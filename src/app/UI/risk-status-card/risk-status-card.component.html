@@ -1,1 +1,4 @@
-<button style="height: 30px;width: 70px;background-color: red;border: none; border-radius: 20px;">Closed</button>
+
+
+
+<button  [ngStyle]="{ 'background-color': isOpen?'#F36661':'#34C759' }"  >{{isOpen?"Open":"closed"}}</button>

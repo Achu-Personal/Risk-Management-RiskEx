@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input, input } from '@angular/core';
 import { OverallRatingCardComponent } from "../../UI/overall-rating-card/overall-rating-card.component";
 import { RiskStatusCardComponent } from "../../UI/risk-status-card/risk-status-card.component";
 
@@ -10,5 +10,13 @@ import { RiskStatusCardComponent } from "../../UI/risk-status-card/risk-status-c
   styleUrl: './risk-basic-details-card.component.scss'
 })
 export class RiskBasicDetailsCardComponent {
+
+
+  @Input() riskNumber=""
+  @Input()riskType=""
+  @Input() riskDesc=""
+   @Input() riskName=""
+  @Input() impact=""
+  @Input() overallRiskRating=""
 
 }

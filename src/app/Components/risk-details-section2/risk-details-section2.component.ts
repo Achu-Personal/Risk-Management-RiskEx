@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-risk-details-section2',
@@ -8,5 +8,12 @@ import { Component } from '@angular/core';
   styleUrl: './risk-details-section2.component.scss'
 })
 export class RiskDetailsSection2Component {
+
+
+  @Input() riskMitigation=""
+  @Input() riskContengency=""
+  @Input() responsibilityOfAction=""
+  @Input() plannedActionDate=""
+
 
 }
