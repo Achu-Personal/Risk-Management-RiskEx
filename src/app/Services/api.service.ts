@@ -14,7 +14,7 @@ constructor(private http:HttpClient) { }
   {
       return this.http.get("/data/getAllRisk.json");
 
-  
+  }
   getRiskType(){
     return this.http.get(`data/type-dropdown.json`)
   }
