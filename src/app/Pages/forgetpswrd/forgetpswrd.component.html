@@ -19,9 +19,11 @@
           placeholder="Enter your email"
           formControlName="email"
         />
-        <div *ngIf="email.invalid && email.touched" class="error">
+        @if (email.invalid && email.touched) {
+        <div class="error">
           Please enter a valid email address.
         </div>
+      }
       </div>
 
       <button type="submit" class="btn-submit" [disabled]="forgotPasswordForm.invalid">
