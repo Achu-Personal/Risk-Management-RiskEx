@@ -1,0 +1,25 @@
+/* Sidebar and Content Alignment */
+.d-flex {
+  display: flex;
+}
+
+/* Container Styling */
+.container {
+  margin-left: 20px;
+  flex-grow: 1;
+}
+
+/* Modal Header Styling */
+.modal-header {
+  background-color: #f8f9fa;
+}
+
+/* Buttons Consistency */
+.btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+.btn-primary:hover {
+  background-color: #0056b3;
+  border-color: #004085;
+}
