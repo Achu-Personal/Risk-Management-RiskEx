@@ -10,7 +10,7 @@ import { ISMSFormComponent } from "../../Components/isms-form/isms-form.componen
 @Component({
   selector: 'app-register-risk',
   standalone: true,
-  imports: [SidebarComponent, DropdownComponent, CommonModule, FormsModule, QMSFormComponent, ISMSFormComponent],
+  imports: [ DropdownComponent, CommonModule, FormsModule, QMSFormComponent, ISMSFormComponent],
   templateUrl: './register-risk.component.html',
   styleUrl: './register-risk.component.scss'
 })
