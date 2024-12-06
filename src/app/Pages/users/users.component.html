@@ -1,24 +1,24 @@
-
 <app-body-container>
 
 
 
-    <div class="container mt-4 ">
-      <h2 class="mb-4" style="margin-left: 0;">Manage Users and Departments</h2>
+  <div class="container mt-4 ">
+    <h2 class="mb-4" style="margin-left: 0;">Manage Users and Departments</h2>
+</div>
+<div class="row button-group">
+  <div class="col-md-2 d-flex justify-content-end">
+    <button type="button" class="btn btn-success button-custom" data-bs-toggle="modal" data-bs-target="#addUserModal">
+      Add User
+    </button>
+  </div>
+  <div class="col-md-2 d-flex justify-content-start">
+    <button type="button" class="btn btn-success button-custom" data-bs-toggle="modal" data-bs-target="#addDepartmentModal">
+      Add Department
+    </button>
+  </div>
+</div>
 
-      <div class="row button-group">
-        <div class="col-md-2">
-          <button type="button" class="btn btn-success w-100" data-bs-toggle="modal" data-bs-target="#addUserModal">
-            Add User
-          </button>
-        </div>
-        <div class="col-md-2">
-          <button type="button" class="btn btn-success w-100" data-bs-toggle="modal" data-bs-target="#addDepartmentModal">
-            Add Department
-          </button>
-        </div>
-      </div>
-    </div>
+
 
 
   <!-- Add User Modal -->
@@ -38,9 +38,9 @@
               </label>
               <input type="text" class="form-control" id="name" placeholder="Enter Name" formControlName="name" />
               @if (userForm.get('name')?.invalid && userForm.get('name')?.touched)
-               {
-                 <div  class="text-danger"> Name is required. </div>
-               }
+              {
+              <div class="text-danger"> Name is required. </div>
+              }
             </div>
 
             <div class="mb-3">
@@ -50,16 +50,16 @@
               <input type="email" class="form-control" id="email" placeholder="Enter Email" formControlName="email" />
               @if (userForm.get('email')?.invalid && userForm.get('email')?.touched)
               {
-                <div class="text-danger">
-                  @if (userForm.get('email')?.errors?.['required'])
-                   {
-                    <span> Email is required. </span>
-                   }
-                  @if (userForm.get('email')?.errors?.['email'])
-                   {
-                    <span >Invalid email address.</span>
-                   }
-                </div>
+              <div class="text-danger">
+                @if (userForm.get('email')?.errors?.['required'])
+                {
+                <span> Email is required. </span>
+                }
+                @if (userForm.get('email')?.errors?.['email'])
+                {
+                <span>Invalid email address.</span>
+                }
+              </div>
               }
 
             </div>
@@ -76,9 +76,9 @@
               </select>
               @if (userForm.get('department')?.invalid &&userForm.get('department')?.touched)
               {
-                <div class="text-danger">
-                  Department is required.
-                </div>
+              <div class="text-danger">
+                Department is required.
+              </div>
               }
 
             </div>
@@ -123,7 +123,7 @@
                 formControlName="departmentName" />
               @if (departmentForm.get('departmentName')?.invalid && departmentForm.get('departmentName')?.touched)
               {
-                 <div class="text-danger">Department name is required.</div>
+              <div class="text-danger">Department name is required.</div>
               }
             </div>
 
@@ -140,5 +140,5 @@
       </div>
     </div>
   </div>
-
+  <app-usertable></app-usertable>
 </app-body-container>

@@ -1,0 +1,25 @@
+table {
+  border: 2px solid black;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+thead {
+  background-color: #f8f9fa;
+  border-bottom: 2px solid black;
+  border-top: 2px solid black;
+}
+
+// thead th {
+//   text-align: center;
+// }
+
+tbody tr td {
+  border: none !important; /* No borders for rows */
+
+}
+tbody th {
+  border: none !important; /* No borders for rows */
+ 
+
+}
