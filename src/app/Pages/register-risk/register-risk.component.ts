@@ -15,8 +15,8 @@ import { ISMSFormComponent } from "../../Components/isms-form/isms-form.componen
   styleUrl: './register-risk.component.scss'
 })
 export class RegisterRiskComponent {
-  selectedOption:string=''
-  data:any
+selectedOption:string=''
+ data:any
 
   constructor(public api:ApiService){}
   ngOnInit(){
