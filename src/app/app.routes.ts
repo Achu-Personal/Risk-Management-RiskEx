@@ -46,16 +46,16 @@ export const routes: Routes = [
         path:'addrisk',component:RegisterRiskComponent
       },
       {
-        path:'users',component:UsersComponent
+        path:'users',component:UsersComponent,data: { title: 'Users' },
       },
       {
-        path:'history',component:HistoryComponent
+        path:'history',component:HistoryComponent,data: { title: 'History' }
       },
       {
-        path:'reports',component:ReportsComponent
+        path:'reports',component:ReportsComponent,data: { title: 'Reports' }
       },
       {
-        path:'approvals',component:ApprovalComponent
+        path:'approvals',component:ApprovalComponent,data: { title: 'Approvals' }
       },
       {
         path:'',redirectTo:'home',pathMatch:'full'
