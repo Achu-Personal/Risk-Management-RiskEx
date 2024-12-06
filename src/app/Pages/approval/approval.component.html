@@ -1,1 +1,29 @@
-<p>approval works!</p>
+<app-body-container class="hide-scrollbar">
+    <main>
+      <app-risk-basic-details-card ></app-risk-basic-details-card>
+      <app-risk-details-section2 ></app-risk-details-section2>
+    </main>
+    
+        <form [formGroup]="commentForm" (ngSubmit)="ApproveRisk()">
+            <div class="comment-section">
+        <label for="comment" class="form-label"><h5>Comments</h5></label>
+        <input id="comment" class="form-control" rows="4" placeholder="Write your comment here..." formControlName="approve"/>
+    </div>
+    @if(cancelMessage){
+        <div class="cancel-message">
+            <p>{{cancelMessage}}</p>
+        </div>
+    }
+    @if(approveMessage){
+        <div class="cancel-message">
+            <p>{{approveMessage}}</p>
+        </div>
+    }
+    <div class="button-group">
+        <button type="submit" class="btn btn-success">Approve</button>
+        <button type="button" class="btn btn-danger" (click)="cancelRisk()">Cancel</button>
+    </div></form>
+   
+  </app-body-container>
+  
+  

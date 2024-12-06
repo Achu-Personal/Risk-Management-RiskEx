@@ -1,9 +1,9 @@
 <div class="sidebar d-flex flex-column">
     <div class="sidebar-item">
         @for(item of menuItems; track item.id){
-        <a 
-        [class.active]="item.active" 
-        (click)="setActiveItem(item)" 
+        <a
+        [class.active]="item.active"
+        (click)="setActiveItem(item)"
         [routerLink]="item.route" class="sidebar-link">
         <i [class]="'bi ' + item.icon"></i>
         <span class="sidebar-text">{{ item.label }}</span>
@@ -11,4 +11,4 @@
     }
     </div>
   </div>
-  
+

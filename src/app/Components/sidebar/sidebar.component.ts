@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { NavigationEnd, Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-sidebar',
@@ -10,14 +10,33 @@ import { RouterLink } from '@angular/router';
 })
 export class SidebarComponent {
   menuItems = [
-    { id:1, label: 'Home', icon: 'bi-house', route: '/home', active: true },
-    { id:2, label: 'Users', icon: 'bi-people', route: '/users', active: false },
-    { id:3, label: 'History', icon: 'bi-clock-history', route: '/history', active: false },
-    { id:4, label: 'Reports', icon: 'bi-bar-chart', route: '/reports', active: false },
-    { id:5,label: 'Approvals', icon: 'bi-check2-square', route: '/approvals', active: false },
+    { id: 1, label: 'Home', icon: 'bi-house', route: '/', active: false },
+    { id: 2, label: 'Users', icon: 'bi-people', route: '/users', active: false },
+    { id: 3, label: 'History', icon: 'bi-clock-history', route: '/history', active: false },
+    { id: 4, label: 'Reports', icon: 'bi-bar-chart', route: '/reports', active: false },
+    { id: 5, label: 'Approvals', icon: 'bi-check2-square', route: '/approvals', active: false },
   ];
+
+  constructor(private router: Router) {}
+
+  ngOnInit() {
+    this.setActiveFromRoute(this.router.url);
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        this.setActiveFromRoute(event.urlAfterRedirects);
+      }
+    });
+  }
+
   setActiveItem(selectedItem: any) {
     this.menuItems.forEach((item) => (item.active = false));
     selectedItem.active = true;
+    this.router.navigate([selectedItem.route]);
+  }
+
+  setActiveFromRoute(currentRoute: string) {
+    this.menuItems.forEach((item) => {
+      item.active = item.route === currentRoute;
+    });
   }
 }

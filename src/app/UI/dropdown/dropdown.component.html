@@ -1,0 +1,5 @@
+<select [(ngModel)]="selectedOption"  class="dropdown" (ngModelChange)="onSelectionChange($event)">
+  @for (item of data; track $index) {
+    <option  value="{{item.value}}">{{item.type}}</option>
+  }
+</select>

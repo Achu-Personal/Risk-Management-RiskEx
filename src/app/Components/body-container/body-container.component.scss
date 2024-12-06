@@ -1,0 +1,8 @@
+.container-fluid{
+    overflow: auto; /* Allow scrolling */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE 10+ */
+}
+.container-fluid::-webkit-scrollbar {
+    display: none; /* Hide the scrollbar */
+}
