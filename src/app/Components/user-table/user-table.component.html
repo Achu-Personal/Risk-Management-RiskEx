@@ -1,0 +1,47 @@
+
+<div class="table-container">
+  <div class="top">
+    <div class="table-header">
+      <label for="entries">Show</label>
+      <select id="entries">
+        <option value="10">10</option>
+        <option value="25">25</option>
+        <option value="50">50</option>
+      </select>
+      <label>entries</label>
+      <input type="text" id="search" placeholder="Search..." />
+  </div>
+
+  </div>
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead>
+
+        <tr class="bord">
+          @for (item of items; track item) {
+            <th>{{item.data}}</th>
+          }
+        </tr>
+      </thead>
+      <tbody>
+        @for (item of itemslist; track item) {
+          <tr>
+            <td>{{item.name}}</td>
+            <td>{{item.email}}</td>
+            <td>{{item.department}}</td>
+            <td>{{item.actions}}</td>
+          </tr>
+        }
+
+      </tbody>
+    </table>
+  </div>
+  <div class="pagination fixed-pagination">
+    <button class="page-btn">&laquo;</button>
+    <button class="page-btn active">1</button>
+    <button class="page-btn">2</button>
+    <button class="page-btn">3</button>
+    <button class="page-btn">&raquo;</button>
+  </div>
+</div>
+
