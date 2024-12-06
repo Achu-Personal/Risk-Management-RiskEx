@@ -19,7 +19,6 @@ import { RegisterRiskComponent } from './Pages/register-risk/register-risk.compo
 
 
 import { ForgetpswrdComponent } from './Pages/forgetpswrd/forgetpswrd.component';
-import { LoginComponent } from './Pages/login/login.component';
 
 
 export const routes: Routes = [
@@ -69,7 +68,6 @@ export const routes: Routes = [
 
     path:'**',component:WildComponentComponent
 
-    path:'user',component:UsersComponent
   },
   {
     path:"forgetpassword",component:ForgetpswrdComponent
