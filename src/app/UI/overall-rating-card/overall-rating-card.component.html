@@ -1,0 +1,10 @@
+
+
+<div [ngStyle]="{ 'background-color': numericValue<30?'green': ( numericValue>30&&numericValue<99)?'yellow':'red' }"  class=" d-flex flex-column justify-content-center align-items-center" >
+
+  <h1 class="value">
+    {{value}}
+  </h1>
+  <h6>{{title}}</h6>
+
+</div>

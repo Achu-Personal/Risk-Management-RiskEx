@@ -10,7 +10,7 @@ import { RouterLink } from '@angular/router';
 })
 export class SidebarComponent {
   menuItems = [
-    { id:1, label: 'Home', icon: 'bi-house', route: '/home', active: true },
+    { id:1, label: 'Home', icon: 'bi-house', route: '/', active: true },
     { id:2, label: 'Users', icon: 'bi-people', route: '/users', active: false },
     { id:3, label: 'History', icon: 'bi-clock-history', route: '/history', active: false },
     { id:4, label: 'Reports', icon: 'bi-bar-chart', route: '/reports', active: false },

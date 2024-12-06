@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { DashboardComponent } from './Layout/dashboard/dashboard.component';
+import { ViewRiskComponent } from './Pages/view-risk/view-risk.component';
 import { SidebarComponent } from './Components/sidebar/sidebar.component';
 import { AuthComponent } from './Layout/auth/auth.component';
 import { LoginComponent } from './Pages/login/login.component';
@@ -22,8 +23,11 @@ export const routes: Routes = [
   {
     path:'',component:DashboardComponent,
     children:[
+      // {
+      //   path:'home',component:DashboardComponent
+      // },
       {
-        path:'home',component:DashboardComponent
+        path:'ViewRisk/:id',component:ViewRiskComponent
       },
       // {path:"ViewRisk/:id",component:ViewRiskComponent}
       {
@@ -41,9 +45,9 @@ export const routes: Routes = [
       {
         path:'approvals',component:ApprovalComponent
       },
-      {
-        path:'',redirectTo:'home',pathMatch:'full'
-      }
+      // {
+      //   path:'',redirectTo:'home',pathMatch:'full'
+      // }
     ]
   },
   {path:'sidebar',component:SidebarComponent},
