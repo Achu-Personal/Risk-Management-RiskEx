@@ -2,11 +2,26 @@
 .d-flex {
     display: flex;
     height: 100vh;
+    height: 100vh;
+    // overflow-y: scroll;
+    // scrollbar-width: none;
+    // -ms-overflow-style: none;
 }
 
-
-/* Main Content styles */
 .main-content {
     padding: 20px;
+    padding: 5px;
     overflow-y: auto;
+    width: 100%;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.main-content::-webkit-scrollbar {
+    display: none;
+}
+.navbar{
+    height: 10vh;
+    background-color: red;
+    width: 100%;
 }

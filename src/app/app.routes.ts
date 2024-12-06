@@ -23,8 +23,11 @@ export const routes: Routes = [
   {
     path:'',component:DashboardComponent,
     children:[
+      // {
+      //   path:'home',component:DashboardComponent
+      // },
       {
-        path:'home',component:DashboardComponent
+        path:'ViewRisk/:id',component:ViewRiskComponent
       },
       // {path:"ViewRisk/:id",component:ViewRiskComponent}
       {
@@ -42,9 +45,9 @@ export const routes: Routes = [
       {
         path:'approvals',component:ApprovalComponent
       },
-      {
-        path:'',redirectTo:'home',pathMatch:'full'
-      }
+      // {
+      //   path:'',redirectTo:'home',pathMatch:'full'
+      // }
     ]
   },
   {path:'sidebar',component:SidebarComponent},
