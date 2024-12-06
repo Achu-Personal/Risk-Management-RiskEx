@@ -1,0 +1,212 @@
+[
+  {
+    "SL_No": 1,
+    "Risk_Number": "R-001",
+    "Risk_Description": "Unauthorized access to sensitive data",
+    "Risk_Type": "Confidentiality",
+    "DepartmentId": "DPT-001",
+    "ProjectId": "PRJ-1001",
+    "Impact_of_Risk": {
+      "Confidentiality": {
+        "Likelihood": "Medium",
+        "Impact": "High",
+        "Risk_Factor": 6
+      },
+      "Integrity": {
+        "Likelihood": "Low",
+        "Impact": "Medium",
+        "Risk_Factor": 3
+      },
+      "Availability": {
+        "Likelihood": "Very Low",
+        "Impact": "Medium",
+        "Risk_Factor": 2
+      },
+      "Overall_Risk_Rating": 11
+    },
+    "Current_Risk_Assessment": {
+      "Confidentiality": {
+        "Likelihood": "High",
+        "Impact": "High",
+        "Risk_Factor": 9
+      },
+      "Integrity": {
+        "Likelihood": "Medium",
+        "Impact": "Low",
+        "Risk_Factor": 3
+      },
+      "Availability": {
+        "Likelihood": "Low",
+        "Impact": "Medium",
+        "Risk_Factor": 2
+      },
+      "Overall_Risk_Rating": 14
+    },
+    "Risk_Mitigation": "Implement multi-factor authentication and encryption.",
+    "Risk_Contingency": "Restrict system access and enable monitoring tools.",
+    "Responsibility_Of_Action": "IT Security Team",
+    "Planned_Action_Date": "2024-12-10",
+    "Assessment_Post_Implementation": {
+      "Confidentiality": {
+        "Likelihood": "Low",
+        "Impact": "Medium",
+        "Risk_Factor": 3
+      },
+      "Integrity": {
+        "Likelihood": "Very Low",
+        "Impact": "Low",
+        "Risk_Factor": 1
+      },
+      "Availability": {
+        "Likelihood": "Very Low",
+        "Impact": "Low",
+        "Risk_Factor": 1
+      },
+      "Overall_Risk_Rating": 5
+    },
+    "Actual_Closed_Date": "2025-01-15",
+    "Risk_Response": "Mitigate",
+    "Risk_Status": "Closed",
+    "Remarks": "Risk successfully mitigated through planned measures."
+  },
+  {
+    "SL_No": 2,
+    "Risk_Number": "R-002",
+    "Risk_Description": "Server outage causing downtime",
+    "Risk_Type": "Availability",
+    "DepartmentId": "DPT-002",
+    "ProjectId": "PRJ-1002",
+    "Impact_of_Risk": {
+      "Confidentiality": {
+        "Likelihood": "Very Low",
+        "Impact": "Low",
+        "Risk_Factor": 1
+      },
+      "Integrity": {
+        "Likelihood": "Low",
+        "Impact": "Low",
+        "Risk_Factor": 1
+      },
+      "Availability": {
+        "Likelihood": "High",
+        "Impact": "High",
+        "Risk_Factor": 9
+      },
+      "Overall_Risk_Rating": 11
+    },
+    "Current_Risk_Assessment": {
+      "Confidentiality": {
+        "Likelihood": "Very Low",
+        "Impact": "Low",
+        "Risk_Factor": 1
+      },
+      "Integrity": {
+        "Likelihood": "Low",
+        "Impact": "Medium",
+        "Risk_Factor": 2
+      },
+      "Availability": {
+        "Likelihood": "High",
+        "Impact": "Very High",
+        "Risk_Factor": 12
+      },
+      "Overall_Risk_Rating": 15
+    },
+    "Risk_Mitigation": "Setup load balancing and disaster recovery systems.",
+    "Risk_Contingency": "Use cloud-based failover mechanisms.",
+    "Responsibility_Of_Action": "Infrastructure Team",
+    "Planned_Action_Date": "2024-12-20",
+    "Assessment_Post_Implementation": {
+      "Confidentiality": {
+        "Likelihood": "Very Low",
+        "Impact": "Low",
+        "Risk_Factor": 1
+      },
+      "Integrity": {
+        "Likelihood": "Very Low",
+        "Impact": "Low",
+        "Risk_Factor": 1
+      },
+      "Availability": {
+        "Likelihood": "Low",
+        "Impact": "Medium",
+        "Risk_Factor": 2
+      },
+      "Overall_Risk_Rating": 4
+    },
+    "Actual_Closed_Date": "2025-01-30",
+    "Risk_Response": "Mitigate",
+    "Risk_Status": "Closed",
+    "Remarks": "Downtime risk significantly reduced."
+  },
+  {
+    "SL_No": 3,
+    "Risk_Number": "R-003",
+    "Risk_Description": "Data breach due to phishing",
+    "Risk_Type": "Integrity",
+    "DepartmentId": "DPT-003",
+    "ProjectId": "PRJ-1003",
+    "Impact_of_Risk": {
+      "Confidentiality": {
+        "Likelihood": "Medium",
+        "Impact": "High",
+        "Risk_Factor": 6
+      },
+      "Integrity": {
+        "Likelihood": "High",
+        "Impact": "Very High",
+        "Risk_Factor": 12
+      },
+      "Availability": {
+        "Likelihood": "Low",
+        "Impact": "Medium",
+        "Risk_Factor": 2
+      },
+      "Overall_Risk_Rating": 20
+    },
+    "Current_Risk_Assessment": {
+      "Confidentiality": {
+        "Likelihood": "High",
+        "Impact": "High",
+        "Risk_Factor": 9
+      },
+      "Integrity": {
+        "Likelihood": "Very High",
+        "Impact": "Very High",
+        "Risk_Factor": 15
+      },
+      "Availability": {
+        "Likelihood": "Medium",
+        "Impact": "Medium",
+        "Risk_Factor": 4
+      },
+      "Overall_Risk_Rating": 28
+    },
+    "Risk_Mitigation": "Conduct regular phishing awareness training and email filtering.",
+    "Risk_Contingency": "Enable email threat detection and account recovery protocols.",
+    "Responsibility_Of_Action": "Security Awareness Team",
+    "Planned_Action_Date": "2024-12-25",
+    "Assessment_Post_Implementation": {
+      "Confidentiality": {
+        "Likelihood": "Low",
+        "Impact": "Medium",
+        "Risk_Factor": 3
+      },
+      "Integrity": {
+        "Likelihood": "Medium",
+        "Impact": "Low",
+        "Risk_Factor": 2
+      },
+      "Availability": {
+        "Likelihood": "Very Low",
+        "Impact": "Low",
+        "Risk_Factor": 1
+      },
+      "Overall_Risk_Rating": 6
+    },
+    "Actual_Closed_Date": "2025-02-10",
+    "Risk_Response": "Mitigate",
+    "Risk_Status": "Closed",
+    "Remarks": "Phishing awareness training completed."
+  }
+]

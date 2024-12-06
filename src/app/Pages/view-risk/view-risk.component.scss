@@ -1,0 +1,16 @@
+main{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+/* Hide scrollbar for all browsers */
+// .hide-scrollbar {
+//   overflow-y: scroll; /* Enable scrolling */
+//   scrollbar-width: none; /* Firefox: Hide scrollbar */
+//   -ms-overflow-style: none; /* IE 10+: Hide scrollbar */
+// }
+
+// /* Chrome, Edge, and Safari */
+// .hide-scrollbar::-webkit-scrollbar {
+//   display: none; /* Hide scrollbar */
+// }

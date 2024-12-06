@@ -1,0 +1,65 @@
+main{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.comment-section {
+    width: 100%;
+    margin-top: 20px ; /* Center the section */
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #F6FBFF;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+    
+}
+
+textarea {
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    resize: vertical; /* Allow vertical resizing only */
+    // margin: 10px;
+}
+.button-group {
+    display: flex;
+    gap: 30px; /* Space between buttons */
+    margin-top: 30px;
+    justify-content: end;
+    margin-right: 10px;
+}
+
+button {
+    padding: 7px 20px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    width: 100px;
+}
+
+button.btn-success {
+    background-color: #3E68B9;
+    color: white;
+}
+
+button.btn-success:hover {
+    background-color: #052564;
+    transform: scale(1.05);
+}
+
+
+button.btn-danger {
+    background-color: #ECEAFA;
+    color: rgb(17, 16, 16);
+}
+
+button.btn-danger:hover {
+    background-color: #b6b5bd;
+    transform: scale(1.05);
+}
