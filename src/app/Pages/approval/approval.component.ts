@@ -15,7 +15,7 @@ export class ApprovalComponent {
 
 
   commentForm = new FormGroup({
-    approve: new FormControl('')});  
+    approve: new FormControl('')});
     cancelMessage: string = "";
   approveMessage: string = "";
 

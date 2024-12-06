@@ -1,11 +1,15 @@
 import { Routes } from '@angular/router';
+
 import { DashboardComponent } from './Layout/dashboard/dashboard.component';
 import { ViewRiskComponent } from './Pages/view-risk/view-risk.component';
 import { SidebarComponent } from './Components/sidebar/sidebar.component';
 
+
+
 import { AuthComponent } from './Layout/auth/auth.component';
 import { LoginComponent } from './Pages/login/login.component';
 import { UsersComponent } from './Pages/users/users.component';
+
 import { HistoryComponent } from './Pages/history/history.component';
 import { ReportsComponent } from './Pages/reports/reports.component';
 import { ApprovalComponent } from './Pages/approval/approval.component';
@@ -14,7 +18,11 @@ import { RegisterRiskComponent } from './Pages/register-risk/register-risk.compo
 
 
 
+import { ForgetpswrdComponent } from './Pages/forgetpswrd/forgetpswrd.component';
+
+
 export const routes: Routes = [
+
   {
     path:'auth',component:AuthComponent,
     children:[
@@ -49,15 +57,23 @@ export const routes: Routes = [
       {
         path:'approvals',component:ApprovalComponent,data: { title: 'Approvals' }
       },
-      // {
-      //   path:'',redirectTo:'home',pathMatch:'full'
-      // }
+      {
+        path:'',redirectTo:'home',pathMatch:'full'
+      }
     ]
   },
   {path:'sidebar',component:SidebarComponent},
 
   {
+
     path:'**',component:WildComponentComponent
 
+  },
+  {
+    path:"forgetpassword",component:ForgetpswrdComponent
+  },
+  {
+    path:"Login",component:LoginComponent
   }
+
 ];

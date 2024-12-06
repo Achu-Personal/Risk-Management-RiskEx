@@ -1,0 +1,32 @@
+[
+  {
+  "type":"Very Low",
+  "value":"Very Low"
+
+
+},
+{
+
+  "type":"Low",
+  "value":"Low"
+
+},
+{
+
+  "type":"Medium",
+  "value":"Medium"
+
+},
+{
+
+  "type":"High",
+  "value":"High"
+
+},
+{
+
+  "type":"Very High",
+  "value":"Very High"
+
+}
+]
