@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { DashboardComponent } from './Layout/dashboard/dashboard.component';
 import { ViewRiskComponent } from './Pages/view-risk/view-risk.component';
 import { SidebarComponent } from './Components/sidebar/sidebar.component';
+
 import { AuthComponent } from './Layout/auth/auth.component';
 import { LoginComponent } from './Pages/login/login.component';
 import { UsersComponent } from './Pages/users/users.component';
@@ -10,6 +11,8 @@ import { ReportsComponent } from './Pages/reports/reports.component';
 import { ApprovalComponent } from './Pages/approval/approval.component';
 import { WildComponentComponent } from './Pages/wild-component/wild-component.component';
 import { RegisterRiskComponent } from './Pages/register-risk/register-risk.component';
+=======
+
 
 export const routes: Routes = [
   {
@@ -20,6 +23,7 @@ export const routes: Routes = [
       }
     ]
   },
+
   {
     path:'',component:DashboardComponent,
     children:[
@@ -54,5 +58,6 @@ export const routes: Routes = [
 
   {
     path:'**',component:WildComponentComponent
+
   }
 ];
