@@ -19,6 +19,7 @@ import { RegisterRiskComponent } from './Pages/register-risk/register-risk.compo
 
 
 import { ForgetpswrdComponent } from './Pages/forgetpswrd/forgetpswrd.component';
+import { HomeComponent } from './Pages/home/home.component';
 
 
 export const routes: Routes = [
@@ -35,9 +36,9 @@ export const routes: Routes = [
   {
     path:'',component:DashboardComponent,
     children:[
-      // {
-      //   path:'home',component:DashboardComponent
-      // },
+      {
+        path:'home',component:HomeComponent
+      },
       {
         path:'ViewRisk/:id',component:ViewRiskComponent
       },
