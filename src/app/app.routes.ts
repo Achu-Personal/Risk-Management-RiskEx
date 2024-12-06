@@ -57,9 +57,9 @@ export const routes: Routes = [
       {
         path:'approvals',component:ApprovalComponent
       },
-      // {
-      //   path:'',redirectTo:'home',pathMatch:'full'
-      // }
+      {
+        path:'',redirectTo:'home',pathMatch:'full'
+      }
     ]
   },
   {path:'sidebar',component:SidebarComponent},
