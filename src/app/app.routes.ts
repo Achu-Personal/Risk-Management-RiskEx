@@ -11,7 +11,7 @@ import { ReportsComponent } from './Pages/reports/reports.component';
 import { ApprovalComponent } from './Pages/approval/approval.component';
 import { WildComponentComponent } from './Pages/wild-component/wild-component.component';
 import { RegisterRiskComponent } from './Pages/register-risk/register-risk.component';
-=======
+
 
 
 export const routes: Routes = [
