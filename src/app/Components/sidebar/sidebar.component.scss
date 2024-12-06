@@ -1,0 +1,32 @@
+.sidebar {
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: white;
+    color: black;
+    width: 170px;
+    border-right: 1px solid #ddd;
+  }
+  .sidebar a {
+    color: black;
+    text-decoration: none;
+    display: block;
+    padding: 15px;
+    transition: background-color 0.3s, color 0.3s;
+  }
+
+  .sidebar a.active {
+    background-color: #3E68B9;
+    color: white;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 10px;
+  }
+  .sidebar-item {
+    text-align: left;
+    padding-top: 100px;
+  }
+  .sidebar-link i {
+    margin-right: 8px; 
+}
