@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
-import { SidebarComponent } from "../../Components/sidebar/sidebar.component";
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-users',
   standalone: true,
-  imports: [SidebarComponent,ReactiveFormsModule],
+  imports: [ReactiveFormsModule],
   templateUrl: './users.component.html',
   styleUrl: './users.component.scss'
 })
