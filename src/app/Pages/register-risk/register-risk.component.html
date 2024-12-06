@@ -1,1 +1,29 @@
-<p>register-risk works!</p>
+<div class="container">
+  <div class="content">
+    <div class="register">
+      <label> Risk Type <span class="required">*</span> :</label>
+      <app-dropdown [data]="data" value="selectedOption"
+      (valueChange)="onDropdownChange($event)"></app-dropdown>
+    </div>
+    @if (selectedOption==="") {
+      <div class="typeImage">
+        <div class="typeImageContainer">
+          <p>If you don’t invest in risk-management, it doesn’t matter what business you’re in, it’s a risky business.</p>
+          <img src="02c7457e-d86d-4f21-8f9e-f6c7c457bfbd.png" alt="image" style="height: 250px;width: 470px; border: none;">
+
+        </div>
+
+      </div>
+
+    }
+    @if (selectedOption==="quality") {
+      <app-qms-form></app-qms-form>
+    }
+    @if (selectedOption==="privacy"||selectedOption==="security") {
+      <app-isms-form></app-isms-form>
+
+    }
+
+
+  </div>
+</div>

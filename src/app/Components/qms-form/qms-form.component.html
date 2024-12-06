@@ -1,0 +1,70 @@
+<div class="container">
+  <div class="form">
+    <form [formGroup]="qmsForm">
+      <div class="field">
+        <div class="name">
+          <label >Risk Name <span class="required">*</span>  :</label>
+          <input type="text">
+        </div>
+        <div class="description">
+          <label >Description <span class="required">*</span> :</label>
+          <textarea></textarea>
+        </div>
+        <div class="impact">
+          <label >Impact Of Risk <span class="required">*</span> :</label>
+          <textarea></textarea>
+        </div>
+        <div class="project">
+
+            <label >Project ID :</label>
+          <input type="text">
+
+        </div>
+
+      </div>
+      <div class="field"  >
+        <h5>Current Risk Assessment</h5>
+        <label class="assessment" for="">Likelihood</label>
+        <app-dropdown  [data]="data" id="likelihoodDropdown" ></app-dropdown><br>
+
+
+        <label class="assessment" for="">Impact</label>
+        <app-dropdown  [data]="data"  id="impactDropdown" ></app-dropdown>
+
+
+
+      </div>
+
+      <div class="field" id="thirdfield">
+        <div class="mitigation">
+          <label >Risk Mitigation <span class="required">*</span> :</label>
+          <textarea class="textareaspace"></textarea>
+
+
+        </div>
+        <div class="contingency">
+          <label >Risk Contingency :</label>
+          <textarea class="textareaspace"></textarea>
+
+        </div>
+        <div class="responsibility">
+          <label >Responsibility of Action <span class="required">*</span> :</label>
+          <textarea ></textarea>
+
+        </div>
+        <div class="actionDate">
+          <label id="actionlabel">Planned Action Date :</label>
+          <input type="date" class="textareaspace" >
+
+        </div>
+
+
+      </div>
+
+
+
+    </form>
+
+  </div>
+
+</div>

@@ -1,7 +1,10 @@
 import { Routes } from '@angular/router';
+
 import { DashboardComponent } from './Layout/dashboard/dashboard.component';
 import { ViewRiskComponent } from './Pages/view-risk/view-risk.component';
 import { SidebarComponent } from './Components/sidebar/sidebar.component';
+
+
 
 import { AuthComponent } from './Layout/auth/auth.component';
 import { LoginComponent } from './Pages/login/login.component';
@@ -15,6 +18,7 @@ import { RegisterRiskComponent } from './Pages/register-risk/register-risk.compo
 
 
 export const routes: Routes = [
+
   {
     path:'auth',component:AuthComponent,
     children:[
@@ -60,4 +64,5 @@ export const routes: Routes = [
     path:'**',component:WildComponentComponent
 
   }
+
 ];
