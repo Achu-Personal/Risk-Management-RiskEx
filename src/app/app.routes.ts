@@ -9,12 +9,16 @@ import { SidebarComponent } from './Components/sidebar/sidebar.component';
 import { AuthComponent } from './Layout/auth/auth.component';
 import { LoginComponent } from './Pages/login/login.component';
 import { UsersComponent } from './Pages/users/users.component';
+
 import { HistoryComponent } from './Pages/history/history.component';
 import { ReportsComponent } from './Pages/reports/reports.component';
 import { ApprovalComponent } from './Pages/approval/approval.component';
 import { WildComponentComponent } from './Pages/wild-component/wild-component.component';
 import { RegisterRiskComponent } from './Pages/register-risk/register-risk.component';
 
+
+
+import { ForgetpswrdComponent } from './Pages/forgetpswrd/forgetpswrd.component';
 
 
 export const routes: Routes = [
@@ -61,8 +65,15 @@ export const routes: Routes = [
   {path:'sidebar',component:SidebarComponent},
 
   {
+
     path:'**',component:WildComponentComponent
 
+  },
+  {
+    path:"forgetpassword",component:ForgetpswrdComponent
+  },
+  {
+    path:"Login",component:LoginComponent
   }
 
 ];
