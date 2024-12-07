@@ -25,18 +25,18 @@ export class ViewRiskComponent {
     impact_of_risk: "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC",
     current_risk_assessment: {
       confidentiality: {
-        likelihood: "High",
-        impact: "High",
+        likelihood: "high",
+        impact: "high",
         risk_factor: 9
       },
       integrity: {
-        likelihood: "Medium",
-        impact: "Low",
+        likelihood: "medium",
+        impact: "low",
         risk_factor: 3
       },
       availability: {
-        likelihood: "Low",
-        impact: "Medium",
+        likelihood: "low",
+        impact: "medium",
         risk_factor: 2
       },
       overall_risk_rating: 14
@@ -47,25 +47,25 @@ export class ViewRiskComponent {
     planned_action_date: "2024-12-10",
     assessment_post_implementation: {
       confidentiality: {
-        likelihood: "Low",
-        impact: "Medium",
+        likelihood: "low",
+        impact: "medium",
         risk_factor: 3
       },
       integrity: {
-        likelihood: "Very Low",
-        impact: "Low",
+        likelihood: "low",
+        impact: "low",
         risk_factor: 1
       },
       availability: {
-        likelihood: "Very Low",
-        impact: "Low",
+        likelihood: "low",
+        impact: "low",
         risk_factor: 1
       },
       overall_risk_rating: 31
     },
     actual_closed_date: "2025-01-15",
     risk_response: "Mitigate",
-    risk_status: "Closed",
+    risk_status: "closed",
     remarks: "Risk successfully mitigated through planned measures."
   };
 
