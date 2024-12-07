@@ -22,7 +22,7 @@
       <div class=" riskdesc" style="gap: 10px;">
         <div style="display: flex; gap: 10px;">
           <h5>{{riskName}}</h5>
-          <app-risk-status-card></app-risk-status-card>
+          <app-risk-status-card [isOpen]="riskStatus === 'open'"></app-risk-status-card>
         </div>
         <div>
           <p title={{riskDesc}}>{{riskDesc.slice(0,200)}}...</p>
