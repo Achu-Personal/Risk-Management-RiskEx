@@ -1,22 +1,25 @@
+body{
+  background-color: #3E68B9;
 
+}
 .d-flex {
     display: flex;
-    height: 100vh; 
+    height: 100vh;
     // overflow-y: scroll;
     // scrollbar-width: none;
-    // -ms-overflow-style: none; 
+    // -ms-overflow-style: none;
 }
 
 .main-content {
-    padding: 5px; 
+    padding: 5px;
     overflow-y: auto;
     width: 100%;
     scrollbar-width: none;
-    -ms-overflow-style: none; 
+    -ms-overflow-style: none;
 }
 
 .main-content::-webkit-scrollbar {
-    display: none; 
+    display: none;
 }
 .navbar{
     height: 10vh;
