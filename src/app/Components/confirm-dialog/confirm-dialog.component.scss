@@ -1,0 +1,71 @@
+.dialog-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: fixed; 
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); 
+    width: 450px; 
+    max-width: 90%; 
+    background-color: #ffffff; 
+    border-radius: 10px; 
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); 
+    padding: 20px;
+    z-index: 1000; 
+  }
+  
+
+.dialog-box h2[mat-dialog-title] {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #3E68B9;
+    margin-bottom: 16px;
+    text-align: center;
+  }
+  
+  .dialog-box mat-dialog-content {
+    font-size: 1rem;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  .dialog-box mat-dialog-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    width: 100%;
+  }
+  
+  .dialog-box button {
+    padding: 7px 20px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    width: 100px;
+}
+
+.dialog-box button.btn-success {
+    background-color: #3E68B9;
+    color: white;
+}
+
+.dialog-box button.btn-success:hover {
+    background-color: #052564;
+    transform: scale(1.05);
+}
+
+
+.dialog-box button.btn-danger {
+    background-color: #ECEAFA;
+    color: rgb(17, 16, 16);
+}
+
+.dialog-box button.btn-danger:hover {
+    background-color: #b6b5bd;
+    transform: scale(1.05);
+}
