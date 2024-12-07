@@ -8,11 +8,11 @@
 }
 input{
   margin-left: 60px;
-  width: 600px;
+  width:47.25vw;
 }
 textarea{
   margin-left: 55px;
-  width: 600px;
+  width:47.25vw;
   height: 32px;
   margin-top: 20px;
   resize: none;
@@ -81,7 +81,7 @@ textarea:focus {
 }
 #review{
   margin-left: 160px;
-  width: 600px;
+  width: 47.25vw;
 
 }
 .reviewer{
@@ -126,6 +126,44 @@ textarea:focus {
     margin-top: 30px;
 
   }
+}
+.assessmentDropdown{
+  margin-left: 30px;
+}
+#assessmentDropdownImpact{
+  margin-left: 53px;
+
+}
+.dropdown{
+
+  height: 30px;
+  border-radius: 10px;
+
+
+  margin-left: 160px;
+
+}
+#reviewerDropdown{
+  width:47.25vw;
+
+}
+.dropdownassessment{
+  height: 30px;
+  border-radius: 10px;
+  width:  13.33vw;
+
+}
+#dropdownassessmentLikelihood{
+  margin-left: 50px;
+}
+#dropdownassessmentimpact{
+  margin-left: 73px;
+}
+
+
+#risktype{
+  margin-left: 70px;
+  margin-bottom: 20px;
 }
 
 
