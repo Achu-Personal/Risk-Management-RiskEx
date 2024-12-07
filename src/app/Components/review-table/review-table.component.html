@@ -1,0 +1,28 @@
+<div class="table-responsive">
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+            @for(item of TableHeader; track item){  
+                <th>{{item}}</th>
+            }
+        </tr>
+      </thead>
+      <tbody>
+        @for(row of TableBody; track row.id){
+            <tr>
+                <td>{{ row.SINo }}</td>
+                <td>{{ row.RiskId }}</td>
+                <td>{{ row.Risk }}</td>
+                <td>{{ row.Description }}</td>
+                <td>{{ row.EndDate}}</td>
+                <td>{{ row.Type }}</td>
+                <td>{{ row.CurrentRating }}</td>
+                <td>{{ row.Status }}</td>
+            </tr>
+            <td><img src="" alt=""></td>
+        }
+       
+      </tbody>
+    </table>
+  </div>
+  
