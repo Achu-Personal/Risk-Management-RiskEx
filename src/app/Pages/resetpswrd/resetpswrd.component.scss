@@ -7,7 +7,7 @@ $background-color: #f9f9f9;
 $container-padding: 20px;
 
 // Main container styling
-.main-container {
+.top-container {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -26,7 +26,7 @@ $container-padding: 20px;
     margin: 0;
   }
 
-  .box-container {
+  .first-container {
     flex: 1;
     max-width: 50%;
     display: flex;
@@ -97,7 +97,7 @@ $container-padding: 20px;
     }
   }
 
-  .side-box {
+  .right-box {
     flex: 1;
     max-width: 50%;
     display: flex;
