@@ -1,15 +1,15 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, output } from '@angular/core';
-import { RouterLink } from '@angular/router';
 
 @Component({
-  selector: 'app-button',
+  selector: 'app-searchbox',
   standalone: true,
-  imports: [CommonModule,RouterLink],
-  templateUrl: './button.component.html',
-  styleUrl: './button.component.scss'
+  imports: [CommonModule],
+  templateUrl: './searchbox.component.html',
+  styleUrl: './searchbox.component.scss'
 })
-export class ButtonComponent {
+export class SearchboxComponent {
+
 
   @Input() title:string = 'get the app'
   @Input() bgColour:string = 'orange'
@@ -22,4 +22,5 @@ export class ButtonComponent {
   onClick(){
     this.clicked.emit();
   }
+
 }
