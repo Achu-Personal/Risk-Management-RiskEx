@@ -5,7 +5,7 @@ main{
 }
 .comment-section {
     width: 100%;
-    margin-top: 20px ; /* Center the section */
+    margin-top: -30px ; /* Center the section */
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -62,4 +62,16 @@ button.btn-danger {
 button.btn-danger:hover {
     background-color: #b6b5bd;
     transform: scale(1.05);
+}
+.cancel-message{
+    width: 100%;
+    margin-top: 20px ; 
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #F6FBFF;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
 }

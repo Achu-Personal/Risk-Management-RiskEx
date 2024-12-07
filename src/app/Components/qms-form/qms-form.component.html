@@ -1,0 +1,153 @@
+<div class="container">
+  <div class="form">
+    <form [formGroup]="qmsForm">
+      <div class="field">
+        <div class="name">
+          <div>
+            <label >Risk Name <span class="required">*</span>  :</label>
+
+          </div>
+          <div>
+            <input type="text">
+
+          </div>
+
+
+        </div>
+        <div class="description">
+          <div class="fieldlabel">
+            <label >Description <span class="required">*</span> :</label>
+
+          </div>
+          <div  class="fieldTextarea">
+            <textarea [(ngModel)]="descriptionText"  (input)="autoResize($event)"></textarea>
+
+          </div>
+
+
+        </div>
+        <div class="impact">
+          <div class="fieldlabel">
+            <label >Impact Of Risk <span class="required">*</span> :</label>
+
+          </div>
+          <div  class="fieldTextarea">
+            <textarea [(ngModel)]="descriptionText"  (input)="autoResize($event)"></textarea>
+
+          </div>
+
+
+        </div>
+        <div class="project">
+          <div class="projectLabel">
+            <label >Project ID :</label>
+
+          </div>
+          <div>
+            <input type="text">
+
+          </div>
+
+
+        </div>
+
+      </div>
+      <div class="field"  >
+        <h5>Current Risk Assessment</h5>
+        <label class="assessment" for="">Likelihood</label>
+        <app-dropdown  [data]="data" id="likelihoodDropdown" ></app-dropdown><br>
+
+
+        <label class="assessment" for="">Impact</label>
+        <app-dropdown  [data]="data"  id="impactDropdown" ></app-dropdown>
+
+
+
+      </div>
+
+      <div class="field" id="thirdfield">
+        <div class="mitigation">
+          <div class="fieldlabel">
+            <label >Risk Mitigation <span class="required">*</span> :</label>
+
+          </div>
+          <div  class="fieldTextarea">
+            <textarea class="textarea" [(ngModel)]="descriptionText"  (input)="autoResize($event)"></textarea>
+
+
+          </div>
+
+        </div>
+        <div class="contingency">
+          <div class="fieldlabel">
+            <label >Risk Contingency :</label>
+
+          </div>
+
+          <div class="fieldTextarea">
+            <textarea class="textarea"  [(ngModel)]="descriptionText"  (input)="autoResize($event)" ></textarea>
+
+          </div>
+
+
+        </div>
+        <div class="responsibility">
+          <div class="fieldlabel">
+            <label >Responsibility of Action <span class="required">*</span> :</label>
+
+          </div>
+          <div  class="fieldTextarea">
+            <textarea  [(ngModel)]="descriptionText"  (input)="autoResize($event)" ></textarea>
+
+          </div>
+
+
+
+        </div>
+        <div class="actionDate">
+          <div class="actionDateLabel">
+            <label id="actionlabel">Planned Action Date  <span class="required">*</span> :</label>
+
+          </div>
+          <div>
+            <input type="date" class="textarea" id="textareaspace" >
+
+          </div>
+
+
+
+
+        </div>
+        <div class="reviewer">
+          <div>
+            <label >Reviewer <span class="required">*</span> :</label>
+
+          </div>
+          <div>
+            <app-dropdown id="review" [dropdownWidth]="'600px'"></app-dropdown>
+
+          </div>
+
+
+
+        </div>
+
+        <div class="action">
+          <div>
+            <app-button value="Save"></app-button>
+          <app-button value="Cancel" id="cancelbtn"></app-button>
+
+          </div>
+
+        </div>
+
+
+      </div>
+
+
+
+    </form>
+
+  </div>
+
+</div>
