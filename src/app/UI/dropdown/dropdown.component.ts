@@ -11,6 +11,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class DropdownComponent {
   @Input() data :Array<{ value: string; type: string }> = []
+  @Input() dropdownWidth: string = '150px';
 
   @Input()selectedOption :string=''
   @Output() valueChange: EventEmitter<string> = new EventEmitter<string>();
