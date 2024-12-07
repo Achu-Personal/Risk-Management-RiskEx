@@ -20,6 +20,7 @@ import { RegisterRiskComponent } from './Pages/register-risk/register-risk.compo
 
 import { ForgetpswrdComponent } from './Pages/forgetpswrd/forgetpswrd.component';
 import { ResetpswrdComponent } from './Pages/resetpswrd/resetpswrd.component';
+import { HomeComponent } from './Pages/home/home.component';
 
 
 export const routes: Routes = [
@@ -36,9 +37,9 @@ export const routes: Routes = [
   {
     path:'',component:DashboardComponent,
     children:[
-      // {
-      //   path:'home',component:DashboardComponent
-      // },
+      {
+        path:'home',component:HomeComponent
+      },
       {
         path:'ViewRisk/:id',component:ViewRiskComponent
       },
@@ -47,20 +48,20 @@ export const routes: Routes = [
         path:'addrisk',component:RegisterRiskComponent
       },
       {
-        path:'users',component:UsersComponent
+        path:'users',component:UsersComponent,data: { title: 'Users' },
       },
       {
-        path:'history',component:HistoryComponent
+        path:'history',component:HistoryComponent,data: { title: 'History' }
       },
       {
-        path:'reports',component:ReportsComponent
+        path:'reports',component:ReportsComponent,data: { title: 'Reports' }
       },
       {
-        path:'approvals',component:ApprovalComponent
+        path:'approvals',component:ApprovalComponent,data: { title: 'Approvals' }
       },
-      // {
-      //   path:'',redirectTo:'home',pathMatch:'full'
-      // }
+      {
+        path:'',redirectTo:'home',pathMatch:'full'
+      }
     ]
   },
   {path:'sidebar',component:SidebarComponent},
@@ -76,8 +77,8 @@ export const routes: Routes = [
 
     path:'**',component:WildComponentComponent
 
-
   },
+
 
 
 

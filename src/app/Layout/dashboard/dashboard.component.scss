@@ -1,10 +1,17 @@
 body{
-  background-color: #3E68B9;
+
+    background-color: #3E68B9;
 
 }
 .d-flex {
     display: flex;
     height: 100vh;
+
+
+}
+
+.main-content {
+    padding: 20px;
     // overflow-y: scroll;
     // scrollbar-width: none;
     // -ms-overflow-style: none;
@@ -16,6 +23,11 @@ body{
     width: 100%;
     scrollbar-width: none;
     -ms-overflow-style: none;
+    -ms-overflow-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+
 }
 
 .main-content::-webkit-scrollbar {
@@ -26,3 +38,4 @@ body{
     background-color: red;
     width: 100%;
 }
+

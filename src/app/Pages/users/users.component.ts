@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { BodyContainerComponent } from "../../Components/body-container/body-container.component";
 
 @Component({
   selector: 'app-users',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, BodyContainerComponent],
   templateUrl: './users.component.html',
   styleUrl: './users.component.scss'
 })
