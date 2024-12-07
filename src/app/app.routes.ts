@@ -20,6 +20,7 @@ import { RegisterRiskComponent } from './Pages/register-risk/register-risk.compo
 
 import { ForgetpswrdComponent } from './Pages/forgetpswrd/forgetpswrd.component';
 import { HomeComponent } from './Pages/home/home.component';
+import { ApprovalTableComponent } from './Pages/approval-table/approval-table.component';
 
 
 
@@ -56,6 +57,10 @@ export const routes: Routes = [
       {
         path:'reports',component:ReportsComponent,data: { title: 'Reports' }
       },
+      {
+        path:'approvaltable',component:ApprovalTableComponent,data: { title: 'Approvals' }
+      },
+
       {
         path:'approvals',component:ApprovalComponent,data: { title: 'Approvals' }
       },
