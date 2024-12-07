@@ -1,0 +1,90 @@
+/* Dropdown Box */
+.dropdown-box {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  min-width: 200px;
+  font-size: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Dropdown Arrow */
+.arrow {
+  font-size: 16px;
+  margin-left: 10px;
+}
+
+/* Dropdown Content */
+.dropdown-content {
+  position: absolute;
+  background-color: white;
+  padding: 0;
+  min-width: 200px;
+  max-height: 300px; /* Limit height of dropdown */
+  overflow-y: auto; /* Scroll if content exceeds 300px */
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+  z-index: 1;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* Scrollbar for Dropdown */
+.dropdown-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.dropdown-content::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.dropdown-content::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.dropdown-content::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Search Input inside Dropdown */
+input[type="text"] {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* Checkbox inside Dropdown */
+label {
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+}
+
+/* Hover effect for each checkbox item */
+label:hover {
+  background-color: #f4f4f4;
+}
+
+/* Department Option Click Handling */
+.department-option {
+  padding: 8px;
+  font-weight: bold;
+}
+
+.department-option:hover {
+  background-color: #e7f3fe;
+}

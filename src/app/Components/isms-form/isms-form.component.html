@@ -1,14 +1,19 @@
 <div class="container">
   <div class="form">
-    <form [formGroup]="ismsForm">
+    <form [formGroup]="ismsForm" (ngSubmit)="onsubmit()">
       <div class="field">
+        <div style="display: none;">
+          <label for="">Risk Type <span class="required">*</span> :</label>
+          <label for="" id="risktype" >{{riskType}}</label>
+        </div>
         <div class="name">
           <div>
+
             <label >Risk Name <span class="required">*</span>  :</label>
 
           </div>
           <div>
-            <input type="text">
+            <input type="text" formControlName="riskName">
 
           </div>
 
@@ -20,7 +25,7 @@
 
           </div>
           <div  class="fieldTextarea">
-            <textarea [(ngModel)]="descriptionText"  (input)="autoResize($event)"></textarea>
+            <textarea  (input)="autoResize($event)" formControlName="description"></textarea>
 
           </div>
 
@@ -32,7 +37,7 @@
 
           </div>
           <div  class="fieldTextarea">
-            <textarea [(ngModel)]="descriptionText"  (input)="autoResize($event)"></textarea>
+            <textarea  (input)="autoResize($event)" formControlName="riskImpact"></textarea>
 
           </div>
 
@@ -44,7 +49,7 @@
 
           </div>
           <div>
-            <input type="text">
+            <input type="text" formControlName="projectId">
 
           </div>
 
@@ -52,8 +57,72 @@
         </div>
 
       </div>
+      <div class="field"  >
+        <h5>Current Risk Assessment</h5>
+
+        <table>
+          <tr>
+            <th> </th>
+            <th>Confidenciality</th>
+            <th>Integrity</th>
+            <th>Availability</th>
+            <th>Privacy</th>
+          </tr>
+          <tr>
+            <td>Likelihood</td>
+            <td> <select name="" id="dropdownassessmentLikelihood" class="dropdownassessment"  formControlName="confidentialityLikelihood">
+              @for(item of dropdownData;track $index){
+                <option value="{{item.value}}">{{item.type}}</option>
+              }
+            </select></td>
+            <td> <select name="" id="dropdownassessmentLikelihood" class="dropdownassessment"  formControlName="IntegrityLikelihood">
+              @for(item of dropdownData;track $index){
+                <option value="{{item.value}}">{{item.type}}</option>
+              }
+            </select></td>
+            <td> <select name="" id="dropdownassessmentLikelihood" class="dropdownassessment"  formControlName="availabiltyLikelihood">
+              @for(item of dropdownData;track $index){
+                <option value="{{item.value}}">{{item.type}}</option>
+              }
+            </select></td>
+            <td> <select name="" id="dropdownassessmentLikelihood" class="dropdownassessment"  formControlName="privacyLikelihood">
+              @for(item of dropdownData;track $index){
+                <option value="{{item.value}}">{{item.type}}</option>
+              }
+            </select></td>
+
+          </tr>
+          <tr>
+            <td>Impact</td>
+            <td><select name="" id="dropdownassessmentimpact" class="dropdownassessment"  formControlName="confidentialityImpact">
+              @for(item of dropdownData;track $index){
+                <option value="{{item.value}}">{{item.type}}</option>
+              }
+            </select></td>
+            <td><select name="" id="dropdownassessmentimpact" class="dropdownassessment"  formControlName="IntegrityImpact">
+              @for(item of dropdownData;track $index){
+                <option value="{{item.value}}">{{item.type}}</option>
+              }
+            </select></td>
+            <td><select name="" id="dropdownassessmentimpact" class="dropdownassessment"  formControlName="availabiltyImpact">
+              @for(item of dropdownData;track $index){
+                <option value="{{item.value}}">{{item.type}}</option>
+              }
+            </select></td>
+            <td><select name="" id="dropdownassessmentimpact" class="dropdownassessment"  formControlName="privacyImpact">
+              @for(item of dropdownData;track $index){
+                <option value="{{item.value}}">{{item.type}}</option>
+              }
+            </select></td>
+
+          </tr>
+        </table>
 
 
+
+
+
+      </div>
 
       <div class="field" id="thirdfield">
         <div class="mitigation">
@@ -62,7 +131,7 @@
 
           </div>
           <div  class="fieldTextarea">
-            <textarea class="textarea" [(ngModel)]="descriptionText"  (input)="autoResize($event)"></textarea>
+            <textarea class="textarea"   (input)="autoResize($event)" formControlName="mitigation"></textarea>
 
 
           </div>
@@ -75,7 +144,7 @@
           </div>
 
           <div class="fieldTextarea">
-            <textarea class="textarea"  [(ngModel)]="descriptionText"  (input)="autoResize($event)" ></textarea>
+            <textarea class="textarea"  (input)="autoResize($event)" formControlName="contingency" ></textarea>
 
           </div>
 
@@ -87,7 +156,7 @@
 
           </div>
           <div  class="fieldTextarea">
-            <textarea  [(ngModel)]="descriptionText"  (input)="autoResize($event)" ></textarea>
+            <textarea   (input)="autoResize($event)" formControlName="responsibilityOfAction" ></textarea>
 
           </div>
 
@@ -100,7 +169,7 @@
 
           </div>
           <div>
-            <input type="date" class="textarea" id="textareaspace" >
+            <input type="date" class="textarea" id="textareaspace" formControlName="plannedActionDate" >
 
           </div>
 
@@ -114,7 +183,25 @@
 
           </div>
           <div>
-            <app-dropdown id="review" [dropdownWidth]="'400px'"></app-dropdown>
+            <!-- <app-dropdown id="review" [dropdownWidth]="'600px'"></app-dropdown> -->
+             <!-- <app-dropdown [options]="dropdownDataReviewer"
+             [displayField]="'name'"
+             [valueField]="'email'"
+             value="selectedOption" [dropdownWidth]="'600px'" id="review" formControlName="reviewer" ></app-dropdown> -->
+            <select name="" id="reviewerDropdown" class="dropdown"  formControlName="reviewer">
+              @for(item of dropdownDataReviewer;track $index){
+                <option value="{{item.email}}">{{item.name}}</option>
+              }
+              <option value="custom" (click)="isCustomSelected=true">Add new email...</option>
+            </select>
+            @if(isCustomSelected==true)
+            {
+              <input type="text" placeholder="enter email here">
+
+            }
+
+
+
 
           </div>
 
@@ -124,7 +211,7 @@
 
         <div class="action">
           <div>
-            <app-button value="Save"></app-button>
+            <app-button type="submit" value="Save" ></app-button>
           <app-button value="Cancel" id="cancelbtn"></app-button>
 
           </div>
@@ -133,7 +220,6 @@
 
 
       </div>
-
 
 
 

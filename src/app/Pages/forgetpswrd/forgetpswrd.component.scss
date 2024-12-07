@@ -1,99 +1,122 @@
-.forgot-password-container {
+
+
+// Variables for colors and common styles
+$primary-color: #007bff;
+$text-color: #333;
+$background-color: #f9f9f9;
+$container-padding: 20px;
+
+// Main container styling
+.main-container {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  font-family: 'Arial', sans-serif;
-  color: #333;
-  background-color: #ffffff;
- 
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: $container-padding;
+  background-color: $background-color;
+  height: 100vh;
+  box-sizing: border-box;
 
-  .back-to-login {
-    align-self: flex-start;
-    margin-left: 2rem;
-    font-size: 0.9rem;
-
-    a {
-      text-decoration: none;
-      color: #0056b3;
-    }
+  h2 {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 24px;
+    color: $primary-color;
+    margin: 0;
   }
 
-  h1 {
-    font-size: 2rem;
-    margin: 1rem 0;
-  }
-
-  p {
-    color: #666;
-    font-size: 1rem;
-    text-align: center;
-    max-width: 400px;
-    margin-bottom: 2rem;
-  }
-
-  form {
+  .box-container {
+    flex: 1;
+    max-width: 50%;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    justify-content: center;
+    padding: $container-padding;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    margin-top: 100px;
+    padding: 40px;
+    margin-left: 50px;
 
-    .input-group {
-      display: flex;
-      flex-direction: column;
-      margin-bottom: 1rem;
-      width: 100%;
-      max-width: 300px;
+    h1 {
+      font-size: 28px;
+      color: $text-color;
+    }
 
+    p {
+      font-size: 16px;
+      color: $text-color;
+      margin-bottom: 20px;
+    }
+
+    form {
       label {
-        font-size: 0.9rem;
-        color: #333;
-        margin-bottom: 0.5rem;
+        font-size: 14px;
+        color: $text-color;
       }
 
       input {
-        padding: 0.8rem;
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
         border: 1px solid #ccc;
         border-radius: 4px;
-        font-size: 1rem;
-        width: 100%;
+      }
+
+      button {
+        padding: 10px 20px;
+        background-color: $primary-color;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+
+        &:hover {
+          background-color: darken($primary-color, 10%);
+        }
       }
     }
 
-    .submit-button {
-      background-color: #0056b3;
-      color: #fff;
-      padding: 0.8rem 2rem;
-      border: none;
-      border-radius: 4px;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: background-color 0.3s;
+    .back-to-login {
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      color: $primary-color;
+      margin-bottom: 20px;
+      text-decoration: none;
+
+      i {
+        margin-right: 5px;
+      }
 
       &:hover {
-        background-color: #004099;
-      }
-
-      &:disabled {
-        background-color: #ccc;
-        cursor: not-allowed;
+        text-decoration: underline;
       }
     }
   }
 
-  .illustration {
-    margin-top: 2rem;
+  .side-box {
+    flex: 1;
+    max-width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
     img {
-      width: 250px;
+      max-width: 100%;
+      height: auto;
+      margin-top: 140px;
+      border-radius: 8px;
     }
   }
 
-  footer {
-    margin-top: auto;
-    display: flex;
-    gap: 0.5rem;
-    font-size: 0.8rem;
-    color: #666;
+  img[src="/Images/experion logo.png"] {
+
+  margin-top: 520px;
+    width: 90px;
+    height: 30px;
   }
 }
+

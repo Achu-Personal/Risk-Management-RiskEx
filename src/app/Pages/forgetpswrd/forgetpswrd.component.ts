@@ -11,6 +11,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class ForgetpswrdComponent {
 
   email: string = '';
+forgotPasswordForm: any;
 
   onSubmit(): void {
     if (this.email) {

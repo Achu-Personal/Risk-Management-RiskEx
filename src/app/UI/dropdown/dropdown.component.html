@@ -1,5 +1,11 @@
-<select [(ngModel)]="selectedOption"  class="dropdown" (ngModelChange)="onSelectionChange($event)" [ngStyle]="{'width': dropdownWidth}">
+<!-- <select [(ngModel)]="selectedOption"  class="dropdown" (ngModelChange)="onSelectionChange($event)" [ngStyle]="{'width': dropdownWidth}">
   @for (item of data; track $index) {
     <option  value="{{item.value}}">{{item.type}}</option>
+  }
+</select> -->
+
+<select class="dropdown"  [(ngModel)]="selectedValue" (ngModelChange)="onSelectionChange($event)" [ngStyle]="{'width': dropdownWidth}">
+  @for (item of options; track $index) {
+    <option  value="{{item[valueField]}}" >{{item[displayField]}}</option>
   }
 </select>
