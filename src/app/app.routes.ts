@@ -19,6 +19,7 @@ import { RegisterRiskComponent } from './Pages/register-risk/register-risk.compo
 
 
 import { ForgetpswrdComponent } from './Pages/forgetpswrd/forgetpswrd.component';
+import { ResetpswrdComponent } from './Pages/resetpswrd/resetpswrd.component';
 
 
 export const routes: Routes = [
@@ -66,6 +67,9 @@ export const routes: Routes = [
 
   {
     path:"forgetpassword",component:ForgetpswrdComponent
+  },
+  {
+    path:"resetpassword",component:ResetpswrdComponent
   },
 
   {
