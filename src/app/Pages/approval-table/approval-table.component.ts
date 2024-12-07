@@ -1,14 +1,12 @@
 import { Component } from '@angular/core';
-import { UserTableComponent } from "../../Components/user-table/user-table.component";
 import { BodyContainerComponent } from "../../Components/body-container/body-container.component";
 import { approvalTableBody } from '../../Interfaces/approvalTable.interface';
-import { ReviewTableComponent } from "../../Components/review-table/review-table.component";
 import { ReusableTableComponent } from "../../Components/reusable-table/reusable-table.component";
 
 @Component({
   selector: 'app-approval-table',
   standalone: true,
-  imports: [UserTableComponent, BodyContainerComponent, ReviewTableComponent, ReusableTableComponent],
+  imports: [ BodyContainerComponent, ReusableTableComponent],
   templateUrl: './approval-table.component.html',
   styleUrl: './approval-table.component.scss'
 })
