@@ -1,1 +1,1 @@
-<button class="button" type="{{type}}">{{value}}</button>
+<button [ngStyle]="{'background-color': bgColour,height: height + 'px',width: width + 'px' }"  [routerLink]="routerLink"  (click)="onClick()"> {{title}}</button>

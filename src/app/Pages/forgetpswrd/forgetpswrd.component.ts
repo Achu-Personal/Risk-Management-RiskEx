@@ -10,22 +10,15 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class ForgetpswrdComponent {
 
-  forgotPasswordForm: FormGroup;
+  email: string = '';
+forgotPasswordForm: any;
 
-  constructor(private fb: FormBuilder) {
-    this.forgotPasswordForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-    });
-  }
-
-  get email() {
-    return this.forgotPasswordForm.get('email');
-  }
-
-  onSubmit() {
-    if (this.forgotPasswordForm.valid) {
-      console.log('Form Submitted', this.forgotPasswordForm.value);
-      // Add your backend API integration here
+  onSubmit(): void {
+    if (this.email) {
+      console.log('Password recovery email sent to:', this.email);
+      // Implement password recovery logic here
     }
   }
+
+
 }

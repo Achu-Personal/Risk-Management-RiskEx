@@ -17,9 +17,9 @@ export class DashboardComponent {
 
   ngOnInit(): void {
       this.router.events.subscribe(() => {
-          
+
           const routeData = this.activatedRoute.firstChild?.snapshot.data;
-          this.navbarData = routeData || {}; 
+          this.navbarData = routeData || {};
       });
   }
 }
