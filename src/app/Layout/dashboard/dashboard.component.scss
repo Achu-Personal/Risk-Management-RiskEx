@@ -1,26 +1,31 @@
-body{
-    background-color: #3E68B9;
+body {
+  background-color: #3e68b9;
 }
 .d-flex {
-    display: flex;
-    height: 100vh;
-
+  display: flex;
+  height: 100vh;
 }
 
 .main-content {
-    padding: 20px;
-    padding: 5px;
-    overflow-y: auto;
-    width: 100%;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-    -ms-overflow-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 25px;
+  padding: 20px;
+  // overflow-y: scroll;
+  // scrollbar-width: none;
+  // -ms-overflow-style: none;
+}
+
+.main-content {
+  padding: 5px;
+  overflow-y: auto;
+  width: 100%;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  -ms-overflow-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
 }
 
 .main-content::-webkit-scrollbar {
-    display: none;
+  display: none;
 }
 

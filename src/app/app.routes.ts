@@ -22,6 +22,7 @@ import { ForgetpswrdComponent } from './Pages/forgetpswrd/forgetpswrd.component'
 import { HomeComponent } from './Pages/home/home.component';
 
 
+
 export const routes: Routes = [
 
   {
@@ -66,15 +67,16 @@ export const routes: Routes = [
   {path:'sidebar',component:SidebarComponent},
 
   {
+    path:"forgetpassword",component:ForgetpswrdComponent
+  },
+
+  {
 
     path:'**',component:WildComponentComponent
 
   },
-  {
-    path:"forgetpassword",component:ForgetpswrdComponent
-  },
-  {
-    path:"Login",component:LoginComponent
-  }
+  
+
+
 
 ];
