@@ -1,6 +1,6 @@
 
 
-<div [ngStyle]="{ 'background-color': numericValue<30?'green': ( numericValue>30&&numericValue<99)?'yellow':'red' }"  class=" d-flex flex-column justify-content-center align-items-center" >
+<div [ngStyle]="{ 'background-color':backgroundColor==''? (numericValue<30?'green': ( numericValue>30&&numericValue<99)?'yellow':'red'):'white','color':textColor==''? (numericValue<30?'green': ( numericValue>30&&numericValue<99)?'yellow':'red'):'black',height:height.toString()+'vh',width:width.toString()+'vh'}"  class=" d-flex flex-column justify-content-center align-items-center" >
 
   <h1 class="value">
     {{value}}

@@ -1,31 +1,21 @@
 
 
-interface Risk
-{
 
+
+export interface IRiskAssessment
+{
+  likelihood: string,
+  impact: string,
+  risk_factor: number
+}
+
+export interface PrivacySecurityRiskAssessment
+{
+  confidentiality: IRiskAssessment,
+  integrity: IRiskAssessment,
+  availability: IRiskAssessment,
+  overall_risk_rating: number
 }
 
 
-export interface ILikelihood
-{
-
-  low:levelData,
-  medium:levelData,
-  high:levelData,
-  critical:levelData
-}
-export interface levelData
-{
-  value:number,
-  color:string
-}
-
-export interface IImpact
-{
-
-    low:levelData,
-    medium:levelData,
-    high:levelData,
-    critical:levelData
-}
 

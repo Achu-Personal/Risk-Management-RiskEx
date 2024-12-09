@@ -21,7 +21,7 @@
 
       <div class=" riskdesc" style="gap: 10px;">
         <div style="display: flex; gap: 10px;">
-          <h5>{{riskName}}</h5>
+          <h5 style="font-weight: bold;">{{riskName}}</h5>
           <app-risk-status-card [isOpen]="riskStatus === 'open'"></app-risk-status-card>
         </div>
         <div>
@@ -36,7 +36,7 @@
     </div>
 
     <app-overall-rating-card class="col-2 rating-card" value={{overallRiskRating}}
-      title="Overal Risk Rating"></app-overall-rating-card>
+      title="Overal Risk Rating" textColor="black"></app-overall-rating-card>
 
   </div>
 
