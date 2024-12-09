@@ -1,0 +1,54 @@
+.container{
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  z-index: 1;
+
+
+}
+.sidebar{
+  flex-basis: 10%;
+}
+.content{
+  flex-basis: 100%;
+
+}
+.riskType{
+  background-color: white;
+  width: 80vw;
+  margin-left: 15px;
+  margin-top: 20px;
+  padding: 10px;
+  border-radius: 10px 10px 0px 0px;
+}
+app-dropdown{
+  margin-left: 20px;
+}
+.typeImage{
+  background-color: white;
+  width: 80vw;
+  margin-left: 15px;
+  padding: 30px;
+  margin-top: 10px;
+  border-radius: 0px 0px 10px 10px;
+}
+.typeImageContainer{
+  border: 1px dashed black;
+  height: 360px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  // border-radius: 10px;
+  flex-direction: column;
+
+
+}
+.required{
+  color: red;
+  margin-left: 4px;
+}
+.dropdown {
+  position: relative;
+  z-index: 999; /* Lower z-index to make sure it stays below the navbar */
+}
+

@@ -1,0 +1,25 @@
+.navbar{
+    height: 12vh;
+    background-color: #3E68B9;
+    width: 84vw;
+    position: fixed;
+    top: 0;
+    z-index: 1000;
+    margin-left: 5px;
+    h2{
+        color: white;
+        padding: 10px;
+    }
+    .nav-text{
+        display: flex;
+        justify-content: space-between;
+        margin-right: 2rem;
+        margin-top: 6px;
+        width: 100%;
+    }
+    .bi{
+        color: white;
+        font-size: 2rem;
+    }
+
+}

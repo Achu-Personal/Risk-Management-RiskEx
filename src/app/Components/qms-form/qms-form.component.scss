@@ -1,0 +1,172 @@
+.field{
+  background-color: white;
+  width: 80vw;
+ margin-left: 3px;
+  margin-top: 10px;
+  padding: 30px;
+
+}
+input{
+  margin-left: 60px;
+  width:47.25vw;
+}
+textarea{
+  margin-left: 55px;
+  width:47.25vw;
+  height: 32px;
+  margin-top: 20px;
+  resize: none;
+    overflow: hidden;
+    box-sizing: border-box;
+
+
+
+}
+textarea:focus {
+  outline: none;
+  border-color: #007bff;
+}
+.impact{
+
+
+
+  textarea{
+    margin-left:33px ;
+    margin-top: 20px;
+  }
+
+}
+.project{
+  input{
+
+
+    margin-left: 82px;
+    margin-top: 20px;
+  }
+}
+.required{
+  color: red;
+  margin-left: 4px;
+}
+.assessment{
+  margin-top: 20px;
+
+}
+
+#thirdfield{
+  margin-bottom: 90px;
+  border-radius: 0px 0px 10px 10px ;
+}
+
+
+
+#likelihoodDropdown{
+  margin-left: 30px;
+
+}
+#impactDropdown{
+  margin-left: 55px;
+}
+#textareaspace{
+
+  margin-top: 20px;
+  margin-left: 80px;
+
+
+}
+
+
+.textarea{
+  margin-left: 115px;
+}
+#review{
+  margin-left: 160px;
+  width: 47.25vw;
+
+}
+.reviewer{
+  margin-top: 20px;
+}
+#cancelbtn{
+  margin-left: 20px;
+}
+.action{
+  margin-top: 140px;
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+  margin-right: 150px;
+}
+.contingency,.description,.impact,.mitigation,.responsibility{
+  display: flex;
+  flex-direction: row;
+  .fieldlabel label{
+    margin-top: 30px;
+
+  }
+
+}
+.name,.project,.actionDate,.reviewer{
+  display: flex;
+  flex-direction: row;
+  div label{
+    margin-top: 10px;
+  }
+
+
+}
+.project{
+  .projectLabel label{
+    margin-top: 30px;
+  }
+
+}
+.actionDate{
+  .actionDateLabel label{
+    margin-top: 30px;
+
+  }
+}
+.assessmentDropdown{
+  margin-left: 30px;
+}
+#assessmentDropdownImpact{
+  margin-left: 53px;
+
+}
+.dropdown{
+
+  height: 30px;
+  border-radius: 10px;
+
+
+  margin-left: 160px;
+
+}
+#reviewerDropdown{
+  width:47.25vw;
+
+}
+.dropdownassessment{
+  height: 30px;
+  border-radius: 10px;
+  width:  13.33vw;
+
+}
+#dropdownassessmentLikelihood{
+  margin-left: 50px;
+}
+#dropdownassessmentimpact{
+  margin-left: 73px;
+}
+
+
+#risktype{
+  margin-left: 70px;
+  margin-bottom: 20px;
+}
+
+
+
+
+

@@ -1,1 +1,8 @@
-<p>view-risk works!</p>
+<app-body-container class="hide-scrollbar">
+  <main>
+    <app-risk-basic-details-card riskDesc={{data.risk_description}}  riskName={{data.risk_name}} riskNumber={{data.risk_number}} riskType={{data.risk_type}} impact={{data.impact_of_risk}} overallRiskRating="{{data. assessment_post_implementation.overall_risk_rating}}" riskStatus="{{data.risk_status}}" ></app-risk-basic-details-card>
+    <app-risk-details-section2 riskMitigation={{data.risk_mitigation}} riskContengency={{data.risk_contingency}} responsibilityOfAction={{data.responsibility_of_action}} plannedActionDate={{data.planned_action_date}}></app-risk-details-section2>
+    <app-risk-details-section3-mitigation    ></app-risk-details-section3-mitigation>
+  </main>
+
+</app-body-container>
