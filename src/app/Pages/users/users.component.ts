@@ -1,7 +1,9 @@
+import { department } from './../../Interfaces/deparments.interface';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { BodyContainerComponent } from "../../Components/body-container/body-container.component";
 import { UserTableComponent } from "../../Components/user-table/user-table.component";
+import { project } from '../../Interfaces/projects.interface';
 
 @Component({
   selector: 'app-users',
@@ -11,8 +13,46 @@ import { UserTableComponent } from "../../Components/user-table/user-table.compo
   styleUrl: './users.component.scss'
 })
 export class UsersComponent {
+
+  departments:department[]=[
+    {
+    id:1,
+    departmentName:'HR'
+    },
+    {
+    id:2,
+    departmentName:'SFM'
+    },
+    {
+    id:3,
+    departmentName:'Audit and Compliance'
+    },
+    {
+    id:4,
+    departmentName:'DU1'
+    },
+  ];
+  
+  projects:project[]=[
+    {
+      id:1,
+      projectName: "Japanese Report"
+    },
+    {
+      id:2,
+      projectName: "Risk Management"
+    },
+    {
+      id:1,
+      projectName: "Training Calendar"
+    },
+  
+  ]
+  
+
   userForm: FormGroup;
   departmentForm: FormGroup;
+  projectForm: FormGroup;
 
   constructor() {
     this.departmentForm = new FormGroup({
@@ -22,7 +62,12 @@ export class UsersComponent {
       name: new FormControl('', Validators.required),
       email: new FormControl('', [Validators.required, Validators.email]),
       department: new FormControl('', Validators.required),
-      projectId: new FormControl(''),
+      projectName: new FormControl(''),
+    });
+    this.projectForm = new FormGroup({
+      projectName: new FormControl('', Validators.required),
+      departmentName: new FormControl('', Validators.required),
+
     });
   }
 
@@ -57,4 +102,17 @@ export class UsersComponent {
       console.log('Form invalid');
     }
   }
+
+  onSubmitProject() {
+    if (this.projectForm.valid) {
+      console.log('Project saved:', this.projectForm.value);
+      this.projectForm.reset();
+      const modal = document.getElementById('addProjectModal');
+      if (modal) {
+        (modal as HTMLElement).click();
+      }
+    } else {
+      console.log('Form invalid');
+    }
+    }
 }

@@ -1,18 +1,18 @@
 .field{
   background-color: white;
   width: 80vw;
-  margin-left: 3px;
+ margin-left: 3px;
   margin-top: 10px;
   padding: 30px;
 
 }
 input{
   margin-left: 60px;
-  width: 400px;
+  width:47.25vw;
 }
 textarea{
   margin-left: 55px;
-  width: 400px;
+  width:47.25vw;
   height: 32px;
   margin-top: 20px;
   resize: none;
@@ -22,7 +22,22 @@ textarea{
 
 
 }
+textarea:focus{
+  // outline: none;
+  border-color: #3E68B9;
+  border: 1px solid #3E68B9 ;
+  border-radius: 10px;
+  height: 40px;
+}
 
+input:focus{
+  outline: none;
+  border-color: #3E68B9;
+  border-radius: 10px;
+  height: 40px;
+
+
+}
 .impact{
 
 
@@ -45,7 +60,10 @@ textarea{
   color: red;
   margin-left: 4px;
 }
+.assessment{
+  margin-top: 20px;
 
+}
 
 #thirdfield{
   margin-bottom: 90px;
@@ -121,3 +139,64 @@ textarea{
 
   }
 }
+.assessmentDropdown{
+  margin-left: 30px;
+}
+#assessmentDropdownImpact{
+  margin-left: 53px;
+
+}
+.dropdown{
+
+  height: 30px;
+  border-radius: 10px;
+
+
+  margin-left: 160px;
+
+}
+#reviewerDropdown{
+  width:47.25vw;
+
+}
+.dropdownassessment{
+  height: 30px;
+  border-radius: 10px;
+  width:  13.33vw ;
+
+}
+#dropdownassessmentLikelihood{
+ margin-left: 20px;
+}
+#dropdownassessmentimpact{
+  margin-left: 20px;
+}
+
+table tr th{
+  text-align: center;
+  color: #3E68B9;
+}
+table tr td{
+  align-items: center;
+
+}
+table{
+  gap: 20px;
+  margin-top: 50px;
+  border-collapse: separate;
+  border-spacing: 20px;
+}
+th td{
+  padding: 10px;
+}
+
+#risktype{
+  margin-left: 70px;
+  margin-bottom: 20px;
+}
+
+
+
+
+
+

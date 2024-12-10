@@ -1,0 +1,28 @@
+<div class="table-responsive">
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+            @for(header of tableHeaders; track header){
+                <th>{{header}}</th>
+
+            }
+        </tr>
+      </thead>
+      <tbody>
+        @for(row of tableData ; track row){
+            <tr>
+                @for(key of rowKeys; track key){
+                    <td>{{row[key]}}</td>
+                }
+            </tr>  
+        }
+        <tr>
+        @if(!tableData || tableData.length===0){
+            
+            <td [attr.colspan]="tableHeaders.length" class="text-center">No data available</td>
+        }
+    </tr>
+      </tbody>
+    </table>
+  </div>
+  

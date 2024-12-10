@@ -1,6 +1,9 @@
 .container{
   display: flex;
   flex-direction: row;
+  position: relative;
+  z-index: 1;
+
 
 }
 .sidebar{
@@ -8,8 +11,9 @@
 }
 .content{
   flex-basis: 100%;
+
 }
-.register{
+.riskType{
   background-color: white;
   width: 80vw;
   margin-left: 15px;
@@ -42,5 +46,9 @@ app-dropdown{
 .required{
   color: red;
   margin-left: 4px;
+}
+.dropdown {
+  position: relative;
+  z-index: 999; /* Lower z-index to make sure it stays below the navbar */
 }
 

@@ -15,25 +15,40 @@ import { ISMSFormComponent } from "../../Components/isms-form/isms-form.componen
   styleUrl: './register-risk.component.scss'
 })
 export class RegisterRiskComponent {
-selectedOption:string=''
- data:any
+// selectedOption:string=''
+//  data:any
 
-  constructor(public api:ApiService){}
-  ngOnInit(){
-    this.api.getRiskType().subscribe((res:any)=>{
-      this.data=res
-      console.log(this.data);
+//   constructor(public api:ApiService){}
+//   ngOnInit(){
+//     this.api.getRiskType().subscribe((res:any)=>{
+//       this.data=res
+//       console.log(this.data);
 
-    })
-
-
+//     })
 
 
 
-  }
 
-  onDropdownChange(value: string): void {
-    this.selectedOption = value;
-    console.log('Selected Option:', value); // For debugging
+
+  // }
+
+  // onDropdownChange(value: string): void {
+  //   this.selectedOption = value;
+  //   console.log('Selected Option:', value); // For debugging
+  // }
+
+
+
+  dropdownData = [
+    {"type":"Quality","value":"quality"},
+    {"type":"Security","value":"security"},
+    {"type":"Privacy","value":"privacy"}];
+
+
+  selectedOptionFromChild: string = '';
+
+  onOptionSelected(value: string) {
+    this.selectedOptionFromChild = value;
+    console.log('Parent received selected value:', this.selectedOptionFromChild);
   }
 }
