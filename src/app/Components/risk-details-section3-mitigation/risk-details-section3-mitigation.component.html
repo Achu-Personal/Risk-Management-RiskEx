@@ -2,23 +2,66 @@
 
 <div class="risk-details-section3-mitigation shadowType1">
 
-  <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-    <li class="nav-item" role="presentation">
-      <button  class="nav-link active tab-button" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Before Mitigation</button>
-    </li>
-    <li class="nav-item" role="presentation">
-      <button class="nav-link tab-button" id="pills-profile-tab " data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">After Mitigation</button>
-    </li>
 
-  </ul>
-  <div class="tab-content" id="pills-tabContent">
-    <div class="tab-pane fade show active  tab-content " id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+    <h6>Risk Assessement</h6>
 
-      <app-likelihood-impact-card></app-likelihood-impact-card>
-      <app-likelihood-impact-card></app-likelihood-impact-card>
-      <app-likelihood-impact-card></app-likelihood-impact-card>
+
+
+  @if(status=="closed")
+  {
+    <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist" style="margin-top: 20px;">
+      <li class="nav-item" role="presentation">
+        <button  class="nav-link active tab-button" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Before Mitigation</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link tab-button" id="pills-profile-tab " data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">After Mitigation</button>
+      </li>
+
+    </ul>
+  }
+
+  <div class="tab-content" id="pills-tabContent" style="margin-top: 20px;">
+    <div class="tab-pane fade show active " id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+      <div class=" mytab-content">
+        <app-likelihood-impact-card title="Confidentiality (C)" [LikeliHoodlevel]="beforeMitigation.confidentiality.likelihood" [Impactlevel]="beforeMitigation.confidentiality.impact"  [RiskFactor]="beforeMitigation.confidentiality.risk_factor" ></app-likelihood-impact-card>
+        <app-likelihood-impact-card title="Integrity (I)" [LikeliHoodlevel]="beforeMitigation.integrity.likelihood" [Impactlevel]="beforeMitigation.integrity.impact" [RiskFactor]="beforeMitigation.integrity.risk_factor"   ></app-likelihood-impact-card>
+        <app-likelihood-impact-card title="Availability (A)" [LikeliHoodlevel]="beforeMitigation.availability.likelihood" [Impactlevel]="beforeMitigation.availability.impact" [RiskFactor]="beforeMitigation.availability.risk_factor"  ></app-likelihood-impact-card>
+        <app-likelihood-impact-card title="Privacy(P)" [LikeliHoodlevel]="beforeMitigation.availability.likelihood" [Impactlevel]="beforeMitigation.availability.impact" [RiskFactor]="beforeMitigation.availability.risk_factor"  ></app-likelihood-impact-card>
+        <app-overall-rating-card title="Overall Rating" value="20" backgroundColor="white" [height]="27" [width]="27"  ></app-overall-rating-card>
+      </div>
+      <div class="reviewer-section">
+        <h5 style="font-weight: bold;margin-top: 50px">Reviewed By: <span>Tony Stark</span></h5>
+        <div style="height: 100px;width: 100%;background-color: white; margin-top: 10px;border-radius: 10px;">
+
+        </div>
+      </div>
+
     </div>
-    <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">...</div>
+    <div class="tab-pane fade  " id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+      <div class=" mytab-content">
+
+        @if(type!="quality")
+        {
+          <app-likelihood-impact-card title="Confidentiality (C)" [LikeliHoodlevel]="afterMitigation.confidentiality.likelihood" [Impactlevel]="afterMitigation.confidentiality.impact"  [RiskFactor]="afterMitigation.confidentiality.risk_factor" ></app-likelihood-impact-card>
+          <app-likelihood-impact-card title="Integrity (I)" [LikeliHoodlevel]="afterMitigation.integrity.likelihood" [Impactlevel]="afterMitigation.integrity.impact" [RiskFactor]="afterMitigation.integrity.risk_factor"   ></app-likelihood-impact-card>
+          <app-likelihood-impact-card title="Availability (A)" [LikeliHoodlevel]="afterMitigation.availability.likelihood" [Impactlevel]="afterMitigation.availability.impact" [RiskFactor]="afterMitigation.availability.risk_factor"  ></app-likelihood-impact-card>
+          <app-likelihood-impact-card title="Privacy(P)" [LikeliHoodlevel]="afterMitigation.availability.likelihood" [Impactlevel]="afterMitigation.availability.impact" [RiskFactor]="afterMitigation.availability.risk_factor"  ></app-likelihood-impact-card>
+          <app-overall-rating-card title="Overall Rating" value="20" backgroundColor="white" [height]="27" [width]="27"  ></app-overall-rating-card>
+        }
+        @else
+        {
+          <app-likelihood-impact-card  [LikeliHoodlevel]="afterMitigation.likelihood" [Impactlevel]="afterMitigation.impact"  [RiskFactor]="afterMitigation.risk_factor" ></app-likelihood-impact-card>
+        }
+
+      </div>
+
+      <div class="reviewer-section">
+        <h5 style="font-weight: bold;margin-top: 50px">Reviewed By: <span>Tony Stark</span></h5>
+        <div style="height: 100px;width: 100%;background-color: white; margin-top: 10px;border-radius: 10px;">
+
+        </div>
+      </div>
+
 
   </div>
 
