@@ -4,7 +4,7 @@
       <div class="field">
         <div style="display: none;">
           <label for="">Risk Type <span class="required">*</span> :</label>
-          <label for="" id="risktype" >{{riskType}}</label>
+          <input for="" id="risktype" formControlName="riskType" >
         </div>
         <div class="name">
 
@@ -175,7 +175,7 @@
 
         <div class="action">
           <div>
-            <app-button type="submit" value="Save" ></app-button>
+            <button type="submit" value="Save" >Save</button>
           <app-button value="Cancel" id="cancelbtn"></app-button>
 
           </div>
