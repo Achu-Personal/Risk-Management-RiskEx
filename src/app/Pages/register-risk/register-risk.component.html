@@ -30,13 +30,27 @@
 
 <div class="container">
   <div class="content">
-    <div class="riskType">
-      <label for="riskType">Risk Type <span class="required">*</span> :</label>
+    <div class="riskType" id="riskTypeDiv">
+      <!-- <label for="riskType">Risk Type <span class="required">*</span> :</label>
       <app-dropdown [options]="dropdownData"
       [displayField]="'type'"
       [valueField]="'value'"
       (selectionChange)="onOptionSelected($event)"
-      value="selectedOption" class="dropdown"></app-dropdown>
+      value="selectedOption" class="dropdown"></app-dropdown> -->
+      <div>
+        <button (click)="setQuality()" [ngClass]="isSelectQuality ? 'selected' : ''">Quality</button>
+
+      </div>
+      <div>
+        <button (click)="setSecurity()"[ngClass]="isSelectSecurity ? 'selected' : ''">Security</button>
+
+      </div>
+      <div>
+        <button (click)="setPrivacy()"[ngClass]="isSelectPrivacy ? 'selected' : ''">Privacy</button>
+
+      </div>
+
+
 
     </div>
     @if (selectedOptionFromChild==="") {
@@ -51,10 +65,10 @@
 
     }
     @if (selectedOptionFromChild==="quality") {
-      <app-qms-form  [riskType]="selectedOptionFromChild"></app-qms-form>
+      <app-qms-form  [riskTypeValue]="selectedOptionFromChild"></app-qms-form>
     }
     @if (selectedOptionFromChild==="privacy"||selectedOptionFromChild==="security") {
-      <app-isms-form [riskType]="selectedOptionFromChild"></app-isms-form>
+      <app-isms-form [riskTypeValue]="selectedOptionFromChild"></app-isms-form>
 
     }
 

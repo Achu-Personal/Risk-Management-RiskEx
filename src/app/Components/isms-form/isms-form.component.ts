@@ -15,7 +15,7 @@ export class ISMSFormComponent {
   @Output() sendDataToParent = new EventEmitter<object>();
   isCustomSelected = false;
   newEmail = '';
-  @Input() riskType: string=''
+  @Input() riskTypeValue: string=''
 
 
   ismsForm=new FormGroup({
@@ -66,9 +66,7 @@ constructor(public api:ApiService){}
       console.log(this.data)
 
     })
-    if (this.riskType) {
-      this.ismsForm.patchValue({ riskType: this.riskType }); // Initialize form control with input value
-    }
+
 
   }
 
@@ -84,6 +82,9 @@ constructor(public api:ApiService){}
 
 
   onsubmit(){
+
+    this.ismsForm.get('riskType')?.setValue(this.riskTypeValue);
+    console.log("Updated riskType value:", this.ismsForm.get('riskType')?.value);
 
     this.sendDataToParent.emit(this.ismsForm.value);
     console.log("actual data");
