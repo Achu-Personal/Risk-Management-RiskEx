@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { BodyContainerComponent } from "../../Components/body-container/body-container.component";
 import { approvalTableBody } from '../../Interfaces/approvalTable.interface';
 import { ReusableTableComponent } from "../../Components/reusable-table/reusable-table.component";
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-approval-table',
@@ -11,6 +12,16 @@ import { ReusableTableComponent } from "../../Components/reusable-table/reusable
   styleUrl: './approval-table.component.scss'
 })
 export class ApprovalTableComponent {
+  constructor(private router: Router) {}
+
+
+  OnClickRow(rowData:any): void {
+    this.router.navigate([`/approvals/${rowData.RiskId}`]);
+    console.log("rowdata",rowData);
+    
+  } 
+  // keys: string[] = ['id', 'name', 'description'];
+
 headerData:any=[
   "SI NO"," RiskID","Risk","Description","EndDate","Type","Current Risk Rating","Status","Actions"
 ];

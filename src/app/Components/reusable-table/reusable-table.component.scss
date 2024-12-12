@@ -1,43 +1,154 @@
+// .bord {
+//   border: 1px solid #89CFF0;
+  
+// }
+// thead{
+//   background: #89CFF0;
+// }
 
-  .bord{
-    border: 2px solid #c1bdbd;
+// .table {
+//   width: 100%;
+//   border-collapse: collapse;
+//   background: #ffffff;
+//   margin: 0;
+// }
+
+// .table th,.table td {
+//   padding: 15px 15px;
+//   text-align: left;
+//   border-bottom: 1px solid #eee;
+// }
+
+// .table th {
+//   background: #fff;
+//   color: #333;
+//   font-weight: bold;
+//   text-transform: uppercase;
+//   font-size: 13px;
+// }
+
+// .table tbody tr:nth-child(odd) {
+//   background-color: #f4f6f9; /* Background color for alternate rows */
+// }
+
+// .table tbody tr:nth-child(even) {
+//   background-color: #ffffff; /* Default white for other rows */
+// }
+
+// /* Corrected hover effect */
+// .table tbody tr:hover {
+//   background-color: #e9ecef; /* Highlight color on hover */
+// }
+// ::ng-deep .table tbody tr:nth-child(odd) {
+//   background-color: #f4f6f9;
+// }
+
+// ::ng-deep .table tbody tr:hover {
+//   background-color: #e9ecef;
+// }
+
+
+// .table tbody td {
+//   font-size: 14px;
+//   color: #555;
+//   vertical-align: middle;
+// }
+
+
+
+.bord{
+  border: 2px solid #c1bdbd;
+}
+
+/* Table */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #ffffff;
+  margin: 0;
+}
+
+.table th,
+.table td {
+  padding: 15px 15px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.table th {
+  background: #ffffff;
+  color: #333;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 13px;
+}
+
+.table tbody tr:nth-child(even) {
+  background: #f9fbfd !important ;
+}
+// .table-striped>tbody>tr:nth-child(even)>td, 
+// .table-striped>tbody>tr:nth-child(odd)>th {
+//    background-color:#F6FBFF; // Choose your own color here
+//  }
+.table-striped>tbody>tr:nth-child(odd)>td,
+.table-striped>tbody>tr:nth-child(odd)>th {
+  background-color: #F6FBFF;
+
+}
+.table-striped>tbody>tr:nth-child(even)>td,
+.table-striped>tbody>tr:nth-child(even)>th {
+  background-color: #ffffff;
+
+}
+
+.table tbody tr:hover {
+  background: #eef7ff;
+}
+
+.table tbody td {
+  font-size: 14px;
+  color: #555;
+  vertical-align: middle;
+}
+// }
+
+.table-responsive {
+  .tooltip {
+      position: relative;
+      display: inline-block;
+      cursor: pointer;
+
+      // Truncated text
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+
+      // Tooltip text styling
+      .tooltip-text {
+          visibility: hidden;
+          background-color: #4d4747;
+          color: #cee9f5;
+          text-align: center;
+          padding: 8px;
+          border-radius: 4px;
+
+          // Position the tooltip
+          position: absolute;
+          z-index: 1;
+          top: -100%; // Adjust to position above the cell
+          left: 50%;
+          transform: translateX(-50%);
+
+          // Zoom effect
+          transform-origin: top center;
+          scale: 0;
+          transition: all 0.3s ease-in-out;
+          box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      &:hover .tooltip-text {
+          visibility: visible;
+          scale: 1;
+      }
   }
-  .table-responsive{
-    border: 2px solid #c1bdbd;
-  }
-  .table {
-    width: 100%;
-    border-collapse: collapse;
-    background: #ffffff;
-    margin: 0;
-  }
-  
-  .table th,
-  .table td {
-    padding: 15px 15px;
-    text-align: left;
-    border-bottom: 1px solid #eee;
-  }
-  
-  .table th {
-    background: #f4f6f9;
-    color: #333;
-    font-weight: bold;
-    text-transform: uppercase;
-    font-size: 13px;
-  }
-  
-  .table tbody tr:nth-child(even) {
-    background: #f9fbfd;
-  }
-  
-  .table tbody tr:hover {
-    background: #eef7ff;
-  }
-  
-  .table tbody td {
-    font-size: 14px;
-    color: #555;
-    vertical-align: middle;
-  }
-  
+}

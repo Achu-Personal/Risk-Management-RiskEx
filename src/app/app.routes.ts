@@ -60,7 +60,9 @@ export const routes: Routes = [
       {
         path:'approvaltable',component:ApprovalTableComponent,data: { title: 'Approvals' }
       },
-
+      {
+        path:'approvals/:id',component:ApprovalComponent,data: { title: 'Approvals' }
+      },
       {
         path:'approvals',component:ApprovalComponent,data: { title: 'Approvals' }
       },
