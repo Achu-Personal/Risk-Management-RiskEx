@@ -1,18 +1,27 @@
 import { Component } from '@angular/core';
-import { UserTableComponent } from "../../Components/user-table/user-table.component";
 import { BodyContainerComponent } from "../../Components/body-container/body-container.component";
 import { approvalTableBody } from '../../Interfaces/approvalTable.interface';
-import { ReviewTableComponent } from "../../Components/review-table/review-table.component";
 import { ReusableTableComponent } from "../../Components/reusable-table/reusable-table.component";
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-approval-table',
   standalone: true,
-  imports: [UserTableComponent, BodyContainerComponent, ReviewTableComponent, ReusableTableComponent],
+  imports: [ BodyContainerComponent, ReusableTableComponent],
   templateUrl: './approval-table.component.html',
   styleUrl: './approval-table.component.scss'
 })
 export class ApprovalTableComponent {
+  constructor(private router: Router) {}
+
+
+  OnClickRow(rowData:any): void {
+    this.router.navigate([`/approvals/${rowData.RiskId}`]);
+    console.log("rowdata",rowData);
+    
+  } 
+  // keys: string[] = ['id', 'name', 'description'];
+
 headerData:any=[
   "SI NO"," RiskID","Risk","Description","EndDate","Type","Current Risk Rating","Status","Actions"
 ];
