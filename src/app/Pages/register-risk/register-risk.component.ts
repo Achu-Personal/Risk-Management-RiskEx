@@ -37,7 +37,9 @@ export class RegisterRiskComponent {
   //   console.log('Selected Option:', value); // For debugging
   // }
 
-
+ isSelectQuality:boolean=false
+ isSelectSecurity:boolean=false
+ isSelectPrivacy:boolean=false
 
   dropdownData = [
     {"type":"Quality","value":"quality"},
@@ -46,6 +48,28 @@ export class RegisterRiskComponent {
 
 
   selectedOptionFromChild: string = '';
+
+  setQuality(){
+    this.selectedOptionFromChild='quality'
+    this.isSelectQuality=true;
+    this.isSelectPrivacy=false
+    this.isSelectSecurity=false
+
+  }
+  setSecurity(){
+     this.selectedOptionFromChild='security'
+     this.isSelectQuality=false;
+     this.isSelectPrivacy=false
+     this.isSelectSecurity=true
+
+  }
+  setPrivacy(){
+    this.selectedOptionFromChild='privacy'
+    this.isSelectQuality=false
+    this.isSelectPrivacy=true
+    this.isSelectSecurity=false
+
+ }
 
   onOptionSelected(value: string) {
     this.selectedOptionFromChild = value;

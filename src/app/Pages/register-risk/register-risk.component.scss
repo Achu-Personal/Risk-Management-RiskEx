@@ -18,7 +18,7 @@
   width: 80vw;
   margin-left: 15px;
   margin-top: 20px;
-  padding: 10px;
+  // padding: 10px;
   border-radius: 10px 10px 0px 0px;
 }
 app-dropdown{
@@ -49,6 +49,29 @@ app-dropdown{
 }
 .dropdown {
   position: relative;
-  z-index: 999; /* Lower z-index to make sure it stays below the navbar */
+  z-index: 999;
 }
 
+.selected {
+  // text-decoration: underline;
+  font-weight: bold;
+  color:#3E68B9 ;
+}
+button {
+  padding: 10px 20px;
+  margin: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+}
+#riskTypeDiv{
+  display: flex;
+  flex-direction: row;
+  // justify-content: space-around;
+
+
+}
+#riskTypeDiv div{
+  margin-left: 160px;
+}
