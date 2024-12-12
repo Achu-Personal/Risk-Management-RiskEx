@@ -61,7 +61,7 @@ export class ViewRiskComponent {
         impact: "low",
         risk_factor: 1
       },
-      overall_risk_rating: 31
+      overall_risk_rating: 121
     },
     actual_closed_date: "2025-01-15",
     risk_response: "Mitigate",
