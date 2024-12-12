@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-user-table',
@@ -9,7 +9,7 @@ import { Component } from '@angular/core';
 })
 export class UserTableComponent {
 
-  items:any[]=[];
-  itemslist:any[]=[];
+  @Input() items:any[]=[];
+  @Input() itemslist:any[]=[];
 
 }
