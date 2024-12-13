@@ -18,5 +18,6 @@ export class RiskBasicDetailsCardComponent {
    @Input() riskName=""
   @Input() impact=""
   @Input() overallRiskRating=""
+  @Input() riskStatus=""
 
 }

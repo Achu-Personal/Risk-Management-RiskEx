@@ -15,25 +15,64 @@ import { ISMSFormComponent } from "../../Components/isms-form/isms-form.componen
   styleUrl: './register-risk.component.scss'
 })
 export class RegisterRiskComponent {
-selectedOption:string=''
- data:any
+// selectedOption:string=''
+//  data:any
 
-  constructor(public api:ApiService){}
-  ngOnInit(){
-    this.api.getRiskType().subscribe((res:any)=>{
-      this.data=res
-      console.log(this.data);
+//   constructor(public api:ApiService){}
+//   ngOnInit(){
+//     this.api.getRiskType().subscribe((res:any)=>{
+//       this.data=res
+//       console.log(this.data);
 
-    })
-
-
+//     })
 
 
+
+
+
+  // }
+
+  // onDropdownChange(value: string): void {
+  //   this.selectedOption = value;
+  //   console.log('Selected Option:', value); // For debugging
+  // }
+
+ isSelectQuality:boolean=false
+ isSelectSecurity:boolean=false
+ isSelectPrivacy:boolean=false
+
+  dropdownData = [
+    {"type":"Quality","value":"quality"},
+    {"type":"Security","value":"security"},
+    {"type":"Privacy","value":"privacy"}];
+
+
+  selectedOptionFromChild: string = '';
+
+  setQuality(){
+    this.selectedOptionFromChild='quality'
+    this.isSelectQuality=true;
+    this.isSelectPrivacy=false
+    this.isSelectSecurity=false
 
   }
+  setSecurity(){
+     this.selectedOptionFromChild='security'
+     this.isSelectQuality=false;
+     this.isSelectPrivacy=false
+     this.isSelectSecurity=true
 
-  onDropdownChange(value: string): void {
-    this.selectedOption = value;
-    console.log('Selected Option:', value); // For debugging
+  }
+  setPrivacy(){
+    this.selectedOptionFromChild='privacy'
+    this.isSelectQuality=false
+    this.isSelectPrivacy=true
+    this.isSelectSecurity=false
+
+ }
+
+  onOptionSelected(value: string) {
+    this.selectedOptionFromChild = value;
+    console.log('Parent received selected value:', this.selectedOptionFromChild);
   }
 }

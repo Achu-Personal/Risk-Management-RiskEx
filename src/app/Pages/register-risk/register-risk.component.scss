@@ -1,6 +1,9 @@
 .container{
   display: flex;
   flex-direction: row;
+  position: relative;
+  z-index: 1;
+
 
 }
 .sidebar{
@@ -8,13 +11,14 @@
 }
 .content{
   flex-basis: 100%;
+
 }
-.register{
+.riskType{
   background-color: white;
   width: 80vw;
   margin-left: 15px;
   margin-top: 20px;
-  padding: 10px;
+  // padding: 10px;
   border-radius: 10px 10px 0px 0px;
 }
 app-dropdown{
@@ -43,4 +47,31 @@ app-dropdown{
   color: red;
   margin-left: 4px;
 }
+.dropdown {
+  position: relative;
+  z-index: 999;
+}
 
+.selected {
+  // text-decoration: underline;
+  font-weight: bold;
+  color:#3E68B9 ;
+}
+button {
+  padding: 10px 20px;
+  margin: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+}
+#riskTypeDiv{
+  display: flex;
+  flex-direction: row;
+  // justify-content: space-around;
+
+
+}
+#riskTypeDiv div{
+  margin-left: 160px;
+}
