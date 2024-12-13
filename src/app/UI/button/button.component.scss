@@ -1,7 +1,16 @@
-.button{
-  width: 100px;
-  border-radius: 10px;
-  background-color: #3E68B9 ;
-  border: none;
-  color: white;
+button{
+  color: #3E68B9;
+  border: 1px solid rgb(62, 104, 185, 75%) ;
+  cursor: pointer;
+  font-weight: 600;
+  border-radius: 8px;
+  // text-align: center;
+  // outline: none;
+  :focus
+  {
+    outline: none;
+    border: none;
+  }
+
 }
+

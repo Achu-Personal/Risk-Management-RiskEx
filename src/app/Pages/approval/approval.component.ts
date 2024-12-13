@@ -5,6 +5,7 @@ import { RiskDetailsSection2Component } from "../../Components/risk-details-sect
 import {FormBuilder, FormControl,FormGroup,FormsModule,ReactiveFormsModule,} from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../../Components/confirm-dialog/confirm-dialog.component';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-approval',
@@ -15,7 +16,7 @@ import { ConfirmDialogComponent } from '../../Components/confirm-dialog/confirm-
 })
 export class ApprovalComponent {
 
-  constructor(private fb: FormBuilder, private dialog: MatDialog) {
+  constructor(private fb: FormBuilder, private dialog: MatDialog,private route: ActivatedRoute) {
     this.commentForm = this.fb.group({
       approve: [''] // Initial value
     });
@@ -58,5 +59,13 @@ async cancelRisk() {
   }
  
 }
+approvalId!: string;
 
+
+ngOnInit(): void {
+  this.route.paramMap.subscribe((params) => {
+    this.approvalId = params.get('id') || ''; // Fetch the dynamic ID
+  });
+
+}
 }

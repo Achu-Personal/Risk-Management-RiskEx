@@ -1,0 +1,9 @@
+
+<div class="likelihood-impact-card">
+
+  <h6 class="heading">{{title}}  </h6>
+  <h6 style="margin-top: 10px;">Likehood  <span [ngStyle]="{'color': LikeliHoodlevel=='low'?'green':LikeliHoodlevel=='medium'?'#FFBF00':'red'}" >{{LikeliHoodlevel | capitalizeFirst}}</span></h6>
+  <h6>Impact <span [ngStyle]="{'color': Impactlevel=='low'?'green':Impactlevel=='medium'?'#FFBF00':'red'}" >{{Impactlevel | capitalizeFirst}}</span></h6>
+  <h6>Risk Factor <span [ngStyle]="{'color': Impactlevel=='low'?'green':Impactlevel=='medium'?'#FFBF00':'red'}" >{{ RiskFactor}}</span> </h6>
+
+</div>

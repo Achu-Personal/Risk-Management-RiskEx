@@ -1,0 +1,45 @@
+
+.risk-details-section3-mitigation
+{
+  width: 100%;
+  height: auto;
+  background-color: #F6FBFF;
+  border-radius: 20px;
+  padding: 20px;
+
+
+}
+
+
+.tab-button {
+  background-color: white; /* Non-selected buttons */
+  color: black;
+
+}
+
+.tab-button.active {
+  background-color: #5800C8; /* Change to your desired active button color */
+  color: white; /* Text color for active button */
+  border-color: transparent; /* Match the border color */
+}
+
+.mytab-content
+{
+display: flex;
+flex-direction: row;
+gap: 1vw;
+}
+
+h5{
+  font-size: 2vh;
+}
+
+h6{
+  font-size: 2.7vh;
+  font-weight: bold;
+}
+
+.reviewer-section
+{
+ padding:10px ;
+}

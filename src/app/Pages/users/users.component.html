@@ -15,6 +15,12 @@
         Add Department
       </button>
     </div>
+    <div class="col-md-2 d-flex justify-content-start">
+      <button type="button" class="btn btn-success button-custom" data-bs-toggle="modal"
+        data-bs-target="#addProjectModal">
+        Add Project
+      </button>
+    </div>
   </div>
 
 
@@ -69,9 +75,11 @@
               </label>
               <select class="form-select" id="department" formControlName="department">
                 <option value="" disabled>Select Department</option>
-                <option value="HR">HR</option>
-                <option value="IT">IT</option>
-                <option value="Finance">Finance</option>
+                @for(item of departments; track item.id){
+
+                  <option value="item.departmentName">{{item.departmentName}}</option>
+                }
+                
               </select>
               @if (userForm.get('department')?.invalid &&userForm.get('department')?.touched)
               {
@@ -83,9 +91,17 @@
             </div>
 
             <div class="mb-3">
-              <label for="projectId" class="form-label">Project ID</label>
-              <input type="text" class="form-control" id="projectId" placeholder="Enter Project ID"
-                formControlName="projectId" />
+              <label for="projectName" class="form-label">
+                Project
+              </label>
+              <select class="form-select" id="projectName" formControlName="projectName">
+                <option value="" disabled>Select Project</option>
+                @for(item of projects;track item.id){
+                  <option value="item.projectName">{{item.projectName}}</option>
+                }
+                
+              </select>
+                 
             </div>
 
             <div class="modal-footer">
@@ -139,5 +155,57 @@
       </div>
     </div>
   </div>
+
+  <!-- ------------add project modal------------------- -->
+
+  <div class="modal fade" id="addProjectModal" tabindex="-1" aria-labelledby="addProjectModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addProjectModalLabel">New Project</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="projectForm" (ngSubmit)="onSubmitProject()">
+
+          <div class="mb-3">
+
+            <label for="projectName" class="form-label p-2">
+              Project Name <span class="text-danger">*</span>
+            </label>
+            <input type="text" class="form-control" id="projectName" placeholder="Enter Project Name"
+              formControlName="projectName" />
+
+            @if (projectForm.get('projectName')?.invalid && projectForm.get('projectName')?.touched)
+            {
+            <div class="text-danger">Project name is required.</div>
+            }
+
+            <label for="departmentName" class="form-label p-2">
+              Department Name <span class="text-danger">*</span>
+            </label>
+            <input type="text" class="form-control" id="departmentName" placeholder="Enter Department Name"
+              formControlName="departmentName" />
+            @if (projectForm.get('departmentName')?.invalid && projectForm.get('departmentName')?.touched)
+            {
+            <div class="text-danger">Department name is required.</div>
+            }
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+              Cancel
+            </button>
+            <button type="submit" class="btn btn-success" [disabled]="projectForm.invalid">
+              Save
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
   <app-user-table></app-user-table>
+
 </app-body-container>

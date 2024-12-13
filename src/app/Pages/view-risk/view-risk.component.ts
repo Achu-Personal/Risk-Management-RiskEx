@@ -2,11 +2,12 @@ import { Component, Input } from '@angular/core';
 import { RiskBasicDetailsCardComponent } from "../../Components/risk-basic-details-card/risk-basic-details-card.component";
 import { BodyContainerComponent } from "../../Components/body-container/body-container.component";
 import { RiskDetailsSection2Component } from "../../Components/risk-details-section2/risk-details-section2.component";
+import { RiskDetailsSection3MitigationComponent } from "../../Components/risk-details-section3-mitigation/risk-details-section3-mitigation.component";
 
 @Component({
   selector: 'app-view-risk',
   standalone: true,
-  imports: [RiskBasicDetailsCardComponent, BodyContainerComponent, RiskDetailsSection2Component],
+  imports: [RiskBasicDetailsCardComponent, BodyContainerComponent, RiskDetailsSection2Component, RiskDetailsSection3MitigationComponent],
   templateUrl: './view-risk.component.html',
   styleUrl: './view-risk.component.scss'
 })
@@ -24,18 +25,18 @@ export class ViewRiskComponent {
     impact_of_risk: "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC",
     current_risk_assessment: {
       confidentiality: {
-        likelihood: "High",
-        impact: "High",
+        likelihood: "high",
+        impact: "high",
         risk_factor: 9
       },
       integrity: {
-        likelihood: "Medium",
-        impact: "Low",
+        likelihood: "medium",
+        impact: "low",
         risk_factor: 3
       },
       availability: {
-        likelihood: "Low",
-        impact: "Medium",
+        likelihood: "low",
+        impact: "medium",
         risk_factor: 2
       },
       overall_risk_rating: 14
@@ -46,25 +47,25 @@ export class ViewRiskComponent {
     planned_action_date: "2024-12-10",
     assessment_post_implementation: {
       confidentiality: {
-        likelihood: "Low",
-        impact: "Medium",
+        likelihood: "low",
+        impact: "medium",
         risk_factor: 3
       },
       integrity: {
-        likelihood: "Very Low",
-        impact: "Low",
+        likelihood: "low",
+        impact: "low",
         risk_factor: 1
       },
       availability: {
-        likelihood: "Very Low",
-        impact: "Low",
+        likelihood: "low",
+        impact: "low",
         risk_factor: 1
       },
-      overall_risk_rating: 31
+      overall_risk_rating: 121
     },
     actual_closed_date: "2025-01-15",
     risk_response: "Mitigate",
-    risk_status: "Closed",
+    risk_status: "closed",
     remarks: "Risk successfully mitigated through planned measures."
   };
 

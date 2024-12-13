@@ -1,14 +1,21 @@
 <div class="sidebar d-flex flex-column">
     <div class="sidebar-item">
+      <div class="header"><h3 class="riskex">RiskEX</h3>
+        <hr>
+      </div>
+      
+      <div class="nav-items">
         @for(item of menuItems; track item.id){
-        <a
-        [class.active]="item.active"
-        (click)="setActiveItem(item)"
-        [routerLink]="item.route" class="sidebar-link">
-        <i [class]="'bi ' + item.icon"></i>
-        <span class="sidebar-text">{{ item.label }}</span>
-      </a>
-    }
+          <a
+          [class.active]="item.active"
+          (click)="setActiveItem(item)"
+          [routerLink]="item.route" class="sidebar-link">
+          <i [class]="'bi ' + item.icon"></i>
+          <span class="sidebar-text">{{ item.label }}</span>
+        </a>
+      }
+      </div>
+       
     </div>
   </div>
 

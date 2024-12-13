@@ -1,4 +1,4 @@
-<div class="container">
+<!-- <div class="container">
   <div class="content">
     <div class="register">
       <label> Risk Type <span class="required">*</span> :</label>
@@ -26,4 +26,55 @@
 
 
   </div>
+</div> -->
+
+<div class="container">
+  <div class="content">
+    <div class="riskType" id="riskTypeDiv">
+      <!-- <label for="riskType">Risk Type <span class="required">*</span> :</label>
+      <app-dropdown [options]="dropdownData"
+      [displayField]="'type'"
+      [valueField]="'value'"
+      (selectionChange)="onOptionSelected($event)"
+      value="selectedOption" class="dropdown"></app-dropdown> -->
+      <div>
+        <button (click)="setQuality()" [ngClass]="isSelectQuality ? 'selected' : ''">Quality</button>
+
+      </div>
+      <div>
+        <button (click)="setSecurity()"[ngClass]="isSelectSecurity ? 'selected' : ''">Security</button>
+
+      </div>
+      <div>
+        <button (click)="setPrivacy()"[ngClass]="isSelectPrivacy ? 'selected' : ''">Privacy</button>
+
+      </div>
+
+
+
+    </div>
+    @if (selectedOptionFromChild==="") {
+      <div class="typeImage">
+        <div class="typeImageContainer">
+          <p>If you don’t invest in risk-management, it doesn’t matter what business you’re in, it’s a risky business.</p>
+          <img src="02c7457e-d86d-4f21-8f9e-f6c7c457bfbd.png" alt="image" style="height: 250px;width: 470px; border: none;">
+
+        </div>
+
+      </div>
+
+    }
+    @if (selectedOptionFromChild==="quality") {
+      <app-qms-form  [riskTypeValue]="selectedOptionFromChild"></app-qms-form>
+    }
+    @if (selectedOptionFromChild==="privacy"||selectedOptionFromChild==="security") {
+      <app-isms-form [riskTypeValue]="selectedOptionFromChild"></app-isms-form>
+
+    }
+
+  </div>
 </div>
+
+
+
+
