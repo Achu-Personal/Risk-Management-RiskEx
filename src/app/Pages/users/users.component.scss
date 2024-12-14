@@ -18,7 +18,7 @@
 
 button.button-custom {
   padding: 10px 20px;
-  font-size: 1rem;
+  font-size: 0.8rem;
   border: none;
   border-radius: 5px;
   width: auto;
@@ -26,7 +26,7 @@ button.button-custom {
   height: auto;
   white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis;
+  // text-overflow: ellipsis;
   text-align: center;
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.2s ease;
@@ -37,7 +37,7 @@ button.button-custom {
 
 button {
   padding: 7px 20px;
-  font-size: 1rem;
+  font-size: 0.9rem;
   border: none;
   border-radius: 5px;
   cursor: pointer;
