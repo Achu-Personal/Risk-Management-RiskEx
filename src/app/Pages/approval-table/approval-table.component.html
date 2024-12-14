@@ -1,8 +1,8 @@
 <app-body-container>
     <app-reusable-table 
   [tableHeaders]="headerData" 
-  [tableData]="tableBody">
+  [tableData]="tableBody"
+  (onclickrow)="OnClickRow($event)">
 </app-reusable-table>
 
-    <!-- <app-review-table [TableHeader]="headerData" [TableBody]="tableBody"></app-review-table> -->
 </app-body-container>

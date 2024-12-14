@@ -1,18 +1,17 @@
 <div class="table-responsive">
-    <table class="table table-bordered table-striped">
+    <table class="table table-striped">
       <thead>
-        <tr>
+        <tr class="bord">
             @for(header of tableHeaders; track header){
                 <th>{{header}}</th>
-
             }
         </tr>
       </thead>
       <tbody>
         @for(row of tableData ; track row){
-            <tr>
-                @for(key of rowKeys; track key){
-                    <td>{{row[key]}}</td>
+            <tr (click)="rowClick(row)" >
+                @for(key of rowKeys; track key ){
+                    <td [title]="row[key]">{{ row[key]?.toString() | slice: 0: 12 }}{{ row[key]?.length > 12 ? '...' : '' }}</td>
                 }
             </tr>  
         }

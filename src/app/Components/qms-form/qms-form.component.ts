@@ -15,11 +15,12 @@ import { CommonModule } from '@angular/common';
 })
 export class QMSFormComponent {
 
-   @Input() riskType: string=''
+   @Input() riskTypeValue: string=''
   @Output() sendDataToParent = new EventEmitter<object>();
   isCustomSelected = false;
   newEmail = '';
   qmsForm=new FormGroup({
+    riskType:new FormControl(''),
     riskName:new FormControl(''),
     description:new FormControl(''),
     riskImpact:new FormControl(''),
@@ -34,10 +35,11 @@ export class QMSFormComponent {
 
 
   })
+
   data:any
   descriptionText: string = '';
   dropdownData=[
-    {"type":"Very Low","value":"Very Low"},
+    {"type":"Very Low","value":"1"},
     {"type":"Low","value":"Low"},
     {"type":"Medium","value":"Medium"},
     { "type":"High","value":"High"},
@@ -59,6 +61,8 @@ constructor(public api:ApiService){}
       console.log(this.data)
 
     })
+
+
   }
 
 
@@ -72,6 +76,8 @@ constructor(public api:ApiService){}
 
 
   onsubmit(){
+    this.qmsForm.get('riskType')?.setValue(this.riskTypeValue);
+    console.log("Updated riskType value:", this.qmsForm.get('riskType')?.value);
 
     this.sendDataToParent.emit(this.qmsForm.value);
     console.log("actual data");
@@ -84,11 +90,11 @@ constructor(public api:ApiService){}
 
      }
 
-     ngOnChanges(changes: SimpleChanges): void {
-      if (changes['riskType']) {
-        console.log('Risk Type changed:', changes['riskType'].currentValue);
-      }
-    }
+    //  ngOnChanges(changes: SimpleChanges): void {
+    //   if (changes['riskType']) {
+    //     console.log('Risk Type changed:', changes['riskType'].currentValue);
+    //   }
+    // }
 
 
 
