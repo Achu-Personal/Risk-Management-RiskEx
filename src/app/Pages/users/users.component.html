@@ -9,13 +9,13 @@
         Add User
       </button>
     </div>
-    <div class="col-md-2 d-flex justify-content-start">
+    <div class="col-md-2 d-flex justify-content-end">
       <button type="button" class="btn btn-success button-custom" data-bs-toggle="modal"
         data-bs-target="#addDepartmentModal">
         Add Department
       </button>
     </div>
-    <div class="col-md-2 d-flex justify-content-start">
+    <div class="col-md-2 d-flex justify-content-end">
       <button type="button" class="btn btn-success button-custom" data-bs-toggle="modal"
         data-bs-target="#addProjectModal">
         Add Project
@@ -79,7 +79,7 @@
 
                   <option value="item.departmentName">{{item.departmentName}}</option>
                 }
-                
+
               </select>
               @if (userForm.get('department')?.invalid &&userForm.get('department')?.touched)
               {
@@ -99,9 +99,9 @@
                 @for(item of projects;track item.id){
                   <option value="item.projectName">{{item.projectName}}</option>
                 }
-                
+
               </select>
-                 
+
             </div>
 
             <div class="modal-footer">
