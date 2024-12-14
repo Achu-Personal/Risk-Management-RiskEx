@@ -11,7 +11,7 @@ import { Component, input, Input } from '@angular/core';
 export class OverallRatingCardComponent {
 
 
-  @Input() value="";
+  @Input() value=0;
   @Input() title="";
   @Input() backgroundColor=""
   numericValue: number=40;
@@ -21,6 +21,7 @@ export class OverallRatingCardComponent {
 
   ngOnInit() {
     this.numericValue = +this.value; // Convert to a number
+    console.log(this.numericValue)
   }
 
 

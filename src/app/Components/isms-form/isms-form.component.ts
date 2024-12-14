@@ -3,11 +3,12 @@ import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angul
 import { ButtonComponent } from "../../UI/button/button.component";
 import { DropdownComponent } from "../../UI/dropdown/dropdown.component";
 import { ApiService } from '../../Services/api.service';
+import { TextareaComponent } from "../../UI/textarea/textarea.component";
 
 @Component({
   selector: 'app-isms-form',
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule, ButtonComponent, DropdownComponent],
+  imports: [FormsModule, ReactiveFormsModule, ButtonComponent, DropdownComponent, TextareaComponent],
   templateUrl: './isms-form.component.html',
   styleUrl: './isms-form.component.scss'
 })
@@ -20,6 +21,7 @@ export class ISMSFormComponent {
 
   ismsForm=new FormGroup({
     riskType:new FormControl(''),
+    status:new FormControl(''),
     riskName:new FormControl(''),
     description:new FormControl(''),
     riskImpact:new FormControl(''),
@@ -32,7 +34,6 @@ export class ISMSFormComponent {
     IntegrityImpact:new FormControl(''),
     availabiltyImpact:new FormControl(''),
     privacyImpact:new FormControl(''),
-    impact:new FormControl(''),
     mitigation:new FormControl(''),
     contingency:new FormControl(''),
     responsibilityOfAction:new FormControl(''),
@@ -84,6 +85,7 @@ constructor(public api:ApiService){}
   onsubmit(){
 
     this.ismsForm.get('riskType')?.setValue(this.riskTypeValue);
+    this.ismsForm.get('status')?.setValue("open");
     console.log("Updated riskType value:", this.ismsForm.get('riskType')?.value);
 
     this.sendDataToParent.emit(this.ismsForm.value);

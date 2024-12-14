@@ -16,6 +16,8 @@ export class ButtonComponent {
   @Input() height: string = '40';
   @Input() width: string = '100';
   @Input() routerLink: string ='';
+  @Input() border: string = '';
+  @Input() color: string = '#3E68B9';
 
   clicked= output()
 

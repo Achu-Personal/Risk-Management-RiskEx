@@ -1,30 +1,29 @@
-.container{
+.container {
   display: flex;
   flex-direction: row;
   position: relative;
   z-index: 1;
+}
 
 
-}
-.sidebar{
-  flex-basis: 10%;
-}
-.content{
+
+.content {
   flex-basis: 100%;
 
 }
-.riskType{
+
+.riskType {
   background-color: white;
   width: 80vw;
   margin-left: 15px;
   margin-top: 20px;
-  // padding: 10px;
+  // padding-top: 10px;
   border-radius: 10px 10px 0px 0px;
 }
-app-dropdown{
-  margin-left: 20px;
-}
-.typeImage{
+
+
+
+.typeImage {
   background-color: white;
   width: 80vw;
   margin-left: 15px;
@@ -32,7 +31,8 @@ app-dropdown{
   margin-top: 10px;
   border-radius: 0px 0px 10px 10px;
 }
-.typeImageContainer{
+
+.typeImageContainer {
   border: 1px dashed black;
   height: 360px;
   display: flex;
@@ -43,10 +43,12 @@ app-dropdown{
 
 
 }
-.required{
+
+.required {
   color: red;
   margin-left: 4px;
 }
+
 .dropdown {
   position: relative;
   z-index: 999;
@@ -55,8 +57,37 @@ app-dropdown{
 .selected {
   // text-decoration: underline;
   font-weight: bold;
-  color:#3E68B9 ;
+  color: white;
+  background-color: #3E68B9;
+  height: 50px;
+  border-radius: 10px 10px 0px 0px;
+  margin-bottom: 0px;
+  width: 150px;
+
 }
+
+.chooseSelect {
+  color: white;
+  background-color: #3E68B9;
+  height: 50px;
+  border-radius: 10px 10px 0px 0px;
+  margin-bottom: 0px;
+  margin-top: 5px;
+  width: 150px;
+  padding-top: 10px;
+  padding-left: 25px;
+
+}
+
+.notChooseSelect {
+  padding-top: 5px;
+  padding-left: 10px;
+  color: black;
+
+}
+
+
+
 button {
   padding: 10px 20px;
   margin: 5px;
@@ -65,13 +96,60 @@ button {
   cursor: pointer;
   font-size: 16px;
 }
-#riskTypeDiv{
+
+#riskTypeDiv {
   display: flex;
   flex-direction: row;
-  // justify-content: space-around;
+
 
 
 }
-#riskTypeDiv div{
-  margin-left: 160px;
+
+.chooseRisk {
+  margin-top: 10px;
+  margin-left: 20px;
+
+}
+
+.riskDiv {
+  margin-left: 20px;
+}
+
+.isSelect {
+  display: block;
+}
+
+.isSelectNot {
+
+  button {
+    color: white;
+
+  }
+}
+.chooseType{
+  display: flex;
+  flex-direction: row;
+  gap: 90px;
+  margin-right: 50px;
+  margin-bottom: 70px;
+
+}
+.chooseContainer{
+  border:  1px dashed black;
+  padding: 10px;
+  height: 150px;
+  justify-content: center;
+  align-content: center;
+  border-radius: 10px;
+
+
+
+}
+.chooseContainer:hover{
+  background-color: #3E68B9;
+
+  button{
+    color: white;
+  }
+
 }
