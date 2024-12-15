@@ -17,23 +17,25 @@
     @if (selectedOptionFromChild==="") {
       <div class="typeImage">
         <div class="typeImageContainer">
-          <h4 style="margin-right: 50px;margin-bottom: 50px;">Choose A Risk Type</h4>
+          <h4 style="margin-right: 50px;margin-bottom: 50px; color: darkgrey;">Choose A Risk Type</h4>
 
           <div class="chooseType">
-            <div class="chooseContainer">
-              <button (click)="setQuality()" [ngClass]="isSelectQuality ? 'selected' : ''">Quality</button>
-              <img src="images (12).jpg" alt="Quality" style="height: 50px;">
+            <div class="chooseContainer" (click)="setQuality()" id="chooseContainerQuality">
+              <img src="quality.png" alt="quality" style="height: 50px;width: 50px;margin-left: 50px;" >
+              <button (click)="setQuality()" [ngClass]="isSelectQuality ? 'selected' : ''" class="buttonQuality">Quality</button>
 
             </div>
-            <div class="chooseContainer">
-              <button (click)="setSecurity()"[ngClass]="isSelectSecurity ? 'selected' : ''">Security</button>
-              <img src="images (12).jpg" alt="Quality" style="height: 50px;">
+            <div class="chooseContainer" (click)="setSecurity()" id="chooseContainerSecurity">
+              <img src="security.png" alt="security" style="height: 50px;width: 50px;margin-left: 50px;">
+              <button (click)="setSecurity()"[ngClass]="isSelectSecurity ? 'selected' : ''" >Security</button>
+
 
 
             </div>
-            <div class="chooseContainer">
+            <div class="chooseContainer"(click)="setPrivacy()" id="chooseContainerPrivacy">
+              <img src="privacy-policy.png" alt="quality" style="height: 50px;width: 50px;margin-left: 50px;">
               <button (click)="setPrivacy()"[ngClass]="isSelectPrivacy ? 'selected' : ''">Privacy</button>
-              <img src="images (12).jpg" alt="Quality" style="height: 50px;">
+
 
 
             </div>

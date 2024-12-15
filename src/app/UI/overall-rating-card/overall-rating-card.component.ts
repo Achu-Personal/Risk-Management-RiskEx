@@ -19,10 +19,7 @@ export class OverallRatingCardComponent {
   @Input() width:number=33;
   @Input() textColor:string=""
 
-  ngOnInit() {
-    this.numericValue = +this.value; // Convert to a number
-    console.log(this.numericValue)
-  }
+
 
 
 

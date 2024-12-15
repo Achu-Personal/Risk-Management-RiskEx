@@ -146,10 +146,8 @@ constructor(public api:ApiService){}
     getBackgroundColor() {
       if (this.result <= 30) {
         return { 'background-color': ' #548135' };
-      } else if (this.result <= 31 && this.result <= 99) {
-        return { 'background-color': 'amber' };
-      } else if(this.result<=100 && this.result<=30) {
-        return { 'background-color': 'red' };
+      } else if (this.result >= 31 && this.result <= 99) {
+        return { 'background-color': '#FFBF00' };
       }
       else{
         return { 'background-color': 'red' };

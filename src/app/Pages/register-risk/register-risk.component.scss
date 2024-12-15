@@ -95,6 +95,11 @@ button {
   border: none;
   cursor: pointer;
   font-size: 16px;
+  margin-left: 27px;
+}
+.buttonQuality{
+  margin-left: 30px;
+
 }
 
 #riskTypeDiv {
@@ -135,21 +140,47 @@ button {
 
 }
 .chooseContainer{
-  border:  1px dashed black;
+
   padding: 10px;
   height: 150px;
+  width: 170px;
   justify-content: center;
   align-content: center;
   border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(62, 104, 185, 0.5);
+  cursor: pointer;
 
 
 
 }
-.chooseContainer:hover{
-  background-color: #3E68B9;
 
-  button{
-    color: white;
-  }
+
+#chooseContainerQuality,#chooseContainerSecurity,#chooseContainerPrivacy{
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  justify-content: center;
+  align-content: center;
+  box-shadow: 0px 4px 8px rgba(62, 104, 185, 0.5); /* Initial shadow */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden; /* Hide the overflowing drops */
 
 }
+
+#chooseContainerPrivacy:hover{
+  transform: translateY(-10px); /* Moves the container up */
+  box-shadow: 0px 6px 12px rgba(62, 104, 185, 0.7); /* Stronger shadow effect on hover */
+}
+#chooseContainerQuality:hover{
+  transform: translateY(-10px); /* Moves the container up */
+  box-shadow: 0px 6px 12px rgba(62, 104, 185, 0.7); /* Stronger shadow effect on hover */
+
+}
+#chooseContainerSecurity:hover{
+  transform: translateY(-10px); /* Moves the container up */
+  box-shadow: 0px 6px 12px rgba(62, 104, 185, 0.7); /* Stronger shadow effect on hover */
+
+}
+
+
+
+
+
