@@ -1,7 +1,8 @@
 
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, forwardRef, Input, Output } from '@angular/core';
 import { FormsModule} from '@angular/forms';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
   selector: 'app-dropdown',
@@ -9,34 +10,52 @@ import { FormsModule} from '@angular/forms';
   imports: [CommonModule,FormsModule],
   templateUrl: './dropdown.component.html',
   styleUrl: './dropdown.component.scss',
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => DropdownComponent),
+      multi: true
+    }
+  ]
 
 })
-export class DropdownComponent {
+export class DropdownComponent implements ControlValueAccessor {
 
-
-
-
-
-  // @Input() data :Array<{ value: string; type: string }> = []
-
-
-  // @Input()selectedOption :string=''
-  // @Output() valueChange: EventEmitter<string> = new EventEmitter<string>();
-
-
-  // onSelectionChange(value: string): void {
-  //   this.valueChange.emit(value);
-  // }
-  @Input() dropdownWidth: string = '150px';
-  @Input() options: any[] = []; // Array of objects
-  @Input() displayField: string = ''; // Field name for display text
-  @Input() valueField: string = ''; // Field name for value
-  @Output() selectionChange = new EventEmitter<string>(); // Notify parent of selection
+  @Input() options: any[] = [];
+  @Input() displayField: string = '';
+  @Input() valueField: string = '';
   selectedValue: string = '';
+  @Input() width:string='13.33'
+
+  value: any = '';
+  onChange = (value: any) => {};
+  onTouched = () => {};
 
 
-  onSelectionChange(selectedValue: string) {
-    this.selectionChange.emit(selectedValue);
+   // Write value to the component
+   writeValue(value: any): void {
+    this.value = value;
   }
+
+  // Register change callback
+  registerOnChange(fn: any): void {
+    this.onChange = fn;
+  }
+
+  // Register touched callback
+  registerOnTouched(fn: any): void {
+    this.onTouched = fn;
+  }
+
+  // Handle selection change
+  onSelectionChange(value: any): void {
+    this.value = value;
+    this.onChange(value);
+    this.onTouched();
+    
+  }
+
+
+
 
 }
