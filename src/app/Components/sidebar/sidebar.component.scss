@@ -1,31 +1,66 @@
 .sidebar {
-    height: 100vh;
-    position: sticky;
-    background-color: white;
-    color: #000000;
-    width: 15vw;
-    border-right: 1px solid #ddd;
-    box-sizing: border-box;
-  }
-  .sidebar a {
-    color: black;
-    text-decoration: none;
-    display: block;
-    padding: 15px;
-    transition: background-color 0.3s, color 0.3s;
+
+  height: 100vh;
+
+  background-color: white;
+  color: black;
+  width: 15vw;
+
+  box-sizing: border-box;
+}
+.header{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 40px;
+
+
+
+  h3{
+    color: #3e68b9;
+    font-size: 1.5rem;
+    font-weight: 500;
   }
 
-  .sidebar a.active {
-    background-color: #3E68B9;
-    color: white;
-    padding: 10px;
-    margin: 10px;
-    border-radius: 10px;
-  }
-  .sidebar-item {
-    text-align: left;
-    padding-top: 100px;
-  }
-  .sidebar-link i {
-    margin-right: 8px;
 }
+.sidebar a {
+  color: #746e6e;
+  text-decoration: none;
+  display: block;
+  padding: 10px;
+
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.sidebar a.active {
+  background-color: #3e68b9;
+  color: white;
+  padding-top: 10px;
+  padding-bottom: 10px;
+
+  border-radius: 10px;
+}
+.sidebar-item {
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+
+
+}
+.sidebar-link i {
+  margin-right: 8px;
+}
+
+
+.nav-items
+{
+
+padding: 20px;
+gap: 10px;
+display: flex;
+flex-direction: column;
+}
+
+

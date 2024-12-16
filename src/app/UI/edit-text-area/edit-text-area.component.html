@@ -1,0 +1,20 @@
+<div class="enterField">
+  <div class="labelArea">
+    <div >
+      <h6>{{label}}</h6>
+
+    </div>
+    <div class="labelAreaButtonDiv">
+      <button type="button" (click)="toggleEdit()"><i class="fa-solid fa-pen"></i></button>
+
+
+    </div>
+
+
+  </div>
+  <div class="inputfield">
+    <textarea type="text" (input)="autoResize($event)" row="1"  [disabled]="!isEditable" (ngModelChange)="onSelectionChanges($event)" [(ngModel)]="value" ></textarea>
+
+  </div>
+
+</div>

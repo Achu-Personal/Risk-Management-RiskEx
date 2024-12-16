@@ -1,2 +1,15 @@
+<div class="container">
+  <div class="content">
+   
+    @if (riskType==="Quality"){
+      <app-qms-edit></app-qms-edit>
 
+    }
+    @if (riskType==="Security" ||riskType==="Privacy"){
+      <app-isms-edit></app-isms-edit>
+
+    }
+
+  </div>
+</div>
 

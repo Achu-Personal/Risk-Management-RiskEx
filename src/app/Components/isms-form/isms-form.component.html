@@ -4,57 +4,12 @@
       <div class="field">
         <div style="display: none;">
           <label for="">Risk Type <span class="required">*</span> :</label>
-          <label for="" id="risktype" >{{riskType}}</label>
+          <input for="" id="risktype" formControlName="riskType">
         </div>
-        <div class="name">
-          <div>
-
-            <label >Risk Name <span class="required">*</span>  :</label>
-
-          </div>
-          <div>
-            <input type="text" formControlName="riskName">
-
-          </div>
-
-
-        </div>
-        <div class="description">
-          <div class="fieldlabel">
-            <label >Description <span class="required">*</span> :</label>
-
-          </div>
-          <div  class="fieldTextarea">
-            <textarea  (input)="autoResize($event)" formControlName="description"></textarea>
-
-          </div>
-
-
-        </div>
-        <div class="impact">
-          <div class="fieldlabel">
-            <label >Impact Of Risk <span class="required">*</span> :</label>
-
-          </div>
-          <div  class="fieldTextarea">
-            <textarea  (input)="autoResize($event)" formControlName="riskImpact"></textarea>
-
-          </div>
-
-
-        </div>
-        <div class="project">
-          <div class="projectLabel">
-            <label >Project ID :</label>
-
-          </div>
-          <div>
-            <input type="text" formControlName="projectId">
-
-          </div>
-
-
-        </div>
+         <app-textarea label="Risk Name" isRequired="*" formControlName="riskName"></app-textarea>
+         <app-textarea label="Description" isRequired="*" marginLeft="50" formControlName="description"></app-textarea>
+         <app-textarea label="Impact Of Risk" isRequired="*" marginLeft="27" formControlName="riskImpact"></app-textarea>
+         <app-textarea label="Project" marginLeft="92" formControlName="projectId"></app-textarea>
 
       </div>
       <div class="field"  >
@@ -70,50 +25,54 @@
           </tr>
           <tr>
             <td>Likelihood</td>
-            <td> <select name="" id="dropdownassessmentLikelihood" class="dropdownassessment"  formControlName="confidentialityLikelihood">
-              @for(item of dropdownData;track $index){
-                <option value="{{item.value}}">{{item.type}}</option>
-              }
-            </select></td>
-            <td> <select name="" id="dropdownassessmentLikelihood" class="dropdownassessment"  formControlName="IntegrityLikelihood">
-              @for(item of dropdownData;track $index){
-                <option value="{{item.value}}">{{item.type}}</option>
-              }
-            </select></td>
-            <td> <select name="" id="dropdownassessmentLikelihood" class="dropdownassessment"  formControlName="availabiltyLikelihood">
-              @for(item of dropdownData;track $index){
-                <option value="{{item.value}}">{{item.type}}</option>
-              }
-            </select></td>
-            <td> <select name="" id="dropdownassessmentLikelihood" class="dropdownassessment"  formControlName="privacyLikelihood">
-              @for(item of dropdownData;track $index){
-                <option value="{{item.value}}">{{item.type}}</option>
-              }
-            </select></td>
+            <td>
+
+            <app-dropdown  [options]="dropdownData"
+            [displayField]="'type'"
+            [valueField]="'value'"
+            width="13.33"
+            id="dropdownassessmentLikelihood"  formControlName="confidentialityLikelihood"></app-dropdown>
+          </td>
+            <td> <app-dropdown  [options]="dropdownData"
+              [displayField]="'type'"
+              [valueField]="'value'"
+              width="13.33"
+              id="dropdownassessmentLikelihood" class="dropdownassessment"   formControlName="IntegrityLikelihood"></app-dropdown>
+            </td>
+            <td> <app-dropdown  [options]="dropdownData"
+              [displayField]="'type'"
+              [valueField]="'value'"
+              width="13.33"
+              id="dropdownassessmentLikelihood" class="dropdownassessment"   formControlName="availabiltyLikelihood"></app-dropdown></td>
+            <td> <app-dropdown  [options]="dropdownData"
+              [displayField]="'type'"
+              [valueField]="'value'"
+              width="13.33"
+              id="dropdownassessmentLikelihood" class="dropdownassessment"   formControlName="privacyLikelihood"></app-dropdown></td>
 
           </tr>
           <tr>
             <td>Impact</td>
-            <td><select name="" id="dropdownassessmentimpact" class="dropdownassessment"  formControlName="confidentialityImpact">
-              @for(item of dropdownData;track $index){
-                <option value="{{item.value}}">{{item.type}}</option>
-              }
-            </select></td>
-            <td><select name="" id="dropdownassessmentimpact" class="dropdownassessment"  formControlName="IntegrityImpact">
-              @for(item of dropdownData;track $index){
-                <option value="{{item.value}}">{{item.type}}</option>
-              }
-            </select></td>
-            <td><select name="" id="dropdownassessmentimpact" class="dropdownassessment"  formControlName="availabiltyImpact">
-              @for(item of dropdownData;track $index){
-                <option value="{{item.value}}">{{item.type}}</option>
-              }
-            </select></td>
-            <td><select name="" id="dropdownassessmentimpact" class="dropdownassessment"  formControlName="privacyImpact">
-              @for(item of dropdownData;track $index){
-                <option value="{{item.value}}">{{item.type}}</option>
-              }
-            </select></td>
+            <td><app-dropdown  [options]="dropdownData"
+              [displayField]="'type'"
+              [valueField]="'value'"
+              width="13.33"
+              id="dropdownassessmentimpact" class="dropdownassessment"   formControlName="confidentialityImpact"></app-dropdown></td>
+            <td><app-dropdown  [options]="dropdownData"
+              [displayField]="'type'"
+              [valueField]="'value'"
+              width="13.33"
+              id="dropdownassessmentimpact" class="dropdownassessment"   formControlName="IntegrityImpact"></app-dropdown></td>
+            <td><app-dropdown  [options]="dropdownData"
+              [displayField]="'type'"
+              [valueField]="'value'"
+              width="13.33"
+              id="dropdownassessmentimpact" class="dropdownassessment"   formControlName="availabiltyImpact"></app-dropdown></td>
+            <td><app-dropdown  [options]="dropdownData"
+              [displayField]="'type'"
+              [valueField]="'value'"
+              width="13.33"
+              id="dropdownassessmentimpact" class="dropdownassessment"   formControlName="privacyImpact"></app-dropdown></td>
 
           </tr>
         </table>
@@ -125,44 +84,9 @@
       </div>
 
       <div class="field" id="thirdfield">
-        <div class="mitigation">
-          <div class="fieldlabel">
-            <label >Risk Mitigation <span class="required">*</span> :</label>
-
-          </div>
-          <div  class="fieldTextarea">
-            <textarea class="textarea"   (input)="autoResize($event)" formControlName="mitigation"></textarea>
-
-
-          </div>
-
-        </div>
-        <div class="contingency">
-          <div class="fieldlabel">
-            <label >Risk Contingency :</label>
-
-          </div>
-
-          <div class="fieldTextarea">
-            <textarea class="textarea"  (input)="autoResize($event)" formControlName="contingency" ></textarea>
-
-          </div>
-
-
-        </div>
-        <div class="responsibility">
-          <div class="fieldlabel">
-            <label >Responsibility of Action <span class="required">*</span> :</label>
-
-          </div>
-          <div  class="fieldTextarea">
-            <textarea   (input)="autoResize($event)" formControlName="responsibilityOfAction" ></textarea>
-
-          </div>
-
-
-
-        </div>
+        <app-textarea label="Risk Mitigation" isRequired="*"  marginLeft="123" formControlName="mitigation"></app-textarea>
+        <app-textarea label="Risk Contingency" isRequired="*" marginLeft="103" formControlName="contingency"></app-textarea>
+        <app-textarea label="Responsibility Of Action" isRequired="*" formControlName="responsibilityOfAction"></app-textarea>
         <div class="actionDate">
           <div class="actionDateLabel">
             <label id="actionlabel">Planned Action Date  <span class="required">*</span> :</label>
@@ -183,25 +107,12 @@
 
           </div>
           <div>
-            <!-- <app-dropdown id="review" [dropdownWidth]="'600px'"></app-dropdown> -->
-             <!-- <app-dropdown [options]="dropdownDataReviewer"
-             [displayField]="'name'"
-             [valueField]="'email'"
-             value="selectedOption" [dropdownWidth]="'600px'" id="review" formControlName="reviewer" ></app-dropdown> -->
-            <select name="" id="reviewerDropdown" class="dropdown"  formControlName="reviewer">
-              @for(item of dropdownDataReviewer;track $index){
-                <option value="{{item.email}}">{{item.name}}</option>
-              }
-              <option value="custom" (click)="isCustomSelected=true">Add new email...</option>
-            </select>
-            @if(isCustomSelected==true)
-            {
-              <input type="text" placeholder="enter email here">
 
-            }
-
-
-
+            <app-dropdown  [options]="dropdownDataReviewer"
+            [displayField]="'name'"
+            [valueField]="'email'"
+            width="47.25"
+            id="reviewerDropdown" class="dropdown"  formControlName="reviewer"></app-dropdown>
 
           </div>
 
@@ -211,8 +122,8 @@
 
         <div class="action">
           <div>
-            <app-button type="submit" value="Save" ></app-button>
-          <app-button value="Cancel" id="cancelbtn"></app-button>
+            <button type="submit" value="Save" class="savecancel">Save</button>
+          <button value="Cancel" id="cancelbtn" class="savecancel">Cancel</button>
 
           </div>
 

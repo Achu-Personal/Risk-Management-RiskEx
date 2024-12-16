@@ -1,0 +1,42 @@
+.inputfield input{
+  border: none;
+}
+.enterField{
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  gap: 0px;
+}
+textarea{
+  // margin-left: 55px;
+  border: none;
+  width:55.25vw;
+  height: 32px;
+  margin-top: 20px;
+  resize: none;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+textarea:focus {
+  outline: none;
+  border-color: #007bff;
+  border: 1px solid #007bff;
+}
+button{
+  border: none;
+  background-color: white;
+  width: 30px;
+  height: 30px;
+  font-size: large;
+
+}
+.labelArea{
+  display: flex;
+  flex-direction: row;
+}
+.labelAreaButtonDiv{
+  margin-top: -2.5px;
+  margin-left: 10px;
+}
+
+

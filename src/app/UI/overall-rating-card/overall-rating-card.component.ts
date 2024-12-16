@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, input, Input } from '@angular/core';
 
 @Component({
   selector: 'app-overall-rating-card',
@@ -11,13 +11,16 @@ import { Component, Input } from '@angular/core';
 export class OverallRatingCardComponent {
 
 
-  @Input() value="";
-  numericValue: number=40;
-
-  ngOnInit() {
-    this.numericValue = +this.value; // Convert to a number
-  }
-
+  @Input() value=0;
   @Input() title="";
+  @Input() backgroundColor=""
+  numericValue: number=40;
+  @Input() height:number=33;
+  @Input() width:number=33;
+  @Input() textColor:string=""
+
+
+
+
 
 }

@@ -1,49 +1,48 @@
-<!-- <div class="container">
-  <div class="content">
-    <div class="register">
-      <label> Risk Type <span class="required">*</span> :</label>
-      <app-dropdown [data]="data" value="selectedOption"
-      (valueChange)="onDropdownChange($event)"></app-dropdown>
-    </div>
-    @if (selectedOption==="") {
-      <div class="typeImage">
-        <div class="typeImageContainer">
-          <p>If you don’t invest in risk-management, it doesn’t matter what business you’re in, it’s a risky business.</p>
-          <img src="02c7457e-d86d-4f21-8f9e-f6c7c457bfbd.png" alt="image" style="height: 250px;width: 470px; border: none;">
-
-        </div>
-
-      </div>
-
-    }
-    @if (selectedOption==="quality") {
-      <app-qms-form></app-qms-form>
-    }
-    @if (selectedOption==="privacy"||selectedOption==="security") {
-      <app-isms-form></app-isms-form>
-
-    }
-
-
-  </div>
-</div> -->
-
 <div class="container">
   <div class="content">
-    <div class="riskType">
-      <label for="riskType">Risk Type <span class="required">*</span> :</label>
-      <app-dropdown [options]="dropdownData"
-      [displayField]="'type'"
-      [valueField]="'value'"
-      (selectionChange)="onOptionSelected($event)"
-      value="selectedOption" class="dropdown"></app-dropdown>
+    <div class="riskType" id="riskTypeDiv" [ngClass]="isSelect ? 'isSelect' : 'isSelectNot'">
 
+      <div class="riskDiv">
+        <button (click)="setQuality()" [ngClass]="isSelectQuality ? 'selected' : ''">Quality</button>
+      </div>
+
+      <div class="riskDiv">
+        <button (click)="setSecurity()"[ngClass]="isSelectSecurity ? 'selected' : ''">Security</button>
+      </div>
+
+      <div class="riskDiv">
+        <button (click)="setPrivacy()"[ngClass]="isSelectPrivacy ? 'selected' : ''">Privacy</button>
+      </div>
     </div>
     @if (selectedOptionFromChild==="") {
       <div class="typeImage">
         <div class="typeImageContainer">
-          <p>If you don’t invest in risk-management, it doesn’t matter what business you’re in, it’s a risky business.</p>
-          <img src="02c7457e-d86d-4f21-8f9e-f6c7c457bfbd.png" alt="image" style="height: 250px;width: 470px; border: none;">
+          <h4 style="margin-right: 50px;margin-bottom: 70px;margin-top: -30px; color: darkgrey;">Choose A Risk Type</h4>
+
+          <div class="chooseType">
+            <div class="chooseContainer" (click)="setQuality()" id="chooseContainerQuality">
+              <img src="quality.png" alt="quality" style="height: 50px;width: 50px;margin-left: 50px;" >
+              <button (click)="setQuality()" [ngClass]="isSelectQuality ? 'selected' : ''" >Quality</button>
+
+            </div>
+            <div class="chooseContainer" (click)="setSecurity()" id="chooseContainerSecurity">
+              <img src="security.png" alt="security" style="height: 50px;width: 50px;margin-left: 50px;">
+              <button (click)="setSecurity()"[ngClass]="isSelectSecurity ? 'selected' : ''" >Security</button>
+
+
+
+            </div>
+            <div class="chooseContainer"(click)="setPrivacy()" id="chooseContainerPrivacy">
+              <img src="privacy-policy.png" alt="quality" style="height: 50px;width: 50px;margin-left: 50px;">
+              <button (click)="setPrivacy()"[ngClass]="isSelectPrivacy ? 'selected' : ''">Privacy</button>
+
+
+
+            </div>
+
+
+          </div>
+
 
         </div>
 
@@ -51,10 +50,10 @@
 
     }
     @if (selectedOptionFromChild==="quality") {
-      <app-qms-form  [riskType]="selectedOptionFromChild"></app-qms-form>
+      <app-qms-form  [riskTypeValue]="selectedOptionFromChild"></app-qms-form>
     }
     @if (selectedOptionFromChild==="privacy"||selectedOptionFromChild==="security") {
-      <app-isms-form [riskType]="selectedOptionFromChild"></app-isms-form>
+      <app-isms-form [riskTypeValue]="selectedOptionFromChild"></app-isms-form>
 
     }
 

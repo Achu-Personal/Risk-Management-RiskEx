@@ -3,11 +3,12 @@ import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angul
 import { ButtonComponent } from "../../UI/button/button.component";
 import { DropdownComponent } from "../../UI/dropdown/dropdown.component";
 import { ApiService } from '../../Services/api.service';
+import { TextareaComponent } from "../../UI/textarea/textarea.component";
 
 @Component({
   selector: 'app-isms-form',
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule, ButtonComponent, DropdownComponent],
+  imports: [FormsModule, ReactiveFormsModule, ButtonComponent, DropdownComponent, TextareaComponent],
   templateUrl: './isms-form.component.html',
   styleUrl: './isms-form.component.scss'
 })
@@ -15,11 +16,12 @@ export class ISMSFormComponent {
   @Output() sendDataToParent = new EventEmitter<object>();
   isCustomSelected = false;
   newEmail = '';
-  @Input() riskType: string=''
+  @Input() riskTypeValue: string=''
 
 
   ismsForm=new FormGroup({
     riskType:new FormControl(''),
+    status:new FormControl(''),
     riskName:new FormControl(''),
     description:new FormControl(''),
     riskImpact:new FormControl(''),
@@ -32,7 +34,6 @@ export class ISMSFormComponent {
     IntegrityImpact:new FormControl(''),
     availabiltyImpact:new FormControl(''),
     privacyImpact:new FormControl(''),
-    impact:new FormControl(''),
     mitigation:new FormControl(''),
     contingency:new FormControl(''),
     responsibilityOfAction:new FormControl(''),
@@ -66,9 +67,7 @@ constructor(public api:ApiService){}
       console.log(this.data)
 
     })
-    if (this.riskType) {
-      this.ismsForm.patchValue({ riskType: this.riskType }); // Initialize form control with input value
-    }
+
 
   }
 
@@ -84,17 +83,33 @@ constructor(public api:ApiService){}
 
 
   onsubmit(){
+    const userConfirmed = window.confirm('Do you want to save?');
+    if (userConfirmed) {
+      this.saveData();
+      this.ismsForm.get('riskType')?.setValue(this.riskTypeValue);
+    this.ismsForm.get('status')?.setValue("open");
+    console.log("Updated riskType value:", this.ismsForm.get('riskType')?.value);
 
     this.sendDataToParent.emit(this.ismsForm.value);
     console.log("actual data");
 
     console.log(this.ismsForm.value);
 
-     }
+    } else {
+      alert('User canceled saving.');
+    }
 
-     ngOnChanges(changes: SimpleChanges): void {
-      if (changes['riskType']) {
-        console.log('Risk Type changed:', changes['riskType'].currentValue);
-      }
+
+  }
+
+  // ngOnChanges(changes: SimpleChanges): void {
+  //     if (changes['riskType']) {
+  //       console.log('Risk Type changed:', changes['riskType'].currentValue);
+  //     }
+  //  }
+
+  saveData() {
+      alert('Data saved successfully!');
+
     }
 }

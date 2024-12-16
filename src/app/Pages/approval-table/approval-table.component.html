@@ -1,8 +1,12 @@
 <app-body-container>
+  <h3 style="padding-bottom: 15px;">You are assigned to review</h3>
     <app-reusable-table 
   [tableHeaders]="headerData" 
-  [tableData]="tableBody">
+  [tableData]="tableBody"
+  [IsActionRequiered]="true"
+  (onclickrow)="OnClickRow($event)"
+  (approveRisk)="approveRisk()"
+  (rejectRisk)="rejectRisk()">
 </app-reusable-table>
 
-    <!-- <app-review-table [TableHeader]="headerData" [TableBody]="tableBody"></app-review-table> -->
 </app-body-container>

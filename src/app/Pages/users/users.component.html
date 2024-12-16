@@ -9,13 +9,13 @@
         Add User
       </button>
     </div>
-    <div class="col-md-2 d-flex justify-content-start">
+    <div class="col-md-2 d-flex justify-content-end">
       <button type="button" class="btn btn-success button-custom" data-bs-toggle="modal"
         data-bs-target="#addDepartmentModal">
         Add Department
       </button>
     </div>
-    <div class="col-md-2 d-flex justify-content-start">
+    <div class="col-md-2 d-flex justify-content-end">
       <button type="button" class="btn btn-success button-custom" data-bs-toggle="modal"
         data-bs-target="#addProjectModal">
         Add Project
@@ -73,13 +73,13 @@
               <label for="department" class="form-label">
                 Department <span class="text-danger">*</span>
               </label>
-              <select class="form-select" id="department" formControlName="department">
+              <select class="form-select" id="department" formControlName="department"(change)="onDepartmentChange($event)">
                 <option value="" disabled>Select Department</option>
                 @for(item of departments; track item.id){
 
-                  <option value="item.departmentName">{{item.departmentName}}</option>
+                  <option [value]="item.departmentName">{{item.departmentName}}</option>
                 }
-                
+
               </select>
               @if (userForm.get('department')?.invalid &&userForm.get('department')?.touched)
               {
@@ -91,17 +91,21 @@
             </div>
 
             <div class="mb-3">
-              <label for="projectName" class="form-label">
-                Project
-              </label>
-              <select class="form-select" id="projectName" formControlName="projectName">
-                <option value="" disabled>Select Project</option>
-                @for(item of projects;track item.id){
-                  <option value="item.projectName">{{item.projectName}}</option>
-                }
-                
-              </select>
-                 
+              
+              <div *ngIf="projects.length > 0; else noProjects">
+                <label for="projectName" class="form-label">Project</label>
+                <select class="form-select" id="projectName" formControlName="projectName">
+                  <option value="" disabled>Select Project</option>
+                  <option *ngFor="let item of projects" [value]="item.projectName">
+                    {{item.projectName}}
+                  </option>
+                </select>
+              </div>
+
+              <ng-template #noProjects>
+                <p>No projects available for the selected department.</p>
+              </ng-template>
+
             </div>
 
             <div class="modal-footer">
