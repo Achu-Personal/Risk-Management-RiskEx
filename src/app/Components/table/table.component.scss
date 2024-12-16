@@ -1,11 +1,13 @@
 /* General Container */
 .table-container {
-  margin: 20px auto;
+  margin-top: 20px ;
   padding: 0;
   border-radius: 12px;
   background: #f4f6f9;
   // box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  max-width: 1200px;
+  box-shadow: 0px 0px 4px rgb(62, 104, 185, 50%);
+  border: 1px solid rgb(62, 104, 185, 0.5) ;
+  min-width: 1200px;
   font-family: 'Arial', sans-serif;
   position: relative;
   height: 500px; /* Adjust based on your needs */
