@@ -1,1 +1,219 @@
-<p>isms-edit works!</p>
+<div class="container">
+  <div class="form">
+    <form [formGroup]="ismsForm"  (ngSubmit)="onsubmit()">
+      <div class="field" id="editableDiv">
+        <app-edit-text-area label="Risk Name" [isEditable]="isEditableRiskName"(editToggled)="onEditToggled('RiskName', $event)" formControlName="riskName"></app-edit-text-area>
+        <app-edit-text-area label="Risk Description" [isEditable]="isEditableRiskDescription"(editToggled)="onEditToggled('RiskDescription', $event)" formControlName="description" ></app-edit-text-area>
+        <app-edit-text-area label="Impact Of Risk" [isEditable]="isEditableImpact"(editToggled)="onEditToggled('Impact', $event)" formControlName="riskImpact"></app-edit-text-area>
+        <app-edit-text-area label="Risk Mitigation" [isEditable]="isEditableMitigation"(editToggled)="onEditToggled('mitigation', $event)" formControlName="mitigation"></app-edit-text-area>
+        <app-edit-text-area label="Risk Contingency" [isEditable]="isEditableContingency"(editToggled)="onEditToggled('Contingency', $event)" formControlName="contingency"></app-edit-text-area>
+
+      </div>
+      <div class="field"  >
+        <h5>Current Risk Assessment</h5>
+
+        <table>
+          <tr>
+            <th> </th>
+            <th>Confidenciality</th>
+            <th>Integrity</th>
+            <th>Availability</th>
+            <th>Privacy</th>
+          </tr>
+          <tr>
+            <td>Likelihood</td>
+            <td>
+
+            <app-dropdown  [options]="dropdownDataLikelihood"
+            [displayField]="'type'"
+            [valueField]="'value'"
+            width="13.33"
+            id="dropdownassessmentLikelihood" formControlName="confidentialityLikelihood" ></app-dropdown>
+          </td>
+            <td> <app-dropdown  [options]="dropdownDataLikelihood"
+              [displayField]="'type'"
+              [valueField]="'value'"
+              width="13.33"
+              id="dropdownassessmentLikelihood" class="dropdownassessment" formControlName="IntegrityLikelihood"  ></app-dropdown>
+            </td>
+            <td> <app-dropdown  [options]="dropdownDataLikelihood"
+              [displayField]="'type'"
+              [valueField]="'value'"
+              width="13.33"
+              id="dropdownassessmentLikelihood" class="dropdownassessment" formControlName="availabiltyLikelihood" ></app-dropdown></td>
+            <td> <app-dropdown  [options]="dropdownDataLikelihood"
+              [displayField]="'type'"
+              [valueField]="'value'"
+              width="13.33"
+              id="dropdownassessmentLikelihood" class="dropdownassessment"  formControlName="privacyLikelihood" ></app-dropdown></td>
+
+          </tr>
+          <tr>
+            <td>Impact</td>
+            <td><app-dropdown  [options]="dropdownDataImpact"
+              [displayField]="'type'"
+              [valueField]="'value'"
+              width="13.33"
+              id="dropdownassessmentimpact" class="dropdownassessment" formControlName="confidentialityImpact"  ></app-dropdown></td>
+            <td><app-dropdown  [options]="dropdownDataImpact"
+              [displayField]="'type'"
+              [valueField]="'value'"
+              width="13.33"
+              id="dropdownassessmentimpact" class="dropdownassessment" formControlName="IntegrityImpact"  ></app-dropdown></td>
+            <td><app-dropdown  [options]="dropdownDataImpact"
+              [displayField]="'type'"
+              [valueField]="'value'"
+              width="13.33"
+              id="dropdownassessmentimpact" class="dropdownassessment" formControlName="availabiltyImpact"  ></app-dropdown></td>
+            <td><app-dropdown  [options]="dropdownDataImpact"
+              [displayField]="'type'"
+              [valueField]="'value'"
+              width="13.33"
+              id="dropdownassessmentimpact" class="dropdownassessment" formControlName="privacyImpact" ></app-dropdown></td>
+
+          </tr>
+        </table>
+      </div>
+
+
+
+      <div class="field"  >
+        <h5>Post Assessment After Implimentation</h5>
+
+        <table>
+          <tr>
+            <th> </th>
+            <th>Confidenciality</th>
+            <th>Integrity</th>
+            <th>Availability</th>
+            <th>Privacy</th>
+          </tr>
+          <tr>
+            <td>Likelihood</td>
+            <td>
+
+            <app-dropdown  [options]="dropdownDataLikelihood"
+            [displayField]="'type'"
+            [valueField]="'value'"
+            width="13.33"
+            id="dropdownassessmentLikelihood" formControlName="postConfidentialityLikelihood" ></app-dropdown>
+          </td>
+            <td> <app-dropdown  [options]="dropdownDataLikelihood"
+              [displayField]="'type'"
+              [valueField]="'value'"
+              width="13.33"
+              id="dropdownassessmentLikelihood" class="dropdownassessment" formControlName="postIntegrityLikelihood"  ></app-dropdown>
+            </td>
+            <td> <app-dropdown  [options]="dropdownDataLikelihood"
+              [displayField]="'type'"
+              [valueField]="'value'"
+              width="13.33"
+              id="dropdownassessmentLikelihood" class="dropdownassessment" formControlName="postAvailabiltyLikelihood" ></app-dropdown></td>
+            <td> <app-dropdown  [options]="dropdownDataLikelihood"
+              [displayField]="'type'"
+              [valueField]="'value'"
+              width="13.33"
+              id="dropdownassessmentLikelihood" class="dropdownassessment" formControlName="postPrivacyLikelihood"  ></app-dropdown></td>
+
+          </tr>
+          <tr>
+            <td>Impact</td>
+            <td><app-dropdown  [options]="dropdownDataImpact"
+              [displayField]="'type'"
+              [valueField]="'value'"
+              width="13.33"
+              id="dropdownassessmentimpact" class="dropdownassessment"  formControlName="postConfidentialityImpact" ></app-dropdown></td>
+            <td><app-dropdown  [options]="dropdownDataImpact"
+              [displayField]="'type'"
+              [valueField]="'value'"
+              width="13.33"
+              id="dropdownassessmentimpact" class="dropdownassessment" formControlName="postIntegrityImpact"  ></app-dropdown></td>
+            <td><app-dropdown  [options]="dropdownDataImpact"
+              [displayField]="'type'"
+              [valueField]="'value'"
+              width="13.33"
+              id="dropdownassessmentimpact" class="dropdownassessment" formControlName="postAvailabiltyImpact"  ></app-dropdown></td>
+            <td><app-dropdown  [options]="dropdownDataImpact"
+              [displayField]="'type'"
+              [valueField]="'value'"
+              width="13.33"
+              id="dropdownassessmentimpact" class="dropdownassessment" formControlName="postPrivacyImpact" ></app-dropdown></td>
+
+          </tr>
+        </table>
+
+
+
+
+
+      </div>
+      <div class="field" id="thirdField">
+        <div class="actionDate">
+          <div class="plannedActionDate">
+            <label for="">Planned Action Date:
+            <input type="date" class="textarea" id="actionDateinput" formControlName="plannedActionDate" ></label>
+          </div>
+          <div class="closeDate">
+            <label for="">Actual Close Date:
+            <input type="date" class="textarea" id="actionDateinput" formControlName="actualCloseDate"></label>
+          </div>
+
+        </div>
+        <!-- <app-textarea label="Responsibility Of Action" isRequired="*" formControlName="responsibilityOfAction"></app-textarea> -->
+        <app-textarea label="Responsibility Of Action"  marginLeft="10" formControlName="responsibilityOfAction"></app-textarea>
+
+        <div class="reviewer">
+          <div>
+            <label >Reviewer :
+
+            <app-dropdown  [options]="dropdownDataReviewer"
+            [displayField]="'name'"
+            [valueField]="'email'"
+            width="47.25"
+            class="reviewerDropdown"  formControlName="reviewer"></app-dropdown></label>
+          </div>
+        </div>
+        <div class="riskresponse">
+          <div>
+            <label for="">Risk Response :</label>
+          </div>
+
+          <div class="radioButton">
+            <div>
+              <label>
+                <input type="radio"value="Accept" formControlName="riskResponse"/>
+                Accept
+              </label>
+            </div>
+            <div>
+              <label>
+                <input type="radio"  value="Transfer" formControlName="riskResponse" />
+                Transfer
+              </label>
+            </div>
+            <div>
+              <label>
+                <input type="radio"  value="Mitigate" formControlName="riskResponse" />
+                Mitigate
+              </label>
+            </div>
+            <div>
+              <label>
+                <input type="radio"  value="Avoid" formControlName="riskResponse" />
+                Avoid
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="action">
+          <div>
+            <button type="submit" value="Save" class="savecancel">Save</button>
+            <button value="Cancel" id="cancelbtn" class="savecancel">Cancel</button>
+          </div>
+        </div>
+
+      </div>
+    </form>
+  </div>
+</div>
+

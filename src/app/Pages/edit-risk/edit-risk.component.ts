@@ -11,6 +11,6 @@ import { IsmsEditComponent } from "../../Components/isms-edit/isms-edit.componen
 })
 export class EditRiskComponent {
 
-  riskType:string='Quality'
+  riskType:string='Security'
 
 }

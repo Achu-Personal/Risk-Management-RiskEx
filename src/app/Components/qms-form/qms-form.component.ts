@@ -94,16 +94,24 @@ constructor(public api:ApiService){}
 
 
   onsubmit(){
-    this.qmsForm.get('riskType')?.setValue(this.riskTypeValue);
-    this.qmsForm.get('status')?.setValue("open");
 
-    console.log("Updated riskType value:", this.qmsForm.get('riskType')?.value);
-    const formValue = this.qmsForm.getRawValue();
+    const userConfirmed = window.confirm('Do you want to save?');
+    if (userConfirmed) {
+      this.saveData();
+      this.qmsForm.get('riskType')?.setValue(this.riskTypeValue);
+      this.qmsForm.get('status')?.setValue("open");
 
-    this.sendDataToParent.emit(this.qmsForm.value);
-    console.log("actual data");
+      console.log("Updated riskType value:", this.qmsForm.get('riskType')?.value);
+      const formValue = this.qmsForm.getRawValue();
 
-    console.log(formValue);
+      this.sendDataToParent.emit(this.qmsForm.value);
+      console.log("actual data");
+
+      console.log(formValue);
+    } else {
+      alert('User canceled saving.');
+    }
+
 
      }
 
@@ -145,14 +153,25 @@ constructor(public api:ApiService){}
 
     getBackgroundColor() {
       if (this.result <= 30) {
-        return { 'background-color': ' #548135' };
+        return { 'background-color': ' #4CAF50' };
       } else if (this.result >= 31 && this.result <= 99) {
-        return { 'background-color': '#FFBF00' };
+        return { 'background-color': '#FFC107' };
       }
-      else{
-        return { 'background-color': 'red' };
+      else if(this.result>=100 && this.result<=300){
+        return { 'background-color': '#FF5722' };
 
       }
+      else{
+       return{'background-color': 'transparent'}
+
+      }
+
+    }
+
+
+    saveData() {
+      alert('Data saved successfully!');
+
     }
 
 

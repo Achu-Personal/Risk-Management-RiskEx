@@ -83,8 +83,10 @@ constructor(public api:ApiService){}
 
 
   onsubmit(){
-
-    this.ismsForm.get('riskType')?.setValue(this.riskTypeValue);
+    const userConfirmed = window.confirm('Do you want to save?');
+    if (userConfirmed) {
+      this.saveData();
+      this.ismsForm.get('riskType')?.setValue(this.riskTypeValue);
     this.ismsForm.get('status')?.setValue("open");
     console.log("Updated riskType value:", this.ismsForm.get('riskType')?.value);
 
@@ -93,11 +95,21 @@ constructor(public api:ApiService){}
 
     console.log(this.ismsForm.value);
 
-     }
+    } else {
+      alert('User canceled saving.');
+    }
 
-     ngOnChanges(changes: SimpleChanges): void {
-      if (changes['riskType']) {
-        console.log('Risk Type changed:', changes['riskType'].currentValue);
-      }
+
+  }
+
+  // ngOnChanges(changes: SimpleChanges): void {
+  //     if (changes['riskType']) {
+  //       console.log('Risk Type changed:', changes['riskType'].currentValue);
+  //     }
+  //  }
+
+  saveData() {
+      alert('Data saved successfully!');
+
     }
 }
