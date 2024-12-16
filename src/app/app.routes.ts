@@ -43,7 +43,7 @@ export const routes: Routes = [
         path:'home',component:HomeComponent, data: { title: 'Register Management' }
       },
       {
-        path:'ViewRisk/:id',component:ViewRiskComponent
+        path:'ViewRisk/:id',component:ViewRiskComponent,  data: { title: 'View Risk' }
       },
       // {path:"ViewRisk/:id",component:ViewRiskComponent}
       {
