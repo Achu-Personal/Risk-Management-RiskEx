@@ -2,15 +2,14 @@ import { department } from './../../Interfaces/deparments.interface';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { BodyContainerComponent } from "../../Components/body-container/body-container.component";
-import { UserTableComponent } from "../../Components/user-table/user-table.component";
-import { project } from '../../Interfaces/projects.interface';
 import { ApiService } from '../../Services/api.service';
 import { NgFor, NgIf } from '@angular/common';
+import { ReusableTableComponent } from "../../Components/reusable-table/reusable-table.component";
 
 @Component({
   selector: 'app-users',
   standalone: true,
-  imports: [ReactiveFormsModule, BodyContainerComponent, UserTableComponent,NgIf,NgFor],
+  imports: [ReactiveFormsModule, BodyContainerComponent, NgIf,NgFor, ReusableTableComponent],
   templateUrl: './users.component.html',
   styleUrl: './users.component.scss'
 })
@@ -137,4 +136,30 @@ onDepartmentChange(event: any) {
       console.log('Form invalid');
     }
     }
+
+
+    headerData:any=["Name","Email","Department","Projects"]
+    tableBody: any = [
+      {
+        Name: "John Doe",
+        Email: "john.doe@example.com",
+        Department: "Engineering",
+        Projects: "Project A, Project B",
+
+      },
+      {
+        Name: "Jane Smith",
+        Email: "jane.smith@example.com",
+        Department: "Marketing",
+        Projects: "Campaign X, Campaign Y",
+    
+      },
+      {
+        Name: "Alice Johnson",
+        Email: "alice.johnson@example.com",
+        Department: "HR",
+        Projects: "Recruitment, Employee Engagement",
+  
+      }
+    ];
 }
