@@ -33,6 +33,14 @@
   border-bottom: 1px solid #121111;
   font-size: 14px;
   gap: 10px;
+  
+}
+.bord{
+  th{
+    position: sticky;
+    top:0;
+    z-index: 1000;
+  }
 }
 
 .table-header select,
