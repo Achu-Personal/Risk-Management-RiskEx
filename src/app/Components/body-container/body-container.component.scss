@@ -1,7 +1,7 @@
 
 main{
   box-sizing: border-box;
-  padding: 20px;
+  padding: 5px;
   height:100%;
 
   width: 100%;
@@ -18,7 +18,7 @@ main>div>div
   overflow: auto; /* Allow scrolling */
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE 10+ */
-  height: 85vh;
+  height: 86vh;
 }
 
 
