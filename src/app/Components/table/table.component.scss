@@ -70,6 +70,15 @@
   overflow-x: auto;
   scrollbar-width: thin;
   scrollbar-color: #ccc #f4f6f9;
+  tbody tr:nth-child(even) {
+    background-color: #F7F6FE;
+  }
+
+
+  tbody tr:hover {
+    background-color: #95c8f5;
+    cursor: pointer;
+  }
 }
 
 .table-responsive::-webkit-scrollbar {
@@ -86,21 +95,26 @@
 }
 
 /* Table */
-.table {
+.table1 {
   width: 100%;
   border-collapse: collapse;
   background: #ffffff;
   margin: 0;
 }
 
-.table th,
-.table td {
+.table1 th,
+.table1 td {
   padding: 15px 15px;
-  text-align: left;
+  text-align: center;
   border-bottom: 1px solid #eee;
+
+}
+.table1 td{
+
+
 }
 
-.table th {
+.table1 th {
   background: #F7F6FE;
   color: #0f0f0f;
   font-weight: bold;
@@ -108,16 +122,17 @@
   font-size: 13px;
 }
 
-.table tbody tr:nth-child(even) {
-  background: #F7F6FE;
+.table-responsive tbody tr:nth-child(even) {
+  background-color: #F7F6FE;
 }
 
 
-.table tbody tr:hover {
-  background: #bfdaf1;
+.table-responsive tbody tr:hover {
+  background-color: #a5c0f8;
+
 }
 
-.table tbody td {
+.table1 tbody td {
   font-size: 14px;
   color: #555;
   vertical-align: middle;
@@ -208,4 +223,85 @@ th {
   padding: 5px;
   border: 1px solid #420c0c ;
   border-radius: 10px;
+  text-align: center;
+}
+
+
+
+
+
+
+
+
+/* Table Header */
+.table1 th {
+  background: #F7F6FE;
+  color: #0f0f0f;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 13px;
+  padding: 12px 10px; /* Adjust padding for better responsiveness */
+  border-bottom: 2px solid #ddd;
+  text-align: center;
+  vertical-align: middle;
+  position: sticky; /* Make header sticky for better UX in scrollable tables */
+  top: 0;
+  z-index: 100; /* Ensure header stays above table content */
+  min-width: 100px; /* Minimum width to prevent text wrapping */
+  max-width: 200px; /* Maximum width to maintain column alignment */
+  word-wrap: break-word; /* Handle long text gracefully */
+}
+
+/* Ensuring headers align well with dropdown buttons */
+.table1 th .dropdown-button {
+  display: flex;
+  justify-content: center; /* Center align the button */
+  align-items: center;
+  width: 100%; /* Match the column width */
+  font-size: 13px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  font-weight: bold;
+}
+
+.table1 th .dropdown-options {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  position: absolute;
+  top: 100%; /* Position dropdown just below the header */
+  left: 0;
+  z-index: 150;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  min-width: 150px; /* Ensure dropdown has enough space */
+}
+
+.table1 th .dropdown-options li {
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.table1 th .dropdown-options li:hover {
+  background-color: #f0f0f0;
+}
+
+/* For Responsive Design */
+@media (max-width: 768px) {
+  .table1 th {
+    font-size: 12px; /* Reduce font size for smaller screens */
+    padding: 8px 5px; /* Adjust padding for compactness */
+  }
+
+  .table1 th .dropdown-button {
+    font-size: 12px;
+    padding: 5px 0;
+  }
+
+  .table1 th .dropdown-options {
+    min-width: 120px; /* Adjust dropdown width for smaller screens */
+  }
 }
