@@ -10,7 +10,7 @@ Chart.register(...registerables);
 @Component({
   selector: 'app-chart',
   standalone: true,
-  imports: [],
+  imports: [BaseChartDirective],
   templateUrl: './chart.component.html',
   styleUrl: './chart.component.scss'
 })

@@ -10,14 +10,14 @@ import { ChartComponent } from "../../UI/chart/chart.component";
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [BodyContainerComponent, ButtonComponent, DepartmentDropdownComponent, ChartComponent, DropdownComponent],
+  imports: [BodyContainerComponent, ButtonComponent, DepartmentDropdownComponent, ChartComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
 export class HomeComponent {
-data:any
-onDropdownChange($event: string) {
-}
+// data:any
+// onDropdownChange($event: string) {
+// }
 
 graph3labels:string[]=["Delivery Units","L&D","Sfm", "HR"];
 graph3chartType:any='bar'
