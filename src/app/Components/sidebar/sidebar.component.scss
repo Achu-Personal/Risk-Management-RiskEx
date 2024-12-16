@@ -1,0 +1,57 @@
+.sidebar {
+  padding-top: -10vh;
+    height: 100vh;
+    position: sticky;
+    background-color: white;
+    color: #000000;
+    width: 15vw;
+    border-right: 1px solid #ddd;
+    box-sizing: border-box;
+  }
+  .header{
+    .riskex{
+      padding-left: 20px;
+    }
+    
+    // margin-top: -30px;
+    h3{
+      color: #3E68B9;
+      font-size: 1.5rem;
+      font-weight: 800;
+    }
+
+  }
+  .sidebar a {
+    color: black;
+    text-decoration: none;
+    display: block;
+    padding: 15px;
+    transition: background-color 0.3s, color 0.3s;
+    &:hover{
+      // padding-left: 20px;
+      background-color: #dbe4f5;
+      color: rgb(105, 103, 103);
+      padding: 10px;
+      margin: 10px;
+      border-radius: 10px;
+
+    }
+  }
+
+  .sidebar a.active {
+    background-color: #3E68B9;
+    color: white;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 10px;
+  }
+  .sidebar-item {
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 60px;
+    padding-top: 100px;
+  }
+  .sidebar-link i {
+    margin-right: 8px;
+}

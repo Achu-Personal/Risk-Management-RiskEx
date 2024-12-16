@@ -1,0 +1,21 @@
+.container {
+  position: relative;
+  z-index: 1;
+}
+
+
+
+.content {
+  flex-basis: 100%;
+
+}
+
+.header {
+  background-color: white;
+  width: 80vw;
+  margin-left: 15px;
+  margin-top: 20px;
+  // padding-top: 10px;
+  border-radius: 10px 10px 0px 0px;
+  height: 50px;
+}

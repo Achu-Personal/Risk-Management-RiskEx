@@ -1,0 +1,93 @@
+<div class="container">
+  <div class="form">
+    <form [formGroup]="qmsForm" (ngSubmit)="onsubmit()">
+      <div class="field">
+        <div style="display: none;">
+          <label for="">Risk Type <span class="required">*</span> :</label>
+          <input for="" id="risktype" formControlName="riskType" >
+        </div>
+        <div class="firstDiv">
+          <div>
+            <app-textarea label="Risk Name" isRequired="*"formControlName="riskName" ></app-textarea>
+            <app-textarea label="Description" isRequired="*" marginLeft="50" formControlName="description"></app-textarea>
+            <app-textarea label="Impact Of Risk" isRequired="*" marginLeft="27" formControlName="riskImpact"></app-textarea>
+            <app-textarea label="Project" marginLeft="92" formControlName="projectId"></app-textarea>
+          </div>
+          <div class="riskRatingValueDiv" [ngStyle]=" getBackgroundColor()">
+            <div class="riskRating">
+              <div>
+                <h1>
+                  {{ result === 0 ? '0' : result }}
+                </h1>
+              </div>
+
+
+            </div>
+            <div class="riskRatingDesc">
+              <p>Overall Risk Rating</p>
+            </div>
+
+
+
+
+
+          </div>
+
+        </div>
+
+      </div>
+      <div class="field"  >
+        <h5>Current Risk Assessment</h5>
+        <label class="assessment" for="">Likelihood :</label>
+
+         <app-dropdown  [options]="dropdownDataLikelihood"
+         [displayField]="'type'"
+         [valueField]="'value'"
+         width="13.33"
+         id="dropdownassessmentLikelihood"  formControlName="likelihood"
+         (change)="onDropdownChange1($event)"></app-dropdown><br>
+
+        <label class="assessment" for="">Impact :</label>
+        <app-dropdown  [options]="dropdownDataImpact"
+         [displayField]="'type'"
+         [valueField]="'value'"
+         width="13.33"
+         id="dropdownassessmentimpact"  formControlName="impact"
+         (change)="onDropdownChange2($event)"></app-dropdown><br>
+
+      </div>
+
+      <div class="field" id="thirdfield">
+        <app-textarea label="Risk Mitigation" isRequired="*"  marginLeft="123" formControlName="mitigation"></app-textarea>
+        <app-textarea label="Risk Contingency" isRequired="*" marginLeft="103" formControlName="contingency"></app-textarea>
+        <app-textarea label="Responsibility Of Action" isRequired="*" formControlName="responsibilityOfAction"></app-textarea>
+        <div class="actionDate">
+          <div class="actionDateLabel">
+            <label id="actionlabel">Planned Action Date  <span class="required">*</span> :</label>
+          </div>
+          <div>
+            <input type="date" class="textarea" id="textareaspace" formControlName="plannedActionDate" >
+          </div>
+        </div>
+        <div class="reviewer">
+          <div>
+            <label >Reviewer <span class="required">*</span> :</label>
+          </div>
+          <div>
+            <app-dropdown  [options]="dropdownDataReviewer"
+            [displayField]="'name'"
+            [valueField]="'email'"
+            width="47.25"
+            class="dropdown"  formControlName="reviewer"></app-dropdown>
+          </div>
+        </div>
+        <div class="action">
+          <div>
+            <button type="submit" value="Save" class="savecancel" >Save</button>
+            <button value="Cancel" id="cancelbtn" class="savecancel">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

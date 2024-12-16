@@ -1,0 +1,25 @@
+.enterField{
+  display: flex;
+  flex-direction: row;
+  div label{
+    margin-top: 30px;
+  }
+
+}
+.required{
+  color: red;
+  margin-left: 4px;
+}
+textarea{
+  margin-left: 55px;
+  width:47.25vw;
+  height: 32px;
+  margin-top: 20px;
+  resize: none;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+textarea:focus {
+  outline: none;
+  border-color: #007bff;
+}

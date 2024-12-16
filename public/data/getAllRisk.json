@@ -1,0 +1,122 @@
+[
+  {
+    "id": 1,
+    "risk_number": "R-001",
+    "risk_name": "Unauthorized access to sensitive data",
+    "risk_description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
+    "risk_type": "Security",
+    "department_id": "DPT-001",
+    "project_id": "PRJ-1001",
+    "impact_of_risk": "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in classical Latin literature.",
+    "current_risk_assessment": {
+      "confidentiality": { "likelihood": "high", "impact": "high", "risk_factor": 9 },
+      "integrity": { "likelihood": "medium", "impact": "low", "risk_factor": 3 },
+      "availability": { "likelihood": "low", "impact": "medium", "risk_factor": 2 },
+      "overall_risk_rating": 14
+    },
+    "risk_mitigation": "Implementing multi-factor authentication (MFA) and encryption.",
+    "risk_contingency": "Restricting system access and enabling monitoring tools.",
+    "responsibility_of_action": "IT Security Team",
+    "planned_action_date": "2024-12-10",
+    "assessment_post_implementation": {
+      "confidentiality": { "likelihood": "low", "impact": "medium", "risk_factor": 3 },
+      "integrity": { "likelihood": "low", "impact": "low", "risk_factor": 1 },
+      "availability": { "likelihood": "low", "impact": "low", "risk_factor": 1 },
+      "overall_risk_rating": 5
+    },
+    "actual_closed_date": "2025-01-15",
+    "risk_response": "Mitigate",
+    "risk_status": "closed",
+    "remarks": "Risk successfully mitigated through planned measures."
+  },
+  {
+    "id": 2,
+    "risk_number": "R-002",
+    "risk_name": "Data corruption due to hardware failure",
+    "risk_description": "Unexpected hardware failure can result in significant data corruption and operational downtime.",
+    "risk_type": "Operational",
+    "department_id": "DPT-002",
+    "project_id": "PRJ-1002",
+    "impact_of_risk": "Data loss and service unavailability can lead to operational inefficiencies.",
+    "current_risk_assessment": {
+      "confidentiality": { "likelihood": "low", "impact": "low", "risk_factor": 2 },
+      "integrity": { "likelihood": "high", "impact": "high", "risk_factor": 9 },
+      "availability": { "likelihood": "medium", "impact": "high", "risk_factor": 6 },
+      "overall_risk_rating": 17
+    },
+    "risk_mitigation": "Regular backups and redundant hardware setups.",
+    "risk_contingency": "Immediate restoration from backups and replacing faulty hardware.",
+    "responsibility_of_action": "IT Operations Team",
+    "planned_action_date": "2024-11-20",
+    "assessment_post_implementation": {
+      "confidentiality": { "likelihood": "low", "impact": "low", "risk_factor": 1 },
+      "integrity": { "likelihood": "low", "impact": "low", "risk_factor": 1 },
+      "availability": { "likelihood": "low", "impact": "medium", "risk_factor": 2 },
+      "overall_risk_rating": 4
+    },
+    "actual_closed_date": "2025-01-05",
+    "risk_response": "Mitigate",
+    "risk_status": "closed",
+    "remarks": "Regular backups ensured risk mitigation."
+  },
+  {
+    "id": 3,
+    "risk_number": "R-003",
+    "risk_name": "Insider threat",
+    "risk_description": "Employees with malicious intent can misuse their access to compromise data and systems.",
+    "risk_type": "Security",
+    "department_id": "DPT-003",
+    "project_id": "PRJ-1003",
+    "impact_of_risk": "Compromised data integrity and organizational reputation.",
+    "current_risk_assessment": {
+      "confidentiality": { "likelihood": "medium", "impact": "high", "risk_factor": 6 },
+      "integrity": { "likelihood": "high", "impact": "medium", "risk_factor": 8 },
+      "availability": { "likelihood": "medium", "impact": "medium", "risk_factor": 4 },
+      "overall_risk_rating": 18
+    },
+    "risk_mitigation": "Implementing robust access controls and employee monitoring.",
+    "risk_contingency": "Restrict access immediately upon detection and review logs.",
+    "responsibility_of_action": "HR and IT Security Team",
+    "planned_action_date": "2024-12-15",
+    "assessment_post_implementation": {
+      "confidentiality": { "likelihood": "low", "impact": "medium", "risk_factor": 2 },
+      "integrity": { "likelihood": "low", "impact": "low", "risk_factor": 1 },
+      "availability": { "likelihood": "low", "impact": "low", "risk_factor": 1 },
+      "overall_risk_rating": 4
+    },
+    "actual_closed_date": "2025-02-01",
+    "risk_response": "Mitigate",
+    "risk_status": "closed",
+    "remarks": "Employee access controls reduced risks significantly."
+  },
+  {
+    "id": 4,
+    "risk_number": "R-004",
+    "risk_name": "Software vulnerability exploitation",
+    "risk_description": "Exploitable vulnerabilities in outdated software.",
+    "risk_type": "Security",
+    "department_id": "DPT-004",
+    "project_id": "PRJ-1004",
+    "impact_of_risk": "System compromise and data breach.",
+    "current_risk_assessment": {
+      "confidentiality": { "likelihood": "high", "impact": "high", "risk_factor": 9 },
+      "integrity": { "likelihood": "medium", "impact": "medium", "risk_factor": 6 },
+      "availability": { "likelihood": "medium", "impact": "high", "risk_factor": 6 },
+      "overall_risk_rating": 21
+    },
+    "risk_mitigation": "Regular software patching and updates.",
+    "risk_contingency": "Immediate patching upon exploitation.",
+    "responsibility_of_action": "IT Security Team",
+    "planned_action_date": "2024-11-30",
+    "assessment_post_implementation": {
+      "confidentiality": { "likelihood": "low", "impact": "low", "risk_factor": 1 },
+      "integrity": { "likelihood": "low", "impact": "medium", "risk_factor": 2 },
+      "availability": { "likelihood": "low", "impact": "low", "risk_factor": 1 },
+      "overall_risk_rating": 4
+    },
+    "actual_closed_date": "2025-01-20",
+    "risk_response": "Mitigate",
+    "risk_status": "closed",
+    "remarks": "Patch management resolved vulnerabilities."
+  }
+]
