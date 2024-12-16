@@ -25,7 +25,7 @@ export class RiskBasicDetailsCardComponent {
   @Input() riskDesc=""
    @Input() riskName=""
   @Input() impact=""
-  @Input() overallRiskRating=""
+  @Input() overallRiskRating:number=0
   @Input() riskStatus=""
   @Input() isEditable=true;
 

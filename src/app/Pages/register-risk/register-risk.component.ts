@@ -6,40 +6,24 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { QMSFormComponent } from "../../Components/qms-form/qms-form.component";
 import { ISMSFormComponent } from "../../Components/isms-form/isms-form.component";
+import { ButtonComponent } from "../../UI/button/button.component";
 
 @Component({
   selector: 'app-register-risk',
   standalone: true,
-  imports: [ DropdownComponent, CommonModule, FormsModule, QMSFormComponent, ISMSFormComponent],
+  imports: [DropdownComponent, CommonModule, FormsModule, QMSFormComponent, ISMSFormComponent, ButtonComponent],
   templateUrl: './register-risk.component.html',
   styleUrl: './register-risk.component.scss'
 })
 export class RegisterRiskComponent {
-// selectedOption:string=''
-//  data:any
-
-//   constructor(public api:ApiService){}
-//   ngOnInit(){
-//     this.api.getRiskType().subscribe((res:any)=>{
-//       this.data=res
-//       console.log(this.data);
-
-//     })
-
-
-
-
-
-  // }
-
-  // onDropdownChange(value: string): void {
-  //   this.selectedOption = value;
-  //   console.log('Selected Option:', value); // For debugging
-  // }
 
  isSelectQuality:boolean=false
  isSelectSecurity:boolean=false
  isSelectPrivacy:boolean=false
+ isSelectNothing:boolean=true
+ isSelect:boolean=false
+ selectedOptionFromChild: string = '';
+
 
   dropdownData = [
     {"type":"Quality","value":"quality"},
@@ -47,13 +31,15 @@ export class RegisterRiskComponent {
     {"type":"Privacy","value":"privacy"}];
 
 
-  selectedOptionFromChild: string = '';
+
 
   setQuality(){
     this.selectedOptionFromChild='quality'
     this.isSelectQuality=true;
     this.isSelectPrivacy=false
     this.isSelectSecurity=false
+    this.isSelectNothing=false
+    this.isSelect=true
 
   }
   setSecurity(){
@@ -61,6 +47,8 @@ export class RegisterRiskComponent {
      this.isSelectQuality=false;
      this.isSelectPrivacy=false
      this.isSelectSecurity=true
+     this.isSelectNothing=false
+     this.isSelect=true
 
   }
   setPrivacy(){
@@ -68,6 +56,8 @@ export class RegisterRiskComponent {
     this.isSelectQuality=false
     this.isSelectPrivacy=true
     this.isSelectSecurity=false
+    this.isSelectNothing=false
+    this.isSelect=true
 
  }
 
