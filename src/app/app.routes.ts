@@ -40,7 +40,7 @@ export const routes: Routes = [
     path:'',component:DashboardComponent,
     children:[
       {
-        path:'home',component:HomeComponent, data: { title: 'Register Management' }
+        path:'home',component:HomeComponent, data: { title: 'Risk Management' }
       },
       {
         path:'ViewRisk/:id',component:ViewRiskComponent,  data: { title: 'View Risk' }

@@ -1,52 +1,102 @@
 <div class="table-responsive">
-    <table>
-      <thead>
-        <tr class="bord">
-            @for(header of tableHeaders; track header){
-                <th>{{header}}</th>
-                
-            }
-            @if(IsActionRequiered){
-              <th>Action</th>
-            }
-        </tr>
-      </thead>
-      <tbody>
-        @for(row of tableData ; track row){
-            <tr (click)="rowClick(row)" >
-                @for(key of rowKeys; track key ){
-                    <td [title]="row[key]">{{ row[key]?.toString() | slice: 0: 12 }}{{ row[key]?.length > 12 ? '...' : '' }}</td>
-                }
-                
-                @if(IsActionRequiered){
-                  <td class="icon-display" >
-                     <div class="icon approve" title="Approve" (click)="approveButton($event)">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                        <circle cx="12" cy="12" r="10" stroke="#3e68b9" stroke-width="2" fill="none" />
-                        <path d="M8 12l3 3 5-5" stroke="#3e68b9" stroke-width="2" fill="none" />
-                    </svg>
-                </div>
-            
-                <!-- Reject Icon -->
-                <div class="icon reject" title="reject" (click)="rejectButton($event)">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                        <circle cx="12" cy="12" r="10" stroke="#3e68b9" stroke-width="2" fill="none" />
-                        <path d="M8 8l8 8m0-8l-8 8" stroke="#3e68b9" stroke-width="2" fill="none" />
-                    </svg>
-                </div>
-              </td>
-        
-                }
-            </tr>  
+  <table>
+    <thead>
+      <tr class="bord">
+        @for(header of tableHeaders; track header){
+        <th>{{ header }}</th>
+
+        } @if(IsActionRequiered){
+        <th>Actions</th>
         }
-    
-        <tr>
+      </tr>
+    </thead>
+    <tbody>
+      @for(row of tableData ; track row){
+      <tr (click)="rowClick(row)">
+        @for(key of rowKeys; track key ){
+        <td [title]="row[key]">
+          {{ row[key]?.toString() | slice : 0 : 12
+          }}{{ row[key]?.length > 12 ? "..." : "" }}
+        </td>
+        } @if(IsActionRequiered){ @if(!IsUser){
+        <td class="icon-display">
+          <div
+            class="icon approve"
+            title="Approve"
+            (click)="approveButton($event)"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <circle
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="#3e68b9"
+                stroke-width="2"
+                fill="none"
+              />
+              <path
+                d="M8 12l3 3 5-5"
+                stroke="#3e68b9"
+                stroke-width="2"
+                fill="none"
+              />
+            </svg>
+          </div>
+
+          <!-- Reject Icon -->
+          <div
+            class="icon reject"
+            title="reject"
+            (click)="rejectButton($event)"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <circle
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="#3e68b9"
+                stroke-width="2"
+                fill="none"
+              />
+              <path
+                d="M8 8l8 8m0-8l-8 8"
+                stroke="#3e68b9"
+                stroke-width="2"
+                fill="none"
+              />
+            </svg>
+          </div>
+        </td>
+
+        } @else if(IsUser) {
+        <div class="toggle-container">
+          <!-- Display toggle state -->
+          <div 
+          class="toggle-background"
+          [ngClass]="row.toggleState ? 'green-background' : 'red-background'">
+           <p>{{ row.toggleState ? "Active" : "Inactive" }}</p>
+        </div>
+          <!-- Toggle Switch -->
+          <label class="switch">
+            <input type="checkbox" [(ngModel)]="row.toggleState" />
+            <span class="slider"></span>
+          </label>
+
+          
+          
+        </div>
+        } }
+      </tr>
+      }
+
+      <tr>
         @if(!tableData || tableData.length===0){
-            
-            <td [attr.colspan]="tableHeaders.length" class="text-center">No data available</td>
+
+        <td [attr.colspan]="tableHeaders.length" class="text-center">
+          No data available
+        </td>
         }
-    </tr>
-      </tbody>
-    </table>
-  </div>
-  
+      </tr>
+    </tbody>
+  </table>
+</div>
