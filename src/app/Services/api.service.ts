@@ -45,5 +45,9 @@ constructor(private http:HttpClient) { }
     return this.http.get<project[]>(`https://localhost:7150/api/Project/GetProjectsByDepartment/${departmentName}`);
   }
 
+  addNewProject(project:any){
+    return this.http.post("https://localhost:7150/api/Project/AddProject",project)
+  }
+
 
 }

@@ -1,31 +1,39 @@
 import { department } from './../../Interfaces/deparments.interface';
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { BodyContainerComponent } from "../../Components/body-container/body-container.component";
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { BodyContainerComponent } from '../../Components/body-container/body-container.component';
 import { ApiService } from '../../Services/api.service';
-import { NgFor, NgIf } from '@angular/common';
-import { ReusableTableComponent } from "../../Components/reusable-table/reusable-table.component";
+import {  NgFor, NgIf } from '@angular/common';
+import { ReusableTableComponent } from '../../Components/reusable-table/reusable-table.component';
 
 @Component({
   selector: 'app-users',
   standalone: true,
-  imports: [ReactiveFormsModule, BodyContainerComponent, NgIf,NgFor, ReusableTableComponent],
+  imports: [
+    ReactiveFormsModule,
+    BodyContainerComponent,
+    NgIf,
+    NgFor,
+    ReusableTableComponent
+  ],
   templateUrl: './users.component.html',
-  styleUrl: './users.component.scss'
+  styleUrl: './users.component.scss',
 })
 export class UsersComponent {
-
-
-  departments:department[]=[];
+  departments: department[] = [];
 
   projects: any[] = [];
-
 
   userForm: FormGroup;
   departmentForm: FormGroup;
   projectForm: FormGroup;
 
-  constructor(public api:ApiService) {
+  constructor(public api: ApiService) {
     this.departmentForm = new FormGroup({
       departmentName: new FormControl('', Validators.required),
     });
@@ -38,11 +46,10 @@ export class UsersComponent {
     this.projectForm = new FormGroup({
       projectName: new FormControl('', Validators.required),
       departmentName: new FormControl('', Validators.required),
-
     });
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.api.getDepartment().subscribe(
       (response) => {
         this.departments = response;
@@ -53,30 +60,29 @@ export class UsersComponent {
       }
     );
   }
-// Event triggered when department selection changes
-onDepartmentChange(event: any) {
-  const selectedDepartment = event.target.value;
-  console.log('Selected Department:', selectedDepartment);
 
-  if (selectedDepartment) {
-    this.api.getProjects(selectedDepartment).subscribe(
-      (projects) => {
-        if (projects && projects.length > 0) {
-          this.projects = projects;
-          console.log('Projects loaded for department:', this.projects);
-        } else {
-          console.log('No projects found for the selected department');
-          this.projects = [];  // Set to an empty array if no projects are found
+  onDepartmentChange(event: any) {
+    const selectedDepartment = event.target.value;
+    console.log('Selected Department:', selectedDepartment);
+
+    if (selectedDepartment) {
+      this.api.getProjects(selectedDepartment).subscribe(
+        (projects) => {
+          if (projects && projects.length > 0) {
+            this.projects = projects;
+            console.log('Projects loaded for department:', this.projects);
+          } else {
+            console.log('No projects found for the selected department');
+            this.projects = [];
+          }
+        },
+        (error) => {
+          console.error('Failed to load projects', error);
+          this.projects = [];
         }
-      },
-      (error) => {
-        console.error('Failed to load projects', error);
-        this.projects = [];  // Clear projects on error
-      }
-    );
+      );
+    }
   }
-}
-
 
   onSubmitDepartment() {
     if (this.departmentForm.valid) {
@@ -104,12 +110,6 @@ onDepartmentChange(event: any) {
     }
   }
 
-
-
-
-
-
-
   onSubmitUser() {
     if (this.userForm.valid) {
       console.log('User saved:', this.userForm.value);
@@ -126,40 +126,49 @@ onDepartmentChange(event: any) {
 
   onSubmitProject() {
     if (this.projectForm.valid) {
-      console.log('Project saved:', this.projectForm.value);
-      this.projectForm.reset();
-      const modal = document.getElementById('addProjectModal');
-      if (modal) {
-        (modal as HTMLElement).click();
-      }
+      const projectData = this.projectForm.value;
+
+      this.api.addNewProject(projectData).subscribe(
+        (response) => {
+          console.log('Project saved successfully:', response);
+
+          this.projectForm.reset();
+
+          const modal = document.getElementById('addProjectModal');
+          if (modal) {
+            (modal as HTMLElement).click();
+          }
+        },
+        (error) => {
+          console.error('Failed to save project:', error);
+          console.log('Error saving project. Please try again.');
+        }
+      );
     } else {
       console.log('Form invalid');
     }
-    }
+  }
 
 
-    headerData:any=["Name","Email","Department","Projects"]
-    tableBody: any = [
-      {
-        Name: "John Doe",
-        Email: "john.doe@example.com",
-        Department: "Engineering",
-        Projects: "Project A, Project B",
-
-      },
-      {
-        Name: "Jane Smith",
-        Email: "jane.smith@example.com",
-        Department: "Marketing",
-        Projects: "Campaign X, Campaign Y",
-    
-      },
-      {
-        Name: "Alice Johnson",
-        Email: "alice.johnson@example.com",
-        Department: "HR",
-        Projects: "Recruitment, Employee Engagement",
-  
-      }
-    ];
+  headerData: any = ['Name', 'Email', 'Department', 'Projects'];
+  tableBody: any = [
+    {
+      Name: 'John Doe',
+      Email: 'john.doe@example.com',
+      Department: 'Engineering',
+      Projects: 'Project A, Project B',
+    },
+    {
+      Name: 'Jane Smith',
+      Email: 'jane.smith@example.com',
+      Department: 'Marketing',
+      Projects: 'Campaign X, Campaign Y',
+    },
+    {
+      Name: 'Alice Johnson',
+      Email: 'alice.johnson@example.com',
+      Department: 'HR',
+      Projects: 'Recruitment, Employee Engagement',
+    },
+  ];
 }
