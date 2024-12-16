@@ -40,17 +40,17 @@ export const routes: Routes = [
     path:'',component:DashboardComponent,
     children:[
       {
-        path:'home',component:HomeComponent
+        path:'home',component:HomeComponent, data: { title: 'Register Management' }
       },
       {
-        path:'ViewRisk/:id',component:ViewRiskComponent
+        path:'ViewRisk/:id',component:ViewRiskComponent,  data: { title: 'View Risk' }
       },
       // {path:"ViewRisk/:id",component:ViewRiskComponent}
       {
-        path:'addrisk',component:RegisterRiskComponent
+        path:'addrisk',component:RegisterRiskComponent,data: { title: 'Register Risk' }
       },
       {
-        path:'users',component:UsersComponent,data: { title: 'Users' },
+        path:'users',component:UsersComponent,data: { title: 'Manage Users and Departments' },
       },
       {
         path:'history',component:HistoryComponent,data: { title: 'History' }
@@ -59,7 +59,7 @@ export const routes: Routes = [
         path:'reports',component:ReportsComponent,data: { title: 'Reports' }
       },
       {
-        path:'approvaltable',component:ApprovalTableComponent,data: { title: 'Approvals' }
+        path:'approvaltable',component:ApprovalTableComponent, data: { title: 'Approvals' }
       },
       {
         path:'approvals/:id',component:ApprovalComponent,data: { title: 'Approvals' }

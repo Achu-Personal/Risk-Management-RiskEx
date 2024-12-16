@@ -6,7 +6,7 @@ export interface approvalTableBody{
     EndDate: Date,
     Type:string
     CurrentRating:number,
-    Status:string,
-    Actions:string
+    Status:string
+    
 
 }
