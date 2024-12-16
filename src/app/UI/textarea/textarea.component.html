@@ -1,0 +1,9 @@
+<div class="enterField">
+  <div>
+    <label >{{label}}<span class="required">{{isRequired}}</span>  :</label>
+  </div>
+  <div  class="fieldTextarea">
+    <textarea  (input)="autoResize($event)" row="1" [ngStyle]="{'margin-left': marginLeft+'px'}"(ngModelChange)="onSelectionChanges($event)" [(ngModel)]="value"  ></textarea>
+  </div>
+
+</div>
