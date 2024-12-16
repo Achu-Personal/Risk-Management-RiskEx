@@ -73,11 +73,11 @@
               <label for="department" class="form-label">
                 Department <span class="text-danger">*</span>
               </label>
-              <select class="form-select" id="department" formControlName="department">
+              <select class="form-select" id="department" formControlName="department"(change)="onDepartmentChange($event)">
                 <option value="" disabled>Select Department</option>
                 @for(item of departments; track item.id){
 
-                  <option value="item.departmentName">{{item.departmentName}}</option>
+                  <option [value]="item.departmentName">{{item.departmentName}}</option>
                 }
 
               </select>
@@ -91,16 +91,20 @@
             </div>
 
             <div class="mb-3">
-              <label for="projectName" class="form-label">
-                Project
-              </label>
-              <select class="form-select" id="projectName" formControlName="projectName">
-                <option value="" disabled>Select Project</option>
-                @for(item of projects;track item.id){
-                  <option value="item.projectName">{{item.projectName}}</option>
-                }
+              
+              <div *ngIf="projects.length > 0; else noProjects">
+                <label for="projectName" class="form-label">Project</label>
+                <select class="form-select" id="projectName" formControlName="projectName">
+                  <option value="" disabled>Select Project</option>
+                  <option *ngFor="let item of projects" [value]="item.projectName">
+                    {{item.projectName}}
+                  </option>
+                </select>
+              </div>
 
-              </select>
+              <ng-template #noProjects>
+                <p>No projects available for the selected department.</p>
+              </ng-template>
 
             </div>
 

@@ -5,7 +5,7 @@ import { BodyContainerComponent } from "../../Components/body-container/body-con
 @Component({
   selector: 'app-history',
   standalone: true,
-  imports: [TableComponent],
+  imports: [TableComponent, BodyContainerComponent],
   templateUrl: './history.component.html',
   styleUrl: './history.component.scss'
 })
