@@ -1,9 +1,10 @@
-import { Component} from '@angular/core';
+import { Component, output} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { SearchbarComponent } from '../../UI/searchbar/searchbar.component';
 import { PaginationComponent } from '../../UI/pagination/pagination.component';
 import { ApiService } from '../../Services/api.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-table',
@@ -13,15 +14,30 @@ import { ApiService } from '../../Services/api.service';
   styleUrl: './table.component.scss'
 })
 export class TableComponent {
-  constructor( public api: ApiService){}
+  constructor( public api: ApiService,private route:ActivatedRoute){}
 
+   onclickrow = output()
+    rowClick(row:any) {
+
+      this.onclickrow.emit(row);
+      }
 
   items:any=[];
   isActive = true;
   isDisabled = false;
   open = true;
   closed = false;
+  isButtonVisible = false;
+  checkPageForButtonVisibility(): void {
+    const currentRoute = this.route.snapshot.url.join('/'); // Get current route path
+    console.log(currentRoute);
 
+    if (currentRoute === 'history') {
+      this.isButtonVisible = false; // Hide button on page1
+    } else if (currentRoute === 'home') {
+      this.isButtonVisible = true; // Show button on page2
+    }
+  }
   filteredItems = [...this.items];
   paginatedItems:any=[];
   isDropdownOpen: boolean = false;
@@ -89,6 +105,9 @@ export class TableComponent {
       this.totalItems = this.filteredItems.length;
       this.updatePaginatedItems();
     });
+    this.route.url.subscribe(() => {
+      this.checkPageForButtonVisibility();
+    });
   }
 
   updateUniqueDepartments(): void {
@@ -116,7 +135,7 @@ export class TableComponent {
   onDepartmentSelect(department: string): void {
     this.selectedDepartment = department;
     this.isDropdownOpen = false;
-    this.filterTable(); 
+    this.filterTable();
   }
 
 }

@@ -9,6 +9,14 @@
       </select>
       <label>entries</label>
       <app-searchbar (searchChanged)="onSearch($event)"></app-searchbar>
+      <div class="btnn">
+        @if(isButtonVisible == true){
+          <button>Download Report</button>
+        }
+        <!-- <button>Download Report</button> -->
+
+      </div>
+
     </div>
   </div>
   <div class="table-responsive">
@@ -20,7 +28,7 @@
           <th>Risk Name</th>
           <th>
             <button class="dropdown-button" (click)="toggleDropdown()">
-              Department &#9662;
+              DEPARTMENT&#9662;
             </button>
             @if(isDropdownOpen){
             <ul class="dropdown-options">
@@ -46,7 +54,7 @@
       </thead>
       <tbody>
         @for(item of paginatedItems ;track item){
-        <tr>
+        <tr (click)="rowClick(item.id)">
           <td>{{ item.slNo }}</td>
           <td>{{ item.riskId }}</td>
           <td>{{ item.riskName }}</td>
