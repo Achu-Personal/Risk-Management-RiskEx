@@ -1,8 +1,8 @@
 <app-body-container>
 
-  <div class="container mt-4 ">
+  <!-- <div class="container mt-4 ">
     <h2 class="mb-4" style="margin-left: 0;">Manage Users and Departments</h2>
-  </div>
+  </div> -->
   <div class="row button-group">
     <div class="col-md-2 d-flex justify-content-end">
       <button type="button" class="btn btn-success button-custom" data-bs-toggle="modal" data-bs-target="#addUserModal">
@@ -210,6 +210,14 @@
     </div>
   </div>
 </div>
-  <app-user-table></app-user-table>
+  <!-- <app-user-table></app-user-table> -->
 
+
+    <div class="table-container">
+      <app-reusable-table 
+    [tableHeaders]="headerData" 
+    [tableData]="tableBody"
+    [IsActionRequiered]="true"
+    [IsUser]="true"> 
+  </app-reusable-table></div>
 </app-body-container>
