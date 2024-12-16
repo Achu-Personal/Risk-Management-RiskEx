@@ -2,8 +2,6 @@ import { department } from './../../Interfaces/deparments.interface';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { BodyContainerComponent } from "../../Components/body-container/body-container.component";
-import { UserTableComponent } from "../../Components/user-table/user-table.component";
-import { project } from '../../Interfaces/projects.interface';
 import { ApiService } from '../../Services/api.service';
 import { NgFor, NgIf } from '@angular/common';
 import { ReusableTableComponent } from "../../Components/reusable-table/reusable-table.component";
@@ -11,7 +9,7 @@ import { ReusableTableComponent } from "../../Components/reusable-table/reusable
 @Component({
   selector: 'app-users',
   standalone: true,
-  imports: [ReactiveFormsModule, BodyContainerComponent, UserTableComponent,NgIf,NgFor, ReusableTableComponent],
+  imports: [ReactiveFormsModule, BodyContainerComponent, NgIf,NgFor, ReusableTableComponent],
   templateUrl: './users.component.html',
   styleUrl: './users.component.scss'
 })
