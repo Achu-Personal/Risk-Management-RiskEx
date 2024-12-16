@@ -14,7 +14,7 @@ export class LoginComponent {
 
 
   navigateToLogin() {
-    this.router.navigate(['/dashboard']);
+    this.router.navigate(['/home']);
 
   }
 
