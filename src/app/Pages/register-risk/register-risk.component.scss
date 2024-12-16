@@ -125,11 +125,11 @@ button {
 }
 
 .isSelectNot {
+button{
+  visibility: hidden;
 
-  button {
-    color: white;
+}
 
-  }
 }
 .chooseType{
   display: flex;
