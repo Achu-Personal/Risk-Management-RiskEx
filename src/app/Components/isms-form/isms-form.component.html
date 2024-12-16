@@ -8,12 +8,39 @@
         </div>
          <app-textarea label="Risk Name" isRequired="*" formControlName="riskName"></app-textarea>
          <app-textarea label="Description" isRequired="*" marginLeft="50" formControlName="description"></app-textarea>
+         @if(ismsForm.get("description")){
+
+          @if (ismsForm.get("description")?.hasError('maxlength')) {
+            <div class="text-danger">maximum length is 1000</div>
+
+          }
+          @else if (ismsForm.get("description")?.hasError('minlength')) {
+            <div class="text-danger">minimum length is 15</div>
+
+          }
+        }
+
+
+
+
          <app-textarea label="Impact Of Risk" isRequired="*" marginLeft="27" formControlName="riskImpact"></app-textarea>
+
+         @if(ismsForm.get("riskImpact")){
+
+          @if (ismsForm.get("riskImpact")?.hasError('maxlength')) {
+            <div class="text-danger">maximum length is 1000</div>
+
+          }
+          @else if (ismsForm.get("riskImpact")?.hasError('minlength')) {
+            <div class="text-danger">minimum length is 15</div>
+
+          }
+        }
          <app-textarea label="Project" marginLeft="92" formControlName="projectId"></app-textarea>
 
       </div>
       <div class="field"  >
-        <h5>Current Risk Assessment</h5>
+        <h5>Current Risk Assessment <span class="required">*</span></h5>
 
         <table>
           <tr>
@@ -85,8 +112,34 @@
 
       <div class="field" id="thirdfield">
         <app-textarea label="Risk Mitigation" isRequired="*"  marginLeft="123" formControlName="mitigation"></app-textarea>
-        <app-textarea label="Risk Contingency" isRequired="*" marginLeft="103" formControlName="contingency"></app-textarea>
+        @if(ismsForm.get("mitigation")){
+
+          @if (ismsForm.get("mitigation")?.hasError('maxlength')) {
+            <div class="text-danger" >maximum length is 1000</div>
+
+          }
+          @else if (ismsForm.get("mitigation")?.hasError('minlength')) {
+            <div class="text-danger" id="mitigationError">minimum length is 15</div>
+
+          }
+        }
+
+
+        <app-textarea label="Risk Contingency" marginLeft="110" formControlName="contingency"></app-textarea>
         <app-textarea label="Responsibility Of Action" isRequired="*" formControlName="responsibilityOfAction"></app-textarea>
+        @if(ismsForm.get("responsibilityOfAction")){
+
+          @if (ismsForm.get("responsibilityOfAction")?.hasError('maxlength')) {
+            <div class="text-danger" >maximum length is 20</div>
+
+          }
+          @else if (ismsForm.get("responsibilityOfAction")?.hasError('minlength')) {
+            <div class="text-danger" id="mitigationError">minimum length is 5</div>
+
+          }
+        }
+
+
         <div class="actionDate">
           <div class="actionDateLabel">
             <label id="actionlabel">Planned Action Date  <span class="required">*</span> :</label>

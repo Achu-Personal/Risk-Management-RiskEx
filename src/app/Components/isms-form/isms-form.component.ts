@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ButtonComponent } from "../../UI/button/button.component";
 import { DropdownComponent } from "../../UI/dropdown/dropdown.component";
 import { ApiService } from '../../Services/api.service';
@@ -22,23 +22,23 @@ export class ISMSFormComponent {
   ismsForm=new FormGroup({
     riskType:new FormControl(''),
     status:new FormControl(''),
-    riskName:new FormControl(''),
-    description:new FormControl(''),
-    riskImpact:new FormControl(''),
+    riskName:new FormControl('',Validators.required),
+    description:new FormControl('',[Validators.maxLength(1000),Validators.minLength(15),Validators.required]),
+    riskImpact:new FormControl('',[Validators.maxLength(1000),Validators.minLength(15),Validators.required]),
     projectId:new FormControl(''),
-    confidentialityLikelihood:new FormControl(''),
-    IntegrityLikelihood:new FormControl(''),
-    availabiltyLikelihood:new FormControl(''),
-    privacyLikelihood:new FormControl(''),
-    confidentialityImpact:new FormControl(''),
-    IntegrityImpact:new FormControl(''),
-    availabiltyImpact:new FormControl(''),
-    privacyImpact:new FormControl(''),
-    mitigation:new FormControl(''),
+    confidentialityLikelihood:new FormControl('',Validators.required),
+    IntegrityLikelihood:new FormControl('',Validators.required),
+    availabiltyLikelihood:new FormControl('',Validators.required),
+    privacyLikelihood:new FormControl('',Validators.required),
+    confidentialityImpact:new FormControl('',Validators.required),
+    IntegrityImpact:new FormControl('',Validators.required),
+    availabiltyImpact:new FormControl('',Validators.required),
+    privacyImpact:new FormControl('',Validators.required),
+    mitigation:new FormControl('',[Validators.maxLength(1000),Validators.minLength(15),Validators.required]),
     contingency:new FormControl(''),
-    responsibilityOfAction:new FormControl(''),
-    plannedActionDate:new FormControl(''),
-    reviewer:new FormControl()
+    responsibilityOfAction:new FormControl('',[Validators.maxLength(20),Validators.minLength(5),Validators.required]),
+    plannedActionDate:new FormControl('',Validators.required),
+    reviewer:new FormControl('',Validators.required)
 
 
   })
@@ -83,33 +83,21 @@ constructor(public api:ApiService){}
 
 
   onsubmit(){
-    const userConfirmed = window.confirm('Do you want to save?');
-    if (userConfirmed) {
-      this.saveData();
+    if (this.ismsForm.valid) {
+
       this.ismsForm.get('riskType')?.setValue(this.riskTypeValue);
-    this.ismsForm.get('status')?.setValue("open");
-    console.log("Updated riskType value:", this.ismsForm.get('riskType')?.value);
-
-    this.sendDataToParent.emit(this.ismsForm.value);
-    console.log("actual data");
-
-    console.log(this.ismsForm.value);
-
+      this.ismsForm.get('status')?.setValue("open");
+      console.log("Updated riskType value:", this.ismsForm.get('riskType')?.value);
+      const formValue = this.ismsForm.getRawValue();
+      this.sendDataToParent.emit(this.ismsForm.value);
+      console.log("Actual data:", formValue);
+      alert("saved successfull")
     } else {
-      alert('User canceled saving.');
+      this.ismsForm.markAllAsTouched();
+      alert("Form is invalid. Please fill out all required fields.");
     }
-
 
   }
 
-  // ngOnChanges(changes: SimpleChanges): void {
-  //     if (changes['riskType']) {
-  //       console.log('Risk Type changed:', changes['riskType'].currentValue);
-  //     }
-  //  }
 
-  saveData() {
-      alert('Data saved successfully!');
-
-    }
 }
