@@ -9,9 +9,23 @@ import { Component, Input, output } from '@angular/core';
   styleUrl: './reusable-table.component.scss'
 })
 export class ReusableTableComponent {
+rejectRisk = output();  
+rejectButton(event:Event) {
+  event.stopPropagation();
+  this.rejectRisk.emit();
+  
+}
+approveRisk = output();
+approveButton(event:Event) {
+    event.stopPropagation();
+    this.approveRisk.emit();
+ 
+  
+}
 
   @Input() tableHeaders: string[] = []; 
   @Input() tableData: any[] = []; 
+  @Input() IsActionRequiered: boolean = true;
 
   rowKeys: string[] = []; 
 
@@ -22,12 +36,8 @@ export class ReusableTableComponent {
   }
   onclickrow = output()
   rowClick(row:any) {
+
     this.onclickrow.emit(row);
     }
-    // truncateWords(text: string, wordLimit: number): string {
-    //   if (!text) return ''; // Handle empty or undefined text
-    //   const words = text.split(' ');
-    //   return words.length > wordLimit ? words.slice(0, wordLimit).join(' ') + '...' : text;
-    // }
       
 }

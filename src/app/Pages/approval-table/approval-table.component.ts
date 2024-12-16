@@ -3,6 +3,8 @@ import { BodyContainerComponent } from "../../Components/body-container/body-con
 import { approvalTableBody } from '../../Interfaces/approvalTable.interface';
 import { ReusableTableComponent } from "../../Components/reusable-table/reusable-table.component";
 import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialogComponent } from '../../Components/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-approval-table',
@@ -12,7 +14,12 @@ import { Router } from '@angular/router';
   styleUrl: './approval-table.component.scss'
 })
 export class ApprovalTableComponent {
-  constructor(private router: Router) {}
+  commentForm: any;
+  isButtonClicked:boolean = false;
+  cancelMessage: string = "";
+  approveMessage: string = "";
+
+  constructor( private dialog: MatDialog,private router: Router) {}
 
 
   OnClickRow(rowData:any): void {
@@ -20,10 +27,43 @@ export class ApprovalTableComponent {
     console.log("rowdata",rowData);
     
   } 
-  // keys: string[] = ['id', 'name', 'description'];
+ 
+
+approveRisk(): void {
+  const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+    data: { message: 'Are you sure you want to approve this risk?' },
+    width: '400px',
+  });
+
+  dialogRef.afterClosed().subscribe((result: any) => {
+    if (result) {
+      console.log('Risk approved!');
+      this.approveMessage = 'Risk has been approved successfully.';
+    } else {
+      console.log('Approval canceled.');
+    }
+  });
+}
+
+// Open a confirmation dialog for rejecting a risk
+rejectRisk(): void {
+  const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+    data: { message: 'Are you sure you want to reject this risk?' },
+    width: '400px',
+  });
+
+  dialogRef.afterClosed().subscribe((result: any) => {
+    if (result) {
+      console.log('Risk rejected!');
+      this.cancelMessage = 'Risk has been rejected successfully.';
+    } else {
+      console.log('Rejection canceled.');
+    }
+  });
+}
 
 headerData:any=[
-  "SI NO"," RiskID","Risk","Description","EndDate","Type","Current Risk Rating","Status","Actions"
+  "SI NO"," RiskID","Risk","Description","EndDate","Type","Current Risk Rating","Status",
 ];
 
 tableBody:approvalTableBody[]=[
@@ -35,8 +75,8 @@ tableBody:approvalTableBody[]=[
     EndDate: new Date('2024-12-31'),
     Type: 'Cybersecurity',
     CurrentRating: 8,
-    Status: 'Active',
-    Actions: 'Mitigation in Progress',
+    Status: 'Active'
+    
   },
   {
     SINo: 2,
@@ -46,8 +86,8 @@ tableBody:approvalTableBody[]=[
     EndDate: new Date('2024-11-30'),
     Type: 'Operational',
     CurrentRating: 7,
-    Status: 'Resolved',
-    Actions: 'Upgraded server infrastructure',
+    Status: 'Resolved'
+    
   },
   {
     SINo: 3,
@@ -57,8 +97,8 @@ tableBody:approvalTableBody[]=[
     EndDate: new Date('2024-10-15'),
     Type: 'Legal',
     CurrentRating: 5,
-    Status: 'Pending Review',
-    Actions: 'Internal audit in progress',
+    Status: 'Pending Review'
+    
   },
   {
     SINo: 4,
@@ -68,8 +108,8 @@ tableBody:approvalTableBody[]=[
     EndDate: new Date('2024-09-01'),
     Type: 'Strategic',
     CurrentRating: 6,
-    Status: 'Active',
-    Actions: 'Identified alternative vendors',
+    Status: 'Active'
+    
   },
   {
     SINo: 5,
@@ -79,9 +119,8 @@ tableBody:approvalTableBody[]=[
     EndDate: new Date('2024-12-15'),
     Type: 'Financial',
     CurrentRating: 4,
-    Status: 'Monitoring',
-    Actions: 'Regular market analysis',
-  },
+    Status: 'Monitoring'
+  }
 ];
 
 }

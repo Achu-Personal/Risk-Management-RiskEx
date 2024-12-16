@@ -6,13 +6,13 @@
   cursor: pointer;
   display: inline-block;
   position: relative;
-  min-width: 200px;
+  min-width: 250px;
   font-size: 16px;
   color: rgb(39, 39, 39);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  max-width: 300px;
+  max-width: 250px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -29,9 +29,9 @@
   position: absolute;
   background-color: white;
   padding: 0;
-  min-width: 200px;
-  max-height: 300px; /* Limit height of dropdown */
-  overflow-y: auto; /* Scroll if content exceeds 300px */
+  min-width: 250px;
+  max-height: 300px;
+  overflow-y: auto;
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
   z-index: 1;
   border: 1px solid #ccc;
@@ -39,8 +39,14 @@
 }
 
 /* Scrollbar for Dropdown */
+.dropdown-content {
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
 .dropdown-content::-webkit-scrollbar {
-  width: 8px;
+  width: 5px;
+  height: 0;
 }
 
 .dropdown-content::-webkit-scrollbar-track {
@@ -48,22 +54,28 @@
 }
 
 .dropdown-content::-webkit-scrollbar-thumb {
-  background: #888;
-  border-radius: 4px;
+  background: #c6c5c5;
+  border-radius: 10px;
 }
 
 .dropdown-content::-webkit-scrollbar-thumb:hover {
-  background: #555;
+  background: #e3dfdf;
 }
 
 /* Search Input inside Dropdown */
 input[type="text"] {
-  width: 100%;
+  width: 95%;
   padding: 8px;
   box-sizing: border-box;
-  margin-bottom: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  margin: 8px;
+  border: 1px solid #929090;
+  border-radius: 10px;
+
+  /* Sticky positioning */
+  position: sticky;
+  top: 0;
+  background-color: white;
+  z-index: 2;
 }
 
 /* Checkbox inside Dropdown */
