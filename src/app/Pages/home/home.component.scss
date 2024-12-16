@@ -21,9 +21,10 @@
   padding: 0;
 }
 .graphs{
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr ;
-  gap: 1rem;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
   margin-top: 8px;
 
 
@@ -70,6 +71,6 @@
 }
 .apptable{
 
-  width:1212px;
-  margin-left: -10px;
+  width:100%
+
 }
