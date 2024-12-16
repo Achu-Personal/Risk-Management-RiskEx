@@ -1,26 +1,29 @@
 
 .table-container {
-  margin: 20px auto;
+  margin-top: 20px ;
   padding: 0;
   border-radius: 12px;
   background: #ffffff;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  max-width: 1250px;
+  // box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 0px 4px rgb(62, 104, 185, 50%);
+  border: 1px solid rgb(62, 104, 185, 0.5) ;
+  min-width: 1200px;
   font-family: 'Arial', sans-serif;
   position: relative;
   height: 550px; /* height */
   overflow: hidden;
-  border: 1px solid #ddd;
+  // border: 1px solid #ddd;
 }
 .bord{
   position: sticky;
   top: 0;
   z-index: 1000;
-  border: 2px solid #c1bdbd;
+
 
   tr{
     // border-bottom: 2px solid #c1bdbd;
-    position: sticky;
+    border: 2px solid #c1bdbd;
+    position: fixed;
     top: 0;
     z-index: 1000;
   }
@@ -62,7 +65,7 @@
 
 /* Responsive Table */
 .table-responsive {
-  height: calc(100% - 130px);
+  height: calc(100% - 140px);
   overflow-y: auto;
   overflow-x: auto;
   scrollbar-width: thin;
@@ -99,7 +102,7 @@
 
 .table th {
   background: #F7F6FE;
-  color: #333;
+  color: #0f0f0f;
   font-weight: bold;
   text-transform: uppercase;
   font-size: 13px;
