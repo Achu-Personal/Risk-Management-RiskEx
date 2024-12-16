@@ -45,9 +45,19 @@ constructor(private http:HttpClient) { }
     return this.http.get<project[]>(`https://localhost:7150/api/Project/GetProjectsByDepartment/${departmentName}`);
   }
 
+  gettabledata(){
+    return this.http.get(`data/tabledata.json`)
+  }
+  getFilteredData(department: any) {
+    return this.http.get(`data/tabledata.json`).pipe(
+      map((data:any) => {
+        const filteredData = data.filter((item:any) => item.department.toLowerCase() === String( department).toLowerCase());
+        return filteredData;
+      })
+    );
+  }
   addNewProject(project:any){
     return this.http.post("https://localhost:7150/api/Project/AddProject",project)
   }
-
 
 }
