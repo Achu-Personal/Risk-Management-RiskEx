@@ -22,6 +22,7 @@ import { ForgetpswrdComponent } from './Pages/forgetpswrd/forgetpswrd.component'
 import { ResetpswrdComponent } from './Pages/resetpswrd/resetpswrd.component';
 import { HomeComponent } from './Pages/home/home.component';
 import { ApprovalTableComponent } from './Pages/approval-table/approval-table.component';
+import { EditRiskComponent } from './Pages/edit-risk/edit-risk.component';
 
 
 export const routes: Routes = [
@@ -39,17 +40,17 @@ export const routes: Routes = [
     path:'',component:DashboardComponent,
     children:[
       {
-        path:'home',component:HomeComponent
+        path:'home',component:HomeComponent, data: { title: 'Register Management' }
       },
       {
         path:'ViewRisk/:id',component:ViewRiskComponent
       },
       // {path:"ViewRisk/:id",component:ViewRiskComponent}
       {
-        path:'addrisk',component:RegisterRiskComponent
+        path:'addrisk',component:RegisterRiskComponent,data: { title: 'Register Risk' }
       },
       {
-        path:'users',component:UsersComponent,data: { title: 'Users' },
+        path:'users',component:UsersComponent,data: { title: 'Manage Users and Departments' },
       },
       {
         path:'history',component:HistoryComponent,data: { title: 'History' }
@@ -58,13 +59,16 @@ export const routes: Routes = [
         path:'reports',component:ReportsComponent,data: { title: 'Reports' }
       },
       {
-        path:'approvaltable',component:ApprovalTableComponent,data: { title: 'Approvals' }
+        path:'approvaltable',component:ApprovalTableComponent, data: { title: 'Approvals' }
       },
       {
         path:'approvals/:id',component:ApprovalComponent,data: { title: 'Approvals' }
       },
       {
         path:'approvals',component:ApprovalComponent,data: { title: 'Approvals' }
+      },
+      {
+        path:'edit',component:EditRiskComponent
       },
       {
         path:'',redirectTo:'home',pathMatch:'full'
@@ -79,6 +83,7 @@ export const routes: Routes = [
   {
     path:"resetpassword",component:ResetpswrdComponent
   },
+
 
   {
 

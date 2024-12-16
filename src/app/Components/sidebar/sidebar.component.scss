@@ -27,6 +27,15 @@
     display: block;
     padding: 15px;
     transition: background-color 0.3s, color 0.3s;
+    &:hover{
+      // padding-left: 20px;
+      background-color: #dbe4f5;
+      color: rgb(105, 103, 103);
+      padding: 10px;
+      margin: 10px;
+      border-radius: 10px;
+
+    }
   }
 
   .sidebar a.active {

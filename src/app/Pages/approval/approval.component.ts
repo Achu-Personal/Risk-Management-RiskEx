@@ -46,7 +46,7 @@ export class ApprovalComponent {
     this.approveMessage = "The risk has been approved, The status of the risk will be updated";
     this.isButtonClicked= true;
   }
-  
+
 }
 
 async cancelRisk() {
@@ -57,7 +57,7 @@ async cancelRisk() {
     this.cancelMessage = "The risk has been canceled as it was not approved. The owner will be notified shortly. ";
     this.isButtonClicked=true
   }
- 
+
 }
 approvalId!: string;
 

@@ -1,30 +1,29 @@
-.container{
+.container {
   display: flex;
   flex-direction: row;
   position: relative;
   z-index: 1;
+}
 
 
-}
-.sidebar{
-  flex-basis: 10%;
-}
-.content{
+
+.content {
   flex-basis: 100%;
 
 }
-.riskType{
+
+.riskType {
   background-color: white;
   width: 80vw;
   margin-left: 15px;
   margin-top: 20px;
-  // padding: 10px;
+  // padding-top: 10px;
   border-radius: 10px 10px 0px 0px;
 }
-app-dropdown{
-  margin-left: 20px;
-}
-.typeImage{
+
+
+
+.typeImage {
   background-color: white;
   width: 80vw;
   margin-left: 15px;
@@ -32,7 +31,8 @@ app-dropdown{
   margin-top: 10px;
   border-radius: 0px 0px 10px 10px;
 }
-.typeImageContainer{
+
+.typeImageContainer {
   border: 1px dashed black;
   height: 360px;
   display: flex;
@@ -43,10 +43,12 @@ app-dropdown{
 
 
 }
-.required{
+
+.required {
   color: red;
   margin-left: 4px;
 }
+
 .dropdown {
   position: relative;
   z-index: 999;
@@ -55,8 +57,37 @@ app-dropdown{
 .selected {
   // text-decoration: underline;
   font-weight: bold;
-  color:#3E68B9 ;
+  color: white;
+  background-color: #3E68B9;
+  height: 50px;
+  border-radius: 10px 10px 0px 0px;
+  margin-bottom: 0px;
+  width: 150px;
+
 }
+
+.chooseSelect {
+  color: white;
+  background-color: #3E68B9;
+  height: 50px;
+  border-radius: 10px 10px 0px 0px;
+  margin-bottom: 0px;
+  margin-top: 5px;
+  width: 150px;
+  padding-top: 10px;
+  padding-left: 25px;
+
+}
+
+.notChooseSelect {
+  padding-top: 5px;
+  padding-left: 10px;
+  color: black;
+
+}
+
+
+
 button {
   padding: 10px 20px;
   margin: 5px;
@@ -64,14 +95,92 @@ button {
   border: none;
   cursor: pointer;
   font-size: 16px;
+  margin-left: 27px;
 }
-#riskTypeDiv{
+.buttonQuality{
+  margin-left: 30px;
+
+}
+
+#riskTypeDiv {
   display: flex;
   flex-direction: row;
-  // justify-content: space-around;
+
 
 
 }
-#riskTypeDiv div{
-  margin-left: 160px;
+
+.chooseRisk {
+  margin-top: 10px;
+  margin-left: 20px;
+
 }
+
+.riskDiv {
+  margin-left: 20px;
+}
+
+.isSelect {
+  display: block;
+}
+
+.isSelectNot {
+button{
+  visibility: hidden;
+
+}
+
+}
+.chooseType{
+  display: flex;
+  flex-direction: row;
+  gap: 90px;
+  margin-right: 50px;
+  // margin-bottom: 30px;
+
+}
+.chooseContainer{
+
+  padding: 10px;
+  height: 150px;
+  width: 170px;
+  justify-content: center;
+  align-content: center;
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(62, 104, 185, 0.5);
+  cursor: pointer;
+
+
+
+}
+
+
+#chooseContainerQuality,#chooseContainerSecurity,#chooseContainerPrivacy{
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  justify-content: center;
+  align-content: center;
+  box-shadow: 0px 4px 8px rgba(62, 104, 185, 0.5); /* Initial shadow */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden; /* Hide the overflowing drops */
+
+}
+
+#chooseContainerPrivacy:hover{
+  transform: translateY(-10px); /* Moves the container up */
+  box-shadow: 0px 6px 12px rgba(62, 104, 185, 0.7); /* Stronger shadow effect on hover */
+}
+#chooseContainerQuality:hover{
+  transform: translateY(-10px); /* Moves the container up */
+  box-shadow: 0px 6px 12px rgba(62, 104, 185, 0.7); /* Stronger shadow effect on hover */
+
+}
+#chooseContainerSecurity:hover{
+  transform: translateY(-10px); /* Moves the container up */
+  box-shadow: 0px 6px 12px rgba(62, 104, 185, 0.7); /* Stronger shadow effect on hover */
+
+}
+
+
+
+
+
