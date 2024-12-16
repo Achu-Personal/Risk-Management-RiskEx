@@ -56,5 +56,8 @@ constructor(private http:HttpClient) { }
       })
     );
   }
+  addNewProject(project:any){
+    return this.http.post("https://localhost:7150/api/Project/AddProject",project)
+  }
 
 }
