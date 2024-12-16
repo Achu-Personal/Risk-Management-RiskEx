@@ -8,7 +8,7 @@
           <div ></div>
           <h5>{{riskType}} Risk</h5>
         </div>
-        <app-edit-button (onClick)="onEditButtonClicked()"></app-edit-button>
+        <app-edit-button [ngStyle]="{'display':isEditable?'flex':'none'}"  (onClick)="onEditButtonClicked()"></app-edit-button>
 
 
       </div>
