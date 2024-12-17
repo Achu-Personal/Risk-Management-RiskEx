@@ -6,39 +6,50 @@
           <label for="">Risk Type <span class="required">*</span> :</label>
           <input for="" id="risktype" formControlName="riskType">
         </div>
-         <app-textarea label="Risk Name" isRequired="*" formControlName="riskName"></app-textarea>
-         <app-textarea label="Description" isRequired="*" marginLeft="50" formControlName="description"></app-textarea>
-         @if(ismsForm.get("description")){
+        <div class="firstDiv">
+          <div>
+            <app-textarea label="Risk Name" isRequired="*" formControlName="riskName"></app-textarea>
+          <app-textarea label="Description" isRequired="*" marginLeft="50" formControlName="description"></app-textarea>
+          @if(ismsForm.get("description")){
 
-          @if (ismsForm.get("description")?.hasError('maxlength')) {
-            <div class="text-danger">maximum length is 1000</div>
+           @if (ismsForm.get("description")?.hasError('maxlength')) {
+             <div class="text-danger">maximum length is 1000</div>
 
-          }
-          @else if (ismsForm.get("description")?.hasError('minlength')) {
-            <div class="text-danger">minimum length is 15</div>
+           }
+           @else if (ismsForm.get("description")?.hasError('minlength')) {
+             <div class="text-danger">minimum length is 15</div>
 
-          }
-        }
-
-
+           }
+         }
 
 
-         <app-textarea label="Impact Of Risk" isRequired="*" marginLeft="27" formControlName="riskImpact"></app-textarea>
 
-         @if(ismsForm.get("riskImpact")){
 
-          @if (ismsForm.get("riskImpact")?.hasError('maxlength')) {
-            <div class="text-danger">maximum length is 1000</div>
+          <app-textarea label="Impact Of Risk" isRequired="*" marginLeft="27" formControlName="riskImpact"></app-textarea>
 
-          }
-          @else if (ismsForm.get("riskImpact")?.hasError('minlength')) {
-            <div class="text-danger">minimum length is 15</div>
+          @if(ismsForm.get("riskImpact")){
 
-          }
-        }
-         <app-textarea label="Project" marginLeft="92" formControlName="projectId"></app-textarea>
+           @if (ismsForm.get("riskImpact")?.hasError('maxlength')) {
+             <div class="text-danger">maximum length is 1000</div>
+
+           }
+           @else if (ismsForm.get("riskImpact")?.hasError('minlength')) {
+             <div class="text-danger">minimum length is 15</div>
+
+           }
+         }
+          <app-textarea label="Project" marginLeft="92" formControlName="projectId"></app-textarea>
+
+
+
+
+        </div>
+        <app-overall-rating-card class="col-2 rating-card" [value]="result" title="Overal Risk Rating" textColor="black" [ngStyle]="{'margin-left':'20px','margin-top':'20px'}"></app-overall-rating-card>
+      </div>
+
 
       </div>
+
       <div class="field"  >
         <h5>Current Risk Assessment <span class="required">*</span></h5>
 
@@ -54,52 +65,52 @@
             <td>Likelihood</td>
             <td>
 
-            <app-dropdown  [options]="dropdownData"
+            <app-dropdown  [options]="dropdownDataLikelihood"
             [displayField]="'type'"
             [valueField]="'value'"
             width="13.33"
-            id="dropdownassessmentLikelihood"  formControlName="confidentialityLikelihood"></app-dropdown>
+            id="dropdownassessmentLikelihood"  formControlName="confidentialityLikelihood" (change)="onDropdownChange1($event)"></app-dropdown>
           </td>
-            <td> <app-dropdown  [options]="dropdownData"
+            <td> <app-dropdown  [options]="dropdownDataLikelihood"
               [displayField]="'type'"
               [valueField]="'value'"
               width="13.33"
-              id="dropdownassessmentLikelihood" class="dropdownassessment"   formControlName="IntegrityLikelihood"></app-dropdown>
+              id="dropdownassessmentLikelihood" class="dropdownassessment"   formControlName="IntegrityLikelihood" (change)="onDropdownChange2($event)"></app-dropdown>
             </td>
-            <td> <app-dropdown  [options]="dropdownData"
+            <td> <app-dropdown  [options]="dropdownDataLikelihood"
               [displayField]="'type'"
               [valueField]="'value'"
               width="13.33"
-              id="dropdownassessmentLikelihood" class="dropdownassessment"   formControlName="availabiltyLikelihood"></app-dropdown></td>
-            <td> <app-dropdown  [options]="dropdownData"
+              id="dropdownassessmentLikelihood" class="dropdownassessment"   formControlName="availabiltyLikelihood" (change)="onDropdownChange3($event)"></app-dropdown></td>
+            <td> <app-dropdown  [options]="dropdownDataLikelihood"
               [displayField]="'type'"
               [valueField]="'value'"
               width="13.33"
-              id="dropdownassessmentLikelihood" class="dropdownassessment"   formControlName="privacyLikelihood"></app-dropdown></td>
+              id="dropdownassessmentLikelihood" class="dropdownassessment"   formControlName="privacyLikelihood" (change)="onDropdownChange4($event)"></app-dropdown></td>
 
           </tr>
           <tr>
             <td>Impact</td>
-            <td><app-dropdown  [options]="dropdownData"
+            <td><app-dropdown  [options]="dropdownDataImpact"
               [displayField]="'type'"
               [valueField]="'value'"
               width="13.33"
-              id="dropdownassessmentimpact" class="dropdownassessment"   formControlName="confidentialityImpact"></app-dropdown></td>
-            <td><app-dropdown  [options]="dropdownData"
+              id="dropdownassessmentimpact" class="dropdownassessment"   formControlName="confidentialityImpact" (change)="onDropdownChange5($event)"></app-dropdown></td>
+            <td><app-dropdown  [options]="dropdownDataImpact"
               [displayField]="'type'"
               [valueField]="'value'"
               width="13.33"
-              id="dropdownassessmentimpact" class="dropdownassessment"   formControlName="IntegrityImpact"></app-dropdown></td>
-            <td><app-dropdown  [options]="dropdownData"
+              id="dropdownassessmentimpact" class="dropdownassessment"   formControlName="IntegrityImpact" (change)="onDropdownChange6($event)"></app-dropdown></td>
+            <td><app-dropdown  [options]="dropdownDataImpact"
               [displayField]="'type'"
               [valueField]="'value'"
               width="13.33"
-              id="dropdownassessmentimpact" class="dropdownassessment"   formControlName="availabiltyImpact"></app-dropdown></td>
-            <td><app-dropdown  [options]="dropdownData"
+              id="dropdownassessmentimpact" class="dropdownassessment"   formControlName="availabiltyImpact" (change)="onDropdownChange7($event)"></app-dropdown></td>
+            <td><app-dropdown  [options]="dropdownDataImpact"
               [displayField]="'type'"
               [valueField]="'value'"
               width="13.33"
-              id="dropdownassessmentimpact" class="dropdownassessment"   formControlName="privacyImpact"></app-dropdown></td>
+              id="dropdownassessmentimpact" class="dropdownassessment"   formControlName="privacyImpact" (change)="onDropdownChange8($event)"></app-dropdown></td>
 
           </tr>
         </table>

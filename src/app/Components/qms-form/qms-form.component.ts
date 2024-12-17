@@ -6,12 +6,13 @@ import { ButtonComponent } from "../../UI/button/button.component";
 import { CommonModule } from '@angular/common';
 import { TextareaComponent } from "../../UI/textarea/textarea.component";
 import { OverallRatingCardComponent } from "../../UI/overall-rating-card/overall-rating-card.component";
+import { BodyContainerComponent } from "../body-container/body-container.component";
 
 
 @Component({
   selector: 'app-qms-form',
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule, DropdownComponent, ButtonComponent, CommonModule, TextareaComponent, OverallRatingCardComponent],
+  imports: [FormsModule, ReactiveFormsModule, DropdownComponent, ButtonComponent, CommonModule, TextareaComponent, OverallRatingCardComponent, BodyContainerComponent],
   templateUrl: './qms-form.component.html',
   styleUrl: './qms-form.component.scss'
 })
@@ -46,7 +47,6 @@ export class QMSFormComponent {
 
   })
 
-
   dropdownDataLikelihood=[
     {"type":"Very Low","value":"0.1"},
     {"type":"Low","value":"0.2"},
@@ -71,17 +71,7 @@ export class QMSFormComponent {
     { "name":"Vivek V N","email":"123"},
   ];
 
-constructor(public api:ApiService){}
 
-  ngOninit(){
-    this.api.getRiskCurrentAssessment().subscribe((res:any)=>{
-      this.data=res
-      console.log(this.data)
-
-    })
-
-
-  }
 
 
 
@@ -147,22 +137,7 @@ constructor(public api:ApiService){}
 
     }
 
-    getBackgroundColor() {
-      if (this.result <= 30) {
-        return { 'background-color': ' #4CAF50' };
-      } else if (this.result >= 31 && this.result <= 99) {
-        return { 'background-color': '#FFC107' };
-      }
-      else if(this.result>=100 && this.result<=300){
-        return { 'background-color': '#FF5722' };
 
-      }
-      else{
-       return{'background-color': 'transparent'}
-
-      }
-
-    }
 
 
 

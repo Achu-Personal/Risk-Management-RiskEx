@@ -31,4 +31,12 @@ constructor(private http:HttpClient) { }
      return  data.filter((item:any)=>item.id===id)[0]
     }));
   }
+
+  getRisk()
+  {
+    console.log("hai")
+      return this.http.get(`data/getRisk.json`);
+
+
+  }
 }
