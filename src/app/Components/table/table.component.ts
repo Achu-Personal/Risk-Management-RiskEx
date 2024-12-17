@@ -1,8 +1,10 @@
-import { Component} from '@angular/core';
+import { Component, output} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { SearchbarComponent } from '../../UI/searchbar/searchbar.component';
 import { PaginationComponent } from '../../UI/pagination/pagination.component';
+import { ApiService } from '../../Services/api.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-table',
@@ -12,36 +14,34 @@ import { PaginationComponent } from '../../UI/pagination/pagination.component';
   styleUrl: './table.component.scss'
 })
 export class TableComponent {
+  constructor( public api: ApiService,private route:ActivatedRoute){}
 
+   onclickrow = output()
+    rowClick(row:any) {
 
-  items = [
-    // Example data
-    { slNo: 1, riskId: 'R001', riskName: 'Risk A', department: 'Finance', type: 'Type 1', endDate: '2024-12-20', currentRiskRating: 'High', assignee: 'John', reviewer: 'Jane', reviewStatus: 'Reviewed', status: 'Open' },
-    { slNo: 2, riskId: 'R002', riskName: 'Risk B', department: 'HR', type: 'Type 2', endDate: '2024-12-25', currentRiskRating: 'Medium', assignee: 'Alice', reviewer: 'Bob', reviewStatus: 'Pending', status: 'Closed' },
-    { slNo: 3, riskId: 'R002', riskName: 'Risk B', department: 'HR', type: 'Type 2', endDate: '2024-12-25', currentRiskRating: 'Medium', assignee: 'Alice', reviewer: 'Bob', reviewStatus: 'Pending', status: 'Closed' },
-    // { slNo: 4, riskId: 'R002', riskName: 'Risk B', department: 'HR', type: 'Type 2', endDate: '2024-12-25', currentRiskRating: 'Medium', assignee: 'Alice', reviewer: 'Bob', reviewStatus: 'Pending', status: 'Closed' },
-    // { slNo: 5, riskId: 'R002', riskName: 'Risk B', department: 'HR', type: 'Type 2', endDate: '2024-12-25', currentRiskRating: 'Medium', assignee: 'Alice', reviewer: 'Bob', reviewStatus: 'Pending', status: 'Closed' },
-    // { slNo: 6, riskId: 'R002', riskName: 'Risk B', department: 'HR', type: 'Type 2', endDate: '2024-12-25', currentRiskRating: 'Medium', assignee: 'Alice', reviewer: 'Bob', reviewStatus: 'Pending', status: 'Closed' },
-    { slNo: 7, riskId: 'R001', riskName: 'Risk A', department: 'Finance', type: 'Type 1', endDate: '2024-12-20', currentRiskRating: 'High', assignee: 'John', reviewer: 'Jane', reviewStatus: 'Reviewed', status: 'Open' },
-    { slNo: 8, riskId: 'R001', riskName: 'Risk A', department: 'Finance', type: 'Type 1', endDate: '2024-12-20', currentRiskRating: 'High', assignee: 'John', reviewer: 'Jane', reviewStatus: 'Reviewed', status: 'Open' },
-    { slNo: 9, riskId: 'R001', riskName: 'Risk A', department: 'Finance', type: 'Type 1', endDate: '2024-12-20', currentRiskRating: 'High', assignee: 'John', reviewer: 'Jane', reviewStatus: 'Reviewed', status: 'Open' },
-    { slNo: 10, riskId: 'R001', riskName: 'Risk A', department: 'Finance', type: 'Type 1', endDate: '2024-12-20', currentRiskRating: 'High', assignee: 'John', reviewer: 'Jane', reviewStatus: 'Reviewed', status: 'Open' },
-    { slNo: 11, riskId: 'R001', riskName: 'Risk A', department: 'Finance', type: 'Type 1', endDate: '2024-12-20', currentRiskRating: 'High', assignee: 'John', reviewer: 'Jane', reviewStatus: 'Reviewed', status: 'Open' },
-    { slNo: 12, riskId: 'R001', riskName: 'Risk A', department: 'Finance', type: 'Type 1', endDate: '2024-12-20', currentRiskRating: 'High', assignee: 'John', reviewer: 'Jane', reviewStatus: 'Reviewed', status: 'Open' },
-    { slNo: 13, riskId: 'R001', riskName: 'Risk A', department: 'Finance', type: 'Type 1', endDate: '2024-12-20', currentRiskRating: 'High', assignee: 'John', reviewer: 'Jane', reviewStatus: 'Reviewed', status: 'Open' },
-    { slNo: 14, riskId: 'R002', riskName: 'Risk B', department: 'HR', type: 'Type 2', endDate: '2024-12-25', currentRiskRating: 'Medium', assignee: 'Alice', reviewer: 'Bob', reviewStatus: 'Pending', status: 'Closed' },
+      this.onclickrow.emit(row);
+      }
 
-  ];
-
+  items:any=[];
   isActive = true;
   isDisabled = false;
   open = true;
   closed = false;
+  isButtonVisible = false;
+  checkPageForButtonVisibility(): void {
+    const currentRoute = this.route.snapshot.url.join('/'); // Get current route path
+    console.log(currentRoute);
 
-  filteredItems = [...this.items]; // Clone of the items array
+    if (currentRoute === 'history') {
+      this.isButtonVisible = false; // Hide button on page1
+    } else if (currentRoute === 'home') {
+      this.isButtonVisible = true; // Show button on page2
+    }
+  }
+  filteredItems = [...this.items];
   paginatedItems:any=[];
   isDropdownOpen: boolean = false;
-  itemsPerPage = 10; // Pagination setting
+  itemsPerPage = 10;
   currentPage = 1;
   totalItems: number = 0;
 
@@ -52,7 +52,7 @@ export class TableComponent {
 
   // uniqueRiskIds: string[] = [];
   // uniqueRiskNames: string[] = [];
-  uniqueDepartments: string[] = ["finance","hr"];
+  uniqueDepartments: any[] = [];
 
 
   // ngOnInit(): void {
@@ -62,22 +62,33 @@ export class TableComponent {
   // }
 
   filterTable(): void {
-    this.filteredItems = this.items.filter(item => {
+
+    this.filteredItems = this.items.filter((item:any) => {
       return (
         // (this.selectedRiskId ? item.riskId === this.selectedRiskId : true) &&
         // (this.selectedRiskName ? item.riskName === this.selectedRiskName : true) &&
         (this.selectedDepartment ? item.department === this.selectedDepartment : true)
       );
     });
-    // Reset pagination metadata
-  this.currentPage = 1; // Go back to the first page after filtering
+
+  this.currentPage = 1;
+  this.totalItems = this.filteredItems.length;
   this.updatePaginatedItems();
   }
 
+
+
   onSearch(searchText: string): void {
-    this.paginatedItems = this.items.filter(item =>
-      Object.values(item).some(value => value.toString().toLowerCase().includes(searchText.toLowerCase()))
+    const lowercasedSearchText = searchText.toLowerCase();
+    this.filteredItems = this.items.filter((item: any) =>
+      Object.values(item).some((value: any) =>
+        value.toString().toLowerCase().includes(lowercasedSearchText)
+      )
     );
+
+    this.currentPage = 1;
+    this.totalItems = this.filteredItems.length;
+    this.updatePaginatedItems();
   }
 
   shouldDisplayPagination(): boolean {
@@ -87,22 +98,27 @@ export class TableComponent {
 
   ngOnInit(): void {
 
-    this.filteredItems = [...this.items];
-
-    this.paginatedItems = [...this.items];
-    // this.totalItems = this.items.length;
-    this.uniqueDepartments = [...new Set(this.items.map(item => item.department))];
-    this.totalItems = this.items.length;
-    this.updatePaginatedItems();
+    this.api.gettabledata().subscribe((res: any) => {
+      this.items = res;
+      this.filteredItems = [...this.items];
+      this.updateUniqueDepartments();
+      this.totalItems = this.filteredItems.length;
+      this.updatePaginatedItems();
+    });
+    this.route.url.subscribe(() => {
+      this.checkPageForButtonVisibility();
+    });
   }
 
-
+  updateUniqueDepartments(): void {
+    this.uniqueDepartments = [...new Set(this.items.map((item: any) => item.department))];
+  }
 
   updatePaginatedItems(): void {
     const startIndex = (this.currentPage -1 ) * this.itemsPerPage;
     const endIndex = startIndex + this.itemsPerPage;
     this.paginatedItems = this.filteredItems.slice(startIndex, endIndex);
-    this.totalItems = this.filteredItems.length;
+    // this.totalItems = this.filteredItems.length;
   }
 
   onPageChange(page: number): void {
@@ -118,8 +134,8 @@ export class TableComponent {
 
   onDepartmentSelect(department: string): void {
     this.selectedDepartment = department;
-    this.isDropdownOpen = false; // Close dropdown after selection
-    this.filterTable(); // Apply the filter
+    this.isDropdownOpen = false;
+    this.filterTable();
   }
 
 }

@@ -54,57 +54,7 @@ tbody tr:hover {
  padding: 10px;
 }
 
-// /* Table */
-// .table {
-//   width: 100%;
-//   border-collapse: collapse;
-//   background: #ffffff;
-//   margin: 0;
-// }
 
-// .table th,
-// .table td {
-//   padding: 15px 15px;
-//   text-align: left;
-//   border-bottom: 1px solid #eee;
-// }
-
-// .table th {
-//   background: #ffffff;
-//   color: #333;
-//   font-weight: bold;
-//   text-transform: uppercase;
-//   font-size: 13px;
-// }
-
-// .table tbody tr:nth-child(even) {
-//   background: #f9fbfd !important ;
-// }
-// // .table-striped>tbody>tr:nth-child(even)>td, 
-// // .table-striped>tbody>tr:nth-child(odd)>th {
-// //    background-color:#F6FBFF; // Choose your own color here
-// //  }
-// .table-striped>tbody>tr:nth-child(odd)>td,
-// .table-striped>tbody>tr:nth-child(odd)>th {
-//   background-color: #F6FBFF;
-
-// }
-// .table-striped>tbody>tr:nth-child(even)>td,
-// .table-striped>tbody>tr:nth-child(even)>th {
-//   background-color: #ffffff;
-
-// }
-
-// .table tbody tr:hover {
-//   background: #eef7ff;
-// }
-
-// .table tbody td {
-//   font-size: 14px;
-//   color: #555;
-//   vertical-align: middle;
-// }
-// }
 
 .table-responsive {
   .tooltip {
@@ -179,4 +129,83 @@ tbody tr:hover {
     
 
   }
+}
+
+
+/* Container for toggle switch */
+.toggle-container {
+  margin: 20px;
+  text-align: center;
+  display: flex;
+  gap: 10px;
+}
+
+/* Hide the default checkbox */
+.switch input {
+  display: none;
+}
+
+/* Style the slider (toggle switch) */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 26px;
+}
+
+.switch .slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 34px;
+}
+
+/* Circle inside the switch */
+.switch .slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: 0.4s;
+}
+
+/* When the switch is checked */
+input:checked + .slider {
+  background-color: #3e68b9; /* Green for ON state */
+}
+
+/* Move the circle to the right when checked */
+input:checked + .slider:before {
+  transform: translateX(26px);
+}
+
+
+
+.green-background {
+  // background-color: #24e724;  /* Light Green */
+  // border: 2px solid #188a18;  /* Dark Green */
+  // // padding: 5px;
+  // border-radius: 5px;
+  color: #188a18;
+  // width: 70px;
+
+ 
+}
+
+.red-background {
+  // background-color: #fc3a36;  /* Light Red */
+  // border: 2px solid #e20707;  /* Dark Red */
+  // // padding: 5px;
+  // border-radius: 5px;
+  color: #fc3a36;
+  // width: 70px;
 }

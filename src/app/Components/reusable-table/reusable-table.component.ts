@@ -1,15 +1,19 @@
 import { SlicePipe } from '@angular/common';
 import { Component, Input, output } from '@angular/core';
+import { CommonModule } from '@angular/common'; // Import CommonModule
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-reusable-table',
   standalone: true,
-  imports: [SlicePipe],
+  imports: [SlicePipe,CommonModule,FormsModule],
   templateUrl: './reusable-table.component.html',
   styleUrl: './reusable-table.component.scss'
 })
 export class ReusableTableComponent {
 rejectRisk = output();  
+isToggled: boolean = false;
+  // isActive: boolean;
 rejectButton(event:Event) {
   event.stopPropagation();
   this.rejectRisk.emit();
@@ -26,6 +30,8 @@ approveButton(event:Event) {
   @Input() tableHeaders: string[] = []; 
   @Input() tableData: any[] = []; 
   @Input() IsActionRequiered: boolean = true;
+  @Input() IsUser:boolean= false;
+
 
   rowKeys: string[] = []; 
 
@@ -40,4 +46,7 @@ approveButton(event:Event) {
     this.onclickrow.emit(row);
     }
       
+    // toggleActiveState() {
+    //   this.isActive = !this.isActive;
+    // }
 }
