@@ -6,6 +6,7 @@ import { TextareaComponent } from "../../UI/textarea/textarea.component";
 import { OverallRatingCardComponent } from "../../UI/overall-rating-card/overall-rating-card.component";
 import { CommonModule } from '@angular/common';
 import { ApiService } from '../../Services/api.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-isms-edit',
@@ -23,7 +24,7 @@ export class IsmsEditComponent {
   isEditableContingency: boolean = false;
   @Output() sendDataToParent = new EventEmitter<object>();
   result:number=0
- 
+
 
   onEditToggled(field: string, isEditable: boolean): void {
     switch(field) {
@@ -113,13 +114,18 @@ export class IsmsEditComponent {
 
     this.sendDataToParent.emit(this.ismsForm.value);
     console.log("actual data");
+    alert("Data Saved Successfull");
 
     console.log(formValue);
+    this.router.navigate(['/home']);
 
      }
+     constructor(public api:ApiService,private router:Router){}
 
 
-
-
+     onCancel(): void {
+      this.ismsForm.reset(); // Reset the form
+      this.router.navigate(['/home']); // Navigate to the dashboard
+    }
 
 }
