@@ -1,6 +1,8 @@
+import { department } from './../Interfaces/deparments.interface';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map } from 'rxjs';
+import { map, Observable } from 'rxjs';
+import { project } from '../Interfaces/projects.interface';
 
 @Injectable({
   providedIn: 'root'
