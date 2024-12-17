@@ -1,16 +1,16 @@
 .field{
   background-color: white;
   width: 80vw;
-  margin-left: 3px;
+  // margin-left: 3px;
   padding: 30px;
-  padding-left: 50px;
-  padding-top: 50px;
+  padding-left: 40px;
+  padding-top: 40px;
   margin-top: 10px;
 
 }
 #editableDiv{
   border-radius: 10px 10px 0px 0px;
-  margin-top: 40px;
+  // margin-top: 40px;
 
 }
 #assessmentField{
@@ -108,3 +108,9 @@ h5{
 #cancelbtn{
   margin-left: 20px;
 }
+.firstDiv{
+  display: flex;
+  flex-direction: row;
+
+}
+

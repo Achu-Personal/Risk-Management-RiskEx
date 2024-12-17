@@ -3,11 +3,14 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { EditTextAreaComponent } from "../../UI/edit-text-area/edit-text-area.component";
 import { DropdownComponent } from "../../UI/dropdown/dropdown.component";
 import { TextareaComponent } from "../../UI/textarea/textarea.component";
+import { OverallRatingCardComponent } from "../../UI/overall-rating-card/overall-rating-card.component";
+import { CommonModule } from '@angular/common';
+import { ApiService } from '../../Services/api.service';
 
 @Component({
   selector: 'app-isms-edit',
   standalone: true,
-  imports: [EditTextAreaComponent, DropdownComponent, TextareaComponent,ReactiveFormsModule],
+  imports: [EditTextAreaComponent, DropdownComponent, TextareaComponent, ReactiveFormsModule, OverallRatingCardComponent,CommonModule],
   templateUrl: './isms-edit.component.html',
   styleUrl: './isms-edit.component.scss'
 })
@@ -19,7 +22,8 @@ export class IsmsEditComponent {
   isEditableMitigation: boolean = false;
   isEditableContingency: boolean = false;
   @Output() sendDataToParent = new EventEmitter<object>();
-
+  result:number=0
+ 
 
   onEditToggled(field: string, isEditable: boolean): void {
     switch(field) {
@@ -113,5 +117,9 @@ export class IsmsEditComponent {
     console.log(formValue);
 
      }
+
+
+
+
 
 }

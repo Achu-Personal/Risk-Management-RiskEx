@@ -87,3 +87,9 @@ button.btn-danger:hover {
 .table-container{
   padding-top: 30px;
 }
+.form-select {
+  max-height: 50px; /* Adjust height as needed */
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+

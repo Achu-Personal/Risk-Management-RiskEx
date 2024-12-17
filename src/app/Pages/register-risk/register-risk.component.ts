@@ -7,11 +7,12 @@ import { FormsModule } from '@angular/forms';
 import { QMSFormComponent } from "../../Components/qms-form/qms-form.component";
 import { ISMSFormComponent } from "../../Components/isms-form/isms-form.component";
 import { ButtonComponent } from "../../UI/button/button.component";
+import { BodyContainerComponent } from "../../Components/body-container/body-container.component";
 
 @Component({
   selector: 'app-register-risk',
   standalone: true,
-  imports: [DropdownComponent, CommonModule, FormsModule, QMSFormComponent, ISMSFormComponent, ButtonComponent],
+  imports: [DropdownComponent, CommonModule, FormsModule, QMSFormComponent, ISMSFormComponent, ButtonComponent, BodyContainerComponent],
   templateUrl: './register-risk.component.html',
   styleUrl: './register-risk.component.scss'
 })
