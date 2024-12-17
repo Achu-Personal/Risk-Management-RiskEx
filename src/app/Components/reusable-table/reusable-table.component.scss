@@ -68,21 +68,21 @@
     // z-index: 1000;
   }
 }
-.table {
+.tabledata {
   width: 100%;
   border-collapse: collapse;
   background: #ffffff;
   margin: 0;
 }
 
-.table th,
-.table td {
+.tabledata th,
+.tabledata td {
   padding: 15px 15px;
   text-align: left;
   border-bottom: 1px solid #eee;
 }
 
-.table th {
+.tabledata th {
   background: #F7F6FE;
   color: #0f0f0f;
   font-weight: bold;
@@ -90,16 +90,16 @@
   font-size: 13px;
 }
 
-.table tbody tr:nth-child(even) {
+.tabledata tbody tr:nth-child(even) {
   background: #F7F6FE;
 }
 
 
-.table tbody tr:hover {
+.tabledata tbody tr:hover {
   background: #bfdaf1;
 }
 
-.table tbody td {
+.tabledata tbody td {
   font-size: 14px;
   color: #555;
   vertical-align: middle;
