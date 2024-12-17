@@ -1,122 +1,164 @@
 [
   {
     "id": 1,
-    "risk_number": "R-001",
+    "risk_number": "R001",
     "risk_name": "Unauthorized access to sensitive data",
-    "risk_description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
+    "risk_description": "Unauthorized access to sensitive data can result in serious security breaches, including data theft, data loss, and potential financial damage. It often occurs when internal or external malicious actors bypass security mechanisms to gain access to private and confidential information. This type of risk poses a significant threat to the organization as it compromises the confidentiality of sensitive information and can lead to legal, financial, and reputational damage. Additionally, the breach of sensitive data may also result in regulatory fines, loss of customer trust, and long-term damage to the organization's brand image.",
     "risk_type": "Security",
     "department_id": "DPT-001",
     "project_id": "PRJ-1001",
-    "impact_of_risk": "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in classical Latin literature.",
+    "impact_of_risk": "Unauthorized access to sensitive data can lead to severe consequences such as the exposure of personally identifiable information (PII), financial data, intellectual property, and trade secrets. The potential for widespread data leaks increases the risk of lawsuits, regulatory fines, and a damaged reputation. For organizations that handle financial or personal data, such as banks or healthcare providers, the implications can be especially dire, with the possibility of heavy penalties and a decline in business trust.",
     "current_risk_assessment": {
-      "confidentiality": { "likelihood": "high", "impact": "high", "risk_factor": 9 },
-      "integrity": { "likelihood": "medium", "impact": "low", "risk_factor": 3 },
-      "availability": { "likelihood": "low", "impact": "medium", "risk_factor": 2 },
-      "overall_risk_rating": 14
+      "confidentiality": {
+        "likelihood": "high",
+        "impact": "high",
+        "risk_factor": 64
+      },
+      "integrity": {
+        "likelihood": "medium",
+        "impact": "low",
+        "risk_factor": 8
+      },
+      "availability": {
+        "likelihood": "low",
+        "impact": "medium",
+        "risk_factor": 8
+      },
+      "overall_risk_rating": 80
     },
-    "risk_mitigation": "Implementing multi-factor authentication (MFA) and encryption.",
-    "risk_contingency": "Restricting system access and enabling monitoring tools.",
+    "risk_mitigation": "Implementing multi-factor authentication (MFA) and encryption across all systems and networks to add layers of security. Employee access controls should be strictly enforced with least privilege access, ensuring that only authorized personnel can view or alter sensitive data. Additionally, conducting regular security audits and vulnerability assessments can help detect any potential weaknesses or unauthorized access attempts in real-time.",
+    "risk_contingency": "In case of a breach, immediate action should be taken to revoke access and investigate the incident to identify the source of the breach. A security response team should be deployed to secure all affected systems, and communication protocols must be followed to notify affected parties. Regular monitoring tools should be in place to detect anomalies, and incident response plans must be activated to mitigate any further damage. If sensitive data is exposed, legal measures should be taken to notify relevant stakeholders, including regulatory bodies.",
     "responsibility_of_action": "IT Security Team",
     "planned_action_date": "2024-12-10",
     "assessment_post_implementation": {
-      "confidentiality": { "likelihood": "low", "impact": "medium", "risk_factor": 3 },
-      "integrity": { "likelihood": "low", "impact": "low", "risk_factor": 1 },
-      "availability": { "likelihood": "low", "impact": "low", "risk_factor": 1 },
-      "overall_risk_rating": 5
+      "confidentiality": {
+        "likelihood": "low",
+        "impact": "medium",
+        "risk_factor": 8
+      },
+      "integrity": {
+        "likelihood": "low",
+        "impact": "low",
+        "risk_factor": 4
+      },
+      "availability": {
+        "likelihood": "low",
+        "impact": "low",
+        "risk_factor": 4
+      },
+      "overall_risk_rating": 16
     },
     "actual_closed_date": "2025-01-15",
     "risk_response": "Mitigate",
     "risk_status": "closed",
-    "remarks": "Risk successfully mitigated through planned measures."
+    "remarks": "Risk successfully mitigated through the implementation of MFA, encryption, and stricter access controls."
   },
   {
     "id": 2,
-    "risk_number": "R-002",
+    "risk_number": "R002",
     "risk_name": "Data corruption due to hardware failure",
-    "risk_description": "Unexpected hardware failure can result in significant data corruption and operational downtime.",
-    "risk_type": "Operational",
+    "risk_description": "Hardware failures, such as hard disk crashes, memory malfunctions, or power supply disruptions, can result in significant data corruption, leading to system downtimes and potential data loss. These failures can disrupt business operations, delay project timelines, and affect customer service. Furthermore, recovery from such incidents often involves restoring data from backups, which can be time-consuming and costly. If backups are not available or if they are corrupted, the organization may face irreparable data loss. Hardware failures also increase the risk of delayed decision-making and workflow interruptions.",
+    "risk_type": "Quality",
     "department_id": "DPT-002",
     "project_id": "PRJ-1002",
-    "impact_of_risk": "Data loss and service unavailability can lead to operational inefficiencies.",
+    "impact_of_risk": "The primary impacts of data corruption due to hardware failure are the potential loss of critical data, increased downtime, and the inability to access important business records. Operational inefficiencies can occur as employees may be unable to access necessary data, leading to decreased productivity and customer service. For organizations that rely heavily on real-time data processing or handle large volumes of data, these impacts can be catastrophic, leading to financial losses, customer dissatisfaction, and potential project delays.",
     "current_risk_assessment": {
-      "confidentiality": { "likelihood": "low", "impact": "low", "risk_factor": 2 },
-      "integrity": { "likelihood": "high", "impact": "high", "risk_factor": 9 },
-      "availability": { "likelihood": "medium", "impact": "high", "risk_factor": 6 },
-      "overall_risk_rating": 17
+      "confidentiality": {
+        "likelihood": "critical",
+        "impact": "Medium",
+        "risk_factor": 40
+      },
+      "integrity": {
+        "likelihood": "high",
+        "impact": "high",
+        "risk_factor": 64
+      },
+      "availability": {
+        "likelihood": "medium",
+        "impact": "high",
+        "risk_factor": 32
+      },
+      "overall_risk_rating": 136
     },
-    "risk_mitigation": "Regular backups and redundant hardware setups.",
-    "risk_contingency": "Immediate restoration from backups and replacing faulty hardware.",
+    "risk_mitigation": "To mitigate the risk, the organization should implement regular backup schedules, ensure that backups are stored in multiple locations (on-site and off-site), and conduct routine checks to verify the integrity of backup files. Redundant hardware setups, such as RAID configurations, should be employed to minimize the impact of hardware failures. A disaster recovery plan should be in place, with clearly defined processes for restoring critical data and systems in case of a hardware malfunction. Additionally, proactive monitoring of hardware health and performance can help detect signs of impending failure before it causes significant damage.",
+    "risk_contingency": "If hardware failure occurs, the contingency plan should focus on restoring data from the most recent backup as quickly as possible to minimize downtime. If the hardware failure is extensive, temporary workarounds, such as using alternative hardware or cloud services, may be required. The affected systems should be replaced or repaired as soon as possible to restore full operational capacity. All teams should be trained to follow the disaster recovery protocols to ensure a smooth recovery process.",
     "responsibility_of_action": "IT Operations Team",
     "planned_action_date": "2024-11-20",
     "assessment_post_implementation": {
-      "confidentiality": { "likelihood": "low", "impact": "low", "risk_factor": 1 },
-      "integrity": { "likelihood": "low", "impact": "low", "risk_factor": 1 },
-      "availability": { "likelihood": "low", "impact": "medium", "risk_factor": 2 },
+      "confidentiality": {
+        "likelihood": "low",
+        "impact": "low",
+        "risk_factor": 1
+      },
+      "integrity": {
+        "likelihood": "low",
+        "impact": "low",
+        "risk_factor": 1
+      },
+      "availability": {
+        "likelihood": "low",
+        "impact": "medium",
+        "risk_factor": 2
+      },
       "overall_risk_rating": 4
     },
     "actual_closed_date": "2025-01-05",
     "risk_response": "Mitigate",
     "risk_status": "closed",
-    "remarks": "Regular backups ensured risk mitigation."
+    "remarks": "Regular backups and redundant hardware ensured risk mitigation."
   },
   {
     "id": 3,
-    "risk_number": "R-003",
+    "risk_number": "R003",
     "risk_name": "Insider threat",
-    "risk_description": "Employees with malicious intent can misuse their access to compromise data and systems.",
-    "risk_type": "Security",
+    "risk_description": "Insider threats occur when employees, contractors, or other trusted individuals misuse their access privileges to compromise organizational data or systems. These threats can be intentional (e.g., theft or sabotage) or unintentional (e.g., negligence or error). Insider threats are particularly difficult to detect and prevent because insiders are familiar with the organization's systems, processes, and security measures. Malicious insiders may have the ability to access sensitive data, delete or alter records, or cause other forms of damage to the organization. The impact of such threats can be severe, including data breaches, financial losses, and reputational harm.",
+    "risk_type": "Privacy",
     "department_id": "DPT-003",
     "project_id": "PRJ-1003",
-    "impact_of_risk": "Compromised data integrity and organizational reputation.",
+    "impact_of_risk": "The consequences of an insider threat can be significant, ranging from financial losses due to fraud or theft, to the exposure of confidential or proprietary data. Insider threats can also damage the organization’s reputation, as customers, partners, and regulators may lose confidence in the organization’s ability to secure sensitive information. The internal nature of the threat can also lead to delayed detection and increased difficulty in recovering from the incident. The broader impact may include legal action, regulatory fines, and loss of key intellectual property or business secrets.",
     "current_risk_assessment": {
-      "confidentiality": { "likelihood": "medium", "impact": "high", "risk_factor": 6 },
-      "integrity": { "likelihood": "high", "impact": "medium", "risk_factor": 8 },
-      "availability": { "likelihood": "medium", "impact": "medium", "risk_factor": 4 },
-      "overall_risk_rating": 18
+      "confidentiality": {
+        "likelihood": "medium",
+        "impact": "high",
+        "risk_factor": 32
+      },
+      "integrity": {
+        "likelihood": "high",
+        "impact": "medium",
+        "risk_factor": 32
+      },
+      "availability": {
+        "likelihood": "medium",
+        "impact": "medium",
+        "risk_factor": 16
+      },
+      "overall_risk_rating": 80
     },
-    "risk_mitigation": "Implementing robust access controls and employee monitoring.",
-    "risk_contingency": "Restrict access immediately upon detection and review logs.",
+    "risk_mitigation": "To mitigate insider threats, organizations should implement stringent access control mechanisms, including role-based access controls (RBAC) and least privilege principles, ensuring that employees only have access to the data and systems necessary for their roles. Additionally, monitoring systems should be put in place to detect abnormal behavior, such as unauthorized access attempts, file transfers, or changes to sensitive data. Regular security awareness training for employees is crucial to help them recognize and report suspicious activities. Strong policies, including non-disclosure agreements (NDAs), can further help protect sensitive data from malicious insiders.",
+    "risk_contingency": "If an insider threat is detected, immediate actions should include revoking the individual's access to the affected systems and conducting a thorough investigation to determine the scope of the threat. In case of data compromise, efforts should be made to recover the stolen data and identify the motive behind the malicious act. Additionally, the organization should involve legal and HR departments to determine the appropriate disciplinary or legal actions against the individual. The organization should also conduct a post-incident review to improve security measures and prevent similar incidents in the future.",
     "responsibility_of_action": "HR and IT Security Team",
     "planned_action_date": "2024-12-15",
     "assessment_post_implementation": {
-      "confidentiality": { "likelihood": "low", "impact": "medium", "risk_factor": 2 },
-      "integrity": { "likelihood": "low", "impact": "low", "risk_factor": 1 },
-      "availability": { "likelihood": "low", "impact": "low", "risk_factor": 1 },
+      "confidentiality": {
+        "likelihood": "low",
+        "impact": "medium",
+        "risk_factor": 2
+      },
+      "integrity": {
+        "likelihood": "low",
+        "impact": "low",
+        "risk_factor": 1
+      },
+      "availability": {
+        "likelihood": "low",
+        "impact": "low",
+        "risk_factor": 1
+      },
       "overall_risk_rating": 4
     },
     "actual_closed_date": "2025-02-01",
     "risk_response": "Mitigate",
-    "risk_status": "closed",
-    "remarks": "Employee access controls reduced risks significantly."
-  },
-  {
-    "id": 4,
-    "risk_number": "R-004",
-    "risk_name": "Software vulnerability exploitation",
-    "risk_description": "Exploitable vulnerabilities in outdated software.",
-    "risk_type": "Security",
-    "department_id": "DPT-004",
-    "project_id": "PRJ-1004",
-    "impact_of_risk": "System compromise and data breach.",
-    "current_risk_assessment": {
-      "confidentiality": { "likelihood": "high", "impact": "high", "risk_factor": 9 },
-      "integrity": { "likelihood": "medium", "impact": "medium", "risk_factor": 6 },
-      "availability": { "likelihood": "medium", "impact": "high", "risk_factor": 6 },
-      "overall_risk_rating": 21
-    },
-    "risk_mitigation": "Regular software patching and updates.",
-    "risk_contingency": "Immediate patching upon exploitation.",
-    "responsibility_of_action": "IT Security Team",
-    "planned_action_date": "2024-11-30",
-    "assessment_post_implementation": {
-      "confidentiality": { "likelihood": "low", "impact": "low", "risk_factor": 1 },
-      "integrity": { "likelihood": "low", "impact": "medium", "risk_factor": 2 },
-      "availability": { "likelihood": "low", "impact": "low", "risk_factor": 1 },
-      "overall_risk_rating": 4
-    },
-    "actual_closed_date": "2025-01-20",
-    "risk_response": "Mitigate",
-    "risk_status": "closed",
-    "remarks": "Patch management resolved vulnerabilities."
+    "risk_status": "open",
+    "remarks": "Access controls, monitoring, and training reduced risk effectively."
   }
 ]

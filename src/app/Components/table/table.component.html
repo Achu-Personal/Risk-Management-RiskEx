@@ -1,25 +1,48 @@
-
 <div class="table-container primaryColor">
   <div class="top">
-  <div class="table-header">
-    <label for="entries">Show</label>
-    <select id="entries">
-      <option value="10">10</option>
-      <option value="25">25</option>
-      <option value="50">50</option>
-    </select>
-    <label>entries</label>
-    <input type="text" id="search" placeholder="Search..." />
+    <div class="table-header">
+      <label for="entries">Show</label>
+      <select id="entries" [(ngModel)]="itemsPerPage" (ngModelChange)="updatePaginatedItems()">
+        <option value="10">10</option>
+        <option value="25">25</option>
+        <option value="50">50</option>
+      </select>
+      <label>entries</label>
+      <app-searchbar (searchChanged)="onSearch($event)"></app-searchbar>
+      <div class="btnn">
+        @if(isButtonVisible == true){
+          <button>Download Report</button>
+        }
+        <!-- <button>Download Report</button> -->
+
+      </div>
+
+    </div>
   </div>
-</div>
   <div class="table-responsive">
-    <table class="table table-striped">
+    <table class="table1">
       <thead>
         <tr class="bord">
           <th>SL No</th>
           <th>Risk ID</th>
           <th>Risk Name</th>
-          <th>Department</th>
+          <th>
+            <button class="dropdown-button" (click)="toggleDropdown()">
+              DEPARTMENT&#9662;
+            </button>
+            @if(isDropdownOpen){
+            <ul class="dropdown-options">
+
+              @for(department of uniqueDepartments;track department){
+              <li
+                (click)="onDepartmentSelect(department)">
+                {{ department }}
+              </li>
+            }
+              <li (click)="onDepartmentSelect('')">All Departments</li>
+            </ul>
+            }
+          </th>
           <th>Type</th>
           <th>End Date</th>
           <th>Current Risk Rating</th>
@@ -30,185 +53,31 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>1</td>
-          <td>R001</td>
-          <td>Risk A</td>
-          <td>Finance</td>
-          <td>Type 1</td>
-          <td>2024-01-15</td>
-          <td>High</td>
-          <td>John Doe</td>
-          <td>Jane Doe</td>
-          <td>Approved</td>
-          <td>Open</td>
+        @for(item of paginatedItems ;track item){
+        <tr (click)="rowClick(item.id)">
+          <td>{{ item.slNo }}</td>
+          <td>{{ item.riskId }}</td>
+          <td>{{ item.riskName }}</td>
+          <td>{{ item.department }}</td>
+          <td>{{ item.type }}</td>
+          <td>{{ item.endDate }}</td>
+          <td>{{ item.currentRiskRating }}</td>
+          <td>{{ item.assignee }}</td>
+          <td>{{ item.reviewer }}</td>
+          <td>{{ item.reviewStatus }}</td>
+          <td><div  [ngClass]="{'green-cell': item.status === 'Open', 'red-cell': item.status === 'Closed'}">{{ item.status }}</div></td>
+          <!-- <td>{{item}}</td> -->
         </tr>
-        <tr>
-          <td>1</td>
-          <td>R001</td>
-          <td>Risk A</td>
-          <td>Finance</td>
-          <td>Type 1</td>
-          <td>2024-01-15</td>
-          <td>High</td>
-          <td>John Doe</td>
-          <td>Jane Doe</td>
-          <td>Approved</td>
-          <td>Open</td>
-        </tr>
-        <tr>
-          <td>1</td>
-          <td>R001</td>
-          <td>Risk A</td>
-          <td>Finance</td>
-          <td>Type 1</td>
-          <td>2024-01-15</td>
-          <td>High</td>
-          <td>John Doe</td>
-          <td>Jane Doe</td>
-          <td>Approved</td>
-          <td>Open</td>
-        </tr>
-        <tr>
-          <td>1</td>
-          <td>R001</td>
-          <td>Risk A</td>
-          <td>Finance</td>
-          <td>Type 1</td>
-          <td>2024-01-15</td>
-          <td>High</td>
-          <td>John Doe</td>
-          <td>Jane Doe</td>
-          <td>Approved</td>
-          <td>Open</td>
-        </tr>
-        <tr>
-          <td>1</td>
-          <td>R001</td>
-          <td>Risk A</td>
-          <td>Finance</td>
-          <td>Type 1</td>
-          <td>2024-01-15</td>
-          <td>High</td>
-          <td>John Doe</td>
-          <td>Jane Doe</td>
-          <td>Approved</td>
-          <td>Open</td>
-        </tr>
-        <tr>
-          <td>1</td>
-          <td>R001</td>
-          <td>Risk A</td>
-          <td>Finance</td>
-          <td>Type 1</td>
-          <td>2024-01-15</td>
-          <td>High</td>
-          <td>John Doe</td>
-          <td>Jane Doe</td>
-          <td>Approved</td>
-          <td>Open</td>
-        </tr>
-        <tr>
-          <td>1</td>
-          <td>R001</td>
-          <td>Risk A</td>
-          <td>Finance</td>
-          <td>Type 1</td>
-          <td>2024-01-15</td>
-          <td>High</td>
-          <td>John Doe</td>
-          <td>Jane Doe</td>
-          <td>Approved</td>
-          <td>Open</td>
-        </tr>
-        <tr>
-          <td>1</td>
-          <td>R001</td>
-          <td>Risk A</td>
-          <td>Finance</td>
-          <td>Type 1</td>
-          <td>2024-01-15</td>
-          <td>High</td>
-          <td>John Doe</td>
-          <td>Jane Doe</td>
-          <td>Approved</td>
-          <td>Open</td>
-        </tr>
-        <tr>
-          <td>1</td>
-          <td>R001</td>
-          <td>Risk A</td>
-          <td>Finance</td>
-          <td>Type 1</td>
-          <td>2024-01-15</td>
-          <td>High</td>
-          <td>John Doe</td>
-          <td>Jane Doe</td>
-          <td>Approved</td>
-          <td>Open</td>
-        </tr>
-        <tr>
-          <td>1</td>
-          <td>R001</td>
-          <td>Risk A</td>
-          <td>Finance</td>
-          <td>Type 1</td>
-          <td>2024-01-15</td>
-          <td>High</td>
-          <td>John Doe</td>
-          <td>Jane Doe</td>
-          <td>Approved</td>
-          <td>Open</td>
-        </tr>
-        <tr>
-          <td>1</td>
-          <td>R001</td>
-          <td>Risk A</td>
-          <td>Finance</td>
-          <td>Type 1</td>
-          <td>2024-01-15</td>
-          <td>High</td>
-          <td>John Doe</td>
-          <td>Jane Doe</td>
-          <td>Approved</td>
-          <td>Open</td>
-        </tr>
-        <tr>
-          <td>1</td>
-          <td>R001</td>
-          <td>Risk A</td>
-          <td>Finance</td>
-          <td>Type 1</td>
-          <td>2024-01-15</td>
-          <td>High</td>
-          <td>John Doe</td>
-          <td>Jane Doe</td>
-          <td>Approved</td>
-          <td>Open</td>
-        </tr>
-        <tr>
-          <td>1</td>
-          <td>R001</td>
-          <td>Risk A</td>
-          <td>Finance</td>
-          <td>Type 1</td>
-          <td>2024-01-15</td>
-          <td>High</td>
-          <td>John Doe</td>
-          <td>Jane Doe</td>
-          <td>Approved</td>
-          <td>Open</td>
-        </tr>
-
+      }
       </tbody>
     </table>
   </div>
-  <div class="pagination fixed-pagination">
-    <button class="page-btn">&laquo;</button>
-    <button class="page-btn active">1</button>
-    <button class="page-btn">2</button>
-    <button class="page-btn">3</button>
-    <button class="page-btn">&raquo;</button>
-  </div>
-</div>
 
+   @if(shouldDisplayPagination()){
+    <app-pagination  [totalItems]="totalItems"
+    [itemsPerPage]="itemsPerPage"
+    [currentPage]="currentPage"
+    (pageChanged)="onPageChange($event)" class="pagination-controls pagination "></app-pagination>
+   }
+
+  </div>

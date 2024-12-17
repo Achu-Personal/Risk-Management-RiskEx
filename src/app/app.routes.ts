@@ -23,6 +23,7 @@ import { ResetpswrdComponent } from './Pages/resetpswrd/resetpswrd.component';
 import { HomeComponent } from './Pages/home/home.component';
 import { ApprovalTableComponent } from './Pages/approval-table/approval-table.component';
 import { EditRiskComponent } from './Pages/edit-risk/edit-risk.component';
+import { ChangepasswordComponent } from './Components/changepassword/changepassword.component';
 
 
 export const routes: Routes = [
@@ -40,7 +41,7 @@ export const routes: Routes = [
     path:'',component:DashboardComponent,
     children:[
       {
-        path:'home',component:HomeComponent, data: { title: 'Register Management' }
+        path:'home',component:HomeComponent, data: { title: 'Risk Management' }
       },
       {
         path:'ViewRisk/:id',component:ViewRiskComponent,  data: { title: 'View Risk' }
@@ -82,6 +83,9 @@ export const routes: Routes = [
   },
   {
     path:"resetpassword",component:ResetpswrdComponent
+  },
+  {
+    path:"changepassword",component:ChangepasswordComponent
   },
 
 
