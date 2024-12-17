@@ -1,7 +1,8 @@
 <!-- Dropdown Box -->
 <div class="dropdown-box" (click)="toggleDropdown()">
   {{ selectedDepartment }}
-  <i class="bi bi-chevron-down"></i></div>
+  <i class="bi bi-chevron-down"></i>
+</div>
 
 <!-- Dropdown Content -->
 <div class="dropdown-content" *ngIf="dropdownOpen">
@@ -25,7 +26,7 @@
         [checked]="isSelected(option)"
         (change)="toggleSelection(option)"
       />
-      {{ option }}
+      {{ option.departmentName }}
     </label>
   </div>
 </div>

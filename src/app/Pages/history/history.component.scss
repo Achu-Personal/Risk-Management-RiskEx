@@ -3,11 +3,46 @@ h2{
   margin-left: 40px;
 }
 .tab{
-  margin-top: 80px;
+  margin-top: 30px;
 }
 
-app-table{
-  position: fixed;
-  margin-left: 20px;
-  width: 1250px;
+// app-table{
+//   position: fixed;
+//   margin-left: 20px;
+//   width: 1250px;
+// }
+.btnn{
+  display: flex;
+  flex-direction: row;
+  justify-content: right;
+  gap: 20px;
+
 }
+
+
+/* Style for individual buttons */
+.btnn button {
+  padding: 10px 20px;  /* Space inside the button */
+  background-color: #ffffff;  /* Blue background */
+  color: #0056b3 ;  /* White text */
+  border: 1px solid #007bff;  /* Border matching the background */
+  box-shadow: 0 0 3px rgba(122, 174, 229, 0.626);
+  border-radius: 5px;  /* Rounded corners */
+  font-size: 14px;  /* Button text size */
+  cursor: pointer;  /* Pointer cursor on hover */
+  transition: background-color 0.3s, border-color 0.3s;  /* Smooth transition */
+}
+
+/* Hover effect */
+.btnn button:hover {
+  background-color: #0056b3;
+  color: white;
+  border-color: #0056b3;  /* Darker border on hover */
+}
+
+/* Focus effect */
+.btnn button:focus {
+  outline: none;  /* Remove default focus outline */
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);  /* Add custom focus outline */
+}
+
