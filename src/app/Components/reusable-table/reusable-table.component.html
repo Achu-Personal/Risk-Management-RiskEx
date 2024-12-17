@@ -1,5 +1,6 @@
+<div class="table-container">
 <div class="table-responsive">
-  <table>
+  <table class="table">
     <thead>
       <tr class="bord">
         @for(header of tableHeaders; track header){
@@ -15,7 +16,7 @@
       <tr (click)="rowClick(row)">
         @for(key of rowKeys; track key ){
         <td [title]="row[key]">
-          {{ row[key]?.toString() | slice : 0 : 12
+          {{ row[key]?.toString() | slice : 0 : 20
           }}{{ row[key]?.length > 12 ? "..." : "" }}
         </td>
         } @if(IsActionRequiered){ @if(!IsUser){
@@ -69,6 +70,7 @@
         </td>
 
         } @else if(IsUser) {
+          <td>
         <div class="toggle-container">
           <!-- Display toggle state -->
           <div 
@@ -84,8 +86,9 @@
 
           
           
-        </div>
-        } }
+        </div></td>
+        }
+       }
       </tr>
       }
 
@@ -99,4 +102,5 @@
       </tr>
     </tbody>
   </table>
+</div>
 </div>

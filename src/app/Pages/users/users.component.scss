@@ -13,7 +13,26 @@
   justify-content: end;
   margin-top: 10px;
   margin-right: 20px;
+  // position: fixed;
+
 }
+
+.sticky-buttons {
+  position: sticky; /* Sticks to the top while scrolling */
+  top: -25px;
+  margin-top: 10px;
+  // left: 0;
+  z-index: 1000; /* Higher than table content */
+  background-color: white; /* Solid background to hide table content */
+  padding-bottom: 10px;
+  padding-top: 30px;
+  overflow-y: none;
+}
+
+
+
+
+
 
 button.button-custom {
   padding: 10px ;
