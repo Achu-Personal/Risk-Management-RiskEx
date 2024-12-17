@@ -33,31 +33,12 @@ constructor(private http:HttpClient) { }
      return  data.filter((item:any)=>item.id===id)[0]
     }));
   }
-  getDepartment() {
-    return this.http.get<department[]>('https://localhost:7150/api/Department/GetAllDepartments');
-  }
 
-  addNewDepartment(department: any): Observable<{ message: string }> {
-    return this.http.post<{ message: string }>('https://localhost:7150/api/Department/AddDepartment', department);
-  }
+  getRisk()
+  {
+    console.log("hai")
+      return this.http.get(`data/getRisk.json`);
 
-  getProjects(departmentName: string) {
-    return this.http.get<project[]>(`https://localhost:7150/api/Project/GetProjectsByDepartment/${departmentName}`);
-  }
 
-  gettabledata(){
-    return this.http.get(`data/tabledata.json`)
   }
-  getFilteredData(department: any) {
-    return this.http.get(`data/tabledata.json`).pipe(
-      map((data:any) => {
-        const filteredData = data.filter((item:any) => item.department.toLowerCase() === String( department).toLowerCase());
-        return filteredData;
-      })
-    );
-  }
-  addNewProject(project:any){
-    return this.http.post("https://localhost:7150/api/Project/AddProject",project)
-  }
-
 }

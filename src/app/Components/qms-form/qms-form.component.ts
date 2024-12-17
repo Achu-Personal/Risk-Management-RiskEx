@@ -1,17 +1,18 @@
 import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ApiService } from '../../Services/api.service';
 import { DropdownComponent } from "../../UI/dropdown/dropdown.component";
 import { ButtonComponent } from "../../UI/button/button.component";
 import { CommonModule } from '@angular/common';
 import { TextareaComponent } from "../../UI/textarea/textarea.component";
 import { OverallRatingCardComponent } from "../../UI/overall-rating-card/overall-rating-card.component";
+import { BodyContainerComponent } from "../body-container/body-container.component";
 
 
 @Component({
   selector: 'app-qms-form',
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule, DropdownComponent, ButtonComponent, CommonModule, TextareaComponent, OverallRatingCardComponent],
+  imports: [FormsModule, ReactiveFormsModule, DropdownComponent, ButtonComponent, CommonModule, TextareaComponent, OverallRatingCardComponent, BodyContainerComponent],
   templateUrl: './qms-form.component.html',
   styleUrl: './qms-form.component.scss'
 })
@@ -31,21 +32,20 @@ export class QMSFormComponent {
   qmsForm=new FormGroup({
     riskType:new FormControl(''),
     status:new FormControl(''),
-    riskName:new FormControl(''),
-    description:new FormControl(''),
-    riskImpact:new FormControl(''),
+    riskName:new FormControl('',Validators.required),
+    description:new FormControl('',[Validators.maxLength(1000),Validators.minLength(15),Validators.required]),
+    riskImpact:new FormControl('',[Validators.maxLength(1000),Validators.minLength(15),Validators.required]),
     projectId:new FormControl(''),
-    likelihood:new FormControl(''),
-    impact:new FormControl(''),
-    mitigation:new FormControl(''),
+    likelihood:new FormControl('',Validators.required),
+    impact:new FormControl('',Validators.required),
+    mitigation:new FormControl('',[Validators.maxLength(1000),Validators.minLength(15),Validators.required]),
     contingency:new FormControl(''),
-    responsibilityOfAction:new FormControl(''),
-    plannedActionDate:new FormControl(''),
-    reviewer:new FormControl()
+    responsibilityOfAction:new FormControl('',[Validators.maxLength(20),Validators.minLength(5),Validators.required]),
+    plannedActionDate:new FormControl('',Validators.required),
+    reviewer:new FormControl('',Validators.required)
 
 
   })
-
 
   dropdownDataLikelihood=[
     {"type":"Very Low","value":"0.1"},
@@ -71,17 +71,7 @@ export class QMSFormComponent {
     { "name":"Vivek V N","email":"123"},
   ];
 
-constructor(public api:ApiService){}
 
-  ngOninit(){
-    this.api.getRiskCurrentAssessment().subscribe((res:any)=>{
-      this.data=res
-      console.log(this.data)
-
-    })
-
-
-  }
 
 
 
@@ -95,29 +85,25 @@ constructor(public api:ApiService){}
 
   onsubmit(){
 
-    const userConfirmed = window.confirm('Do you want to save?');
-    if (userConfirmed) {
-      this.saveData();
-      this.qmsForm.get('riskType')?.setValue(this.riskTypeValue);
-      this.qmsForm.get('status')?.setValue("open");
 
-      console.log("Updated riskType value:", this.qmsForm.get('riskType')?.value);
-      const formValue = this.qmsForm.getRawValue();
+  if (this.qmsForm.valid) {
 
-      this.sendDataToParent.emit(this.qmsForm.value);
-      console.log("actual data");
+    this.qmsForm.get('riskType')?.setValue(this.riskTypeValue);
+    this.qmsForm.get('status')?.setValue("open");
+    console.log("Updated riskType value:", this.qmsForm.get('riskType')?.value);
+    const formValue = this.qmsForm.getRawValue();
+    this.sendDataToParent.emit(this.qmsForm.value);
+    console.log("Actual data:", formValue);
+    alert("saved successfull")
+  } else {
+    this.qmsForm.markAllAsTouched();
+    alert("Form is invalid. Please fill out all required fields.");
+  }
+}
 
-      console.log(formValue);
-    } else {
-      alert('User canceled saving.');
-    }
-
-
-     }
-
-     onDropdownChange1(value: any): void {
-      this.selectedValue1 = value ? parseFloat(value.target.value) : 0; // Convert string value to number
-      this.updateResult();  // Update the result when a value is selected
+ onDropdownChange1(value: any): void {
+   this.selectedValue1 = value ? parseFloat(value.target.value) : 0; // Convert string value to number
+   this.updateResult();  // Update the result when a value is selected
     }
 
     // Method to handle value change for the second dropdown
@@ -151,28 +137,10 @@ constructor(public api:ApiService){}
 
     }
 
-    getBackgroundColor() {
-      if (this.result <= 30) {
-        return { 'background-color': ' #4CAF50' };
-      } else if (this.result >= 31 && this.result <= 99) {
-        return { 'background-color': '#FFC107' };
-      }
-      else if(this.result>=100 && this.result<=300){
-        return { 'background-color': '#FF5722' };
-
-      }
-      else{
-       return{'background-color': 'transparent'}
-
-      }
-
-    }
 
 
-    saveData() {
-      alert('Data saved successfully!');
 
-    }
+
 
 
 }
