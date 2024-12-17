@@ -1,8 +1,8 @@
 <app-body-container>
 
-  <div class="container mt-4 ">
+  <!-- <div class="container mt-4 ">
     <h2 class="mb-4" style="margin-left: 0;">Manage Users and Departments</h2>
-  </div>
+  </div> -->
   <div class="row button-group">
     <div class="col-md-2 d-flex justify-content-end">
       <button type="button" class="btn btn-success button-custom" data-bs-toggle="modal" data-bs-target="#addUserModal">
@@ -91,7 +91,7 @@
             </div>
 
             <div class="mb-3">
-              
+
               <div *ngIf="projects.length > 0; else noProjects">
                 <label for="projectName" class="form-label">Project</label>
                 <select class="form-select" id="projectName" formControlName="projectName">
@@ -189,11 +189,19 @@
             <label for="departmentName" class="form-label p-2">
               Department Name <span class="text-danger">*</span>
             </label>
-            <input type="text" class="form-control" id="departmentName" placeholder="Enter Department Name"
-              formControlName="departmentName" />
-            @if (projectForm.get('departmentName')?.invalid && projectForm.get('departmentName')?.touched)
+            <select class="form-select" id="department" formControlName="departmentName">
+              <option value="" disabled>Select Department</option>
+              @for(item of departments; track item.id){
+
+                <option [value]="item.departmentName">{{item.departmentName}}</option>
+              }
+
+            </select>
+            @if (userForm.get('department')?.invalid &&userForm.get('department')?.touched)
             {
-            <div class="text-danger">Department name is required.</div>
+            <div class="text-danger">
+              Department is required.
+            </div>
             }
           </div>
 
@@ -210,6 +218,14 @@
     </div>
   </div>
 </div>
-  <app-user-table></app-user-table>
+  <!-- <app-user-table></app-user-table> -->
 
+
+    <div class="table-container">
+      <app-reusable-table
+    [tableHeaders]="headerData"
+    [tableData]="tableBody"
+    [IsActionRequiered]="true"
+    [IsUser]="true">
+  </app-reusable-table></div>
 </app-body-container>

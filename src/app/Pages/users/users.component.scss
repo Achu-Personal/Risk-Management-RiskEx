@@ -8,11 +8,10 @@
   background-color: #f8f9fa;
 }
 .button-group {
-  margin-top: 30px;
   gap: 20px;
   display: flex;
-  margin-top: 30px;
   justify-content: end;
+  margin-top: 10px;
   margin-right: 20px;
 }
 
@@ -64,5 +63,14 @@ button.btn-danger {
 button.btn-danger:hover {
   background-color: #b6b5bd;
   transform: scale(1.05);
+}
+
+.table-container{
+  padding-top: 30px;
+}
+.form-select {
+  max-height: 50px; /* Adjust height as needed */
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 

@@ -7,6 +7,7 @@ import { DropdownComponent } from "../../UI/dropdown/dropdown.component";
 import { DepartmentDropdownComponent } from "../../Components/department-dropdown/department-dropdown.component";
 import { ChartComponent } from "../../UI/chart/chart.component";
 import { TableComponent } from "../../Components/table/table.component";
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -16,6 +17,13 @@ import { TableComponent } from "../../Components/table/table.component";
   styleUrl: './home.component.scss'
 })
 export class HomeComponent {
+  constructor(private router: Router) {}
+
+  OnClickRow(rowid:any): void {
+    this.router.navigate([`/ViewRisk/${rowid}`]);
+    console.log("rowdata",rowid);
+
+  }
 // data:any
 // onDropdownChange($event: string) {
 // }
