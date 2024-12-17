@@ -41,7 +41,7 @@ export const routes: Routes = [
     path:'',component:DashboardComponent,
     children:[
       {
-        path:'home',component:HomeComponent, data: { title: 'Risk Management' }
+        path:'home',component:HomeComponent, data:{title: 'Risk Management' }
       },
       {
         path:'ViewRisk/:id',component:ViewRiskComponent,  data: { title: 'View Risk' }
@@ -69,10 +69,10 @@ export const routes: Routes = [
         path:'approvals',component:ApprovalComponent,data: { title: 'Approvals' }
       },
       {
-        path:'edit',component:EditRiskComponent
+        path:'edit',component:EditRiskComponent, data:{title: 'Edit Risk' }
       },
       {
-        path:'',redirectTo:'home',pathMatch:'full'
+        path:'',redirectTo:'home',pathMatch:'full', data:{title: 'Risk Management' }
       }
     ]
   },
