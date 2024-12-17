@@ -37,7 +37,7 @@
 .table-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: left;
   padding: 10px 15px;
   background: #ffffff;
   border-bottom: 1px solid #ddd;
@@ -115,7 +115,7 @@
 }
 
 .table1 th {
-  background: #F7F6FE;
+  background: #F6FBFF;
   color: #0f0f0f;
   font-weight: bold;
   text-transform: uppercase;
@@ -123,12 +123,12 @@
 }
 
 .table-responsive tbody tr:nth-child(even) {
-  background-color: #F7F6FE;
+  background-color: #F6FBFF;
 }
 
 
 .table-responsive tbody tr:hover {
-  background-color: #a5c0f8;
+  background-color: #d4e5f2;
 
 }
 
@@ -161,6 +161,7 @@
 }
 #entries{
   background-color: #F7F6FE;
+  height: 39px;
 }
 //dropdown
 
