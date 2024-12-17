@@ -94,14 +94,19 @@ textarea:focus {
   margin-top: 20px;
 }
 #cancelbtn{
-  margin-left: 20px;
+  margin-left: 0px;
 }
 .action{
-  margin-top: 140px;
+  margin-top: 100px;
   display: flex;
   flex-direction: row;
   justify-content: end;
-  margin-right: 150px;
+  margin-right: 110px;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: end;
+  margin-bottom: 30px;
 }
 .contingency,.description,.impact,.mitigation,.responsibility{
   display: flex;
@@ -171,19 +176,30 @@ textarea:focus {
   margin-left: 70px;
   margin-bottom: 20px;
 }
-.savecancel{
-  border: 1px solid rgb(62, 104, 185, 75%) ;
+.savecancel {
+  border: 1px solid rgba(62, 104, 185, 0.75); /* Clean RGBA format */
+  background-color: #f5f8ff; /* Light background for better visibility */
+  color: #3e68b9; /* Text color to match the border */
   cursor: pointer;
   font-weight: 600;
+  font-size: 14px;
+  padding: 5px 5px; /* Added padding for better appearance */
   border-radius: 8px;
-  // text-align: center;
-  // outline: none;
-  :focus
-  {
-    outline: none;
-    border: none;
-  }
+  text-align: center;
+  transition: all 0.3s ease; /* Smooth transition for hover effects */
+  width:160px ;
+}
 
+.savecancel:hover {
+  background-color: #3e68b9; /* On hover: Fill the button with primary color */
+  color: #ffffff; /* On hover: Text becomes white */
+  border-color: #3e68b9; /* Border matches background on hover */
+}
+
+.savecancel:focus {
+  outline: none; /* Remove focus outline */
+  box-shadow: 0 0 5px rgba(62, 104, 185, 0.5); /* Subtle glow effect */
+  border-color: #3e68b9; /* Border remains consistent */
 }
 .firstDiv{
   display: flex;

@@ -6,6 +6,7 @@ import { ApiService } from '../../Services/api.service';
 import { TextareaComponent } from "../../UI/textarea/textarea.component";
 import { OverallRatingCardComponent } from "../../UI/overall-rating-card/overall-rating-card.component";
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-isms-form',
@@ -28,6 +29,7 @@ export class ISMSFormComponent {
   selectedValue7: number  = 0;
   selectedValue8: number = 0;
   result: number = 0;
+
 
 
   ismsForm=new FormGroup({
@@ -79,7 +81,7 @@ export class ISMSFormComponent {
     { "name":"Vivek V N","email":"123"},
   ];
 
-constructor(public api:ApiService){}
+constructor(public api:ApiService,private router:Router){}
 
   ngOninit(){
     this.api.getRiskCurrentAssessment().subscribe((res:any)=>{
@@ -112,6 +114,7 @@ constructor(public api:ApiService){}
       this.sendDataToParent.emit(this.ismsForm.value);
       console.log("Actual data:", formValue);
       alert("saved successfull")
+      this.router.navigate(['/home']);
     } else {
       this.ismsForm.markAllAsTouched();
       alert("Form is invalid. Please fill out all required fields.");
@@ -223,6 +226,11 @@ constructor(public api:ApiService){}
        this.result = this.selectedValue8;
      }
 
+    }
+
+    onCancel(): void {
+      this.ismsForm.reset(); // Reset the form
+      this.router.navigate(['/home']); // Navigate to the dashboard
     }
 
 
