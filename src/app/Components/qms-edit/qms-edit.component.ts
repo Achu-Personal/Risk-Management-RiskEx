@@ -6,6 +6,7 @@ import { TextareaComponent } from "../../UI/textarea/textarea.component";
 import { OverallRatingCardComponent } from "../../UI/overall-rating-card/overall-rating-card.component";
 import { CommonModule } from '@angular/common';
 import { ApiService } from '../../Services/api.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-qms-edit',
@@ -25,6 +26,7 @@ export class QmsEditComponent {
   selectedValue1: number  = 0;
   selectedValue2: number = 0;
   result: number = 0;
+
 
 
 
@@ -104,8 +106,10 @@ export class QmsEditComponent {
 
     this.sendDataToParent.emit(this.qmsForm.value);
     console.log("actual data");
+    alert("Data Saved Successfull");
 
     console.log(formValue);
+    this.router.navigate(['/home']);
 
      }
 
@@ -147,7 +151,7 @@ export class QmsEditComponent {
 
        }
 
-       constructor(public api:ApiService){}
+       constructor(public api:ApiService,private router:Router){}
 
        ngOnInit(){
          this.api.getRisk().subscribe((data:any)=>{
@@ -171,6 +175,9 @@ export class QmsEditComponent {
 
 
        }
-
+       onCancel(): void {
+        this.qmsForm.reset(); // Reset the form
+        this.router.navigate(['/home']); // Navigate to the dashboard
+      }
 
 }

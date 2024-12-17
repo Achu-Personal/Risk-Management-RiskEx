@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ApiService } from '../../Services/api.service';
@@ -26,6 +27,7 @@ export class QMSFormComponent {
   selectedValue1: number  = 0;
   selectedValue2: number = 0;
   result: number = 0;
+  constructor(private router:Router){}
 
 
 
@@ -95,6 +97,7 @@ export class QMSFormComponent {
     this.sendDataToParent.emit(this.qmsForm.value);
     console.log("Actual data:", formValue);
     alert("saved successfull")
+    this.router.navigate(['/home']);
   } else {
     this.qmsForm.markAllAsTouched();
     alert("Form is invalid. Please fill out all required fields.");
@@ -135,6 +138,10 @@ export class QMSFormComponent {
       this.result= this.selectedValue2;
     }
 
+    }
+    onCancel(): void {
+      this.qmsForm.reset(); // Reset the form
+      this.router.navigate(['/home']); // Navigate to the dashboard
     }
 
 
