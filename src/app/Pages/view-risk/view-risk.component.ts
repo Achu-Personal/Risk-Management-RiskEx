@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, computed, effect, Input } from '@angular/core';
 import { RiskBasicDetailsCardComponent } from "../../Components/risk-basic-details-card/risk-basic-details-card.component";
 import { BodyContainerComponent } from "../../Components/body-container/body-container.component";
 import { RiskDetailsSection2Component } from "../../Components/risk-details-section2/risk-details-section2.component";
@@ -19,7 +19,7 @@ export class ViewRiskComponent {
 
   constructor(public api:ApiService,public route:ActivatedRoute)
   {
-
+  
   }
 
   ngOnInit()
@@ -30,6 +30,8 @@ export class ViewRiskComponent {
       this.data=e
     })
   }
-
+ 
+   
+  
 
 }
