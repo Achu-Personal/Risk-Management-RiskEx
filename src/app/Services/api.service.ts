@@ -60,5 +60,11 @@ constructor(private http:HttpClient) { }
      return this.http.post("https://localhost:7150/api/Project/AddProject",project)
    }
 
+   getRisk()
+   {
+     console.log("hai")
+       return this.http.get(`data/getRisk.json`);
+
+
+   }
  }
- 
