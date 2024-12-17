@@ -61,8 +61,8 @@
           <td>{{ item.department }}</td>
           <td>{{ item.type }}</td>
           <td>{{ item.endDate }}</td>
-          <td>{{ item.currentRiskRating }}</td>
-          <td>{{ item.assignee }}</td>
+          <td><div  [ngClass]="{'green-cell': item.currentRiskRating === 'Medium', 'yellow-cell': item.currentRiskRating === 'High','red-cell':item.currentRiskRating === 'Critical'}">{{ item.currentRiskRating }}</div></td>
+          <td >{{ item.assignee }}</td>
           <td>{{ item.reviewer }}</td>
           <td>{{ item.reviewStatus }}</td>
           <td><div  [ngClass]="{'green-cell': item.status === 'Open', 'red-cell': item.status === 'Closed'}">{{ item.status }}</div></td>
