@@ -11,15 +11,6 @@ import { IsmsEditComponent } from "../../Components/isms-edit/isms-edit.componen
 })
 export class EditRiskComponent {
 
-
   riskType:string='Security'
-
-  ngOnInit()
-  {
-    let riskData = history.state.riskData;
-
-    this.riskType=riskData.risk_type
-    console.log("data==",this.riskType)
-  }
 
 }
