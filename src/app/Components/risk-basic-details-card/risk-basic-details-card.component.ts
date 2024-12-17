@@ -28,11 +28,12 @@ export class RiskBasicDetailsCardComponent {
   @Input() overallRiskRating:number=0
   @Input() riskStatus=""
   @Input() isEditable=true;
+  @Input() allData:any={}
 
 
   onEditButtonClicked()
   {
-      this.router.navigate(["editrisk"])
+      this.router.navigate(["edit"], { state: { riskData: this.allData } })
   }
 
 }
