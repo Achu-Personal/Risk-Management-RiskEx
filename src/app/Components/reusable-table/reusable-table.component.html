@@ -13,7 +13,7 @@
     </thead>
     <tbody>
       @for(row of tableData ; track row){
-      <tr (click)="rowClick(row)">
+      <tr (click)="rowClick($event)">
         @for(key of rowKeys; track key ){
         <td [title]="row[key]">
           {{ row[key]?.toString() | slice : 0 : 20
@@ -24,7 +24,7 @@
           <div
             class="icon approve"
             title="Approve"
-            (click)="approveButton($event)"
+            (click)="approveButton($event,row)"
           >
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
               <circle
@@ -48,7 +48,7 @@
           <div
             class="icon reject"
             title="reject"
-            (click)="rejectButton($event)"
+            (click)="rejectButton($event,row)"
           >
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
               <circle
