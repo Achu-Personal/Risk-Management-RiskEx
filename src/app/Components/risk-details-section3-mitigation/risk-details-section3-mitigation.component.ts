@@ -38,7 +38,9 @@ export class RiskDetailsSection3MitigationComponent {
   ngOnInit(): void {
     const data = this.sharedData();
     if (data && data.approve) {
-      this.approvalMessage = data.approve; // Extract the message
+      this.approvalMessage = data.approve; 
+      console.log("approvalMsg:",this.approvalMessage);
+      // Extract the message
     }
   }
 }
