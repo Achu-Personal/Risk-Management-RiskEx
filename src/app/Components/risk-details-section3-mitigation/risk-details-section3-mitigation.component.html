@@ -23,18 +23,24 @@
   <div class="tab-content" id="pills-tabContent" style="margin-top: 20px;">
     <div class="tab-pane fade show active " id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
       <div class=" mytab-content">
-        @if(type!="Quality")
-        {
-        <app-likelihood-impact-card title="Confidentiality (C)" [LikeliHoodlevel]="beforeMitigation.confidentiality.likelihood" [Impactlevel]="beforeMitigation.confidentiality.impact"  [RiskFactor]="beforeMitigation.confidentiality.risk_factor" ></app-likelihood-impact-card>
-        <app-likelihood-impact-card title="Integrity (I)" [LikeliHoodlevel]="beforeMitigation.integrity.likelihood" [Impactlevel]="beforeMitigation.integrity.impact" [RiskFactor]="beforeMitigation.integrity.risk_factor"   ></app-likelihood-impact-card>
-        <app-likelihood-impact-card title="Availability (A)" [LikeliHoodlevel]="beforeMitigation.availability.likelihood" [Impactlevel]="beforeMitigation.availability.impact" [RiskFactor]="beforeMitigation.availability.risk_factor"  ></app-likelihood-impact-card>
-        <app-likelihood-impact-card title="Privacy(P)" [LikeliHoodlevel]="beforeMitigation.availability.likelihood" [Impactlevel]="beforeMitigation.availability.impact" [RiskFactor]="beforeMitigation.availability.risk_factor"  ></app-likelihood-impact-card>
-        }
-        @else {
-          <app-likelihood-impact-card  [LikeliHoodlevel]="afterMitigation.confidentiality.likelihood" [Impactlevel]="beforeMitigation.confidentiality.impact"  [RiskFactor]="afterMitigation.confidentiality.risk_factor" ></app-likelihood-impact-card>
+        <div style="display: flex;flex-direction: row; justify-content: space-between; width: 100%;">
+          <div style="display: flex;flex-direction: row; justify-content:space-around; gap:20px">
+            @if(type!="Quality")
+            {
+            <app-likelihood-impact-card title="Confidentiality (C)" [LikeliHoodlevel]="beforeMitigation.confidentiality.likelihood" [Impactlevel]="beforeMitigation.confidentiality.impact"  [RiskFactor]="beforeMitigation.confidentiality.risk_factor" ></app-likelihood-impact-card>
+            <app-likelihood-impact-card title="Integrity (I)" [LikeliHoodlevel]="beforeMitigation.integrity.likelihood" [Impactlevel]="beforeMitigation.integrity.impact" [RiskFactor]="beforeMitigation.integrity.risk_factor"   ></app-likelihood-impact-card>
+            <app-likelihood-impact-card title="Availability (A)" [LikeliHoodlevel]="beforeMitigation.availability.likelihood" [Impactlevel]="beforeMitigation.availability.impact" [RiskFactor]="beforeMitigation.availability.risk_factor"  ></app-likelihood-impact-card>
+            <app-likelihood-impact-card title="Privacy(P)" [LikeliHoodlevel]="beforeMitigation.availability.likelihood" [Impactlevel]="beforeMitigation.availability.impact" [RiskFactor]="beforeMitigation.availability.risk_factor"  ></app-likelihood-impact-card>
+            }
+            @else {
+              <app-likelihood-impact-card  [LikeliHoodlevel]="afterMitigation.confidentiality.likelihood" [Impactlevel]="beforeMitigation.confidentiality.impact"  [RiskFactor]="afterMitigation.confidentiality.risk_factor" ></app-likelihood-impact-card>
 
-        }
-        <app-overall-rating-card title="Overall Rating" [value]="beforeMitigation.overall_risk_rating" backgroundColor="white" [height]="27" [width]="27"  ></app-overall-rating-card>
+            }
+          </div>
+          <app-overall-rating-card title="Overall Rating" [value]="beforeMitigation.overall_risk_rating" backgroundColor="white" [height]="27" [width]="27"  ></app-overall-rating-card>
+        </div>
+
+
       </div>
       <div class="reviewer-section">
         <h5 style="font-weight: bold;margin-top: 50px">Reviewed By: <span>Tony Stark</span></h5>
@@ -46,21 +52,23 @@
     </div>
     <div class="tab-pane fade  " id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
       <div class=" mytab-content">
-
+        <div style="display: flex;flex-direction: row; justify-content: space-between; width: 100%;">
+          <div style="display: flex;flex-direction: row; justify-content:space-around; gap:20px">
         @if(type!="Quality")
         {
           <app-likelihood-impact-card title="Confidentiality (C)" [LikeliHoodlevel]="afterMitigation.confidentiality.likelihood" [Impactlevel]="afterMitigation.confidentiality.impact"  [RiskFactor]="afterMitigation.confidentiality.risk_factor" ></app-likelihood-impact-card>
           <app-likelihood-impact-card title="Integrity (I)" [LikeliHoodlevel]="afterMitigation.integrity.likelihood" [Impactlevel]="afterMitigation.integrity.impact" [RiskFactor]="afterMitigation.integrity.risk_factor"   ></app-likelihood-impact-card>
           <app-likelihood-impact-card title="Availability (A)" [LikeliHoodlevel]="afterMitigation.availability.likelihood" [Impactlevel]="afterMitigation.availability.impact" [RiskFactor]="afterMitigation.availability.risk_factor"  ></app-likelihood-impact-card>
           <app-likelihood-impact-card title="Privacy(P)" [LikeliHoodlevel]="afterMitigation.availability.likelihood" [Impactlevel]="afterMitigation.availability.impact" [RiskFactor]="afterMitigation.availability.risk_factor"  ></app-likelihood-impact-card>
-          <app-overall-rating-card title="Overall Rating" [value]="afterMitigation.overall_risk_rating" backgroundColor="white" [height]="27" [width]="27"  ></app-overall-rating-card>
         }
         @else
         {
           <app-likelihood-impact-card  [LikeliHoodlevel]="afterMitigation.confidentiality.likelihood" [Impactlevel]="afterMitigation.confidentiality.impact"  [RiskFactor]="afterMitigation.confidentiality.risk_factor" ></app-likelihood-impact-card>
-          <app-overall-rating-card title="Overall Rating" [value]="afterMitigation.overall_risk_rating" backgroundColor="white" [height]="27" [width]="27"  ></app-overall-rating-card>
 
         }
+      </div>
+        <app-overall-rating-card title="Overall Rating" [value]="afterMitigation.overall_risk_rating" backgroundColor="white" [height]="27" [width]="27"  ></app-overall-rating-card>
+      </div>
 
       </div>
 
