@@ -1,13 +1,13 @@
 import { Component, computed, effect, Input } from '@angular/core';
 import { LikelihoodImpactCardComponent } from "../../UI/likelihood-impact-card/likelihood-impact-card.component";
-import { PrivacySecurityRiskAssessment } from '../../Interfaces/RiskInterFaces.interface';
-import { OverallRatingCardComponent } from '../../UI/overall-rating-card/overall-rating-card.component';
+// import { PrivacySecurityRiskAssessment } from '../../Interfaces/RiskInterFaces.interface';
+// import { OverallRatingCardComponent } from '../../UI/overall-rating-card/overall-rating-card.component';
 import { GlobalStateServiceService } from '../../Services/global-state-service.service';
 
 @Component({
   selector: 'app-risk-details-section3-mitigation',
   standalone: true,
-  imports: [LikelihoodImpactCardComponent,OverallRatingCardComponent],
+  imports: [LikelihoodImpactCardComponent],
   templateUrl: './risk-details-section3-mitigation.component.html',
   styleUrl: './risk-details-section3-mitigation.component.scss'
 })
