@@ -1,4 +1,4 @@
-import { Component, EventEmitter, output, Output } from '@angular/core';
+import { Component, EventEmitter, Input, output, Output } from '@angular/core';
 import { EditTextAreaComponent } from "../../UI/edit-text-area/edit-text-area.component";
 import { DropdownComponent } from "../../UI/dropdown/dropdown.component";
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -26,6 +26,7 @@ export class QmsEditComponent {
   selectedValue1: number  = 0;
   selectedValue2: number = 0;
   result: number = 0;
+  @Input() dataObject: any;
 
 
 
@@ -154,22 +155,22 @@ export class QmsEditComponent {
        constructor(public api:ApiService,private router:Router){}
 
        ngOnInit(){
-         this.api.getRisk().subscribe((data:any)=>{
+
            this.qmsForm.patchValue({
-             riskType: data.riskType,
-             riskName: data.riskName,
-             description: data.description,
-             riskImpact: data.riskImpact,
-             projectId: data.projectId,
-             likelihood: data.likelihood,
-             impact: data.impact,
-             mitigation: data.mitigation,
-             contingency: data.contingency,
-             responsibilityOfAction: data.responsibilityOfAction,
-             plannedActionDate: data.plannedActionDate,
-             reviewer: data.reviewer
+             riskType: this.dataObject.risk_type,
+             riskName: this.dataObject.risk_name,
+             description: this.dataObject.risk_description,
+             riskImpact: this.dataObject.impact_of_risk,
+             projectId: this.dataObject.projectId,
+             likelihood: this.dataObject.current_risk_assessment.integrity.likelihood,
+             impact: this.dataObject.current_risk_assessment.integrity.impact,
+             mitigation: this.dataObject.risk_mitigation,
+             contingency: this.dataObject.risk_contingency,
+             responsibilityOfAction: this.dataObject.responsibility_of_action,
+             plannedActionDate: this.dataObject.planned_action_date,
+
            });
-         })
+
        console.log("hiii");
 
 

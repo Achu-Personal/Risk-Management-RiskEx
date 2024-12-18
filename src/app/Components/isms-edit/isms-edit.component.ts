@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { EditTextAreaComponent } from "../../UI/edit-text-area/edit-text-area.component";
 import { DropdownComponent } from "../../UI/dropdown/dropdown.component";
@@ -24,6 +24,7 @@ export class IsmsEditComponent {
   isEditableContingency: boolean = false;
   @Output() sendDataToParent = new EventEmitter<object>();
   result:number=0
+  @Input() dataObject: any;
 
 
   onEditToggled(field: string, isEditable: boolean): void {
@@ -105,6 +106,29 @@ export class IsmsEditComponent {
 
 
   })
+
+  ngOnInit(){
+
+    this.ismsForm.patchValue({
+      riskType: this.dataObject.risk_type,
+      riskName: this.dataObject.risk_name,
+      description: this.dataObject.risk_description,
+      riskImpact: this.dataObject.impact_of_risk,
+      projectId: this.dataObject.projectId,
+      mitigation: this.dataObject.risk_mitigation,
+      contingency: this.dataObject.risk_contingency,
+      responsibilityOfAction: this.dataObject.responsibility_of_action,
+      plannedActionDate: this.dataObject.planned_action_date,
+
+    });
+
+console.log("hiii");
+
+
+
+}
+
+
   onsubmit(){
 
 
