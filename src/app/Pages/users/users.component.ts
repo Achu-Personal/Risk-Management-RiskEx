@@ -10,6 +10,8 @@ import { BodyContainerComponent } from '../../Components/body-container/body-con
 import { ApiService } from '../../Services/api.service';
 import {  NgFor, NgIf } from '@angular/common';
 import { ReusableTableComponent } from '../../Components/reusable-table/reusable-table.component';
+import { StyleButtonComponent } from "../../UI/style-button/style-button.component";
+import { PaginationComponent } from "../../UI/pagination/pagination.component";
 
 @Component({
   selector: 'app-users',
@@ -19,8 +21,10 @@ import { ReusableTableComponent } from '../../Components/reusable-table/reusable
     BodyContainerComponent,
     NgIf,
     NgFor,
-    ReusableTableComponent
-  ],
+    ReusableTableComponent,
+    StyleButtonComponent,
+    PaginationComponent
+],
   templateUrl: './users.component.html',
   styleUrl: './users.component.scss',
 })

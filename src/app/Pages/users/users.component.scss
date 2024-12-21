@@ -18,22 +18,15 @@
 }
 
 .sticky-buttons {
-  position: sticky; /* Sticks to the top while scrolling */
+  position: sticky;
   top: -25px;
   margin-top: 10px;
-  // left: 0;
   z-index: 1000; /* Higher than table content */
   background-color: white; /* Solid background to hide table content */
   padding-bottom: 10px;
   padding-top: 30px;
   overflow-y: none;
 }
-
-
-
-
-
-
 button.button-custom {
   padding: 10px ;
   font-size: 0.8rem;
@@ -93,3 +86,10 @@ button.btn-danger:hover {
   overflow-x: hidden;
 }
 
+.button-container{
+  display: flex;
+  justify-content: end;
+  gap: 20px;
+  padding-right: 10px;
+
+}

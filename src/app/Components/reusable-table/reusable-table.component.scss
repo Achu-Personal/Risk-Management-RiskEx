@@ -20,7 +20,11 @@ thead{
 
   tr{
     z-index: 100;
+    th{
+      text-align: center;
+    }
   }
+  
 
 }
 .bord{
@@ -30,9 +34,6 @@ thead{
 
   tr{
     border: 2px solid #c1bdbd;
-   
-
-
   }
 }
 .tabledata {
@@ -75,7 +76,8 @@ thead{
   font-size: 14px;
   color: #555;
   vertical-align: middle;
-  padding: 8px;
+  // padding: 8px;
+text-align: center;
 
 }
 
