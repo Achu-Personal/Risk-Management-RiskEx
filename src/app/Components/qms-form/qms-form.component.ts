@@ -58,7 +58,7 @@ export class QMSFormComponent {
   ];
 
   dropdownDataImpact=[
-    {"type":"Very Low","value":"10"},
+    {"type":"Very Low","value":"very Low"},
     {"type":"Low","value":"20"},
     {"type":"Medium","value":"40"},
     { "type":"High","value":"80"},
@@ -107,6 +107,8 @@ export class QMSFormComponent {
  onDropdownChange1(value: any): void {
    this.selectedValue1 = value ? parseFloat(value.target.value) : 0; // Convert string value to number
    this.updateResult();  // Update the result when a value is selected
+
+
     }
 
     // Method to handle value change for the second dropdown
