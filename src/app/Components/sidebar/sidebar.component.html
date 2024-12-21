@@ -1,21 +1,30 @@
-<div class="sidebar d-flex flex-column">
+<div class="sidebar d-flex flex-column" data-aos="fade-right">
     <div class="sidebar-item">
-      <div class="header"><h3 class="riskex">RiskEX</h3>
+      <div class="header"><h5 class="riskex">REX</h5>
         <hr>
       </div>
-      
-      <div class="nav-items">
+
+      <div class="nav-items " style="padding: 5px;">
         @for(item of menuItems; track item.id){
           <a
           [class.active]="item.active"
           (click)="setActiveItem(item)"
           [routerLink]="item.route" class="sidebar-link">
-          <i [class]="'bi ' + item.icon"></i>
-          <span class="sidebar-text">{{ item.label }}</span>
+          <i [class]="item.icon" ></i>
+          <!-- <span class="sidebar-text">{{ item.label }}</span> -->
         </a>
       }
       </div>
-       
+
+
+      <div class="nav-items" style="padding: 5px;">
+
+        <div style="height: 5px;"></div>
+        <i class="fa-solid fa-right-from-bracket logout-icon"  ></i>
+        <div style="height: 20px;"></div>
+        <img src="https://cdn-icons-png.flaticon.com/128/149/149071.png" height="50" width="50"/>
+      </div>
+
     </div>
   </div>
 
