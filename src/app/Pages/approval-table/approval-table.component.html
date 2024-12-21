@@ -1,6 +1,6 @@
 <app-body-container>
   <h3 style="padding-bottom: 15px;">You are assigned to review</h3>
-    <app-reusable-table 
+  <app-reusable-table 
   [tableHeaders]="headerData" 
   [tableData]="tableBody"
   [IsActionRequiered]="true"
@@ -8,5 +8,4 @@
   (approveRisk)="approveRisk($event)"
   (rejectRisk)="rejectRisk($event)">
 </app-reusable-table>
-
 </app-body-container>
