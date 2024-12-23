@@ -1,0 +1,48 @@
+@if (!departmentName) {
+  <div class="text-muted mb-2">
+    Please select a department first
+  </div>
+} @else if (loading) {
+  <div class="text-muted mb-2">
+    Loading projects...
+  </div>
+} @else if (filteredProjects.length === 0) {
+  <div class="text-muted mb-2">
+    No projects available for the selected department.
+  </div>
+} @else {
+  <div class="position-relative">
+    <!-- Dropdown Box -->
+    <div class="dropdown-box form-select" (click)="toggleDropdown()">
+      {{ selectedProject }}
+      <!-- <i class="bi bi-chevron-down float-end"></i> -->
+    </div>
+
+    <!-- Dropdown Content -->
+    <div class="dropdown-content" *ngIf="dropdownOpen">
+      <!-- Select All Checkbox -->
+      <label class="d-block p-2 border-bottom">
+        <input
+          type="checkbox"
+          [checked]="isAllSelected()"
+          (change)="selectAll()"
+        />
+        Select All
+      </label>
+
+      <!-- Dropdown List -->
+      <div class="project-list">
+        <div *ngFor="let project of filteredProjects" class="project-item">
+          <label>
+            <input
+              type="checkbox"
+              [checked]="isSelected(project)"
+              (change)="toggleSelection(project)"
+            />
+            {{ project.projectName }}
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+}
