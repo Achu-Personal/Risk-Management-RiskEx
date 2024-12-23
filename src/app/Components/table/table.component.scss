@@ -2,30 +2,25 @@
 .table-container {
   margin-top: 20px ;
   padding: 0;
-  border-radius: 12px;
+  border-radius: 8px;
   background: #ffffff;
-  // box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   box-shadow: 0px 0px 4px rgb(62, 104, 185, 50%);
-  border: 1px solid rgb(62, 104, 185, 0.5) ;
-  min-width: 1200px;
+  width: 100%;
   font-family: 'Arial', sans-serif;
   position: relative;
   height: 550px; /* height */
   overflow: hidden;
-  // border: 1px solid #ddd;
 }
 .bord{
   position: sticky;
   top: 0;
   z-index: 1000;
-////////////////////////////////////////////////////////////////////////////////
 
-
-  //////////////////////////////////////////////////////////////////////////
 
   tr{
     // border-bottom: 2px solid #c1bdbd;
-    border: 2px solid #c1bdbd;
+    // border: 2px solid #c1bdbd;
+    // box-shadow: 0px 0px 4px rgb(62, 104, 185, 50%);
     position: fixed;
     top: 0;
     z-index: 1000;
@@ -43,8 +38,8 @@
   align-items: left;
   padding: 10px 15px;
   background: #ffffff;
-  border-bottom: 1px solid #ddd;
-  font-size: 14px;
+  // border-bottom: 1px solid #ddd;
+  font-size: 2vh;
   gap: 10px;
 }
 
@@ -67,8 +62,8 @@
 }
 
 /* Responsive Table */
-.table-responsive {
-  height: calc(100% - 140px);
+.table-responsive1 {
+  height: calc(100% - 150px);
   overflow-y: auto;
   overflow-x: auto;
   scrollbar-width: thin;
@@ -84,15 +79,15 @@
   }
 }
 
-.table-responsive::-webkit-scrollbar {
+.table-responsive1 tbody::-webkit-scrollbar {
   width: 8px;
 }
 
-.table-responsive::-webkit-scrollbar-track {
+.table-responsive1 tbody::-webkit-scrollbar-track {
   background: #f4f7f9;
 }
 
-.table-responsive::-webkit-scrollbar-thumb {
+.table-responsive1 tbody::-webkit-scrollbar-thumb {
   background-color: #f4f7f9;
   border-radius: 4px;
 }
@@ -122,16 +117,16 @@
   background: #F6FBFF;
   color: #0f0f0f;
   font-weight: bold;
-  text-transform: uppercase;
-  font-size: 13px;
+  // text-transform: uppercase;
+  font-size: 2vh;
 }
 
-.table-responsive tbody tr:nth-child(even) {
+.table-responsive1 tbody tr:nth-child(even) {
   background-color: #F6FBFF;
 }
 
 
-.table-responsive tbody tr:hover {
+.table-responsive1 tbody tr:hover {
   background-color: #d4e5f2;
 
 }
@@ -174,8 +169,8 @@
   background: none;
   border: none;
   cursor: pointer;
-  font-size: 16px;
-  font-weight: bold;
+  font-size: 1.7vh;
+  // font-weight: bold;
   padding: 5px;
   display: flex;
   align-items: center;
@@ -214,29 +209,29 @@ th {
 //open
 
 .green-cell {
-  background-color: #d4edda;
+  background-color: #8cf2a4;
   color: #155724;
   font-weight: bold;
   padding: 5px;
-  border: 1px solid #0c4219 ;
+  // border: 1px solid #0c4219 ;
   border-radius: 10px;
   text-align: center;
 }
 .red-cell {
-  background-color: #edd4d5;
+  background-color: #f3b1b3;
   color: #571515;
   font-weight: bold;
   padding: 5px;
-  border: 1px solid #420c0c ;
+  // border: 1px solid #420c0c ;
   border-radius: 10px;
   text-align: center;
 }
 .yellow-cell{
-  background-color: #dadd5d;
+  background-color: #f6f970;
   color: #555715;
   font-weight: bold;
   padding: 5px;
-  border: 1px solid #a2870c ;
+  // border: 1px solid #a2870c ;
   border-radius: 10px;
   text-align: center;
 }
@@ -253,8 +248,8 @@ th {
   background: #F7F6FE;
   color: #0f0f0f;
   font-weight: bold;
-  text-transform: uppercase;
-  font-size: 13px;
+  // text-transform: uppercase;
+  font-size: 2.2vh;
   padding: 12px 10px; /* Adjust padding for better responsiveness */
   border-bottom: 2px solid #ddd;
   text-align: center;
@@ -262,9 +257,11 @@ th {
   position: sticky; /* Make header sticky for better UX in scrollable tables */
   top: 0;
   z-index: 100; /* Ensure header stays above table content */
-  min-width: 100px; /* Minimum width to prevent text wrapping */
-  max-width: 200px; /* Maximum width to maintain column alignment */
-  word-wrap: break-word; /* Handle long text gracefully */
+  // min-width: 100px; /* Minimum width to prevent text wrapping */
+  // max-width: 200px; /* Maximum width to maintain column alignment */
+  word-wrap:overflow; /* Handle long text gracefully */
+  height: 50px;
+
 }
 
 /* Ensuring headers align well with dropdown buttons */
