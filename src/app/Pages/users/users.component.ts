@@ -8,8 +8,10 @@ import {
 } from '@angular/forms';
 import { BodyContainerComponent } from '../../Components/body-container/body-container.component';
 import { ApiService } from '../../Services/api.service';
-import {  NgFor, NgIf } from '@angular/common';
 import { ReusableTableComponent } from '../../Components/reusable-table/reusable-table.component';
+import { ProjectDropDownComponent } from "../../Components/project-drop-down/project-drop-down.component";
+import { project } from '../../Interfaces/projects.interface';
+import { DropDownDeparmentComponent } from '../../Components/drop-down-deparment/drop-down-deparment.component';
 
 @Component({
   selector: 'app-users',
@@ -17,10 +19,10 @@ import { ReusableTableComponent } from '../../Components/reusable-table/reusable
   imports: [
     ReactiveFormsModule,
     BodyContainerComponent,
-    NgIf,
-    NgFor,
-    ReusableTableComponent
-  ],
+    ReusableTableComponent,
+    ProjectDropDownComponent,
+    DropDownDeparmentComponent
+],
   templateUrl: './users.component.html',
   styleUrl: './users.component.scss',
 })
@@ -41,7 +43,8 @@ export class UsersComponent {
       name: new FormControl('', Validators.required),
       email: new FormControl('', [Validators.required, Validators.email]),
       department: new FormControl('', Validators.required),
-      projectName: new FormControl(''),
+      projectName: new FormControl([[]]),
+
     });
     this.projectForm = new FormGroup({
       projectName: new FormControl('', Validators.required),
@@ -50,38 +53,29 @@ export class UsersComponent {
   }
 
   ngOnInit() {
-    this.api.getDepartment().subscribe(
-      (response) => {
-        this.departments = response;
-        console.log('Departments fetched successfully:', this.departments);
-      },
-      (error) => {
-        console.error('Failed to fetch departments', error);
+    this.userForm.get('department')?.valueChanges.subscribe(selectedDepartment => {
+      if (selectedDepartment) {
+        this.loadProjectsForDepartment(selectedDepartment);
       }
-    );
+    });
   }
 
-  onDepartmentChange(event: any) {
-    const selectedDepartment = event.target.value;
-    console.log('Selected Department:', selectedDepartment);
-
-    if (selectedDepartment) {
-      this.api.getProjects(selectedDepartment).subscribe(
-        (projects) => {
-          if (projects && projects.length > 0) {
-            this.projects = projects;
-            console.log('Projects loaded for department:', this.projects);
-          } else {
-            console.log('No projects found for the selected department');
-            this.projects = [];
-          }
-        },
-        (error) => {
-          console.error('Failed to load projects', error);
+  loadProjectsForDepartment(department: string) {
+    this.api.getProjects(department).subscribe(
+      (projects) => {
+        if (projects && projects.length > 0) {
+          this.projects = projects;
+          console.log('Projects loaded for department:', this.projects);
+        } else {
+          console.log('No projects found for the selected department');
           this.projects = [];
         }
-      );
-    }
+      },
+      (error) => {
+        console.error('Failed to load projects', error);
+        this.projects = [];
+      }
+    );
   }
 
   onSubmitDepartment() {
@@ -171,4 +165,8 @@ export class UsersComponent {
       Projects: 'Recruitment, Employee Engagement',
     },
   ];
+  onProjectsSelected(projects: project[]) {
+    console.log('Selected projects:', projects);
+    // Form control will be automatically updated thanks to ControlValueAccessor
+  }
 }

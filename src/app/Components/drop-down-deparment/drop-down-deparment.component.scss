@@ -1,0 +1,32 @@
+.form-select {
+  width: 100%;
+}
+/* Custom styles for dropdown with more than 5 options */
+select:not([size]) {
+  max-height: 200px;
+  overflow-y: auto;
+}
+/* Styling for when there are more than 5 options */
+select[size] {
+  height: auto;
+  max-height: 200px;
+}
+/* Firefox scrollbar styling */
+select {
+  scrollbar-width: thin;
+  scrollbar-color: #888 #f1f1f1;
+}
+/* WebKit scrollbar styling */
+select::-webkit-scrollbar {
+  width: 8px;
+}
+select::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+select::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+select::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
