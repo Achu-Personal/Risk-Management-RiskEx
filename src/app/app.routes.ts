@@ -24,6 +24,7 @@ import { HomeComponent } from './Pages/home/home.component';
 import { ApprovalTableComponent } from './Pages/approval-table/approval-table.component';
 import { EditRiskComponent } from './Pages/edit-risk/edit-risk.component';
 import { ChangepasswordComponent } from './Components/changepassword/changepassword.component';
+import { ReferenceComponent } from './Pages/reference/reference.component';
 
 
 export const routes: Routes = [
@@ -76,6 +77,10 @@ export const routes: Routes = [
       }
     ]
   },
+  {
+    path:"reference",component:ReferenceComponent
+  },
+
   {path:'sidebar',component:SidebarComponent},
 
   {
@@ -94,7 +99,6 @@ export const routes: Routes = [
     path:'**',component:WildComponentComponent
 
   },
-
 
 
 
