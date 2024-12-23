@@ -24,7 +24,7 @@
           <div
             class="icon approve"
             title="Approve"
-            (click)="approveButton($event)"
+            (click)="approveButton($event,row)"
           >
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
               <circle
@@ -48,7 +48,7 @@
           <div
             class="icon reject"
             title="reject"
-            (click)="rejectButton($event)"
+            (click)="rejectButton($event,row)"
           >
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
               <circle

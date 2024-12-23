@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { EditTextAreaComponent } from "../../UI/edit-text-area/edit-text-area.component";
 import { DropdownComponent } from "../../UI/dropdown/dropdown.component";
@@ -6,6 +6,7 @@ import { TextareaComponent } from "../../UI/textarea/textarea.component";
 import { OverallRatingCardComponent } from "../../UI/overall-rating-card/overall-rating-card.component";
 import { CommonModule } from '@angular/common';
 import { ApiService } from '../../Services/api.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-isms-edit',
@@ -23,7 +24,8 @@ export class IsmsEditComponent {
   isEditableContingency: boolean = false;
   @Output() sendDataToParent = new EventEmitter<object>();
   result:number=0
- 
+  @Input() dataObject: any;
+
 
   onEditToggled(field: string, isEditable: boolean): void {
     switch(field) {
@@ -104,6 +106,29 @@ export class IsmsEditComponent {
 
 
   })
+
+  ngOnInit(){
+
+    this.ismsForm.patchValue({
+      riskType: this.dataObject.risk_type,
+      riskName: this.dataObject.risk_name,
+      description: this.dataObject.risk_description,
+      riskImpact: this.dataObject.impact_of_risk,
+      projectId: this.dataObject.projectId,
+      mitigation: this.dataObject.risk_mitigation,
+      contingency: this.dataObject.risk_contingency,
+      responsibilityOfAction: this.dataObject.responsibility_of_action,
+      plannedActionDate: this.dataObject.planned_action_date,
+
+    });
+
+console.log("hiii");
+
+
+
+}
+
+
   onsubmit(){
 
 
@@ -113,13 +138,18 @@ export class IsmsEditComponent {
 
     this.sendDataToParent.emit(this.ismsForm.value);
     console.log("actual data");
+    alert("Data Saved Successfull");
 
     console.log(formValue);
+    this.router.navigate(['/home']);
 
      }
+     constructor(public api:ApiService,private router:Router){}
 
 
-
-
+     onCancel(): void {
+      this.ismsForm.reset(); // Reset the form
+      this.router.navigate(['/home']); // Navigate to the dashboard
+    }
 
 }

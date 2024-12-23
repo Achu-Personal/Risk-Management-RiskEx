@@ -65,7 +65,7 @@ async cancelRisk() {
     console.log(this.commentForm.value);
     this.commentForm.reset();
     this.cancelMessage = "The risk has been canceled as it was not approved. The owner will be notified shortly. ";
-    this.isButtonClicked=true
+    this.isButtonClicked=true;
   }
 
 }

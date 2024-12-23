@@ -5,8 +5,8 @@
   [tableData]="tableBody"
   [IsActionRequiered]="true"
   (onclickrow)="OnClickRow($event)"
-  (approveRisk)="approveRisk()"
-  (rejectRisk)="rejectRisk()">
+  (approveRisk)="approveRisk($event)"
+  (rejectRisk)="rejectRisk($event)">
 </app-reusable-table>
 
 </app-body-container>
