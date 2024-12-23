@@ -1,5 +1,63 @@
-.dropdown{
-
-  height: 30px;
-  border-radius: 10px;
+.custom-dropdown{
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background-color: #f9f9f9;
+  cursor: pointer;
+  color: #333;
 }
+
+
+/* Change color of the dropdown options */
+.custom-dropdown option {
+  background-color:white;
+  color: #333;
+}
+
+/* Change selected option background color */
+.custom-dropdown:focus {
+  outline: none;
+  border-color: var( --foreground-color);
+}
+
+.custom-dropdown option:hover {
+  background-color:var(--secondary-color);
+}
+
+.custom-dropdown option:checked {
+  background-color:var(--secondary-color);
+  color: white;
+}
+
+/* For devices with a maximum width of 768px (tablets and smaller) */
+@media (max-width: 768px) {
+  .custom-dropdown {
+    width: 80vw; /* Adjust width for smaller screens */
+    font-size: 0.9rem; /* Slightly reduce font size */
+    padding: 8px; /* Adjust padding for compactness */
+  }
+}
+
+/* For devices with a maximum width of 480px (mobile phones) */
+@media (max-width: 480px) {
+  .custom-dropdown {
+    width: 100%; /* Full width for mobile devices */
+    font-size: 0.8rem; /* Further reduce font size */
+    padding: 6px; /* Reduce padding for small screens */
+  }
+}
+
+/* For devices with a maximum width of 360px (small phones) */
+@media (max-width: 360px) {
+  .custom-dropdown {
+    width: 100%; /* Full width for very small devices */
+    font-size: 0.75rem; /* Slightly smaller font size */
+    padding: 5px; /* Compact padding for very small screens */
+  }
+}
+
+
+
+
