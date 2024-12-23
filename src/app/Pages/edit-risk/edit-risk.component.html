@@ -1,15 +1,18 @@
-<div class="container">
-  <div class="content">
 
-    @if (riskType==="Quality"){
-      <app-qms-edit></app-qms-edit>
+<app-body-container backgroundColor="transparent" padding="0" [showShadow]="false">
+  <div class="container">
+    <div class="content">
 
-    }
-    @if (riskType==="Security" ||riskType==="Privacy"){
-      <app-isms-edit></app-isms-edit>
+      @if (riskType==="Quality"){
+        <app-qms-edit [dataObject]="riskdata"></app-qms-edit>
 
-    }
+      }
+      @if (riskType==="Security" ||riskType==="Privacy"){
+        <app-isms-edit [dataObject]="riskdata"></app-isms-edit>
 
+      }
+
+    </div>
   </div>
-</div>
+</app-body-container>
 

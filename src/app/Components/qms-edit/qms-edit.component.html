@@ -2,11 +2,20 @@
   <div class="form">
     <form  [formGroup]="qmsForm" (ngSubmit)="onsubmit()">
       <div class="field" id="editableDiv">
-        <app-edit-text-area label="Risk Name" [isEditable]="isEditableRiskName"(editToggled)="onEditToggled('RiskName', $event)" formControlName="riskName"></app-edit-text-area>
-        <app-edit-text-area label="Risk Description" [isEditable]="isEditableRiskDescription"(editToggled)="onEditToggled('RiskDescription', $event)" formControlName="description" ></app-edit-text-area>
-        <app-edit-text-area label="Impact Of Risk" [isEditable]="isEditableImpact"(editToggled)="onEditToggled('Impact', $event)" formControlName="riskImpact"></app-edit-text-area>
-        <app-edit-text-area label="Risk Mitigation" [isEditable]="isEditableMitigation"(editToggled)="onEditToggled('mitigation', $event)" formControlName="mitigation"></app-edit-text-area>
-        <app-edit-text-area label="Risk Contingency" [isEditable]="isEditableContingency"(editToggled)="onEditToggled('Contingency', $event)" formControlName="contingency"></app-edit-text-area>
+        <div class="firstDiv">
+          <div>
+            <app-edit-text-area label="Risk Name" [isEditable]="isEditableRiskName"(editToggled)="onEditToggled('RiskName', $event)" formControlName="riskName"></app-edit-text-area>
+            <app-edit-text-area label="Risk Description" [isEditable]="isEditableRiskDescription"(editToggled)="onEditToggled('RiskDescription', $event)" formControlName="description" ></app-edit-text-area>
+            <app-edit-text-area label="Impact Of Risk" [isEditable]="isEditableImpact"(editToggled)="onEditToggled('Impact', $event)" formControlName="riskImpact"></app-edit-text-area>
+            <app-edit-text-area label="Risk Mitigation" [isEditable]="isEditableMitigation"(editToggled)="onEditToggled('mitigation', $event)" formControlName="mitigation"></app-edit-text-area>
+            <app-edit-text-area label="Risk Contingency" [isEditable]="isEditableContingency"(editToggled)="onEditToggled('Contingency', $event)" formControlName="contingency"></app-edit-text-area>
+
+
+          </div>
+          <app-overall-rating-card class="col-2 rating-card" [value]="result" title="Overal Risk Rating" textColor="black" [ngStyle]="{'margin-left':'50px','margin-top':'20px'}"></app-overall-rating-card>
+        </div>
+
+
 
       </div>
       <div class="field" id="assessmentField">
@@ -34,13 +43,13 @@
          [displayField]="'type'"
          [valueField]="'value'"
          width="13.33"
-         class="dropdownassessmentLikelihood" formControlName="postAssessmentLikelihood"></app-dropdown><br></label>
+         class="dropdownassessmentLikelihood" formControlName="postAssessmentLikelihood" (change)="onDropdownChange1($event)"></app-dropdown><br></label>
          <label class="assessment" for="">Impact :
         <app-dropdown  [options]="dropdownDataImpact"
          [displayField]="'type'"
          [valueField]="'value'"
          width="13.33"
-         class="dropdownassessmentimpact" formControlName="postAssessmentImpact"></app-dropdown></label>
+         class="dropdownassessmentimpact" formControlName="postAssessmentImpact"  (change)="onDropdownChange2($event)"></app-dropdown></label>
 
         </div>
 
@@ -106,7 +115,11 @@
         <div class="action">
           <div>
             <button type="submit" value="Save" class="savecancel">Save</button>
-            <button value="Cancel" id="cancelbtn" class="savecancel">Cancel</button>
+          </div>
+          <div>
+            <button value="Cancel" id="cancelbtn" class="savecancel" (click)="onCancel()">Cancel</button>
+
+
           </div>
         </div>
 

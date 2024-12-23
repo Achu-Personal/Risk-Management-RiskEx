@@ -1,5 +1,6 @@
+<div class="table-container">
 <div class="table-responsive">
-  <table>
+  <table class="tabledata">
     <thead>
       <tr class="bord">
         @for(header of tableHeaders; track header){
@@ -15,7 +16,7 @@
       <tr (click)="rowClick(row)">
         @for(key of rowKeys; track key ){
         <td [title]="row[key]">
-          {{ row[key]?.toString() | slice : 0 : 12
+          {{ row[key]?.toString() | slice : 0 : 20
           }}{{ row[key]?.length > 12 ? "..." : "" }}
         </td>
         } @if(IsActionRequiered){ @if(!IsUser){
@@ -23,7 +24,7 @@
           <div
             class="icon approve"
             title="Approve"
-            (click)="approveButton($event)"
+            (click)="approveButton($event,row)"
           >
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
               <circle
@@ -47,7 +48,7 @@
           <div
             class="icon reject"
             title="reject"
-            (click)="rejectButton($event)"
+            (click)="rejectButton($event,row)"
           >
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
               <circle
@@ -69,6 +70,7 @@
         </td>
 
         } @else if(IsUser) {
+          <td>
         <div class="toggle-container">
           <!-- Display toggle state -->
           <div 
@@ -84,8 +86,9 @@
 
           
           
-        </div>
-        } }
+        </div></td>
+        }
+       }
       </tr>
       }
 
@@ -99,4 +102,5 @@
       </tr>
     </tbody>
   </table>
+</div>
 </div>

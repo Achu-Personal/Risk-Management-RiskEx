@@ -10,10 +10,36 @@
           <div>
             <app-textarea label="Risk Name" isRequired="*"formControlName="riskName" ></app-textarea>
             <app-textarea label="Description" isRequired="*" marginLeft="50" formControlName="description"></app-textarea>
+            @if(qmsForm.get("description")){
+
+              @if (qmsForm.get("description")?.hasError('maxlength')) {
+                <div class="text-danger">maximum length is 1000</div>
+
+              }
+              @else if (qmsForm.get("description")?.hasError('minlength')) {
+                <div class="text-danger">minimum length is 15</div>
+
+              }
+            }
+
+
             <app-textarea label="Impact Of Risk" isRequired="*" marginLeft="27" formControlName="riskImpact"></app-textarea>
+            @if(qmsForm.get("riskImpact")){
+
+              @if (qmsForm.get("riskImpact")?.hasError('maxlength')) {
+                <div class="text-danger">maximum length is 1000</div>
+
+              }
+              @else if (qmsForm.get("riskImpact")?.hasError('minlength')) {
+                <div class="text-danger">minimum length is 15</div>
+
+              }
+            }
+
+
             <app-textarea label="Project" marginLeft="92" formControlName="projectId"></app-textarea>
           </div>
-          <div class="riskRatingValueDiv" [ngStyle]=" getBackgroundColor()">
+          <!-- <div class="riskRatingValueDiv" [ngStyle]=" getBackgroundColor()">
             <div class="riskRating">
               <div>
                 <h1>
@@ -31,13 +57,15 @@
 
 
 
-          </div>
+          </div> -->
+          <app-overall-rating-card class="col-2 rating-card" [value]="result" title="Overal Risk Rating" textColor="black" [ngStyle]="{'margin-left':'10px','margin-top':'20px'}"></app-overall-rating-card>
+
 
         </div>
 
       </div>
       <div class="field"  >
-        <h5>Current Risk Assessment</h5>
+        <h5>Current Risk Assessment <span class="required">*</span></h5>
         <label class="assessment" for="">Likelihood :</label>
 
          <app-dropdown  [options]="dropdownDataLikelihood"
@@ -59,8 +87,34 @@
 
       <div class="field" id="thirdfield">
         <app-textarea label="Risk Mitigation" isRequired="*"  marginLeft="123" formControlName="mitigation"></app-textarea>
-        <app-textarea label="Risk Contingency" isRequired="*" marginLeft="103" formControlName="contingency"></app-textarea>
+        @if(qmsForm.get("mitigation")){
+
+          @if (qmsForm.get("mitigation")?.hasError('maxlength')) {
+            <div class="text-danger" >maximum length is 1000</div>
+
+          }
+          @else if (qmsForm.get("mitigation")?.hasError('minlength')) {
+            <div class="text-danger" id="mitigationError">minimum length is 15</div>
+
+          }
+        }
+
+
+
+
+        <app-textarea label="Risk Contingency" marginLeft="110" formControlName="contingency"></app-textarea>
         <app-textarea label="Responsibility Of Action" isRequired="*" formControlName="responsibilityOfAction"></app-textarea>
+        @if(qmsForm.get("responsibilityOfAction")){
+
+          @if (qmsForm.get("responsibilityOfAction")?.hasError('maxlength')) {
+            <div class="text-danger" >maximum length is 20</div>
+
+          }
+          @else if (qmsForm.get("responsibilityOfAction")?.hasError('minlength')) {
+            <div class="text-danger" id="mitigationError">minimum length is 5</div>
+
+          }
+        }
         <div class="actionDate">
           <div class="actionDateLabel">
             <label id="actionlabel">Planned Action Date  <span class="required">*</span> :</label>
@@ -84,7 +138,11 @@
         <div class="action">
           <div>
             <button type="submit" value="Save" class="savecancel" >Save</button>
-            <button value="Cancel" id="cancelbtn" class="savecancel">Cancel</button>
+          </div>
+          <div>
+            <button value="Cancel" id="cancelbtn" class="savecancel"(click)="onCancel()">Cancel</button>
+
+
           </div>
         </div>
       </div>

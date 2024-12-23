@@ -2,11 +2,21 @@
   <div class="form">
     <form [formGroup]="ismsForm"  (ngSubmit)="onsubmit()">
       <div class="field" id="editableDiv">
-        <app-edit-text-area label="Risk Name" [isEditable]="isEditableRiskName"(editToggled)="onEditToggled('RiskName', $event)" formControlName="riskName"></app-edit-text-area>
-        <app-edit-text-area label="Risk Description" [isEditable]="isEditableRiskDescription"(editToggled)="onEditToggled('RiskDescription', $event)" formControlName="description" ></app-edit-text-area>
-        <app-edit-text-area label="Impact Of Risk" [isEditable]="isEditableImpact"(editToggled)="onEditToggled('Impact', $event)" formControlName="riskImpact"></app-edit-text-area>
-        <app-edit-text-area label="Risk Mitigation" [isEditable]="isEditableMitigation"(editToggled)="onEditToggled('mitigation', $event)" formControlName="mitigation"></app-edit-text-area>
-        <app-edit-text-area label="Risk Contingency" [isEditable]="isEditableContingency"(editToggled)="onEditToggled('Contingency', $event)" formControlName="contingency"></app-edit-text-area>
+        <div class="firstDiv">
+          <div>
+            <app-edit-text-area label="Risk Name" [isEditable]="isEditableRiskName"(editToggled)="onEditToggled('RiskName', $event)" formControlName="riskName"></app-edit-text-area>
+            <app-edit-text-area label="Risk Description" [isEditable]="isEditableRiskDescription"(editToggled)="onEditToggled('RiskDescription', $event)" formControlName="description" ></app-edit-text-area>
+            <app-edit-text-area label="Impact Of Risk" [isEditable]="isEditableImpact"(editToggled)="onEditToggled('Impact', $event)" formControlName="riskImpact"></app-edit-text-area>
+            <app-edit-text-area label="Risk Mitigation" [isEditable]="isEditableMitigation"(editToggled)="onEditToggled('mitigation', $event)" formControlName="mitigation"></app-edit-text-area>
+            <app-edit-text-area label="Risk Contingency" [isEditable]="isEditableContingency"(editToggled)="onEditToggled('Contingency', $event)" formControlName="contingency"></app-edit-text-area>
+
+          </div>
+
+          <app-overall-rating-card class="col-2 rating-card" [value]="result" title="Overal Risk Rating" textColor="black" [ngStyle]="{'margin-left':'50px','margin-top':'20px'}"></app-overall-rating-card>
+
+
+        </div>
+
 
       </div>
       <div class="field"  >
@@ -208,7 +218,11 @@
         <div class="action">
           <div>
             <button type="submit" value="Save" class="savecancel">Save</button>
-            <button value="Cancel" id="cancelbtn" class="savecancel">Cancel</button>
+          </div>
+          <div>
+            <button value="Cancel" id="cancelbtn" class="savecancel" (click)="onCancel()">Cancel</button>
+
+
           </div>
         </div>
 

@@ -1,16 +1,16 @@
 .field{
   background-color: white;
   width: 80vw;
-  margin-left: 3px;
+  // margin-left: 3px;
   padding: 30px;
-  padding-left: 50px;
-  padding-top: 50px;
+  padding-left: 40px;
+  padding-top: 40px;
   margin-top: 10px;
 
 }
 #editableDiv{
   border-radius: 10px 10px 0px 0px;
-  margin-top: 40px;
+  // margin-top: 10px;
 
 }
 #assessmentField{
@@ -46,7 +46,7 @@
 }
 #thirdField{
   border-radius: 0px 0px 10px 10px;
-  margin-bottom: 25px;
+  margin-bottom: 15px;
 }
 .responsibilityofAction{
   margin-top: 30px;
@@ -86,24 +86,40 @@
   display: flex;
   flex-direction: row;
   justify-content: end;
-  margin-right: 150px;
+  margin-right: 110px;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: end;
+  margin-bottom: 30px;
 }
-.savecancel{
-  border: 1px solid rgb(62, 104, 185, 75%) ;
+.savecancel {
+  border: 1px solid rgba(62, 104, 185, 0.75); /* Clean RGBA format */
+  background-color: #f5f8ff; /* Light background for better visibility */
+  color: #3e68b9; /* Text color to match the border */
   cursor: pointer;
   font-weight: 600;
+  font-size: 14px;
+  padding: 5px 5px; /* Added padding for better appearance */
   border-radius: 8px;
-  // text-align: center;
-  // outline: none;
-  :focus
-  {
-    outline: none;
-    border: none;
-  }
+  text-align: center;
+  transition: all 0.3s ease; /* Smooth transition for hover effects */
+  width:160px ;
+}
 
+.savecancel:hover {
+  background-color: #3e68b9; /* On hover: Fill the button with primary color */
+  color: #ffffff; /* On hover: Text becomes white */
+  border-color: #3e68b9; /* Border matches background on hover */
+}
+
+.savecancel:focus {
+  outline: none; /* Remove focus outline */
+  box-shadow: 0 0 5px rgba(62, 104, 185, 0.5); /* Subtle glow effect */
+  border-color: #3e68b9; /* Border remains consistent */
 }
 #cancelbtn{
-  margin-left: 20px;
+  margin-left: 0px;
 }
 
 .dropdownassessment{
@@ -136,4 +152,9 @@ table{
 }
 th td{
   // padding: 10px;
+}
+.firstDiv{
+  display: flex;
+  flex-direction: row;
+
 }
