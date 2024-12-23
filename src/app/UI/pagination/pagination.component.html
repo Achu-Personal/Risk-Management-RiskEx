@@ -1,32 +1,34 @@
 
 <!-- <div> -->
-  @if(totalPages > 1){
-  <div class="fixed-pagination pagination-controls pagination ">
+  <div class="footer">
+@if(totalPages > 1){
+<div class="pagination fixed-pagination pagination-controls pagination ">
 
-    <button
-      class="page-btn"
-      [class.disabled]="currentPage === 1"
-      (click)="changePage(currentPage - 1)">
-      &laquo;
-    </button>
+  <button
+    class="page-btn"
+    [class.disabled]="currentPage === 1"
+    (click)="changePage(currentPage - 1)">
+    &laquo;
+  </button>
 
 
-    @for(page of pages;track page){
-    <button  class="page-btn"
-    [class.active]="page === currentPage"
-    (click)="changePage(page)">
+  @for(page of pages;track page){
+  <button  class="page-btn"
+  [class.active]="page === currentPage"
+  (click)="changePage(page)">
 
-      {{ page }}
+    {{ page }}
 
-    </button>
-    }
-
-    <button
-      class="page-btn"
-      [class.disabled]="currentPage === totalPages"
-      (click)="changePage(currentPage + 1)">
-      &raquo;
-    </button>
-  </div>
+  </button>
   }
-  <!-- </div> -->
+
+  <button
+    class="page-btn"
+    [class.disabled]="currentPage === totalPages"
+    (click)="changePage(currentPage + 1)">
+    &raquo;
+  </button>
+</div>
+}
+</div>
+<!-- </div> -->
