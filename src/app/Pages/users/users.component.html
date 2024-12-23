@@ -36,7 +36,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="addUserModalLabel">New User</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button type="button" class="btn-close custom-btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <form [formGroup]="userForm" (ngSubmit)="onSubmitUser()">
@@ -77,39 +77,23 @@
               <label for="department" class="form-label">
                 Department <span class="text-danger">*</span>
               </label>
-              <select class="form-select" id="department" formControlName="department"(change)="onDepartmentChange($event)">
-                <option value="" disabled>Select Department</option>
-                @for(item of departments; track item.id){
-
-                  <option [value]="item.departmentName">{{item.departmentName}}</option>
-                }
-
-              </select>
-              @if (userForm.get('department')?.invalid &&userForm.get('department')?.touched)
-              {
-              <div class="text-danger">
-                Department is required.
-              </div>
+              <app-drop-down-deparment
+                formControlName="department"
+              ></app-drop-down-deparment>
+              @if (userForm.get('department')?.invalid && userForm.get('department')?.touched) {
+                <div class="text-danger">
+                  Department is required.
+                </div>
               }
-
             </div>
 
             <div class="mb-3">
-
-              <div *ngIf="projects.length > 0; else noProjects">
-                <label for="projectName" class="form-label">Project</label>
-                <select class="form-select" id="projectName" formControlName="projectName">
-                  <option value="" disabled>Select Project</option>
-                  <option *ngFor="let item of projects" [value]="item.projectName">
-                    {{item.projectName}}
-                  </option>
-                </select>
-              </div>
-
-              <ng-template #noProjects>
-                <p>No projects available for the selected department.</p>
-              </ng-template>
-
+              <label for="projectName" class="form-label">Project</label>
+              <app-project-drop-down
+                [departmentName]="userForm.get('department')?.value"
+                formControlName="projectName"
+                (selectedProjectsChange)="onProjectsSelected($event)"
+              ></app-project-drop-down>
             </div>
 
             <div class="modal-footer">
@@ -133,7 +117,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="addDepartmentModalLabel">New Department</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button type="button" class="btn-close custom-btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <form [formGroup]="departmentForm" (ngSubmit)="onSubmitDepartment()">
@@ -172,7 +156,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="addProjectModalLabel">New Project</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button type="button" class="btn-close custom-btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <form [formGroup]="projectForm" (ngSubmit)="onSubmitProject()">
@@ -190,22 +174,16 @@
             <div class="text-danger">Project name is required.</div>
             }
 
-            <label for="departmentName" class="form-label p-2">
-              Department Name <span class="text-danger">*</span>
+            <label for="department" class="form-label">
+              Department <span class="text-danger">*</span>
             </label>
-            <select class="form-select" id="department" formControlName="departmentName">
-              <option value="" disabled>Select Department</option>
-              @for(item of departments; track item.id){
-
-                <option [value]="item.departmentName">{{item.departmentName}}</option>
-              }
-
-            </select>
-            @if (userForm.get('department')?.invalid &&userForm.get('department')?.touched)
-            {
-            <div class="text-danger">
-              Department is required.
-            </div>
+            <app-drop-down-deparment
+              formControlName="departmentName"
+            ></app-drop-down-deparment>
+            @if (userForm.get('department')?.invalid && userForm.get('department')?.touched) {
+              <div class="text-danger">
+                Department is required.
+              </div>
             }
           </div>
 
