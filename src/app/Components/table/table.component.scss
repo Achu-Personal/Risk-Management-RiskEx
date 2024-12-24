@@ -12,6 +12,7 @@
 .container1 {
 
   // max-width: 1200px;
+  width: 100%;
   // margin: 20px auto;
   background: transparent;
   display: flex;
@@ -40,8 +41,9 @@
 .table-container1 {
   max-height: 400px;
   overflow-y: auto;
-  background-color: #fff;
+  // background-color: #741b1b;
   border-radius: 4px;
+  width: 182vh;
   box-shadow: 0px 4px 5px #979797;
 
   table {
@@ -55,12 +57,15 @@
     top: 0;
     background-color: #b9b0a3;
     z-index: 1;
+    // tr{
+    //   width: 10000vh;
+    // }
 
     th {
       background-color: #b9b0a3;
       padding: 12px;
       text-align: left;
-      // border-bottom: 2px solid #eaeaea;
+
     }
   }
 
@@ -76,7 +81,7 @@
 
 
     &:hover {
-      background-color: rgba(208, 198, 182, 0.7);
+      background-color: rgba(208, 198, 182, 0.2);
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  /* Increased shadow for more lift effect */
       transform: translateY(-1px);  /* Lifts the row upwards */
       transition: box-shadow 0.2s ease-in-out, transform 0.2s ease-in-out;  /* Add transition for transform */
@@ -119,21 +124,14 @@ tbody {
 // table tbody tr:nth-child(even) {
 //   background: rgba(208, 198, 182, 0.3);
 // }
-// tbody tr:hover {
-//   cursor: pointer;
-//   background-color: rgba(208, 198, 182, 0.7);
-//   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  /* Increased shadow for more lift effect */
-//   transform: translateY(-1px);  /* Lifts the row upwards */
-//   transition: box-shadow 0.2s ease-in-out, transform 0.2s ease-in-out;  /* Add transition for transform */
 
-// }
 
-  .table-container1::-webkit-scrollbar {
+.table-container1::-webkit-scrollbar {
     display: none;
   }
 
 
-  .table-container1
+.table-container1
   {
     scrollbar-width: none;
     -ms-overflow-style: none;
@@ -180,7 +178,7 @@ tbody {
     &:focus {
       outline: none;
       // border-color: #5a67d8;
-      // box-shadow: 0 0 5px rgba(90, 103, 216, 0.5);
+      box-shadow: 0 0 5px rgba(90, 103, 216, 0.5);
     }
   }
 
@@ -276,7 +274,7 @@ tbody {
 
 .green-cell {
   background-color: #d4edda;
-  color: #155724;
+  color: #2ae355;
   font-weight: bold;
   padding: 5px;
   // border: 1px solid #0c4219 ;
@@ -285,7 +283,7 @@ tbody {
 }
 .red-cell {
   background-color: #edd4d5;
-  color: #571515;
+  color: #e82222;
   font-weight: bold;
   padding: 5px;
   // border: 1px solid #420c0c ;
@@ -294,7 +292,7 @@ tbody {
 }
 .yellow-cell {
   background-color: #edebd4;
-  color: #575315;
+  color: #e1d52c;
   font-weight: bold;
   padding: 5px;
   // border: 1px solid #420c0c ;

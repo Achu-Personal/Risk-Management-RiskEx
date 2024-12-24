@@ -18,7 +18,7 @@
       <thead>
         <tr class="bord">
           <th>SL No</th>
-          <th>Risk ID</th>
+          <!-- <th>Risk ID</th> -->
           <th>Risk Name</th>
           <th>
             <button class="dropdown-button" (click)="toggleDropdown()">
@@ -39,7 +39,7 @@
           </th>
           <th>Type</th>
           <th>End Date</th>
-          <th>Current Risk Rating</th>
+          <th>CRR</th>
           <th>Assignee</th>
           <th>Reviewer</th>
           <th>Review Status</th>
@@ -50,7 +50,7 @@
         @for(item of paginatedItems ;track item){
         <tr>
           <td>{{ item.slNo }}</td>
-          <td>{{ item.riskId }}</td>
+          <!-- <td>{{ item.riskId }}</td> -->
           <td>{{ item.riskName }}</td>
           <td>{{ item.department }}</td>
           <td>{{ item.type }}</td>
