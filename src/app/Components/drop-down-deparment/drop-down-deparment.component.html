@@ -1,0 +1,25 @@
+<div class="position-relative custom-dropdown-container">
+  <div
+    class="custom-dropdown-placeholder d-flex align-items-center justify-content-between"
+    (click)="toggleDropdown()"
+    [class.disabled]="disabled"
+  >
+    <span>{{ selectedDepartment || 'Select Department' }}</span>
+    <i class="bi bi-chevron-down"></i>
+  </div>
+  <select
+    *ngIf="dropdownOpen"
+    class="form-select"
+    [value]="selectedDepartment"
+    (change)="onSelectionChange($event)"
+    [attr.disabled]="disabled ? '' : null"
+    [size]="departments.length > 5 ? 5 : 0"
+  >
+    <option
+      *ngFor="let dept of departments; trackBy: trackByFn"
+      [value]="dept.departmentName"
+    >
+      {{ dept.departmentName }}
+    </option>
+  </select>
+</div>

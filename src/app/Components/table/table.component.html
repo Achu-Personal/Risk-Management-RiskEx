@@ -1,6 +1,8 @@
-<div class="table-container primaryColor">
-  <div class="top">
-    <div class="table-header">
+
+<div class="body">
+  <div class="container1">
+    <div class="header1">
+      <div class="entries">
       <label for="entries">Show</label>
       <select id="entries" [(ngModel)]="itemsPerPage" (ngModelChange)="updatePaginatedItems()">
         <option value="10">10</option>
@@ -9,26 +11,18 @@
       </select>
       <label>entries</label>
       <app-searchbar (searchChanged)="onSearch($event)"></app-searchbar>
-      <div class="btnn">
-        @if(isButtonVisible == true){
-          <button>Download Report</button>
-        }
-        <!-- <button>Download Report</button> -->
-
-      </div>
-
     </div>
-  </div>
-  <div class="table-responsive">
+   </div>
+    <div class="table-container1 fi">
     <table class="table1">
       <thead>
         <tr class="bord">
           <th>SL No</th>
-          <th>Risk ID</th>
+          <!-- <th>Risk ID</th> -->
           <th>Risk Name</th>
           <th>
             <button class="dropdown-button" (click)="toggleDropdown()">
-              DEPARTMENT&#9662;
+              Department &#9662;
             </button>
             @if(isDropdownOpen){
             <ul class="dropdown-options">
@@ -45,7 +39,7 @@
           </th>
           <th>Type</th>
           <th>End Date</th>
-          <th>Current Risk Rating</th>
+          <th>CRR</th>
           <th>Assignee</th>
           <th>Reviewer</th>
           <th>Review Status</th>
@@ -54,14 +48,14 @@
       </thead>
       <tbody>
         @for(item of paginatedItems ;track item){
-        <tr (click)="rowClick(item.id)">
+        <tr>
           <td>{{ item.slNo }}</td>
-          <td>{{ item.riskId }}</td>
+          <!-- <td>{{ item.riskId }}</td> -->
           <td>{{ item.riskName }}</td>
           <td>{{ item.department }}</td>
           <td>{{ item.type }}</td>
           <td>{{ item.endDate }}</td>
-          <td>{{ item.currentRiskRating }}</td>
+          <td><div [ngClass]="{'green-cell': item.currentRiskRating === 'Medium', 'red-cell': item.currentRiskRating === 'Critical', 'yellow-cell': item.currentRiskRating === 'High'}">{{ item.currentRiskRating }}</div></td>
           <td>{{ item.assignee }}</td>
           <td>{{ item.reviewer }}</td>
           <td>{{ item.reviewStatus }}</td>
@@ -71,13 +65,14 @@
       }
       </tbody>
     </table>
-  </div>
-
+    </div>
+    <!-- <div class="foot"> -->
    @if(shouldDisplayPagination()){
     <app-pagination  [totalItems]="totalItems"
     [itemsPerPage]="itemsPerPage"
     [currentPage]="currentPage"
     (pageChanged)="onPageChange($event)" class="pagination-controls pagination "></app-pagination>
    }
-
+    <!-- </div> -->
   </div>
+</div>

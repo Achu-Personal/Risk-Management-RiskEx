@@ -86,6 +86,20 @@ button.btn-danger:hover {
   overflow-x: hidden;
 }
 
+.custom-btn-close {
+  position: relative;
+  right: 7px;
+  width: 0.75rem;
+  height: 0.85rem;
+}
+
+.custom-btn-close::after,
+.custom-btn-close::before {
+  width: 0.75rem;
+  height: 0.1rem;
+}
+
+
 .button-container{
   display: flex;
   justify-content: end;

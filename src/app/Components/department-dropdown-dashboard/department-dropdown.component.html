@@ -10,22 +10,14 @@
 
   <!-- Select All Checkbox -->
   <label>
-    <input
-      type="checkbox"
-      [checked]="isAllSelected()"
-      (change)="selectAll()"
-    />
+    <input type="checkbox" [checked]="isAllSelected()" (change)="selectAll()" />
     Select All
   </label>
 
   <!-- Dropdown List -->
   <div *ngFor="let option of filterOptions()">
     <label>
-      <input
-        type="checkbox"
-        [checked]="isSelected(option)"
-        (change)="toggleSelection(option)"
-      />
+      <input type="checkbox" [checked]="isSelected(option)" (change)="toggleSelection(option)" />
       {{ option.departmentName }}
     </label>
   </div>
