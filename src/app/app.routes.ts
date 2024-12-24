@@ -65,20 +65,15 @@ export const routes: Routes = [
       },
       {
         path:'approvaltable',component:ApprovalTableComponent, data: { title: 'Approvals' ,breadcrumb: 'Approvals'}
-        // , children:[
-        //   {
-        //     path:'approvals/:id',component:ApprovalComponent, data: { title: 'Approvals',breadcrumb: 'View Risk' }
-        //   }
-        // ]
       },
       {
-        path:'approvals/:id',component:ApprovalComponent,data: { title: 'Approvals',breadcrumb: 'Approvals' }
+        path:'approvals/:id',component:ApprovalComponent,data: { title: 'Approvals',breadcrumb: 'Approvals / View Risk' }
       },
       {
         path:"reference",component:ReferenceComponent,data:{title: 'Reference' ,breadcrumb: 'Reference'}
       },
       {
-        path:'edit',component:EditRiskComponent, data:{title: 'Edit Risk' ,breadcrumb: 'Edit Risk'}
+        path:'edit',component:EditRiskComponent, data:{title: 'Edit Risk' ,breadcrumb: 'View Risk / Edit Risk'}
       },
 
       {
