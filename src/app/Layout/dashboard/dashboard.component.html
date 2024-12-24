@@ -2,7 +2,11 @@
     <app-sidebar></app-sidebar>
 
     <div class="main-content">
-        <app-navbar [data]="navbarData"></app-navbar>
+        <app-navbar [data]="navbarData">
+            <!-- <app-crumbs></app-crumbs> -->
+        </app-navbar>
+        <app-crumbs></app-crumbs>
+        
         <router-outlet></router-outlet>
     </div>
 </div>

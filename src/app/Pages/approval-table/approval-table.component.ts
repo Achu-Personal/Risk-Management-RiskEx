@@ -2,14 +2,15 @@ import { Component } from '@angular/core';
 import { BodyContainerComponent } from "../../Components/body-container/body-container.component";
 import { approvalTableBody } from '../../Interfaces/approvalTable.interface';
 import { ReusableTableComponent } from "../../Components/reusable-table/reusable-table.component";
-import { Router } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../../Components/confirm-dialog/confirm-dialog.component';
+
 
 @Component({
   selector: 'app-approval-table',
   standalone: true,
-  imports: [ BodyContainerComponent, ReusableTableComponent],
+  imports: [BodyContainerComponent, ReusableTableComponent, RouterOutlet],
   templateUrl: './approval-table.component.html',
   styleUrl: './approval-table.component.scss'
 })

@@ -1,2 +1,104 @@
-<app-heatmap>
-</app-heatmap>
+<!-- <app-body-container>
+    <div class="full-container">
+       
+    <div class="heatmap">
+        <h1><b>Risk Methodology</b></h1>
+        <img src="/Images/4X4heatmap.jpg" alt="heatmap">
+
+    </div>
+    <div class="table-section">
+        <div class="likelyhood">
+            <app-referncetable  [tableHead]="likelyHoodTableHead" 
+            [tableBody]="likelyHoodTableBody">
+
+            </app-referncetable>
+
+        </div>
+        <div class="impact">
+            <app-referncetable  [tableHead]="impactTableHead" 
+            [tableBody]="impactTableBody">
+
+            </app-referncetable>
+        </div>
+    </div>
+    <div class="response">
+        <app-referncetable  [tableHead]="riskResponseHead" 
+        [tableBody]="riskResponseBody">
+
+        </app-referncetable>
+    </div>
+
+
+</div>
+</app-body-container> -->
+<app-body-container>
+  <div class="boy-container">
+    <div class="risk-logo">
+      <img src="Images/risk-methodology-logo.png" alt="" />
+    </div>
+    <div class="methodology">
+      <h3><b>Risk Methodology</b></h3>
+      <p>
+        Risk refers to the uncertainty that something may result in a loss or
+        injury
+      </p>
+      <app-heatmap></app-heatmap>
+    </div>
+    <div class="definitions">
+      <h5>Definitions</h5>
+      <div class="tab-container">
+        <!-- Tab Navigation -->
+        <div class="tabs">
+          <button 
+            *ngFor="let tab of tabs; let i = index" 
+            [class.active]="selectedTab === i" 
+            (click)="selectTab(i)">
+            {{ tab.label }}
+          </button>
+        </div>
+    
+        <!-- Tab Content -->
+        <div class="tab-content">
+          <!-- Dynamic content based on the selected tab -->
+          <div *ngIf="selectedTab === 0">
+            <div class="content-section">
+              <h5>{{ tabs[0].label }}</h5>
+              <!-- <p>Risk refers to the uncertainty that something may result in a loss or injury.</p> -->
+              <app-referncetable [tableHead]="likelyHoodTableHead" [tableBody]="likelyHoodTableBody"></app-referncetable>
+            </div>
+          </div>
+          <div *ngIf="selectedTab === 1">
+            <div class="content-section">
+              <h5>{{ tabs[1].label }}</h5>
+              <!-- <p>Details about Likelihood Table.</p> -->
+              
+              <app-referncetable [tableHead]="impactTableHead" [tableBody]="impactTableBody"></app-referncetable>
+            </div>
+          </div>
+          <div *ngIf="selectedTab === 2">
+            <div class="content-section">
+              <h5>{{ tabs[2].label }}</h5>
+              <!-- <p>Details about Impact Table.</p> -->
+              <app-referncetable [tableHead]="QMStablehead" [tableBody]="QMSTablebody"></app-referncetable>
+            </div>
+          </div>
+          <div *ngIf="selectedTab === 3">
+            <div class="content-section">
+              <h5>{{ tabs[3].label }}</h5>
+              <!-- <p>Details about Risk Response Table.</p> -->
+              <app-referncetable [tableHead]="ISMSTableHead" [tableBody]="ISMSTableBody"></app-referncetable>
+            </div>
+          </div>
+          <div *ngIf="selectedTab === 4">
+            <div class="content-section">
+              <h5>{{ tabs[4].label }}</h5>
+              <app-referncetable [tableHead]="riskResponseHead" [tableBody]="riskResponseBody"></app-referncetable>
+            </div>
+          </div>
+        </div>
+      </div>
+        
+      </div>
+    </div>
+ 
+</app-body-container>

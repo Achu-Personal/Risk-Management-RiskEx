@@ -2,7 +2,7 @@ import { Component, Input, input } from '@angular/core';
 import { OverallRatingCardComponent } from "../../UI/overall-rating-card/overall-rating-card.component";
 import { RiskStatusCardComponent } from "../../UI/risk-status-card/risk-status-card.component";
 import { EditButtonComponent } from "../../UI/edit-button/edit-button.component";
-import { Route, Router } from '@angular/router';
+import {  Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -33,7 +33,9 @@ export class RiskBasicDetailsCardComponent {
 
   onEditButtonClicked()
   {
-      this.router.navigate(["edit"], { state: { riskData: this.allData } })
+    console.log("id",this.allData.id);
+    
+      this.router.navigate([`edit`], { state: { riskData: this.allData } }) //         /ViewRisk/${this.allData.id}/
   }
 
 }
