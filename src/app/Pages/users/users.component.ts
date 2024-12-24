@@ -9,9 +9,13 @@ import {
 import { BodyContainerComponent } from '../../Components/body-container/body-container.component';
 import { ApiService } from '../../Services/api.service';
 import { ReusableTableComponent } from '../../Components/reusable-table/reusable-table.component';
+import {  NgFor, NgIf } from '@angular/common';
+
 import { ProjectDropDownComponent } from "../../Components/project-drop-down/project-drop-down.component";
 import { project } from '../../Interfaces/projects.interface';
 import { DropDownDeparmentComponent } from '../../Components/drop-down-deparment/drop-down-deparment.component';
+import { StyleButtonComponent } from "../../UI/style-button/style-button.component";
+import { PaginationComponent } from "../../UI/pagination/pagination.component";
 
 @Component({
   selector: 'app-users',
@@ -19,10 +23,14 @@ import { DropDownDeparmentComponent } from '../../Components/drop-down-deparment
   imports: [
     ReactiveFormsModule,
     BodyContainerComponent,
+    NgIf,
+    NgFor,
     ReusableTableComponent,
     ProjectDropDownComponent,
-    DropDownDeparmentComponent
-],
+    DropDownDeparmentComponent,
+    StyleButtonComponent,
+    PaginationComponent
+  ],
   templateUrl: './users.component.html',
   styleUrl: './users.component.scss',
 })

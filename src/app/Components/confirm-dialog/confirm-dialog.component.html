@@ -3,7 +3,22 @@
     <h2 mat-dialog-title>Confirmation</h2>
 <mat-dialog-content>{{ data.message }}</mat-dialog-content>
 <mat-dialog-actions align="end">
-  <button (click)="onCancel()" class="btn-danger">Cancel</button>
-  <button color="primary" (click)="onConfirm()" class="btn-success">Confirm</button>
+  <div class="buttons">
+  <app-style-button
+       type="button"
+       label="Confirm"
+       color="primary"
+       class="btn-success"
+       (clicked)="onConfirm()">
+      </app-style-button>
+  <app-style-button
+       type="button"
+       label="Cancel"
+       color="primary"
+       class="btn-danger"
+       (clicked)="onCancel()">
+      </app-style-button></div>
+  <!-- <button (click)="onCancel()" class="btn-danger">Cancel</button>
+  <button color="primary" (click)="onConfirm()" class="btn-success">Confirm</button> -->
 </mat-dialog-actions>
 </div>
