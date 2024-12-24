@@ -1,16 +1,15 @@
 .navbar{
-    height: 12vh;
-
+    height: 5vh;
     width: 84vw;
     position: fixed;
     top: 0;
     z-index: 1000;
     margin-left: 5px;
-    color: white;
+    color: black;
 
     h2{
-        color: white;
-        padding: 10px;
+        color:black;
+        // padding: 10px;
     }
     .nav-text{
         display: flex;
