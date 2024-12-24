@@ -1,5 +1,5 @@
 button{
-  
+
   border: 1px solid rgb(62, 104, 185, 75%) ;
   cursor: pointer;
   font-weight: 600;
@@ -10,7 +10,14 @@ button{
   {
     outline: none;
     border: none;
+    // box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);  /* Add custom focus outline */
   }
+  :hover{
 
+    background-color: #0056b3;
+    color: white;
+    border-color: #0056b3;
+  }
 }
+
 

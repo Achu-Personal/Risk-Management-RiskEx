@@ -1,13 +1,59 @@
-<div class="navbar">
+<!-- <div class="navbar">
 
     <div class="nav-text">
-        <h2>{{ data.title }}</h2>
-        <!-- @if(data?.title){
+
+
+            <div class="userdropdown">
+              <img  height="30" width="30"  (click)="toggleDropdown()"
+              alt="Menu"
+              class="menu-icon"/>
+
+              <div *ngIf="showDropdown" class="dropdown-menu">
+                <ul>
+                  <li (click)="onChangePassword()">Change Password</li>
+                  <li (click)="onLogout()">Log Out</li>
+                </ul>
+              </div>
+            </div>
+
+
+</div> -->
+
+
+
+
+
+<div class="navbar">
+  <div class="nav-text">
+    <h2>{{ data.title }}</h2>
+    <!-- @if(data?.title){
             <h2>{{ data.title }}</h2>
         }
         @else {
             <h2>Risk Management</h2>
         } -->
-        <!-- <img src="https://cdn-icons-png.flaticon.com/128/727/727399.png" height="30" width="30"/> -->
+
+
+    <!-- Dropdown Trigger Image -->
+    <!-- <img src="https://cdn-icons-png.flaticon.com/128/727/727399.png" height="30" width="30" (click)="toggleDropdown()"
+      alt="Menu" class="menu-icon" style="z-index: 10;" />
+    @if(showDropdown){
+    <div class="dropdown-container">
+
+
+
+      <div class="dropdown-menu">
+        <ul>
+          <li (click)="onChangePassword()">
+            <h6>Change Password</h6>
+          </li>
+          <li (click)="onLogout()">Log Out</li>
+        </ul>
+      </div>
+
+
+      <img src="https://cdn-icons-png.flaticon.com/128/727/727399.png" height="30" width="30" />
     </div>
+    }
+  </div> -->
 </div>
