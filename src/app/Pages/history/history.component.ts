@@ -7,7 +7,7 @@ import { ButtonComponent } from "../../UI/button/button.component";
 @Component({
   selector: 'app-history',
   standalone: true,
-  imports: [TableComponent, BodyContainerComponent, ButtonComponent],
+  imports: [TableComponent, BodyContainerComponent],
   templateUrl: './history.component.html',
   styleUrl: './history.component.scss'
 })
