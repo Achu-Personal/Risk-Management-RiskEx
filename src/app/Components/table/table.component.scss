@@ -24,7 +24,7 @@
 .header1 {
   margin-top: 70px;
   padding: 10px 20px;
-  background-color: #ffffff;
+  background-color: #d0c6b683;
   border-radius: 4px;
   box-shadow: 0px 4px 5px #979797;
   display: flex;
@@ -36,6 +36,10 @@
     width: auto;
   }
 }
+
+// .bord{
+//   background-color: #d0c6b683;
+// }
 
 /* Table Section */
 .table-container1 {
@@ -55,14 +59,16 @@
   thead {
     position: sticky;
     top: 0;
-    background-color: #b9b0a3;
+    // background-color: #b9b0a3;
+    // background-color: #d0c6b683;
     z-index: 1;
     // tr{
-    //   width: 10000vh;
+    //   // background-color: #d0c6b683;
     // }
 
     th {
-      background-color: #b9b0a3;
+      // background-color: #b9b0a3;
+      background-color: #d0c6b6;
       padding: 12px;
       text-align: left;
 
@@ -141,7 +147,7 @@ tbody {
   align-items: center;
   gap: 8px;
   font-size: 14px;
-  color: #4D4D4D;
+  color: #4d4d4d;
   font-weight: 500;
 
   select {
