@@ -1,16 +1,8 @@
-h2{
-  color: white;
-  margin-left: 40px;
-}
+
 .tab{
   margin-top: 10px;
 }
 
-// app-table{
-//   position: fixed;
-//   margin-left: 20px;
-//   width: 1250px;
-// }
 .btnn{
   display: flex;
   flex-direction: row;
@@ -25,12 +17,10 @@ h2{
 
 /* Style for individual buttons */
 .btnn button {
-  padding: 10px 20px;  /* Space inside the button */
-  background-color: #cfdeee ;  /* Blue background */
-  color: #0056b3 ;  /* White text */
-  // border: 1px solid #007bff;  /* Border matching the background */
-  // box-shadow: 0 0 3px rgba(122, 174, 229, 0.626);
-  box-shadow: 0px 0px 4px rgb(62, 104, 185, 50%);
+  padding: 10px 20px;
+  background-color: #4D4D4D ;
+  color: #ffffff ;
+  box-shadow: 0px 0px 4px rgba(185, 154, 62, 0.5);
   border: none;
   border-radius: 5px;  /* Rounded corners */
   font-size: 14px;  /* Button text size */
@@ -40,16 +30,14 @@ h2{
 
 /* Hover effect */
 .btnn button:hover {
-  background-color: #0056b3;
-  color: white;
+  background-color: #d0c6b6;
+  color: rgb(43, 28, 6);
   // border-color: #0056b3;  /* Darker border on hover */
 }
 
 /* Focus effect */
 .btnn button:focus {
   outline: none;  /* Remove default focus outline */
-  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);  /* Add custom focus outline */
+  box-shadow: 0 0 5px rgba(255, 166, 0, 0.5);  /* Add custom focus outline */
 }
-app-table{
-  width: 100%;
-}
+

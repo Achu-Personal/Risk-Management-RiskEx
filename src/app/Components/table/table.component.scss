@@ -17,16 +17,16 @@
   background: transparent;
   display: flex;
   flex-direction: column;
-  gap: 11px;
+  gap: 8px;
 }
 
 /* Header Section */
 .header1 {
-  margin-top: 70px;
+  // margin-top: 70px;
   padding: 10px 20px;
   background-color: #d0c6b683;
   border-radius: 4px;
-  box-shadow: 0px 4px 5px #979797;
+  box-shadow: 0px 1px 3px #979797;
   display: flex;
   align-items: left;
   justify-items: left;
@@ -43,12 +43,12 @@
 
 /* Table Section */
 .table-container1 {
-  max-height: 400px;
+  max-height: 420px;
   overflow-y: auto;
   // background-color: #741b1b;
   border-radius: 4px;
-  width: 182vh;
-  box-shadow: 0px 4px 5px #979797;
+  // width: 182vh;
+  box-shadow: 0px 1px 3px #979797;
 
   table {
     width: 100%;
@@ -59,17 +59,14 @@
   thead {
     position: sticky;
     top: 0;
-    // background-color: #b9b0a3;
-    // background-color: #d0c6b683;
     z-index: 1;
-    // tr{
-    //   // background-color: #d0c6b683;
-    // }
+    tr{
+      width: 100%;
+      background-color: #d0c6b6;
+    }
 
     th {
-      // background-color: #b9b0a3;
-      background-color: #d0c6b6;
-      padding: 12px;
+      padding: 10px;
       text-align: left;
 
     }
@@ -103,7 +100,7 @@ tbody {
     position: relative;
 
     td {
-      padding: 12px;
+      padding: 10px;
       vertical-align: middle;
       border-bottom: none; /* Remove borders directly */
       button{
