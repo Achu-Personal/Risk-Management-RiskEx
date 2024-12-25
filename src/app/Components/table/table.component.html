@@ -48,7 +48,7 @@
       </thead>
       <tbody>
         @for(item of paginatedItems ;track item){
-        <tr>
+        <tr (click)="rowClick(item.id)">
           <td>{{ item.slNo }}</td>
           <!-- <td>{{ item.riskId }}</td> -->
           <td>{{ item.riskName }}</td>
