@@ -1,0 +1,48 @@
+<div class="matrix-container">
+    <!-- <div class="likelihood-label">
+      LIKELIHOOD 
+      <span class="right-arrow">→</span>
+    </div> -->
+ 
+
+    <div class="matrix-wrapper">
+      <!-- <div class="impact-label">
+        IMPACT
+        <span class="down-arrow">↓</span>
+      </div> -->
+   
+
+      <div class="matrix">
+        <div class="header-row">
+            
+          <div class="corner-cell">
+            <div class="likelihood-label">
+                LIKELIHOOD 
+                <span class="right-arrow"><i class="bi bi-arrow-right"></i></span>
+              </div>
+
+              <div class="impact-label">
+                IMPACT
+                <span class="down-arrow"><i class="bi bi-arrow-down"></i></span>
+              </div>
+          </div>
+          
+          <div class="header-cell" *ngFor="let likelihood of likelihoods">
+            {{likelihood.value}}<br>{{likelihood.label}}
+          </div>
+        </div>
+        
+        <!-- Matrix rows -->
+        <div class="matrix-row" *ngFor="let impact of impacts">
+          <div class="impact-cell">
+            {{impact.value}} {{impact.label}}
+          </div>
+          <div class="matrix-cell" 
+               *ngFor="let cell of getCellsForImpact(impact.value)"
+               [style.background-color]="cell.color">
+            {{cell.value}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

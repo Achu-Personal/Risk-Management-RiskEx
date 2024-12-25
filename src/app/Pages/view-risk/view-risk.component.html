@@ -1,3 +1,4 @@
+
 <app-body-container class="hide-scrollbar"  >
   <main>
     <app-risk-basic-details-card [isEditable]="true" riskDesc={{data.risk_description}}  riskName={{data.risk_name}} riskNumber={{data.risk_number}} riskType={{data.risk_type}} impact={{data.impact_of_risk}} [overallRiskRating]="data.risk_status=='closed'? data. assessment_post_implementation.overall_risk_rating:data.current_risk_assessment.overall_risk_rating" riskStatus="{{data.risk_status}}" [allData]="data" ></app-risk-basic-details-card>
@@ -6,3 +7,4 @@
   </main>
 
 </app-body-container>
+<!-- <router-outlet></router-outlet> -->

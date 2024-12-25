@@ -8,11 +8,12 @@ import { ConfirmDialogComponent } from '../../Components/confirm-dialog/confirm-
 import { ActivatedRoute } from '@angular/router';
 import { ApiService } from '../../Services/api.service';
 import { GlobalStateServiceService } from '../../Services/global-state-service.service';
+import { StyleButtonComponent } from "../../UI/style-button/style-button.component";
 
 @Component({
   selector: 'app-approval',
   standalone: true,
-  imports: [BodyContainerComponent, RiskBasicDetailsCardComponent, RiskDetailsSection2Component,FormsModule, ReactiveFormsModule],
+  imports: [BodyContainerComponent, RiskBasicDetailsCardComponent, RiskDetailsSection2Component, FormsModule, ReactiveFormsModule, StyleButtonComponent],
   templateUrl: './approval.component.html',
   styleUrl: './approval.component.scss'
 })
