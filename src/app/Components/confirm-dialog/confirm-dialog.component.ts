@@ -1,4 +1,4 @@
-import { Component, Inject, Input } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -14,20 +14,19 @@ import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angul
   styleUrl: './confirm-dialog.component.scss'
 })
 export class ConfirmDialogComponent {
-  
-  @Input() IsCommentRequiered:boolean=false;
 
-   isButtonClicked:boolean = false;
+  IsCommentRequiered:boolean=true;
+
+   isButtonClicked:boolean = true;
     commentForm = new FormGroup({
     approve: new FormControl('')});
     
-  constructor(
-    public dialogRef: MatDialogRef<ConfirmDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { message: string }
-  ) {
-    
-  }
-
+constructor(
+  public dialogRef: MatDialogRef<ConfirmDialogComponent>,
+  @Inject(MAT_DIALOG_DATA) public data: { message: string; IsCommentRequiered: boolean }
+) {
+ 
+}
   
   onConfirm(): void {
     this.dialogRef.close(true);
@@ -40,5 +39,5 @@ export class ConfirmDialogComponent {
   onCancel(): void {
     this.dialogRef.close(false);
   }
-  
+
 }
