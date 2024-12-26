@@ -118,7 +118,7 @@ export class ProjectDropDownComponent implements OnChanges, ControlValueAccessor
   updateSelectedProject() {
     if (this.selectedItems.length > 0) {
       this.selectedProject = this.selectedItems
-        .map((proj) => proj.projectName)
+        .map((proj) => proj.name)
         .join(', ');
     } else {
       this.selectedProject = 'Select Projects';

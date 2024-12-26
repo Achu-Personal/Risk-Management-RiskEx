@@ -9,13 +9,11 @@ import {
 import { BodyContainerComponent } from '../../Components/body-container/body-container.component';
 import { ApiService } from '../../Services/api.service';
 import { ReusableTableComponent } from '../../Components/reusable-table/reusable-table.component';
-import {  NgFor, NgIf } from '@angular/common';
 
 import { ProjectDropDownComponent } from "../../Components/project-drop-down/project-drop-down.component";
 import { project } from '../../Interfaces/projects.interface';
 import { DropDownDeparmentComponent } from '../../Components/drop-down-deparment/drop-down-deparment.component';
 import { StyleButtonComponent } from "../../UI/style-button/style-button.component";
-import { PaginationComponent } from "../../UI/pagination/pagination.component";
 
 @Component({
   selector: 'app-users',
@@ -23,13 +21,10 @@ import { PaginationComponent } from "../../UI/pagination/pagination.component";
   imports: [
     ReactiveFormsModule,
     BodyContainerComponent,
-    NgIf,
-    NgFor,
     ReusableTableComponent,
     ProjectDropDownComponent,
     DropDownDeparmentComponent,
     StyleButtonComponent,
-    PaginationComponent
   ],
   templateUrl: './users.component.html',
   styleUrl: './users.component.scss',
@@ -45,7 +40,7 @@ export class UsersComponent {
 
   constructor(public api: ApiService) {
     this.departmentForm = new FormGroup({
-      departmentName: new FormControl('', Validators.required),
+      name: new FormControl('', Validators.required),
     });
     this.userForm = new FormGroup({
       name: new FormControl('', Validators.required),
@@ -90,6 +85,8 @@ export class UsersComponent {
     if (this.departmentForm.valid) {
       const departmentData = this.departmentForm.value;
 
+      console.log('Submitting department data:', departmentData);
+
       this.api.addNewDepartment(departmentData).subscribe(
         (response) => {
           console.log('Department added successfully:', response.message);
@@ -105,12 +102,16 @@ export class UsersComponent {
         },
         (error) => {
           console.error('Failed to add the department', error);
+          if (error.error && error.error.message) {
+            alert(error.error.message); // Display specific error message
+          }
         }
       );
     } else {
-      console.error('Form is invalid');
+      console.error('Form is invalid:', this.departmentForm.errors);
     }
   }
+
 
   onSubmitUser() {
     if (this.userForm.valid) {
@@ -129,6 +130,9 @@ export class UsersComponent {
   onSubmitProject() {
     if (this.projectForm.valid) {
       const projectData = this.projectForm.value;
+
+      console.log('Submitting project data:', projectData);
+
 
       this.api.addNewProject(projectData).subscribe(
         (response) => {

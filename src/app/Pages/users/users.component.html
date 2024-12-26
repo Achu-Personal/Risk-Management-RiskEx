@@ -6,7 +6,7 @@
   <app-style-button
   label="Add User"
   color="primary"
-  data-bs-toggle="modal" 
+  data-bs-toggle="modal"
   data-bs-target="#addUserModal">
  </app-style-button>
 
@@ -125,7 +125,7 @@
                 Department Name <span class="text-danger">*</span>
               </label>
               <input type="text" class="form-control" id="departmentName" placeholder="Enter Department Name"
-                formControlName="departmentName" />
+                formControlName="name" />
               @if (departmentForm.get('departmentName')?.invalid && departmentForm.get('departmentName')?.touched)
               {
               <div class="text-danger">Department name is required.</div>

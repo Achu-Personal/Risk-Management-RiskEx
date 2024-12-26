@@ -34,15 +34,15 @@ constructor(private http:HttpClient) { }
      }));
    }
    getDepartment() {
-     return this.http.get<department[]>('https://localhost:7150/api/Department/GetAllDepartments');
+     return this.http.get<department[]>('https://localhost:7216/api/Department/Departments');
    }
 
    addNewDepartment(department: any): Observable<{ message: string }> {
-     return this.http.post<{ message: string }>('https://localhost:7150/api/Department/AddDepartment', department);
+     return this.http.post<{ message: string }>('https://localhost:7216/api/Department/Department', department);
    }
 
    getProjects(departmentName: string) {
-     return this.http.get<project[]>(`https://localhost:7150/api/Project/GetProjectsByDepartment/${departmentName}`);
+     return this.http.get<project[]>(`https://localhost:7216/api/Project/ProjectsBy/${departmentName}`);
    }
 
    gettabledata(){
@@ -57,7 +57,10 @@ constructor(private http:HttpClient) { }
      );
    }
    addNewProject(project:any){
-     return this.http.post("https://localhost:7150/api/Project/AddProject",project)
+     return this.http.post("https://localhost:7216/api/Project/Project",project)
+   }
+   addNewUser(){
+    
    }
 
    getRisk()
