@@ -1,8 +1,8 @@
 
-<app-body-container class="hide-scrollbar"  >
+<app-body-container class="hide-scrollbar" backgroundColor="transparent"  [showShadow]=false >
   <main>
-    <app-risk-basic-details-card [isEditable]="true" riskDesc={{data.risk_description}}  riskName={{data.risk_name}} riskNumber={{data.risk_number}} riskType={{data.risk_type}} impact={{data.impact_of_risk}} [overallRiskRating]="data.risk_status=='closed'? data. assessment_post_implementation.overall_risk_rating:data.current_risk_assessment.overall_risk_rating" riskStatus="{{data.risk_status}}" [allData]="data" ></app-risk-basic-details-card>
-    <app-risk-details-section2 riskMitigation={{data.risk_mitigation}} riskContengency={{data.risk_contingency}} responsibilityOfAction={{data.responsibility_of_action}} plannedActionDate={{data.planned_action_date}}></app-risk-details-section2>
+    <app-risk-basic-details-card [isEditable]="true" riskDesc={{data.risk_description}}  riskName={{data.risk_name}} riskNumber={{data.risk_number}} riskType={{data.risk_type}}  [overallRiskRating]="data.risk_status=='closed'? data. assessment_post_implementation.overall_risk_rating:data.current_risk_assessment.overall_risk_rating" riskStatus="{{data.risk_status}}" [allData]="data" ></app-risk-basic-details-card>
+    <app-risk-details-section2 riskMitigation={{data.risk_mitigation}} riskContengency={{data.risk_contingency}} responsibilityOfAction={{data.responsibility_of_action}} impact={{data.impact_of_risk}} plannedActionDate={{data.planned_action_date}}></app-risk-details-section2>
     <app-risk-details-section3-mitigation [beforeMitigation]="data.current_risk_assessment"  [afterMitigation]="data.assessment_post_implementation" status={{data.risk_status}}  type={{data.risk_type}} ></app-risk-details-section3-mitigation>
   </main>
 
