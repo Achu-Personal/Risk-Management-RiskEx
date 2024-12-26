@@ -67,7 +67,7 @@
 
     th {
       padding: 10px;
-      text-align: left;
+      text-align: center;
 
     }
   }
@@ -80,6 +80,7 @@
     td {
       padding: 12px;
       vertical-align: middle;
+      text-align: center;
     }
 
 
@@ -301,4 +302,35 @@ tbody {
   // border: 1px solid #420c0c ;
   border-radius: 10px;
   text-align: center;
+}
+
+
+// fixed width for columns
+
+
+th:nth-child(1),
+td:nth-child(1) {
+  width: 90px;
+}
+
+th:nth-child(2),
+td:nth-child(2) {
+  width: 200px;
+}
+
+th:nth-child(3),
+td:nth-child(3) {
+  width: 150px;
+}
+th:nth-child(5),
+td:nth-child(5) {
+  width: 150px;
+}
+th:nth-child(6),
+td:nth-child(6) {
+  width: 150px;
+}
+th:nth-child(9),
+td:nth-child(9) {
+  width: 150px;
 }
