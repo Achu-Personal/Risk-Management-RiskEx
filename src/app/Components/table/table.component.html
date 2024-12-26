@@ -61,7 +61,9 @@
           <td>{{ item.assignee }}</td>
           <td>{{ item.reviewer }}</td>
           <td>{{ item.reviewStatus }}</td>
-          <td><div  [ngClass]="{'green-cell': item.status === 'Open', 'red-cell': item.status === 'Closed'}">{{ item.status }}</div></td>
+          <!-- <td><div  [ngClass]="{'green-cell': item.status === 'Open', 'red-cell': item.status === 'Closed'}">{{ item.status }}</div></td> -->
+          <td><div>{{ item.status }}</div></td>
+
           <!-- <td>{{item}}</td> -->
         </tr>
       }
