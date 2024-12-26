@@ -11,12 +11,12 @@ import { BodyContainerComponent } from "../../Components/body-container/body-con
   styleUrl: './edit-risk.component.scss'
 })
 export class EditRiskComponent {
-  riskdata:any
-  riskType:string=''
+  riskdata:any=''
+  riskType:string='Quality'
   ngOnInit(){
-    this. riskdata=history.state.riskData ;
-    this.riskType=this.riskdata.risk_type;
-    console.log(this.riskdata)
+    // this. riskdata=history.state.riskData ;
+    // this.riskType=this.riskdata.risk_type;
+    // console.log(this.riskdata)
 
   }
 
