@@ -15,9 +15,9 @@
 //   }
 
   .custom-button.primary {
-    border: 1px solid rgba(62, 104, 185, 0.75); 
-    background-color: #f5f8ff; 
-    color: #3e68b9; 
+    border: 1px solid #3b3636; 
+    background-color: #d0c6b6; 
+    color: #000000; 
     cursor: pointer;
     font-weight: 600;
     font-size: 14px;
@@ -30,15 +30,15 @@
   }
   
   .custom-button.primary:hover {
-    background-color: #3e68b9; 
-    color: #ffffff; 
-    border-color: #3e68b9; 
+    background-color: #c48f3b; 
+    color: #050505; 
+    border-color: #d6a727; 
   }
   
   .custom-button.primary:focus {
     outline: none;
-    box-shadow: 0 0 5px rgba(62, 104, 185, 0.5);
-    border-color: #3e68b9;
+    box-shadow: 0 0 5px #3b3636;
+    border-color: #d0c6b6;
   }
   
   /* Disabled style */
