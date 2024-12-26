@@ -1,0 +1,27 @@
+
+
+
+<div class="stepper-container">
+  <div class="timeline">
+    @for(step of steps; track step.id) {
+      <div class="step-item" [class.completed]="step.isCompleted">
+        <div class="step-icon"
+             [class.completed]="step.isCompleted"
+             [class.current]="step.id === currentStep">
+          @if (step.isCompleted) {
+            <i class="checkmark">✓</i>
+          } @else {
+            {{ step.stepNumber }}
+          }
+        </div>
+        <div class="step-content">
+          <div class="step-title">{{ step.title }}</div>
+          <div class="step-info">
+            <span>{{ step.isCompleted ? (step.title === 'Open' ? 'Created' : step.title === 'Closed' ? 'Closed' : 'Reviewed') : 'Pending' }} by {{ step.actionBy }} on</span>
+            <span class="date">{{ step.date }}</span>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+</div>
