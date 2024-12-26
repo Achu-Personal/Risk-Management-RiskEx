@@ -1,8 +1,16 @@
+h5{
+  font-size: 2.7vh;
 
+  font-weight: bold;
+}
+p{
+  font-size: 2.2vh;
+
+}
 .risk-details-section2
 {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   gap: 20px;
   width: 100%;
   height: auto;
@@ -14,15 +22,31 @@
 }
 
 
-.risk-details-section2>div
+.risk-details-section2>div:nth-child(1)
 {
 
 
   width: 100%;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: space-between;
   height: 40vh;
+  gap: 20px;
+
+
+
+
+}
+
+.risk-details-section2>div:nth-child(2)
+{
+
+
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  height: 55vh;
   gap: 20px;
 
 
@@ -32,18 +56,66 @@
 .responsibility-of-action-planned-Action-div
 {
   height: 100%;
-  width: 100%;
+  width: 50%;
   border-radius: 10px;
   padding: 20px;
+  background-color: var( --accent-color);
+}
+.responsibility-of-action-planned-Action-div>p{
+  width: 100%;
+
+  word-wrap: break-word;
+}
+.responsibility-of-action-planned-Action-div> div
+{
+
+width: 100%;
+height: 100%;
+background-color: #F5F5F5;
+padding: 20px;
+}
+
+.responsibility-of-action-planned-Action-div>div> div
+{
+display: flex;
+flex-direction: row;
+align-items: center;
+margin-top: 30px;
+}
+
+.responsibility-of-action-planned-Action-div>div> div>h5
+{
+
+
+font-size: 2.1vh !important;
+margin: 0px !important;
+display: flex;
+justify-content: center;
+align-items: center;
+
+}
+
+.responsibility-of-action-planned-Action-div>div> div>h6
+{
+
+
+font-size: 1.8vh !important;
+margin: 0px !important;
+display: flex;
+justify-content: center;
+align-items: center;
+
 }
 
 .details-card
 {
   width: 100%;
-  height: 45%;
+  height: 100%;
   padding: 20px;
   border-radius: 10px;
   box-sizing: border-box;
+  background-color: var(--accent-color);
+
 
 
 }
@@ -63,11 +135,24 @@
 {
  margin: 0px;
 }
-h5{
-  font-size: 2.7vh;
-  font-weight: bold;
+
+
+.risk-status
+{
+  height: 100%;width: 100%;background-color: white;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
 }
-p{
-  font-size: 2.2vh;
+
+.risk-status>div{
+  height: 90%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+
 }
 
