@@ -1,6 +1,6 @@
 
-<div class="body">
-  <div class="container1">
+<!-- <div class="body"> -->
+
     <div class="header1">
       <div class="entries">
       <label for="entries">Show</label>
@@ -10,9 +10,11 @@
         <option value="50">50</option>
       </select>
       <label>entries</label>
-      <app-searchbar (searchChanged)="onSearch($event)"></app-searchbar>
     </div>
+      <app-searchbar (searchChanged)="onSearch($event)"></app-searchbar>
+
    </div>
+  <div class="container1">
     <div class="table-container1 fi">
     <table class="table1">
       <thead>
@@ -48,7 +50,7 @@
       </thead>
       <tbody>
         @for(item of paginatedItems ;track item){
-        <tr (click)="rowClick(item.id)">
+        <tr (click)="rowClick(item.id)" style="height:10px;">
           <td>{{ item.slNo }}</td>
           <!-- <td>{{ item.riskId }}</td> -->
           <td>{{ item.riskName }}</td>
@@ -71,8 +73,11 @@
     <app-pagination  [totalItems]="totalItems"
     [itemsPerPage]="itemsPerPage"
     [currentPage]="currentPage"
-    (pageChanged)="onPageChange($event)" class="pagination-controls pagination "></app-pagination>
+    (pageChanged)="onPageChange($event)" class="pagination-controls pagination ">
+
+    </app-pagination>
    }
+
     <!-- </div> -->
   </div>
-</div>
+<!-- </div> -->

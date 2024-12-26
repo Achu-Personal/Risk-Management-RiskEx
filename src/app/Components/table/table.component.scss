@@ -17,24 +17,26 @@
   background: transparent;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  // gap: 8px;
 }
 
 /* Header Section */
 .header1 {
   // margin-top: 70px;
-  padding: 10px 20px;
-  background-color: #d0c6b683;
-  border-radius: 4px;
-  box-shadow: 0px 1px 3px #979797;
+  // padding: 10px 20px;
+  // background-color: #d0c6b683;
+  // border-radius: 4px;
+  // box-shadow: 0px 1px 3px #979797;
+  margin-bottom: 20px;
   display: flex;
   align-items: left;
   justify-items: left;
-  gap: 30px;
-  .report{
-    margin-left: 600px;
-    width: auto;
-  }
+  max-width: 50%;
+  gap: 20px;
+  // .report{
+  //   margin-left: 600px;
+  //   width: auto;
+  // }
 }
 
 // .bord{
@@ -43,15 +45,15 @@
 
 /* Table Section */
 .table-container1 {
-  max-height: 420px;
+  max-height: 480px;
   overflow-y: auto;
   // background-color: #741b1b;
   border-radius: 4px;
   // width: 182vh;
   box-shadow: 0px 1px 3px #979797;
 
-  table {
-    width: 100%;
+  .table1 {
+    // width: 100%;
     border-collapse: collapse; /* Allows spacing */
     border-spacing: 0 8px; /* Vertical spacing between rows */
   }
@@ -101,7 +103,7 @@ tbody {
     position: relative;
 
     td {
-      padding: 10px;
+      padding: 5px;
       vertical-align: middle;
       border-bottom: none; /* Remove borders directly */
       button{
@@ -110,24 +112,24 @@ tbody {
       }
     }
 
-    &::after {
-      content: "";
-      position: absolute;
-      bottom: 0;
-      left: 1%;
-      width: 98%;
-      height: 1px;
-      background-color: rgba(0, 0, 0, .3);
-    }
+    // &::after {
+    //   content: "";
+    //   position: absolute;
+    //   bottom: 0;
+    //   left: 1%;
+    //   width: 98%;
+    //   height: 1px;
+    //   background-color: rgba(0, 0, 0, .3);
+    // }
 
   }
 
 }
 
 
-// table tbody tr:nth-child(even) {
-//   background: rgba(208, 198, 182, 0.3);
-// }
+table tbody tr:nth-child(even) {
+  background: rgba(208, 198, 182, 0.3);
+}
 
 
 .table-container1::-webkit-scrollbar {
@@ -152,7 +154,7 @@ tbody {
     padding: 6px 12px;
     border: none;
     border-radius: 4px;
-    box-shadow: 0px 1px 1px #4D4D4D;
+    // box-shadow: 0px 1px 1px #4D4D4D;
     background: #D0C6B6;
     font-size: 14px;
     color: #000000;
@@ -173,7 +175,7 @@ tbody {
     padding: 6px 12px;
     border: none;
     border-radius: 4px;
-    box-shadow: 0px 1px 1px #4D4D4D;
+    // box-shadow: 0px 1px 1px #4D4D4D;
     font-size: 14px;
     color: #000000;
     background: #D0C6B6;
