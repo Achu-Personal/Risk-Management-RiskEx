@@ -12,20 +12,21 @@
 .container1 {
 
   // max-width: 1200px;
+  width: 100%;
   // margin: 20px auto;
   background: transparent;
   display: flex;
   flex-direction: column;
-  gap: 11px;
+  gap: 8px;
 }
 
 /* Header Section */
 .header1 {
-  margin-top: 70px;
+  // margin-top: 70px;
   padding: 10px 20px;
-  background-color: #ffffff;
+  background-color: #d0c6b683;
   border-radius: 4px;
-  box-shadow: 0px 4px 5px #979797;
+  box-shadow: 0px 1px 3px #979797;
   display: flex;
   align-items: left;
   justify-items: left;
@@ -36,13 +37,18 @@
   }
 }
 
+// .bord{
+//   background-color: #d0c6b683;
+// }
+
 /* Table Section */
 .table-container1 {
-  max-height: 400px;
+  max-height: 420px;
   overflow-y: auto;
-  background-color: #fff;
+  // background-color: #741b1b;
   border-radius: 4px;
-  box-shadow: 0px 4px 5px #979797;
+  // width: 182vh;
+  box-shadow: 0px 1px 3px #979797;
 
   table {
     width: 100%;
@@ -53,14 +59,16 @@
   thead {
     position: sticky;
     top: 0;
-    background-color: #b9b0a3;
     z-index: 1;
+    tr{
+      width: 100%;
+      background-color: #d0c6b6;
+    }
 
     th {
-      background-color: #b9b0a3;
-      padding: 12px;
-      text-align: left;
-      // border-bottom: 2px solid #eaeaea;
+      padding: 10px;
+      text-align: center;
+
     }
   }
 
@@ -72,11 +80,12 @@
     td {
       padding: 12px;
       vertical-align: middle;
+      text-align: center;
     }
 
 
     &:hover {
-      background-color: rgba(208, 198, 182, 0.7);
+      background-color: rgba(208, 198, 182, 0.2);
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  /* Increased shadow for more lift effect */
       transform: translateY(-1px);  /* Lifts the row upwards */
       transition: box-shadow 0.2s ease-in-out, transform 0.2s ease-in-out;  /* Add transition for transform */
@@ -92,7 +101,7 @@ tbody {
     position: relative;
 
     td {
-      padding: 12px;
+      padding: 10px;
       vertical-align: middle;
       border-bottom: none; /* Remove borders directly */
       button{
@@ -119,21 +128,14 @@ tbody {
 // table tbody tr:nth-child(even) {
 //   background: rgba(208, 198, 182, 0.3);
 // }
-// tbody tr:hover {
-//   cursor: pointer;
-//   background-color: rgba(208, 198, 182, 0.7);
-//   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  /* Increased shadow for more lift effect */
-//   transform: translateY(-1px);  /* Lifts the row upwards */
-//   transition: box-shadow 0.2s ease-in-out, transform 0.2s ease-in-out;  /* Add transition for transform */
 
-// }
 
-  .table-container1::-webkit-scrollbar {
+.table-container1::-webkit-scrollbar {
     display: none;
   }
 
 
-  .table-container1
+.table-container1
   {
     scrollbar-width: none;
     -ms-overflow-style: none;
@@ -143,7 +145,7 @@ tbody {
   align-items: center;
   gap: 8px;
   font-size: 14px;
-  color: #4D4D4D;
+  color: #4d4d4d;
   font-weight: 500;
 
   select {
@@ -180,7 +182,7 @@ tbody {
     &:focus {
       outline: none;
       // border-color: #5a67d8;
-      // box-shadow: 0 0 5px rgba(90, 103, 216, 0.5);
+      box-shadow: 0 0 5px rgba(90, 103, 216, 0.5);
     }
   }
 
@@ -276,7 +278,7 @@ tbody {
 
 .green-cell {
   background-color: #d4edda;
-  color: #155724;
+  color: #2ae355;
   font-weight: bold;
   padding: 5px;
   // border: 1px solid #0c4219 ;
@@ -285,7 +287,7 @@ tbody {
 }
 .red-cell {
   background-color: #edd4d5;
-  color: #571515;
+  color: #e82222;
   font-weight: bold;
   padding: 5px;
   // border: 1px solid #420c0c ;
@@ -294,10 +296,41 @@ tbody {
 }
 .yellow-cell {
   background-color: #edebd4;
-  color: #575315;
+  color: #e1d52c;
   font-weight: bold;
   padding: 5px;
   // border: 1px solid #420c0c ;
   border-radius: 10px;
   text-align: center;
+}
+
+
+// fixed width for columns
+
+
+th:nth-child(1),
+td:nth-child(1) {
+  width: 90px;
+}
+
+th:nth-child(2),
+td:nth-child(2) {
+  width: 200px;
+}
+
+th:nth-child(3),
+td:nth-child(3) {
+  width: 150px;
+}
+th:nth-child(5),
+td:nth-child(5) {
+  width: 150px;
+}
+th:nth-child(6),
+td:nth-child(6) {
+  width: 150px;
+}
+th:nth-child(9),
+td:nth-child(9) {
+  width: 150px;
 }

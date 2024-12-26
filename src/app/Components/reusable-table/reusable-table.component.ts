@@ -34,6 +34,7 @@ approveButton(event:Event,row:any) {
   @Input() tableData: any[] = []; 
   @Input() IsActionRequiered: boolean = true;
   @Input() IsUser:boolean= false;
+  @Input() height:any='70%';
 
 
   rowKeys: string[] = []; 

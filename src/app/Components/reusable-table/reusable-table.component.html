@@ -1,5 +1,5 @@
-<div class="table-container">
-<div class="table-responsive">
+<div class="table-container" [ngStyle]="{'height':height}">
+<div class="tablestyle">
   <table class="tabledata">
     <thead>
       <tr class="bord">
@@ -7,7 +7,11 @@
         <th>{{ header }}</th>
 
         } @if(IsActionRequiered){
-        <th>Actions</th>
+          @if(!IsUser){
+        <th>Actions</th>}
+        @else {
+          <th>Status</th>
+        }
         }
       </tr>
     </thead>
@@ -31,13 +35,13 @@
                 cx="12"
                 cy="12"
                 r="10"
-                stroke="#3e68b9"
+                stroke="#976c26"
                 stroke-width="2"
                 fill="none"
               />
               <path
                 d="M8 12l3 3 5-5"
-                stroke="#3e68b9"
+                stroke="#976c26"
                 stroke-width="2"
                 fill="none"
               />
@@ -55,13 +59,13 @@
                 cx="12"
                 cy="12"
                 r="10"
-                stroke="#3e68b9"
+                stroke="#976c26"
                 stroke-width="2"
                 fill="none"
               />
               <path
                 d="M8 8l8 8m0-8l-8 8"
-                stroke="#3e68b9"
+                stroke="#976c26"
                 stroke-width="2"
                 fill="none"
               />

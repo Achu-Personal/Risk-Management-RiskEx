@@ -24,9 +24,21 @@ body {
   -ms-overflow-style: none;
   display: flex;
   flex-direction: column;
-  gap: 5.5vh;
+  // gap: 5.5vh;
 }
-
+app-crumbs{
+  padding-top: 35px;
+  position: sticky;
+  top: 0;
+  left: 0;
+  // padding-left: -10px;
+}
+router-outlet{
+  position: sticky;
+  top: 0;
+  left: 0;
+  margin-top: -30px;
+}
 .main-content::-webkit-scrollbar {
   display: none;
 }
