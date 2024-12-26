@@ -4,16 +4,20 @@
   <!-- Left side: To Show Risk Mitigation and  Risk Continjency -->
   <div>
 
-    <div class=" primaryColor shadowType1 details-card " >
+    <div class=" primaryColor shadowType1 details-card "  >
       <h5 >Risk Mitigation</h5>
       <p title={{riskMitigation}}>{{riskMitigation.slice(0,1020)}}..</p>
     </div>
 
-    <div  class=" primaryColor shadowType1 details-card ">
-      <h5>Risk Contingency</h5>
-      <p title={{riskContengency}}>{{riskContengency.slice(0,1020)}}..</p>
+    @if(riskContengency!=null&&riskContengency!="")
+    {
+      <div  class=" primaryColor shadowType1 details-card ">
+        <h5>Risk Contingency</h5>
+        <p title={{riskContengency}}>{{riskContengency.slice(0,1020)}}..</p>
 
-    </div>
+      </div>
+    }
+
 
   </div>
 
@@ -22,7 +26,7 @@
     <div  class="responsibility-of-action-planned-Action-div" >
       <div>
         <h5>Impact of risk</h5>
-        <p >{{impact.slice(0,200)}}</p>
+        <p >{{impact.slice(0,198.)}}..</p>
         <div class="" >
           <h5 >Responsibility of the Action : </h5>
           <h6 >{{responsibilityOfAction}}</h6>
@@ -42,7 +46,11 @@
 
     </div>
     <div class="risk-status">
+      <h5>Risk Progress</h5>
+      <div >
         <app-stepper></app-stepper>
+      </div>
+
     </div>
   </div>
 
