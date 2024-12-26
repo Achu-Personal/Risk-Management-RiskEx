@@ -1,84 +1,67 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-// import { EventEmitter } from '@angular/core';
+
 import { StyleButtonComponent } from './style-button.component';
-import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
-import { CommonModule } from '@angular/common';
 
 describe('StyleButtonComponent', () => {
   let component: StyleButtonComponent;
   let fixture: ComponentFixture<StyleButtonComponent>;
-  let button: DebugElement;
-
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [StyleButtonComponent],
-      imports: [CommonModule]
+      imports: [StyleButtonComponent]
     })
     .compileComponents();
 
     fixture = TestBed.createComponent(StyleButtonComponent);
     component = fixture.componentInstance;
-    button = fixture.debugElement.query(By.css('button'));
     fixture.detectChanges();
   });
 
-  it('should create the component', () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
+  it('should initialize with default values', () => {
+    fixture.detectChanges();
 
+    expect(component.label).toBe('Click Me');
+    expect(component.type).toBe('button');
+    expect(component.disabled).toBeFalse();
+    expect(component.color).toBe('primary');
+  });
 
-  // it('should render label text correctly', () => {
-  //   component.label = 'Submit';
-  //   fixture.detectChanges();
-  //   expect(button.nativeElement.textContent).toBe('Submit');
-  // });
+  it('should emit clicked event when the button is clicked', () => {
+    spyOn(component.clicked, 'emit'); // Spy on the output event
 
-  // it('should have correct button type based on input', () => {
-  //   component.type = 'submit';
-  //   fixture.detectChanges();
-  //   expect(button.nativeElement.type).toBe('submit');
+    const button = fixture.debugElement.query(By.css('button'));
+    button.triggerEventHandler('click', null); // Trigger click event
 
-  //   component.type = 'reset';
-  //   fixture.detectChanges();
-  //   expect(button.nativeElement.type).toBe('reset');
-  // });
+    expect(component.clicked.emit).toHaveBeenCalled();
+  });
 
-  // it('should be disabled when the disabled input is true', () => {
-  //   component.disabled = true;
-  //   fixture.detectChanges();
-  //   expect(button.nativeElement.disabled).toBeTrue();
-  // });
+  it('should disable the button when disabled input is true', () => {
+    component.disabled = true;
+    fixture.detectChanges();
 
-  // it('should not be disabled when the disabled input is false', () => {
-  //   component.disabled = false;
-  //   fixture.detectChanges();
-  //   expect(button.nativeElement.disabled).toBeFalse();
-  // });
+    const button = fixture.debugElement.query(By.css('button'));
+    expect(button.nativeElement.disabled).toBeTrue();
+  });
 
-  // it('should apply the correct CSS class based on the color input', () => {
-  //   component.color = 'primary';
-  //   fixture.detectChanges();
-  //   expect(button.nativeElement.classList).toContain('primary');
+  // Test: Button class is applied correctly based on the color input property
+  it('should apply the correct class based on the color input', () => {
+    component.color = 'secondary';
+    fixture.detectChanges();
 
-  //   component.color = 'secondary';
-  //   fixture.detectChanges();
-  //   expect(button.nativeElement.classList).toContain('secondary');
-  // });
+    const button = fixture.debugElement.query(By.css('button'));
+    expect(button.nativeElement.classList).toContain('secondary');
+  });
 
-  // it('should emit event when button is clicked', () => {
-  //   spyOn(component.clicked, 'emit');
-  //   button.triggerEventHandler('click', null);
-  //   expect(component.clicked.emit).toHaveBeenCalled();
-  // });
+  // Test: Button is enabled when disabled input is false
+  it('should enable the button when disabled input is false', () => {
+    component.disabled = false;
+    fixture.detectChanges();
 
-  // it('should not emit event when button is disabled', () => {
-  //   spyOn(component.clicked, 'emit');
-  //   component.disabled = true;
-  //   fixture.detectChanges();
-  //   button.triggerEventHandler('click', null);
-  //   expect(component.clicked.emit).not.toHaveBeenCalled();
-  // });
-
+    const button = fixture.debugElement.query(By.css('button'));
+    expect(button.nativeElement.disabled).toBeFalse();
+  });
 });
