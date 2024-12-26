@@ -14,6 +14,7 @@ export class RiskDetailsSection2Component {
   @Input() riskContengency=""
   @Input() responsibilityOfAction=""
   @Input() plannedActionDate=""
+  @Input() impact=""
 
 
 }
