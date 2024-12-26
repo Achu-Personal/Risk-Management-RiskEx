@@ -2,17 +2,18 @@
 
 /* Table */
 .table-container {
-  margin-top: 20px ;
+
   padding: 0;
   border-radius: 12px;
   background: #ffffff;
   box-shadow: 0px 0px 4px D0C6B6;
   border: 1px solid #D0C6B6;
-  width: 88%;
+  width: 90%;
   font-family: 'Arial', sans-serif;
   position: fixed;
   // height: 75%; 
   overflow-y: auto;
+  margin-left: -20px;
 
 }
 
@@ -102,6 +103,15 @@ tr{
 
 }
 }
+
+
+
+
+
+
+
+
+
 
 
 
