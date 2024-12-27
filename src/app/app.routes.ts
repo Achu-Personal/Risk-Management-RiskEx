@@ -24,6 +24,7 @@ import { HomeComponent } from './Pages/home/home.component';
 import { ApprovalTableComponent } from './Pages/approval-table/approval-table.component';
 import { EditRiskComponent } from './Pages/edit-risk/edit-risk.component';
 import { ChangepasswordComponent } from './Components/changepassword/changepassword.component';
+import { SsoComponent } from './Pages/sso/sso.component';
 
 
 export const routes: Routes = [
@@ -86,6 +87,9 @@ export const routes: Routes = [
   },
   {
     path:"changepassword",component:ChangepasswordComponent
+  },
+  {
+    path:"sso",component:SsoComponent
   },
 
 
