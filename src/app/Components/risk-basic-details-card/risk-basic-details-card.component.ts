@@ -24,7 +24,7 @@ export class RiskBasicDetailsCardComponent {
   @Input()riskType=""
   @Input() riskDesc=""
    @Input() riskName=""
-  @Input() impact=""
+
   @Input() overallRiskRating:number=0
   @Input() riskStatus=""
   @Input() isEditable=true;
@@ -34,7 +34,7 @@ export class RiskBasicDetailsCardComponent {
   onEditButtonClicked()
   {
     console.log("id",this.allData.id);
-    
+
       this.router.navigate([`edit`], { state: { riskData: this.allData } }) //         /ViewRisk/${this.allData.id}/
   }
 
