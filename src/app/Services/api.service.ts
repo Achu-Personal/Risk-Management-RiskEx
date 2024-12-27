@@ -67,4 +67,14 @@ constructor(private http:HttpClient) { }
 
 
    }
+   getRiskResponses(){
+    
+    return this.http.get('https://localhost:7216/api/RiskResponseData')
+   }
+   getLikelyHoodDefinition(){
+    return this.http.get('https://localhost:7216/api/AssessmentMatrixLikelihood')
+   }
+   getImpactDefinition(){
+    return this.http.get('https://localhost:7216/api/AssessmentMatrixImpact')
+   }
  }

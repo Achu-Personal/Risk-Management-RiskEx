@@ -17,24 +17,29 @@
   background: transparent;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  // gap: 8px;
+  font-size: small;
 }
-
+label{
+  font-size: small;
+}
 /* Header Section */
 .header1 {
   // margin-top: 70px;
-  padding: 10px 20px;
-  background-color: #d0c6b683;
-  border-radius: 4px;
-  box-shadow: 0px 1px 3px #979797;
+  // padding: 10px 20px;
+  // background-color: #d0c6b683;
+  // border-radius: 4px;
+  // box-shadow: 0px 1px 3px #979797;
+  margin-bottom: 20px;
   display: flex;
   align-items: left;
   justify-items: left;
-  gap: 30px;
-  .report{
-    margin-left: 600px;
-    width: auto;
-  }
+  max-width: 50%;
+  gap: 20px;
+  // .report{
+  //   margin-left: 600px;
+  //   width: auto;
+  // }
 }
 
 // .bord{
@@ -43,15 +48,15 @@
 
 /* Table Section */
 .table-container1 {
-  max-height: 420px;
+  max-height: 480px;
   overflow-y: auto;
   // background-color: #741b1b;
   border-radius: 4px;
   // width: 182vh;
   box-shadow: 0px 1px 3px #979797;
 
-  table {
-    width: 100%;
+  .table1 {
+    // width: 100%;
     border-collapse: collapse; /* Allows spacing */
     border-spacing: 0 8px; /* Vertical spacing between rows */
   }
@@ -62,12 +67,12 @@
     z-index: 1;
     tr{
       width: 100%;
-      background-color: #d0c6b6;
+      background-color: #e6e1d7;
     }
 
     th {
       padding: 10px;
-      text-align: center;
+      text-align: left;
 
     }
   }
@@ -80,7 +85,7 @@
     td {
       padding: 12px;
       vertical-align: middle;
-      text-align: center;
+      text-align: left;
     }
 
 
@@ -101,7 +106,7 @@ tbody {
     position: relative;
 
     td {
-      padding: 10px;
+      padding: 5px;
       vertical-align: middle;
       border-bottom: none; /* Remove borders directly */
       button{
@@ -117,7 +122,7 @@ tbody {
       left: 1%;
       width: 98%;
       height: 1px;
-      background-color: rgba(0, 0, 0, .3);
+      background-color: rgba(0, 0, 0, .1);
     }
 
   }
@@ -152,7 +157,7 @@ tbody {
     padding: 6px 12px;
     border: none;
     border-radius: 4px;
-    box-shadow: 0px 1px 1px #4D4D4D;
+    // box-shadow: 0px 1px 1px #4D4D4D;
     background: #D0C6B6;
     font-size: 14px;
     color: #000000;
@@ -173,7 +178,7 @@ tbody {
     padding: 6px 12px;
     border: none;
     border-radius: 4px;
-    box-shadow: 0px 1px 1px #4D4D4D;
+    // box-shadow: 0px 1px 1px #4D4D4D;
     font-size: 14px;
     color: #000000;
     background: #D0C6B6;
@@ -241,7 +246,7 @@ tbody {
   background: none;
   border: none;
   cursor: pointer;
-  font-size: 16px;
+  font-size: small;
   font-weight: bold;
   padding: 5px;
   display: flex;
@@ -249,28 +254,7 @@ tbody {
 }
 
 .dropdown-button:hover {
-  color: #007bff;
-}
-
-.dropdown-options {
-  position: absolute;
-  margin-top: 5px;
-  list-style: none;
-  background-color: #fff;
-  border: 1px solid #ccc;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  z-index: 10;
-  padding: 0;
-  width: 150px;
-}
-
-.dropdown-options li {
-  padding: 8px 12px;
-  cursor: pointer;
-}
-
-.dropdown-options li:hover {
-  background-color: #f0f0f0;
+  color: #5c2f10;
 }
 
 
@@ -310,16 +294,21 @@ tbody {
 
 th:nth-child(1),
 td:nth-child(1) {
-  width: 90px;
+  width: 60px;
 }
 
 th:nth-child(2),
 td:nth-child(2) {
-  width: 200px;
+  width: 300px;
 }
 
 th:nth-child(3),
 td:nth-child(3) {
+  width: 150px;
+}
+
+th:nth-child(4),
+td:nth-child(4) {
   width: 150px;
 }
 th:nth-child(5),
@@ -328,9 +317,91 @@ td:nth-child(5) {
 }
 th:nth-child(6),
 td:nth-child(6) {
-  width: 150px;
+  width: 50px;
 }
 th:nth-child(9),
 td:nth-child(9) {
   width: 150px;
 }
+
+
+
+
+
+/* Dropdown container */
+.dropdown-container {
+  position: relative;
+  display: inline-block;
+  font-family: 'Arial', sans-serif;
+}
+
+/* Dropdown options container */
+.dropdown-options {
+  position: absolute;
+  margin-top: 6px;
+  list-style: none;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  padding: 0;
+  width: 180px;
+  max-height: 240px;
+  overflow-y: auto;
+  border-radius: 6px; /* Softer corners for an elegant look */
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+/* Show the dropdown with smooth transition */
+.dropdown-options.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Individual list items */
+.dropdown-options li {
+  padding: 10px 14px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 400;
+  color: #444;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.dropdown-options li:hover {
+  background-color: #f7f7f7;
+  color: #222;
+}
+
+/* Add subtle scrollbar for long lists */
+.dropdown-options::-webkit-scrollbar {
+  width: 6px;
+}
+
+.dropdown-options::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 4px;
+}
+
+.dropdown-options::-webkit-scrollbar-thumb:hover {
+  background-color: #aaa;
+}
+
+/* Responsive and accessibility improvements */
+@media (max-width: 600px) {
+  .dropdown-button {
+    font-size: 13px;
+    padding: 6px 10px;
+  }
+
+  .dropdown-options {
+    width: 150px;
+  }
+
+  .dropdown-options li {
+    padding: 8px 12px;
+  }
+}
+

@@ -1,6 +1,6 @@
 
-<div class="body">
-  <div class="container1">
+<!-- <div class="body"> -->
+
     <div class="header1">
       <div class="entries">
       <label for="entries">Show</label>
@@ -10,9 +10,11 @@
         <option value="50">50</option>
       </select>
       <label>entries</label>
-      <app-searchbar (searchChanged)="onSearch($event)"></app-searchbar>
     </div>
+      <app-searchbar (searchChanged)="onSearch($event)"></app-searchbar>
+
    </div>
+  <div class="container1">
     <div class="table-container1 fi">
     <table class="table1">
       <thead>
@@ -21,11 +23,12 @@
           <!-- <th>Risk ID</th> -->
           <th>Risk Name</th>
           <th>
-            <button class="dropdown-button" (click)="toggleDropdown()">
+            <div class="dropdown-container">
+            <button class="dropdown-button" (click)="toggleDepartmentDropdown()">
               Department &#9662;
             </button>
-            @if(isDropdownOpen){
-            <ul class="dropdown-options">
+            @if(isDepartmentDropdownOpen ){
+            <ul [class.open]="isDepartmentDropdownOpen" class="dropdown-options">
 
               @for(department of uniqueDepartments;track department){
               <li
@@ -36,8 +39,27 @@
               <li (click)="onDepartmentSelect('')">All Departments</li>
             </ul>
             }
+          </div>
           </th>
-          <th>Type</th>
+          <th>
+            <div class="dropdown-container">
+            <button class="dropdown-button" (click)="toggleTypeDropdown()">
+              Risk Type &#9662;
+            </button>
+            @if(isTypeDropdownOpen ){
+            <ul [class.open]="isTypeDropdownOpen"  class="dropdown-options">
+
+              @for(type of uniqueRiskTypes;track type){
+              <li
+                (click)="onTypeSelect(type)">
+                {{ type }}
+              </li>
+            }
+              <li (click)="onTypeSelect('')">All Risk Types</li>
+            </ul>
+            }
+          </div>
+          </th>
           <th>End Date</th>
           <th>CRR</th>
           <th>Assignee</th>
@@ -48,7 +70,7 @@
       </thead>
       <tbody>
         @for(item of paginatedItems ;track item){
-        <tr (click)="rowClick(item.id)">
+        <tr (click)="rowClick(item.id)" style="height:10px;">
           <td>{{ item.slNo }}</td>
           <!-- <td>{{ item.riskId }}</td> -->
           <td>{{ item.riskName }}</td>
@@ -59,7 +81,9 @@
           <td>{{ item.assignee }}</td>
           <td>{{ item.reviewer }}</td>
           <td>{{ item.reviewStatus }}</td>
-          <td><div  [ngClass]="{'green-cell': item.status === 'Open', 'red-cell': item.status === 'Closed'}">{{ item.status }}</div></td>
+          <!-- <td><div  [ngClass]="{'green-cell': item.status === 'Open', 'red-cell': item.status === 'Closed'}">{{ item.status }}</div></td> -->
+          <td><div>{{ item.status }}</div></td>
+
           <!-- <td>{{item}}</td> -->
         </tr>
       }
@@ -71,8 +95,11 @@
     <app-pagination  [totalItems]="totalItems"
     [itemsPerPage]="itemsPerPage"
     [currentPage]="currentPage"
-    (pageChanged)="onPageChange($event)" class="pagination-controls pagination "></app-pagination>
+    (pageChanged)="onPageChange($event)" class="pagination-controls pagination ">
+
+    </app-pagination>
    }
+
     <!-- </div> -->
   </div>
-</div>
+<!-- </div> -->

@@ -1,6 +1,7 @@
+
 .stepper-container {
-  padding: 20px;
-  max-width: 800px;
+  // padding: 20px;
+  // max-width: 800px;
   margin: 0 auto;
 }
 
@@ -25,7 +26,7 @@
       position: absolute;
       top: 50%;
       left: -100px; /* Adjusted to account for the step-icon width */
-      width: 85px;
+      width: 80px;
       height: 2px;
       background-color: #4c6ef5;
       transform: translateY(-50%);
@@ -55,6 +56,7 @@
   justify-content: center;
   font-weight: bold;
   margin-bottom: 8px;
+  margin: 10px;
   position: relative;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
@@ -81,6 +83,7 @@
   text-align: center;
   min-width: 120px;
   opacity: 0.7;
+
   // transform: translateY(10px);
   transition: all 0.3s ease;
 
@@ -132,4 +135,10 @@
   100% {
     box-shadow: 0 0 0 0 rgba(76, 110, 245, 0);
   }
+}
+
+
+.step{
+  width: 50px;
+  height: 60px;
 }

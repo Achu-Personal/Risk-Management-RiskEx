@@ -1,17 +1,19 @@
 
 .tab{
-  margin-top: 10px;
+  margin-top: 5px;
 }
 
 .btnn{
   display: flex;
   flex-direction: row;
   justify-content: right;
+  // background-color: #cfafaf;
   gap: 20px;
   position: sticky;
   top: 0;
-  margin-right: 55px;
-
+  // margin-right: 55px;
+  width: 30%;
+  float: right;
 }
 
 
@@ -23,7 +25,7 @@
   box-shadow: 0px 0px 4px rgba(185, 154, 62, 0.5);
   border: none;
   border-radius: 5px;  /* Rounded corners */
-  font-size: 14px;  /* Button text size */
+  font-size: small;  /* Button text size */
   cursor: pointer;  /* Pointer cursor on hover */
   transition: background-color 0.3s, border-color 0.3s;  /* Smooth transition */
 }
@@ -43,4 +45,5 @@
 
 app-table{
   cursor: pointer;
+
 }

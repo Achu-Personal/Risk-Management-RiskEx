@@ -25,6 +25,7 @@ import { ApprovalTableComponent } from './Pages/approval-table/approval-table.co
 import { EditRiskComponent } from './Pages/edit-risk/edit-risk.component';
 import { ChangepasswordComponent } from './Components/changepassword/changepassword.component';
 import { ReferenceComponent } from './Pages/reference/reference.component';
+import { SsoComponent } from './Pages/sso/sso.component';
 import { UpdateRiskComponent } from './Pages/update-risk/update-risk.component';
 
 
@@ -98,6 +99,9 @@ export const routes: Routes = [
   },
   {
     path:"changepassword",component:ChangepasswordComponent
+  },
+  {
+    path:"sso",component:SsoComponent
   },
 
 
