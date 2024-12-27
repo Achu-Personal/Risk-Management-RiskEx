@@ -1,24 +1,43 @@
-
 <div class="dialog-box">
-    <h2 mat-dialog-title>Confirmation</h2>
-<mat-dialog-content>{{ data.message }}</mat-dialog-content>
-<mat-dialog-actions align="end">
-  <div class="buttons">
-  <app-style-button
-       type="button"
-       label="Confirm"
-       color="primary"
-       class="btn-success"
-       (clicked)="onConfirm()">
+  <h2 mat-dialog-title>Confirmation</h2>
+  <mat-dialog-content
+    >{{ data.message }}
+    <div class="comment-section">
+      @if(IsCommentRequiered){
+
+      <form [formGroup]="commentForm" (ngSubmit)="onConfirm()">
+        <label for="comment" class="form-label"><h5>Comments</h5></label>
+        <input
+          id="comment"
+          class="form-control"
+          rows="4"
+          placeholder="Write your comment here..."
+          formControlName="approve"
+        />
+      </form>
+    }
+    </div>
+
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <div class="buttons">
+      <app-style-button
+        type="button"
+        label="Confirm"
+        color="primary"
+        class="btn-success"
+        (clicked)="onConfirm()"
+      >
       </app-style-button>
-  <app-style-button
-       type="button"
-       label="Cancel"
-       color="primary"
-       class="btn-danger"
-       (clicked)="onCancel()">
-      </app-style-button></div>
-  <!-- <button (click)="onCancel()" class="btn-danger">Cancel</button>
-  <button color="primary" (click)="onConfirm()" class="btn-success">Confirm</button> -->
-</mat-dialog-actions>
+      <app-style-button
+        type="button"
+        label="Cancel"
+        color="primary"
+        class="btn-danger"
+        (clicked)="onCancel()"
+      >
+      </app-style-button>
+    </div>
+    
+  </mat-dialog-actions>
 </div>

@@ -19,6 +19,7 @@ import { StyleButtonComponent } from "../../UI/style-button/style-button.compone
 })
 export class ApprovalComponent {
   data: any;
+  // IsCommentRequiered: boolean=false;
 
   constructor(private fb: FormBuilder, private dialog: MatDialog,private route: ActivatedRoute, private api:ApiService , public commentSignal:GlobalStateServiceService) {
     this.commentForm = this.fb.group({
@@ -67,6 +68,7 @@ async cancelRisk() {
     this.commentForm.reset();
     this.cancelMessage = "The risk has been canceled as it was not approved. The owner will be notified shortly. ";
     this.isButtonClicked=true;
+    // this.IsCommentRequiered=true;
   }
 
 }

@@ -2,7 +2,7 @@ import { department } from './../../Interfaces/deparments.interface';
 import { Component, Input } from '@angular/core';
 import { DropdownComponent } from "../dropdown/dropdown.component";
 import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgFor } from '@angular/common';
 
 @Component({
   selector: 'app-profile',
