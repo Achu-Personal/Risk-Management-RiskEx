@@ -6,17 +6,22 @@ import {FormBuilder, FormControl,FormGroup,FormsModule,ReactiveFormsModule,} fro
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../../Components/confirm-dialog/confirm-dialog.component';
 import { ActivatedRoute } from '@angular/router';
+import { ApiService } from '../../Services/api.service';
+import { GlobalStateServiceService } from '../../Services/global-state-service.service';
+import { StyleButtonComponent } from "../../UI/style-button/style-button.component";
 
 @Component({
   selector: 'app-approval',
   standalone: true,
-  imports: [BodyContainerComponent, RiskBasicDetailsCardComponent, RiskDetailsSection2Component,FormsModule, ReactiveFormsModule],
+  imports: [BodyContainerComponent, RiskBasicDetailsCardComponent, RiskDetailsSection2Component, FormsModule, ReactiveFormsModule, StyleButtonComponent],
   templateUrl: './approval.component.html',
   styleUrl: './approval.component.scss'
 })
 export class ApprovalComponent {
+  data: any;
+  // IsCommentRequiered: boolean=false;
 
-  constructor(private fb: FormBuilder, private dialog: MatDialog,private route: ActivatedRoute) {
+  constructor(private fb: FormBuilder, private dialog: MatDialog,private route: ActivatedRoute, private api:ApiService , public commentSignal:GlobalStateServiceService) {
     this.commentForm = this.fb.group({
       approve: [''] // Initial value
     });
@@ -42,9 +47,14 @@ export class ApprovalComponent {
   async ApproveRisk() {
   const confirmed = await this.confirmAction('Are you sure you want to approve this risk?');
   if(confirmed){
+    const approveMessage = this.commentForm.value.approve || 'Default approval message';
+    this.commentSignal.setData({ approve: approveMessage });
+
+    // this.commentSignal.setData({ approve: this.commentForm.value.approve });
     console.log(this.commentForm.value);
     this.approveMessage = "The risk has been approved, The status of the risk will be updated";
     this.isButtonClicked= true;
+
   }
 
 }
@@ -52,20 +62,34 @@ export class ApprovalComponent {
 async cancelRisk() {
   const confirmed = await this.confirmAction('Are you sure you want to cancel?');
   if(confirmed){
+    const approveMessage = this.commentForm.value.approve as string;
+    this.commentSignal.setData({ approve: approveMessage });
     console.log(this.commentForm.value);
     this.commentForm.reset();
     this.cancelMessage = "The risk has been canceled as it was not approved. The owner will be notified shortly. ";
-    this.isButtonClicked=true
+    this.isButtonClicked=true;
+    // this.IsCommentRequiered=true;
   }
 
 }
-approvalId!: string;
+approvalId:number=0;
+
 
 
 ngOnInit(): void {
   this.route.paramMap.subscribe((params) => {
-    this.approvalId = params.get('id') || ''; // Fetch the dynamic ID
-  });
+    const rawApprovalId = params.get('id') || ''; // Fetch the dynamic ID
+    this.approvalId = parseInt(rawApprovalId.slice(1), 10); // Extract the numeric part and convert to integer
 
+    if (!isNaN(this.approvalId)) {
+      this.api.getRiskById(this.approvalId).subscribe(e => {
+        console.log("Data=", e);
+        this.data = e;
+      });
+    } else {
+      console.error('Invalid approvalId format:', rawApprovalId);
+    }
+  });
 }
+
 }

@@ -20,7 +20,7 @@
 .dialog-box h2[mat-dialog-title] {
     font-size: 1.5rem;
     font-weight: bold;
-    color: #3E68B9;
+    color: #4D4D4D;
     margin-bottom: 16px;
     text-align: center;
   }
@@ -68,4 +68,19 @@
 .dialog-box button.btn-danger:hover {
     background-color: #b6b5bd;
     transform: scale(1.05);
+}
+.buttons{
+  display: flex;
+  justify-content: space-between;
+  gap: 50px;
+}
+
+.error {
+  color: #dc143c;
+  font-size: 12px;
+  margin-top: 8px;
+}
+.comment-field {
+  width: 100%;
+  margin-top: 16px;
 }

@@ -3,11 +3,12 @@ import { TableComponent } from "../../Components/table/table.component";
 import { BodyContainerComponent } from "../../Components/body-container/body-container.component";
 import { Router } from '@angular/router';
 import { ButtonComponent } from "../../UI/button/button.component";
+import { DatepickerComponent } from "../../UI/datepicker/datepicker.component";
 
 @Component({
   selector: 'app-history',
   standalone: true,
-  imports: [TableComponent, BodyContainerComponent, ButtonComponent],
+  imports: [TableComponent, BodyContainerComponent, DatepickerComponent],
   templateUrl: './history.component.html',
   styleUrl: './history.component.scss'
 })

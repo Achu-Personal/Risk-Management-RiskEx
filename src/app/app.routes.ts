@@ -24,6 +24,9 @@ import { HomeComponent } from './Pages/home/home.component';
 import { ApprovalTableComponent } from './Pages/approval-table/approval-table.component';
 import { EditRiskComponent } from './Pages/edit-risk/edit-risk.component';
 import { ChangepasswordComponent } from './Components/changepassword/changepassword.component';
+import { ReferenceComponent } from './Pages/reference/reference.component';
+import { SsoComponent } from './Pages/sso/sso.component';
+import { UpdateRiskComponent } from './Pages/update-risk/update-risk.component';
 
 
 export const routes: Routes = [
@@ -38,44 +41,54 @@ export const routes: Routes = [
   },
 
   {
-    path:'',component:DashboardComponent,
+    path:'',component:DashboardComponent,data:{title: 'Risk Management',breadcrumb: 'Dashboard' },
     children:[
       {
-        path:'home',component:HomeComponent, data: { title: 'Risk Management' }
+        path:'home',component:HomeComponent, data:{title: 'Risk Management' }
       },
       {
-        path:'ViewRisk/:id',component:ViewRiskComponent,  data: { title: 'View Risk' }
+        path:'ViewRisk/:id',component:ViewRiskComponent,  data: { title: 'View Risk',breadcrumb: 'View Risk' },
+
       },
+
+
       // {path:"ViewRisk/:id",component:ViewRiskComponent}
       {
-        path:'addrisk',component:RegisterRiskComponent,data: { title: 'Register Risk' }
+        path:'addrisk',component:RegisterRiskComponent,data: { title: 'Register Risk',breadcrumb: 'Register Risk' }
       },
       {
-        path:'users',component:UsersComponent,data: { title: 'Manage Users and Departments' },
+        path:'users',component:UsersComponent,data: { title: 'Manage Users and Departments' ,breadcrumb: 'User Management'},
       },
       {
-        path:'history',component:HistoryComponent,data: { title: 'History' }
+        path:'history',component:HistoryComponent,data: { title: 'History',breadcrumb: 'History' }
       },
       {
-        path:'reports',component:ReportsComponent,data: { title: 'Reports' }
+        path:'reports',component:ReportsComponent,data: { title: 'Reports',breadcrumb: 'Report' }
       },
       {
-        path:'approvaltable',component:ApprovalTableComponent, data: { title: 'Approvals' }
+        path:'approvaltable',component:ApprovalTableComponent, data: { title: 'Approvals' ,breadcrumb: 'Approvals'}
       },
       {
-        path:'approvals/:id',component:ApprovalComponent,data: { title: 'Approvals' }
+        path:'approvals/:id',component:ApprovalComponent,data: { title: 'Approvals',breadcrumb: 'Approvals / View Risk' }
       },
       {
-        path:'approvals',component:ApprovalComponent,data: { title: 'Approvals' }
+        path:"reference",component:ReferenceComponent,data:{title: 'Reference' ,breadcrumb: 'Reference'}
       },
       {
-        path:'edit',component:EditRiskComponent
+        path:'edit',component:EditRiskComponent, data:{title: 'Edit Risk' ,breadcrumb: 'View Risk / Edit Risk'}
       },
       {
-        path:'',redirectTo:'home',pathMatch:'full'
+        path:'update',component:UpdateRiskComponent, data:{title: 'Update Risk' ,breadcrumb: 'View Risk / Update Risk'}
+      },
+
+      {
+        path:'',redirectTo:'home',pathMatch:'full', data:{title: 'Risk Management' ,breadcrumb: 'Dashboard'}
       }
+
     ]
   },
+
+
   {path:'sidebar',component:SidebarComponent},
 
   {
@@ -87,6 +100,9 @@ export const routes: Routes = [
   {
     path:"changepassword",component:ChangepasswordComponent
   },
+  {
+    path:"sso",component:SsoComponent
+  },
 
 
   {
@@ -94,7 +110,6 @@ export const routes: Routes = [
     path:'**',component:WildComponentComponent
 
   },
-
 
 
 

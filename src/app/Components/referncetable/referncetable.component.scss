@@ -1,0 +1,49 @@
+.table-container .tableBody{
+  margin-top: 20px;
+  padding: 0;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0px 0px 4px D0C6B6;
+  border: 1px solid #d0c6b6;
+  width: 100%;
+  height: auto;
+}
+
+thead {
+  tr {
+    th {
+      text-align: center;
+      text-transform: capitalize;
+    }
+  }
+}
+
+.tableBody th,
+.tableBody td {
+  padding: 15px 15px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.tableBody th {
+  background: #d0c6b6;
+  color: #0f0f0f;
+  font-weight: bold;
+  // text-transform: uppercase;
+  font-size: 13px;
+}
+.tableBody tbody tr:nth-child(even) {
+  background: #f4f1ec;
+}
+
+.tableBody tbody tr:hover {
+  background: #f1eadd;
+}
+
+.tableBody tbody td {
+  font-size: 14px;
+  color: #555;
+  vertical-align: middle;
+  // padding: 8px;
+  text-align: center;
+}

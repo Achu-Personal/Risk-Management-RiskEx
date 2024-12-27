@@ -1,12 +1,14 @@
-.container {
-  position: relative;
-  z-index: 1;
-}
+// .container {
+//   position: relative;
+//   z-index: 1;
+// }
 
 
 
 .content {
-  flex-basis: 100%;
+  background-color: var( --primary-color) ;
+  padding: 10px;
+  border-radius: 7px;
 
 }
 

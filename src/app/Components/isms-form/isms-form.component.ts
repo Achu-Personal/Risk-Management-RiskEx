@@ -1,115 +1,175 @@
-import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Component,Input} from '@angular/core';
+import { FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { ButtonComponent } from "../../UI/button/button.component";
 import { DropdownComponent } from "../../UI/dropdown/dropdown.component";
-import { ApiService } from '../../Services/api.service';
 import { TextareaComponent } from "../../UI/textarea/textarea.component";
+import { OverallRatingCardComponent } from "../../UI/overall-rating-card/overall-rating-card.component";
+import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-isms-form',
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule, ButtonComponent, DropdownComponent, TextareaComponent],
+  imports: [FormsModule, ReactiveFormsModule, ButtonComponent, DropdownComponent, TextareaComponent, OverallRatingCardComponent,CommonModule],
   templateUrl: './isms-form.component.html',
   styleUrl: './isms-form.component.scss'
 })
 export class ISMSFormComponent {
-  @Output() sendDataToParent = new EventEmitter<object>();
-  isCustomSelected = false;
-  newEmail = '';
-  @Input() riskTypeValue: string=''
+
+@Input() riskTypeValue: number=0
+result: number = 0;
+reviewerNotInList:boolean=false
+assigneeNotInList:boolean=false
+isAdmin:string='admin'
+confidentialityRiskFactor:number=0
+integrityRiskFactor:number=0
+availabilityRiskFactor:number=0
+privacyRiskFactor:number=0
+confidentialityLikelihoodValue:number=0
+confidentialityImpactValue:number=0
+integrityLikelihoodValue:number=0
+integrityImpactValue:number=0
+availabilityLikelihoodValue:number=0
+availabilityImpactValue:number=0
+privacyLikelihoodValue:number=0
+privacyImpactValue:number=0
 
 
-  ismsForm=new FormGroup({
-    riskType:new FormControl(''),
-    status:new FormControl(''),
-    riskName:new FormControl(''),
-    description:new FormControl(''),
-    riskImpact:new FormControl(''),
-    projectId:new FormControl(''),
-    confidentialityLikelihood:new FormControl(''),
-    IntegrityLikelihood:new FormControl(''),
-    availabiltyLikelihood:new FormControl(''),
-    privacyLikelihood:new FormControl(''),
-    confidentialityImpact:new FormControl(''),
-    IntegrityImpact:new FormControl(''),
-    availabiltyImpact:new FormControl(''),
-    privacyImpact:new FormControl(''),
-    mitigation:new FormControl(''),
-    contingency:new FormControl(''),
-    responsibilityOfAction:new FormControl(''),
-    plannedActionDate:new FormControl(''),
-    reviewer:new FormControl()
+dropdownDataLikelihood=[
+  { "type":"Select Likelihood","value":""},
+  {"type":"Low","value":"0.1"},
+  {"type":"Medium","value":"0.2"},
+  { "type":"High","value":"0.4"},
+  { "type":"Critical","value":"0.6"}
+];
 
+dropdownDataImpact=[
+  { "type":"select Impact","value":""},
+  {"type":"Low","value":"10"},
+  {"type":"Medium","value":"20"},
+  { "type":"High","value":"40"},
+  { "type":"Critical","value":"80"}
+];
 
-  })
-  data:any
-  descriptionText: string = '';
-  dropdownData=[
-    {"type":"Very Low","value":"Very Low"},
-    {"type":"Low","value":"Low"},
-    {"type":"Medium","value":"Medium"},
-    { "type":"High","value":"High"},
-    { "type":"Very High","value":"Very High"},
-  ];
-  dropdownDataReviewer=[
-    {"name":"Achu s nair","email":"123"},
-    {"name":"Shamna Sherin","email":"123"},
-    {"name":"Deepak Denny","email":"123"},
-    { "name":"Bindhya C Philip","email":"123"},
-    { "name":"Vivek V N","email":"123"},
-  ];
+dropdownDataReviewer=[
+  {"name":"Select--","email":""},
+  {"name":"Achu s nair","email":"123"},
+  {"name":"Shamna Sherin","email":"123"},
+  {"name":"Deepak Denny","email":"123"},
+  { "name":"Bindhya C Philip","email":"123"},
+  { "name":"Vivek V N","email":"123"},
+];
 
-constructor(public api:ApiService){}
+dropdownDataProject=[
+  {"name":"Select--","id":""},
+  {"name":"japanese training","id":"p12-34"},
+  {"name":"risk management","id":"p-34-56"},
+  {"name":"pit-stop","id":"p34-54"},
+  { "name":"query management","id":"p01-01"},
+  { "name":"HR inventory","id":"p03-3"},
+];
 
-  ngOninit(){
-    this.api.getRiskCurrentAssessment().subscribe((res:any)=>{
-      this.data=res
-      console.log(this.data)
+dropdownDataDepartment=[
+  {"name":"Select--","id":""},
+  {"name":"SFM","id":"1"},
+  {"name":"ACE","id":"2"},
+  {"name":"HR","id":"3"},
+  { "name":"L&D","id":"4"},
+  { "name":"DU1","id":"5"},
+];
 
-    })
+autoResize(event: Event): void {
+  const textarea = event.target as HTMLTextAreaElement;
+  const minHeight = 40;
+  textarea.style.height = 'auto';
+  textarea.style.height = `${Math.max(minHeight, textarea.scrollHeight)}px`;
+}
 
+isReviewerNotInList(){
+  this.reviewerNotInList=!this.reviewerNotInList
+}
 
+isAssigneeNotInList(){
+  this.assigneeNotInList=!this.assigneeNotInList
+}
+
+onDropdownChange(value: any, type: string, category: string): void {
+  const parsedValue = value ? parseFloat(value.target.value) : 0;
+
+  switch (category) {
+    case 'Confidentiality':
+      if (type === 'Likelihood') {
+        this.confidentialityLikelihoodValue = parsedValue;
+      } else if (type === 'Impact') {
+        this.confidentialityImpactValue = parsedValue;
+      }
+      this.calculateRiskFactor('Confidentiality');
+      break;
+
+    case 'Integrity':
+      if (type === 'Likelihood') {
+        this.integrityLikelihoodValue = parsedValue;
+      } else if (type === 'Impact') {
+        this.integrityImpactValue = parsedValue;
+      }
+      this.calculateRiskFactor('Integrity');
+      break;
+
+    case 'Availability':
+      if (type === 'Likelihood') {
+        this.availabilityLikelihoodValue = parsedValue;
+      } else if (type === 'Impact') {
+        this.availabilityImpactValue = parsedValue;
+      }
+      this.calculateRiskFactor('Availability');
+      break;
+
+    case 'Privacy':
+      if (type === 'Likelihood') {
+        this.privacyLikelihoodValue = parsedValue;
+      } else if (type === 'Impact') {
+        this.privacyImpactValue = parsedValue;
+      }
+      this.calculateRiskFactor('Privacy');
+      break;
   }
+}
 
+calculateRiskFactor(category: string): void {
+  switch (category) {
+    case 'Confidentiality':
+      this.confidentialityRiskFactor = this.confidentialityLikelihoodValue * this.confidentialityImpactValue;
+      break;
 
+    case 'Integrity':
+      this.integrityRiskFactor = this.integrityLikelihoodValue * this.integrityImpactValue;
+      break;
 
+    case 'Availability':
+      this.availabilityRiskFactor = this.availabilityLikelihoodValue * this.availabilityImpactValue;
+      break;
 
-  autoResize(event: Event): void {
-    const textarea = event.target as HTMLTextAreaElement;
-    textarea.style.height = 'auto'; // Reset height to recalculate
-    textarea.style.height = `${textarea.scrollHeight}px`; // Set height to match content
+    case 'Privacy':
+      this.privacyRiskFactor = this.privacyLikelihoodValue * this.privacyImpactValue;
+      break;
   }
+  if(this.confidentialityRiskFactor !=0 && this.integrityRiskFactor !=0 && this.availabilityRiskFactor !=0 && this.privacyRiskFactor !=0){
 
-
-
-  onsubmit(){
-    const userConfirmed = window.confirm('Do you want to save?');
-    if (userConfirmed) {
-      this.saveData();
-      this.ismsForm.get('riskType')?.setValue(this.riskTypeValue);
-    this.ismsForm.get('status')?.setValue("open");
-    console.log("Updated riskType value:", this.ismsForm.get('riskType')?.value);
-
-    this.sendDataToParent.emit(this.ismsForm.value);
-    console.log("actual data");
-
-    console.log(this.ismsForm.value);
-
-    } else {
-      alert('User canceled saving.');
-    }
-
-
+    this.result= this.confidentialityRiskFactor + this.integrityRiskFactor + this.availabilityRiskFactor + this.privacyRiskFactor
   }
+}
 
-  // ngOnChanges(changes: SimpleChanges): void {
-  //     if (changes['riskType']) {
-  //       console.log('Risk Type changed:', changes['riskType'].currentValue);
-  //     }
-  //  }
+changeColorOverallRiskRating(){
+  if(this.result<30){
+    return '#6DA34D';
+  }
+  if(this.result>31 && this.result<99){
+    return '#FFC107'
+  }
+  else{
+    return '#D9534F'
+  }
+}
 
-  saveData() {
-      alert('Data saved successfully!');
 
-    }
 }

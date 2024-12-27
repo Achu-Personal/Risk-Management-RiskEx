@@ -2,9 +2,14 @@
 
   height: 100vh;
 
-  background-color: white;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
   color: black;
-  width: 15vw;
+  width: 8vw;
+
 
   box-sizing: border-box;
 }
@@ -13,13 +18,18 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 40px;
+  background-color: var(--foreground-color);
+  border-radius: 50%;
+  height: 60px;
+
+  align-items: center;
+  margin-top: 20px;
 
 
 
-  h3{
-    color: #3e68b9;
-    font-size: 1.5rem;
+  h5{
+    color: var(--accent-color);
+    font-size: 1rem;
     font-weight: 500;
   }
 
@@ -27,40 +37,57 @@
 .sidebar a {
   color: #746e6e;
   text-decoration: none;
-  display: block;
-  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+
+  border-radius: 50%;
+  height: 50px;
 
   transition: background-color 0.3s, color 0.3s;
 }
 
 .sidebar a.active {
-  background-color: #3e68b9;
-  color: white;
+  background-color: var(--foreground-color);
+  color: var(--selection-color);
   padding-top: 10px;
   padding-bottom: 10px;
 
-  border-radius: 10px;
+
 }
+
+.logout-icon
+{
+  color:var(--foreground-color);
+
+}
+
 .sidebar-item {
   text-align: left;
   display: flex;
+  height: 100%;
+
   flex-direction: column;
+  justify-content: space-between;
+  padding-bottom: 10px;
   gap: 60px;
 
 
-}
-.sidebar-link i {
-  margin-right: 8px;
 }
 
 
 .nav-items
 {
 
-padding: 20px;
-gap: 10px;
+background-color: var(--accent-color);
+gap: 0px;
 display: flex;
 flex-direction: column;
+align-items: center;
+width: 100%;
+padding: 5px;
+border-radius: 30px;
 }
 
 

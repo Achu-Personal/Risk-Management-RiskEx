@@ -14,15 +14,18 @@ export class ReusableTableComponent {
 rejectRisk = output();  
 isToggled: boolean = false;
   // isActive: boolean;
-rejectButton(event:Event) {
+rejectButton(event:Event,row:any) {
+  console.log("Row",row);
   event.stopPropagation();
-  this.rejectRisk.emit();
+  this.rejectRisk.emit(row);
+ 
+  
   
 }
 approveRisk = output();
-approveButton(event:Event) {
+approveButton(event:Event,row:any) {
     event.stopPropagation();
-    this.approveRisk.emit();
+    this.approveRisk.emit(row);
  
   
 }
@@ -31,6 +34,7 @@ approveButton(event:Event) {
   @Input() tableData: any[] = []; 
   @Input() IsActionRequiered: boolean = true;
   @Input() IsUser:boolean= false;
+  @Input() height:any='70%';
 
 
   rowKeys: string[] = []; 
@@ -46,7 +50,5 @@ approveButton(event:Event) {
     this.onclickrow.emit(row);
     }
       
-    // toggleActiveState() {
-    //   this.isActive = !this.isActive;
-    // }
+
 }

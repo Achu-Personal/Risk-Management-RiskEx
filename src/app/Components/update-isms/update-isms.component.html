@@ -1,0 +1,147 @@
+<div class="qmsForm">
+  <form action="">
+    <div class="form-details-sub-container">
+      <h2>ASSESSMENT POST IMPLEMENTATION OF ACTION</h2>
+      <table>
+      <tr>
+        <th></th>
+        <th>Likelihood <span class="required">*</span></th>
+        <th>Impact <span class="required">*</span></th>
+        <th> <span style="margin-left: 30px;"> Risk Factor</span></th>
+      </tr>
+      <tr>
+        <td><h2 [ngStyle]="{'border-bottom':'0px','text-transform':'none'}">Confidentiality</h2></td>
+        <td><app-dropdown  [options]="dropdownDataLikelihood"
+              [displayField]="'type'"
+              [valueField]="'value'"
+              width="25" bottom="25px" (change)="onDropdownChange($event, 'Likelihood', 'Confidentiality')">
+            </app-dropdown>
+
+        </td>
+        <td><app-dropdown  [options]="dropdownDataImpact"
+              [displayField]="'type'"
+              [valueField]="'value'"
+              width="25" bottom="25px" (change)="onDropdownChange($event, 'Impact', 'Confidentiality')">
+            </app-dropdown>
+        </td>
+        <td><h2 [ngStyle]="{'border-bottom':'0px','text-transform':'none','margin-left':'5vw'}">{{confidentialityRiskFactor}}</h2></td>
+
+      </tr>
+      <tr>
+        <td><h2 [ngStyle]="{'border-bottom':'0px','text-transform':'none'}">Integrity</h2></td>
+        <td><app-dropdown  [options]="dropdownDataLikelihood"
+              [displayField]="'type'"
+              [valueField]="'value'"
+              width="25" bottom="25px" (change)="onDropdownChange($event, 'Likelihood', 'Integrity')">
+            </app-dropdown>
+
+        </td>
+        <td><app-dropdown  [options]="dropdownDataImpact"
+              [displayField]="'type'"
+              [valueField]="'value'"
+              width="25" bottom="25px" (change)="onDropdownChange($event, 'Impact', 'Integrity')">
+            </app-dropdown>
+        </td>
+        <td><h2 [ngStyle]="{'border-bottom':'0px','text-transform':'none','margin-left':'5vw'}">{{integrityRiskFactor}}</h2></td>
+
+      </tr>
+      <tr>
+        <td><h2 [ngStyle]="{'border-bottom':'0px','text-transform':'none'}">Availability</h2></td>
+        <td><app-dropdown  [options]="dropdownDataLikelihood"
+              [displayField]="'type'"
+              [valueField]="'value'"
+              width="25" bottom="25px" (change)="onDropdownChange($event, 'Likelihood', 'Availability')">
+            </app-dropdown>
+
+        </td>
+        <td><app-dropdown  [options]="dropdownDataImpact"
+              [displayField]="'type'"
+              [valueField]="'value'"
+              width="25" bottom="25px" (change)="onDropdownChange($event, 'Impact', 'Availability')">
+            </app-dropdown>
+        </td>
+        <td><h2 [ngStyle]="{'border-bottom':'0px','text-transform':'none','margin-left':'5vw'}">{{availabilityRiskFactor}}</h2></td>
+
+      </tr>
+      <tr>
+        <td><h2 [ngStyle]="{'border-bottom':'0px','text-transform':'none'}">Privacy</h2></td>
+        <td><app-dropdown  [options]="dropdownDataLikelihood"
+              [displayField]="'type'"
+              [valueField]="'value'"
+              width="25" bottom="25px" (change)="onDropdownChange($event, 'Likelihood', 'Privacy')">
+            </app-dropdown>
+
+        </td>
+        <td><app-dropdown  [options]="dropdownDataImpact"
+              [displayField]="'type'"
+              [valueField]="'value'"
+              width="25" bottom="25px" (change)="onDropdownChange($event, 'Impact', 'Privacy')">
+            </app-dropdown>
+        </td>
+        <td><h2 [ngStyle]="{'border-bottom':'0px','text-transform':'none','margin-left':'5vw'}">{{privacyRiskFactor}}</h2></td>
+
+      </tr>
+      </table>
+      <div class="form-row" [ngStyle]="{'margin-top':'30px'}">
+       <h2 [ngStyle]="{'border-bottom':'0px','text-transform':'none'}">Overall Risk Rating : <span style="margin-left: 10px;" [ngStyle]="{'color':changeColorOverallRiskRating()}">{{result}}</span></h2>
+      </div>
+     <div [ngStyle]="{'margin-top':'20px','font-style':'italic','color':'grey'}">
+       <p>For reference <span><a href="javascript:void(0);">click </a></span>here</p>
+     </div>
+    </div>
+    <div class="form-details-sub-container" >
+      <h2>RISK CLOSURE</h2>
+      <div class="form-group" >
+        <label for="closeDate">Actual Close Date<span class="required">*</span></label>
+        <input type="date" id="closeDate">
+      </div>
+      <div class="form-group">
+        <label for="response" class="form-label">Risk Response<span class="required">*</span></label>
+        <div class="radio-group">
+          @for ( response of riskResponses; track $index) {
+            <div class="radio-option">
+              <input
+                type="radio"
+                [id]="'response-' + response.id"
+                name="risk-response"
+                [value]="response.label"
+                [(ngModel)]="selectedResponse"
+              />
+              <label [for]="'response-' + response.id">{{ response.label }}</label>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+    <div class="form-details-sub-container">
+      <h2>Reviewer</h2>
+      <div class="form-group">
+        <label for="reviewer">Reviewer <span class="required">*</span></label>
+        <app-dropdown  [options]="dropdownDataReviewer"
+          [displayField]="'name'"
+          [valueField]="'email'"
+          width="82.5">
+        </app-dropdown>
+      </div>
+      <div [ngStyle]="{'margin-top':'20px','font-style':'italic','color':'grey'}">
+        <p>If reviewer not in the list <span (click)="isReviewerNotInList()"><a href="javascript:void(0);">click </a></span>here</p>
+      </div>
+      @if(reviewerNotInList){
+        <div class="form-detail">
+          <label for="reviewer">Reviewer Name <span class="required">*</span></label>
+          <input type="text" id="reviewer" placeholder="Enter reviewer name"  >
+        </div>
+        <div class="form-detail">
+          <label for="reviewer-email">Email <span class="required">*</span></label>
+          <input type="text" id="reviewer-email" placeholder="Enter email"  >
+        </div>
+      }
+    </div>
+    <div class="button-group">
+      <button type="submit" class="btn save">Save</button>
+      <button type="button" class="btn cancel">Cancel</button>
+    </div>
+  </form>
+</div>
+
+

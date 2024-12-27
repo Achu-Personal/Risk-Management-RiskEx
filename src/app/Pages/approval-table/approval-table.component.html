@@ -1,12 +1,14 @@
-<app-body-container>
-  <h3 style="padding-bottom: 15px;">You are assigned to review</h3>
-    <app-reusable-table 
+<!-- <router-outlet></router-outlet> -->
+  <app-body-container backgroundColor="transparent" [showShadow]="false">
+  <!-- <h3 style="padding-bottom: 15px;">You are assigned to review</h3> -->
+  <app-reusable-table 
   [tableHeaders]="headerData" 
   [tableData]="tableBody"
   [IsActionRequiered]="true"
   (onclickrow)="OnClickRow($event)"
-  (approveRisk)="approveRisk()"
-  (rejectRisk)="rejectRisk()">
+  (approveRisk)="approveRisk($event)"
+  (rejectRisk)="rejectRisk($event)"
+  height="80%">
 </app-reusable-table>
 
 </app-body-container>
