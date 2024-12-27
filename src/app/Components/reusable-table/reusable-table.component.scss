@@ -2,17 +2,18 @@
 
 /* Table */
 .table-container {
-  margin-top: 20px ;
+
   padding: 0;
-  border-radius: 12px;
+  border-radius: 8px;
   background: #ffffff;
-  box-shadow: 0px 0px 4px D0C6B6;
+  box-shadow: 0px 1px 3px #979797;
   border: 1px solid #D0C6B6;
-  width: 88%;
+  width: 87%;
   font-family: 'Arial', sans-serif;
   position: fixed;
   // height: 75%; 
   overflow-y: auto;
+  margin-left: -20px;
 
 }
 
@@ -56,16 +57,16 @@ thead{
 }
 
 .tabledata th {
-  background: #D0C6B6;
+  background-color: #e6e1d7;
   color: #0f0f0f;
   font-weight: bold;
   // text-transform: uppercase;
   font-size: 13px;
 }
 
-.tabledata tbody tr:nth-child(even) {
-  background: #F4F1EC;
-}
+// .tabledata tbody tr:nth-child(even) {
+//   background: #F4F1EC;
+// }
 
 
 .tabledata tbody tr:hover {
@@ -92,7 +93,10 @@ text-align: center;
 
 /* Optional: Add hover effect for rows */
 tbody tr:hover {
-  background-color: #e3f2fd; /* Slightly darker blue on hover */
+  background-color: rgba(208, 198, 182, 0.2);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  /* Increased shadow for more lift effect */
+  transform: translateY(-1px);  /* Lifts the row upwards */
+  transition: box-shadow 0.2s ease-in-out, transform 0.2s ease-in-out;  /* Add transition for transform */
   cursor: pointer;
 }
 tbody{
@@ -102,6 +106,15 @@ tr{
 
 }
 }
+
+
+
+
+
+
+
+
+
 
 
 
