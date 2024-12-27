@@ -19,7 +19,7 @@ import { BodyContainerComponent } from "../body-container/body-container.compone
 })
 export class QMSFormComponent {
 
-@Input() riskTypeValue: string=''
+@Input() riskTypeValue: number=1
 result: number = 0;
 reviewerNotInList:boolean=false
 assigneeNotInList:boolean=false
@@ -31,17 +31,23 @@ riskFactor:number=0
 
 qmsForm=new FormGroup({
   riskType:new FormControl(''),
+  riskStatus:new FormControl(''),
   riskName:new FormControl('',Validators.required),
   description:new FormControl('',[Validators.maxLength(1000),Validators.minLength(15),Validators.required]),
-  riskImpact:new FormControl('',[Validators.maxLength(1000),Validators.minLength(15),Validators.required]),
+  impact:new FormControl('',[Validators.maxLength(1000),Validators.minLength(15),Validators.required]),
   projectId:new FormControl(''),
+  overallRiskRating:new FormControl(''),
   likelihood:new FormControl('',Validators.required),
-  impact:new FormControl('',Validators.required),
+  impactValue:new FormControl('',Validators.required),
   mitigation:new FormControl('',[Validators.maxLength(1000),Validators.minLength(15),Validators.required]),
   contingency:new FormControl(''),
-  responsibilityOfAction:new FormControl('',[Validators.maxLength(20),Validators.minLength(5),Validators.required]),
+  responsibileUserId:new FormControl('',[Validators.maxLength(20),Validators.minLength(5),Validators.required]),
   plannedActionDate:new FormControl('',Validators.required),
-  reviewer:new FormControl('',Validators.required)
+  reviewerId:new FormControl('',Validators.required),
+  DepartmentId:new FormControl(''),
+  // AssessmentBasisId:new FormControl(''),
+  riskFactor:new FormControl(''),
+  isMitigated:new FormControl(false),
 })
 
 dropdownDataLikelihood=[
@@ -131,5 +137,30 @@ changeColorOverallRiskRating(){
   }
 }
 
+isMobile: boolean = false; // Flag to determine mobile screen
+ dropdownWidth: string = '40'
 
+ constructor() { }
+
+  ngOnInit(): void {
+    this.checkScreenSize();
+    window.addEventListener('resize', this.checkScreenSize.bind(this)); // Listen for resize
+  }
+
+  checkScreenSize() {
+    this.isMobile = window.innerWidth >= 768; // Set flag for mobile screen size
+    this.updateDropdownWidth(); // Update dropdown width based on screen size
+  }
+
+  updateDropdownWidth() {
+    if (this.isMobile) {
+      this.dropdownWidth = '40'; // Set width to 90vw for mobile devices
+    } else {
+      this.dropdownWidth = '40'; // Set width to 50vw for larger screens
+    }
+  }
+
+  ngOnDestroy() {
+    window.removeEventListener('resize', this.checkScreenSize.bind(this)); // Cleanup listener
+  }
 }

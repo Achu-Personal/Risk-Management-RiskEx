@@ -13,10 +13,15 @@ import { ISMSFormComponent } from "../../Components/isms-form/isms-form.componen
 })
 export class RegisterRiskComponent {
 
-selectedRiskType: string = 'quality';
+selectedRiskType: number = 1;
 
-  setRiskType(type: string): void {
-    this.selectedRiskType = type;
-  }
+riskTypes=[
+ { "type": "Quality","value": 1 },
+ { "type": "Security","value": 2 },
+ { "type": "Privacy","value": 3 }
+];
 
+setRiskType(riskValue: number){
+  this.selectedRiskType = riskValue;
+}
 }

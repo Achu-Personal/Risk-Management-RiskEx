@@ -25,6 +25,7 @@ import { ApprovalTableComponent } from './Pages/approval-table/approval-table.co
 import { EditRiskComponent } from './Pages/edit-risk/edit-risk.component';
 import { ChangepasswordComponent } from './Components/changepassword/changepassword.component';
 import { ReferenceComponent } from './Pages/reference/reference.component';
+import { UpdateRiskComponent } from './Pages/update-risk/update-risk.component';
 
 
 export const routes: Routes = [
@@ -45,11 +46,11 @@ export const routes: Routes = [
         path:'home',component:HomeComponent, data:{title: 'Risk Management' }
       },
       {
-        path:'ViewRisk/:id',component:ViewRiskComponent,  data: { title: 'View Risk',breadcrumb: 'View Risk' }, 
-  
+        path:'ViewRisk/:id',component:ViewRiskComponent,  data: { title: 'View Risk',breadcrumb: 'View Risk' },
+
       },
-   
-      
+
+
       // {path:"ViewRisk/:id",component:ViewRiskComponent}
       {
         path:'addrisk',component:RegisterRiskComponent,data: { title: 'Register Risk',breadcrumb: 'Register Risk' }
@@ -75,6 +76,9 @@ export const routes: Routes = [
       {
         path:'edit',component:EditRiskComponent, data:{title: 'Edit Risk' ,breadcrumb: 'View Risk / Edit Risk'}
       },
+      {
+        path:'update',component:UpdateRiskComponent, data:{title: 'Update Risk' ,breadcrumb: 'View Risk / Update Risk'}
+      },
 
       {
         path:'',redirectTo:'home',pathMatch:'full', data:{title: 'Risk Management' ,breadcrumb: 'Dashboard'}
@@ -82,7 +86,7 @@ export const routes: Routes = [
 
     ]
   },
-  
+
 
   {path:'sidebar',component:SidebarComponent},
 
