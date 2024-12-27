@@ -25,6 +25,7 @@ import { ApprovalTableComponent } from './Pages/approval-table/approval-table.co
 import { EditRiskComponent } from './Pages/edit-risk/edit-risk.component';
 import { ChangepasswordComponent } from './Components/changepassword/changepassword.component';
 import { ReferenceComponent } from './Pages/reference/reference.component';
+import { SsoComponent } from './Pages/sso/sso.component';
 
 
 export const routes: Routes = [
@@ -45,11 +46,11 @@ export const routes: Routes = [
         path:'home',component:HomeComponent, data:{title: 'Risk Management' }
       },
       {
-        path:'ViewRisk/:id',component:ViewRiskComponent,  data: { title: 'View Risk',breadcrumb: 'View Risk' }, 
-  
+        path:'ViewRisk/:id',component:ViewRiskComponent,  data: { title: 'View Risk',breadcrumb: 'View Risk' },
+
       },
-   
-      
+
+
       // {path:"ViewRisk/:id",component:ViewRiskComponent}
       {
         path:'addrisk',component:RegisterRiskComponent,data: { title: 'Register Risk',breadcrumb: 'Register Risk' }
@@ -82,7 +83,7 @@ export const routes: Routes = [
 
     ]
   },
-  
+
 
   {path:'sidebar',component:SidebarComponent},
 
@@ -94,6 +95,9 @@ export const routes: Routes = [
   },
   {
     path:"changepassword",component:ChangepasswordComponent
+  },
+  {
+    path:"sso",component:SsoComponent
   },
 
 
