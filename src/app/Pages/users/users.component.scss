@@ -102,9 +102,11 @@ button.btn-danger:hover {
 
 .button-container{
   display: flex;
+  margin-bottom: 20px;
   justify-content: end;
   gap: 20px;
-  padding-right: 10px;
-  margin-bottom: 20px;
-
+  margin-right: 5px;
+  height: 10%;
+  // padding-right: 10px;
+  // background-color: #052564;
 }
