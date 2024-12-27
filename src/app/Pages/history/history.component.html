@@ -1,13 +1,10 @@
-<app-body-container>
+
+<app-body-container backgroundColor="transparent" [showShadow]=false >
   <div class="btnn">
     <button>Add Columns</button>
     <button>Filter by Date</button>
   </div>
-
   <div class="tab"></div>
   <app-table (onclickrow)="OnClickRow($event)"></app-table>
 </app-body-container>
-
-
-
 

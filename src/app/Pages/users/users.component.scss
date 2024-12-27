@@ -18,22 +18,15 @@
 }
 
 .sticky-buttons {
-  position: sticky; /* Sticks to the top while scrolling */
+  position: sticky;
   top: -25px;
   margin-top: 10px;
-  // left: 0;
   z-index: 1000; /* Higher than table content */
   background-color: white; /* Solid background to hide table content */
   padding-bottom: 10px;
   padding-top: 30px;
   overflow-y: none;
 }
-
-
-
-
-
-
 button.button-custom {
   padding: 10px ;
   font-size: 0.8rem;
@@ -93,3 +86,24 @@ button.btn-danger:hover {
   overflow-x: hidden;
 }
 
+.custom-btn-close {
+  position: relative;
+  right: 7px;
+  width: 0.75rem;
+  height: 0.85rem;
+}
+
+.custom-btn-close::after,
+.custom-btn-close::before {
+  width: 0.75rem;
+  height: 0.1rem;
+}
+
+
+.button-container{
+  display: flex;
+  justify-content: end;
+  gap: 20px;
+  padding-right: 10px;
+
+}

@@ -1,6 +1,6 @@
 
 
-<div [ngStyle]="{ 'background-color':backgroundColor==''? (value<=30?'green': ( value>30&&value<99)?'#FFBF00':'red'):'white','color':textColor==''? (value<30?'green': ( value>30&&value<99)?'#FFBF00':'red'):'black',height:height.toString()+'vh',width:width.toString()+'vh'}"  class=" d-flex flex-column justify-content-center align-items-center" >
+<div [ngStyle]="{ 'background-color':backgroundColor==''? (value<=30?'green': ( value>30&&value<99)?'#FFBF00':'red'):'var(--primary-color)','color':textColor==''? (value<30?'green': ( value>30&&value<99)?'#FFBF00':'red'):'black',height:height.toString()+'vh',width:width.toString()+'vh'}"  class=" d-flex flex-column justify-content-center align-items-center" >
 
   <h1 class="value">
     {{value}}

@@ -1,42 +1,40 @@
+<!-- <app-body-container backgroundColor="#ece4d7"> -->
 <app-body-container>
+<!------- buttons ------->
 
-  <!-- <div class="container mt-4 ">
-    <h2 class="mb-4" style="margin-left: 0;">Manage Users and Departments</h2>
-  </div> -->
+<div class="button-container">
+  <app-style-button
+  label="Add User"
+  color="primary"
+  data-bs-toggle="modal" 
+  data-bs-target="#addUserModal">
+ </app-style-button>
 
+  <app-style-button
+  label="Add Department"
+  color="primary"
+  data-bs-toggle="modal"
+  data-bs-target="#addDepartmentModal"
+ ></app-style-button>
 
-<div class="sticky-buttons">
-  <div class="row button-group">
-    <div class="col-md-2 d-flex justify-content-end">
-      <button type="button" class="btn btn-success button-custom" data-bs-toggle="modal" data-bs-target="#addUserModal">
-        Add User
-      </button>
-    </div>
-    <div class="col-md-2 d-flex justify-content-end">
-      <button type="button" class="btn btn-success button-custom" data-bs-toggle="modal"
-        data-bs-target="#addDepartmentModal">
-        Add Department
-      </button>
-    </div>
-    <div class="col-md-2 d-flex justify-content-end">
-      <button type="button" class="btn btn-success button-custom" data-bs-toggle="modal"
-        data-bs-target="#addProjectModal">
-        Add Project
-      </button>
-    </div>
-  </div>
+  <app-style-button
+  label="Add Project"
+  color="primary"
+  data-bs-target="#addProjectModal"
+  data-bs-toggle="modal"
+ ></app-style-button>
+
 </div>
 
 
-
-
   <!-- Add User Modal -->
+
   <div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="addUserModalLabel">New User</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button type="button" class="btn-close custom-btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <form [formGroup]="userForm" (ngSubmit)="onSubmitUser()">
@@ -77,39 +75,23 @@
               <label for="department" class="form-label">
                 Department <span class="text-danger">*</span>
               </label>
-              <select class="form-select" id="department" formControlName="department"(change)="onDepartmentChange($event)">
-                <option value="" disabled>Select Department</option>
-                @for(item of departments; track item.id){
-
-                  <option [value]="item.departmentName">{{item.departmentName}}</option>
-                }
-
-              </select>
-              @if (userForm.get('department')?.invalid &&userForm.get('department')?.touched)
-              {
-              <div class="text-danger">
-                Department is required.
-              </div>
+              <app-drop-down-deparment
+                formControlName="department"
+              ></app-drop-down-deparment>
+              @if (userForm.get('department')?.invalid && userForm.get('department')?.touched) {
+                <div class="text-danger">
+                  Department is required.
+                </div>
               }
-
             </div>
 
             <div class="mb-3">
-
-              <div *ngIf="projects.length > 0; else noProjects">
-                <label for="projectName" class="form-label">Project</label>
-                <select class="form-select" id="projectName" formControlName="projectName">
-                  <option value="" disabled>Select Project</option>
-                  <option *ngFor="let item of projects" [value]="item.projectName">
-                    {{item.projectName}}
-                  </option>
-                </select>
-              </div>
-
-              <ng-template #noProjects>
-                <p>No projects available for the selected department.</p>
-              </ng-template>
-
+              <label for="projectName" class="form-label">Project</label>
+              <app-project-drop-down
+                [departmentName]="userForm.get('department')?.value"
+                formControlName="projectName"
+                (selectedProjectsChange)="onProjectsSelected($event)"
+              ></app-project-drop-down>
             </div>
 
             <div class="modal-footer">
@@ -133,7 +115,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="addDepartmentModalLabel">New Department</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button type="button" class="btn-close custom-btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <form [formGroup]="departmentForm" (ngSubmit)="onSubmitDepartment()">
@@ -172,7 +154,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="addProjectModalLabel">New Project</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button type="button" class="btn-close custom-btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <form [formGroup]="projectForm" (ngSubmit)="onSubmitProject()">
@@ -190,22 +172,16 @@
             <div class="text-danger">Project name is required.</div>
             }
 
-            <label for="departmentName" class="form-label p-2">
-              Department Name <span class="text-danger">*</span>
+            <label for="department" class="form-label">
+              Department <span class="text-danger">*</span>
             </label>
-            <select class="form-select" id="department" formControlName="departmentName">
-              <option value="" disabled>Select Department</option>
-              @for(item of departments; track item.id){
-
-                <option [value]="item.departmentName">{{item.departmentName}}</option>
-              }
-
-            </select>
-            @if (userForm.get('department')?.invalid &&userForm.get('department')?.touched)
-            {
-            <div class="text-danger">
-              Department is required.
-            </div>
+            <app-drop-down-deparment
+              formControlName="departmentName"
+            ></app-drop-down-deparment>
+            @if (userForm.get('department')?.invalid && userForm.get('department')?.touched) {
+              <div class="text-danger">
+                Department is required.
+              </div>
             }
           </div>
 
@@ -225,11 +201,11 @@
   <!-- <app-user-table></app-user-table> -->
 
 
-    <div class="table-container">
+
       <app-reusable-table
     [tableHeaders]="headerData"
     [tableData]="tableBody"
     [IsActionRequiered]="true"
     [IsUser]="true">
-  </app-reusable-table></div>
+  </app-reusable-table>
 </app-body-container>

@@ -1,5 +1,5 @@
 
-<select class="dropdown"  [(ngModel)]="selectedValue" (ngModelChange)="onSelectionChange($event)" [ngStyle]="{'width': width+'vw'}">
+<select class="custom-dropdown"  [(ngModel)]="selectedValue" (ngModelChange)="onSelectionChange($event)" [ngStyle]="{'width': width+'vw','margin-bottom': bottom}">
   @for (item of options; track $index) {
     <option  value="{{item[valueField]}}" >{{item[displayField]}}</option>
   }
