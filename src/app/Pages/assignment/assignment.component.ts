@@ -1,27 +1,29 @@
 import { Component } from '@angular/core';
 import { BodyContainerComponent } from "../../Components/body-container/body-container.component";
-import { approvalTableBody } from '../../Interfaces/approvalTable.interface';
 import { ReusableTableComponent } from "../../Components/reusable-table/reusable-table.component";
-import { Router, RouterOutlet } from '@angular/router';
-import { MatDialog } from '@angular/material/dialog';
-import { ConfirmDialogComponent } from '../../Components/confirm-dialog/confirm-dialog.component';
-
+import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-approval-table',
+  selector: 'app-assignment',
   standalone: true,
-  imports: [BodyContainerComponent, ReusableTableComponent, RouterOutlet],
-  templateUrl: './approval-table.component.html',
-  styleUrl: './approval-table.component.scss'
+  imports: [BodyContainerComponent, ReusableTableComponent],
+  templateUrl: './assignment.component.html',
+  styleUrl: './assignment.component.scss'
 })
-export class ApprovalTableComponent {
+export class AssignmentComponent {
+  constructor(private router: Router) {}
+  
+  OnClickRow(rowid:any): void {
+    this.router.navigate([`/ViewRisk/${rowid}`]);
+    console.log("rowdata",rowid);
 
+  }
   
 headerData:any=[
   "SI NO"," Risk Id","Risk","Description","End Date","Type","CRR","Status",
 ];
 
-tableBody:approvalTableBody[]=[
+tableBody:any[]=[
   {
     SINo: 1,
     RiskId: 'R001',
@@ -132,62 +134,5 @@ tableBody:approvalTableBody[]=[
   }
 ];
 
-
-
-  commentForm: any;
-  isButtonClicked:boolean = false;
-  cancelMessage: string = "";
-  approveMessage: string = "";
-
-  constructor( private dialog: MatDialog,private router: Router) {}
-
-
-  OnClickRow(rowData:any): void {
-    this.router.navigate([`/approvals/${rowData.RiskId}`]);
-    console.log("rowdata",rowData);
-    
-  } 
- 
-
-approveRisk(rowData:any): void {
-  const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-    data: { message: 'Are you sure you want to approve this risk?',
-      rowData: rowData,
-      // isCommentRequired: true,
-     },
-    width: '400px',
-  });
-
-  dialogRef.afterClosed().subscribe((result: any) => {
-    if (result) {
-      this.tableBody = this.tableBody.filter(row => row.RiskId !== rowData.RiskId);
-      console.log('Risk approved!');
-      this.approveMessage = 'Risk has been approved successfully.';
-    } else {
-      console.log('Approval canceled.');
-    }
-  });
-}
-
-// Open a confirmation dialog for rejecting a risk
-rejectRisk(rowData:any): void {
-  const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-    data: { message: 'Are you sure you want to reject this risk?',rowData: rowData },
-    width: '400px',
-  });
-
-  dialogRef.afterClosed().subscribe((result: any) => {
-    
-    if (result) {
-      this.tableBody = this.tableBody.filter(row => row.RiskId !== rowData.RiskId);
-      console.log("tablebody",this.tableBody);
-      
-      console.log('Risk rejected!');
-      this.cancelMessage = 'Risk has been rejected successfully.';
-    } else {
-      console.log('Rejection canceled.');
-    }
-  });
-}
 
 }
