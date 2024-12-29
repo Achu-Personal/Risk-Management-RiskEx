@@ -79,7 +79,7 @@ export class TableComponent {
   this.updatePaginatedItems();
   }
 
-
+ // hello bindu.... sugalle ?
 
   onSearch(searchText: string): void {
     const lowercasedSearchText = searchText.toLowerCase();
