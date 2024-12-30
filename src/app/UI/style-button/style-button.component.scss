@@ -1,49 +1,44 @@
-.custom-button {
-    padding: 10px 20px;
-    font-size: 16px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  /* Primary style */
 
-//   .custom-button.primary {
-//     background-color: #007bff;
-//     color: white;
-//   }
 
-  .custom-button.primary {
-    border: 1px solid rgba(62, 104, 185, 0.75); 
-    background-color: #f5f8ff; 
-    color: #3e68b9; 
-    cursor: pointer;
-    font-weight: 600;
-    font-size: 14px;
-    padding: 5px 5px;
-    border-radius: 8px;
-    text-align: center;
-    transition: all 0.3s ease; 
-    width:160px ;
-    height: 45px
-  }
-  
-  .custom-button.primary:hover {
-    background-color: #3e68b9; 
-    color: #ffffff; 
-    border-color: #3e68b9; 
-  }
-  
-  .custom-button.primary:focus {
-    outline: none;
-    box-shadow: 0 0 5px rgba(62, 104, 185, 0.5);
-    border-color: #3e68b9;
-  }
-  
-  /* Disabled style */
-  .custom-button:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-  }
-  
+
+.btnn{
+  display: flex;
+  // flex-direction: row;
+  justify-content: right;
+  background-color: #cfafaf;
+  // gap: 20px
+  position: sticky;
+  top: 0;
+  // margin-right: 55px;
+  // width: 15%;
+  float: right;
+}
+
+
+/* Style for individual buttons */
+.btnn button {
+  padding: 10px 20px;
+  background-color: #4D4D4D ;
+  color: #ffffff ;
+  box-shadow: 0px 0px 4px rgba(185, 154, 62, 0.5);
+  border: none;
+  border-radius: 5px;  /* Rounded corners */
+  font-size: small;  /* Button text size */
+  cursor: pointer;  /* Pointer cursor on hover */
+  transition: background-color 0.3s, border-color 0.3s;  /* Smooth transition */
+}
+
+/* Hover effect */
+.btnn button:hover {
+  background-color: #d0c6b6;
+  color: rgb(43, 28, 6);
+  // border-color: #0056b3;  /* Darker border on hover */
+}
+
+/* Focus effect */
+.btnn button:focus {
+  outline: none;  /* Remove default focus outline */
+  box-shadow: 0 0 5px rgba(255, 166, 0, 0.5);  /* Add custom focus outline */
+}
+
+

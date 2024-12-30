@@ -152,7 +152,8 @@ tableBody:approvalTableBody[]=[
 approveRisk(rowData:any): void {
   const dialogRef = this.dialog.open(ConfirmDialogComponent, {
     data: { message: 'Are you sure you want to approve this risk?',
-      rowData: rowData
+      rowData: rowData,
+      // isCommentRequired: true,
      },
     width: '400px',
   });
