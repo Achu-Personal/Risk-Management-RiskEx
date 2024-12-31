@@ -25,8 +25,9 @@ export class DropdownComponent implements ControlValueAccessor {
   @Input() displayField: string = '';
   @Input() valueField: string = '';
   selectedValue: string = '';
-  @Input() width:string='40'
+  @Input() width:string='100'
   @Input() bottom:string=''
+  @Input() selectValue:string=''
 
 
   value: any = '';

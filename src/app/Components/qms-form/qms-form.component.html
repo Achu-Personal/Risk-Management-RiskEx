@@ -1,18 +1,19 @@
 <div class="qmsForm">
-  <form action="">
+  <form [formGroup]="qmsForm" (ngSubmit)="onSubmit()">
     <div class="form-details-sub-container">
       <h2>Risk Details</h2>
       <div class="form-row">
        <div class="form-detail">
          <label for="riskName">Risk Name <span class="required">*</span></label>
-         <input type="text" id="riskName" placeholder="Enter risk name"  [ngStyle]="{'width':'40vw'}" >
+         <input type="text" id="riskName" placeholder="Enter risk name"  [ngStyle]="{'width':'100%'}" formControlName="riskName" >
        </div>
        <div class="form-detail">
          <label for="project">Project Name</label>
          <app-dropdown  [options]="dropdownDataProject"
            [displayField]="'name'"
            [valueField]="'id'"
-           width="dropdownWidth">
+           selectValue="Project"
+           width="100" formControlName="projectId">
           </app-dropdown>
        </div>
      </div>
@@ -22,17 +23,17 @@
         <app-dropdown  [options]="dropdownDataDepartment"
           [displayField]="'name'"
           [valueField]="'id'"
-          width="82.25" id="department">
+          width="100" id="department" >
          </app-dropdown>
       </div>
      }
      <div class="form-detail">
        <label for="impactOfRisk">Impact Of Risk <span class="required">*</span></label>
-       <textarea id="description" rows="2" placeholder="Impact of risk" (input)="autoResize($event)"></textarea>
+       <textarea id="description" rows="2" placeholder="Impact of risk" (input)="autoResize($event)" formControlName="impact"></textarea>
      </div>
      <div class="form-detail">
        <label for="description">Description <span class="required">*</span></label>
-       <textarea id="description" rows="2" placeholder="Enter description" (input)="autoResize($event)"></textarea>
+       <textarea id="description" rows="2" placeholder="Enter description" (input)="autoResize($event)" formControlName="description"></textarea>
      </div>
     </div>
     <div class="form-details-sub-container">
@@ -41,16 +42,18 @@
         <div class="form-detail">
           <label for="likelihood">Likelihood <span class="required">*</span></label>
           <app-dropdown  [options]="dropdownDataLikelihood"
-           [displayField]="'type'"
-           [valueField]="'value'"
-           width="40" (change)="onDropdownChangelikelihood($event)"></app-dropdown>
+           [displayField]="'assessmentFactor'"
+           [valueField]="'id'"
+           selectValue="Likelihood"
+           width="100" (change)="onDropdownChangelikelihood($event)" formControlName="likelihood"></app-dropdown>
         </div>
         <div class="form-detail">
           <label for="impact">Impact <span class="required">*</span></label>
           <app-dropdown  [options]="dropdownDataImpact"
-           [displayField]="'type'"
-           [valueField]="'value'"
-           width="40" (change)="onDropdownChangeImpact($event)"></app-dropdown>
+           [displayField]="'assessmentFactor'"
+           [valueField]="'id'"
+           selectValue="Impact"
+           width="100" (change)="onDropdownChangeImpact($event)" formControlName="impactValue"></app-dropdown>
         </div>
       </div>
       <div class="form-row" [ngStyle]="{'gap':'32vw','margin-top':'30px'}">
@@ -65,11 +68,11 @@
       <h2>Risk Management</h2>
       <div class="form-detail">
         <label for="mitigation">Risk Mitigation <span class="required">*</span></label>
-        <textarea id="mitigation" rows="2" placeholder="Enter mitigation" (input)="autoResize($event)"></textarea>
+        <textarea id="mitigation" rows="2" placeholder="Enter mitigation" (input)="autoResize($event)" formControlName="mitigation"></textarea>
       </div>
       <div class="form-detail">
         <label for="contingency">Risk Contingency</label>
-        <textarea id="contingency" rows="2" placeholder="Enter contingency plan" (input)="autoResize($event)"></textarea>
+        <textarea id="contingency" rows="2" placeholder="Enter contingency plan" (input)="autoResize($event)" formControlName="contingency"></textarea>
       </div>
     </div>
     <div class="form-details-sub-container">
@@ -79,7 +82,7 @@
         <app-dropdown  [options]="dropdownDataReviewer"
            [displayField]="'name'"
            [valueField]="'email'"
-           width="82.5">
+           width="100" formControlName="responsibileUserId">
         </app-dropdown>
       </div>
       <div [ngStyle]="{'margin-top':'20px','font-style':'italic','color':'grey'}">
@@ -98,7 +101,7 @@
       }
       <div class="form-group">
         <label for="actionDate">Planned Action Date<span class="required">*</span></label>
-        <input type="date" id="actionDate">
+        <input type="date" id="actionDate" formControlName="plannedActionDate">
       </div>
     </div>
     <div class="form-details-sub-container">
@@ -108,7 +111,7 @@
         <app-dropdown  [options]="dropdownDataReviewer"
           [displayField]="'name'"
           [valueField]="'email'"
-          width="82.5">
+          width="100" formControlName="reviewerId">
         </app-dropdown>
       </div>
       <div [ngStyle]="{'margin-top':'20px','font-style':'italic','color':'grey'}">
@@ -131,3 +134,5 @@
     </div>
   </form>
 </div>
+
+

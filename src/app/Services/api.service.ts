@@ -42,7 +42,7 @@ constructor(private http:HttpClient) { }
    }
 
    getProjects(departmentName: string) {
-     return this.http.get<project[]>(`https://localhost:7150/api/Project/GetProjectsByDepartment/${departmentName}`);
+     return this.http.get<project[]>(`https://localhost:7216/api/Project/ProjectsBy/${departmentName}`);
    }
 
    gettabledata(){
@@ -68,7 +68,7 @@ constructor(private http:HttpClient) { }
 
    }
    getRiskResponses(){
-    
+
     return this.http.get('https://localhost:7216/api/RiskResponseData')
    }
    getLikelyHoodDefinition(){
@@ -77,4 +77,10 @@ constructor(private http:HttpClient) { }
    getImpactDefinition(){
     return this.http.get('https://localhost:7216/api/AssessmentMatrixImpact')
    }
+
+   addnewQualityRisk(qualityRisk:any){
+    return this.http.get('https://localhost:7216/api/Risk/Quality',qualityRisk)
+   }
+
+
  }
