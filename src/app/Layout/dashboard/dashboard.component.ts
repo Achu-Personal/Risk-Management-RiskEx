@@ -3,8 +3,7 @@ import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { SidebarComponent } from '../../Components/sidebar/sidebar.component';
 import { NavbarComponent } from '../../UI/navbar/navbar.component';
 import { CrumbsComponent } from '../../UI/crumbs/crumbs.component';
-import { BodyContainerComponent } from '../../Components/body-container/body-container.component';
-import { BreadcrumbComponent } from "../../UI/breadcrumb/breadcrumb.component";
+
 
 @Component({
   selector: 'app-dashboard',
@@ -14,8 +13,7 @@ import { BreadcrumbComponent } from "../../UI/breadcrumb/breadcrumb.component";
     SidebarComponent,
     NavbarComponent,
     CrumbsComponent,
-    BodyContainerComponent,
-    BreadcrumbComponent
+
 ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',

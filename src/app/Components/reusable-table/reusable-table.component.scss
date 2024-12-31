@@ -8,7 +8,7 @@
   background: #ffffff;
   box-shadow: 0px 1px 3px #979797;
   border: 1px solid #D0C6B6;
-  width: 87%;
+  width: 88%;
   font-family: 'Arial', sans-serif;
   position: fixed;
   // height: 75%; 
@@ -20,7 +20,7 @@
 thead{
 
   tr{
-    z-index: 100;
+    z-index: 10; //100
     th{
       text-align: center;
     }
@@ -31,7 +31,7 @@ thead{
 .bord{
   position: sticky;
   top: 0;
-  z-index: 1000;
+  z-index: 20;//1000
 
   tr{
     border: 2px solid #c1bdbd;
@@ -85,6 +85,8 @@ text-align: center;
 
 
 
+
+
 .text-center {
   text-align: center;
   color: #888; /* Subtle gray color for 'No data available' */
@@ -106,16 +108,6 @@ tr{
 
 }
 }
-
-
-
-
-
-
-
-
-
-
 
 
 .tablestyle {
@@ -257,4 +249,17 @@ input:checked + .slider:before {
 .red-background {
   color: #fc3a36;
   
+}
+
+
+
+.eye-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.eye-icon:hover {
+  stroke: #3e68b9;
+  transition: stroke 0.3s ease-in-out;
 }

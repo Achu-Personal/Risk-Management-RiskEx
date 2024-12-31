@@ -1,15 +1,20 @@
-.risk-logo{
-    display: flex;
-    justify-content: center;
-    margin-bottom: 30px;
-    img{
-        width: 100px;
-        height: 70px;
-    }
-}
+// .risk-logo{
+//     display: flex;
+//     justify-content: center;
+//     margin-bottom: 20px;
+//     img{
+//         width: 100px;
+//         height: 70px;
+//     }
+// }
 .methodology{
-    h3,p{
+    h3{
+
         text-align: center;
+    }
+    p{
+      text-align: center;
+      margin-bottom: 5px;
     }
 }
 .definitions{
@@ -17,10 +22,10 @@
     margin-left: auto;
     margin-right: auto;
     h5{
-        padding-top: 20px;
+        // padding-top: 10px;
         padding-left: 10px;
         font-weight: 800;
-        padding-bottom: 20px;
+        padding-bottom: 10px;
     }
 }
 

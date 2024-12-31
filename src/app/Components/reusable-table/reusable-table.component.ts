@@ -11,6 +11,7 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './reusable-table.component.scss'
 })
 export class ReusableTableComponent {
+
 rejectRisk = output();  
 isToggled: boolean = false;
   // isActive: boolean;
@@ -22,6 +23,12 @@ rejectButton(event:Event,row:any) {
   
   
 }
+
+RiskClose(event:Event,row:any) {
+    event.stopPropagation();
+  this.rejectRisk.emit(row);
+  }
+
 approveRisk = output();
 approveButton(event:Event,row:any) {
     event.stopPropagation();
@@ -35,7 +42,12 @@ approveButton(event:Event,row:any) {
   @Input() IsActionRequiered: boolean = true;
   @Input() IsUser:boolean= false;
   @Input() height:any='70%';
+  @Input() IsAssignee:boolean = false;
+  isEyeOpen = false;
 
+  // SVG paths for eye states
+  openEyePath = 'M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z';
+  closedEyePath = 'M1 12s4-8 11-8 11 8 11 8M2 12h20';
 
   rowKeys: string[] = []; 
 

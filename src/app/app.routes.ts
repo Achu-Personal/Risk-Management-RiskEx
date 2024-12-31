@@ -26,6 +26,7 @@ import { EditRiskComponent } from './Pages/edit-risk/edit-risk.component';
 import { ChangepasswordComponent } from './Components/changepassword/changepassword.component';
 import { ReferenceComponent } from './Pages/reference/reference.component';
 import { SsoComponent } from './Pages/sso/sso.component';
+import { AssignmentComponent } from './Pages/assignment/assignment.component';
 import { UpdateRiskComponent } from './Pages/update-risk/update-risk.component';
 
 
@@ -58,6 +59,9 @@ export const routes: Routes = [
       },
       {
         path:'users',component:UsersComponent,data: { title: 'Manage Users and Departments' ,breadcrumb: 'User Management'},
+      },
+      {
+        path:'assignee',component:AssignmentComponent,data: { title: 'Assignments' ,breadcrumb: 'Assignments'},
       },
       {
         path:'history',component:HistoryComponent,data: { title: 'History',breadcrumb: 'History' }
