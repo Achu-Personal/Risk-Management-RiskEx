@@ -13,6 +13,8 @@
 }
 
 .step-item {
+  // background-color: #f54cc2;
+  // height: 1000px;
   position: relative;
   z-index: 2;
   display: flex;
@@ -81,9 +83,10 @@
 
 .step-content {
   text-align: center;
-  min-width: 120px;
+  // min-width: 120px;
+  width: 100%;
   opacity: 0.7;
-
+  // background-color: #4c6ef5;
   // transform: translateY(10px);
   transition: all 0.3s ease;
 
@@ -94,14 +97,18 @@
 }
 
 .step-title {
+  // background-color: #4c6ef5;
   font-weight: bold;
   margin-bottom: 4px;
   color: #333;
 }
 
 .step-info {
+  background-color: #4c6ef5;
   font-size: 12px;
   color: #666;
+  width: auto;
+  height: auto;
   display: flex;
   flex-direction: column;
 

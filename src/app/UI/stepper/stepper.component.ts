@@ -49,7 +49,7 @@ export class StepperComponent {
       id: 4,
       title: 'Post Review',
       isCompleted: false,
-      actionBy: 'Tony',
+      actionBy: 'Tonybackground-color: #4c6ef5;',
       date: '23 June 2024',
       stepNumber: '04'
     },
