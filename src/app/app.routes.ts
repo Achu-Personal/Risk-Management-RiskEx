@@ -27,21 +27,21 @@ import { ChangepasswordComponent } from './Components/changepassword/changepassw
 import { ReferenceComponent } from './Pages/reference/reference.component';
 import { SsoComponent } from './Pages/sso/sso.component';
 import { AssignmentComponent } from './Pages/assignment/assignment.component';
+import { AuthGuard } from './Gaurd/auth.guard';
 
 
 export const routes: Routes = [
 
   {
-    path:'auth',component:AuthComponent,
-    children:[
-      {
-        path:'login',component:LoginComponent
-      }
+    path: 'auth',
+    component: AuthComponent,
+    children: [
+      { path: 'login', component: LoginComponent },
+      { path: '', redirectTo: 'login', pathMatch: 'full' }
     ]
   },
-
   {
-    path:'',component:DashboardComponent,data:{title: 'Risk Management',breadcrumb: 'Dashboard' },
+    path:'',component:DashboardComponent, canActivate: [AuthGuard], data:{title: 'Risk Management',breadcrumb: 'Dashboard' },
     children:[
       {
         path:'home',component:HomeComponent, data:{title: 'Risk Management' }

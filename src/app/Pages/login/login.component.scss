@@ -29,6 +29,7 @@ $card-shadow: rgba(0, 0, 0, 0.1);
       justify-content: center;
       background-color: #fff;
 
+
       h1 {
         font-size: 24px;
         font-weight: bold;
@@ -142,6 +143,19 @@ $card-shadow: rgba(0, 0, 0, 0.1);
         margin-top: 90px;
         border-radius: 10px;
       }
+
+    }
+    .error-container {
+      height: 15px;
+      margin-bottom:5px ;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .error-message {
+      color: #dc3545;
+      font-size: 14px;
     }
   }
 }
