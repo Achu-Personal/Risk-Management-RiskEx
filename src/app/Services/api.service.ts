@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { project } from '../Interfaces/projects.interface';
+import { UserResponse } from '../Interfaces/Userdata.interface.';
 
 @Injectable({
   providedIn: 'root'
@@ -59,9 +60,16 @@ constructor(private http:HttpClient) { }
    addNewProject(project:any){
      return this.http.post("https://localhost:7216/api/Project/Project",project)
    }
-   addNewUser(){
-    
-   }
+   addNewUser(user: any) {
+    return this.http.post<UserResponse>(
+      "https://localhost:7216/api/User/register",
+      user,
+      {
+        // Add this to handle text responses
+        responseType: 'text' as 'json'
+      }
+    );
+  }
 
    getRisk()
    {
@@ -71,7 +79,7 @@ constructor(private http:HttpClient) { }
 
    }
    getRiskResponses(){
-    
+
     return this.http.get('https://localhost:7216/api/RiskResponseData')
    }
    getLikelyHoodDefinition(){

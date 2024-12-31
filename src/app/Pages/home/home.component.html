@@ -33,8 +33,7 @@
 <div class="dashboard">
 <div class="topbuttons">
   <div class="dropdown">
-    <app-department-dropdown></app-department-dropdown>
-  </div>
+<app-department-dropdown *ngIf="authService.getUserRole() === 'Admin'"></app-department-dropdown>  </div>
   <div class="registerrisk">
     <app-button class="btn" title="Register Risk" bgColour="#4D4D4D" routerLink="/addrisk" height="38" width="147" color="white"></app-button>
   </div>
