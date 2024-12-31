@@ -1,13 +1,6 @@
 import { Component, Input } from '@angular/core';
+import { Step } from '../../Interfaces/Stepper.interface';
 
-interface Step {
-  id: number;
-  title: string;
-  isCompleted: boolean;
-  actionBy: string;
-  date: string;
-  stepNumber: string;
-}
 
 @Component({
   selector: 'app-stepper',
