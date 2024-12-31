@@ -19,7 +19,6 @@
 }
 .form-detail {
   margin-bottom: 20px;
-  width: 100%;
 }
 
 label {
@@ -43,7 +42,7 @@ input, textarea{
 
 input:focus, textarea:focus {
   outline: none;
-  border-color: #D0C6B6;
+  border-color: var(--secondary-color);
   box-shadow: 0 0 5px rgba(62, 104, 185, 0.5);
   background-color: #fff;
 }
@@ -55,7 +54,6 @@ input:focus, textarea:focus {
 
 .form-row .form-group {
   flex: 1;
-
 }
 
 .form-group {
@@ -73,40 +71,6 @@ a:hover {
   color:red;
 }
 
-
-
-// table tr td{
-//   align-items: center;
-
-// }
-
-// table{
-//   gap: 20px;
-//   margin-top: 30px;
-//   border-collapse: separate;
-//   border-spacing: 20px;
-// }
-// table tr{
-//   width: 100%;
-// }
-
-.risk-assessment-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.risk-assessment-table th,
-.risk-assessment-table td {
-  width: 25%;
-  text-align: left;
-  padding: 8px;
-  box-sizing: border-box;
-}
-
-.risk-assessment-table th {
-  font-weight: bold;
-  text-align: center;
-}
 
 
 
@@ -132,12 +96,12 @@ a:hover {
 .btn.save {
   background-color: #D0C6B6;
   color: #fff;
-  box-shadow: 0 4px 8px rgba(62, 104, 185, 0.4);
+  box-shadow: 0 3px 6px rgba(62, 104, 185, 0.4);
 }
 
 .btn.save:hover {
   background-color: #ebddc8;
-  box-shadow: 0 6px 12px rgba(62, 104, 185, 0.6);
+  box-shadow: 0 6px 10px rgba(62, 104, 185, 0.6);
 }
 
 .btn.cancel {
@@ -216,61 +180,58 @@ a:hover {
 }
 
 
-@media (max-width: 768px) {
-  .qmsForm {
-    width: 90%;
-  }
-  .qmsForm h2 {
-    font-size: 1.25rem;
-  }
-  .qmsForm .form-row {
-    flex-direction: column; /* Stack form details vertically */
-  }
-  .qmsForm input, .qmsForm textarea, .qmsForm app-dropdown {
-    width: 100%; /* Take full width of the container */
-  }
-  .qmsForm table th, .qmsForm table td {
-    font-size: 0.9rem;
-    padding: 8px;
-  }
+
+
+
+.radio-group {
+  display: flex;
+  gap: 2vw;
+  flex-wrap: nowrap;
+  // margin-left: 4vw;
+  margin-top: 2vw;
+}
+
+.radio-option {
+  display: flex;
+  align-items: center;
+  gap: 0.5vw;
+}
+input[type="radio"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 1px solid var(--secondary-color);
+  border-radius: 50%;
+  background-color:var(--primary-color);
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s ease;
+  margin-bottom: 5px;
+}
+
+input[type="radio"]:checked {
+  background-color: var(--secondary-color);
+}
+
+input[type="radio"]:checked::before {
+  content: '';
+  width: 10px;
+  height: 10px;
+  background-color: white;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+input[type="radio"]:hover {
+  box-shadow: 0 0 5px rgba(62, 104, 185, 0.5);
 }
 
 
-@media (max-width: 480px) {
-  .qmsForm h2 {
-    font-size: 1.1rem;
-  }
-  .qmsForm .form-detail, .form-group {
-    margin-bottom: 10px;
-  }
-  .qmsForm input, .qmsForm textarea, .qmsForm app-dropdown {
-    width: 100%;
-    padding: 8px;
-    font-size: 0.9rem;
-  }
-  .qmsForm table th, .qmsForm table td {
-    font-size: 0.8rem;
-    padding: 5px;
-  }
-}
 
 
-@media (max-width: 360px) {
-  .qmsForm h2 {
-    font-size: 1rem;
-  }
-  .qmsForm input, .qmsForm textarea, .qmsForm app-dropdown {
-    width: 100%;
-    padding: 6px;
-    font-size: 0.8rem;
-  }
-  .qmsForm table th, .qmsForm table td {
-    font-size: 0.7rem;
-    padding: 4px;
-  }
-  .qmsForm .button-group button {
-    width: 100%;
-    margin-bottom: 10px;
-  }
-}
+
 

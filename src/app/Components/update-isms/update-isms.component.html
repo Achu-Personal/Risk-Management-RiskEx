@@ -1,43 +1,8 @@
 <div class="qmsForm">
   <form action="">
     <div class="form-details-sub-container">
-      <h2>Risk Details</h2>
-      <div class="form-row">
-       <div class="form-detail">
-         <label for="riskName">Risk Name <span class="required">*</span></label>
-         <input type="text" id="riskName" placeholder="Enter risk name"  [ngStyle]="{'width':'100%'}" >
-       </div>
-       <div class="form-detail">
-         <label for="project">Project Name</label>
-         <app-dropdown  [options]="dropdownDataProject"
-           [displayField]="'name'"
-           [valueField]="'id'"
-           width="100">
-          </app-dropdown>
-       </div>
-     </div>
-     @if(isAdmin=='admin'){
-      <div class="form-detail">
-        <label for="department">Department Name</label>
-        <app-dropdown  [options]="dropdownDataDepartment"
-          [displayField]="'name'"
-          [valueField]="'id'"
-          width="100" id="department">
-         </app-dropdown>
-      </div>
-     }
-     <div class="form-detail">
-       <label for="impactOfRisk">Impact Of Risk <span class="required">*</span></label>
-       <textarea id="description" rows="2" placeholder="Impact of risk" (input)="autoResize($event)"></textarea>
-     </div>
-     <div class="form-detail">
-       <label for="description">Description <span class="required">*</span></label>
-       <textarea id="description" rows="2" placeholder="Enter description" (input)="autoResize($event)"></textarea>
-     </div>
-    </div>
-    <div class="form-details-sub-container">
-      <h2>Current Risk Assessment</h2>
-      <table  class="risk-assessment-table">
+      <h2>ASSESSMENT POST IMPLEMENTATION OF ACTION</h2>
+      <table>
       <tr>
         <th></th>
         <th>Likelihood <span class="required">*</span></th>
@@ -49,14 +14,14 @@
         <td><app-dropdown  [options]="dropdownDataLikelihood"
               [displayField]="'type'"
               [valueField]="'value'"
-              width="100" bottom="25px" (change)="onDropdownChange($event, 'Likelihood', 'Confidentiality')">
+              width="25" bottom="25px" (change)="onDropdownChange($event, 'Likelihood', 'Confidentiality')">
             </app-dropdown>
 
         </td>
         <td><app-dropdown  [options]="dropdownDataImpact"
               [displayField]="'type'"
               [valueField]="'value'"
-              width="100" bottom="25px" (change)="onDropdownChange($event, 'Impact', 'Confidentiality')">
+              width="25" bottom="25px" (change)="onDropdownChange($event, 'Impact', 'Confidentiality')">
             </app-dropdown>
         </td>
         <td><h2 [ngStyle]="{'border-bottom':'0px','text-transform':'none','margin-left':'5vw'}">{{confidentialityRiskFactor}}</h2></td>
@@ -67,14 +32,14 @@
         <td><app-dropdown  [options]="dropdownDataLikelihood"
               [displayField]="'type'"
               [valueField]="'value'"
-              width="100" bottom="25px" (change)="onDropdownChange($event, 'Likelihood', 'Integrity')">
+              width="25" bottom="25px" (change)="onDropdownChange($event, 'Likelihood', 'Integrity')">
             </app-dropdown>
 
         </td>
         <td><app-dropdown  [options]="dropdownDataImpact"
               [displayField]="'type'"
               [valueField]="'value'"
-              width="100" bottom="25px" (change)="onDropdownChange($event, 'Impact', 'Integrity')">
+              width="25" bottom="25px" (change)="onDropdownChange($event, 'Impact', 'Integrity')">
             </app-dropdown>
         </td>
         <td><h2 [ngStyle]="{'border-bottom':'0px','text-transform':'none','margin-left':'5vw'}">{{integrityRiskFactor}}</h2></td>
@@ -85,14 +50,14 @@
         <td><app-dropdown  [options]="dropdownDataLikelihood"
               [displayField]="'type'"
               [valueField]="'value'"
-              width="100" bottom="25px" (change)="onDropdownChange($event, 'Likelihood', 'Availability')">
+              width="25" bottom="25px" (change)="onDropdownChange($event, 'Likelihood', 'Availability')">
             </app-dropdown>
 
         </td>
         <td><app-dropdown  [options]="dropdownDataImpact"
               [displayField]="'type'"
               [valueField]="'value'"
-              width="100" bottom="25px" (change)="onDropdownChange($event, 'Impact', 'Availability')">
+              width="25" bottom="25px" (change)="onDropdownChange($event, 'Impact', 'Availability')">
             </app-dropdown>
         </td>
         <td><h2 [ngStyle]="{'border-bottom':'0px','text-transform':'none','margin-left':'5vw'}">{{availabilityRiskFactor}}</h2></td>
@@ -103,14 +68,14 @@
         <td><app-dropdown  [options]="dropdownDataLikelihood"
               [displayField]="'type'"
               [valueField]="'value'"
-              width="100" bottom="25px" (change)="onDropdownChange($event, 'Likelihood', 'Privacy')">
+              width="25" bottom="25px" (change)="onDropdownChange($event, 'Likelihood', 'Privacy')">
             </app-dropdown>
 
         </td>
         <td><app-dropdown  [options]="dropdownDataImpact"
               [displayField]="'type'"
               [valueField]="'value'"
-              width="100" bottom="25px" (change)="onDropdownChange($event, 'Impact', 'Privacy')">
+              width="25" bottom="25px" (change)="onDropdownChange($event, 'Impact', 'Privacy')">
             </app-dropdown>
         </td>
         <td><h2 [ngStyle]="{'border-bottom':'0px','text-transform':'none','margin-left':'5vw'}">{{privacyRiskFactor}}</h2></td>
@@ -124,44 +89,28 @@
        <p>For reference <span><a href="javascript:void(0);">click </a></span>here</p>
      </div>
     </div>
-    <div class="form-details-sub-container">
-      <h2>Risk Management</h2>
-      <div class="form-detail">
-        <label for="mitigation">Risk Mitigation <span class="required">*</span></label>
-        <textarea id="mitigation" rows="2" placeholder="Enter mitigation" (input)="autoResize($event)"></textarea>
+    <div class="form-details-sub-container" >
+      <h2>RISK CLOSURE</h2>
+      <div class="form-group" >
+        <label for="closeDate">Actual Close Date<span class="required">*</span></label>
+        <input type="date" id="closeDate">
       </div>
-      <div class="form-detail">
-        <label for="contingency">Risk Contingency</label>
-        <textarea id="contingency" rows="2" placeholder="Enter contingency plan" (input)="autoResize($event)"></textarea>
-      </div>
-    </div>
-    <div class="form-details-sub-container">
-      <h2>Action Plan</h2>
-      <div class="form-detail">
-        <label for="responsibility">Responsibility<span class="required">*</span></label>
-        <app-dropdown  [options]="dropdownDataReviewer"
-           [displayField]="'name'"
-           [valueField]="'email'"
-           width="100">
-        </app-dropdown>
-      </div>
-      <div [ngStyle]="{'margin-top':'20px','font-style':'italic','color':'grey'}">
-        <p>If responsible person not in the list <span (click)="isAssigneeNotInList()"><a href="javascript:void(0);">click </a></span>here</p>
-      </div>
-      @if(assigneeNotInList){
-        <div class="form-detail">
-          <label for="assignee">Responsible Person Name <span class="required">*</span></label>
-          <input type="text" id="assignee" placeholder="Enter responsible person name"  >
-        </div>
-        <div class="form-detail">
-          <label for="assignee-email">Email <span class="required">*</span></label>
-          <input type="text" id="assignee-email" placeholder="Enter email"  >
-        </div>
-
-      }
       <div class="form-group">
-        <label for="actionDate">Planned Action Date<span class="required">*</span></label>
-        <input type="date" id="actionDate">
+        <label for="response" class="form-label">Risk Response<span class="required">*</span></label>
+        <div class="radio-group">
+          @for ( response of riskResponses; track $index) {
+            <div class="radio-option">
+              <input
+                type="radio"
+                [id]="'response-' + response.id"
+                name="risk-response"
+                [value]="response.label"
+                [(ngModel)]="selectedResponse"
+              />
+              <label [for]="'response-' + response.id">{{ response.label }}</label>
+            </div>
+          }
+        </div>
       </div>
     </div>
     <div class="form-details-sub-container">
@@ -171,7 +120,7 @@
         <app-dropdown  [options]="dropdownDataReviewer"
           [displayField]="'name'"
           [valueField]="'email'"
-          width="100">
+          width="82.5">
         </app-dropdown>
       </div>
       <div [ngStyle]="{'margin-top':'20px','font-style':'italic','color':'grey'}">
@@ -194,4 +143,5 @@
     </div>
   </form>
 </div>
+
 
