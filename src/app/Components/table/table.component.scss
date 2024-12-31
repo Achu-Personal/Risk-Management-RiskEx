@@ -20,7 +20,9 @@
   // gap: 8px;
   font-size: small;
 }
-
+label{
+  font-size: small;
+}
 /* Header Section */
 .header1 {
   // margin-top: 70px;
@@ -244,7 +246,7 @@ tbody {
   background: none;
   border: none;
   cursor: pointer;
-  font-size: 16px;
+  font-size: small;
   font-weight: bold;
   padding: 5px;
   display: flex;
@@ -252,28 +254,7 @@ tbody {
 }
 
 .dropdown-button:hover {
-  color: #007bff;
-}
-
-.dropdown-options {
-  position: absolute;
-  margin-top: 5px;
-  list-style: none;
-  background-color: #fff;
-  border: 1px solid #ccc;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  z-index: 10;
-  padding: 0;
-  width: 150px;
-}
-
-.dropdown-options li {
-  padding: 8px 12px;
-  cursor: pointer;
-}
-
-.dropdown-options li:hover {
-  background-color: #f0f0f0;
+  color: #5c2f10;
 }
 
 
@@ -325,6 +306,11 @@ th:nth-child(3),
 td:nth-child(3) {
   width: 150px;
 }
+
+th:nth-child(4),
+td:nth-child(4) {
+  width: 150px;
+}
 th:nth-child(5),
 td:nth-child(5) {
   width: 150px;
@@ -337,3 +323,85 @@ th:nth-child(9),
 td:nth-child(9) {
   width: 150px;
 }
+
+
+
+
+
+/* Dropdown container */
+.dropdown-container {
+  position: relative;
+  display: inline-block;
+  font-family: 'Arial', sans-serif;
+}
+
+/* Dropdown options container */
+.dropdown-options {
+  position: absolute;
+  margin-top: 6px;
+  list-style: none;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  padding: 0;
+  width: 180px;
+  max-height: 240px;
+  overflow-y: auto;
+  border-radius: 6px; /* Softer corners for an elegant look */
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+/* Show the dropdown with smooth transition */
+.dropdown-options.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Individual list items */
+.dropdown-options li {
+  padding: 10px 14px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 400;
+  color: #444;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.dropdown-options li:hover {
+  background-color: #f7f7f7;
+  color: #222;
+}
+
+/* Add subtle scrollbar for long lists */
+.dropdown-options::-webkit-scrollbar {
+  width: 6px;
+}
+
+.dropdown-options::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 4px;
+}
+
+.dropdown-options::-webkit-scrollbar-thumb:hover {
+  background-color: #aaa;
+}
+
+/* Responsive and accessibility improvements */
+@media (max-width: 600px) {
+  .dropdown-button {
+    font-size: 13px;
+    padding: 6px 10px;
+  }
+
+  .dropdown-options {
+    width: 150px;
+  }
+
+  .dropdown-options li {
+    padding: 8px 12px;
+  }
+}
+

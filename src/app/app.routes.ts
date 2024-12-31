@@ -25,37 +25,42 @@ import { ApprovalTableComponent } from './Pages/approval-table/approval-table.co
 import { EditRiskComponent } from './Pages/edit-risk/edit-risk.component';
 import { ChangepasswordComponent } from './Components/changepassword/changepassword.component';
 import { ReferenceComponent } from './Pages/reference/reference.component';
+import { SsoComponent } from './Pages/sso/sso.component';
+import { AssignmentComponent } from './Pages/assignment/assignment.component';
+import { AuthGuard } from './Gaurd/auth.guard';
 
 
 export const routes: Routes = [
 
   {
-    path:'auth',component:AuthComponent,
-    children:[
-      {
-        path:'login',component:LoginComponent
-      }
+    path: 'auth',
+    component: AuthComponent,
+    children: [
+      { path: 'login', component: LoginComponent },
+      { path: '', redirectTo: 'login', pathMatch: 'full' }
     ]
   },
-
   {
-    path:'',component:DashboardComponent,data:{title: 'Risk Management',breadcrumb: 'Dashboard' },
+    path:'',component:DashboardComponent, canActivate: [AuthGuard], data:{title: 'Risk Management',breadcrumb: 'Dashboard' },
     children:[
       {
         path:'home',component:HomeComponent, data:{title: 'Risk Management' }
       },
       {
-        path:'ViewRisk/:id',component:ViewRiskComponent,  data: { title: 'View Risk',breadcrumb: 'View Risk' }, 
-  
+        path:'ViewRisk/:id',component:ViewRiskComponent,  data: { title: 'View Risk',breadcrumb: 'View Risk' },
+
       },
-   
-      
+
+
       // {path:"ViewRisk/:id",component:ViewRiskComponent}
       {
         path:'addrisk',component:RegisterRiskComponent,data: { title: 'Register Risk',breadcrumb: 'Register Risk' }
       },
       {
         path:'users',component:UsersComponent,data: { title: 'Manage Users and Departments' ,breadcrumb: 'User Management'},
+      },
+      {
+        path:'assignee',component:AssignmentComponent,data: { title: 'Assignments' ,breadcrumb: 'Assignments'},
       },
       {
         path:'history',component:HistoryComponent,data: { title: 'History',breadcrumb: 'History' }
@@ -82,7 +87,7 @@ export const routes: Routes = [
 
     ]
   },
-  
+
 
   {path:'sidebar',component:SidebarComponent},
 
@@ -95,6 +100,10 @@ export const routes: Routes = [
   {
     path:"changepassword",component:ChangepasswordComponent
   },
+  {
+    path:"sso",component:SsoComponent
+  },
+
 
 
   {

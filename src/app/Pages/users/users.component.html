@@ -1,12 +1,12 @@
 <!-- <app-body-container backgroundColor="#ece4d7"> -->
-<app-body-container>
+<app-body-container backgroundColor="transparent" [showShadow]="false">
 <!------- buttons ------->
 
 <div class="button-container">
   <app-style-button
   label="Add User"
   color="primary"
-  data-bs-toggle="modal" 
+  data-bs-toggle="modal"
   data-bs-target="#addUserModal">
  </app-style-button>
 
@@ -15,6 +15,7 @@
   color="primary"
   data-bs-toggle="modal"
   data-bs-target="#addDepartmentModal"
+  *ngIf="authService.getUserRole() === 'Admin'"
  ></app-style-button>
 
   <app-style-button
@@ -43,7 +44,7 @@
               <label for="name" class="form-label">
                 Name <span class="text-danger">*</span>
               </label>
-              <input type="text" class="form-control" id="name" placeholder="Enter Name" formControlName="name" />
+              <input type="text" class="form-control" id="name" placeholder="Enter Name" formControlName="fullName" />
               @if (userForm.get('name')?.invalid && userForm.get('name')?.touched)
               {
               <div class="text-danger"> Name is required. </div>
@@ -75,9 +76,18 @@
               <label for="department" class="form-label">
                 Department <span class="text-danger">*</span>
               </label>
-              <app-drop-down-deparment
-                formControlName="department"
+              <app-drop-down-deparment  *ngIf="authService.getUserRole() === 'Admin'"
+                formControlName="departmentName"
               ></app-drop-down-deparment>
+              <div *ngIf="authService.getUserRole() === 'DepartmentUser'">
+                <input
+                  class="form-control"
+                  id="department"
+                  type="text"
+                  formControlName="departmentName"
+                  [value]="authService.getDepartmentName()"
+                />
+              </div>
               @if (userForm.get('department')?.invalid && userForm.get('department')?.touched) {
                 <div class="text-danger">
                   Department is required.
@@ -88,8 +98,8 @@
             <div class="mb-3">
               <label for="projectName" class="form-label">Project</label>
               <app-project-drop-down
-                [departmentName]="userForm.get('department')?.value"
-                formControlName="projectName"
+                [departmentName]="userForm.get('departmentName')?.value"
+                formControlName="projectNames"
                 (selectedProjectsChange)="onProjectsSelected($event)"
               ></app-project-drop-down>
             </div>
@@ -125,7 +135,7 @@
                 Department Name <span class="text-danger">*</span>
               </label>
               <input type="text" class="form-control" id="departmentName" placeholder="Enter Department Name"
-                formControlName="departmentName" />
+                formControlName="name" />
               @if (departmentForm.get('departmentName')?.invalid && departmentForm.get('departmentName')?.touched)
               {
               <div class="text-danger">Department name is required.</div>
@@ -175,9 +185,18 @@
             <label for="department" class="form-label">
               Department <span class="text-danger">*</span>
             </label>
-            <app-drop-down-deparment
-              formControlName="departmentName"
-            ></app-drop-down-deparment>
+            <app-drop-down-deparment  *ngIf="authService.getUserRole() === 'Admin'"
+                formControlName="departmentName"
+              ></app-drop-down-deparment>
+              <div *ngIf="authService.getUserRole() === 'DepartmentUser'">
+                <input
+                  class="form-control"
+                  id="department"
+                  type="text"
+                  formControlName="departmentName"
+                  [value]="authService.getDepartmentName()"
+                />
+              </div>
             @if (userForm.get('department')?.invalid && userForm.get('department')?.touched) {
               <div class="text-danger">
                 Department is required.
