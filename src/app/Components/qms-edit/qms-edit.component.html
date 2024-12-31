@@ -1,4 +1,4 @@
-<div class="container">
+<!-- <div class="container">
   <div class="form">
     <form  [formGroup]="qmsForm" (ngSubmit)="onsubmit()">
       <div class="field" id="editableDiv">
@@ -67,7 +67,6 @@
           </div>
 
         </div>
-        <!-- <app-textarea label="Responsibility Of Action" isRequired="*" formControlName="responsibilityOfAction"></app-textarea> -->
         <app-textarea label="Responsibility Of Action"  marginLeft="10" formControlName="responsibilityOfAction"></app-textarea>
 
         <div class="reviewer">
@@ -127,4 +126,67 @@
       </div>
     </form>
   </div>
+</div> -->
+
+
+<div class="content">
+  <form action="">
+    <div class="form-details-sub-container">
+      <h2>Risk Details
+        <button (click)="toggleEdit('isEditableDetails')" class="icon-btn">
+         <i [ngClass]="editableFields['isEditableDetails'] ? 'fas fa-save' : 'fas fa-pen'"[title]="editableFields['isEditableDetails'] ? 'Save changes' : 'Edit details'"></i>
+        </button>
+      </h2>
+      <div class="form-row">
+        <div class="form-detail">
+          <label for="riskName">Risk Name</label>
+          <input type="text" readonly [ngStyle]="{'width': '35vw'}">
+        </div>
+        <div class="form-detail">
+          <label for="Project">Project Name</label>
+          <input type="text" readonly [ngStyle]="{'width': '35vw'}">
+        </div>
+      </div>
+      <div class="form-detail">
+        <label for="description">Risk Description</label>
+        <textarea id="description" rows="2" placeholder="Enter description" (input)="autoResize($event)" [readonly]="!editableFields['isEditableDetails']"></textarea>
+      </div>
+      <div class="form-detail">
+        <label for="impact">Impact Of Risk</label>
+        <textarea id="impact" rows="2" placeholder="Enter impact" (input)="autoResize($event)" [readonly]="!editableFields['isEditableDetails']"></textarea>
+      </div>
+    </div>
+    <div class="form-details-sub-container">
+      <h2>Current Risk Assessment</h2>
+
+
+    </div>
+
+    <div class="form-details-sub-container">
+      <h2>Risk Management
+        <button (click)="toggleEdit('isEditableManagement')" class="icon-btn">
+          <i [ngClass]="editableFields['isEditableManagement'] ? 'fas fa-save' : 'fas fa-pen'"[title]="editableFields['isEditableManagement'] ? 'Save changes' : 'Edit details'"></i>
+         </button>
+      </h2>
+      <div class="form-detail">
+        <label for="mitigation">Risk Mitigation <span class="required">*</span></label>
+        <textarea id="mitigation" rows="2" placeholder="Enter mitigation" (input)="autoResize($event)" [readonly]="!editableFields['isEditableManagement']"></textarea>
+      </div>
+      <div class="form-detail">
+        <label for="contingency">Risk Contingency</label>
+        <textarea id="contingency" rows="2" placeholder="Enter contingency plan" (input)="autoResize($event)" [readonly]="!editableFields['isEditableManagement']"></textarea>
+      </div>
+
+    </div>
+    <div class="form-details-sub-container">
+      <h2>Action Plan</h2>
+
+    </div>
+    <div class="form-details-sub-container">
+      <h2>Reviewer</h2>
+
+    </div>
+
+
+  </form>
 </div>

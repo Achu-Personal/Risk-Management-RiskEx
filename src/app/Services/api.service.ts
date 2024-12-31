@@ -93,4 +93,10 @@ constructor(private http:HttpClient) { }
    getImpactDefinition(){
     return this.http.get('https://localhost:7216/api/AssessmentMatrixImpact')
    }
+
+   addnewQualityRisk(qualityRisk:any){
+    return this.http.get('https://localhost:7216/api/Risk/Quality',qualityRisk)
+   }
+
+
  }
