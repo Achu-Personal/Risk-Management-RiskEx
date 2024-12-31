@@ -1,4 +1,4 @@
-import { Component, forwardRef, OnInit } from '@angular/core';
+import { Component, forwardRef, OnInit, ElementRef, HostListener } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { department } from '../../Interfaces/deparments.interface';
 import { ApiService } from '../../Services/api.service';
@@ -7,7 +7,7 @@ import { NgFor, NgIf } from '@angular/common';
 @Component({
   selector: 'app-drop-down-deparment',
   standalone: true,
-  imports: [NgIf,NgFor],
+  imports: [NgIf, NgFor],
   templateUrl: './drop-down-deparment.component.html',
   styleUrl: './drop-down-deparment.component.scss',
   providers: [
@@ -27,31 +27,42 @@ export class DropDownDeparmentComponent implements OnInit, ControlValueAccessor 
   private onChange: (value: string) => void = () => {};
   private onTouched: () => void = () => {};
 
-  constructor(private api: ApiService) {}
+  constructor(
+    private api: ApiService,
+    private elementRef: ElementRef
+  ) {}
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent) {
+    if (!this.elementRef.nativeElement.contains(event.target)) {
+      this.dropdownOpen = false;
+    }
+  }
 
   ngOnInit() {
     this.loadDepartments();
   }
 
   loadDepartments() {
-    this.api.getDepartment().subscribe(
-      (response) => {
+    this.api.getDepartment().subscribe({
+      next: (response) => {
         this.departments = response;
         console.log('Departments fetched successfully:', this.departments);
       },
-      (error) => {
+      error: (error) => {
         console.error('Failed to fetch departments', error);
         this.departments = [];
       }
-    );
+    });
   }
 
-  onSelectionChange(event: Event) {
-    const target = event.target as HTMLSelectElement;
-    this.selectedDepartment = target.value;
-    this.onChange(this.selectedDepartment);
-    this.onTouched();
-    this.dropdownOpen = false;
+  selectDepartment(departmentName: string) {
+    if (!this.disabled) {
+      this.selectedDepartment = departmentName;
+      this.onChange(this.selectedDepartment);
+      this.onTouched();
+      this.dropdownOpen = false;
+    }
   }
 
   toggleDropdown() {
@@ -76,7 +87,7 @@ export class DropDownDeparmentComponent implements OnInit, ControlValueAccessor 
     this.disabled = isDisabled;
   }
 
-  trackByFn(index: number, item: any): any {
+  trackByFn(index: number, item: department): number {
     return item.id;
   }
 }
