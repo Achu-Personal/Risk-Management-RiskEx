@@ -105,6 +105,7 @@ export const routes: Routes = [
   },
 
 
+
   {
 
     path:'**',component:WildComponentComponent
