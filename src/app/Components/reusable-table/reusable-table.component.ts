@@ -1,5 +1,5 @@
 import { SlicePipe } from '@angular/common';
-import { Component, Input, output } from '@angular/core';
+import { Component, Input, output, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common'; // Import CommonModule
 import { FormsModule } from '@angular/forms';
 
@@ -43,6 +43,7 @@ approveButton(event:Event,row:any) {
   @Input() IsUser:boolean= false;
   @Input() height:any='70%';
   @Input() IsAssignee:boolean = false;
+  @Input() headerDisplayMap:any=this.tableHeaders;
   isEyeOpen = false;
 
   // SVG paths for eye states
@@ -61,6 +62,10 @@ approveButton(event:Event,row:any) {
 
     this.onclickrow.emit(row);
     }
-      
+    ngOnChanges(changes: SimpleChanges): void {
+      console.log('Table Headers:', this.tableHeaders);
+      console.log('Table Data:', this.tableData);
+    }
+    
 
 }

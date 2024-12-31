@@ -77,4 +77,7 @@ constructor(private http:HttpClient) { }
    getImpactDefinition(){
     return this.http.get('https://localhost:7216/api/AssessmentMatrixImpact')
    }
+   getRisksByReviewerId(){
+    return this.http.get('https://localhost:7216/api/Risk/reviewer?userId=1')
+   }
  }

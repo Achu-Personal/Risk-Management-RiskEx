@@ -5,143 +5,70 @@ import { ReusableTableComponent } from "../../Components/reusable-table/reusable
 import { Router, RouterOutlet } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../../Components/confirm-dialog/confirm-dialog.component';
+import { ApiService } from '../../Services/api.service';
 
 
 @Component({
   selector: 'app-approval-table',
   standalone: true,
-  imports: [BodyContainerComponent, ReusableTableComponent, RouterOutlet],
+  imports: [BodyContainerComponent, ReusableTableComponent],
   templateUrl: './approval-table.component.html',
   styleUrl: './approval-table.component.scss'
 })
 export class ApprovalTableComponent {
 
   
-headerData:any=[
-  "SI NO"," Risk Id","Risk","Description","End Date","Type","CRR","Status",
+headerData:any=['riskId', 'riskName', 'description', 'riskType', 'plannedActionDate', 'overallRiskRating', 'riskStatus'];
+//"SI NO",
+headerDisplayMap: { [key: string]: string } = {
+  riskId: 'Risk ID',
+  riskName: 'Risk Name',
+  description: 'Description',
+  riskType: 'Risk Type',
+  plannedActionDate: 'Planned Action Date',
+  overallRiskRating: 'Overall Risk Rating',
+  riskStatus: 'Risk Status',
+};
+
+tableBody:any[]=[
+  {
+
+    riskId: '',
+    riskName: '',
+    description: '',
+    riskType: '',
+    plannedActionDate: Date,
+
+        overallRiskRating: 0,
+        riskStatus: ''
+        
+      },
 ];
-
-tableBody:approvalTableBody[]=[
-  {
-    SINo: 1,
-    RiskId: 'R001',
-    Risk: 'Inside Threat',
-    Description: 'Potential unauthorized access to sensitive data.',
-    EndDate: new Date('2024-12-31'),
-    Type: 'Cybersecurity',
-    CurrentRating: 8,
-    Status: 'Pending'
-    
-  },
-  {
-    SINo: 2,
-    RiskId: 'R002',
-    Risk: 'Third Party Vendor Breach',
-    Description: 'Critical application unavailability due to server failure.',
-    EndDate: new Date('2024-11-30'),
-    Type: 'Operational',
-    CurrentRating: 7,
-    Status: 'Pending'
-    
-  },
-  {
-    SINo: 3,
-    RiskId: 'R003',
-    Risk: 'Regulatory Compliance',
-    Description: 'Non-compliance with new tax regulations.',
-    EndDate: new Date('2024-10-15'),
-    Type: 'Legal',
-    CurrentRating: 5,
-    Status: 'Pending'
-    
-  },
-  {
-    SINo: 4,
-    RiskId: 'R004',
-    Risk: 'Vendor Dependency',
-    Description: 'Over-reliance on a single vendor for critical operations.',
-    EndDate: new Date('2024-09-01'),
-    Type: 'Strategic',
-    CurrentRating: 6,
-    Status: 'Pending'
-    
-  },
-  {
-    SINo: 5,
-    RiskId: 'R005',
-    Risk: 'Market Fluctuations',
-    Description: 'Adverse impact on revenue due to market changes.',
-    EndDate: new Date('2024-12-15'),
-    Type: 'Financial',
-    CurrentRating: 4,
-    Status: 'Pending'
-  },
-  {
-    SINo: 1,
-    RiskId: 'R001',
-    Risk: 'Inside Threat',
-    Description: 'Potential unauthorized access to sensitive data.',
-    EndDate: new Date('2024-12-31'),
-    Type: 'Cybersecurity',
-    CurrentRating: 8,
-    Status: 'Pending'
-    
-  },
-  {
-    SINo: 2,
-    RiskId: 'R002',
-    Risk: 'Third Party Vendor Breach',
-    Description: 'Critical application unavailability due to server failure.',
-    EndDate: new Date('2024-11-30'),
-    Type: 'Operational',
-    CurrentRating: 7,
-    Status: 'Pending'
-    
-  },
-  {
-    SINo: 3,
-    RiskId: 'R003',
-    Risk: 'Regulatory Compliance',
-    Description: 'Non-compliance with new tax regulations.',
-    EndDate: new Date('2024-10-15'),
-    Type: 'Legal',
-    CurrentRating: 5,
-    Status: 'Pending'
-    
-  },
-  {
-    SINo: 4,
-    RiskId: 'R004',
-    Risk: 'Vendor Dependency',
-    Description: 'Over-reliance on a single vendor for critical operations.',
-    EndDate: new Date('2024-09-01'),
-    Type: 'Strategic',
-    CurrentRating: 6,
-    Status: 'Pending'
-    
-  },
-  {
-    SINo: 5,
-    RiskId: 'R005',
-    Risk: 'Market Fluctuations',
-    Description: 'Adverse impact on revenue due to market changes.',
-    EndDate: new Date('2024-12-15'),
-    Type: 'Financial',
-    CurrentRating: 4,
-    Status: 'Pending'
-  }
-];
-
-
 
   commentForm: any;
   isButtonClicked:boolean = false;
   cancelMessage: string = "";
   approveMessage: string = "";
 
-  constructor( private dialog: MatDialog,private router: Router) {}
+  constructor( private dialog: MatDialog,private router: Router,private api:ApiService) {}
 
 
+  ngOnInit(): void {
+    this.api.getRisksByReviewerId().subscribe((response: any) => {
+      console.log('API Response:', response);
+  
+      // Ensure `response` is an array
+      if (Array.isArray(response)) {
+        this.tableBody = response;
+      } else {
+        console.error('Expected an array but got:', response);
+        this.tableBody = []; // Default to an empty array if the response is not valid
+      }
+  
+      console.log('tableBody:', this.tableBody);
+    });
+  }
+  
   OnClickRow(rowData:any): void {
     this.router.navigate([`/approvals/${rowData.RiskId}`]);
     console.log("rowdata",rowData);

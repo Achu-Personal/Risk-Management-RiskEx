@@ -1,208 +1,212 @@
-<div class="table-container" [ngStyle]="{'height':height}">
-<div class="tablestyle">
-  <table class="tabledata">
-    <thead>
-      <tr class="bord">
-        @for(header of tableHeaders; track header){
-        <th>{{ header }}</th>
+<div class="table-container" [ngStyle]="{ height: height }">
+  <div class="tablestyle">
+    <table class="tabledata">
+      <thead>
+        <tr class="bord">
+          @for(header of tableHeaders; track header){
+          <th>{{ headerDisplayMap[header] || header }}</th>
 
-        } @if(IsActionRequiered){
-          @if(!IsUser){
-        <th>Actions</th>}
-        @else {
+          } @if(IsActionRequiered){ @if(!IsUser){
+          <th>Actions</th>
+          } @else {
           <th>Status</th>
-        }
-        }
-      </tr>
-    </thead>
-    <tbody>
-      @for(row of tableData ; track row){
-      <tr (click)="rowClick(row)">
-        @for(key of rowKeys; track key ){
-        <td [title]="row[key]">
-          {{ row[key]?.toString() | slice : 0 : 20
-          }}{{ row[key]?.length > 12 ? "..." : "" }}
-        </td>
-        } @if(IsActionRequiered){ @if(!IsUser && !IsAssignee){
-        <td class="icon-display">
-          <div
-            class="icon approve"
-            title="Approve"
-            (click)="approveButton($event,row)"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-              <circle
-                cx="12"
-                cy="12"
-                r="10"
-                stroke="#976c26"
-                stroke-width="2"
-                fill="none"
-              />
-              <path
-                d="M8 12l3 3 5-5"
-                stroke="#976c26"
-                stroke-width="2"
-                fill="none"
-              />
-            </svg>
-          </div>
+          } }
+        </tr>
+      </thead>
+      <tbody>
+        @for(row of tableData ; track row){
+        <tr (click)="rowClick(row)">
+          @for(key of rowKeys; track key ){
+          <td [title]="row[key]">
+            {{ row[key]?.toString() | slice : 0 : 20
+            }}{{ row[key]?.length > 12 ? "..." : "" }}
+          </td>
+          } @if(IsActionRequiered){ @if(!IsUser && !IsAssignee){
+          <td class="icon-display">
+            <div
+              class="icon approve"
+              title="Approve"
+              (click)="approveButton($event, row)"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <circle
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="#976c26"
+                  stroke-width="2"
+                  fill="none"
+                />
+                <path
+                  d="M8 12l3 3 5-5"
+                  stroke="#976c26"
+                  stroke-width="2"
+                  fill="none"
+                />
+              </svg>
+            </div>
 
-          <!-- Reject Icon -->
-          <div
-            class="icon reject"
-            title="reject"
-            (click)="rejectButton($event,row)"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-              <circle
-                cx="12"
-                cy="12"
-                r="10"
-                stroke="#976c26"
-                stroke-width="2"
-                fill="none"
-              />
-              <path
-                d="M8 8l8 8m0-8l-8 8"
-                stroke="#976c26"
-                stroke-width="2"
-                fill="none"
-              />
-            </svg>
-          </div>
-        </td>
+            <!-- Reject Icon -->
+            <div
+              class="icon reject"
+              title="reject"
+              (click)="rejectButton($event, row)"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <circle
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="#976c26"
+                  stroke-width="2"
+                  fill="none"
+                />
+                <path
+                  d="M8 8l8 8m0-8l-8 8"
+                  stroke="#976c26"
+                  stroke-width="2"
+                  fill="none"
+                />
+              </svg>
+            </div>
+          </td>
 
-        } @else if(IsUser) {
+          } @else if(IsUser) {
           <td>
-        <div class="toggle-container">
-          <!-- Display toggle state -->
-          <div 
-          class="toggle-background"
-          [ngClass]="row.toggleState ? 'green-background' : 'red-background'">
-           <p>{{ row.toggleState ? "Active" : "Inactive" }}</p>
-        </div>
-          <!-- Toggle Switch -->
-          <label class="switch">
-            <input type="checkbox" [(ngModel)]="row.toggleState" />
-            <span class="slider"></span>
-          </label>
-
-          
-          
-        </div></td>
-        }
-        @else if(IsAssignee){
+            <div class="toggle-container">
+              <!-- Display toggle state -->
+              <div
+                class="toggle-background"
+                [ngClass]="
+                  row.toggleState ? 'green-background' : 'red-background'
+                "
+              >
+                <p>{{ row.toggleState ? "Active" : "Inactive" }}</p>
+              </div>
+              <!-- Toggle Switch -->
+              <label class="switch">
+                <input type="checkbox" [(ngModel)]="row.toggleState" />
+                <span class="slider"></span>
+              </label>
+            </div>
+          </td>
+          } @else if(IsAssignee){
           <td>
-          <button class="eye-button" 
-          (click)="rowClick(row)"
-          (mouseenter)="row.isEyeOpen = true" 
-          (mouseleave)="row.isEyeOpen = false">
-    <svg 
-      xmlns="http://www.w3.org/2000/svg" 
-      width="28" height="28" 
-      viewBox="0 0 24 24" 
-      class="eye-icon"
-    >
-      <!-- Eye Outline -->
-      <path 
-        [attr.d]="row.isEyeOpen ? 
-          'M12 4.5c-5.5 0-10 4-11.5 6.5 1.5 2.5 6 6.5 11.5 6.5s10-4 11.5-6.5c-1.5-2.5-6-6.5-11.5-6.5z' : 
-          'M12 4.5c-5.5 0-10 4-11.5 6.5 0 0 0 0 0 0m23 0c-1.5-2.5-6-6.5-11.5-6.5'"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        class="eye-outline"
-      />
-  
-      <!-- Eyelashes (Top) -->
-      <path 
-        d="M5 6 Q6 3 7 6" 
-        fill="none" 
-        stroke="currentColor" 
-        stroke-width="1.5" 
-        stroke-linecap="round"
-      />
-      <path 
-        d="M9 5 Q10 2.5 11 5" 
-        fill="none" 
-        stroke="currentColor" 
-        stroke-width="1.5" 
-        stroke-linecap="round"
-      />
-      <path 
-        d="M13 5 Q14 2.5 15 5" 
-        fill="none" 
-        stroke="currentColor" 
-        stroke-width="1.5" 
-        stroke-linecap="round"
-      />
-      <path 
-        d="M17 6 Q18 3 19 6" 
-        fill="none" 
-        stroke="currentColor" 
-        stroke-width="1.5" 
-        stroke-linecap="round"
-      />
-  
-      <!-- Eyelid -->
-      <path 
-        [attr.d]="row.isEyeOpen ? 
-          'M12 4.5c-3.5 0-6.5 3-6.5 6.5s3 6.5 6.5 6.5 6.5-3 6.5-6.5-3-6.5-6.5-6.5z' :
-          'M4.5 11.5c4 6.5 11.5 6.5 15.5 0'"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="1.8"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      />
-  
-      <!-- Iris and Pupil (Only when open) -->
-      <g *ngIf="row.isEyeOpen" class="iris-group">
-        <circle 
-          cx="12" 
-          cy="12" 
-          r="3.5" 
-          fill="none" 
-          stroke="currentColor" 
-          stroke-width="1.5" 
-          class="iris"
-        />
-        <circle 
-          cx="12" 
-          cy="12" 
-          r="1.5" 
-          fill="currentColor" 
-          class="pupil"
-        />
-        <circle 
-          cx="13.5" 
-          cy="11.5" 
-          r="0.5" 
-          fill="#ffffff" 
-          class="eye-shine"
-        />
-      </g>
-    </svg>
-  </button>
-</td>
-  
-        }
-       }
-      </tr>
-      }
+            <button
+              class="eye-button"
+              (click)="rowClick(row)"
+              (mouseenter)="row.isEyeOpen = true"
+              (mouseleave)="row.isEyeOpen = false"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="28"
+                height="28"
+                viewBox="0 0 24 24"
+                class="eye-icon"
+              >
+                <!-- Eye Outline -->
+                <path
+                  [attr.d]="
+                    row.isEyeOpen
+                      ? 'M12 4.5c-5.5 0-10 4-11.5 6.5 1.5 2.5 6 6.5 11.5 6.5s10-4 11.5-6.5c-1.5-2.5-6-6.5-11.5-6.5z'
+                      : 'M12 4.5c-5.5 0-10 4-11.5 6.5 0 0 0 0 0 0m23 0c-1.5-2.5-6-6.5-11.5-6.5'
+                  "
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="eye-outline"
+                />
 
-      <tr>
-        @if(!tableData || tableData.length===0){
+                <!-- Eyelashes (Top) -->
+                <path
+                  d="M5 6 Q6 3 7 6"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                />
+                <path
+                  d="M9 5 Q10 2.5 11 5"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                />
+                <path
+                  d="M13 5 Q14 2.5 15 5"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                />
+                <path
+                  d="M17 6 Q18 3 19 6"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                />
 
-        <td [attr.colspan]="tableHeaders.length" class="text-center">
-          No data available
-        </td>
+                <!-- Eyelid -->
+                <path
+                  [attr.d]="
+                    row.isEyeOpen
+                      ? 'M12 4.5c-3.5 0-6.5 3-6.5 6.5s3 6.5 6.5 6.5 6.5-3 6.5-6.5-3-6.5-6.5-6.5z'
+                      : 'M4.5 11.5c4 6.5 11.5 6.5 15.5 0'
+                  "
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+
+                <!-- Iris and Pupil (Only when open) -->
+                <g *ngIf="row.isEyeOpen" class="iris-group">
+                  <circle
+                    cx="12"
+                    cy="12"
+                    r="3.5"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    class="iris"
+                  />
+                  <circle
+                    cx="12"
+                    cy="12"
+                    r="1.5"
+                    fill="currentColor"
+                    class="pupil"
+                  />
+                  <circle
+                    cx="13.5"
+                    cy="11.5"
+                    r="0.5"
+                    fill="#ffffff"
+                    class="eye-shine"
+                  />
+                </g>
+              </svg>
+            </button>
+          </td>
+
+          } }
+        </tr>
         }
-      </tr>
-    </tbody>
-  </table>
-</div>
+
+        <tr>
+          @if(!tableData || tableData.length===0){
+
+          <td [attr.colspan]="tableHeaders.length" class="text-center">
+            No data available
+          </td>
+          }
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
