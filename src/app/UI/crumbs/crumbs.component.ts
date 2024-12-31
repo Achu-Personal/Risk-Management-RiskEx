@@ -28,7 +28,7 @@ import { filter } from 'rxjs';
         });
     }
   
-    private createBreadcrumbs(route: ActivatedRoute, url: string = '', breadcrumbs: any = []): any {
+    public createBreadcrumbs(route: ActivatedRoute, url: string = '', breadcrumbs: any = []): any {
       const children: ActivatedRoute[] = route.children;
   
       if (children.length === 0) {

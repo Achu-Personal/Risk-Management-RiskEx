@@ -1,13 +1,13 @@
 /* Dropdown Box */
 .dropdown-box {
   padding: 10px;
-  border: 1px solid #3E68B9;
-  border-radius: 10px;
+  border: 1px solid #a9a9a9;
+  border-radius: 40px;
   cursor: pointer;
   display: inline-block;
   position: relative;
-  min-width: 250px;
-  font-size: 16px;
+  min-width: 255px;
+  font-size: 14px;
   color: rgb(39, 39, 39);
   display: flex;
   justify-content: space-between;
@@ -16,6 +16,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  height: 40px;
 }
 
 /* Dropdown Arrow */

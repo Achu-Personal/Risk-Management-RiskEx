@@ -1,42 +1,59 @@
-<app-user-dropdown></app-user-dropdown>
 <div class="login-container">
   <div class="login-card">
-<div class="left">
-  <div class="left-section">
-    <h1>RiskEx</h1>
-    <h2>Login with RiskEx</h2>
-    <p class="tagline">IF There Is Risk, We are There</p>
-    <form>
-      <div class="form-group">
-        <label for="username">User name</label>
-        <input type="text" id="username" placeholder="User name" />
+    <div class="left">
+      <div class="left-section">
+        <h1>RiskEx</h1>
+        <h2>Login with RiskEx</h2>
+        <p class="tagline">If There Is Risk, We are There</p>
+
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+          <div class="form-group">
+            <label for="login-email">User Mail</label>
+            <input
+              type="text"
+              id="login-email"
+              placeholder="User name"
+              formControlName="email"
+              (focus)="clearError()"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="login-password">Enter your Password</label>
+            <div class="password-input">
+              <input
+                type="password"
+                id="login-password"
+                placeholder="Type your password here"
+                formControlName="password"
+                (focus)="clearError()"
+              />
+            </div>
+          </div>
+
+          <div class="options">
+            <a routerLink="/forgetpassword">Forgot Password?</a>
+          </div>
+
+          <!-- Error message container with fixed height -->
+          <div class="error-container">
+            <span class="error-message" *ngIf="showError">
+              Invalid UserMail Or Password
+            </span>
+          </div>
+
+          <button type="submit" class="login-button">Log In</button>
+        </form>
       </div>
-      <div class="form-group">
-        <label for="password">Enter your Password</label>
-        <div class="password-input">
+    </div>
 
-          <input  type="password"   id="password"   placeholder="Type your password here"  />
-
-        </div>
-      </div>
-      <div class="options">
-
-        <a href="/forgetpassword">Forgot Password?</a>
-      </div>
-      <button type="submit" (click)="navigateToLogin()" class="login-button">Log In</button>
-    </form>
-  </div>
-
-</div>
-    <div class="right" >
-      <div class="right-section" >
-        <img src="/Images/logg.jpg" alt="">
+    <div class="right">
+      <div class="right-section">
+        <img src="/Images/logg.jpg" alt="Login illustration">
       </div>
       <div class="bottom">
-        <img src="/Images/logo.png" alt="">
+        <img src="/Images/logo.png" alt="Company logo">
       </div>
     </div>
   </div>
 </div>
-
-

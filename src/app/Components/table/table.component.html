@@ -23,11 +23,12 @@
           <!-- <th>Risk ID</th> -->
           <th>Risk Name</th>
           <th>
-            <button class="dropdown-button" (click)="toggleDropdown()">
+            <div class="dropdown-container">
+            <button class="dropdown-button" (click)="toggleDepartmentDropdown()">
               Department &#9662;
             </button>
-            @if(isDropdownOpen){
-            <ul class="dropdown-options">
+            @if(isDepartmentDropdownOpen ){
+            <ul [class.open]="isDepartmentDropdownOpen" class="dropdown-options">
 
               @for(department of uniqueDepartments;track department){
               <li
@@ -38,8 +39,27 @@
               <li (click)="onDepartmentSelect('')">All Departments</li>
             </ul>
             }
+          </div>
           </th>
-          <th>Type</th>
+          <th>
+            <div class="dropdown-container">
+            <button class="dropdown-button" (click)="toggleTypeDropdown()">
+              Risk Type &#9662;
+            </button>
+            @if(isTypeDropdownOpen ){
+            <ul [class.open]="isTypeDropdownOpen"  class="dropdown-options">
+
+              @for(type of uniqueRiskTypes;track type){
+              <li
+                (click)="onTypeSelect(type)">
+                {{ type }}
+              </li>
+            }
+              <li (click)="onTypeSelect('')">All Risk Types</li>
+            </ul>
+            }
+          </div>
+          </th>
           <th>End Date</th>
           <th>CRR</th>
           <th>Assignee</th>
