@@ -98,5 +98,12 @@ constructor(private http:HttpClient) { }
     return this.http.get('https://localhost:7216/api/Risk/Quality',qualityRisk)
    }
 
+   getRisksAssignedToUser(id:any='')
+   {
+
+
+    return this.http.get(`https://localhost:7216/api/Risk/GetRiskByAssigne/${id}`)
+   }
+
 
  }
