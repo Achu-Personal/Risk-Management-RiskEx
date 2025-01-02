@@ -52,7 +52,8 @@ constructor(private http:HttpClient) { }
    }
 
    gettabledata(){
-     return this.http.get(`data/tabledata.json`)
+    //  return this.http.get(`data/tabledata.json`)
+    return this.http.get(`https://localhost:7216/api/Report`)
    }
    getFilteredData(department: any) {
      return this.http.get(`data/tabledata.json`).pipe(
