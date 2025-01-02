@@ -9,6 +9,8 @@ import { NavigationEnd, Router, RouterLink } from '@angular/router';
   styleUrl: './sidebar.component.scss'
 })
 export class SidebarComponent {
+
+  showThemeOverlay=false;
   menuItems = [
     { id: 1, label: 'Dashboard', icon: 'fa-solid fa-house', route: '/home', active: false },
     {id: 7, label: "Assignments", icon: "fa-solid fa-tasks", route: "/assignee",active: false},
@@ -47,13 +49,17 @@ export class SidebarComponent {
     document.body.className = theme; // Apply the theme class to <body>
   }
 
-  onMouseOverOFLogo()
+  onMouseClick()
   {
+
+      if(this.showThemeOverlay)
       document.getElementById("header-options-overlay")!.style.display="block"
-  }
-  onMouseOverOFLeave()
-  {
+      else
       document.getElementById("header-options-overlay")!.style.display="none"
+      this.showThemeOverlay=!this.showThemeOverlay
+
+
+
   }
 
 }
