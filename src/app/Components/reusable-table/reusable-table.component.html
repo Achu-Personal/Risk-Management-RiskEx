@@ -4,9 +4,9 @@
       <thead>
         <tr class="bord">
           @for(header of tableHeaders; track header){
-          <th>{{ headerDisplayMap[header] || header }}</th>
+          <th title="{{ header === 'overallRiskRating' ? 'Current Risk Rating' : headerDisplayMap[header] || header }}"> {{ headerDisplayMap[header] || header }}</th>
 
-          } @if(IsActionRequiered){ @if(!IsUser){
+          } @if(IsActionRequiered && !isAdmin){ @if(!IsUser){
           <th>Actions</th>
           } @else {
           <th>Status</th>
@@ -18,12 +18,34 @@
         <tr (click)="rowClick(row)">
           @for(key of rowKeys; track key ){
           <td [title]="row[key]">
-            {{ row[key]?.toString() | slice : 0 : 20
-            }}{{ row[key]?.length > 12 ? "..." : "" }}
+            <ng-container *ngIf="key === 'overallRiskRating'">
+              <div [ngClass]="getRiskRatingStyle(row[key])">
+                {{ row[key] }}
+              </div>
+            </ng-container>
+
+            <ng-container *ngIf="key === 'riskType'">
+               {{ getRiskType(row[key]) }}
+             
+            </ng-container>
+            <ng-container *ngIf="key === 'riskStatus'">
+              <span [ngClass]="getRiskStatusClass(row[key])">
+                {{ getRiskStatus(row[key]) }}
+              </span>
+              
+            </ng-container>
+            @if(key!=='riskType' && key !== 'riskStatus' && key !=='overallRiskRating') {
+              <ng-container>
+                {{formatDate(row[key]) | slice : 0 : 30
+            }}{{ row[key]?.toString.length > 30 ? "..." : "" }}
+              </ng-container>
+            }
+            <!-- {{formatDate(row[key]) | slice : 0 : 30
+            }}{{ row[key]?.toString.length > 30 ? "..." : "" }} -->
           </td>
-          } @if(IsActionRequiered){ @if(!IsUser && !IsAssignee){
-          <td class="icon-display">
-            <div
+          } @if(IsActionRequiered && !isAdmin){ @if(!IsUser && !IsAssignee){
+          <td >
+            <div class="icon-display"
               class="icon approve"
               title="Approve"
               (click)="approveButton($event, row)"
@@ -210,3 +232,23 @@
     </table>
   </div>
 </div>
+
+
+<app-confirmation-popup
+  [isOpen]="showApproveDialog"
+  title="Approve Risk"
+  confirmText="Approve"
+  [showComment]="true"
+  [isReject]="false"
+  (confirm)="onApprove($event)"
+  (cancel)="showApproveDialog = false">
+</app-confirmation-popup>
+
+<app-confirmation-popup
+  [isOpen]="showRejectDialog"
+  title="Reject Risk"
+  confirmText="Reject"
+  [isReject]="true"
+  (confirm)="onReject($event)"
+  (cancel)="showRejectDialog = false">
+</app-confirmation-popup>

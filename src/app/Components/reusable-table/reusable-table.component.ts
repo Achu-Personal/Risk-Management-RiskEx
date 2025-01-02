@@ -1,41 +1,18 @@
 import { SlicePipe } from '@angular/common';
-import { Component, Input, output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, Output, output, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common'; // Import CommonModule
 import { FormsModule } from '@angular/forms';
+import { AuthService } from '../../Services/auth.service';
+import { ConfirmationPopupComponent } from "../confirmation-popup/confirmation-popup.component";
 
 @Component({
   selector: 'app-reusable-table',
   standalone: true,
-  imports: [SlicePipe,CommonModule,FormsModule],
+  imports: [SlicePipe, CommonModule, FormsModule, ConfirmationPopupComponent],
   templateUrl: './reusable-table.component.html',
   styleUrl: './reusable-table.component.scss'
 })
 export class ReusableTableComponent {
-
-rejectRisk = output();  
-isToggled: boolean = false;
-  // isActive: boolean;
-rejectButton(event:Event,row:any) {
-  console.log("Row",row);
-  event.stopPropagation();
-  this.rejectRisk.emit(row);
- 
-  
-  
-}
-
-RiskClose(event:Event,row:any) {
-    event.stopPropagation();
-  this.rejectRisk.emit(row);
-  }
-
-approveRisk = output();
-approveButton(event:Event,row:any) {
-    event.stopPropagation();
-    this.approveRisk.emit(row);
- 
-  
-}
 
   @Input() tableHeaders: string[] = []; 
   @Input() tableData: any[] = []; 
@@ -45,7 +22,17 @@ approveButton(event:Event,row:any) {
   @Input() IsAssignee:boolean = false;
   @Input() headerDisplayMap:any=this.tableHeaders;
   isEyeOpen = false;
+  isAdmin: boolean=false;
 
+  showApproveDialog = false;
+  showRejectDialog = false;
+  currentRow: any;
+  @Output() approveRisk = new EventEmitter<{row: any, comment: string}>();
+  @Output() rejectRisk = new EventEmitter<{row: any, comment: string}>();
+
+
+  constructor(public auth:AuthService){}
+  
   // SVG paths for eye states
   openEyePath = 'M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z';
   closedEyePath = 'M1 12s4-8 11-8 11 8 11 8M2 12h20';
@@ -53,10 +40,123 @@ approveButton(event:Event,row:any) {
   rowKeys: string[] = []; 
 
   ngOnInit(): void {
+    const role = this.auth.getUserRole(); // Fetch user role
+    this.isAdmin = role === 'Admin'; 
     if (this.tableData && this.tableData.length > 0) {
       this.rowKeys = Object.keys(this.tableData[0]); 
     }
   }
+
+  
+// rejectRisk = output();  
+isToggled: boolean = false;
+  // isActive: boolean;
+// rejectButton(event:Event,row:any) {
+//   console.log("Row",row);
+//   event.stopPropagation();
+//   this.rejectRisk.emit(row.riskId);
+ 
+  
+  
+// }
+
+rejectButton(event: Event, row: any) {
+  event.stopPropagation();
+  this.currentRow = row;
+  this.showRejectDialog = true;
+}
+
+RiskClose(event:Event,row:any) {
+    event.stopPropagation();
+  this.rejectRisk.emit(row.riskId);
+  }
+
+// approveRisk = output();
+// approveButton(event:Event,row:any) {
+//     event.stopPropagation();
+//     this.approveRisk.emit(row.riskId);
+  
+// }
+
+approveButton(event: Event, row: any) {
+  event.stopPropagation();
+  this.currentRow = row;
+  this.showApproveDialog = true;
+}
+
+onApprove(data: {comment: string}) {
+  this.approveRisk.emit({row: this.currentRow,comment: data.comment});
+  this.showApproveDialog = false;
+}
+
+onReject(data: {comment: string}) {
+  this.rejectRisk.emit({row: this.currentRow,comment: data.comment});
+  this.showRejectDialog = false;
+}
+
+
+formatDate(value: any): string {
+  if (!value) return ''; // Handle empty value
+  if (typeof value === 'string' ) {
+    const date = new Date(value);
+    if (!isNaN(date.getTime())) {
+      const day = String(date.getDate()).padStart(2, '0'); 
+      const month = String(date.getMonth() + 1).padStart(2, '0'); 
+      const year = date.getFullYear();
+      return `${day}-${month}-${year}`; 
+     
+    }
+  }
+  // If not a valid date, return the original value
+  return value.toString();
+}
+
+getRiskType(riskType: number): string {
+  switch (riskType) {
+    case 1:
+      return 'Quality';
+    case 2:
+      return 'Security';
+    case 3:
+      return 'Privacy';
+    default:
+      return 'Unknown'; 
+  }
+}
+getRiskStatus(riskStatus:number) : string{
+  switch(riskStatus){
+    case 1: 
+      return 'Open';
+    case 2: 
+      return 'Closed';
+    default:
+      return 'Unknown';  
+  }
+}
+
+
+getRiskStatusClass(riskStatus: number): string {
+  switch (riskStatus) {
+    case 1:
+      return 'open'; // Class for Open
+    case 2:
+      return 'closed'; // Class for Closed
+    default:
+      return 'unknown'; // Class for unknown status
+  }
+}
+
+getRiskRatingStyle(riskRating: number): string {
+  if (riskRating < 30) {
+    return 'green-risk'; // Green for risk rating < 30
+  } else if (riskRating > 31 && riskRating < 99) {
+    return 'yellow-risk'; // Yellow for risk rating between 31 and 99
+  } else {
+    return 'red-risk'; // Red for risk rating >= 99
+  }
+}
+
+
   onclickrow = output()
   rowClick(row:any) {
 
