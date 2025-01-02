@@ -304,6 +304,27 @@
 display: flex;
 flex-direction: row;
 align-items: center;
+gap: 20px;
+
+
+
+}
+
+.graph2Legend>div>h5
+{
+font-size: 15px;
+font-weight: bold;
+margin: 0px;
+
+
+}
+.graph2Legend>div>h6
+{
+font-size: 15px;
+font-weight: bold;
+margin: 0px;
+color: grey;
+
 
 }
 .graph2Legend>div>div
@@ -312,6 +333,8 @@ align-items: center;
   width: 20px;
   background-color: red;
   border-radius: 50%;
+
+
 
 }
 .circle-1 {
