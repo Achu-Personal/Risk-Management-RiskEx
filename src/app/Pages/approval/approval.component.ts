@@ -6,6 +6,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ApiService } from '../../Services/api.service';
 import { StyleButtonComponent } from '../../UI/style-button/style-button.component';
 import { ConfirmationPopupComponent } from '../../Components/confirmation-popup/confirmation-popup.component';
+import { ActivatedRoute } from '@angular/router';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-approval',
@@ -17,17 +19,28 @@ import { ConfirmationPopupComponent } from '../../Components/confirmation-popup/
     FormsModule,
     ReactiveFormsModule,
     StyleButtonComponent,
-    ConfirmationPopupComponent,
+    ConfirmationPopupComponent,NgIf
+    
   ],
   templateUrl: './approval.component.html',
   styleUrl: './approval.component.scss',
 })
 export class ApprovalComponent {
-  data:any;
-  constructor(public api: ApiService) {}
-  // ngOnInit(){
-  //   this.api.getRiskById().subscribe(e => e.result)
-  // }
+  data:any=[];
+  constructor(public api: ApiService, public route:ActivatedRoute) {}
+  ngOnInit(){
+    console.log("initial data:",this.data);
+    
+    let id = parseInt(this.route.snapshot.paramMap.get('id')!);
+    this.api.getRiskById(id).subscribe(e=>{
+      console.log("Data=",e)
+      this.data=e
+      console.log("data description",this.data.description);
+    });
+    // console.log("data description",this.data.description);
+  }
+  
+  
   // data = {
   //   risk_description: 'Risk description here...',
   //   risk_name: 'Risk Name',
@@ -47,6 +60,12 @@ export class ApprovalComponent {
   popupConfirmText = '';
   showPopupComment = true;
   isPopupReject = false;
+
+
+  isDataAvailable(): boolean {
+    return this.data && Object.keys(this.data).length > 0;
+  }
+
 
   openPopup(isReject: boolean) {
     this.isPopupOpen = true;
