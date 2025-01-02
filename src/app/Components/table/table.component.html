@@ -71,20 +71,19 @@
       <tbody>
         @for(item of paginatedItems ;track item){
         <tr (click)="rowClick(item.id)" style="height:10px;">
-          <td>{{ item.slNo }}</td>
+          <td>{{ item.id }}</td>
           <!-- <td>{{ item.riskId }}</td> -->
           <td>{{ item.riskName }}</td>
-          <td>{{ item.department }}</td>
-          <td>{{ item.type }}</td>
-          <td>{{ item.endDate }}</td>
-          <td><div [ngClass]="{'green-cell': item.currentRiskRating === 'Medium', 'red-cell': item.currentRiskRating === 'Critical', 'yellow-cell': item.currentRiskRating === 'High'}">{{ item.currentRiskRating }}</div></td>
-          <td>{{ item.assignee }}</td>
-          <td>{{ item.reviewer }}</td>
-          <td>{{ item.reviewStatus }}</td>
+          <td>{{ item.departmentName }}</td>
+          <td>{{ item.riskType }}</td>
+          <td>{{ item.plannedActionDate| date: 'd MMM yyyy' }}</td>
+          <td><div [ngClass]="{'green-cell': item.overallRiskRating >= 12, 'red-cell': item.overallRiskRating >= 70, 'yellow-cell': item.overallRiskRating >= 50}">{{ item.overallRiskRating }}</div></td>
+          <td>{{ item.responsibleUser }}</td>
+          <td> {{item.riskAssessments[0].reviewer}}</td>
+          <td> {{item.riskAssessments[0].reviewStatus }}</td>
           <!-- <td><div  [ngClass]="{'green-cell': item.status === 'Open', 'red-cell': item.status === 'Closed'}">{{ item.status }}</div></td> -->
-          <td><div>{{ item.status }}</div></td>
+          <td><div>{{ item.riskStatus }}</div></td>
 
-          <!-- <td>{{item}}</td> -->
         </tr>
       }
       </tbody>

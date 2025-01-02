@@ -1,153 +1,64 @@
-/* Ensure the form field is positioned relative for dropdown placement */
-mat-form-field {
-  display: block;
-  width: 100%;
-  max-width: 280px; /* Slightly smaller width for compactness */
-  margin-bottom: 12px;
-  font-family: 'Arial', sans-serif;
-  position: relative; /* Ensure the calendar positions relative to the form field */
-}
+.filter-by-date {
+  position: relative;
 
-/* Calendar Popup */
-::ng-deep .mat-datepicker-popup {
-  background-color: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  padding: 6px; /* Reduced padding */
-  position: absolute;
-  z-index: 1000;
-  width: 100%;
-  max-width: 280px; /* Adjust max-width for a more compact look */
-  box-sizing: border-box;
-  display: block;
-}
+  // .filter-btn {
+  //   background-color: #007bff;
+  //   color: white;
+  //   border: none;
+  //   padding: 8px 16px;
+  //   cursor: pointer;
+  //   border-radius: 4px;
 
-/* Calendar Container */
-::ng-deep .mat-calendar {
-  font-family: 'Arial', sans-serif;
-  background-color: #fff;
-  padding: 0 6px; /* Reduced padding */
-  border-radius: 8px;
-  width: 100%;
-}
+  //   &:hover {
+  //     background-color: #0056b3;
+  //   }
+  // }
+  div.dropdown{
+    z-index: 100;
+  }
 
-/* Calendar Header */
-::ng-deep .mat-calendar-header {
-  background-color: #f4f4f4; /* Light gray background */
-  color: #333; /* Dark text for readability */
-  padding: 6px 10px; /* Reduced padding */
-  font-size: 13px; /* Smaller font size */
-  font-weight: 500;
-  text-align: center;
-  border-radius: 8px 8px 0 0; /* Rounded top corners */
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
+  .dropdown {
+    position: absolute;
+    top: 40px;
+    left: 0;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 16px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 9;
 
-/* Month-Year Dropdown */
-::ng-deep .mat-calendar-header .mat-calendar-period-button {
-  background-color: #e5e5e5; /* Light gray background */
-  color: #333;
-  border-radius: 20px;
-  padding: 4px 8px; /* Reduced padding for compactness */
-  cursor: pointer;
-  font-size: 13px; /* Smaller font size */
-}
+    .calendar {
+      margin-bottom: 16px;
 
-::ng-deep .mat-calendar-header .mat-calendar-period-button:hover {
-  background-color: #d1d1d1; /* Slightly darker gray on hover */
-}
+      label {
+        display: block;
+        margin-bottom: 4px;
+        font-weight: bold;
+      }
 
-/* Calendar Navigation Arrows */
-::ng-deep .mat-calendar-header .mat-calendar-arrow {
-  font-size: 16px; /* Smaller font size */
-  color: #333;
-  cursor: pointer;
-}
+      input {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+    }
 
-::ng-deep .mat-calendar-header .mat-calendar-arrow:hover {
-  background-color: rgba(0, 0, 0, 0.1); /* Subtle hover effect */
-  border-radius: 50%;
-  padding: 4px; /* Reduced padding for compactness */
-}
+    .manual-input {
+      label {
+        display: block;
+        margin-bottom: 4px;
+        font-weight: bold;
+      }
 
-/* Weekday Header (first letters only) */
-::ng-deep .mat-calendar-table-header th {
-  font-size: 12px; /* Smaller font size */
-  color: #666;
-  font-weight: normal;
-  padding: 4px; /* Reduced padding */
-  text-align: center;
-}
-
-/* Style the weekday letters */
-.weekday {
-  font-size: 12px; /* Smaller font size */
-  font-weight: bold;
-  display: inline-block;
-  width: 25px; /* Narrower width for weekday letters */
-  text-align: left;
-}
-
-/* Adjust spacing between weekday letters */
-.mat-calendar-header span {
-  margin-right: 3px; /* Slight margin between letters */
-}
-
-/* Selected Date */
-::ng-deep .mat-calendar-body-selected {
-  background-color: #3f51b5;
-  color: #ffffff;
-  border-radius: 50%;
-  padding: 4px;
-  font-size: 12px; /* Smaller font for selected date */
-}
-
-/* Today’s Date Styling */
-::ng-deep .mat-calendar-body-today {
-  border: 1px solid #3f51b5;
-  color: #3f51b5;
-  background-color: #e1f5fe; /* Light blue background for today */
-}
-
-/* Disabled Dates */
-::ng-deep .mat-calendar-body-disabled {
-  color: #bbb;
-  cursor: not-allowed;
-}
-
-/* Range Selection Styling */
-::ng-deep .mat-calendar-body-range-start,
-::ng-deep .mat-calendar-body-range-end {
-  background-color: #3f51b5;
-  color: #ffffff;
-  border-radius: 50%;
-}
-
-::ng-deep .mat-calendar-body-in-range {
-  background-color: rgba(63, 81, 181, 0.2); /* Subtle background for in-range dates */
-  color: #444;
-}
-
-/* Day Cells */
-::ng-deep .mat-calendar-body-cell {
-  font-size: x-small; /* Smaller font size */
-  padding:0; /* Reduced padding */
-  text-align: center;
-  border: none;
-  // border-radius: 50%;
-  transition: background-color 0.2s, color 0.2s;
-  cursor: pointer;
-  min-width: 18px; /* Smaller width */
-  height: 18px; /* Smaller height */
-  line-height: 18px; /* Vertically center the text */
-
-
-}
-
-
-:host::ng-deep .mat-calendar-body-cell:hover {
-  background-color: #e3f2fd; /* Light blue on hover */
-  color: #000;
+      input {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+    }
+  }
 }
