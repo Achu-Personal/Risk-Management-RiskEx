@@ -77,14 +77,13 @@
           <td>{{ item.departmentName }}</td>
           <td>{{ item.riskType }}</td>
           <td>{{ item.plannedActionDate| date: 'd MMM yyyy' }}</td>
-          <td><div [ngClass]="{'green-cell': item.overallRiskRating === 'Medium', 'red-cell': item.overallRiskRating === 'Critical', 'yellow-cell': item.overallRiskRating === 'High'}">{{ item.overallRiskRating }}</div></td>
+          <td><div [ngClass]="{'green-cell': item.overallRiskRating >= 12, 'red-cell': item.overallRiskRating >= 70, 'yellow-cell': item.overallRiskRating >= 50}">{{ item.overallRiskRating }}</div></td>
           <td>{{ item.responsibleUser }}</td>
           <td> {{item.riskAssessments[0].reviewer}}</td>
           <td> {{item.riskAssessments[0].reviewStatus }}</td>
           <!-- <td><div  [ngClass]="{'green-cell': item.status === 'Open', 'red-cell': item.status === 'Closed'}">{{ item.status }}</div></td> -->
           <td><div>{{ item.riskStatus }}</div></td>
 
-          <!-- <td>{{item}}</td> -->
         </tr>
       }
       </tbody>
