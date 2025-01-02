@@ -30,7 +30,7 @@ export class RiskDetailsSection2Component {
   @Input() PostReviewedBy=""
   @Input() PostReviewedAt=""
   @Input() RiskStatus=""
-
+  currentStep =1;
   constructor(private api:ApiService,private route:ActivatedRoute)
   {
 
@@ -75,8 +75,8 @@ export class RiskDetailsSection2Component {
         id: 5,
         title: 'Closed',
         isCompleted: false,
-        actionBy: 'Tony',
-        date: '23 June 2024',
+        actionBy: '',
+        date: '',
         stepNumber: '05'
       }
     ]
@@ -123,4 +123,15 @@ export class RiskDetailsSection2Component {
   }
 
 
+  // onStepCompleted(stepId: number) {
+  //   console.log(`Step ${stepId} completed`);
+  //   this.completeStep(stepId);
+  // }
+
+  completeStep(stepId: number) {
+    const step = this.stepperData.find((s) => s.id === stepId);
+    if (step) {
+      step.isCompleted = true;
+    }
+  }
 }

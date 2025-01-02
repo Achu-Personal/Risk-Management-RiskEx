@@ -79,7 +79,7 @@ export class TableComponent {
   this.updatePaginatedItems();
   }
 
-
+ // hello bindu.... sugalle ?
 
   onSearch(searchText: string): void {
     const lowercasedSearchText = searchText.toLowerCase();
@@ -103,6 +103,7 @@ export class TableComponent {
 
     this.api.gettabledata().subscribe((res: any) => {
       this.items = res;
+      // console.log(this.items);
       this.filteredItems = [...this.items];
       this.updateUniqueDepartments();
       this.updateUniqueTypes();

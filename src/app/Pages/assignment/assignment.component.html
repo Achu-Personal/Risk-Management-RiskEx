@@ -3,7 +3,7 @@
   <!-- <h3 style="padding-bottom: 15px;">You are assigned to review</h3> -->
   @if(tableBody.length>0)
   {
-  <app-reusable-table [tableHeaders]="headerData" [tableData]="tableBody" [IsActionRequiered]="true"
+  <app-reusable-table [tableHeaders]="headerData"  [headerDisplayMap]="headerDisplayMap" [tableData]="tableBody" [IsActionRequiered]="true"
     (onclickrow)="OnClickRow($event)" height="80%" [IsAssignee]="true" [IsUser]="false">
   </app-reusable-table>
   }
