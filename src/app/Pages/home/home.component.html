@@ -1,4 +1,4 @@
-<app-body-container class="main" backgroundColor="transparent" padding="5">
+<app-body-container class="main" backgroundColor="transparent" padding="5" [showShadow]="false">
 <div class="dashboard">
 <div class="topbuttons">
   <div class="dropdown" >
@@ -29,21 +29,60 @@
           </div>
         </div>
       </div>
-      <div class="rightside">
+      <div class="rightside ">
         <div class="circlegraph">
-          <div class="circle circle-1">{{securityRiskCount}}</div>
-          <div class="circle circle-2">{{qualityRiskCount}}</div>
-          <div class="circle circle-3">{{privacyRiskCount ? privacyRiskCount : 0}}</div>
+
+          <div style="width:50px;height:50px;position: absolute;display: flex;justify-content: center;align-items: center;margin-top: 60px;margin-left: 55px;">
+
+
+            <div class="circle circle-1 "></div>
+            <div class="glass">{{securityRiskCount}}</div>
+          </div>
+
+          <div  style="width:180px;height:180px;position: absolute;display: flex;justify-content: center;align-items: center;  margin-left: 100px;margin-bottom: -70px;margin-top: 50px;">
+
+
+            <div class="circle circle-2 "></div>
+            <div class="glass">{{qualityRiskCount}}</div>
+          </div>
+          <div  style="width:135px;height: 135px;position: absolute;display: flex;justify-content: center;align-items: center;margin-top: 120px;">
+
+
+            <div class="circle circle-3 "></div>
+            <div class="glass">{{privacyRiskCount ? privacyRiskCount : 0}}</div>
+          </div>
+
+
+
+
+
         </div>
       </div>
     </div>
     <div class="graph2">
       <div class="riskratingcategory">
       <h4>Risk Rating</h4>
-      <div class="forchart">
-      <div class="graphchart">
-      <app-chart [labels]="graph2labels" [chartType]="graph2chartType" [datasets]="graph2datasets"></app-chart>
-      </div>
+      <div class="forchart" >
+        <div class="graphchart"  >
+        <app-chart [labels]="graph2labels" [chartType]="graph2chartType" [datasets]="graph2datasets"></app-chart>
+        </div>
+        <div class="graph2Legend">
+          <div>
+            <div style="background-color: blue;" ></div>
+            <h6>Low</h6>
+          </div>
+          <div>
+            <div  style="background-color: rgb(251, 213, 255);"></div>
+            <h6>Moderate</h6>
+          </div>
+          <div>
+            <div style="background-color: rgb(206, 206, 255);"></div>
+            <h6>Critical</h6>
+          </div>
+
+
+
+        </div>
       </div>
       </div>
     </div>
