@@ -1,132 +1,211 @@
-.field{
-  background-color: white;
-  width: 80vw;
-  // margin-left: 3px;
-  padding: 30px;
-  padding-left: 40px;
-  padding-top: 40px;
-  margin-top: 10px;
+// .field{
+//   background-color: white;
+//   width: 80vw;
+//   // margin-left: 3px;
+//   padding: 30px;
+//   padding-left: 40px;
+//   padding-top: 40px;
+//   margin-top: 10px;
 
-}
-#editableDiv{
-  border-radius: 10px 10px 0px 0px;
-  // margin-top: 40px;
+// }
+// #editableDiv{
+//   border-radius: 10px 10px 0px 0px;
+//   // margin-top: 40px;
 
-}
-#assessmentField{
-  display: flex;
-  flex-direction: row;
-  gap: 250px;
-}
-.dropdownassessmentimpact{
-  margin-left: 50px;
-}
-.dropdownassessmentLikelihood{
-  margin-left: 25px;
-}
-.dropdown{
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-h5{
-  color: #3E68B9;
+// }
+// #assessmentField{
+//   display: flex;
+//   flex-direction: row;
+//   gap: 250px;
+// }
+// .dropdownassessmentimpact{
+//   margin-left: 50px;
+// }
+// .dropdownassessmentLikelihood{
+//   margin-left: 25px;
+// }
+// .dropdown{
+//   display: flex;
+//   flex-direction: column;
+//   gap: 20px;
+// }
+// h5{
+//   color: #3E68B9;
 
-}
-.plannedActionDate input{
-  width: 220px;
-  margin-left: 40px;
-}
-.closeDate input{
-  width: 220px;
-  margin-left: 30px;
+// }
+// .plannedActionDate input{
+//   width: 220px;
+//   margin-left: 40px;
+// }
+// .closeDate input{
+//   width: 220px;
+//   margin-left: 30px;
 
-}
-.actionDate{
-  display: flex;
-  flex-direction: row;
-  gap: 90px;
-}
-#thirdField{
-  border-radius: 0px 0px 10px 10px;
-  margin-bottom: 25px;
-}
-.responsibilityofAction{
-  margin-top: 30px;
-}
-.responsibilityofAction input{
-  width: 47.25vw;
-  margin-left: 10px;
-}
+// }
+// .actionDate{
+//   display: flex;
+//   flex-direction: row;
+//   gap: 90px;
+// }
+// #thirdField{
+//   border-radius: 0px 0px 10px 10px;
+//   margin-bottom: 25px;
+// }
+// .responsibilityofAction{
+//   margin-top: 30px;
+// }
+// .responsibilityofAction input{
+//   width: 47.25vw;
+//   margin-left: 10px;
+// }
 
-.reviewer{
-  margin-top: 30px;
-}
-.reviewerDropdown{
+// .reviewer{
+//   margin-top: 30px;
+// }
+// .reviewerDropdown{
 
-  height: 30px;
-  border-radius: 10px;
-
-
-  margin-left: 117px;
-
-}
-.riskresponse{
-  margin-top: 30px;
-  display: flex;
-  flex-direction: row;
-}
-.radioButton{
-  margin-left: 80px;
-  display: flex;
-  flex-direction: row;
-  gap: 30px;
+//   height: 30px;
+//   border-radius: 10px;
 
 
-}
-.action{
-  margin-top: 140px;
-  display: flex;
-  flex-direction: row;
-  justify-content: end;
-  margin-right: 110px;
-  display: flex;
-  flex-direction: row;
-  gap: 10px;
-  align-items: end;
-  margin-bottom: 30px;
-}
-.savecancel {
-  border: 1px solid rgba(62, 104, 185, 0.75); /* Clean RGBA format */
-  background-color: #f5f8ff; /* Light background for better visibility */
-  color: #3e68b9; /* Text color to match the border */
-  cursor: pointer;
-  font-weight: 600;
-  font-size: 14px;
-  padding: 5px 5px; /* Added padding for better appearance */
+//   margin-left: 117px;
+
+// }
+// .riskresponse{
+//   margin-top: 30px;
+//   display: flex;
+//   flex-direction: row;
+// }
+// .radioButton{
+//   margin-left: 80px;
+//   display: flex;
+//   flex-direction: row;
+//   gap: 30px;
+
+
+// }
+// .action{
+//   margin-top: 140px;
+//   display: flex;
+//   flex-direction: row;
+//   justify-content: end;
+//   margin-right: 110px;
+//   display: flex;
+//   flex-direction: row;
+//   gap: 10px;
+//   align-items: end;
+//   margin-bottom: 30px;
+// }
+// .savecancel {
+//   border: 1px solid rgba(62, 104, 185, 0.75); /* Clean RGBA format */
+//   background-color: #f5f8ff; /* Light background for better visibility */
+//   color: #3e68b9; /* Text color to match the border */
+//   cursor: pointer;
+//   font-weight: 600;
+//   font-size: 14px;
+//   padding: 5px 5px; /* Added padding for better appearance */
+//   border-radius: 8px;
+//   text-align: center;
+//   transition: all 0.3s ease; /* Smooth transition for hover effects */
+//   width:160px ;
+// }
+
+// .savecancel:hover {
+//   background-color: #3e68b9; /* On hover: Fill the button with primary color */
+//   color: #ffffff; /* On hover: Text becomes white */
+//   border-color: #3e68b9; /* Border matches background on hover */
+// }
+
+// .savecancel:focus {
+//   outline: none; /* Remove focus outline */
+//   box-shadow: 0 0 5px rgba(62, 104, 185, 0.5); /* Subtle glow effect */
+//   border-color: #3e68b9; /* Border remains consistent */
+// }
+// #cancelbtn{
+//   margin-left: 20px;
+// }
+// .firstDiv{
+//   display: flex;
+//   flex-direction: row;
+
+// }
+.content{
+  background-color: var( --primary-color);
+  padding: 10px;
   border-radius: 8px;
-  text-align: center;
-  transition: all 0.3s ease; /* Smooth transition for hover effects */
-  width:160px ;
 }
 
-.savecancel:hover {
-  background-color: #3e68b9; /* On hover: Fill the button with primary color */
-  color: #ffffff; /* On hover: Text becomes white */
-  border-color: #3e68b9; /* Border matches background on hover */
+.form-details-sub-container {
+  background-color: var(--accent-color);
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  border-left: 20px solid var(--secondary-color);
+  margin-top: 10px;
+}
+.form-details-sub-container h2 {
+  font-size: 1.4rem;
+  color: var(--secondary-color);
+  margin-bottom: 15px;
+  text-transform: uppercase;
+  border-bottom: 2px solid var(--secondary-color);
+  padding-bottom: 8px;
+}
+.form-detail {
+  margin-bottom: 20px;
 }
 
-.savecancel:focus {
-  outline: none; /* Remove focus outline */
-  box-shadow: 0 0 5px rgba(62, 104, 185, 0.5); /* Subtle glow effect */
-  border-color: #3e68b9; /* Border remains consistent */
+label {
+  margin-bottom: 5px;
+  font-weight: 600;
+  color:var(--foreground-color);
 }
-#cancelbtn{
-  margin-left: 20px;
+
+input, textarea{
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  overflow: hidden;
+  resize: none;
 }
-.firstDiv{
+
+input:focus, textarea:focus {
+  outline: none;
+  border: 1px solid var(--secondary-color);
+}
+
+.form-row {
   display: flex;
-  flex-direction: row;
+  gap: 7vw;
+}
 
+.form-row .form-group {
+  flex: 1;
+}
+
+textarea[readonly] {
+  // background-color: #f9f9f9;
+  cursor: not-allowed;
+  border: none;
+}
+
+.icon-btn {
+  margin-left: 10px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 18px;
+  color: var(--secondary-color);
+}
+
+.icon-btn i {
+  transition: color 0.3s ease;
+}
+
+.icon-btn:hover i {
+  color: var(--foreground-color);
 }
 

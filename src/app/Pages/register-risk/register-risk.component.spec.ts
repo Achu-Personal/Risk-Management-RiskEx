@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { RegisterRiskComponent } from './register-risk.component';
+import { By } from '@angular/platform-browser';
 
 describe('RegisterRiskComponent', () => {
   let component: RegisterRiskComponent;
@@ -20,4 +21,7 @@ describe('RegisterRiskComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+
+  
 });

@@ -1,0 +1,14 @@
+<app-body-container backgroundColor="var(--secondary-color)"padding="10">
+  <div class="container">
+    <div class="content">
+      @if (riskType==="Quality"){
+        <app-update-qms></app-update-qms>
+
+      }
+      @if (riskType==="Security" ||riskType==="Privacy"){
+        <app-update-isms></app-update-isms>
+
+      }
+    </div>
+  </div>
+</app-body-container>
