@@ -1,3 +1,4 @@
+import { NgIf } from '@angular/common';
 import { ChartType } from 'chart.js';
 import { Component } from '@angular/core';
 import { BodyContainerComponent } from "../../Components/body-container/body-container.component";
@@ -8,12 +9,13 @@ import { DepartmentDropdownComponent } from "../../Components/department-dropdow
 import { ChartComponent } from "../../UI/chart/chart.component";
 import { TableComponent } from "../../Components/table/table.component";
 import { Router } from '@angular/router';
+import { AuthService } from '../../Services/auth.service';
 import { ApiService } from '../../Services/api.service';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [BodyContainerComponent, ButtonComponent, DepartmentDropdownComponent, ChartComponent, TableComponent],
+  imports: [NgIf,BodyContainerComponent, ButtonComponent, DepartmentDropdownComponent, ChartComponent, TableComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
@@ -22,7 +24,7 @@ export class HomeComponent {
 
 
 
-        constructor(public api:ApiService,private router: Router) {}
+        constructor(public api:ApiService,private router: Router,public authService:AuthService) {}
 
         //   OnClickRow(rowid:any): void {
         //   this.router.navigate([`/ViewRisk/${rowid}`]);

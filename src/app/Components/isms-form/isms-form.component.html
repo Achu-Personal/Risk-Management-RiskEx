@@ -5,14 +5,14 @@
       <div class="form-row">
        <div class="form-detail">
          <label for="riskName">Risk Name <span class="required">*</span></label>
-         <input type="text" id="riskName" placeholder="Enter risk name"  [ngStyle]="{'width':'40vw'}" >
+         <input type="text" id="riskName" placeholder="Enter risk name"  [ngStyle]="{'width':'100%'}" >
        </div>
        <div class="form-detail">
          <label for="project">Project Name</label>
          <app-dropdown  [options]="dropdownDataProject"
            [displayField]="'name'"
            [valueField]="'id'"
-           width="40">
+           width="100">
           </app-dropdown>
        </div>
      </div>
@@ -22,7 +22,7 @@
         <app-dropdown  [options]="dropdownDataDepartment"
           [displayField]="'name'"
           [valueField]="'id'"
-          width="82.25" id="department">
+          width="100" id="department">
          </app-dropdown>
       </div>
      }
@@ -37,7 +37,7 @@
     </div>
     <div class="form-details-sub-container">
       <h2>Current Risk Assessment</h2>
-      <table>
+      <table  class="risk-assessment-table">
       <tr>
         <th></th>
         <th>Likelihood <span class="required">*</span></th>
@@ -49,14 +49,14 @@
         <td><app-dropdown  [options]="dropdownDataLikelihood"
               [displayField]="'type'"
               [valueField]="'value'"
-              width="25" bottom="25px" (change)="onDropdownChange($event, 'Likelihood', 'Confidentiality')">
+              width="100" bottom="25px" (change)="onDropdownChange($event, 'Likelihood', 'Confidentiality')">
             </app-dropdown>
 
         </td>
         <td><app-dropdown  [options]="dropdownDataImpact"
               [displayField]="'type'"
               [valueField]="'value'"
-              width="25" bottom="25px" (change)="onDropdownChange($event, 'Impact', 'Confidentiality')">
+              width="100" bottom="25px" (change)="onDropdownChange($event, 'Impact', 'Confidentiality')">
             </app-dropdown>
         </td>
         <td><h2 [ngStyle]="{'border-bottom':'0px','text-transform':'none','margin-left':'5vw'}">{{confidentialityRiskFactor}}</h2></td>
@@ -67,14 +67,14 @@
         <td><app-dropdown  [options]="dropdownDataLikelihood"
               [displayField]="'type'"
               [valueField]="'value'"
-              width="25" bottom="25px" (change)="onDropdownChange($event, 'Likelihood', 'Integrity')">
+              width="100" bottom="25px" (change)="onDropdownChange($event, 'Likelihood', 'Integrity')">
             </app-dropdown>
 
         </td>
         <td><app-dropdown  [options]="dropdownDataImpact"
               [displayField]="'type'"
               [valueField]="'value'"
-              width="25" bottom="25px" (change)="onDropdownChange($event, 'Impact', 'Integrity')">
+              width="100" bottom="25px" (change)="onDropdownChange($event, 'Impact', 'Integrity')">
             </app-dropdown>
         </td>
         <td><h2 [ngStyle]="{'border-bottom':'0px','text-transform':'none','margin-left':'5vw'}">{{integrityRiskFactor}}</h2></td>
@@ -85,14 +85,14 @@
         <td><app-dropdown  [options]="dropdownDataLikelihood"
               [displayField]="'type'"
               [valueField]="'value'"
-              width="25" bottom="25px" (change)="onDropdownChange($event, 'Likelihood', 'Availability')">
+              width="100" bottom="25px" (change)="onDropdownChange($event, 'Likelihood', 'Availability')">
             </app-dropdown>
 
         </td>
         <td><app-dropdown  [options]="dropdownDataImpact"
               [displayField]="'type'"
               [valueField]="'value'"
-              width="25" bottom="25px" (change)="onDropdownChange($event, 'Impact', 'Availability')">
+              width="100" bottom="25px" (change)="onDropdownChange($event, 'Impact', 'Availability')">
             </app-dropdown>
         </td>
         <td><h2 [ngStyle]="{'border-bottom':'0px','text-transform':'none','margin-left':'5vw'}">{{availabilityRiskFactor}}</h2></td>
@@ -103,14 +103,14 @@
         <td><app-dropdown  [options]="dropdownDataLikelihood"
               [displayField]="'type'"
               [valueField]="'value'"
-              width="25" bottom="25px" (change)="onDropdownChange($event, 'Likelihood', 'Privacy')">
+              width="100" bottom="25px" (change)="onDropdownChange($event, 'Likelihood', 'Privacy')">
             </app-dropdown>
 
         </td>
         <td><app-dropdown  [options]="dropdownDataImpact"
               [displayField]="'type'"
               [valueField]="'value'"
-              width="25" bottom="25px" (change)="onDropdownChange($event, 'Impact', 'Privacy')">
+              width="100" bottom="25px" (change)="onDropdownChange($event, 'Impact', 'Privacy')">
             </app-dropdown>
         </td>
         <td><h2 [ngStyle]="{'border-bottom':'0px','text-transform':'none','margin-left':'5vw'}">{{privacyRiskFactor}}</h2></td>
@@ -142,7 +142,7 @@
         <app-dropdown  [options]="dropdownDataReviewer"
            [displayField]="'name'"
            [valueField]="'email'"
-           width="82.5">
+           width="100">
         </app-dropdown>
       </div>
       <div [ngStyle]="{'margin-top':'20px','font-style':'italic','color':'grey'}">
@@ -171,7 +171,7 @@
         <app-dropdown  [options]="dropdownDataReviewer"
           [displayField]="'name'"
           [valueField]="'email'"
-          width="82.5">
+          width="100">
         </app-dropdown>
       </div>
       <div [ngStyle]="{'margin-top':'20px','font-style':'italic','color':'grey'}">

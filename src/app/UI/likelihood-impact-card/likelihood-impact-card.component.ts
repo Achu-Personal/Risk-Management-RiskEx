@@ -14,10 +14,15 @@ import { CapitalizeFirstPipe } from '../../Pipes/capitalize-first.pipe';
 export class LikelihoodImpactCardComponent {
 
 
-  @Input() title:string ="";
-  @Input()  LikeliHoodlevel: string = "high";
-  @Input()  Impactlevel: string = "high";
-  @Input() RiskFactor:number=0
+  @Input() assessment:any ={};
+
+  ngOnInit()
+  {
+    setTimeout(()=>{
+      console.log("Datali",this.assessment)
+    },1000)
+  }
+
 
 
 
