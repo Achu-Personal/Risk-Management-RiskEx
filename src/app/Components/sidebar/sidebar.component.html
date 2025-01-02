@@ -1,8 +1,20 @@
 <div class="sidebar d-flex flex-column" data-aos="fade-right">
     <div class="sidebar-item">
-      <div class="header"><h5 class="riskex">REX</h5>
-        <hr>
+      <div  class="header"  (click)="onMouseClick()"><h5 class="riskex">REX</h5>
+
+        <div class="header-options" id="header-options-overlay"   >
+
+          <div >
+            <div (click)="setTheme('light-theme')" style="background-color: #F3F4F7" class="themes-circle"></div>
+            <div (click)="setTheme('dark-theme')"  style="background-color: #252C47" class="themes-circle"></div>
+            <div (click)="setTheme('default')" style="background-color: #d0c6b6" class="themes-circle"></div>
+            <div (click)="setTheme('stylish-blue')" style="background-color: #7E4EFC" class="themes-circle"></div>
+          </div>
+
+        </div>
       </div>
+
+
 
       <div class="nav-items " style="padding: 5px;">
         @for(item of menuItems; track item.id){
@@ -13,7 +25,7 @@
           <i [class]="item.icon" ></i>
           <!-- <span class="sidebar-text">{{ item.label }}</span> -->
         </a>
-        
+
       }
       </div>
 
@@ -23,7 +35,7 @@
         <div style="height: 5px;"></div>
         <i class="fa-solid fa-right-from-bracket logout-icon"  ></i>
         <div style="height: 20px;"></div>
-        <img src="https://cdn-icons-png.flaticon.com/128/149/149071.png" height="50" width="50"/>
+        <img (click)="setTheme('dark-theme')" src="https://cdn-icons-png.flaticon.com/128/149/149071.png" height="50" width="50"/>
       </div>
 
     </div>

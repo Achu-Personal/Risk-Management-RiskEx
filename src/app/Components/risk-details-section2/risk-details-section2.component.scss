@@ -2,9 +2,11 @@ h5{
   font-size: 2.7vh;
 
   font-weight: bold;
+  color: var(--primary-text-color);
 }
 p{
   font-size: 2.2vh;
+  color: var(--primary-text-color);
 
 }
 .risk-details-section2
@@ -61,17 +63,22 @@ p{
   padding: 20px;
   background-color: var( --accent-color);
 }
-.responsibility-of-action-planned-Action-div>p{
+.responsibility-of-action-planned-Action-div p{
   width: 100%;
 
   word-wrap: break-word;
+  color: var(--secondary-text-color);
+}
+.responsibility-of-action-planned-Action-div h5{
+
+  color: var(--secondary-text-color);
 }
 .responsibility-of-action-planned-Action-div> div
 {
 
 width: 100%;
 height: 100%;
-background-color: #F5F5F5;
+background-color: var(--primary-color);
 padding: 20px;
 }
 
@@ -81,6 +88,7 @@ display: flex;
 flex-direction: row;
 align-items: center;
 margin-top: 30px;
+
 }
 
 .responsibility-of-action-planned-Action-div>div> div>h5
@@ -92,6 +100,7 @@ margin: 0px !important;
 display: flex;
 justify-content: center;
 align-items: center;
+color: var(--secondary-text-color);
 
 }
 
@@ -134,12 +143,14 @@ align-items: center;
 .details-card>div>h6
 {
  margin: 0px;
+ color: var(--secondary-text-color);
 }
 
 
 .risk-status
 {
-  height: 100%;width: 100%;background-color: white;
+  height: 100%;width: 100%;
+  background-color: var(--accent-color);
   border-radius: 10px;
   display: flex;
   flex-direction: column;
