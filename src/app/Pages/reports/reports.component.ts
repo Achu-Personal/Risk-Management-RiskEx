@@ -32,9 +32,7 @@ export class ReportsComponent {
       console.error('Invalid data:', this.data);
     }
     });
-    console.log('Data passed to generateReport:', this.data);  // Check if it's an array and populated
-
-    // Check if the data is valid before calling the service method
+    console.log('Data passed to generateReport:', this.data);
 
   }
 
