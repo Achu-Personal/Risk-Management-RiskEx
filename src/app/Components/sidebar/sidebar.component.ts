@@ -17,7 +17,7 @@ export class SidebarComponent {
     { id: 3, label: 'History', icon: 'fa-solid fa-clock-rotate-left', route: '/history', active: false },
     { id: 2, label: 'User Mangement', icon: 'fa-solid fa-users', route: '/users', active: false },
     { id: 6, label: 'Reference', icon: 'fa-solid fa-book', route: '/reference', active: false }
-    
+
   ];
 
   constructor(private router: Router) {}
@@ -42,4 +42,18 @@ export class SidebarComponent {
       item.active = item.route === currentRoute;
     });
   }
+
+  setTheme(theme:any) {
+    document.body.className = theme; // Apply the theme class to <body>
+  }
+
+  onMouseOverOFLogo()
+  {
+      document.getElementById("header-options-overlay")!.style.display="block"
+  }
+  onMouseOverOFLeave()
+  {
+      document.getElementById("header-options-overlay")!.style.display="none"
+  }
+
 }
