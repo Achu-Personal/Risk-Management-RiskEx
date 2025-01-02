@@ -51,8 +51,11 @@
 
 app-table{
   cursor: pointer;
-}
 
+}
+app-datepicker{
+  z-index: 10;
+}
 
 .contains{
   display: flex;
@@ -69,4 +72,5 @@ app-table{
   top: 0;
   width: 50%;
   float: right;
+  z-index: 11;
 }
