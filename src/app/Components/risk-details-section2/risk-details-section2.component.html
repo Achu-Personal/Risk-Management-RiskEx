@@ -4,42 +4,53 @@
   <!-- Left side: To Show Risk Mitigation and  Risk Continjency -->
   <div>
 
-    <div class=" primaryColor shadowType1 details-card " >
+    <div class=" primaryColor shadowType1 details-card "  >
       <h5 >Risk Mitigation</h5>
-      <p title={{riskMitigation}}>{{riskMitigation.slice(0,120)}}..</p>
-
+      <p title={{riskMitigation}}>{{riskMitigation.slice(0,1020)}}..</p>
     </div>
 
-    <div  class=" primaryColor shadowType1 details-card ">
-      <h5>Risk Contingency</h5>
-      <p title={{riskContengency}}>{{riskContengency.slice(0,120)}}..</p>
+    @if(riskContengency!=null&&riskContengency!="")
+    {
+      <div  class=" primaryColor shadowType1 details-card ">
+        <h5>Risk Contingency</h5>
+        <p title={{riskContengency}}>{{riskContengency.slice(0,1020)}}..</p>
 
-    </div>
+      </div>
+    }
+
 
   </div>
 
     <!-- Right side: To show planned action date and responsibility of action -->
   <div>
-    <div  class="responsibility-of-action-planned-Action-div  primaryColor shadowType1 " >
+    <div  class="responsibility-of-action-planned-Action-div" >
+      <div>
+        <h5>Impact of risk</h5>
+        <p >{{impact.slice(0,198.)}}..</p>
+        <div class="" >
+          <h5 >Responsibility of the Action : </h5>
+          <h6 >{{responsibilityOfAction}}</h6>
 
-      <div class="details-card  " >
-        <h5>Responsibility of the Action</h5>
-        <div >
-            <img src="/assets/icons/user.png" height="20" width="20"/>
-            <h6>{{responsibilityOfAction}}</h6>
+
+
         </div>
 
-
-      </div>
-
-      <div  class="details-card  ">
-        <h5>Planned date of Action</h5>
-        <div >
-          <img src="/assets/icons/Calendar.png" height="20" width="20"/>
+        <div  class=" " >
+          <h5>Planned date of Action : </h5>
           <h6>{{plannedActionDate}}</h6>
+
+
+        </div>
       </div>
 
-      </div>
+
+    </div>
+    <div class="risk-status">
+      <h5>Risk Progress</h5>
+
+        <app-stepper [steps]="stepperData" (stepCompleted)="completeStep($event)"></app-stepper>
+
+
     </div>
   </div>
 

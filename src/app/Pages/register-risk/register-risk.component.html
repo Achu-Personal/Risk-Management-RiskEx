@@ -1,68 +1,34 @@
-<app-body-container backgroundColor="transparent" padding="0" [showShadow]="false">
+<app-body-container backgroundColor="var(--secondary-color)" padding="10">
   <div class="container">
     <div class="content">
-      <div class="riskType" id="riskTypeDiv" [ngClass]="isSelect ? 'isSelect' : 'isSelectNot'">
+      <div id="riskType" class="form-Container">
+        <div class="riskType-radioButton-container">
+          <div class="risk-type-label">
+            <label for="riskType">Risk Type <span class="required">*</span> :</label>
+          </div>
+          @for (risk of riskTypes; track $index) {
+            <div  class="riskType-radioButton">
+              <label for="risk.type">
+                <input
+                  type="radio"
+                  name="riskType"
+                  [value]="risk.value"
+                  (click)="setRiskType(risk.value)"
+                  [checked]="selectedRiskType === risk.value">
+                {{ risk.type }}
+              </label>
+            </div>
+          }
 
-        <div class="riskDiv">
-          <button (click)="setQuality()" [ngClass]="isSelectQuality ? 'selected' : ''">Quality</button>
-        </div>
-
-        <div class="riskDiv">
-          <button (click)="setSecurity()"[ngClass]="isSelectSecurity ? 'selected' : ''">Security</button>
-        </div>
-
-        <div class="riskDiv">
-          <button (click)="setPrivacy()"[ngClass]="isSelectPrivacy ? 'selected' : ''">Privacy</button>
         </div>
       </div>
-      @if (selectedOptionFromChild==="") {
-        <div class="typeImage">
-          <div class="typeImageContainer">
-            <h4 style="margin-right: 50px;margin-bottom: 70px;margin-top: -30px; color: darkgrey;">Choose A Risk Type</h4>
-
-            <div class="chooseType">
-              <div class="chooseContainer" (click)="setQuality()" id="chooseContainerQuality">
-                <img src="quality.png" alt="quality" style="height: 50px;width: 50px;margin-left: 50px;" >
-                <button (click)="setQuality()" [ngClass]="isSelectQuality ? 'selected' : ''" >Quality</button>
-
-              </div>
-              <div class="chooseContainer" (click)="setSecurity()" id="chooseContainerSecurity">
-                <img src="security.png" alt="security" style="height: 50px;width: 50px;margin-left: 50px;">
-                <button (click)="setSecurity()"[ngClass]="isSelectSecurity ? 'selected' : ''" >Security</button>
-
-
-
-              </div>
-              <div class="chooseContainer"(click)="setPrivacy()" id="chooseContainerPrivacy">
-                <img src="privacy-policy.png" alt="quality" style="height: 50px;width: 50px;margin-left: 50px;">
-                <button (click)="setPrivacy()"[ngClass]="isSelectPrivacy ? 'selected' : ''">Privacy</button>
-
-
-
-              </div>
-
-
-            </div>
-
-
-          </div>
-
-        </div>
-
-      }
-      @if (selectedOptionFromChild==="quality") {
-        <app-qms-form  [riskTypeValue]="selectedOptionFromChild"></app-qms-form>
-      }
-      @if (selectedOptionFromChild==="privacy"||selectedOptionFromChild==="security") {
-        <app-isms-form [riskTypeValue]="selectedOptionFromChild"></app-isms-form>
-
-      }
-
+       @if (selectedRiskType === 1) {
+        <app-qms-form  [riskTypeValue]="selectedRiskType"></app-qms-form>
+       }
+       @if (selectedRiskType === 2 || selectedRiskType === 3) {
+        <app-isms-form  [riskTypeValue]="selectedRiskType"></app-isms-form>
+       }
     </div>
   </div>
-
-
-
-
-
 </app-body-container>
+

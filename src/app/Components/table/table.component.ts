@@ -1,4 +1,4 @@
-import { Component, output} from '@angular/core';
+import { Component, HostListener, output} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { SearchbarComponent } from '../../UI/searchbar/searchbar.component';
@@ -40,18 +40,20 @@ export class TableComponent {
   }
   filteredItems = [...this.items];
   paginatedItems:any=[];
-  isDropdownOpen: boolean = false;
+  isDepartmentDropdownOpen: boolean = false;
+  isTypeDropdownOpen: boolean = false;
+
   itemsPerPage = 10;
   currentPage = 1;
   totalItems: number = 0;
 
   // Filter dropdown values
   selectedRiskId = '';
-  selectedRiskName = '';
+  selectedRiskType = '';
   selectedDepartment = '';
 
   // uniqueRiskIds: string[] = [];
-  // uniqueRiskNames: string[] = [];
+  uniqueRiskTypes: any[] = [];
   uniqueDepartments: any[] = [];
 
 
@@ -66,7 +68,8 @@ export class TableComponent {
     this.filteredItems = this.items.filter((item:any) => {
       return (
         // (this.selectedRiskId ? item.riskId === this.selectedRiskId : true) &&
-        // (this.selectedRiskName ? item.riskName === this.selectedRiskName : true) &&
+
+        (this.selectedRiskType ? item.type === this.selectedRiskType : true) &&
         (this.selectedDepartment ? item.department === this.selectedDepartment : true)
       );
     });
@@ -76,7 +79,7 @@ export class TableComponent {
   this.updatePaginatedItems();
   }
 
-
+ // hello bindu.... sugalle ?
 
   onSearch(searchText: string): void {
     const lowercasedSearchText = searchText.toLowerCase();
@@ -100,8 +103,10 @@ export class TableComponent {
 
     this.api.gettabledata().subscribe((res: any) => {
       this.items = res;
+      // console.log(this.items);
       this.filteredItems = [...this.items];
       this.updateUniqueDepartments();
+      this.updateUniqueTypes();
       this.totalItems = this.filteredItems.length;
       this.updatePaginatedItems();
     });
@@ -112,6 +117,12 @@ export class TableComponent {
 
   updateUniqueDepartments(): void {
     this.uniqueDepartments = [...new Set(this.items.map((item: any) => item.department))];
+
+  }
+
+  updateUniqueTypes(): void {
+
+    this.uniqueRiskTypes = [...new Set(this.items.map((item: any) => item.type))];
   }
 
   updatePaginatedItems(): void {
@@ -128,14 +139,35 @@ export class TableComponent {
 
 
 
-  toggleDropdown(): void {
-    this.isDropdownOpen = !this.isDropdownOpen;
+  toggleDepartmentDropdown(): void {
+    this.isDepartmentDropdownOpen = !this.isDepartmentDropdownOpen;
+    this.isTypeDropdownOpen = false;
   }
+
+  toggleTypeDropdown(): void {
+    this.isTypeDropdownOpen = !this.isTypeDropdownOpen;
+    this.isDepartmentDropdownOpen = false;
+  }
+
 
   onDepartmentSelect(department: string): void {
     this.selectedDepartment = department;
-    this.isDropdownOpen = false;
+    this.isDepartmentDropdownOpen = false;
     this.filterTable();
+  }
+  onTypeSelect(type: string): void {
+    this.selectedRiskType = type;
+    this.isTypeDropdownOpen = false;
+    this.filterTable();
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+    const target = event.target as HTMLElement;
+    if (!target.closest('.dropdown-container')) {
+      this.isDepartmentDropdownOpen = false;
+      this.isTypeDropdownOpen = false;
+    }
   }
 
 }

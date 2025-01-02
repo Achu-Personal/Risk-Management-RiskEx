@@ -1,187 +1,152 @@
-.container {
-  display: flex;
-  flex-direction: row;
-  position: relative;
-  z-index: 1;
-  padding: 0px;
-}
-
-
-
-.content {
-  flex-basis: 100%;
-
-}
-
-.riskType {
-  background-color: white;
-  width: 80vw;
-  margin-left: 15px;
-  margin-top: 20px;
-  // padding-top: 10px;
-  border-radius: 10px 10px 0px 0px;
-}
-
-
-
-.typeImage {
-  background-color: white;
-  width: 80vw;
-  margin-left: 15px;
-  padding: 30px;
-  margin-top: 10px;
-  border-radius: 0px 0px 10px 10px;
-  align-items: center;
-  justify-content: center
-}
-
-.typeImageContainer {
-  border: 1px dashed black;
-  height: 60vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  // border-radius: 10px;
-  flex-direction: column;
-
-
-}
-
-.required {
-  color: red;
-  margin-left: 4px;
-}
-
-.dropdown {
-  position: relative;
-  z-index: 999;
-}
-
-.selected {
-  // text-decoration: underline;
-  font-weight: bold;
-  color: white;
-  background-color: #3E68B9;
-  height: 50px;
-  border-radius: 10px 10px 0px 0px;
-  margin-bottom: 0px;
-  width: 150px;
-
-}
-
-.chooseSelect {
-  color: white;
-  background-color: #3E68B9;
-  height: 50px;
-  border-radius: 10px 10px 0px 0px;
-  margin-bottom: 0px;
-  margin-top: 5px;
-  width: 150px;
-  padding-top: 10px;
-  padding-left: 25px;
-
-}
-
-.notChooseSelect {
-  padding-top: 5px;
-  padding-left: 10px;
-  color: black;
-
-}
-
-
-
-button {
-  padding: 10px 20px;
-  margin: 5px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 16px;
-  margin-left: 27px;
-}
-.buttonQuality{
-  margin-left: 30px;
-
-}
-
-#riskTypeDiv {
-  display: flex;
-  flex-direction: row;
-
-
-
-}
-
-.chooseRisk {
-  margin-top: 10px;
-  margin-left: 20px;
-
-}
-
-.riskDiv {
-  margin-left: 20px;
-}
-
-.isSelect {
-  display: block;
-}
-
-.isSelectNot {
-button{
-  visibility: hidden;
-
-}
-
-}
-.chooseType{
-  display: flex;
-  flex-direction: row;
-  gap: 90px;
-  margin-right: 50px;
-  // margin-bottom: 30px;
-
-}
-.chooseContainer{
-
+.container{
+  background-color: var( --primary-color) ;
   padding: 10px;
-  height: 150px;
-  width: 170px;
-  justify-content: center;
-  align-content: center;
-  border-radius: 10px;
-  box-shadow: 0px 4px 8px rgba(62, 104, 185, 0.5);
+  border-radius: 7px;
+}
+
+.form-Container{
+  background-color: var(--accent-color);
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  border-left: 20px solid var(--secondary-color);
+}
+
+.required{
+  color: red;
+}
+
+.risk-type-label label{
+  font-weight: 600;
+  display: block;
+  margin-bottom: 5px;
+  color: #555;
+}
+
+.riskType-radioButton-container{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5vw;
+}
+
+.riskType-radioButton{
+  label{
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    color: #4d4d4d;
+    gap: 5px;
+  }
+}
+
+input[type="radio"] {
+  width: 20px;
+  height: 20px;
+  appearance: none;
+  -webkit-appearance: none;
+  border: 2px solid var(--secondary-color);
+  border-radius: 50%;
+  background-color: var(--accent-color);
   cursor: pointer;
+  position: relative;
+}
 
+input[type="radio"]:checked::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 15px;
+  height: 15px;
+  background-color: var(--secondary-color);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: background-color 0.2s ease;
+}
 
-
+input[type="radio"]:hover {
+  border-color: var(--foreground-color);
 }
 
 
-#chooseContainerQuality,#chooseContainerSecurity,#chooseContainerPrivacy{
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  justify-content: center;
-  align-content: center;
-  box-shadow: 0px 4px 8px rgba(62, 104, 185, 0.5); /* Initial shadow */
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  overflow: hidden; /* Hide the overflowing drops */
 
+
+
+
+/* For devices with a maximum width of 768px (tablets and smaller) */
+@media (max-width: 768px) {
+  .container {
+    padding: 8px;
+    border-radius: 5px;
+  }
+
+  .form-Container {
+    padding: 15px;
+    border-left: 10px solid var(--secondary-color);
+    box-shadow: none;
+  }
+
+  .riskType-radioButton-container {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .riskType-radioButton label {
+    font-size: 14px;
+    gap: 3px;
+  }
+
+  input[type="radio"] {
+    width: 18px;
+    height: 18px;
+  }
+
+  input[type="radio"]:checked::after {
+    width: 12px;
+    height: 12px;
+  }
 }
 
-#chooseContainerPrivacy:hover{
-  transform: translateY(-10px); /* Moves the container up */
-  box-shadow: 0px 6px 12px rgba(62, 104, 185, 0.7); /* Stronger shadow effect on hover */
-}
-#chooseContainerQuality:hover{
-  transform: translateY(-10px); /* Moves the container up */
-  box-shadow: 0px 6px 12px rgba(62, 104, 185, 0.7); /* Stronger shadow effect on hover */
+/* For devices with a maximum width of 480px (mobile phones) */
+@media (max-width: 480px) {
+  .container {
+    padding: 5px;
+    border-radius: 3px;
+  }
 
-}
-#chooseContainerSecurity:hover{
-  transform: translateY(-10px); /* Moves the container up */
-  box-shadow: 0px 6px 12px rgba(62, 104, 185, 0.7); /* Stronger shadow effect on hover */
+  .form-Container {
+    padding: 10px;
+    border-left: 5px solid var(--secondary-color);
+  }
 
+  .riskType-radioButton-container {
+    gap: 8px;
+  }
+
+  .riskType-radioButton label {
+    font-size: 12px;
+    gap: 2px;
+  }
+
+  input[type="radio"] {
+    width: 16px;
+    height: 16px;
+  }
+
+  input[type="radio"]:checked::after {
+    width: 10px;
+    height: 10px;
+  }
 }
+
+
+
+
+
+
 
 
 

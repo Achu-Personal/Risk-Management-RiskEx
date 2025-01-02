@@ -1,40 +1,83 @@
-table {
+
+
+/* Table */
+.table-container {
+
+  padding: 0;
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0px 1px 3px #979797;
+  border: 1px solid #D0C6B6;
+  width: 88%;
+  font-family: 'Arial', sans-serif;
+  position: fixed;
+  overflow-y: auto;
+  margin-left: -20px;
+
+}
+
+thead{
+
+  tr{
+    z-index: 10; 
+    th{
+      text-align: center;
+      cursor: pointer;
+    }
+  }
+  
+
+}
+.bord{
+  position: sticky;
+  top: 0;
+  z-index: 20;//1000
+
+  tr{
+    border: 2px solid #c1bdbd;
+  }
+}
+.tabledata {
   width: 100%;
-  border-collapse: collapse; /* Ensures no double borders */
-  // border: 1px solid #3e68b9; /* Outer border color */
-  border-radius: 8px; /* Rounded edges for the table */
-  overflow: hidden; /* Prevents borders from overlapping */
-}
+  border-collapse: collapse;
+  background: #ffffff;
+  margin: 0;
 
-thead {
-  background-color: #F6FBFF;
-}
 
-thead th {
-  padding: 12px 8px;
-  // border-bottom: 2px solid #3e68b9; /* Only bottom border */
+}
+.table-container::-webkit-scrollbar{
+  width: 0;
+  height: 0;
+}
+.tabledata th,
+.tabledata td {
+  padding: 15px 15px;
   text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.tabledata th {
+  background-color: #e6e1d7;
+  color: #0f0f0f;
   font-weight: bold;
-  color: #333; /* Adjust header text color */
+  font-size: 13px;
 }
 
-tbody tr:nth-child(odd) {
-  background-color: #FFFFFF; /* White for odd rows */
+
+
+.tabledata tbody tr:hover {
+  background: #f1eadd;
 }
 
-tbody tr:nth-child(even) {
-  background-color: #F6FBFF; /* Light blue for even rows */
+.tabledata tbody td {
+  font-size: 14px;
+  color: #555;
+  vertical-align: middle;
+  text-align: center;
+
 }
 
-tbody tr td {
-  padding: 10px 8px;
-  // border-bottom: 1px solid #ddd; /* Subtle bottom border between rows */
-  color: #555; /* Adjust text color for table data */
-}
 
-tbody tr:last-child td {
-  border-bottom: none; /* Remove border from the last row */
-}
 
 .text-center {
   text-align: center;
@@ -42,21 +85,24 @@ tbody tr:last-child td {
   font-style: italic;
 }
 
-/* Optional: Add hover effect for rows */
+
 tbody tr:hover {
-  background-color: #e3f2fd; /* Slightly darker blue on hover */
+  background-color: rgba(208, 198, 182, 0.2);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+  transform: translateY(-1px);  
+  transition: box-shadow 0.2s ease-in-out, transform 0.2s ease-in-out;  
   cursor: pointer;
 }
+tbody{
+tr{
+  z-index: -1;
+  overflow-y: auto;
 
-
-.bord{
-  border: 2px solid #c1bdbd;
- padding: 10px;
+}
 }
 
 
-
-.table-responsive {
+.tablestyle {
   .tooltip {
       position: relative;
       display: inline-block;
@@ -98,6 +144,7 @@ tbody tr:hover {
 }
 .icon-display{
   display: flex;
+  margin-left: 30px;
 }
 .icon {
   width: 30px;
@@ -134,7 +181,7 @@ tbody tr:hover {
 
 /* Container for toggle switch */
 .toggle-container {
-  margin: 20px;
+  // margin: 20px;
   text-align: center;
   display: flex;
   gap: 10px;
@@ -188,24 +235,87 @@ input:checked + .slider:before {
   transform: translateX(26px);
 }
 
-
-
 .green-background {
-  // background-color: #24e724;  /* Light Green */
-  // border: 2px solid #188a18;  /* Dark Green */
-  // // padding: 5px;
-  // border-radius: 5px;
   color: #188a18;
-  // width: 70px;
-
- 
 }
 
 .red-background {
-  // background-color: #fc3a36;  /* Light Red */
-  // border: 2px solid #e20707;  /* Dark Red */
-  // // padding: 5px;
-  // border-radius: 5px;
   color: #fc3a36;
-  // width: 70px;
+  
+}
+
+
+
+.eye-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.eye-icon:hover {
+  stroke: #3e68b9;
+  transition: stroke 0.3s ease-in-out;
+}
+
+
+/* Define colors for risk statuses */
+.open {
+  
+  
+  color: red;
+  font-weight: bold;
+  padding: 10px;
+  background-color: #edd4d5;
+  // border: 1px solid #420c0c ;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.closed {
+  
+  color: green;
+  font-weight: bold;
+  padding: 10px;
+  // border: 1px solid #0c4219 ;
+  background-color: #d4edda;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.unknown {
+  color: gray;
+}
+
+.green-risk {
+ 
+  color: green;
+  font-weight: bold;
+  padding: 5px;
+  border-radius: 10px;
+  text-align: center;
+  height: 35px;   
+  width: 65px;   
+}
+
+.yellow-risk {
+  
+  color: rgb(189, 189, 7);
+  font-weight: bold;
+  padding: 5px;
+  border-radius: 10px;
+  text-align: center;
+  height: 35px;   
+  width: 65px;  
+}
+
+.red-risk {
+  
+  color: red;
+  font-weight: bold;
+  padding: 5px;
+  border-radius: 10px;
+  text-align: center;
+  height: 35px;   
+  width: 65px;  
+  
 }

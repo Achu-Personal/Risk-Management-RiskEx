@@ -1,25 +1,83 @@
 // @import 'ngx-owl-carousel-o/lib/styles/scss/owl.carousel';
 // @import 'ngx-owl-carousel-o/lib/styles/scss/owl.theme.default';
 @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css");
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
-body{
-
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+body {
   font-family: "Inter", sans-serif;
 
+}
 
+:root {
+  // --primary-color: #f4f1ec;
+  --primary-color: #f4f1ec;
+  --foreground-color: #4d4d4d;
+  // --secondary-color:#d0c6b6;
+  --secondary-color:#d0c6b6;
+  --accent-color:white;
+  --selection-color:#FFCB22;
+  --primary-text-color:#4D4D4D;
+  --secondary-text-color:#4D4D4D;
+  --button-color:#3e68b9
 }
 
 
-.primaryColor
+:default {
+
+  --primary-color: #f4f1ec;
+  --foreground-color: #4d4d4d;
+
+  --secondary-color:#d0c6b6;
+  --accent-color:white;
+  --selection-color:#FFCB22;
+  --primary-text-color:#4D4D4D;
+  --secondary-text-color:white;
+  --button-color:#3e68b9
+}
+
+
+
+.light-theme {
+  --primary-color: #F3F4F7;
+  --foreground-color: #333333;
+  --secondary-color: #f0e6d6;
+  --accent-color: white;
+  --selection-color: #ffcb22;
+  --primary-text-color: #1a1a1a;
+  --secondary-text-color: #333333;
+  --button-color: #0056b3;
+}
+
+.dark-theme {
+  --primary-color: #292640;
+  --foreground-color: #999999;
+  --secondary-color: #282828;
+  --accent-color: #252C47;
+  --selection-color: #4db6ac;
+  --primary-text-color: #ffffff;
+  --secondary-text-color: #ffffff;
+  --button-color: #304ffe;
+}
+
+.stylish-blue
 {
-  background-color: #F6FBFF;
+  --primary-color: #F1F5F8;
+  --foreground-color: #999999;
+  --secondary-color: #282828;
+  --accent-color: #7E4EFC;
+  --selection-color: #4db6ac;
+  --primary-text-color: #ffffff;
+  --secondary-text-color: #808080;
+  --button-color: #304ffe;
 }
-.button-color{
-  background-color: #3e68b9;
-  color: white;
+
+
+
+
+
+.button-color {
+  background-color: var(--foreground-color)  ;
+  color: var(--secondary-text-color);
 }
-.shadowType1
-{
+.shadowType1 {
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-
 }

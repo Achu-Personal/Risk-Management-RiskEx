@@ -2,10 +2,10 @@
 .Detailscard
 {
   width: 100%;
-  height: 40vh;
+  height: 50vh;
   border-radius: 10px;
   padding: 1px;
-  background-color: #F6FBFF;
+  background-color: var(--accent-color);
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
   box-sizing: border-box;
 
@@ -20,6 +20,9 @@
   width: 100%;
   align-items: center;
   justify-content: space-between;
+  box-sizing: border-box;
+  padding: 20px;
+
 }
 
 .Detailscard>div>div
@@ -28,9 +31,10 @@
   display: flex;
   flex-direction: column;
   align-items:start;
-  padding: 20px;
+
   height: 100%;
   width: 80%;
+  box-sizing: border-box;
 }
 
 .risk-number-type-and-edit-button
@@ -72,17 +76,18 @@
 .risk-code>h5{
   font-size: 15px;
   margin: 0px;
+  color: var(--primary-text-color);
 }
-.rating-card{
-  margin-right: 50px;
-}
+
 .riskdesc{
   width: 70%;
 }
 p{
   font-size: 2.2vh;
+  color: var(--primary-text-color);
 }
 
 h5{
   font-size: 2.7vh;
+  color: var(--primary-text-color);
 }

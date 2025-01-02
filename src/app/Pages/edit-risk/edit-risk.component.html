@@ -1,17 +1,13 @@
 
-<app-body-container backgroundColor="transparent" padding="0" [showShadow]="false">
+<app-body-container backgroundColor="var(--secondary-color)"padding="10">
   <div class="container">
     <div class="content">
-
       @if (riskType==="Quality"){
-        <app-qms-edit></app-qms-edit>
-
+        <app-qms-form></app-qms-form>
       }
       @if (riskType==="Security" ||riskType==="Privacy"){
-        <app-isms-edit></app-isms-edit>
-
+        <app-isms-form></app-isms-form>
       }
-
     </div>
   </div>
 </app-body-container>

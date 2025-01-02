@@ -1,12 +1,12 @@
-import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
+import { Component, Input} from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ApiService } from '../../Services/api.service';
 import { DropdownComponent } from "../../UI/dropdown/dropdown.component";
 import { ButtonComponent } from "../../UI/button/button.component";
 import { CommonModule } from '@angular/common';
 import { TextareaComponent } from "../../UI/textarea/textarea.component";
 import { OverallRatingCardComponent } from "../../UI/overall-rating-card/overall-rating-card.component";
 import { BodyContainerComponent } from "../body-container/body-container.component";
+import { ApiService } from '../../Services/api.service';
 
 
 @Component({
@@ -18,129 +18,186 @@ import { BodyContainerComponent } from "../body-container/body-container.compone
 })
 export class QMSFormComponent {
 
-  @Input() riskTypeValue: string=''
-  data:any
-  @Output() sendDataToParent = new EventEmitter<object>();
-  isCustomSelected = false;
+@Input() riskTypeValue: number=1
+result: number = 0;
+reviewerNotInList:boolean=false
+assigneeNotInList:boolean=false
+isAdmin:string='admin'
+likelihoodValue:number=0
+impactValue:number=0
+riskFactor:number=0
+riskId:string='sfm_003'
+dropdownDataLikelihood: any[] = []
+dropdownDataImpact:any[]=[]
+dropdownDataProject:any[]=[]
+department:string='SFM'
 
-  selectedValue1: number  = 0;
-  selectedValue2: number = 0;
-  result: number = 0;
-
-
-
-  qmsForm=new FormGroup({
-    riskType:new FormControl(''),
-    status:new FormControl(''),
-    riskName:new FormControl('',Validators.required),
-    description:new FormControl('',[Validators.maxLength(1000),Validators.minLength(15),Validators.required]),
-    riskImpact:new FormControl('',[Validators.maxLength(1000),Validators.minLength(15),Validators.required]),
-    projectId:new FormControl(''),
-    likelihood:new FormControl('',Validators.required),
-    impact:new FormControl('',Validators.required),
-    mitigation:new FormControl('',[Validators.maxLength(1000),Validators.minLength(15),Validators.required]),
-    contingency:new FormControl(''),
-    responsibilityOfAction:new FormControl('',[Validators.maxLength(20),Validators.minLength(5),Validators.required]),
-    plannedActionDate:new FormControl('',Validators.required),
-    reviewer:new FormControl('',Validators.required)
+constructor(private api:ApiService){}
 
 
-  })
-
-  dropdownDataLikelihood=[
-    {"type":"Very Low","value":"0.1"},
-    {"type":"Low","value":"0.2"},
-    {"type":"Medium","value":"0.4"},
-    { "type":"High","value":"0.8"},
-    { "type":"Very High","value":"1"},
-  ];
-
-  dropdownDataImpact=[
-    {"type":"Very Low","value":"10"},
-    {"type":"Low","value":"20"},
-    {"type":"Medium","value":"40"},
-    { "type":"High","value":"80"},
-    { "type":"Very High","value":"100"},
-  ];
-
-  dropdownDataReviewer=[
-    {"name":"Achu s nair","email":"123"},
-    {"name":"Shamna Sherin","email":"123"},
-    {"name":"Deepak Denny","email":"123"},
-    { "name":"Bindhya C Philip","email":"123"},
-    { "name":"Vivek V N","email":"123"},
-  ];
+qmsForm=new FormGroup({
 
 
 
+  riskName:new FormControl('',Validators.required),
+  description:new FormControl('',[Validators.maxLength(1000),Validators.minLength(15),Validators.required]),
+  impact:new FormControl('',[Validators.maxLength(1000),Validators.minLength(15),Validators.required]),
+  projectId:new FormControl(''),
+  likelihood:new FormControl('',Validators.required),
+  impactValue:new FormControl('',Validators.required),
+  mitigation:new FormControl('',[Validators.maxLength(1000),Validators.minLength(15),Validators.required]),
+  contingency:new FormControl(''),
+  responsibileUserId:new FormControl('',[Validators.maxLength(20),Validators.minLength(5),Validators.required]),
+  plannedActionDate:new FormControl('',Validators.required),
+  reviewerId:new FormControl('',Validators.required),
+  DepartmentId:new FormControl(''),
+  userId:new FormControl(''),
+  externalReviewerId:new FormControl(''),
 
 
-  autoResize(event: Event): void {
-    const textarea = event.target as HTMLTextAreaElement;
-    textarea.style.height = 'auto'; // Reset height to recalculate
-    textarea.style.height = `${textarea.scrollHeight}px`; // Set height to match content
+})
+
+
+
+// dropdownDataLikelihood=[
+//   { "type":"Select Likelihood","value":""},
+//   {"type":"Low","value":"1"},
+//   {"type":"Medium","value":"2"},
+//   { "type":"High","value":"3"},
+//   { "type":"Critical","value":"4"}
+// ];
+
+// dropdownDataImpact=[
+//   { "type":"select Impact","value":""},
+//   {"type":"Low","value":"1"},
+//   {"type":"Medium","value":"2"},
+//   { "type":"High","value":"3"},
+//   { "type":"Critical","value":"4"}
+// ];
+
+dropdownDataReviewer=[
+  {"name":"Select--","email":""},
+  {"name":"Achu s nair","email":"1"},
+  {"name":"Shamna Sherin","email":"2"},
+  {"name":"Deepak Denny","email":"3"},
+  { "name":"Bindhya C Philip","email":"4"},
+  { "name":"Vivek V N","email":"5"},
+];
+
+// dropdownDataProject=[
+//   {"name":"Select--","id":""},
+//   {"name":"japanese training","id":"1"},
+//   {"name":"risk management","id":"2"},
+//   {"name":"pit-stop","id":"3"},
+//   { "name":"query management","id":"4"},
+//   { "name":"HR inventory","id":"5"},
+// ];
+
+dropdownDataDepartment=[
+  {"name":"Select--","id":""},
+  {"name":"SFM","id":"1"},
+  {"name":"ACE","id":"2"},
+  {"name":"HR","id":"3"},
+  { "name":"L&D","id":"4"},
+  { "name":"DU1","id":"5"},
+];
+
+autoResize(event: Event): void {
+  const textarea = event.target as HTMLTextAreaElement;
+  const minHeight = 40;
+  textarea.style.height = 'auto';
+  textarea.style.height = `${Math.max(minHeight, textarea.scrollHeight)}px`;
+}
+
+isReviewerNotInList(){
+  this.reviewerNotInList=!this.reviewerNotInList
+}
+
+isAssigneeNotInList(){
+  this.assigneeNotInList=!this.assigneeNotInList
+}
+
+onDropdownChangelikelihood(value: any): void {
+ this.likelihoodValue = value ? parseFloat(value.target.value) : 0;
+ this.calculateOverallRiskRating();
+}
+
+onDropdownChangeImpact(value: any): void {
+  this.impactValue = value ? parseFloat(value.target.value) : 0;
+  this.calculateOverallRiskRating();
+}
+
+calculateOverallRiskRating(){
+  if(this.likelihoodValue !=0 && this.impactValue !=0){
+    this.result=this.likelihoodValue * this.impactValue
   }
+  this.riskFactor=this.result
+}
 
-
-
-  onsubmit(){
-
-
-  if (this.qmsForm.valid) {
-
-    this.qmsForm.get('riskType')?.setValue(this.riskTypeValue);
-    this.qmsForm.get('status')?.setValue("open");
-    console.log("Updated riskType value:", this.qmsForm.get('riskType')?.value);
-    const formValue = this.qmsForm.getRawValue();
-    this.sendDataToParent.emit(this.qmsForm.value);
-    console.log("Actual data:", formValue);
-    alert("saved successfull")
-  } else {
-    this.qmsForm.markAllAsTouched();
-    alert("Form is invalid. Please fill out all required fields.");
+changeColorOverallRiskRating(){
+  if(this.result<30){
+    return '#6DA34D';
+  }
+  if(this.result>31 && this.result<99){
+    return '#FFC107'
+  }
+  else{
+    return '#D9534F'
   }
 }
 
- onDropdownChange1(value: any): void {
-   this.selectedValue1 = value ? parseFloat(value.target.value) : 0; // Convert string value to number
-   this.updateResult();  // Update the result when a value is selected
-    }
+ngOnInit(){
+  console.log(this.riskTypeValue);
+  this.api.getLikelyHoodDefinition().subscribe((res:any)=>{
+    this.dropdownDataLikelihood=res;
+  })
+  this.api.getImpactDefinition().subscribe((res:any)=>{
+    this.dropdownDataImpact=res
+  })
+  this.api.getProjects(this.department).subscribe((res:any)=>{
+    this.dropdownDataProject=res
+  })
 
-    // Method to handle value change for the second dropdown
-    onDropdownChange2(value: any): void {
-      this.selectedValue2 = value ? parseFloat(value.target.value) : 0; // Convert string value to number
-      this.updateResult();  // Update the result when a value is selected
-    }
+}
 
-    // Method to calculate the multiplication of both selected values
-    updateResult(): void {
-      const val1 = this.selectedValue1 ?? 0;  // If null or undefined, default to 0
-      const val2 = this.selectedValue2 ?? 0;  // If null or undefined, default to 0
+onSubmit(){
+  const formValue = this.qmsForm.value;
+  const payload = {
+    riskId:this.riskId ,
+    riskName: formValue.riskName ,
+    description: formValue.description,
+    riskType:this.riskTypeValue ,
+    impact: formValue.impact ,
+    mitigation: formValue.mitigation,
+    contingency: formValue.contingency || null,
+    overallRiskRating:this.result ,
+    responsibleUserId: formValue.responsibileUserId,
+    plannedActionDate: formValue.plannedActionDate ,
+    departmentId: formValue.DepartmentId,
+    projectId: formValue.projectId ? +formValue.projectId : null,
+    riskAssessments: [
+      {
+        likelihood: formValue.likelihood ,
+        impact: formValue.impactValue ,
+        isMitigated: false,
+        assessmentBasisId:null,
+        riskFactor:this.riskFactor ,
+        review: {
+          userId: formValue.reviewerId ? +formValue.reviewerId : null,
+          externalReviewerId:null,
+          comments:null,
+          reviewStatus:1,
+        },
+      },
+    ],
+  };
+  this.api.addnewQualityRisk(payload).subscribe(res=>{
+    console.log(res);
+  })
 
-    //   if (val1 !== 0 && val2 !== 0) {
-    //     this.result = parseFloat((val1 * val2).toFixed(2));  // Multiply if both values are non-zero
-    //   } else {
-    //     this.result = 0;  // Default to 0 if either value is not selected
-    //   }
-
-
-    if (this.selectedValue1 !== 0 && this.selectedValue2 !== 0) {
-      // If both dropdowns are selected, calculate the multiplication result and set it to `a`
-      this.result = parseFloat((val1 * val2).toFixed(2));
-    } else if (this.selectedValue1 !== 0) {
-      // If only the first dropdown is selected, update `a` with the first value
-      this.result = this.selectedValue1;
-    } else if (this.selectedValue2 !== 0) {
-      // If only the second dropdown is selected, update `a` with the second value
-      this.result= this.selectedValue2;
-    }
-
-    }
+  console.log("api for add is ",payload);
 
 
 
-
-
-
-
+}
 }

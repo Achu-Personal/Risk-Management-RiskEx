@@ -1,4 +1,4 @@
-<div class="container">
+<!-- <div class="container">
   <div class="form">
     <form [formGroup]="ismsForm"  (ngSubmit)="onsubmit()">
       <div class="field" id="editableDiv">
@@ -169,7 +169,6 @@
           </div>
 
         </div>
-        <!-- <app-textarea label="Responsibility Of Action" isRequired="*" formControlName="responsibilityOfAction"></app-textarea> -->
         <app-textarea label="Responsibility Of Action"  marginLeft="10" formControlName="responsibilityOfAction"></app-textarea>
 
         <div class="reviewer">
@@ -218,7 +217,11 @@
         <div class="action">
           <div>
             <button type="submit" value="Save" class="savecancel">Save</button>
-            <button value="Cancel" id="cancelbtn" class="savecancel">Cancel</button>
+          </div>
+          <div>
+            <button value="Cancel" id="cancelbtn" class="savecancel" (click)="onCancel()">Cancel</button>
+
+
           </div>
         </div>
 
@@ -226,4 +229,55 @@
     </form>
   </div>
 </div>
+ -->
 
+
+
+ <div class="content">
+  <form action="">
+    <div class="form-details-sub-container">
+      <h2>Risk Details
+        <button (click)="toggleEdit()" class="icon-btn">
+         <i [ngClass]="isEditable ? 'fas fa-save' : 'fas fa-pen'"[title]="isEditable ? 'Save changes' : 'Edit details'"></i>
+        </button>
+      </h2>
+      <div class="form-row">
+        <div class="form-detail">
+          <label for="riskName">Risk Name</label>
+          <p>risk name is here</p>
+        </div>
+        <div class="form-detail">
+          <label for="Project">Project Name</label>
+          <p>project name is here</p>
+        </div>
+      </div>
+      <div class="form-detail">
+        <label for="description">Risk Description</label>
+        <textarea id="description" rows="2" placeholder="Enter description" (input)="autoResize($event)" [readonly]="!isEditable"></textarea>
+      </div>
+      <div class="form-detail">
+        <label for="impact">Impact Of Risk</label>
+        <textarea id="impact" rows="2" placeholder="Enter impact" (input)="autoResize($event)" [readonly]="!isEditable"></textarea>
+      </div>
+    </div>
+    <div class="form-details-sub-container">
+      <h2>Current Risk Assessment</h2>
+
+    </div>
+
+    <div class="form-details-sub-container">
+      <h2>Risk Management</h2>
+
+    </div>
+    <div class="form-details-sub-container">
+      <h2>Action Plan</h2>
+
+    </div>
+    <div class="form-details-sub-container">
+      <h2>Reviewer</h2>
+
+    </div>
+
+
+  </form>
+</div>

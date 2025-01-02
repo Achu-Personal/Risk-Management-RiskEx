@@ -1,7 +1,12 @@
-import { Component, Input } from '@angular/core';
+import { filter } from 'rxjs';
+import { Component, computed, effect, Input } from '@angular/core';
 import { LikelihoodImpactCardComponent } from "../../UI/likelihood-impact-card/likelihood-impact-card.component";
 import { PrivacySecurityRiskAssessment } from '../../Interfaces/RiskInterFaces.interface';
 import { OverallRatingCardComponent } from '../../UI/overall-rating-card/overall-rating-card.component';
+import { GlobalStateServiceService } from '../../Services/global-state-service.service';
+import { Step } from '../../Interfaces/Stepper.interface';
+import { ApiService } from '../../Services/api.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-risk-details-section3-mitigation',
@@ -13,23 +18,58 @@ import { OverallRatingCardComponent } from '../../UI/overall-rating-card/overall
 export class RiskDetailsSection3MitigationComponent {
 
   @Input() title=""
-  // @Input() beforeMitigation!:PrivacySecurityRiskAssessment;
-  // @Input() afterMitigation!:PrivacySecurityRiskAssessment;
-
-
-  //here it is any because Two types of data can come. one that of  privacySecurity  and quality
-  @Input() beforeMitigation!:any;
-  @Input() afterMitigation!:any;
   @Input() type=""
-
+  @Input() riskId=""
   @Input() status:string="";
+  @Input() riskAssessments!:any;
+
+  riskAssessmentBefore:any=[]
+  riskAssessmentAfter:any=[]
+  overallRiskRatingBefore=0;
+  overallRiskratingAfter=0;
 
 
 
 
 
 
+  sharedData = computed(() => this.sharedDataService.data());
+  approvalMessage: string = '';
+
+
+  constructor(private sharedDataService: GlobalStateServiceService,private api:ApiService,private route:ActivatedRoute)
+  {
+    effect(() => {
+      console.log(this.sharedData());
+    });
+  }
+
+
+  ngOnInit(): void {
+    const data = this.sharedData();
+    if (data && data.approve) {
+      this.approvalMessage = data.approve;
+      console.log("approvalMsg:",this.approvalMessage);
+      // Extract the message
+    }
+
+    setTimeout(()=>{
+      this.riskAssessmentAfter=this.riskAssessments.filter((e:any)=>e.isMitigated)
+
+      this.riskAssessmentBefore=this.riskAssessments.filter((e:any)=>!e.isMitigated)
+
+      this.riskAssessmentBefore.forEach((e:any)=>{
+      this.overallRiskRatingBefore += (e.impactMatix.value*e.likelihoodMatrix.value)
+      })
+
+      this.riskAssessmentAfter.forEach((e:any)=>{
+        this.overallRiskratingAfter += (e.impactMatix.value*e.likelihoodMatrix.value)
+    })
+    },1000)
 
 
 
+
+
+  }
 }

@@ -1,76 +1,455 @@
-.main{
-  width: 100%;
+
+.dashboard{
+  display: flex;
+  flex-direction: column;
   height: 100%;
-  border-radius: 20px;
-  background-color: #F1F5FF;
+  width: 100%;
 }
+.topbuttons{
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+  padding: 0;
+  // position: fixed;
+  margin-right: 25px;
+}
+.dropdown{
+  display: flex;
+  align-items: center;
+}
+
 .btn{
   font-size: 14px;
   border: none;
+  cursor: pointer;
   &:focus{
     outline: none;
     border: none;
   }
+  :hover{
+    // background-color: #0056b3;
+    color: white;
+    // border-color: #b34200;
+  }
 }
-.searchbuttons{
+// .btn:hover {
+//   background-color: #0056b3; /* Changes background on hover */
+// }
+.graphs{
   display: flex;
   flex-direction: row;
-  justify-content: end;
-
-
-  padding: 0;
+  justify-content: space-around;
+  // gap: 10px;
+  height: 100%;
+  width: 100%;
+  // padding-top: 40px;
 }
-.graphs{
-
+.graph1{
+  background-color:#D0C6B6 ;
+  height: 95%;
+  width: 50%;
+  border-radius: 20px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  margin-top: 8px;
-
 
 }
-
-
-.graphcard{
-  height:285px ;
-  width:395px ;
-  border-radius:20px ;
-  // border: 1px solid rgb(62, 104, 185, 75%) ;
-
-  padding: 15px;
-  box-shadow: 0px 0px 4px rgb(62, 104, 185, 50%);
+.leftside{
+  display: flex;
+  flex-direction: column;
+  gap: 115px;
+  justify-content: space-around;
+  padding: 30px;
+  // background-color: #4D4D4D;
+}
+.heading{
+  color: black;
+  // padding: 15px;
   h4{
-     color: rgb(9, 9, 9, 85%);
-     font-size: 18px;
-     font-weight: 500;
-
+    font-weight: 600;
   }
-
 }
-.dropdown{
-  margin-top: 7px;
+.labels{
+  // background-color: red;
+}
+.risk-indicator {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  span{
+    font-weight: bold;
+  }
+}
+.risk-indicator div {
+  width: 45px;
+  height: 12px;
+  margin-right: 10px;
+  border-radius: 5px;
+}
+.privacy-risk {
+  background-color: #FEE378;
+}
+.quality-risk {
+  background-color: #FE9578;
+}
+.security-risk {
+  background-color: #4D4D4D;
+}
+.rightside{
+  // background-color: red;
+  width: 65%;
+  height: 100%;
+  display: flex;
+  justify-content: end;
+  align-items: flex-end;
+
+
 }
 .graph2{
-  width: 235px;
+  background-color: #FFFFFF;
+  height: 95%;
+  width: 40%;
+  border-radius: 20px;
+}
+.riskratingcategory{
+  h4{
+    color: black;
+    font-weight: 600;
+    padding: 30px;
+  }
+}
+.forchart{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  height: 100%;
+
+}
+.graphchart{
+  width: 232px;
+  height: 232px;
+  margin-top: -35px;
+  margin-left: 30px;
+}
+.riskdetails{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  // gap: 10px;
+  // margin-top: 10px;
+  height: 100%;
+  width: 100%;
+}
+.urgentrisks{
+  background-color: #FFFFFF;
+  height: 95%;
+  width: 40%;
+  border-radius: 20px;
+  h5{
+    color: black;
+    font-weight: 600;
+    padding: 30px;
+  }
+}
+.maindiv1{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  // background-color: #FEE378;
+  margin-top: -25px;
   height: 235px;
+}
+.risk-card1 {
+  width: 91%;
+  height: 30%;
+  border-radius: 15px;
+  background-color: #F4F1EC;
+  margin-left: 25px;
+  // margin-top: -20px;
+}
+.top1{
+  display: flex;
+  flex-direction: row;
+}
+.risk-text1 {
+  font-weight: 500;
+  color: black;
+  padding: 15px;
+  font-size: 16px;
+}
+.bottom1{
+  display: flex;
+  flex-direction: row;
+  gap: 200px;
   margin-top: -10px;
-  margin-left: 60px;
+}
+.risk-date1 {
+  color: #666;
+  font-size: 13px;
+  padding-left: 17px;
+
+  width: 200px;
+}
+.view-risk-button1 {
+  background-color: black;
+  color: white;
+  border: none;
+  margin-top: -20px;
+  border-radius: 20px;
+  cursor: pointer;
+  width: 80px;
+  height: 30px;
+  font-weight: 500;
+  font-size: 12px;
+  margin-right: 10px;
+}
+.imprisk{
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  background-color: #FFFFFF;
+  height: 95%;
+  width: 50%;
+  border-radius: 20px;
+  h5{
+    color: black;
+    font-weight: 600;
+    padding: 30px;
+  }
+}
+.maindiv{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  // background-color: #FEE378;
+  margin-top: -25px;
+  height: 235px;
+}
+.risk-card {
+  width: 90%;
+  height: 30%;
+  border-radius: 15px;
+  background-color: #D0C6B6;
+  margin-left: 25px;
+  // margin-top: -20px;
+}
+.top{
+  display: flex;
+  flex-direction: row;
 
 }
-.graph1{
-  width: 370px;
-  height: 500px;
-  margin-top: 0px;
-  margin-left: 0px;
+.risk-text {
+  font-weight: 500;
+  color: black;
+  padding: 15px;
+  font-size: 16px;
+}
+.risk-count {
+  background-color:black;
+  color: #fff;
+  padding-left: 14px;
+  border-radius: 20px;
+  height: 25px;
+  width: 55px;
+  margin-top: 15px;
+}
+.bottom{
+  display: flex;
+  flex-direction: row;
+  gap: 350px;
+  margin-top: -10px;
+}
+.risk-date {
+  color: #666;
+  font-size: 13px;
+  padding-left: 17px;
+}
+.view-risk-button {
+  background-color: white;
+  color: black;
+  border: none;
+  margin-top: -20px;
+  border-radius: 20px;
+  cursor: pointer;
+  width: 120px;
+  height: 30px;
+  font-weight: 500;
+  font-size: 15px;
+}
+.circle {
+  position: relative;
+  border-radius: 50%;
+  // background-color: red;
+}
+.circlegraph{
+
+  width: 80%;
+  height: 100%;
+  position: relative;
+
 }
 
-.graph3{
+.graph2Legend
+{
+  height: 100px;
 
-  height: 700px;
-  // color: rgb(62, 104, 185, 0.85);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
 }
-.apptable{
+.graph2Legend>div
+{
+display: flex;
+flex-direction: row;
+align-items: center;
+gap: 20px;
 
-  width:100%
+
 
 }
+
+.graph2Legend>div>h5
+{
+font-size: 15px;
+font-weight: bold;
+margin: 0px;
+
+
+}
+.graph2Legend>div>h6
+{
+font-size: 15px;
+font-weight: bold;
+margin: 0px;
+color: grey;
+
+
+}
+.graph2Legend>div>div
+{
+  height: 20px;
+  width: 20px;
+  background-color: red;
+  border-radius: 50%;
+
+
+
+}
+.circle-1 {
+  width: 80%;
+  height: 80%;
+  background-color: #4D4D4D;
+  color: white;
+  text-align: center;
+  line-height: 50px;
+
+
+}
+.circle-2 {
+  width: 80%;
+  height: 80%;
+  background-color: #FEE378;
+  color: black;
+  text-align: center;
+  line-height: 150px;
+  font-size: 50px;
+
+
+
+}
+.circle-3 {
+  width: 80%;
+  height: 80%;
+  background-color: #FE9578;
+  color: black;
+  text-align: center;
+  line-height: 100px;
+  font-size: 30px;
+
+
+}
+
+.glass {
+
+  background: rgba(255, 255, 255, 0.2); /* Semi-transparent white */
+  height: 100%;
+  width: 100%;
+  border-radius: 50%;
+  padding: 20px;
+  backdrop-filter: blur(10px); /* Blur effect */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.4); /* Optional: adds light border */
+  color: white;
+  text-align: center;
+  position: absolute;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+
+// .xlbtn{
+//   font-size: 14px;
+//   border: none;
+//   &:focus{
+//     outline: none;
+//     border: none;
+//   }
+// }
+// .graphs{
+//   display: flex;
+//   flex-direction: row;
+//   justify-content: space-around;
+//   margin-top: 8px;
+// }
+// .graphcard{
+//   height:285px ;
+//   width:395px ;
+//   border-radius:20px ;
+//   // border: 1px solid rgb(62, 104, 185, 75%) ;
+//   padding: 15px;
+//   box-shadow: 0px 0px 4px rgb(62, 104, 185, 50%);
+//   h4{
+//      color: rgb(9, 9, 9, 85%);
+//      font-size: 18px;
+//      font-weight: 500;
+//   }
+// }
+// .dropdown{
+//   margin-top: 7px;
+// }
+// .graph2{
+//   width: 235px;
+//   height: 235px;
+//   margin-top: -10px;
+//   margin-left: 60px;
+// }
+// .graph1{
+//   width: 370px;
+//   height: 500px;
+//   margin-top: 0px;
+//   margin-left: 0px;
+// }
+// .graph3{
+//   height: 700px;
+//   // color: rgb(62, 104, 185, 0.85);
+// }
+// .apptable{
+//   width:100%
+// }
+
+
+
+
+
+
+
+
+
+
+

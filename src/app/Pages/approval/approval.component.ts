@@ -1,71 +1,98 @@
 import { Component } from '@angular/core';
-import { BodyContainerComponent } from "../../Components/body-container/body-container.component";
-import { RiskBasicDetailsCardComponent } from "../../Components/risk-basic-details-card/risk-basic-details-card.component";
-import { RiskDetailsSection2Component } from "../../Components/risk-details-section2/risk-details-section2.component";
-import {FormBuilder, FormControl,FormGroup,FormsModule,ReactiveFormsModule,} from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
-import { ConfirmDialogComponent } from '../../Components/confirm-dialog/confirm-dialog.component';
+import { BodyContainerComponent } from '../../Components/body-container/body-container.component';
+import { RiskBasicDetailsCardComponent } from '../../Components/risk-basic-details-card/risk-basic-details-card.component';
+import { RiskDetailsSection2Component } from '../../Components/risk-details-section2/risk-details-section2.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ApiService } from '../../Services/api.service';
+import { StyleButtonComponent } from '../../UI/style-button/style-button.component';
+import { ConfirmationPopupComponent } from '../../Components/confirmation-popup/confirmation-popup.component';
 import { ActivatedRoute } from '@angular/router';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-approval',
   standalone: true,
-  imports: [BodyContainerComponent, RiskBasicDetailsCardComponent, RiskDetailsSection2Component,FormsModule, ReactiveFormsModule],
+  imports: [
+    BodyContainerComponent,
+    RiskBasicDetailsCardComponent,
+    RiskDetailsSection2Component,
+    FormsModule,
+    ReactiveFormsModule,
+    StyleButtonComponent,
+    ConfirmationPopupComponent,NgIf
+    
+  ],
   templateUrl: './approval.component.html',
-  styleUrl: './approval.component.scss'
+  styleUrl: './approval.component.scss',
 })
 export class ApprovalComponent {
-
-  constructor(private fb: FormBuilder, private dialog: MatDialog,private route: ActivatedRoute) {
-    this.commentForm = this.fb.group({
-      approve: [''] // Initial value
+  data:any=[];
+  constructor(public api: ApiService, public route:ActivatedRoute) {}
+  ngOnInit(){
+    console.log("initial data:",this.data);
+    
+    let id = parseInt(this.route.snapshot.paramMap.get('id')!);
+    this.api.getRiskById(id).subscribe(e=>{
+      console.log("Data=",e)
+      this.data=e
+      console.log("data description",this.data.description);
     });
+    
+  }
+  
+
+
+  isPopupOpen = false;
+  popupTitle = '';
+  popupConfirmText = '';
+  showPopupComment = true;
+  isPopupReject = false;
+
+
+  isDataAvailable(): boolean {
+    return this.data && Object.keys(this.data).length > 0;
   }
 
-  async confirmAction(message: string): Promise<boolean> {
-    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      data: { message },
-      width: '400px'
 
-    });
+  openPopup(isReject: boolean) {
+    this.isPopupOpen = true;
+    this.isPopupReject = isReject;
 
-    return await dialogRef.afterClosed().toPromise();
+    if (isReject) {
+      this.popupTitle = 'Reject Risk';
+      this.popupConfirmText = 'Reject';
+    } else {
+      this.popupTitle = 'Approve Risk';
+      this.popupConfirmText = 'Approve';
+    }
   }
 
+  handlePopupConfirm(event: { comment: string }) {
+    this.isPopupOpen = false;
 
-  isButtonClicked:boolean = false;
-  commentForm = new FormGroup({
-  approve: new FormControl('')});
-  cancelMessage: string = "";
-  approveMessage: string = "";
-
-  async ApproveRisk() {
-  const confirmed = await this.confirmAction('Are you sure you want to approve this risk?');
-  if(confirmed){
-    console.log(this.commentForm.value);
-    this.approveMessage = "The risk has been approved, The status of the risk will be updated";
-    this.isButtonClicked= true;
+    if (this.isPopupReject) {
+      console.log('Risk rejected with comment:', event.comment);
+      // Perform rejection logic here
+      const updates = {
+        approvalStatus: "Rejected",
+        comments: event.comment 
+      };
+      let id = parseInt(this.route.snapshot.paramMap.get('id')!);
+      this.api.updateReviewStatusAndComments(id,updates);
+    } else {
+      console.log('Risk approved with comment:', event.comment);
+      const updates = {
+        approvalStatus: "Approved",
+        comments: event.comment 
+      };
+      let id = parseInt(this.route.snapshot.paramMap.get('id')!);
+      this.api.updateReviewStatusAndComments(id,updates);
+      
+    }
   }
 
-}
-
-async cancelRisk() {
-  const confirmed = await this.confirmAction('Are you sure you want to cancel?');
-  if(confirmed){
-    console.log(this.commentForm.value);
-    this.commentForm.reset();
-    this.cancelMessage = "The risk has been canceled as it was not approved. The owner will be notified shortly. ";
-    this.isButtonClicked=true
+  handlePopupCancel() {
+    this.isPopupOpen = false;
+    console.log('Popup canceled');
   }
-
-}
-approvalId!: string;
-
-
-ngOnInit(): void {
-  this.route.paramMap.subscribe((params) => {
-    this.approvalId = params.get('id') || ''; // Fetch the dynamic ID
-  });
-
-}
 }

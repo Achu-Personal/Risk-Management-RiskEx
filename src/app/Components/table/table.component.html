@@ -1,6 +1,8 @@
-<div class="table-container primaryColor">
-  <div class="top">
-    <div class="table-header">
+
+<!-- <div class="body"> -->
+
+    <div class="header1">
+      <div class="entries">
       <label for="entries">Show</label>
       <select id="entries" [(ngModel)]="itemsPerPage" (ngModelChange)="updatePaginatedItems()">
         <option value="10">10</option>
@@ -8,30 +10,25 @@
         <option value="50">50</option>
       </select>
       <label>entries</label>
-      <app-searchbar (searchChanged)="onSearch($event)"></app-searchbar>
-      <div class="btnn">
-        @if(isButtonVisible == true){
-          <button>Download Report</button>
-        }
-        <!-- <button>Download Report</button> -->
-
-      </div>
-
     </div>
-  </div>
-  <div class="table-responsive">
+      <app-searchbar (searchChanged)="onSearch($event)"></app-searchbar>
+
+   </div>
+  <div class="container1">
+    <div class="table-container1 fi">
     <table class="table1">
       <thead>
         <tr class="bord">
           <th>SL No</th>
-          <th>Risk ID</th>
+          <!-- <th>Risk ID</th> -->
           <th>Risk Name</th>
           <th>
-            <button class="dropdown-button" (click)="toggleDropdown()">
-              DEPARTMENT&#9662;
+            <div class="dropdown-container">
+            <button class="dropdown-button" (click)="toggleDepartmentDropdown()">
+              Department &#9662;
             </button>
-            @if(isDropdownOpen){
-            <ul class="dropdown-options">
+            @if(isDepartmentDropdownOpen ){
+            <ul [class.open]="isDepartmentDropdownOpen" class="dropdown-options">
 
               @for(department of uniqueDepartments;track department){
               <li
@@ -42,10 +39,29 @@
               <li (click)="onDepartmentSelect('')">All Departments</li>
             </ul>
             }
+          </div>
           </th>
-          <th>Type</th>
+          <th>
+            <div class="dropdown-container">
+            <button class="dropdown-button" (click)="toggleTypeDropdown()">
+              Risk Type &#9662;
+            </button>
+            @if(isTypeDropdownOpen ){
+            <ul [class.open]="isTypeDropdownOpen"  class="dropdown-options">
+
+              @for(type of uniqueRiskTypes;track type){
+              <li
+                (click)="onTypeSelect(type)">
+                {{ type }}
+              </li>
+            }
+              <li (click)="onTypeSelect('')">All Risk Types</li>
+            </ul>
+            }
+          </div>
+          </th>
           <th>End Date</th>
-          <th>Current Risk Rating</th>
+          <th>CRR</th>
           <th>Assignee</th>
           <th>Reviewer</th>
           <th>Review Status</th>
@@ -54,30 +70,35 @@
       </thead>
       <tbody>
         @for(item of paginatedItems ;track item){
-        <tr (click)="rowClick(item.id)">
-          <td>{{ item.slNo }}</td>
-          <td>{{ item.riskId }}</td>
+        <tr (click)="rowClick(item.id)" style="height:10px;">
+          <td>{{ item.id }}</td>
+          <!-- <td>{{ item.riskId }}</td> -->
           <td>{{ item.riskName }}</td>
-          <td>{{ item.department }}</td>
-          <td>{{ item.type }}</td>
-          <td>{{ item.endDate }}</td>
-          <td>{{ item.currentRiskRating }}</td>
-          <td>{{ item.assignee }}</td>
-          <td>{{ item.reviewer }}</td>
-          <td>{{ item.reviewStatus }}</td>
-          <td><div  [ngClass]="{'green-cell': item.status === 'Open', 'red-cell': item.status === 'Closed'}">{{ item.status }}</div></td>
-          <!-- <td>{{item}}</td> -->
+          <td>{{ item.departmentName }}</td>
+          <td>{{ item.riskType }}</td>
+          <td>{{ item.plannedActionDate| date: 'd MMM yyyy' }}</td>
+          <td><div [ngClass]="{'green-cell': item.overallRiskRating >= 12, 'red-cell': item.overallRiskRating >= 70, 'yellow-cell': item.overallRiskRating >= 50}">{{ item.overallRiskRating }}</div></td>
+          <td>{{ item.responsibleUser }}</td>
+          <td> {{item.riskAssessments[0].reviewer}}</td>
+          <td> {{item.riskAssessments[0].reviewStatus }}</td>
+          <!-- <td><div  [ngClass]="{'green-cell': item.status === 'Open', 'red-cell': item.status === 'Closed'}">{{ item.status }}</div></td> -->
+          <td><div>{{ item.riskStatus }}</div></td>
+
         </tr>
       }
       </tbody>
     </table>
-  </div>
-
+    </div>
+    <!-- <div class="foot"> -->
    @if(shouldDisplayPagination()){
     <app-pagination  [totalItems]="totalItems"
     [itemsPerPage]="itemsPerPage"
     [currentPage]="currentPage"
-    (pageChanged)="onPageChange($event)" class="pagination-controls pagination "></app-pagination>
+    (pageChanged)="onPageChange($event)" class="pagination-controls pagination ">
+
+    </app-pagination>
    }
 
+    <!-- </div> -->
   </div>
+<!-- </div> -->

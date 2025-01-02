@@ -1,218 +1,184 @@
-.field{
-  background-color: white;
-  width: 80vw;
- margin-left: 3px;
+.form-details-sub-container {
+  background-color: var(--accent-color);
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  border-left: 20px solid var(--secondary-color);
   margin-top: 10px;
-  padding: 30px;
-
-}
-input{
-  margin-left: 60px;
-  width:47.25vw;
-}
-textarea{
-  margin-left: 55px;
-  width:47.25vw;
-  height: 32px;
-  margin-top: 20px;
-  resize: none;
-    overflow: hidden;
-    box-sizing: border-box;
-
-
-
-}
-textarea:focus {
-  outline: none;
-  border-color: #007bff;
-}
-.impact{
-
-
-
-  textarea{
-    margin-left:33px ;
-    margin-top: 20px;
-  }
-
-}
-.project{
-  input{
-
-
-    margin-left: 82px;
-    margin-top: 20px;
-  }
 }
 .required{
   color: red;
-  margin-left: 4px;
 }
-.assessment{
-  margin-top: 20px;
-
+.form-details-sub-container h2 {
+  font-size: 1.4rem;
+  color: var(--secondary-color);
+  margin-bottom: 15px;
+  text-transform: uppercase;
+  border-bottom: 2px solid var(--secondary-color);
+  padding-bottom: 8px;
 }
-
-#thirdfield{
-  margin-bottom: 25px;
-  border-radius: 0px 0px 10px 10px ;
-}
-.text-danger{
-  margin-left: 155px;
-}
-#mitigationError{
-  margin-left: 250px;
-}
-
-
-
-#likelihoodDropdown{
-  margin-left: 30px;
-
-}
-#impactDropdown{
-  margin-left: 55px;
-}
-#textareaspace{
-
-  margin-top: 20px;
-  margin-left: 80px;
-
-
-}
-
-
-.textarea{
-  margin-left: 115px;
-}
-#review{
-  margin-left: 160px;
-  width: 47.25vw;
-
-}
-.reviewer{
-  margin-top: 20px;
-}
-#cancelbtn{
-  margin-left: 20px;
-}
-.action{
-  margin-top: 140px;
-  display: flex;
-  flex-direction: row;
-  justify-content: end;
-  margin-right: 150px;
-}
-.contingency,.description,.impact,.mitigation,.responsibility{
-  display: flex;
-  flex-direction: row;
-  .fieldlabel label{
-    margin-top: 30px;
-
-  }
-
-}
-.name,.project,.actionDate,.reviewer{
-  display: flex;
-  flex-direction: row;
-  div label{
-    margin-top: 10px;
-  }
-
-
-}
-.project{
-  .projectLabel label{
-    margin-top: 30px;
-  }
-
-}
-.actionDate{
-  .actionDateLabel label{
-    margin-top: 30px;
-
-  }
-}
-.assessmentDropdown{
-  margin-left: 30px;
-}
-#assessmentDropdownImpact{
-  margin-left: 53px;
-
-}
-.dropdown{
-
-  height: 30px;
-  border-radius: 10px;
-
-
-  margin-left: 160px;
-
-}
-#reviewerDropdown{
-  width:47.25vw;
-
-}
-.dropdownassessment{
-  height: 30px;
-  border-radius: 10px;
-  width:  13.33vw;
-
-}
-#dropdownassessmentLikelihood{
-  margin-left: 50px;
-}
-#dropdownassessmentimpact{
-  margin-left: 73px;
-}
-
-
-#risktype{
-  margin-left: 70px;
+.form-detail {
   margin-bottom: 20px;
+  width: 100%;
 }
-.savecancel{
-  border: 1px solid rgb(62, 104, 185, 75%) ;
-  cursor: pointer;
-  font-weight: 600;
-  border-radius: 8px;
-  // text-align: center;
-  // outline: none;
-  :focus
-  {
-    outline: none;
-    border: none;
-  }
 
+label {
+  margin-bottom: 5px;
+  font-weight: 600;
+  color: var(--foreground-color);
 }
-.firstDiv{
+
+input, textarea{
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background-color: #f9f9f9;
+  overflow: hidden;
+  resize: none;
+}
+
+
+input:focus, textarea:focus {
+  outline: none;
+  border-color: var(--secondary-color);
+  box-shadow: 0 0 5px rgba(62, 104, 185, 0.5);
+  background-color: #fff;
+}
+
+.form-row {
   display: flex;
-  flex-direction: row;
-  gap: 10px;
+  gap: 20px;
 }
-.riskRatingValueDiv{
+
+.form-row .form-group {
+  flex: 1;
+}
+
+.form-group {
   display: flex;
   flex-direction: column;
-  background-color: #548135;
-  color: white;
-  padding: 10px;
-  margin-top: 30px;
-  margin-left: 30px;
-  border-radius: 10px;
-  justify-content: center;
-  align-content: center;
+  margin-bottom: 15px;
+}
 
+a {
+  color:var(--secondary-color);
+  text-decoration: none;
 }
-.riskRatingDesc{
-  margin-top: 30px;
-}
-.riskRating{
-  // margin-top: 20px;
-  justify-content: center;
-  align-content: center;
+
+a:hover {
+  color:red;
 }
 
 
+
+
+
+.button-group {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.btn {
+  padding: 12px 25px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.btn.save {
+  background-color: #D0C6B6;
+  color: #fff;
+  box-shadow: 0 3px 6px rgba(62, 104, 185, 0.4);
+}
+
+.btn.save:hover {
+  background-color: #ebddc8;
+  box-shadow: 0 6px 10px rgba(62, 104, 185, 0.6);
+}
+
+.btn.cancel {
+  background-color: #e0e0e0;
+  color: #333;
+}
+
+.btn.cancel:hover {
+  background-color: #d4d4d4;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+
+
+
+@media (max-width: 768px) {
+  .form-details-sub-container {
+    padding: 15px;
+    border-left: 10px solid var(--secondary-color);
+    margin-top: 5px;
+  }
+
+  .form-details-sub-container h2 {
+    font-size: 1.2rem;
+    text-align: center;
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .form-row {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .form-group {
+    margin-bottom: 10px;
+  }
+
+  input, textarea {
+    font-size: 0.9rem;
+    padding: 8px;
+  }
+
+  .button-group {
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .btn {
+    width: 100%;
+    font-size: 0.9rem;
+  }
+}
+
+
+@media (max-width: 480px) {
+  .form-details-sub-container {
+    padding: 10px;
+  }
+
+  .form-details-sub-container h2 {
+    font-size: 1rem;
+    margin-bottom: 10px;
+  }
+
+  input, textarea {
+    font-size: 0.8rem;
+    padding: 6px;
+  }
+
+  .btn {
+    font-size: 0.8rem;
+    padding: 10px 20px;
+  }
+}
 
 
 

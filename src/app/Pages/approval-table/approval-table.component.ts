@@ -1,126 +1,170 @@
 import { Component } from '@angular/core';
-import { BodyContainerComponent } from "../../Components/body-container/body-container.component";
-import { approvalTableBody } from '../../Interfaces/approvalTable.interface';
-import { ReusableTableComponent } from "../../Components/reusable-table/reusable-table.component";
+import { BodyContainerComponent } from '../../Components/body-container/body-container.component';
+import { ReusableTableComponent } from '../../Components/reusable-table/reusable-table.component';
 import { Router } from '@angular/router';
-import { MatDialog } from '@angular/material/dialog';
-import { ConfirmDialogComponent } from '../../Components/confirm-dialog/confirm-dialog.component';
+import { ApiService } from '../../Services/api.service';
+import { AuthService } from '../../Services/auth.service';
 
 @Component({
   selector: 'app-approval-table',
   standalone: true,
-  imports: [ BodyContainerComponent, ReusableTableComponent],
+  imports: [BodyContainerComponent, ReusableTableComponent],
   templateUrl: './approval-table.component.html',
-  styleUrl: './approval-table.component.scss'
+  styleUrl: './approval-table.component.scss',
 })
 export class ApprovalTableComponent {
+  headerData: string[] = [];
+  // updates:any={};
+  //"SI NO",
+  headerDisplayMap: { [key: string]: string } = {
+    riskId: 'Risk ID',
+    riskName: 'Risk Name',
+    description: 'Description',
+    riskType: 'Risk Type',
+    riskDepartment: 'Department',
+    plannedActionDate: 'Planned Action Date',
+    overallRiskRating: 'CRR',
+    riskStatus: 'Risk Status',
+    reviewerName: 'Reviewer',
+    reviewerDepartment: 'Reviewer Department',
+  };
+
+  tableBodyAdmin: any[] = [
+    {
+      riskId: '',
+      riskName: '',
+      description: '',
+      riskType: '',
+      riskDepartment: 'N/A',
+      plannedActionDate: Date,
+      overallRiskRating: 0,
+      riskStatus: '',
+      reviewerName: 'N/A',
+      reviewerDepartment: 'N/A',
+    },
+  ];
+  tableBody: any[] = [
+    {
+      riskId: '',
+      riskName: '',
+      description: '',
+      riskType: '',
+      plannedActionDate: Date,
+      overallRiskRating: 0,
+      riskStatus: '',
+    },
+  ];
+
   commentForm: any;
-  isButtonClicked:boolean = false;
-  cancelMessage: string = "";
-  approveMessage: string = "";
+  isButtonClicked: boolean = false;
+  cancelMessage: string = '';
+  approveMessage: string = '';
+  isAdmin: boolean = false;
 
-  constructor( private dialog: MatDialog,private router: Router) {}
+  constructor(
+    private router: Router,
+    private api: ApiService,
+    public auth: AuthService
+  ) {}
 
+  ngOnInit(): void {
+    const role = this.auth.getUserRole(); // Fetch user role
+    this.isAdmin = role === 'Admin';
+    if (this.isAdmin) {
+      this.headerData = [
+        'riskId',
+        'riskName',
+        'description',
+        'riskType',
+        'riskDepartment',
+        'plannedActionDate',
+        'overallRiskRating',
+        'riskStatus',
+        'reviewerName',
+        'reviewerDepartment',
+      ];
 
-  OnClickRow(rowData:any): void {
-    this.router.navigate([`/approvals/${rowData.RiskId}`]);
-    console.log("rowdata",rowData);
-    
-  } 
- 
-
-approveRisk(): void {
-  const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-    data: { message: 'Are you sure you want to approve this risk?' },
-    width: '400px',
-  });
-
-  dialogRef.afterClosed().subscribe((result: any) => {
-    if (result) {
-      console.log('Risk approved!');
-      this.approveMessage = 'Risk has been approved successfully.';
+      this.api.getAllRisksTobeReviewed().subscribe((response: any) => {
+        this.tableBodyAdmin = response || [];
+      });
     } else {
-      console.log('Approval canceled.');
+      this.headerData = [
+        'riskId',
+        'riskName',
+        'description',
+        'riskType',
+        'plannedActionDate',
+        'overallRiskRating',
+        'riskStatus',
+      ];
+      this.api.getRisksByReviewerId().subscribe((response: any) => {
+        console.log('API Response:', response);
+      
+        // Ensure `response` is an array
+        if (Array.isArray(response)) {
+          // Format `plannedActionDate` for each object in the response array
+          this.tableBody = response.map((item: any) => {
+            return {
+              ...item,
+              plannedActionDate: this.formatDate(item.plannedActionDate), // Format date
+            };
+          });
+        } else {
+          console.error('Expected an array but got:', response);
+          this.tableBody = []; // Default to an empty array if the response is not valid
+        }
+      
+        console.log('tableBody:', this.tableBody);
+      });
+      
     }
-  });
-}
-
-// Open a confirmation dialog for rejecting a risk
-rejectRisk(): void {
-  const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-    data: { message: 'Are you sure you want to reject this risk?' },
-    width: '400px',
-  });
-
-  dialogRef.afterClosed().subscribe((result: any) => {
-    if (result) {
-      console.log('Risk rejected!');
-      this.cancelMessage = 'Risk has been rejected successfully.';
-    } else {
-      console.log('Rejection canceled.');
-    }
-  });
-}
-
-headerData:any=[
-  "SI NO"," RiskID","Risk","Description","EndDate","Type","Current Risk Rating","Status",
-];
-
-tableBody:approvalTableBody[]=[
-  {
-    SINo: 1,
-    RiskId: 'R001',
-    Risk: 'Data Breach',
-    Description: 'Potential unauthorized access to sensitive data.',
-    EndDate: new Date('2024-12-31'),
-    Type: 'Cybersecurity',
-    CurrentRating: 8,
-    Status: 'Active'
-    
-  },
-  {
-    SINo: 2,
-    RiskId: 'R002',
-    Risk: 'System Downtime',
-    Description: 'Critical application unavailability due to server failure.',
-    EndDate: new Date('2024-11-30'),
-    Type: 'Operational',
-    CurrentRating: 7,
-    Status: 'Resolved'
-    
-  },
-  {
-    SINo: 3,
-    RiskId: 'R003',
-    Risk: 'Regulatory Compliance',
-    Description: 'Non-compliance with new tax regulations.',
-    EndDate: new Date('2024-10-15'),
-    Type: 'Legal',
-    CurrentRating: 5,
-    Status: 'Pending Review'
-    
-  },
-  {
-    SINo: 4,
-    RiskId: 'R004',
-    Risk: 'Vendor Dependency',
-    Description: 'Over-reliance on a single vendor for critical operations.',
-    EndDate: new Date('2024-09-01'),
-    Type: 'Strategic',
-    CurrentRating: 6,
-    Status: 'Active'
-    
-  },
-  {
-    SINo: 5,
-    RiskId: 'R005',
-    Risk: 'Market Fluctuations',
-    Description: 'Adverse impact on revenue due to market changes.',
-    EndDate: new Date('2024-12-15'),
-    Type: 'Financial',
-    CurrentRating: 4,
-    Status: 'Monitoring'
   }
-];
 
+  OnClickRow(rowData: any): void {
+    this.router.navigate([`/approvals/${rowData.id}`]);
+    console.log('rowdata', rowData);
+  }
+
+
+  showApproveDialog = false;
+  showRejectDialog = false;
+  selectedRow: any;
+
+  formatDate(value: any): string {
+    if (!value) return '';
+    
+    if (typeof value === 'string' && value.includes('-')) {
+      const date = new Date(value);
+      if (!isNaN(date.getTime())) {
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0'); 
+        const year = date.getFullYear();
+        return `${day}-${month}-${year}`;
+      }
+    }
+    return value;
+  }
+
+  approveRisk(event: {row: any, comment: string}) {
+    const updates = {
+      approvalStatus: "Approved",
+      comments: event.comment 
+    };
+    let id = event.row.id;
+    this.api.updateReviewStatusAndComments(id,updates);
+    this.api.sendEmailToAssignee(id);
+    console.log('Approved:', event.row);
+    console.log('Comment:', event.comment);
+  }
+
+  rejectRisk(event: {row: any, comment: string}) {
+    const updates = {
+      approvalStatus: "Rejected",
+      comments: event.comment 
+    };
+    let id = event.row.id;
+    this.api.updateReviewStatusAndComments(id,updates);
+    console.log('Rejected:', event.row);
+    console.log('Comment:', event.comment);
+  }
 }

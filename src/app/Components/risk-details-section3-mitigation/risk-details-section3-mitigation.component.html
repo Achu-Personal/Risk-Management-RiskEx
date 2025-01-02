@@ -7,7 +7,7 @@
 
 
 
-  @if(status=="closed")
+  @if(status=="close")
   {
     <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist" style="margin-top: 20px;">
       <li class="nav-item" role="presentation">
@@ -27,25 +27,27 @@
           <div style="display: flex;flex-direction: row; justify-content:space-around; gap:20px">
             @if(type!="Quality")
             {
-            <app-likelihood-impact-card title="Confidentiality (C)" [LikeliHoodlevel]="beforeMitigation.confidentiality.likelihood" [Impactlevel]="beforeMitigation.confidentiality.impact"  [RiskFactor]="beforeMitigation.confidentiality.risk_factor" ></app-likelihood-impact-card>
-            <app-likelihood-impact-card title="Integrity (I)" [LikeliHoodlevel]="beforeMitigation.integrity.likelihood" [Impactlevel]="beforeMitigation.integrity.impact" [RiskFactor]="beforeMitigation.integrity.risk_factor"   ></app-likelihood-impact-card>
-            <app-likelihood-impact-card title="Availability (A)" [LikeliHoodlevel]="beforeMitigation.availability.likelihood" [Impactlevel]="beforeMitigation.availability.impact" [RiskFactor]="beforeMitigation.availability.risk_factor"  ></app-likelihood-impact-card>
-            <app-likelihood-impact-card title="Privacy(P)" [LikeliHoodlevel]="beforeMitigation.availability.likelihood" [Impactlevel]="beforeMitigation.availability.impact" [RiskFactor]="beforeMitigation.availability.risk_factor"  ></app-likelihood-impact-card>
-            }
-            @else {
-              <app-likelihood-impact-card  [LikeliHoodlevel]="afterMitigation.confidentiality.likelihood" [Impactlevel]="beforeMitigation.confidentiality.impact"  [RiskFactor]="afterMitigation.confidentiality.risk_factor" ></app-likelihood-impact-card>
+              @for(assessment of riskAssessmentBefore ; track $index  )
+              {
+                <app-likelihood-impact-card [assessment]="assessment" ></app-likelihood-impact-card>
+              }
+
 
             }
+            @else {
+
+              <app-likelihood-impact-card [assessment]="riskAssessmentAfter[0]" ></app-likelihood-impact-card>
+            }
           </div>
-          <app-overall-rating-card title="Overall Rating" [value]="beforeMitigation.overall_risk_rating" backgroundColor="white" [height]="27" [width]="27"  ></app-overall-rating-card>
+          <app-overall-rating-card title="Overall Rating" [value]="overallRiskRatingBefore" backgroundColor="white" [height]="27" [width]="27"  ></app-overall-rating-card>
         </div>
 
 
       </div>
       <div class="reviewer-section">
-        <h5 style="font-weight: bold;margin-top: 50px">Reviewed By: <span>Tony Stark</span></h5>
-        <div style="height: 100px;width: 100%;background-color: white; margin-top: 10px;border-radius: 10px;">
-
+        <h5 style="font-weight: bold;margin-top: 50px">Reviewed By: <span> {{ riskAssessmentBefore[0].review.reviewerName }}</span></h5>
+        <div style="height: 100px;width: 100%;background-color: var(--primary-color); margin-top: 10px;border-radius: 10px;padding: 20px;">
+          {{ riskAssessmentBefore[0].review.comments }}
         </div>
       </div>
 
@@ -56,26 +58,26 @@
           <div style="display: flex;flex-direction: row; justify-content:space-around; gap:20px">
         @if(type!="Quality")
         {
-          <app-likelihood-impact-card title="Confidentiality (C)" [LikeliHoodlevel]="afterMitigation.confidentiality.likelihood" [Impactlevel]="afterMitigation.confidentiality.impact"  [RiskFactor]="afterMitigation.confidentiality.risk_factor" ></app-likelihood-impact-card>
-          <app-likelihood-impact-card title="Integrity (I)" [LikeliHoodlevel]="afterMitigation.integrity.likelihood" [Impactlevel]="afterMitigation.integrity.impact" [RiskFactor]="afterMitigation.integrity.risk_factor"   ></app-likelihood-impact-card>
-          <app-likelihood-impact-card title="Availability (A)" [LikeliHoodlevel]="afterMitigation.availability.likelihood" [Impactlevel]="afterMitigation.availability.impact" [RiskFactor]="afterMitigation.availability.risk_factor"  ></app-likelihood-impact-card>
-          <app-likelihood-impact-card title="Privacy(P)" [LikeliHoodlevel]="afterMitigation.availability.likelihood" [Impactlevel]="afterMitigation.availability.impact" [RiskFactor]="afterMitigation.availability.risk_factor"  ></app-likelihood-impact-card>
+          @for(assessment of riskAssessmentAfter ; track $index  )
+              {
+                <app-likelihood-impact-card [assessment]="assessment" ></app-likelihood-impact-card>
+              }
         }
         @else
         {
-          <app-likelihood-impact-card  [LikeliHoodlevel]="afterMitigation.confidentiality.likelihood" [Impactlevel]="afterMitigation.confidentiality.impact"  [RiskFactor]="afterMitigation.confidentiality.risk_factor" ></app-likelihood-impact-card>
+          <app-likelihood-impact-card [assessment]="riskAssessmentAfter[0]" ></app-likelihood-impact-card>
 
         }
       </div>
-        <app-overall-rating-card title="Overall Rating" [value]="afterMitigation.overall_risk_rating" backgroundColor="white" [height]="27" [width]="27"  ></app-overall-rating-card>
+        <app-overall-rating-card title="Overall Rating" [value]="overallRiskratingAfter" backgroundColor="white" [height]="27" [width]="27"  ></app-overall-rating-card>
       </div>
 
       </div>
 
       <div class="reviewer-section">
-        <h5 style="font-weight: bold;margin-top: 50px">Reviewed By: <span>Tony Stark</span></h5>
-        <div style="height: 100px;width: 100%;background-color: white; margin-top: 10px;border-radius: 10px;">
-
+        <h5 style="font-weight: bold;margin-top: 50px">Reviewed By: <span> {{ riskAssessmentAfter[0].review.reviewerName }}</span></h5>
+        <div style="height: 100px;width: 100%;background-color: var(--primary-color); margin-top: 10px;border-radius: 10px;padding: 20px;">
+          {{ riskAssessmentAfter[0].review.comments }}
         </div>
       </div>
 

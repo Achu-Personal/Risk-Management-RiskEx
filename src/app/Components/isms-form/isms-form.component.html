@@ -1,205 +1,197 @@
-<div class="container">
-  <div class="form">
-    <form [formGroup]="ismsForm" (ngSubmit)="onsubmit()">
-      <div class="field">
-        <div style="display: none;">
-          <label for="">Risk Type <span class="required">*</span> :</label>
-          <input for="" id="risktype" formControlName="riskType">
-        </div>
-        <div class="firstDiv">
-          <div>
-            <app-textarea label="Risk Name" isRequired="*" formControlName="riskName"></app-textarea>
-          <app-textarea label="Description" isRequired="*" marginLeft="50" formControlName="description"></app-textarea>
-          @if(ismsForm.get("description")){
-
-           @if (ismsForm.get("description")?.hasError('maxlength')) {
-             <div class="text-danger">maximum length is 1000</div>
-
-           }
-           @else if (ismsForm.get("description")?.hasError('minlength')) {
-             <div class="text-danger">minimum length is 15</div>
-
-           }
-         }
-
-
-
-
-          <app-textarea label="Impact Of Risk" isRequired="*" marginLeft="27" formControlName="riskImpact"></app-textarea>
-
-          @if(ismsForm.get("riskImpact")){
-
-           @if (ismsForm.get("riskImpact")?.hasError('maxlength')) {
-             <div class="text-danger">maximum length is 1000</div>
-
-           }
-           @else if (ismsForm.get("riskImpact")?.hasError('minlength')) {
-             <div class="text-danger">minimum length is 15</div>
-
-           }
-         }
-          <app-textarea label="Project" marginLeft="92" formControlName="projectId"></app-textarea>
-
-
-
-
-        </div>
-        <app-overall-rating-card class="col-2 rating-card" [value]="result" title="Overal Risk Rating" textColor="black" [ngStyle]="{'margin-left':'20px','margin-top':'20px'}"></app-overall-rating-card>
+<div class="qmsForm">
+  <form action="">
+    <div class="form-details-sub-container">
+      <h2>Risk Details</h2>
+      <div class="form-row">
+       <div class="form-detail">
+         <label for="riskName">Risk Name <span class="required">*</span></label>
+         <input type="text" id="riskName" placeholder="Enter risk name"  [ngStyle]="{'width':'100%'}" >
+       </div>
+       <div class="form-detail">
+         <label for="project">Project Name</label>
+         <app-dropdown  [options]="dropdownDataProject"
+           [displayField]="'name'"
+           [valueField]="'id'"
+           width="100">
+          </app-dropdown>
+       </div>
+     </div>
+     @if(isAdmin=='admin'){
+      <div class="form-detail">
+        <label for="department">Department Name</label>
+        <app-dropdown  [options]="dropdownDataDepartment"
+          [displayField]="'name'"
+          [valueField]="'id'"
+          width="100" id="department">
+         </app-dropdown>
       </div>
+     }
+     <div class="form-detail">
+       <label for="impactOfRisk">Impact Of Risk <span class="required">*</span></label>
+       <textarea id="description" rows="2" placeholder="Impact of risk" (input)="autoResize($event)"></textarea>
+     </div>
+     <div class="form-detail">
+       <label for="description">Description <span class="required">*</span></label>
+       <textarea id="description" rows="2" placeholder="Enter description" (input)="autoResize($event)"></textarea>
+     </div>
+    </div>
+    <div class="form-details-sub-container">
+      <h2>Current Risk Assessment</h2>
+      <table  class="risk-assessment-table">
+      <tr>
+        <th></th>
+        <th>Likelihood <span class="required">*</span></th>
+        <th>Impact <span class="required">*</span></th>
+        <th> <span style="margin-left: 30px;"> Risk Factor</span></th>
+      </tr>
+      <tr>
+        <td><h2 [ngStyle]="{'border-bottom':'0px','text-transform':'none'}">Confidentiality</h2></td>
+        <td><app-dropdown  [options]="dropdownDataLikelihood"
+              [displayField]="'type'"
+              [valueField]="'value'"
+              width="100" bottom="25px" (change)="onDropdownChange($event, 'Likelihood', 'Confidentiality')">
+            </app-dropdown>
 
+        </td>
+        <td><app-dropdown  [options]="dropdownDataImpact"
+              [displayField]="'type'"
+              [valueField]="'value'"
+              width="100" bottom="25px" (change)="onDropdownChange($event, 'Impact', 'Confidentiality')">
+            </app-dropdown>
+        </td>
+        <td><h2 [ngStyle]="{'border-bottom':'0px','text-transform':'none','margin-left':'5vw'}">{{confidentialityRiskFactor}}</h2></td>
 
+      </tr>
+      <tr>
+        <td><h2 [ngStyle]="{'border-bottom':'0px','text-transform':'none'}">Integrity</h2></td>
+        <td><app-dropdown  [options]="dropdownDataLikelihood"
+              [displayField]="'type'"
+              [valueField]="'value'"
+              width="100" bottom="25px" (change)="onDropdownChange($event, 'Likelihood', 'Integrity')">
+            </app-dropdown>
+
+        </td>
+        <td><app-dropdown  [options]="dropdownDataImpact"
+              [displayField]="'type'"
+              [valueField]="'value'"
+              width="100" bottom="25px" (change)="onDropdownChange($event, 'Impact', 'Integrity')">
+            </app-dropdown>
+        </td>
+        <td><h2 [ngStyle]="{'border-bottom':'0px','text-transform':'none','margin-left':'5vw'}">{{integrityRiskFactor}}</h2></td>
+
+      </tr>
+      <tr>
+        <td><h2 [ngStyle]="{'border-bottom':'0px','text-transform':'none'}">Availability</h2></td>
+        <td><app-dropdown  [options]="dropdownDataLikelihood"
+              [displayField]="'type'"
+              [valueField]="'value'"
+              width="100" bottom="25px" (change)="onDropdownChange($event, 'Likelihood', 'Availability')">
+            </app-dropdown>
+
+        </td>
+        <td><app-dropdown  [options]="dropdownDataImpact"
+              [displayField]="'type'"
+              [valueField]="'value'"
+              width="100" bottom="25px" (change)="onDropdownChange($event, 'Impact', 'Availability')">
+            </app-dropdown>
+        </td>
+        <td><h2 [ngStyle]="{'border-bottom':'0px','text-transform':'none','margin-left':'5vw'}">{{availabilityRiskFactor}}</h2></td>
+
+      </tr>
+      <tr>
+        <td><h2 [ngStyle]="{'border-bottom':'0px','text-transform':'none'}">Privacy</h2></td>
+        <td><app-dropdown  [options]="dropdownDataLikelihood"
+              [displayField]="'type'"
+              [valueField]="'value'"
+              width="100" bottom="25px" (change)="onDropdownChange($event, 'Likelihood', 'Privacy')">
+            </app-dropdown>
+
+        </td>
+        <td><app-dropdown  [options]="dropdownDataImpact"
+              [displayField]="'type'"
+              [valueField]="'value'"
+              width="100" bottom="25px" (change)="onDropdownChange($event, 'Impact', 'Privacy')">
+            </app-dropdown>
+        </td>
+        <td><h2 [ngStyle]="{'border-bottom':'0px','text-transform':'none','margin-left':'5vw'}">{{privacyRiskFactor}}</h2></td>
+
+      </tr>
+      </table>
+      <div class="form-row" [ngStyle]="{'margin-top':'30px'}">
+       <h2 [ngStyle]="{'border-bottom':'0px','text-transform':'none'}">Overall Risk Rating : <span style="margin-left: 10px;" [ngStyle]="{'color':changeColorOverallRiskRating()}">{{result}}</span></h2>
       </div>
-
-      <div class="field"  >
-        <h5>Current Risk Assessment <span class="required">*</span></h5>
-
-        <table>
-          <tr>
-            <th> </th>
-            <th>Confidenciality</th>
-            <th>Integrity</th>
-            <th>Availability</th>
-            <th>Privacy</th>
-          </tr>
-          <tr>
-            <td>Likelihood</td>
-            <td>
-
-            <app-dropdown  [options]="dropdownDataLikelihood"
-            [displayField]="'type'"
-            [valueField]="'value'"
-            width="13.33"
-            id="dropdownassessmentLikelihood"  formControlName="confidentialityLikelihood" (change)="onDropdownChange1($event)"></app-dropdown>
-          </td>
-            <td> <app-dropdown  [options]="dropdownDataLikelihood"
-              [displayField]="'type'"
-              [valueField]="'value'"
-              width="13.33"
-              id="dropdownassessmentLikelihood" class="dropdownassessment"   formControlName="IntegrityLikelihood" (change)="onDropdownChange2($event)"></app-dropdown>
-            </td>
-            <td> <app-dropdown  [options]="dropdownDataLikelihood"
-              [displayField]="'type'"
-              [valueField]="'value'"
-              width="13.33"
-              id="dropdownassessmentLikelihood" class="dropdownassessment"   formControlName="availabiltyLikelihood" (change)="onDropdownChange3($event)"></app-dropdown></td>
-            <td> <app-dropdown  [options]="dropdownDataLikelihood"
-              [displayField]="'type'"
-              [valueField]="'value'"
-              width="13.33"
-              id="dropdownassessmentLikelihood" class="dropdownassessment"   formControlName="privacyLikelihood" (change)="onDropdownChange4($event)"></app-dropdown></td>
-
-          </tr>
-          <tr>
-            <td>Impact</td>
-            <td><app-dropdown  [options]="dropdownDataImpact"
-              [displayField]="'type'"
-              [valueField]="'value'"
-              width="13.33"
-              id="dropdownassessmentimpact" class="dropdownassessment"   formControlName="confidentialityImpact" (change)="onDropdownChange5($event)"></app-dropdown></td>
-            <td><app-dropdown  [options]="dropdownDataImpact"
-              [displayField]="'type'"
-              [valueField]="'value'"
-              width="13.33"
-              id="dropdownassessmentimpact" class="dropdownassessment"   formControlName="IntegrityImpact" (change)="onDropdownChange6($event)"></app-dropdown></td>
-            <td><app-dropdown  [options]="dropdownDataImpact"
-              [displayField]="'type'"
-              [valueField]="'value'"
-              width="13.33"
-              id="dropdownassessmentimpact" class="dropdownassessment"   formControlName="availabiltyImpact" (change)="onDropdownChange7($event)"></app-dropdown></td>
-            <td><app-dropdown  [options]="dropdownDataImpact"
-              [displayField]="'type'"
-              [valueField]="'value'"
-              width="13.33"
-              id="dropdownassessmentimpact" class="dropdownassessment"   formControlName="privacyImpact" (change)="onDropdownChange8($event)"></app-dropdown></td>
-
-          </tr>
-        </table>
-
-
-
-
-
+     <div [ngStyle]="{'margin-top':'20px','font-style':'italic','color':'grey'}">
+       <p>For reference <span><a href="javascript:void(0);">click </a></span>here</p>
+     </div>
+    </div>
+    <div class="form-details-sub-container">
+      <h2>Risk Management</h2>
+      <div class="form-detail">
+        <label for="mitigation">Risk Mitigation <span class="required">*</span></label>
+        <textarea id="mitigation" rows="2" placeholder="Enter mitigation" (input)="autoResize($event)"></textarea>
       </div>
-
-      <div class="field" id="thirdfield">
-        <app-textarea label="Risk Mitigation" isRequired="*"  marginLeft="123" formControlName="mitigation"></app-textarea>
-        @if(ismsForm.get("mitigation")){
-
-          @if (ismsForm.get("mitigation")?.hasError('maxlength')) {
-            <div class="text-danger" >maximum length is 1000</div>
-
-          }
-          @else if (ismsForm.get("mitigation")?.hasError('minlength')) {
-            <div class="text-danger" id="mitigationError">minimum length is 15</div>
-
-          }
-        }
-
-
-        <app-textarea label="Risk Contingency" marginLeft="110" formControlName="contingency"></app-textarea>
-        <app-textarea label="Responsibility Of Action" isRequired="*" formControlName="responsibilityOfAction"></app-textarea>
-        @if(ismsForm.get("responsibilityOfAction")){
-
-          @if (ismsForm.get("responsibilityOfAction")?.hasError('maxlength')) {
-            <div class="text-danger" >maximum length is 20</div>
-
-          }
-          @else if (ismsForm.get("responsibilityOfAction")?.hasError('minlength')) {
-            <div class="text-danger" id="mitigationError">minimum length is 5</div>
-
-          }
-        }
-
-
-        <div class="actionDate">
-          <div class="actionDateLabel">
-            <label id="actionlabel">Planned Action Date  <span class="required">*</span> :</label>
-
-          </div>
-          <div>
-            <input type="date" class="textarea" id="textareaspace" formControlName="plannedActionDate" >
-
-          </div>
-
-
-
-
+      <div class="form-detail">
+        <label for="contingency">Risk Contingency</label>
+        <textarea id="contingency" rows="2" placeholder="Enter contingency plan" (input)="autoResize($event)"></textarea>
+      </div>
+    </div>
+    <div class="form-details-sub-container">
+      <h2>Action Plan</h2>
+      <div class="form-detail">
+        <label for="responsibility">Responsibility<span class="required">*</span></label>
+        <app-dropdown  [options]="dropdownDataReviewer"
+           [displayField]="'name'"
+           [valueField]="'email'"
+           width="100">
+        </app-dropdown>
+      </div>
+      <div [ngStyle]="{'margin-top':'20px','font-style':'italic','color':'grey'}">
+        <p>If responsible person not in the list <span (click)="isAssigneeNotInList()"><a href="javascript:void(0);">click </a></span>here</p>
+      </div>
+      @if(assigneeNotInList){
+        <div class="form-detail">
+          <label for="assignee">Responsible Person Name <span class="required">*</span></label>
+          <input type="text" id="assignee" placeholder="Enter responsible person name"  >
         </div>
-        <div class="reviewer">
-          <div>
-            <label >Reviewer <span class="required">*</span> :</label>
-
-          </div>
-          <div>
-
-            <app-dropdown  [options]="dropdownDataReviewer"
-            [displayField]="'name'"
-            [valueField]="'email'"
-            width="47.25"
-            id="reviewerDropdown" class="dropdown"  formControlName="reviewer"></app-dropdown>
-
-          </div>
-
-
-
+        <div class="form-detail">
+          <label for="assignee-email">Email <span class="required">*</span></label>
+          <input type="text" id="assignee-email" placeholder="Enter email"  >
         </div>
 
-        <div class="action">
-          <div>
-            <button type="submit" value="Save" class="savecancel">Save</button>
-          <button value="Cancel" id="cancelbtn" class="savecancel">Cancel</button>
-
-          </div>
-
-        </div>
-
-
+      }
+      <div class="form-group">
+        <label for="actionDate">Planned Action Date<span class="required">*</span></label>
+        <input type="date" id="actionDate">
       </div>
-
-
-
-    </form>
-
-  </div>
-
+    </div>
+    <div class="form-details-sub-container">
+      <h2>Reviewer</h2>
+      <div class="form-group">
+        <label for="reviewer">Reviewer <span class="required">*</span></label>
+        <app-dropdown  [options]="dropdownDataReviewer"
+          [displayField]="'name'"
+          [valueField]="'email'"
+          width="100">
+        </app-dropdown>
+      </div>
+      <div [ngStyle]="{'margin-top':'20px','font-style':'italic','color':'grey'}">
+        <p>If reviewer not in the list <span (click)="isReviewerNotInList()"><a href="javascript:void(0);">click </a></span>here</p>
+      </div>
+      @if(reviewerNotInList){
+        <div class="form-detail">
+          <label for="reviewer">Reviewer Name <span class="required">*</span></label>
+          <input type="text" id="reviewer" placeholder="Enter reviewer name"  >
+        </div>
+        <div class="form-detail">
+          <label for="reviewer-email">Email <span class="required">*</span></label>
+          <input type="text" id="reviewer-email" placeholder="Enter email"  >
+        </div>
+      }
+    </div>
+    <div class="button-group">
+      <button type="submit" class="btn save">Save</button>
+      <button type="button" class="btn cancel">Cancel</button>
+    </div>
+  </form>
 </div>
+

@@ -1,0 +1,38 @@
+<div class="filter-by-date">
+  <app-style-button class="filter-btn" label="Filter by Date" (click)="toggleDropdown()">
+    <!-- Filter by Date -->
+  </app-style-button>
+  @if(showDropdown){
+  <div class="dropdown">
+    <div class="calendar">
+      <label for="start-date">Start Date:</label>
+      <input
+        type="date"
+        id="start-date"
+        [(ngModel)]="startDate"
+        (change)="updateDateRange()"
+      />
+      <label for="end-date">End Date:</label>
+      <input
+        type="date"
+        id="end-date"
+        [(ngModel)]="endDate"
+        (change)="updateDateRange()"
+      />
+    </div>
+    <div class="manual-input">
+      <label for="date-range">Date Range:</label>
+      <input
+        type="text"
+        id="date-range"
+        [(ngModel)]="dateRange"
+        placeholder="YYYY-MM-DD to YYYY-MM-DD"
+        (input)="parseDateRange()"
+      />
+    </div>
+    <div style="margin-top: 10px;">
+      <app-style-button label="Apply" (click)="toggleDropdown()"></app-style-button>
+    </div>
+  </div>
+  }
+</div>

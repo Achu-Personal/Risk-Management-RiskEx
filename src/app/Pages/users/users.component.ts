@@ -8,8 +8,14 @@ import {
 } from '@angular/forms';
 import { BodyContainerComponent } from '../../Components/body-container/body-container.component';
 import { ApiService } from '../../Services/api.service';
-import {  NgFor, NgIf } from '@angular/common';
 import { ReusableTableComponent } from '../../Components/reusable-table/reusable-table.component';
+
+import { ProjectDropDownComponent } from '../../Components/project-drop-down/project-drop-down.component';
+import { project } from '../../Interfaces/projects.interface';
+import { DropDownDeparmentComponent } from '../../Components/drop-down-deparment/drop-down-deparment.component';
+import { StyleButtonComponent } from '../../UI/style-button/style-button.component';
+import { NgIf } from '@angular/common';
+import { AuthService } from '../../Services/auth.service';
 
 @Component({
   selector: 'app-users',
@@ -17,31 +23,33 @@ import { ReusableTableComponent } from '../../Components/reusable-table/reusable
   imports: [
     ReactiveFormsModule,
     BodyContainerComponent,
+    ReusableTableComponent,
+    ProjectDropDownComponent,
+    DropDownDeparmentComponent,
+    StyleButtonComponent,
     NgIf,
-    NgFor,
-    ReusableTableComponent
   ],
   templateUrl: './users.component.html',
   styleUrl: './users.component.scss',
 })
 export class UsersComponent {
   departments: department[] = [];
-
   projects: any[] = [];
+  isDepartmentFieldDisabled = false;
 
   userForm: FormGroup;
   departmentForm: FormGroup;
   projectForm: FormGroup;
 
-  constructor(public api: ApiService) {
+  constructor(public api: ApiService, public authService: AuthService) {
     this.departmentForm = new FormGroup({
-      departmentName: new FormControl('', Validators.required),
+      name: new FormControl('', Validators.required),
     });
     this.userForm = new FormGroup({
-      name: new FormControl('', Validators.required),
+      fullName: new FormControl('', Validators.required),
       email: new FormControl('', [Validators.required, Validators.email]),
-      department: new FormControl('', Validators.required),
-      projectName: new FormControl(''),
+      departmentName: new FormControl('', Validators.required),
+      projectNames: new FormControl([[]]),
     });
     this.projectForm = new FormGroup({
       projectName: new FormControl('', Validators.required),
@@ -50,43 +58,54 @@ export class UsersComponent {
   }
 
   ngOnInit() {
-    this.api.getDepartment().subscribe(
-      (response) => {
-        this.departments = response;
-        console.log('Departments fetched successfully:', this.departments);
-      },
-      (error) => {
-        console.error('Failed to fetch departments', error);
-      }
-    );
+    const userRole = this.authService.getUserRole();
+    const userDepartment = this.authService.getDepartmentName();
+
+    if (userRole === 'DepartmentUser') {
+      this.userForm.patchValue({ departmentName: userDepartment });
+      this.userForm.get('departmentName')?.disable();
+      this.isDepartmentFieldDisabled = true;
+    }
+    if (userRole === 'DepartmentUser') {
+      this.projectForm.patchValue({ departmentName: userDepartment });
+      this.projectForm.get('departmentName')?.disable();
+      this.isDepartmentFieldDisabled = true;
+    }
+
+    this.userForm
+      .get('departmentName')
+      ?.valueChanges.subscribe((selectedDepartment) => {
+        console.log(selectedDepartment);
+
+        if (selectedDepartment) {
+          this.loadProjectsForDepartment(selectedDepartment);
+        }
+      });
   }
 
-  onDepartmentChange(event: any) {
-    const selectedDepartment = event.target.value;
-    console.log('Selected Department:', selectedDepartment);
-
-    if (selectedDepartment) {
-      this.api.getProjects(selectedDepartment).subscribe(
-        (projects) => {
-          if (projects && projects.length > 0) {
-            this.projects = projects;
-            console.log('Projects loaded for department:', this.projects);
-          } else {
-            console.log('No projects found for the selected department');
-            this.projects = [];
-          }
-        },
-        (error) => {
-          console.error('Failed to load projects', error);
+  loadProjectsForDepartment(department: string) {
+    this.api.getProjects(department).subscribe(
+      (res) => {
+        if (res && res.length > 0) {
+          this.projects = res;
+          console.log('Projects loaded for department:', this.projects);
+        } else {
+          console.log('No projects found for the selected department');
           this.projects = [];
         }
-      );
-    }
+      },
+      (error) => {
+        console.error('Failed to load projects', error);
+        this.projects = [];
+      }
+    );
   }
 
   onSubmitDepartment() {
     if (this.departmentForm.valid) {
       const departmentData = this.departmentForm.value;
+
+      console.log('Submitting department data:', departmentData);
 
       this.api.addNewDepartment(departmentData).subscribe(
         (response) => {
@@ -103,30 +122,55 @@ export class UsersComponent {
         },
         (error) => {
           console.error('Failed to add the department', error);
+          if (error.error && error.error.message) {
+            alert(error.error.message);
+          }
         }
       );
     } else {
-      console.error('Form is invalid');
+      console.error('Form is invalid:', this.departmentForm.errors);
     }
   }
 
   onSubmitUser() {
     if (this.userForm.valid) {
-      console.log('User saved:', this.userForm.value);
-      // alert(`User "${this.userForm.value.name}" added successfully!`);
-      this.userForm.reset();
-      const modal = document.getElementById('addUserModal');
-      if (modal) {
-        (modal as HTMLElement).click();
-      }
+      const userData = this.userForm.getRawValue();
+
+      userData.projectNames = userData.projectNames?.length
+        ? userData.projectNames.map((project: any) => project.name)
+        : [];
+
+      console.log('User saved:', userData);
+
+      this.api.addNewUser(userData).subscribe({
+        next: (response) => {
+          console.log('User saved successfully:', response);
+          this.userForm.reset();
+
+          const modal = document.getElementById('addUserModal');
+          if (modal) {
+            (modal as HTMLElement).click();
+          }
+        },
+        error: (error) => {
+          console.error('Failed to save user:', error);
+        },
+        complete: () => {},
+      });
     } else {
       console.log('Form invalid');
+      Object.keys(this.userForm.controls).forEach((key) => {
+        const control = this.userForm.get(key);
+        control?.markAsTouched();
+      });
     }
   }
 
   onSubmitProject() {
     if (this.projectForm.valid) {
       const projectData = this.projectForm.value;
+
+      console.log('Submitting project data:', projectData);
 
       this.api.addNewProject(projectData).subscribe(
         (response) => {
@@ -149,7 +193,6 @@ export class UsersComponent {
     }
   }
 
-
   headerData: any = ['Name', 'Email', 'Department', 'Projects'];
   tableBody: any = [
     {
@@ -171,4 +214,7 @@ export class UsersComponent {
       Projects: 'Recruitment, Employee Engagement',
     },
   ];
+  onProjectsSelected(projects: project[]) {
+    console.log('Selected projects:', projects);
+  }
 }

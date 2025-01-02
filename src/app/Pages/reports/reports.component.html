@@ -1,0 +1,14 @@
+
+<app-body-container backgroundColor="transparent" [showShadow]=false >
+  <div class="contains">
+    <app-datepicker></app-datepicker>
+    <app-style-button
+    label="Generate Report"
+    (click)="onGenerateReport()">
+   </app-style-button>
+
+  </div>
+  <div class="tab"></div>
+  <app-table (onclickrow)="OnClickRow($event)"></app-table>
+</app-body-container>
+
