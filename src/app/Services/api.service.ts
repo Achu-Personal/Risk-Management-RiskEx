@@ -127,6 +127,15 @@ constructor(private http:HttpClient, public auth:AuthService) { }
     // Make the HTTP PUT request
     return this.http.put(url, {});
   }
+  updateReviewStatusAndComments(id:number, updates:any){
+    console.log("updates",updates);
+    
+    this.http.put(`https://localhost:7216/api/Approval/update-review/${id}`,updates).subscribe(e => console.log(e)
+    );
 
-
+  }
+  sendEmailToAssignee(id:number){
+    this.http.post(`https://localhost:7216/api/emails/send-assignment-email/${id}`,{}).subscribe(e => console.log(e));
+  }
+  
  }

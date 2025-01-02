@@ -38,7 +38,7 @@
           <!-- Error message container with fixed height -->
           <div class="error-container">
             <span class="error-message" *ngIf="showError">
-              Invalid UserMail Or Password
+              {{ errorMessage || 'An unexpected error occurred.' }}
             </span>
           </div>
 

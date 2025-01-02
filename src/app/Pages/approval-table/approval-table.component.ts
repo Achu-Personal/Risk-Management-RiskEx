@@ -14,6 +14,7 @@ import { AuthService } from '../../Services/auth.service';
 })
 export class ApprovalTableComponent {
   headerData: string[] = [];
+  // updates:any={};
   //"SI NO",
   headerDisplayMap: { [key: string]: string } = {
     riskId: 'Risk ID',
@@ -98,17 +99,24 @@ export class ApprovalTableComponent {
       ];
       this.api.getRisksByReviewerId().subscribe((response: any) => {
         console.log('API Response:', response);
-
+      
         // Ensure `response` is an array
         if (Array.isArray(response)) {
-          this.tableBody = response;
+          // Format `plannedActionDate` for each object in the response array
+          this.tableBody = response.map((item: any) => {
+            return {
+              ...item,
+              plannedActionDate: this.formatDate(item.plannedActionDate), // Format date
+            };
+          });
         } else {
           console.error('Expected an array but got:', response);
           this.tableBody = []; // Default to an empty array if the response is not valid
         }
-
+      
         console.log('tableBody:', this.tableBody);
       });
+      
     }
   }
 
@@ -122,12 +130,40 @@ export class ApprovalTableComponent {
   showRejectDialog = false;
   selectedRow: any;
 
+  formatDate(value: any): string {
+    if (!value) return '';
+    
+    if (typeof value === 'string' && value.includes('-')) {
+      const date = new Date(value);
+      if (!isNaN(date.getTime())) {
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0'); 
+        const year = date.getFullYear();
+        return `${day}-${month}-${year}`;
+      }
+    }
+    return value;
+  }
+
   approveRisk(event: {row: any, comment: string}) {
+    const updates = {
+      approvalStatus: "Approved",
+      comments: event.comment 
+    };
+    let id = event.row.id;
+    this.api.updateReviewStatusAndComments(id,updates);
+    this.api.sendEmailToAssignee(id);
     console.log('Approved:', event.row);
     console.log('Comment:', event.comment);
   }
 
   rejectRisk(event: {row: any, comment: string}) {
+    const updates = {
+      approvalStatus: "Rejected",
+      comments: event.comment 
+    };
+    let id = event.row.id;
+    this.api.updateReviewStatusAndComments(id,updates);
     console.log('Rejected:', event.row);
     console.log('Comment:', event.comment);
   }
