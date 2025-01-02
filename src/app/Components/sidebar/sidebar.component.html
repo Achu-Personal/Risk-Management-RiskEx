@@ -9,10 +9,11 @@
           <a
           [class.active]="item.active"
           (click)="setActiveItem(item)"
-          [routerLink]="item.route" class="sidebar-link">
+          [routerLink]="item.route" class="sidebar-link" [title]="item.label">
           <i [class]="item.icon" ></i>
           <!-- <span class="sidebar-text">{{ item.label }}</span> -->
         </a>
+        
       }
       </div>
 

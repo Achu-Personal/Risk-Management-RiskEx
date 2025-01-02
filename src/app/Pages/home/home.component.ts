@@ -1,23 +1,21 @@
-import { ChartType } from 'chart.js';
+import { NgIf } from '@angular/common';
 import { Component } from '@angular/core';
 import { BodyContainerComponent } from "../../Components/body-container/body-container.component";
-import { SearchboxComponent } from "../../UI/searchbox/searchbox.component";
 import { ButtonComponent } from "../../UI/button/button.component";
-import { DropdownComponent } from "../../UI/dropdown/dropdown.component";
 import { DepartmentDropdownComponent } from "../../Components/department-dropdown-dashboard/department-dropdown.component";
 import { ChartComponent } from "../../UI/chart/chart.component";
-import { TableComponent } from "../../Components/table/table.component";
 import { Router } from '@angular/router';
+import { AuthService } from '../../Services/auth.service';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [BodyContainerComponent, ButtonComponent, DepartmentDropdownComponent, ChartComponent, TableComponent],
+  imports: [NgIf,BodyContainerComponent, ButtonComponent, DepartmentDropdownComponent, ChartComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
 export class HomeComponent {
-  constructor(private router: Router) {}
+  constructor(private router: Router,public authService:AuthService) {}
 
   OnClickRow(rowid:any): void {
     this.router.navigate([`/ViewRisk/${rowid}`]);
@@ -97,71 +95,100 @@ graph3options: any = {
 
 
 
-graph2labels:string[]=[];
+graph2labels:string[]=['Low',
+    'Moderate',
+    'Critical'];
 graph2chartType:any='doughnut'
 graph2datasets:any[]=[
+
+
   {
-    data:[40],
-    label:"Quality",
-    backgroundColor: '#51AEF2',
-    yAxisID: 'y1',
-    // borderColor: '#3E68B9',
-    pointBackgroundColor: '#51AEF2',
-    // pointBorderColor: '#fff',
-    // pointHoverBackgroundColor: '#fff',
-    pointHoverBorderColor: '#3E68B9',
-  },
-  {
-    data:[35],
-    label:"Privacy",
-    backgroundColor: '#6993E4',
-    yAxisID: 'y1',
-    // borderColor: '#3E68B9',
-    pointBackgroundColor: 'rgb(62, 104, 185, 0.6)',
-    // pointBorderColor: '#fff',
-    // pointHoverBackgroundColor: '#fff',
-    pointHoverBorderColor: '#3E68B9',
-    responsive: true,
-  },
-  {
-    data:[25],
-    label:"Security",
-    backgroundColor: '#979797',
-    yAxisID: 'y1',
-    // borderColor: '#3E68B9',
-    pointBackgroundColor: 'rgb(62, 104, 185, 0.4)',
-    // pointBorderColor: '#fff',
-    // pointHoverBackgroundColor: '#fff',
-    pointHoverBorderColor: '#3E68B9',
-    responsive: true,
-    // plugins: {
-    //   legend: {
-    //     position: 'top' // Or 'top', 'right', 'left'
-    //   }
-    // }
-  },
+
+    data: [10, 21, 19],
+    backgroundColor: [
+     '#962DFF',
+      '#E0C6FD',
+      '#C6D2FD'
+    ],
+    hoverOffset: 10
+  }
+
 ]
 
-graph2options: any = {
-  plugins: {
-    legend: {
-      display: true,
-      labels: {
-        boxWidth: 5,          // Reduce the width of the color box
-        boxHeight: 5,         // Optional: Adjust height for consistency
-        usePointStyle: true,   // Use smaller shapes for legend icons
-        pointStyle: 'Circle', // Example shape: circle, rectRounded, etc.
-        padding: 10            // Add spacing between legend items
-      }
-    }
-  },
-  responsive: true,
-  scales: {
-    y: {
-      beginAtZero: true // Ensure the Y-axis starts at 0
-    }
-  }
-};
+
+
+
+
+
+
+
+
+
+
+
+
+  // {
+  //   data:[40],
+  //   label:"Quality",
+  //   backgroundColor: '#51AEF2',
+  //   yAxisID: 'y1',
+  //   // borderColor: '#3E68B9',
+  //   pointBackgroundColor: '#51AEF2',
+  //   // pointBorderColor: '#fff',
+  //   // pointHoverBackgroundColor: '#fff',
+  //   pointHoverBorderColor: '#3E68B9',
+  // },
+  // {
+  //   data:[35],
+  //   label:"Privacy",
+  //   backgroundColor: '#6993E4',
+  //   yAxisID: 'y1',
+  //   // borderColor: '#3E68B9',
+  //   pointBackgroundColor: 'rgb(62, 104, 185, 0.6)',
+  //   // pointBorderColor: '#fff',
+  //   // pointHoverBackgroundColor: '#fff',
+  //   pointHoverBorderColor: '#3E68B9',
+  //   responsive: true,
+  // },
+  // {
+  //   data:[25],
+  //   label:"Security",
+  //   backgroundColor: '#979797',
+  //   yAxisID: 'y1',
+  //   // borderColor: '#3E68B9',
+  //   pointBackgroundColor: 'rgb(62, 104, 185, 0.4)',
+  //   // pointBorderColor: '#fff',
+  //   // pointHoverBackgroundColor: '#fff',
+  //   pointHoverBorderColor: '#3E68B9',
+  //   responsive: true,
+  //   // plugins: {
+  //   //   legend: {
+  //   //     position: 'top' // Or 'top', 'right', 'left'
+  //   //   }
+  //   // }
+  // },
+
+
+// graph2options: any = {
+//   plugins: {
+//     legend: {
+//       display: true,
+//       labels: {
+//         boxWidth: 5,          // Reduce the width of the color box
+//         boxHeight: 5,         // Optional: Adjust height for consistency
+//         usePointStyle: true,   // Use smaller shapes for legend icons
+//         pointStyle: 'Circle', // Example shape: circle, rectRounded, etc.
+//         padding: 10            // Add spacing between legend items
+//       }
+//     }
+//   },
+//   responsive: true,
+//   scales: {
+//     y: {
+//       beginAtZero: true // Ensure the Y-axis starts at 0
+//     }
+//   }
+// };
 
 
 // graph1labels:string[]=["Critical","Moderate","Low"];

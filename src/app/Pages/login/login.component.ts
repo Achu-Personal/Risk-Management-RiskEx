@@ -1,25 +1,49 @@
 import { Component } from '@angular/core';
-import { ApiService } from '../../Services/api.service';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder,  FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthService } from '../../Services/auth.service';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [],
+  imports: [ReactiveFormsModule,NgIf],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
 export class LoginComponent {
 
-
-  navigateToLogin() {
-    this.router.navigate(['/home']);
-
+  loginForm: FormGroup;
+  showError = false;
+  errorMessage: string = "";
+  
+  constructor(
+    private authServices: AuthService,
+    private fb: FormBuilder,
+    private router: Router
+  ) {
+    this.loginForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', Validators.required]
+    });
   }
 
+  clearError() {
+    this.showError = false;
+    this.errorMessage = ""; // Reset error message
+  }
 
-  constructor( public api:ApiService, private fb: FormBuilder, private router: Router) {
-
+  onSubmit() {
+    if (this.loginForm.valid) {
+      this.authServices.login(this.loginForm.value).subscribe(
+        (response) => {
+          this.clearError();
+        },
+        (error) => {
+          this.showError = true;
+          this.errorMessage = error; // Use the error message from the backend
+        }
+      );
+    }
   }
 }

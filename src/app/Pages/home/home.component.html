@@ -31,6 +31,15 @@
       <app-table class="table" (onclickrow)="OnClickRow($event)"></app-table>
     </div> -->
 <div class="dashboard">
+<div class="topbuttons">
+  <div class="dropdown">
+<app-department-dropdown *ngIf="authService.getUserRole() === 'Admin'"></app-department-dropdown>  </div>
+  <div class="registerrisk">
+    <app-button class="btn" title="Register Risk" bgColour="#4D4D4D" routerLink="/addrisk" height="38" width="147" color="white"></app-button>
+  </div>
+
+</div>
+
   <div class="graphs">
     <div class="graph1">
       <div class="leftside">
@@ -63,6 +72,16 @@
     <div class="graph2">
                       <div class="riskratingcategory">
                     <h4>Risk Rating</h4>
+                    <div class="forchart">
+
+                      <div class="graphchart">
+                        <app-chart [labels]="graph2labels" [chartType]="graph2chartType" [datasets]="graph2datasets"></app-chart>
+
+                      </div>
+
+
+                    </div>
+
                   </div>
     </div>
               </div>
@@ -70,6 +89,33 @@
           <div class="latestrisk">
         </div>
       <div class="imprisk">
+        <h5>Risks With Highest Overall Rating</h5>
+        <div class="maindiv">
+          <div class="risk-card">
+            <div class="top">
+              <div class="risk-text">Data corruption due to hardware failure</div>
+              <div class="risk-count">137</div>
+            </div>
+            <div class="bottom">
+              <div class="risk-date">16 January 2017</div>
+              <button class="view-risk-button">View Risk →</button>
+            </div>
+          </div>
+          <div class="risk-card">
+            <div class="top">
+              <div class="risk-text">Data corruption due to hardware failure</div>
+              <div class="risk-count">137</div>
+            </div>
+            <div class="bottom">
+              <div class="risk-date">16 January 2017</div>
+              <button class="view-risk-button">View Risk →</button>
+            </div>
+          </div>
+
+        </div>
+
+
+
     </div>
   </div>
 </div>

@@ -19,7 +19,7 @@ export class ViewRiskComponent{
 
   constructor(public api:ApiService,public route:ActivatedRoute)
   {
-  
+
   }
 
   ngOnInit()
@@ -28,10 +28,15 @@ export class ViewRiskComponent{
     this.api.getRiskById(id).subscribe(e=>{
       console.log("Data=",e)
       this.data=e
+
+
+
     })
-  }
- 
+
    
-  
+  }
+
+
+
 
 }

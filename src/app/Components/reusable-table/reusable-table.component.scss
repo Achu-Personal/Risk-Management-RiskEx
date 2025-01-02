@@ -8,10 +8,9 @@
   background: #ffffff;
   box-shadow: 0px 1px 3px #979797;
   border: 1px solid #D0C6B6;
-  width: 87%;
+  width: 88%;
   font-family: 'Arial', sans-serif;
   position: fixed;
-  // height: 75%; 
   overflow-y: auto;
   margin-left: -20px;
 
@@ -20,9 +19,10 @@
 thead{
 
   tr{
-    z-index: 100;
+    z-index: 10; 
     th{
       text-align: center;
+      cursor: pointer;
     }
   }
   
@@ -31,7 +31,7 @@ thead{
 .bord{
   position: sticky;
   top: 0;
-  z-index: 1000;
+  z-index: 20;//1000
 
   tr{
     border: 2px solid #c1bdbd;
@@ -60,13 +60,9 @@ thead{
   background-color: #e6e1d7;
   color: #0f0f0f;
   font-weight: bold;
-  // text-transform: uppercase;
   font-size: 13px;
 }
 
-// .tabledata tbody tr:nth-child(even) {
-//   background: #F4F1EC;
-// }
 
 
 .tabledata tbody tr:hover {
@@ -77,11 +73,9 @@ thead{
   font-size: 14px;
   color: #555;
   vertical-align: middle;
-  // padding: 8px;
-text-align: center;
+  text-align: center;
 
 }
-
 
 
 
@@ -91,12 +85,12 @@ text-align: center;
   font-style: italic;
 }
 
-/* Optional: Add hover effect for rows */
+
 tbody tr:hover {
   background-color: rgba(208, 198, 182, 0.2);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  /* Increased shadow for more lift effect */
-  transform: translateY(-1px);  /* Lifts the row upwards */
-  transition: box-shadow 0.2s ease-in-out, transform 0.2s ease-in-out;  /* Add transition for transform */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+  transform: translateY(-1px);  
+  transition: box-shadow 0.2s ease-in-out, transform 0.2s ease-in-out;  
   cursor: pointer;
 }
 tbody{
@@ -106,16 +100,6 @@ tr{
 
 }
 }
-
-
-
-
-
-
-
-
-
-
 
 
 .tablestyle {
@@ -160,6 +144,7 @@ tr{
 }
 .icon-display{
   display: flex;
+  margin-left: 30px;
 }
 .icon {
   width: 30px;
@@ -256,5 +241,79 @@ input:checked + .slider:before {
 
 .red-background {
   color: #fc3a36;
+  
+}
+
+
+
+.eye-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.eye-icon:hover {
+  stroke: #3e68b9;
+  transition: stroke 0.3s ease-in-out;
+}
+
+
+/* Define colors for risk statuses */
+.open {
+  
+  
+  color: red;
+  font-weight: bold;
+  padding: 10px;
+  // border: 1px solid #420c0c ;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.closed {
+  
+  color: green;
+  font-weight: bold;
+  padding: 10px;
+  // border: 1px solid #0c4219 ;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.unknown {
+  color: gray;
+}
+
+.green-risk {
+ 
+  color: green;
+  font-weight: bold;
+  padding: 5px;
+  border-radius: 10px;
+  text-align: center;
+  height: 35px;   
+  width: 65px;   
+}
+
+.yellow-risk {
+  
+  color: rgb(189, 189, 7);
+  font-weight: bold;
+  padding: 5px;
+  border-radius: 10px;
+  text-align: center;
+  height: 35px;   
+  width: 65px;  
+}
+
+.red-risk {
+  
+  color: red;
+  font-weight: bold;
+  padding: 5px;
+  border-radius: 10px;
+  text-align: center;
+  height: 35px;   
+  width: 65px;  
   
 }
