@@ -1,14 +1,17 @@
 import { Component } from '@angular/core';
 import { NavigationEnd, Router, RouterLink } from '@angular/router';
+import { UsericonDropdownComponent } from "../../UI/usericon-dropdown/usericon-dropdown.component";
 
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink, UsericonDropdownComponent],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.scss'
 })
 export class SidebarComponent {
+
+  showThemeOverlay=false;
   menuItems = [
     { id: 1, label: 'Dashboard', icon: 'fa-solid fa-house', route: '/home', active: false },
     {id: 7, label: "Assignments", icon: "fa-solid fa-tasks", route: "/assignee",active: false},
@@ -17,7 +20,7 @@ export class SidebarComponent {
     { id: 3, label: 'History', icon: 'fa-solid fa-clock-rotate-left', route: '/history', active: false },
     { id: 2, label: 'User Mangement', icon: 'fa-solid fa-users', route: '/users', active: false },
     { id: 6, label: 'Reference', icon: 'fa-solid fa-book', route: '/reference', active: false }
-    
+
   ];
 
   constructor(private router: Router) {}
@@ -42,4 +45,22 @@ export class SidebarComponent {
       item.active = item.route === currentRoute;
     });
   }
+
+  setTheme(theme:any) {
+    document.body.className = theme; // Apply the theme class to <body>
+  }
+
+  onMouseClick()
+  {
+
+      if(this.showThemeOverlay)
+      document.getElementById("header-options-overlay")!.style.display="block"
+      else
+      document.getElementById("header-options-overlay")!.style.display="none"
+      this.showThemeOverlay=!this.showThemeOverlay
+
+
+
+  }
+
 }

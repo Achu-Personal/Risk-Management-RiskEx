@@ -1,4 +1,161 @@
-<app-body-container class="main" backgroundColor="transparent" padding="5">
+<app-body-container class="main" backgroundColor="transparent" padding="5" [showShadow]="false">
+<div class="dashboard">
+<div class="topbuttons">
+  <div class="dropdown" >
+<app-department-dropdown *ngIf="authService.getUserRole() === 'Admin'"></app-department-dropdown>  </div>
+  <div class="registerrisk">
+    <app-button class="btn" Content="Register Risk" bgColour="#4D4D4D" routerLink="/addrisk" height="38" width="147" color="white"></app-button>
+  </div>
+</div>
+
+  <div class="graphs">
+    <div class="graph1">
+      <div class="leftside">
+        <div class="heading">
+          <h4>Open Risks</h4>
+        </div>
+        <div class="labels">
+          <div class="risk-indicator">
+            <div class="privacy-risk"></div>
+             <span>Privacy Risk</span>
+          </div>
+                        <div class="risk-indicator">
+                         <div class="quality-risk"></div>
+                          <span>Quality Risk</span>
+                            </div>
+                              <div class="risk-indicator">
+              <div class="security-risk"></div>
+            <span>Security Risk</span>
+          </div>
+        </div>
+      </div>
+      <div class="rightside ">
+        <div class="circlegraph">
+
+          <div style="width:50px;height:50px;position: absolute;display: flex;justify-content: center;align-items: center;margin-top: 60px;margin-left: 55px;">
+
+
+            <div class="circle circle-1 "></div>
+            <div class="glass">{{securityRiskCount}}</div>
+          </div>
+
+          <div  style="width:180px;height:180px;position: absolute;display: flex;justify-content: center;align-items: center;  margin-left: 100px;margin-bottom: -70px;margin-top: 50px;">
+
+
+            <div class="circle circle-2 "></div>
+            <div class="glass">{{qualityRiskCount}}</div>
+          </div>
+          <div  style="width:135px;height: 135px;position: absolute;display: flex;justify-content: center;align-items: center;margin-top: 120px;">
+
+
+            <div class="circle circle-3 "></div>
+            <div class="glass">{{privacyRiskCount ? privacyRiskCount : 0}}</div>
+          </div>
+
+
+
+
+
+        </div>
+      </div>
+    </div>
+    <div class="graph2">
+      <div class="riskratingcategory">
+      <h4>Risk Rating</h4>
+      <div class="forchart" >
+        <div class="graphchart"  >
+        <app-chart [labels]="graph2labels" [chartType]="graph2chartType" [datasets]="graph2datasets"></app-chart>
+        </div>
+        <div class="graph2Legend">
+          <div>
+            <div style="background-color: blue;" ></div>
+            <h6>Low</h6>
+          </div>
+          <div>
+            <div  style="background-color: rgb(251, 213, 255);"></div>
+            <h6>Moderate</h6>
+          </div>
+          <div>
+            <div style="background-color: rgb(206, 206, 255);"></div>
+            <h6>Critical</h6>
+          </div>
+
+
+
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+            <div class="riskdetails">
+        <div class="urgentrisks">
+          <h5>Upcoming Risk Deadlines</h5>
+          <div class="maindiv1">
+            <div class="risk-card1">
+              <div class="top1">
+                <div class="risk-text1">Data corruption due to hardware failure</div>
+
+              </div>
+              <div class="bottom1">
+                <div class="risk-date1">16 January 2017</div>
+                <button class="view-risk-button1">View Risk</button>
+              </div>
+            </div>
+
+            <div class="risk-card1">
+              <div class="top1">
+                <div class="risk-text1">Data corruption due to hardware failure</div>
+
+              </div>
+              <div class="bottom1">
+                <div class="risk-date1">16 January 2017</div>
+                <button class="view-risk-button1">View Risk</button>
+              </div>
+            </div>
+
+
+          </div>
+
+
+        </div>
+      <div class="imprisk">
+        <h5>Risks With Highest Overall Rating</h5>
+        <div class="maindiv">
+          <div class="risk-card">
+            <div class="top">
+              <div class="risk-text">Data corruption due to hardware failure</div>
+              <div class="risk-count">137</div>
+            </div>
+            <div class="bottom">
+              <div class="risk-date">2025-01-15</div>
+              <button class="view-risk-button">View Risk →</button>
+            </div>
+          </div>
+          <div class="risk-card">
+            <div class="top">
+              <div class="risk-text">Data corruption due to hardware failure</div>
+              <div class="risk-count">137</div>
+            </div>
+            <div class="bottom">
+              <div class="risk-date">2025-01-15</div>
+              <button class="view-risk-button">View Risk →</button>
+            </div>
+          </div>
+
+        </div>
+
+
+
+    </div>
+  </div>
+</div>
+</app-body-container>
+
+
+
+
+
+
     <!-- <div class="searchbuttons">
       <div class="dropdown">
         <app-department-dropdown></app-department-dropdown>
@@ -30,100 +187,3 @@
     <div class="apptable">
       <app-table class="table" (onclickrow)="OnClickRow($event)"></app-table>
     </div> -->
-<div class="dashboard">
-<div class="topbuttons">
-  <div class="dropdown">
-<app-department-dropdown *ngIf="authService.getUserRole() === 'Admin'"></app-department-dropdown>  </div>
-  <div class="registerrisk">
-    <app-button class="btn" title="Register Risk" bgColour="#4D4D4D" routerLink="/addrisk" height="38" width="147" color="white"></app-button>
-  </div>
-
-</div>
-
-  <div class="graphs">
-    <div class="graph1">
-      <div class="leftside">
-        <div class="heading">
-          <h4>Open Risks</h4>
-        </div>
-        <div class="labels">
-          <div class="risk-indicator">
-            <div class="privacy-risk"></div>
-             <span>Privacy Risk</span>
-          </div>
-                        <div class="risk-indicator">
-                         <div class="quality-risk"></div>
-                          <span>Quality Risk</span>
-                            </div>
-                              <div class="risk-indicator">
-              <div class="security-risk"></div>
-            <span>Security Risk</span>
-          </div>
-        </div>
-      </div>
-      <div class="rightside">
-        <div class="circlegraph">
-          <div class="circle circle-1">1</div>
-          <div class="circle circle-2">10</div>
-          <div class="circle circle-3">5</div>
-        </div>
-      </div>
-    </div>
-    <div class="graph2">
-                      <div class="riskratingcategory">
-                    <h4>Risk Rating</h4>
-                    <div class="forchart">
-
-                      <div class="graphchart">
-                        <app-chart [labels]="graph2labels" [chartType]="graph2chartType" [datasets]="graph2datasets"></app-chart>
-
-                      </div>
-
-
-                    </div>
-
-                  </div>
-    </div>
-              </div>
-            <div class="riskdetails">
-          <div class="latestrisk">
-        </div>
-      <div class="imprisk">
-        <h5>Risks With Highest Overall Rating</h5>
-        <div class="maindiv">
-          <div class="risk-card">
-            <div class="top">
-              <div class="risk-text">Data corruption due to hardware failure</div>
-              <div class="risk-count">137</div>
-            </div>
-            <div class="bottom">
-              <div class="risk-date">16 January 2017</div>
-              <button class="view-risk-button">View Risk →</button>
-            </div>
-          </div>
-          <div class="risk-card">
-            <div class="top">
-              <div class="risk-text">Data corruption due to hardware failure</div>
-              <div class="risk-count">137</div>
-            </div>
-            <div class="bottom">
-              <div class="risk-date">16 January 2017</div>
-              <button class="view-risk-button">View Risk →</button>
-            </div>
-          </div>
-
-        </div>
-
-
-
-    </div>
-  </div>
-</div>
-
-
-
-
-
-
-
-</app-body-container>

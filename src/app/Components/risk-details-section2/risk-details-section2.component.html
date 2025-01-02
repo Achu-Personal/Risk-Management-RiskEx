@@ -13,7 +13,7 @@
     {
       <div  class=" primaryColor shadowType1 details-card ">
         <h5>Risk Contingency</h5>
-        <p title={{riskContengency}}>{{riskContengency.slice(0,1020)}}..</p>s
+        <p title={{riskContengency}}>{{riskContengency.slice(0,1020)}}..</p>
 
       </div>
     }
@@ -48,7 +48,7 @@
     <div class="risk-status">
       <h5>Risk Progress</h5>
 
-        <app-stepper [steps]="stepperData"></app-stepper>
+        <app-stepper [steps]="stepperData" (stepCompleted)="completeStep($event)"></app-stepper>
 
 
     </div>

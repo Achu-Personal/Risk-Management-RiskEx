@@ -1,4 +1,4 @@
-import { SlicePipe } from '@angular/common';
+// import { SlicePipe } from '@angular/common';
 import { Component, EventEmitter, Input, Output, output, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common'; // Import CommonModule
 import { FormsModule } from '@angular/forms';
@@ -8,14 +8,14 @@ import { ConfirmationPopupComponent } from "../confirmation-popup/confirmation-p
 @Component({
   selector: 'app-reusable-table',
   standalone: true,
-  imports: [SlicePipe, CommonModule, FormsModule, ConfirmationPopupComponent],
+  imports: [ CommonModule, FormsModule, ConfirmationPopupComponent],
   templateUrl: './reusable-table.component.html',
   styleUrl: './reusable-table.component.scss'
 })
 export class ReusableTableComponent {
 
-  @Input() tableHeaders: string[] = []; 
-  @Input() tableData: any[] = []; 
+  @Input() tableHeaders: string[] = [];
+  @Input() tableData: any[] = [];
   @Input() IsActionRequiered: boolean = true;
   @Input() IsUser:boolean= false;
   @Input() height:any='70%';
@@ -32,32 +32,32 @@ export class ReusableTableComponent {
 
 
   constructor(public auth:AuthService){}
-  
+
   // SVG paths for eye states
   openEyePath = 'M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z';
   closedEyePath = 'M1 12s4-8 11-8 11 8 11 8M2 12h20';
 
-  rowKeys: string[] = []; 
+  rowKeys: string[] = [];
 
   ngOnInit(): void {
     const role = this.auth.getUserRole(); // Fetch user role
-    this.isAdmin = role === 'Admin'; 
+    this.isAdmin = role === 'Admin';
     if (this.tableData && this.tableData.length > 0) {
-      this.rowKeys = Object.keys(this.tableData[0]); 
+      this.rowKeys = Object.keys(this.tableData[0]);
     }
   }
 
-  
-// rejectRisk = output();  
+
+// rejectRisk = output();
 isToggled: boolean = false;
   // isActive: boolean;
 // rejectButton(event:Event,row:any) {
 //   console.log("Row",row);
 //   event.stopPropagation();
 //   this.rejectRisk.emit(row.riskId);
- 
-  
-  
+
+
+
 // }
 
 rejectButton(event: Event, row: any) {
@@ -75,7 +75,7 @@ RiskClose(event:Event,row:any) {
 // approveButton(event:Event,row:any) {
 //     event.stopPropagation();
 //     this.approveRisk.emit(row.riskId);
-  
+
 // }
 
 approveButton(event: Event, row: any) {
@@ -95,21 +95,24 @@ onReject(data: {comment: string}) {
 }
 
 
-formatDate(value: any): string {
-  if (!value) return ''; // Handle empty value
-  if (typeof value === 'string' ) {
-    const date = new Date(value);
-    if (!isNaN(date.getTime())) {
-      const day = String(date.getDate()).padStart(2, '0'); 
-      const month = String(date.getMonth() + 1).padStart(2, '0'); 
-      const year = date.getFullYear();
-      return `${day}-${month}-${year}`; 
-     
-    }
-  }
+// formatDate(value: any): string {
+//   if (!value) return '';
+  
+//   if (typeof value === 'string' && value.includes('-')) {
+//     const date = new Date(value);
+//     if (!isNaN(date.getTime())) {
+//       const day = String(date.getDate()).padStart(2, '0');
+//       const month = String(date.getMonth() + 1).padStart(2, '0'); 
+//       const year = date.getFullYear();
+//       return `${day}-${month}-${year}`;
+//     }
+//   }
+//   return value;
+// }
+
   // If not a valid date, return the original value
-  return value.toString();
-}
+  // return value.toString();
+// }
 
 getRiskType(riskType: number): string {
   switch (riskType) {
@@ -120,17 +123,17 @@ getRiskType(riskType: number): string {
     case 3:
       return 'Privacy';
     default:
-      return 'Unknown'; 
+      return 'Unknown';
   }
 }
 getRiskStatus(riskStatus:number) : string{
   switch(riskStatus){
-    case 1: 
+    case 1:
       return 'Open';
-    case 2: 
+    case 2:
       return 'Closed';
     default:
-      return 'Unknown';  
+      return 'Unknown';
   }
 }
 
@@ -166,6 +169,6 @@ getRiskRatingStyle(riskRating: number): string {
       console.log('Table Headers:', this.tableHeaders);
       console.log('Table Data:', this.tableData);
     }
-    
+
 
 }

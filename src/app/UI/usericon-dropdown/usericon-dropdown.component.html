@@ -1,0 +1,21 @@
+<div class="box" style="padding: 5px;">
+  <div  style="height: 5px;"></div>
+  <i style="margin-left: 17px; color:red;" class="fa-solid fa-right-from-bracket logout-icon"></i>
+  <div style="height: 20px;"></div>
+  <img
+    (click)="toggleDropdown()"
+    src="/Images/usericon.png"
+    height="50"
+    width="50"
+    alt="User Icon"
+  />
+  <div *ngIf="dropdownVisible" class="dropdown-card">
+    <div class="profile-card">
+      <img src="/Images/usericon.png" alt="Profile Picture" class="profile-image" />
+      <h3>{{ auth.getUserName() }}</h3>
+      <p class="role">{{ auth.getUserRole() }}</p>
+      <p class="department">{{ auth.getDepartmentName() }}</p>
+      <p class="email">{{ auth.getUserMail() }}</p>
+    </div>
+  </div>
+</div>
