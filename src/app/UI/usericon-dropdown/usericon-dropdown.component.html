@@ -4,14 +4,14 @@
   <div style="height: 20px;"></div>
   <img
     (click)="toggleDropdown()"
-    src="https://w7.pngwing.com/pngs/152/155/png-transparent-male-man-person-business-avatar-icon.png"
+    src="/Images/avtar.jpg"
     height="50"
     width="50"
     alt="User Icon"
   />
   <div *ngIf="dropdownVisible" class="dropdown-card">
     <div class="profile-card">
-      <img src="https://w7.pngwing.com/pngs/152/155/png-transparent-male-man-person-business-avatar-icon.png" alt="Profile Picture" class="profile-image" />
+      <img src="/Images/avtar.jpg" alt="Profile Picture" class="profile-image" />
       <h3>{{ auth.getUserName() }}</h3>
       <p class="role">{{ auth.getUserRole() }}</p>
       <p class="department">{{ auth.getDepartmentName() }}</p>
