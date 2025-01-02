@@ -1,4 +1,4 @@
-import { SlicePipe } from '@angular/common';
+// import { SlicePipe } from '@angular/common';
 import { Component, EventEmitter, Input, Output, output, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common'; // Import CommonModule
 import { FormsModule } from '@angular/forms';
@@ -8,7 +8,7 @@ import { ConfirmationPopupComponent } from "../confirmation-popup/confirmation-p
 @Component({
   selector: 'app-reusable-table',
   standalone: true,
-  imports: [SlicePipe, CommonModule, FormsModule, ConfirmationPopupComponent],
+  imports: [ CommonModule, FormsModule, ConfirmationPopupComponent],
   templateUrl: './reusable-table.component.html',
   styleUrl: './reusable-table.component.scss'
 })
@@ -95,20 +95,21 @@ onReject(data: {comment: string}) {
 }
 
 
-formatDate(value: any): string {
-  if (!value) return '';
+// formatDate(value: any): string {
+//   if (!value) return '';
   
-  if (typeof value === 'string' && value.includes('-')) {
-    const date = new Date(value);
-    if (!isNaN(date.getTime())) {
-      const day = String(date.getDate()).padStart(2, '0');
-      const month = String(date.getMonth() + 1).padStart(2, '0'); 
-      const year = date.getFullYear();
-      return `${day}-${month}-${year}`;
-    }
-  }
-  return value;
-}
+//   if (typeof value === 'string' && value.includes('-')) {
+//     const date = new Date(value);
+//     if (!isNaN(date.getTime())) {
+//       const day = String(date.getDate()).padStart(2, '0');
+//       const month = String(date.getMonth() + 1).padStart(2, '0'); 
+//       const year = date.getFullYear();
+//       return `${day}-${month}-${year}`;
+//     }
+//   }
+//   return value;
+// }
+
   // If not a valid date, return the original value
   // return value.toString();
 // }
