@@ -95,7 +95,23 @@ constructor(private http:HttpClient) { }
    }
 
    addnewQualityRisk(qualityRisk:any){
-    return this.http.get('https://localhost:7216/api/Risk/Quality',qualityRisk)
+    return this.http.post('https://localhost:7216/api/Risk/Quality',qualityRisk)
+   }
+
+   addnewSecurityOrPrivacyRisk(SecurityOrPrivacyRisk:any){
+    return this.http.post('https://localhost:7216/api/Risk/security',SecurityOrPrivacyRisk)
+   }
+   addExternalReviewer(reviewer:any){
+    return this.http.post('https://localhost:7216/api/Reviewer/add-reviewer',reviewer)
+   }
+   addResponsiblePerson(assignee:any){
+    return this.http.post('https://localhost:7216/api/User/register',assignee)
+   }
+   getAllReviewer(){
+    return this.http.get('https://localhost:7216/api/Reviewer/getAllReviewers')
+   }
+   editQualityRisk(id:any,risk:any){
+    return this.http.put(`https://localhost:7216/api/Risk/quality/${id}`,risk)
    }
 
 

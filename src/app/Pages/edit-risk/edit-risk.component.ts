@@ -15,11 +15,12 @@ import { ISMSFormComponent } from "../../Components/isms-form/isms-form.componen
 })
 export class EditRiskComponent {
   riskdata:any=''
-  riskType:string=''
+  riskType:string='Quality'
+  riskId:number=21
   ngOnInit(){
-    this. riskdata=history.state.riskData ;
-    this.riskType=this.riskdata.risk_type;
-    console.log(this.riskdata)
+    // this. riskdata=history.state.riskData ;
+    // this.riskType=this.riskdata.risk_type;
+    // console.log(this.riskdata)
 
   }
 

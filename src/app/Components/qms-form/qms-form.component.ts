@@ -1,4 +1,4 @@
-import { Component, Input} from '@angular/core';
+import { ChangeDetectorRef, Component, Input} from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DropdownComponent } from "../../UI/dropdown/dropdown.component";
 import { ButtonComponent } from "../../UI/button/button.component";
@@ -7,22 +7,24 @@ import { TextareaComponent } from "../../UI/textarea/textarea.component";
 import { OverallRatingCardComponent } from "../../UI/overall-rating-card/overall-rating-card.component";
 import { BodyContainerComponent } from "../body-container/body-container.component";
 import { ApiService } from '../../Services/api.service';
+import { AuthService } from '../../Services/auth.service';
+import { HeatmapComponent } from '../heatmap/heatmap.component';
 
 
 @Component({
   selector: 'app-qms-form',
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule, DropdownComponent, ButtonComponent, CommonModule, TextareaComponent, OverallRatingCardComponent, BodyContainerComponent],
+  imports: [FormsModule, ReactiveFormsModule, DropdownComponent, ButtonComponent, CommonModule, TextareaComponent, OverallRatingCardComponent, BodyContainerComponent,HeatmapComponent],
   templateUrl: './qms-form.component.html',
   styleUrl: './qms-form.component.scss'
 })
 export class QMSFormComponent {
+  @Input() riskIdFromParent: number=0;
 
 @Input() riskTypeValue: number=1
 result: number = 0;
 reviewerNotInList:boolean=false
 assigneeNotInList:boolean=false
-isAdmin:string='admin'
 likelihoodValue:number=0
 impactValue:number=0
 riskFactor:number=0
@@ -30,15 +32,26 @@ riskId:string='sfm_003'
 dropdownDataLikelihood: any[] = []
 dropdownDataImpact:any[]=[]
 dropdownDataProject:any[]=[]
-department:string='SFM'
+dropdownDataDepartment:any[]=[]
+dropdownDataReviewer: Array<{ id: number; fullName: string; email: string; type: string }> = [];
+departmentId:string='';
+showDialog = false;
+externalReviewerId:number=0
+departmentName:string=''
+newAssigneeId:number=0
+isInternal:boolean=true
+showReference =false
+showDialogSuccess=false
+dialogMessage:string=''
+isEditMode = false;
 
-constructor(private api:ApiService){}
 
+showNotification = false;
+  isSuccess = false;
+  notificationMessage = '';
+constructor(private api:ApiService,public authService:AuthService,private cdr: ChangeDetectorRef){}
 
 qmsForm=new FormGroup({
-
-
-
   riskName:new FormControl('',Validators.required),
   description:new FormControl('',[Validators.maxLength(1000),Validators.minLength(15),Validators.required]),
   impact:new FormControl('',[Validators.maxLength(1000),Validators.minLength(15),Validators.required]),
@@ -53,54 +66,22 @@ qmsForm=new FormGroup({
   DepartmentId:new FormControl(''),
   userId:new FormControl(''),
   externalReviewerId:new FormControl(''),
+})
 
+reviewerGroup= new FormGroup({
+  fullName:new FormControl(''),
+  email:new FormControl(''),
+  departmentId:new FormControl('')
+})
+
+assigneeGroup=new FormGroup({
+  fullName:new FormControl(''),
+  email:new FormControl(''),
+  departmentName:new FormControl('')
 
 })
 
 
-
-// dropdownDataLikelihood=[
-//   { "type":"Select Likelihood","value":""},
-//   {"type":"Low","value":"1"},
-//   {"type":"Medium","value":"2"},
-//   { "type":"High","value":"3"},
-//   { "type":"Critical","value":"4"}
-// ];
-
-// dropdownDataImpact=[
-//   { "type":"select Impact","value":""},
-//   {"type":"Low","value":"1"},
-//   {"type":"Medium","value":"2"},
-//   { "type":"High","value":"3"},
-//   { "type":"Critical","value":"4"}
-// ];
-
-dropdownDataReviewer=[
-  {"name":"Select--","email":""},
-  {"name":"Achu s nair","email":"1"},
-  {"name":"Shamna Sherin","email":"2"},
-  {"name":"Deepak Denny","email":"3"},
-  { "name":"Bindhya C Philip","email":"4"},
-  { "name":"Vivek V N","email":"5"},
-];
-
-// dropdownDataProject=[
-//   {"name":"Select--","id":""},
-//   {"name":"japanese training","id":"1"},
-//   {"name":"risk management","id":"2"},
-//   {"name":"pit-stop","id":"3"},
-//   { "name":"query management","id":"4"},
-//   { "name":"HR inventory","id":"5"},
-// ];
-
-dropdownDataDepartment=[
-  {"name":"Select--","id":""},
-  {"name":"SFM","id":"1"},
-  {"name":"ACE","id":"2"},
-  {"name":"HR","id":"3"},
-  { "name":"L&D","id":"4"},
-  { "name":"DU1","id":"5"},
-];
 
 autoResize(event: Event): void {
   const textarea = event.target as HTMLTextAreaElement;
@@ -117,13 +98,27 @@ isAssigneeNotInList(){
   this.assigneeNotInList=!this.assigneeNotInList
 }
 
-onDropdownChangelikelihood(value: any): void {
- this.likelihoodValue = value ? parseFloat(value.target.value) : 0;
+onDropdownChangelikelihood(event: any): void {
+  const selectedFactorId = Number(event.target.value);
+  const selectedFactor = this.dropdownDataLikelihood.find(factor => Number(factor.id) === selectedFactorId);
+  if (selectedFactor) {
+    this.likelihoodValue = selectedFactor.likelihood;
+    console.log('Selected Likelihood:', this.likelihoodValue);
+  } else {
+    console.log('Selected factor not found.');
+  }
  this.calculateOverallRiskRating();
 }
 
-onDropdownChangeImpact(value: any): void {
-  this.impactValue = value ? parseFloat(value.target.value) : 0;
+onDropdownChangeImpact(event: any): void {
+ const selectedFactorId = Number(event.target.value);
+ const selectedFactor = this.dropdownDataImpact.find(factor => Number(factor.id) === selectedFactorId);
+ if (selectedFactor) {
+  this.impactValue = selectedFactor.impact;
+  console.log('Selected Impact:',this.impactValue);
+ }else {
+  console.log('Selected factor not found.');
+ }
   this.calculateOverallRiskRating();
 }
 
@@ -147,17 +142,54 @@ changeColorOverallRiskRating(){
 }
 
 ngOnInit(){
-  console.log(this.riskTypeValue);
+  console.log('selecetd risk type value',this.riskTypeValue);
+  this.departmentName =this.authService.getDepartmentName()!;
+  console.log('department Name',this.departmentName);
+  this.departmentId=this.authService.getDepartmentId()!;
+  console.log('department id',this.departmentId)
+
   this.api.getLikelyHoodDefinition().subscribe((res:any)=>{
     this.dropdownDataLikelihood=res;
   })
   this.api.getImpactDefinition().subscribe((res:any)=>{
     this.dropdownDataImpact=res
   })
-  this.api.getProjects(this.department).subscribe((res:any)=>{
+  this.api.getProjects(this.departmentName).subscribe((res:any)=>{
     this.dropdownDataProject=res
   })
+  this.api.getDepartment().subscribe((res:any)=>{
+    this.dropdownDataDepartment=res
+  })
+  this.api.getAllReviewer().subscribe((res:any)=>{
+    this.dropdownDataReviewer=res.reviewers
+  })
+  if(this.riskIdFromParent!=0){
+    this.isEditMode = true;
+    this.api.getRiskById(this.riskIdFromParent).subscribe((res:any)=>{
+      console.log("this is the id from the parent",this.riskIdFromParent)
+      console.log("this is the data from that id",res)
+      const formattedPlannedActionDate = this.formatDate(res.plannedActionDate);
 
+      this.qmsForm.patchValue({
+        riskName: res.riskName,
+        description: res.description,
+        impact: res.impact,
+        projectId: res.projectId,
+        likelihood: res.riskAssessments[0]?.likelihood,
+        impactValue: res.riskAssessments[0]?.impact,
+        mitigation: res.mitigation,
+        contingency: res.contingency,
+        responsibileUserId: res.responsibleUserId,
+        plannedActionDate: formattedPlannedActionDate, // Remove time if present
+        reviewerId: res.riskAssessments[0]?.review?.userId
+          ? res.riskAssessments[0]?.review?.userId
+          : res.riskAssessments[0]?.review?.externalReviewerId,
+        DepartmentId: res.departmentId,
+        userId: res.userId,
+        externalReviewerId: res.riskAssessments[0]?.review?.externalReviewerId,
+      });
+    })
+  }
 }
 
 onSubmit(){
@@ -169,35 +201,170 @@ onSubmit(){
     riskType:this.riskTypeValue ,
     impact: formValue.impact ,
     mitigation: formValue.mitigation,
-    contingency: formValue.contingency || null,
-    overallRiskRating:this.result ,
-    responsibleUserId: formValue.responsibileUserId,
-    plannedActionDate: formValue.plannedActionDate ,
-    departmentId: formValue.DepartmentId,
-    projectId: formValue.projectId ? +formValue.projectId : null,
+    contingency: formValue.contingency || " ",
+    overallRiskRating:Number(this.result) ,
+    responsibleUserId:formValue.responsibileUserId? Number(formValue.responsibileUserId):this.newAssigneeId,
+    plannedActionDate: `${formValue.plannedActionDate}T00:00:00.000Z` ,
+    departmentId:formValue.DepartmentId? + Number(formValue.DepartmentId) : Number(this.departmentId),
+    projectId: formValue.projectId ? +Number(formValue.projectId) : null,
     riskAssessments: [
       {
-        likelihood: formValue.likelihood ,
-        impact: formValue.impactValue ,
+        likelihood: Number(formValue.likelihood) ,
+        impact: Number(formValue.impactValue) ,
         isMitigated: false,
         assessmentBasisId:null,
         riskFactor:this.riskFactor ,
         review: {
-          userId: formValue.reviewerId ? +formValue.reviewerId : null,
-          externalReviewerId:null,
-          comments:null,
+          userId: this.isInternal && formValue.reviewerId?formValue.reviewerId : null,
+          externalReviewerId:!this.isInternal?formValue.reviewerId: this.externalReviewerId!=0 ? this.externalReviewerId: null,
+          comments:" ",
           reviewStatus:1,
         },
       },
     ],
   };
-  this.api.addnewQualityRisk(payload).subscribe(res=>{
-    console.log(res);
+  if(!this.isEditMode){
+    this.api.addnewQualityRisk(payload).subscribe({
+      next: (res: any) => {
+        console.log(res);
+        if (res && res.id && res.id !== 0) { // Assuming API returns a success property
+          this.isSuccess = true;
+          this.notificationMessage = 'Risk successfully submitted!';
+          // this.showNotification = true;
+          // this.showDialog=false
+        } else {
+          this.isSuccess = false;
+          this.notificationMessage = 'Failed to submit risk. Please try again.';
+          // this.showNotification = true;
+          // this.showDialog=false
+        }
+        this.showNotification = true;
+        this.showDialog = false;
+        this.cdr.detectChanges();
+
+      },
+      error: (error) => {
+        console.error('Error:', error);
+        this.isSuccess = false;
+        this.notificationMessage = 'An error occurred while submitting the risk.';
+        this.showNotification = true;
+        this.showDialog=false
+
+        this.cdr.detectChanges();
+      }
+
+    });
+
+  }
+  else{
+    this.api.editQualityRisk(this.riskIdFromParent,payload).subscribe((res:any)=>{
+      console.log(res)
+    })
+
+  }
+
+}
+
+formatDate(date: string): string {
+  const dateObj = new Date(date);
+  const year = dateObj.getFullYear();
+  const month = ('0' + (dateObj.getMonth() + 1)).slice(-2); // Ensure two digits for month
+  const day = ('0' + dateObj.getDate()).slice(-2); // Ensure two digits for day
+  return `${year}-${month}-${day}`;
+}
+
+closeDialogSuccess() {
+  this.showNotification = false;
+  this.showDialog=false
+}
+
+openConfirmationDialog() {
+  this.showDialog = true;
+  this.cdr.detectChanges();
+}
+
+closeDialog() {
+  this.showDialog = false;
+}
+
+onConfirm() {
+  this.showDialog = false;
+  this.onSubmit();
+}
+
+onCancel() {
+  this.showDialog = false;
+    this.notificationMessage = 'Submission canceled.';
+    this.showNotification = true;
+    this.cdr.detectChanges();
+}
+
+onClear() {
+  this.qmsForm.reset();
+  console.log('Form cleared.');
+}
+
+saveExternalReviewer(){
+  console.log(this.reviewerGroup);
+
+  this.api.addExternalReviewer(this.reviewerGroup.value).subscribe((res:any)=>{
+    this.externalReviewerId = res.reviewerId
+    console.log("reviewer response",this.externalReviewerId);
+
   })
 
-  console.log("api for add is ",payload);
+}
 
+saveAssignee(){
+  const formValue = this.assigneeGroup.value;
+  const payload = {
+    email:formValue.email,
+    fullName:formValue.fullName,
+    departmentName:this.departmentName
+  }
+  console.log(payload)
+  this.api.addResponsiblePerson(payload).subscribe((res:any)=>{
+    this.newAssigneeId=res.id
+    console.log("new assignee id: ",this.newAssigneeId)
+  })
 
 
 }
+
+onReviewerChange(selectedReviewer: any) {
+  const selectedreviewer = Number(selectedReviewer.target.value);
+  console.log("selected factor id is ",selectedreviewer);
+
+  const selectedFactor = this.dropdownDataReviewer.find(factor => factor.id === selectedreviewer);
+  console.log("selected factor is ",selectedFactor)
+  if(selectedFactor){
+    if (selectedFactor.type ==="Internal") {
+      this.isInternal=true
+      console.log("this is a internal reviewer",this.isInternal);
+
+    } else if (selectedFactor.type ==="External") {
+     this.isInternal=false
+     console.log("this is a external reviewer",this.isInternal);
+    }
+  }
+
+  else {
+    console.error("No matching reviewer found for the selected ID.");
+  }
+}
+
+
+dropdownDataassignee=[
+    {"name":"Achu s nair","email":"1"},
+    {"name":"Shamna Sherin","email":"2"},
+    {"name":"Deepak Denny","email":"3"},
+    { "name":"Bindhya C Philip","email":"4"},
+    { "name":"Vivek V N","email":"5"},
+  ];
+
+  onReferenceClick(){
+    this.showReference=!this.showReference
+  }
+
+
 }
