@@ -68,7 +68,7 @@ constructor(private http:HttpClient) { }
 
    }
    getRiskResponses(){
-    
+
     return this.http.get('https://localhost:7216/api/RiskResponseData')
    }
    getLikelyHoodDefinition(){
@@ -76,5 +76,11 @@ constructor(private http:HttpClient) { }
    }
    getImpactDefinition(){
     return this.http.get('https://localhost:7216/api/AssessmentMatrixImpact')
+   }
+   getRiskCategoryCounts(){
+    return this.http.get('https://localhost:7216/api/Risk/RiskCategory-Counts')
+   }
+   getOpenRiskCountByType(){
+    return this.http.get('https://localhost:7216/api/Risk/OpenRisk-Counts')
    }
  }
