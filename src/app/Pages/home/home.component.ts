@@ -65,15 +65,22 @@ export class HomeComponent {
 
           this.api. getRiskCategoryCounts().subscribe((response:any)=>{
           this.list=response;
-          console.log(this.list);
+
 
           const count = this.list.map((element: { count: any; }) => element.count);
           this.counter = count
-          console.log(this.counter);
+          console.log("Criticality",this.list)
+
 
           const riskCat = this.list.map((element: {riskCategory:any})=>element.riskCategory);
           this.risk = riskCat;
-          console.log(this.risk);
+
+          const Criticality = this.list.reduce((acc: any, item: any) => {
+            acc[item.riskType] = item.riskCount;
+            return acc;
+            }, {});
+
+
 
             this.graph2datasets=[{
             data: this.counter,
@@ -85,7 +92,7 @@ export class HomeComponent {
             hoverOffset: 10
             }]
 
-            console.log(this.graph2datasets);
+
 
             this.graph2labels=this.risk
             this.graph2chartType='doughnut'
