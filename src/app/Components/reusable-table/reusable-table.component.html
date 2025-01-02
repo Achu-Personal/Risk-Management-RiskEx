@@ -77,7 +77,7 @@
           <td>
         <div class="toggle-container">
           <!-- Display toggle state -->
-          <div 
+          <div
           class="toggle-background"
           [ngClass]="row.toggleState ? 'green-background' : 'red-background'">
            <p>{{ row.toggleState ? "Active" : "Inactive" }}</p>
@@ -88,26 +88,26 @@
             <span class="slider"></span>
           </label>
 
-          
-          
+
+
         </div></td>
         }
         @else if(IsAssignee){
           <td>
-          <button class="eye-button" 
+          <button class="eye-button"
           (click)="rowClick(row)"
-          (mouseenter)="row.isEyeOpen = true" 
+          (mouseenter)="row.isEyeOpen = true"
           (mouseleave)="row.isEyeOpen = false">
-    <svg 
-      xmlns="http://www.w3.org/2000/svg" 
-      width="28" height="28" 
-      viewBox="0 0 24 24" 
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="28" height="28"
+      viewBox="0 0 24 24"
       class="eye-icon"
     >
       <!-- Eye Outline -->
-      <path 
-        [attr.d]="row.isEyeOpen ? 
-          'M12 4.5c-5.5 0-10 4-11.5 6.5 1.5 2.5 6 6.5 11.5 6.5s10-4 11.5-6.5c-1.5-2.5-6-6.5-11.5-6.5z' : 
+      <path
+        [attr.d]="row.isEyeOpen ?
+          'M12 4.5c-5.5 0-10 4-11.5 6.5 1.5 2.5 6 6.5 11.5 6.5s10-4 11.5-6.5c-1.5-2.5-6-6.5-11.5-6.5z' :
           'M12 4.5c-5.5 0-10 4-11.5 6.5 0 0 0 0 0 0m23 0c-1.5-2.5-6-6.5-11.5-6.5'"
         fill="none"
         stroke="currentColor"
@@ -116,40 +116,40 @@
         stroke-linejoin="round"
         class="eye-outline"
       />
-  
+
       <!-- Eyelashes (Top) -->
-      <path 
-        d="M5 6 Q6 3 7 6" 
-        fill="none" 
-        stroke="currentColor" 
-        stroke-width="1.5" 
+      <path
+        d="M5 6 Q6 3 7 6"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
         stroke-linecap="round"
       />
-      <path 
-        d="M9 5 Q10 2.5 11 5" 
-        fill="none" 
-        stroke="currentColor" 
-        stroke-width="1.5" 
+      <path
+        d="M9 5 Q10 2.5 11 5"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
         stroke-linecap="round"
       />
-      <path 
-        d="M13 5 Q14 2.5 15 5" 
-        fill="none" 
-        stroke="currentColor" 
-        stroke-width="1.5" 
+      <path
+        d="M13 5 Q14 2.5 15 5"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
         stroke-linecap="round"
       />
-      <path 
-        d="M17 6 Q18 3 19 6" 
-        fill="none" 
-        stroke="currentColor" 
-        stroke-width="1.5" 
+      <path
+        d="M17 6 Q18 3 19 6"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
         stroke-linecap="round"
       />
-  
+
       <!-- Eyelid -->
-      <path 
-        [attr.d]="row.isEyeOpen ? 
+      <path
+        [attr.d]="row.isEyeOpen ?
           'M12 4.5c-3.5 0-6.5 3-6.5 6.5s3 6.5 6.5 6.5 6.5-3 6.5-6.5-3-6.5-6.5-6.5z' :
           'M4.5 11.5c4 6.5 11.5 6.5 15.5 0'"
         fill="none"
@@ -158,37 +158,37 @@
         stroke-linecap="round"
         stroke-linejoin="round"
       />
-  
+
       <!-- Iris and Pupil (Only when open) -->
       <g *ngIf="row.isEyeOpen" class="iris-group">
-        <circle 
-          cx="12" 
-          cy="12" 
-          r="3.5" 
-          fill="none" 
-          stroke="currentColor" 
-          stroke-width="1.5" 
+        <circle
+          cx="12"
+          cy="12"
+          r="3.5"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
           class="iris"
         />
-        <circle 
-          cx="12" 
-          cy="12" 
-          r="1.5" 
-          fill="currentColor" 
+        <circle
+          cx="12"
+          cy="12"
+          r="1.5"
+          fill="currentColor"
           class="pupil"
         />
-        <circle 
-          cx="13.5" 
-          cy="11.5" 
-          r="0.5" 
-          fill="#ffffff" 
+        <circle
+          cx="13.5"
+          cy="11.5"
+          r="0.5"
+          fill="#ffffff"
           class="eye-shine"
         />
       </g>
     </svg>
   </button>
 </td>
-  
+
         }
        }
       </tr>

@@ -16,7 +16,7 @@ import { ConfirmDialogComponent } from '../../Components/confirm-dialog/confirm-
 })
 export class ApprovalTableComponent {
 
-  
+
 headerData:any=[
   "SI NO"," Risk Id","Risk","Description","End Date","Type","CRR","Status",
 ];
@@ -31,7 +31,7 @@ tableBody:approvalTableBody[]=[
     Type: 'Cybersecurity',
     CurrentRating: 8,
     Status: 'Pending'
-    
+
   },
   {
     SINo: 2,
@@ -42,7 +42,7 @@ tableBody:approvalTableBody[]=[
     Type: 'Operational',
     CurrentRating: 7,
     Status: 'Pending'
-    
+
   },
   {
     SINo: 3,
@@ -53,7 +53,7 @@ tableBody:approvalTableBody[]=[
     Type: 'Legal',
     CurrentRating: 5,
     Status: 'Pending'
-    
+
   },
   {
     SINo: 4,
@@ -64,7 +64,7 @@ tableBody:approvalTableBody[]=[
     Type: 'Strategic',
     CurrentRating: 6,
     Status: 'Pending'
-    
+
   },
   {
     SINo: 5,
@@ -85,7 +85,7 @@ tableBody:approvalTableBody[]=[
     Type: 'Cybersecurity',
     CurrentRating: 8,
     Status: 'Pending'
-    
+
   },
   {
     SINo: 2,
@@ -96,7 +96,7 @@ tableBody:approvalTableBody[]=[
     Type: 'Operational',
     CurrentRating: 7,
     Status: 'Pending'
-    
+
   },
   {
     SINo: 3,
@@ -107,7 +107,7 @@ tableBody:approvalTableBody[]=[
     Type: 'Legal',
     CurrentRating: 5,
     Status: 'Pending'
-    
+
   },
   {
     SINo: 4,
@@ -118,7 +118,7 @@ tableBody:approvalTableBody[]=[
     Type: 'Strategic',
     CurrentRating: 6,
     Status: 'Pending'
-    
+
   },
   {
     SINo: 5,
@@ -145,9 +145,9 @@ tableBody:approvalTableBody[]=[
   OnClickRow(rowData:any): void {
     this.router.navigate([`/approvals/${rowData.RiskId}`]);
     console.log("rowdata",rowData);
-    
-  } 
- 
+
+  }
+
 
 approveRisk(rowData:any): void {
   const dialogRef = this.dialog.open(ConfirmDialogComponent, {
@@ -177,11 +177,11 @@ rejectRisk(rowData:any): void {
   });
 
   dialogRef.afterClosed().subscribe((result: any) => {
-    
+
     if (result) {
       this.tableBody = this.tableBody.filter(row => row.RiskId !== rowData.RiskId);
       console.log("tablebody",this.tableBody);
-      
+
       console.log('Risk rejected!');
       this.cancelMessage = 'Risk has been rejected successfully.';
     } else {
