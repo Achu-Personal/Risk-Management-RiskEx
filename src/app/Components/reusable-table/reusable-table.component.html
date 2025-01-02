@@ -38,6 +38,7 @@
               <ng-container>
                 {{row[key] | slice : 0 : 30}}
                 {{ row[key]?.toString.length > 25 ? "..." : "" }}
+                <!-- {{row[key]}} -->
               </ng-container>
             }
             <!-- {{formatDate(row[key]) | slice : 0 : 30
