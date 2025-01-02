@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { BehaviorSubject, catchError, Observable, tap, throwError } from 'rxjs';
 import { project } from '../Interfaces/projects.interface';
 
 // interface Project {
@@ -21,6 +21,10 @@ export class AuthService {
   private departmentId = new BehaviorSubject<string | null>(null);
   private projects = new BehaviorSubject<project[]>([]);
   private currentUserId = new BehaviorSubject<string | null>(null);
+  private userMail = new BehaviorSubject<string | null>(null);
+  private userName = new BehaviorSubject<string | null>(null);
+
+
 
   constructor(private http: HttpClient, private router: Router) {
     // Initialize values from token if exists
@@ -39,9 +43,11 @@ export class AuthService {
       tap((response: any) => {
         localStorage.setItem('token', response.token);
         this.setUserDetails(response.token);
-        console.log("userrole",this.userRole.value);
-
+        console.log("userrole", this.userRole.value);
         this.navigateToDashboard();
+      }),
+      catchError((error) => {
+        return throwError(() => error.error.message || "An unexpected error occurred.");
       })
     );
   }
@@ -52,6 +58,9 @@ export class AuthService {
     this.departmentName.next(decodedToken.DepartmentName);
     this.departmentId.next(decodedToken.DepartmentId);
     this.currentUserId.next(decodedToken.CurrentUserId);
+    this.userMail.next(decodedToken.UserMail);
+    this.userName.next(decodedToken.UserName);
+
 
     // Parse projects from the token if they exist
     if (decodedToken.Projects) {
@@ -68,6 +77,13 @@ export class AuthService {
   // Getters for all user data
   getUserRole() {
     return this.userRole.value;
+  }
+  getUserName(){
+    return this.userName.value;
+  }
+  getUserMail(){
+    return this.userMail.value;
+
   }
 
   getDepartmentName() {
@@ -129,5 +145,13 @@ export class AuthService {
     // } else {
     //   this.router.navigate(['/home']);
     // }
+  }
+
+  getToken()
+  {
+    const token = localStorage.getItem('token');
+    console.log(token);
+
+    return token;
   }
 }

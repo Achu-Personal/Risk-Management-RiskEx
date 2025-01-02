@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { project } from '../Interfaces/projects.interface';
 import { UserResponse } from '../Interfaces/Userdata.interface.';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,8 +12,7 @@ import { UserResponse } from '../Interfaces/Userdata.interface.';
 export class ApiService {
 
 
-
-constructor(private http:HttpClient) { }
+constructor(private http:HttpClient, public auth:AuthService) { }
    //Just for now to test can be removed later
    getAllRisk()
    {
@@ -52,7 +52,8 @@ constructor(private http:HttpClient) { }
    }
 
    gettabledata(){
-     return this.http.get(`data/tabledata.json`)
+    //  return this.http.get(`data/tabledata.json`)
+    return this.http.get(`https://localhost:7216/api/Report`)
    }
    getFilteredData(department: any) {
      return this.http.get(`data/tabledata.json`).pipe(
@@ -93,6 +94,12 @@ constructor(private http:HttpClient) { }
    getImpactDefinition(){
     return this.http.get('https://localhost:7216/api/AssessmentMatrixImpact')
    }
+   getRiskCategoryCounts(){
+    return this.http.get('https://localhost:7216/api/Risk/RiskCategory-Counts')
+   }
+   getOpenRiskCountByType(){
+    return this.http.get('https://localhost:7216/api/Risk/OpenRisk-Counts')
+   }
 
    addnewQualityRisk(qualityRisk:any){
     return this.http.post('https://localhost:7216/api/Risk/Quality',qualityRisk)
@@ -114,5 +121,37 @@ constructor(private http:HttpClient) { }
     return this.http.put(`https://localhost:7216/api/Risk/quality/${id}`,risk)
    }
 
+   getRisksAssignedToUser(id:any='')
+   {
 
+
+    return this.http.get(`https://localhost:7216/api/Risk/GetRiskByAssigne/${id}`)
+   }
+
+
+   getRisksByReviewerId(){
+    const userId= this.auth.getCurrentUserId()
+    return this.http.get(`https://localhost:7216/api/Approval/Approval${userId}`)
+   }
+   getAllRisksTobeReviewed(){
+    return this.http.get('https://localhost:7216/api/Approval/RisksToBeReviewed');
+   }
+   updateRiskReviewStatus(riskId: number, approvalStatus: string) {
+    // Construct the API URL with query parameters
+    const url = `https://localhost:7216/api/Approval/update-review-status?riskId=${riskId}&approvalStatus=${approvalStatus}`;
+
+    // Make the HTTP PUT request
+    return this.http.put(url, {});
+  }
+  updateReviewStatusAndComments(id:number, updates:any){
+    console.log("updates",updates);
+    
+    this.http.put(`https://localhost:7216/api/Approval/update-review/${id}`,updates).subscribe(e => console.log(e)
+    );
+
+  }
+  sendEmailToAssignee(id:number){
+    this.http.post(`https://localhost:7216/api/emails/send-assignment-email/${id}`,{}).subscribe(e => console.log(e));
+  }
+  
  }

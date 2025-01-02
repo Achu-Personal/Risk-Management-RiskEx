@@ -48,7 +48,7 @@
     <div class="risk-status">
       <h5>Risk Progress</h5>
 
-        <app-stepper [steps]="stepperData"></app-stepper>
+        <app-stepper [steps]="stepperData" (stepCompleted)="completeStep($event)"></app-stepper>
 
 
     </div>

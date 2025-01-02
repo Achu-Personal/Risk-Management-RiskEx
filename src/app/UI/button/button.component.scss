@@ -8,18 +8,20 @@ button{
   outline: none;
   border: none;
   font-size: 14px;
-  :focus
+  background-color: blue;
+  &:focus
   {
     outline: none;
     border: none;
     // box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);  /* Add custom focus outline */
   }
-  // :hover{
+  &:hover{
 
-  //   background-color: #0056b3;
-  //   color: white;
-  //   border-color: #0056b3;
-  // }
+    background-color: rgb(103, 102, 102) !important;
+    color: white;
+
+  }
+
 }
 
 

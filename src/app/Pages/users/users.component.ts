@@ -61,7 +61,6 @@ export class UsersComponent {
     const userRole = this.authService.getUserRole();
     const userDepartment = this.authService.getDepartmentName();
 
-    // If the user is a DepartmentUser, disable the department field
     if (userRole === 'DepartmentUser') {
       this.userForm.patchValue({ departmentName: userDepartment });
       this.userForm.get('departmentName')?.disable();

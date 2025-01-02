@@ -1,34 +1,120 @@
 import { NgIf } from '@angular/common';
-import { ChartType } from 'chart.js';
 import { Component } from '@angular/core';
 import { BodyContainerComponent } from "../../Components/body-container/body-container.component";
-import { SearchboxComponent } from "../../UI/searchbox/searchbox.component";
 import { ButtonComponent } from "../../UI/button/button.component";
-import { DropdownComponent } from "../../UI/dropdown/dropdown.component";
 import { DepartmentDropdownComponent } from "../../Components/department-dropdown-dashboard/department-dropdown.component";
 import { ChartComponent } from "../../UI/chart/chart.component";
-import { TableComponent } from "../../Components/table/table.component";
 import { Router } from '@angular/router';
 import { AuthService } from '../../Services/auth.service';
+import { ApiService } from '../../Services/api.service';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [NgIf,BodyContainerComponent, ButtonComponent, DepartmentDropdownComponent, ChartComponent, TableComponent],
+  imports: [NgIf,BodyContainerComponent, ButtonComponent, DepartmentDropdownComponent, ChartComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
 export class HomeComponent {
-  constructor(private router: Router,public authService:AuthService) {}
+        list: any;
 
-  OnClickRow(rowid:any): void {
-    this.router.navigate([`/ViewRisk/${rowid}`]);
-    console.log("rowdata",rowid);
 
-  }
-// data:any
-// onDropdownChange($event: string) {
-// }
+
+        constructor(public api:ApiService,private router: Router,public authService:AuthService) {}
+
+        //   OnClickRow(rowid:any): void {
+        //   this.router.navigate([`/ViewRisk/${rowid}`]);
+        //   console.log("rowdata",rowid);
+        // }
+        privacyRiskCount: number = 0; // Default value
+        qualityRiskCount: number = 0; // Default value
+        securityRiskCount: number = 0; // Default value
+
+        graph2labels:string[]=[];
+        graph2chartType:any;
+        graph2datasets:any[]=[];
+        counter:number[]=[];
+        risk:string[]=[];
+
+        ngOnInit(){
+
+          this.api. getOpenRiskCountByType().subscribe((response:any)=>{
+          this.list=response;
+          console.log(this.list);
+
+
+
+          const riskcounts = this.list.reduce((acc: any, item: any) => {
+          acc[item.riskType] = item.riskCount;
+          return acc;
+          }, {});
+
+          console.log('Risk Counts:', riskcounts);
+
+
+          this.privacyRiskCount = riskcounts['Privacy'] ;
+          this.qualityRiskCount = riskcounts['Quality'] ;
+          this.securityRiskCount = riskcounts['Security'];
+
+          // console.log('Privacy Risk Count:', privacyRiskCount);
+          // console.log('Quality Risk Count:', qualityRiskCount);
+          // console.log('Security Risk Count:', securityRiskCount);
+
+          });
+
+
+          this.api. getRiskCategoryCounts().subscribe((response:any)=>{
+          this.list=response;
+
+
+          const count = this.list.map((element: { count: any; }) => element.count);
+          this.counter = count
+          console.log("Criticality",this.list)
+
+
+          const riskCat = this.list.map((element: {riskCategory:any})=>element.riskCategory);
+          this.risk = riskCat;
+
+          const Criticality = this.list.reduce((acc: any, item: any) => {
+            acc[item.riskType] = item.riskCount;
+            return acc;
+            }, {});
+
+
+
+            this.graph2datasets=[{
+            data: this.counter,
+            backgroundColor: [
+            '#962DFF',
+            '#E0C6FD',
+            '#C6D2FD'
+            ],
+            hoverOffset: 10
+            }]
+
+
+
+            this.graph2labels=this.risk
+            this.graph2chartType='doughnut'
+          })
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 graph3labels:string[]=["Delivery Units","L&D","Sfm", "HR"];
 graph3chartType:any='bar'
@@ -99,25 +185,7 @@ graph3options: any = {
 
 
 
-graph2labels:string[]=['Low',
-    'Moderate',
-    'Critical'];
-graph2chartType:any='doughnut'
-graph2datasets:any[]=[
 
-
-  {
-
-    data: [10, 21, 19],
-    backgroundColor: [
-     '#962DFF',
-      '#E0C6FD',
-      '#C6D2FD'
-    ],
-    hoverOffset: 10
-  }
-
-]
 
 
 
