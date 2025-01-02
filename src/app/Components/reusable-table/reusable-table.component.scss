@@ -265,6 +265,7 @@ input:checked + .slider:before {
   color: red;
   font-weight: bold;
   padding: 10px;
+  background-color: #edd4d5;
   // border: 1px solid #420c0c ;
   border-radius: 10px;
   text-align: center;
@@ -276,6 +277,7 @@ input:checked + .slider:before {
   font-weight: bold;
   padding: 10px;
   // border: 1px solid #0c4219 ;
+  background-color: #d4edda;
   border-radius: 10px;
   text-align: center;
 }

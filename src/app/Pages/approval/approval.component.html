@@ -4,24 +4,13 @@
   ShowShadow="false"
 >
   <main>
-    <app-risk-basic-details-card
-      [isEditable]="false"
-      riskDesc="{{ data.risk_description }}"
-      riskName="{{ data.risk_name }}"
-      riskNumber="{{ data.risk_number }}"
-      riskType="{{ data.risk_type }}"
-      [overallRiskRating]="
-        data.assessment_post_implementation.overall_risk_rating
-      "
-      riskStatus="{{ data.risk_status }}"
-    ></app-risk-basic-details-card>
-    <app-risk-details-section2
-      riskMitigation="{{ data.risk_mitigation }}"
-      impact="{{ data.impact_of_risk }}"
-      riskContengency="{{ data.risk_contingency }}"
-      responsibilityOfAction="{{ data.responsibility_of_action }}"
-      plannedActionDate="{{ data.planned_action_date }}"
-    ></app-risk-details-section2>
+    <ng-container *ngIf="isDataAvailable()">
+
+    <!-- @if(Object.keys(data).length!==0){ -->
+    <app-risk-basic-details-card [isEditable]="true" riskDesc={{data.description}}  riskName={{data.riskName}} riskNumber={{data.riskId}} riskType={{data.riskType}}  [overallRiskRating]="data.overallRiskRating" riskStatus="{{data.riskStatus}}" [allData]="data" ></app-risk-basic-details-card>
+    <app-risk-details-section2 riskMitigation={{data.mitigation}} riskContengency={{data.contingency}} responsibilityOfAction={{data.responsibleUser?.fullName}} impact={{data.impact}} plannedActionDate={{data.plannedActionDate}} CreatedBy={{data.createdBy}} CreatedAt={{data.createdAt}} UpdatedBy={{data.updatedBy}} UpdatedAt={{data.updatedAt}}  RiskStatus="{{data.riskStatus}}"></app-risk-details-section2>
+    <!-- } -->
+    </ng-container>
   </main>
   <!-- Confirmation Popup -->
   <app-confirmation-popup
