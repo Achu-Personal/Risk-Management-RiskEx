@@ -11,7 +11,7 @@ import { RouterLink } from '@angular/router';
 })
 export class ButtonComponent {
 
-  @Input() title:string = 'get the app'
+  @Input() Content:string = 'get the app'
   @Input() bgColour:string = 'orange'
   @Input() height: string = '40';
   @Input() width: string = '100';

@@ -12,7 +12,6 @@ import { AuthService } from './auth.service';
 export class ApiService {
 
 
-
 constructor(private http:HttpClient, public auth:AuthService) { }
    //Just for now to test can be removed later
    getAllRisk()
@@ -95,6 +94,12 @@ constructor(private http:HttpClient, public auth:AuthService) { }
    getImpactDefinition(){
     return this.http.get('https://localhost:7216/api/AssessmentMatrixImpact')
    }
+   getRiskCategoryCounts(){
+    return this.http.get('https://localhost:7216/api/Risk/RiskCategory-Counts')
+   }
+   getOpenRiskCountByType(){
+    return this.http.get('https://localhost:7216/api/Risk/OpenRisk-Counts')
+   }
 
    addnewQualityRisk(qualityRisk:any){
     return this.http.get('https://localhost:7216/api/Risk/Quality',qualityRisk)
@@ -118,10 +123,10 @@ constructor(private http:HttpClient, public auth:AuthService) { }
    updateRiskReviewStatus(riskId: number, approvalStatus: string) {
     // Construct the API URL with query parameters
     const url = `https://localhost:7216/api/Approval/update-review-status?riskId=${riskId}&approvalStatus=${approvalStatus}`;
-    
+
     // Make the HTTP PUT request
     return this.http.put(url, {});
   }
-  
-  
+
+
  }
