@@ -10,8 +10,11 @@
           <div class="step-content">
             <div class="step-title">{{ step.title }}</div>
             <div class="step-info">
-              <span>{{ step.isCompleted ? (step.title === 'Open'? 'Created' : step.title === 'Closed' ? 'Closed' : 'Reviewed') : 'Pending' }} by {{ step.actionBy }} on</span>
-              <span class="date">{{ step.date | date: 'd MMM yyyy'}}</span>
+              <span>by {{ step.actionBy| slice: 0:15 }} </span>
+              <span class="date">on {{ step.date | date: 'd MMM yyyy'}}</span>
+              <div class="tooltip">
+                info: {{ step.actionBy }} completed this step on {{ step.date | date: 'longDate' }}
+              </div>
             </div>
           </div>
           <div class="step-icon"
@@ -42,8 +45,11 @@
           <div class="step-content">
             <div class="step-title">{{ step.title }}</div>
             <div class="step-info">
-              <span>{{ step.isCompleted ? (step.title === 'Open' ? 'Created' : step.title === 'Closed' ? 'Closed' : 'Reviewed') : 'Pending' }} by {{ step.actionBy }} on</span>
-              <span class="date">{{ step.date | date: 'd MMM yyyy'}}</span>
+              <span> by {{ step.actionBy | slice: 0:15}} </span>
+              <span class="date">on {{ step.date | date: 'd MMM yyyy'}}</span>
+              <div class="tooltip">
+                info: {{ step.actionBy }} completed this step on {{ step.date | date: 'longDate' }}
+              </div>
             </div>
           </div>
         }

@@ -43,8 +43,8 @@ export class RiskDetailsSection2Component {
         id: 1,
         title: 'Open',
         isCompleted: false,
-        actionBy: 'Sreehari',
-        date: '21 June 2024',
+        actionBy: '...',
+        date: '...',
         stepNumber: '01'
       },
       {
@@ -67,16 +67,16 @@ export class RiskDetailsSection2Component {
         id: 4,
         title: 'Post Review',
         isCompleted: false,
-        actionBy: 'Tony',
-        date: '23 June 2024',
+        actionBy: '...',
+        date: '...',
         stepNumber: '04'
       },
       {
         id: 5,
         title: 'Closed',
         isCompleted: false,
-        actionBy: '',
-        date: '',
+        actionBy: '...',
+        date: '....',
         stepNumber: '05'
       }
     ]
