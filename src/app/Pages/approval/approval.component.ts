@@ -37,23 +37,10 @@ export class ApprovalComponent {
       this.data=e
       console.log("data description",this.data.description);
     });
-    // console.log("data description",this.data.description);
+    
   }
   
-  
-  // data = {
-  //   risk_description: 'Risk description here...',
-  //   risk_name: 'Risk Name',
-  //   risk_number: 'RISK-001',
-  //   risk_type: 'Type A',
-  //   assessment_post_implementation: { overall_risk_rating: 5 },
-  //   risk_status: 'Pending',
-  //   risk_mitigation: 'Mitigation strategy here...',
-  //   impact_of_risk: 'Impact details here...',
-  //   risk_contingency: 'Contingency plan here...',
-  //   responsibility_of_action: 'Responsible person',
-  //   planned_action_date: '2025-01-31',
-  // };
+
 
   isPopupOpen = false;
   popupTitle = '';
@@ -86,9 +73,21 @@ export class ApprovalComponent {
     if (this.isPopupReject) {
       console.log('Risk rejected with comment:', event.comment);
       // Perform rejection logic here
+      const updates = {
+        approvalStatus: "Rejected",
+        comments: event.comment 
+      };
+      let id = parseInt(this.route.snapshot.paramMap.get('id')!);
+      this.api.updateReviewStatusAndComments(id,updates);
     } else {
       console.log('Risk approved with comment:', event.comment);
-      // Perform approval logic here
+      const updates = {
+        approvalStatus: "Approved",
+        comments: event.comment 
+      };
+      let id = parseInt(this.route.snapshot.paramMap.get('id')!);
+      this.api.updateReviewStatusAndComments(id,updates);
+      
     }
   }
 

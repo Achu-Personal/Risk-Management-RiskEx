@@ -147,7 +147,7 @@ $card-shadow: rgba(0, 0, 0, 0.1);
     }
     .error-container {
       height: 15px;
-      margin-bottom:5px ;
+      margin-bottom:10px ;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -155,7 +155,7 @@ $card-shadow: rgba(0, 0, 0, 0.1);
 
     .error-message {
       color: #dc3545;
-      font-size: 14px;
+      font-size: 12px;
     }
   }
 }
