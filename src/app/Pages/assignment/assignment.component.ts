@@ -13,7 +13,7 @@ import { AssignmentTable } from '../../Interfaces/assignment.interface';
   styleUrl: './assignment.component.scss'
 })
 export class AssignmentComponent {
-  constructor(private router: Router,private api:ApiService,private changeDetection:ChangeDetectorRef) {}
+  constructor(private router: Router,private api:ApiService) {}
 
   OnClickRow(row:any): void {
 
@@ -25,17 +25,38 @@ export class AssignmentComponent {
 
 
 headerData:any=[
-  "Risk Id","Risk","Description","End Date","Type","CRR","Status",
+  "riskId"," riskName","description","riskType","overallRiskRating","plannedActionDate","riskStatus",
 ];
 
-tableBody:AssignmentTable[]=[]
+
+headerDisplayMap: { [key: string]: string } = {
+  riskId: "RiskId",
+  riskName: "RiskName",
+  description: "Description",
+  riskType: "Risk Type",
+  overallRiskRating: "CRR",
+  plannedActionDate:"End Date",
+  riskStatus: "RiskStatus"
+};
+
+tableBody:any[]=[
+  {
+    riskId: '',
+    riskName: '',
+    description: '',
+    riskType: '',
+    overallRiskRating: 0,
+    plannedActionDate: Date,
+    riskStatus: '',
+  },
+]
 
 ngOnInit()
 {
     this.api.getRisksAssignedToUser().subscribe((e:any)=>{
       console.log("Risk assigned to a user=",e)
       this.tableBody=e
-      this.changeDetection.detectChanges()
+
     })
 }
 
