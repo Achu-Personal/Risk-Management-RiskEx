@@ -96,20 +96,22 @@ onReject(data: {comment: string}) {
 
 
 formatDate(value: any): string {
-  if (!value) return ''; // Handle empty value
-  if (typeof value === 'string' ) {
+  if (!value) return '';
+  
+  if (typeof value === 'string' && value.includes('-')) {
     const date = new Date(value);
     if (!isNaN(date.getTime())) {
-      const day = String(date.getDate()).padStart(2, '0'); 
+      const day = String(date.getDate()).padStart(2, '0');
       const month = String(date.getMonth() + 1).padStart(2, '0'); 
       const year = date.getFullYear();
-      return `${day}-${month}-${year}`; 
-     
+      return `${day}-${month}-${year}`;
     }
   }
-  // If not a valid date, return the original value
-  return value.toString();
+  return value;
 }
+  // If not a valid date, return the original value
+  // return value.toString();
+// }
 
 getRiskType(riskType: number): string {
   switch (riskType) {
