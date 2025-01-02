@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { BehaviorSubject, catchError, Observable, tap, throwError } from 'rxjs';
 import { project } from '../Interfaces/projects.interface';
 
 // interface Project {
@@ -39,9 +39,11 @@ export class AuthService {
       tap((response: any) => {
         localStorage.setItem('token', response.token);
         this.setUserDetails(response.token);
-        console.log("userrole",this.userRole.value);
-
+        console.log("userrole", this.userRole.value);
         this.navigateToDashboard();
+      }),
+      catchError((error) => {
+        return throwError(() => error.error.message || "An unexpected error occurred.");
       })
     );
   }
