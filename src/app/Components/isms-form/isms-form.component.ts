@@ -16,7 +16,7 @@ import { CommonModule } from '@angular/common';
 })
 export class ISMSFormComponent {
 
-@Input() riskTypeValue: string=''
+@Input() riskTypeValue: number=0
 result: number = 0;
 reviewerNotInList:boolean=false
 assigneeNotInList:boolean=false

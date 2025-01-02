@@ -1,28 +1,34 @@
-<app-body-container backgroundColor="var(--secondary-color)"padding="10">
+<app-body-container backgroundColor="var(--secondary-color)" padding="10">
   <div class="container">
     <div class="content">
       <div id="riskType" class="form-Container">
-          <div class="riskType-radioButton-container">
-            <div class="risk-type-label">
-              <label for="riskType">Risk Type <span class="required">*</span> :</label>
-            </div>
-            <div class="riskType-radioButton">
-              <label for="Quality"><input type="radio" name="riskType" (click)="setRiskType('quality')" value="quality" [checked]="selectedRiskType === 'quality'"> Quality</label>
-            </div>
-            <div class="riskType-radioButton">
-              <label for="Security"><input type="radio" name="riskType" (click)="setRiskType('security')" value="security" [checked]="selectedRiskType === 'security'"> Security</label>
-            </div>
-            <div class="riskType-radioButton">
-              <label for="Privacy"><input type="radio" name="riskType" (click)="setRiskType('privacy')" value="privacy" [checked]="selectedRiskType === 'privacy'"> privacy</label>
-            </div>
+        <div class="riskType-radioButton-container">
+          <div class="risk-type-label">
+            <label for="riskType">Risk Type <span class="required">*</span> :</label>
           </div>
+          @for (risk of riskTypes; track $index) {
+            <div  class="riskType-radioButton">
+              <label for="risk.type">
+                <input
+                  type="radio"
+                  name="riskType"
+                  [value]="risk.value"
+                  (click)="setRiskType(risk.value)"
+                  [checked]="selectedRiskType === risk.value">
+                {{ risk.type }}
+              </label>
+            </div>
+          }
+
+        </div>
       </div>
-      @if(selectedRiskType==="quality"){
-        <app-qms-form [riskTypeValue]="selectedRiskType"></app-qms-form>
-      }
-      @if (selectedRiskType==="privacy"||selectedRiskType==="security") {
-        <app-isms-form [riskTypeValue]="selectedRiskType"></app-isms-form>
-      }
+       @if (selectedRiskType === 1) {
+        <app-qms-form  [riskTypeValue]="selectedRiskType"></app-qms-form>
+       }
+       @if (selectedRiskType === 2 || selectedRiskType === 3) {
+        <app-isms-form  [riskTypeValue]="selectedRiskType"></app-isms-form>
+       }
     </div>
   </div>
 </app-body-container>
+

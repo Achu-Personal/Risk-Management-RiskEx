@@ -28,6 +28,7 @@ import { ReferenceComponent } from './Pages/reference/reference.component';
 import { SsoComponent } from './Pages/sso/sso.component';
 import { AssignmentComponent } from './Pages/assignment/assignment.component';
 import { AuthGuard } from './Gaurd/auth.guard';
+import { UpdateRiskComponent } from './Pages/update-risk/update-risk.component';
 
 
 export const routes: Routes = [
@@ -80,6 +81,9 @@ export const routes: Routes = [
       {
         path:'edit',component:EditRiskComponent, data:{title: 'Edit Risk' ,breadcrumb: 'View Risk / Edit Risk'}
       },
+      {
+        path:'update',component:UpdateRiskComponent, data:{title: 'Update Risk' ,breadcrumb: 'View Risk / Update Risk'}
+      },
 
       {
         path:'',redirectTo:'home',pathMatch:'full', data:{title: 'Risk Management' ,breadcrumb: 'Dashboard'}
@@ -103,6 +107,7 @@ export const routes: Routes = [
   {
     path:"sso",component:SsoComponent
   },
+
 
 
   {

@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
-import { ProfileComponent } from "../../UI/profile/profile.component";
 
 @Component({
   selector: 'app-sso',
   standalone: true,
-  imports: [ProfileComponent],
+  imports: [],
   templateUrl: './sso.component.html',
   styleUrl: './sso.component.scss'
 })

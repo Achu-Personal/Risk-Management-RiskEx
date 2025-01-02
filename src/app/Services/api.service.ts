@@ -30,10 +30,15 @@ constructor(private http:HttpClient, public auth:AuthService) { }
 
    getRiskById(id:number)
    {
-     return  this.http.get("/data/getAllRisk.json").pipe(map((data:any)=>{
-       console.log(data)
-      return  data.filter((item:any)=>item.id===id)[0]
-     }));
+     return  this.http.get(`https://localhost:7216/api/Risk/id?id=${id}`);
+   }
+   getMitigationSatus(id:string)
+   {
+    return  this.http.get(`https://localhost:7216/api/Risk/GetMitigationStatusOfARisk/${id}`);
+   }
+   getReviewSatus(id:string,isPreReview:boolean)
+   {
+    return  this.http.get(`https://localhost:7216/api/Review/GetReviewStatusOfARisk/${2}/${isPreReview}`);
    }
    getDepartment() {
      return this.http.get<department[]>('https://localhost:7216/api/Department/Departments');
@@ -89,6 +94,19 @@ constructor(private http:HttpClient, public auth:AuthService) { }
    getImpactDefinition(){
     return this.http.get('https://localhost:7216/api/AssessmentMatrixImpact')
    }
+
+   addnewQualityRisk(qualityRisk:any){
+    return this.http.get('https://localhost:7216/api/Risk/Quality',qualityRisk)
+   }
+
+   getRisksAssignedToUser(id:any='')
+   {
+
+
+    return this.http.get(`https://localhost:7216/api/Risk/GetRiskByAssigne/${id}`)
+   }
+
+
    getRisksByReviewerId(){
     const userId= this.auth.getCurrentUserId()
     return this.http.get(`https://localhost:7216/api/Approval/Approval${userId}`)
