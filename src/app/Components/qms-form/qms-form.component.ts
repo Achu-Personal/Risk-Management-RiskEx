@@ -28,7 +28,7 @@ assigneeNotInList:boolean=false
 likelihoodValue:number=0
 impactValue:number=0
 riskFactor:number=0
-riskId:string='sfm_003'
+riskId:string='SFM-001'
 dropdownDataLikelihood: any[] = []
 dropdownDataImpact:any[]=[]
 dropdownDataProject:any[]=[]
@@ -164,7 +164,7 @@ ngOnInit(){
   this.api.getAllReviewer().subscribe((res:any)=>{
     this.dropdownDataReviewer=res.reviewers
   })
-  this.api.getAllUsers().subscribe((res:any)=>{
+  this.api.getAllUsersForAssignee().subscribe((res:any)=>{
     this.dropdownDataassignee=res
   })
 

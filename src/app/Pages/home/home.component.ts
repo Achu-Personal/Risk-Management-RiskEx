@@ -45,6 +45,8 @@ export class HomeComponent {
 
         ngOnInit(){
 
+
+          console.log(  "role",this.authService.getUserRole())
           this.api. getOpenRiskCountByType().subscribe((response:any)=>{
           this.list=response;
           console.log(this.list);
@@ -70,49 +72,91 @@ export class HomeComponent {
           });
 
 
-          this.api. getRiskCategoryCounts().subscribe((response:any)=>{
-          this.list=response;
+
+          if(this.authService.getUserRole() === 'Admin')
+          {
+            this.api. getRiskCategoryCounts().subscribe((response:any)=>{
+              this.list=response;
 
 
-          const count = this.list.map((element: { count: any; }) => element.count);
-          this.counter = count
-          console.log("Criticality",this.list)
+              const count = this.list.map((element: { count: any; }) => element.count);
+              this.counter = count
+              console.log("Criticality",this.list)
 
 
-          const riskCat = this.list.map((element: {riskCategory:any})=>element.riskCategory);
-          this.risk = riskCat;
+              const riskCat = this.list.map((element: {riskCategory:any})=>element.riskCategory);
+              this.risk = riskCat;
 
-          this.Criticality = this.list.reduce((acc: any, item: any) => {
-            acc[item.riskCategory] = item.count;
-            return acc;
-            }, {});
-
-
-
-            this.graph2datasets=[{
-            data: this.counter,
-            backgroundColor: [
-            '#962DFF',
-            '#E0C6FD',
-            '#C6D2FD'
-            ],
-            hoverOffset: 10
-            }]
+              this.Criticality = this.list.reduce((acc: any, item: any) => {
+                acc[item.riskCategory] = item.count;
+                return acc;
+                }, {});
 
 
 
-            this.graph2labels=this.risk
-            this.graph2chartType='doughnut'
-          })
+                this.graph2datasets=[{
+                data: this.counter,
+                backgroundColor: [
+                '#962DFF',
+                '#E0C6FD',
+                '#C6D2FD'
+                ],
+                hoverOffset: 10
+                }]
 
 
 
-          this.api.getRiskApproachingDeadline().subscribe((e:any)=>{
+                this.graph2labels=this.risk
+                this.graph2chartType='doughnut'
+              })
+          }
+          else
+          {
+            this.api.getRiskCategoryCountsByDepartment([]).subscribe((response:any)=>{
+              this.list=response;
+
+
+              const count = this.list.map((element: { count: any; }) => element.count);
+              this.counter = count
+              console.log("Criticality",this.list)
+
+
+              const riskCat = this.list.map((element: {riskCategory:any})=>element.riskCategory);
+              this.risk = riskCat;
+
+              this.Criticality = this.list.reduce((acc: any, item: any) => {
+                acc[item.riskCategory] = item.count;
+                return acc;
+                }, {});
+
+
+
+                this.graph2datasets=[{
+                data: this.counter,
+                backgroundColor: [
+                '#962DFF',
+                '#E0C6FD',
+                '#C6D2FD'
+                ],
+                hoverOffset: 10
+                }]
+
+
+
+                this.graph2labels=this.risk
+                this.graph2chartType='doughnut'
+              })
+          }
+
+
+
+
+          this.api.getRiskApproachingDeadline(this.authService.getUserRole() === 'Admin'?'':this.authService.getDepartmentId()).subscribe((e:any)=>{
               this.riskApproachingDeadline=e
               console.log("approaching",e)
           })
 
-          this.api.getRisksWithHeigestOverallRating().subscribe((e:any)=>{
+          this.api.getRisksWithHeigestOverallRating(this.authService.getUserRole() === 'Admin'?'':this.authService.getDepartmentId()).subscribe((e:any)=>{
             this.risksWithHeighesOverallRating=e
             console.log("heigest",e)
         })
