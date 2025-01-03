@@ -55,6 +55,10 @@ constructor(private http:HttpClient, public auth:AuthService) { }
     //  return this.http.get(`data/tabledata.json`)
     return this.http.get(`https://localhost:7216/api/Report`)
    }
+   gethistorytabledata(){
+    //  return this.http.get(`data/tabledata.json`)
+    return this.http.get(`https://localhost:7216/api/Report?riskStatus=close`)
+   }
    getFilteredData(department: any) {
      return this.http.get(`data/tabledata.json`).pipe(
        map((data:any) => {
@@ -86,8 +90,6 @@ constructor(private http:HttpClient, public auth:AuthService) { }
    }
    getRiskResponses(){
     return this.http.get('https://localhost:7216/api/RiskResponseData')
-    
-
    }
    getLikelyHoodDefinition(){
     return this.http.get('https://localhost:7216/api/AssessmentMatrixLikelihood')
@@ -154,10 +156,22 @@ constructor(private http:HttpClient, public auth:AuthService) { }
   sendEmailToAssignee(id:number){
     this.http.post(`https://localhost:7216/api/emails/send-assignment-email/${id}`,{}).subscribe(e => console.log(e));
   }
-  getAllUsers(){
-    return this.http.get('https://localhost:7216/Users')
+
+  getRisksWithHeigestOverallRating(id:any='')
+  {
+    return this.http.get(`https://localhost:7216/api/Risk/GetRiskWithHeighestOverallRationg?id=${id}`)
   }
 
+  getRiskApproachingDeadline(id:any='')
+  {
+    return this.http.get(`https://localhost:7216/api/Risk/GetRiskApproachingDeadline?id=${id}`)
+  }
 
+  getAllUsers(){
+    return this.http.get('https://localhost:7216/api/User/GetAllUsers');
+  }
 
+  getAllUsersByDepartmentName(department:string){
+    return this.http.get(`https://localhost:7216/api/User/GetUsersByDepartment/${department}`)
+  }
  }
