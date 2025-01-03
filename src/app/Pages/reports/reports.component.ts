@@ -41,7 +41,22 @@ export class ReportsComponent {
       OnClickRow(rowid:any): void {
         this.router.navigate([`/ViewRisk/${rowid}`]);
         console.log("rowdata",rowid);
+      }
 
+      ngOnInit(): void {
+
+        this.api.gettabledata().subscribe((res: any) => {
+          this.items = res;
+          console.log(this.items);
+          // this.filteredItems = [...this.items];
+          // this.updateUniqueDepartments();
+          // this.updateUniqueTypes();
+          // this.totalItems = this.filteredItems.length;
+          // this.updatePaginatedItems();
+        });
+        // this.route.url.subscribe(() => {
+        //   this.checkPageForButtonVisibility();
+        // });
       }
 
 }
