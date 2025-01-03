@@ -33,24 +33,24 @@
       <div class="rightside ">
         <div class="circlegraph">
 
-          <div style="width:50px;height:50px;position: absolute;display: flex;justify-content: center;align-items: center;margin-top: 40px;margin-left: 55px;">
+          <div (click)="onBubbleClicked('Security')" style="width:50px;height:50px;position: absolute;display: flex;justify-content: center;align-items: center;margin-top: 40px;margin-left: 55px;">
 
 
             <div class="circle circle-1 "></div>
             <div class="glass">{{securityRiskCount}}</div>
           </div>
 
-          <div  style="width:250px;height:250px;position: absolute;display: flex;justify-content: center;align-items: center;  margin-left: 100px;margin-bottom: -10px;margin-top: 10px;">
+          <div (click)="onBubbleClicked('Privacy')"   style="width:250px;height:250px;position: absolute;display: flex;justify-content: center;align-items: center;  margin-left: 100px;margin-bottom: -10px;margin-top: 10px;">
 
 
             <div class="circle circle-2 "></div>
-            <div class="glass">{{qualityRiskCount}}</div>
+            <div class="glass">{{privacyRiskCount ? privacyRiskCount : 0}}</div>
           </div>
-          <div  style="width:185px;height: 185px;position: absolute;display: flex;justify-content: center;align-items: center;margin-top: 100px;">
+          <div (click)="onBubbleClicked('Quality')"   style="width:185px;height: 185px;position: absolute;display: flex;justify-content: center;align-items: center;margin-top: 100px;">
 
 
             <div class="circle circle-3 "></div>
-            <div class="glass">{{privacyRiskCount ? privacyRiskCount : 0}}</div>
+            <div class="glass">{{qualityRiskCount}}</div>
           </div>
 
 
