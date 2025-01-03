@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, HostListener, Input } from '@angular/core';
 import { TableComponent } from "../../Components/table/table.component";
 import { BodyContainerComponent } from "../../Components/body-container/body-container.component";
 import { Router } from '@angular/router';
@@ -36,7 +36,20 @@ export class ReportsComponent {
 
   }
 
+  isDropdownOpen: boolean = false;
 
+  toggleDropdown(): void {
+    this.isDropdownOpen = !this.isDropdownOpen;
+
+  }
+
+  @HostListener('document:click', ['$event'])
+    onDocumentClick(event: MouseEvent): void {
+      const target = event.target as HTMLElement;
+      if (!target.closest('.contains1')) {
+        this.isDropdownOpen = false;
+      }
+    }
 
       OnClickRow(rowid:any): void {
         this.router.navigate([`/ViewRisk/${rowid}`]);
@@ -49,7 +62,12 @@ export class ReportsComponent {
           this.items = res;
           console.log(this.items);
         });
-      
-      }
 
+      }
+      //datepicker
+    selectedDateRange: { startDate: string; endDate: string } | null = null;
+
+    onDateRangeSelected(dateRange: { startDate: string; endDate: string }) {
+    this.selectedDateRange = dateRange;
+}
 }

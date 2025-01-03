@@ -11,7 +11,7 @@ import { DatepickerComponent } from "../../UI/datepicker/datepicker.component";
 @Component({
   selector: 'app-table',
   standalone: true,
-  imports: [SearchbarComponent, FormsModule, PaginationComponent, CommonModule, DatepickerComponent],
+  imports: [SearchbarComponent, FormsModule, PaginationComponent, CommonModule,],
   templateUrl: './table.component.html',
   styleUrl: './table.component.scss'
 })
