@@ -8,11 +8,12 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../Services/auth.service';
 import { ApiService } from '../../Services/api.service';
 import { BubbleGraphComponent } from "../../UI/bubble-graph/bubble-graph.component";
+import { StyleButtonComponent } from "../../UI/style-button/style-button.component";
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [NgIf, BodyContainerComponent, ButtonComponent, DepartmentDropdownComponent, ChartComponent, BubbleGraphComponent,CommonModule],
+  imports: [NgIf, BodyContainerComponent, ButtonComponent, DepartmentDropdownComponent, ChartComponent, BubbleGraphComponent, CommonModule, StyleButtonComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
@@ -130,6 +131,12 @@ export class HomeComponent {
         onBubbleClicked(type:string)
         {
           this.router.navigate([`reports`], { state: { type: type} });
+        }
+
+        OnRegisterRiskButtonCLicked()
+        {
+          this.router.navigate([`/addrisk`]) //         /ViewRisk/${this.allData.id}/
+
         }
 
 
