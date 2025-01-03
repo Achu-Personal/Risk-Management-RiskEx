@@ -2,104 +2,213 @@ import { Injectable } from '@angular/core';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 
-// Define the RiskAssessment interface
 interface RiskAssessment {
-  assessmentBasis: string;
+  assessmentBasis: string | null;
+  id: number;
   matrixImpact: string;
   matrixLikelihood: string;
   reviewStatus: string;
   reviewer: string;
 }
 
+interface Risk {
+  closedDate: string;
+  contingency: string;
+  createdAt: string;
+  createdBy: string;
+  departmentId: number;
+  departmentName: string;
+  description: string;
+  email: string;
+  id: number;
+  impact: string;
+  mitigation: string;
+  overallRiskRating: number;
+  plannedActionDate: string;
+  projectId: number | null;
+  remarks: string;
+  responsibleUser: string;
+  responsibleUserId: number;
+  riskAssessments: RiskAssessment[];
+  riskId: string;
+  riskName: string;
+  riskResponse: string;
+  riskStatus: string;
+  riskType: string;
+  updatedAt: string;
+  updatedBy: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class ReportGenerationService {
-  // Method to generate and download an Excel file
-  generateReport(data: any[], fileName: string): void {
+  generateReport(data: Risk[], fileName: string): void {
     try {
       const workbook: XLSX.WorkBook = { SheetNames: [], Sheets: {} };
 
-      // Define the sheet's headers with multi-level columns for Risk Assessment
+      // Define header styles
+      const headerStyle = {
+        font: { bold: true, color: { rgb: "FFFFFF" } },
+        fill: { fgColor: { rgb: "0000FF" } },
+        alignment: { horizontal: "center", vertical: "center" },
+        border: {
+          top: { style: "thin" },
+          bottom: { style: "thin" },
+          left: { style: "thin" },
+          right: { style: "thin" }
+        }
+      };
+
+      // Define the main headers
       const headerRow1 = [
-        'RiskName', 'RiskId', 'RiskType', 'RiskStatus', 'DepartmentName', 'Impact', 'Mitigation', 'Contingency', 'OverallRiskRating', 'ResponsibleUser', 'Email', 'CreatedAt', 'UpdatedAt',
-        // Multi-level Risk Assessment header
-        'Risk Assessment (Confidentiality - Matrix Impact)', 'Risk Assessment (Confidentiality - Matrix Likelihood)',
-        'Risk Assessment (Integrity - Matrix Impact)', 'Risk Assessment (Integrity - Matrix Likelihood)'
+        { v: 'Risk Mitigation', s: headerStyle },
+        { v: 'Risk Contingency', s: headerStyle },
+        { v: 'Responsibility Of The Action', s: headerStyle },
+        { v: 'Planned Action date', s: headerStyle },
+        // Assessment Categories
+        { v: 'Assessment Response Details', s: headerStyle },
+        { v: 'Actual Closed date', s: headerStyle },
+        { v: 'Risk Response', s: headerStyle },
+        { v: 'Risk Status', s: headerStyle },
+        { v: 'Remarks', s: headerStyle }
       ];
 
-      // Prepare data for the Quality sheet and the Security/Privacy sheet
-      const qualitySheetData: any[][] = [headerRow1]; // For Quality risks
-      const securityPrivacySheetData: any[][] = [headerRow1]; // For Security and Privacy risks
+      // Define sub-headers for assessment details
+      const headerRow2 = [
+        '', '', '', '',  // Empty cells for non-assessment columns
+        // Confidentiality P1
+        { v: 'Confidentiality P1', s: headerStyle },
+        { v: 'Integrity P1', s: headerStyle },
+        { v: 'Privacy P1', s: headerStyle },
+        { v: 'Availability P1', s: headerStyle },
+        { v: 'Overall Risk Rating', s: headerStyle },
+        '', '', '', ''  // Empty cells for remaining columns
+      ];
 
-      // Iterate through each risk and add it to the appropriate sheet
+      // Define the risk factor headers
+      const headerRow3 = [
+        '', '', '', '',  // Empty cells for non-assessment columns
+        // Risk Factors for each category
+        'Risk Factor',
+        'Likelihood',
+        'R=Rs x Ls',
+        'Risk Factor',
+        'Likelihood',
+        'R=Rs x Ls',
+        'Risk Factor',
+        'Likelihood',
+        'R=Rs x Ls',
+        'Risk Factor',
+        'Likelihood',
+        'R=Rs x Ls',
+        'R = R1 + R2 + R3 + R4',
+        '', '', '', ''  // Empty cells for remaining columns
+      ];
+
+      const qualitySheetData: any[][] = [];
+      const securityPrivacySheetData: any[][] = [];
+
+      // Process each risk
       data.forEach((risk) => {
+        const getAssessmentDetails = (basis: string) => {
+          const assessment = risk.riskAssessments.find(a => a.assessmentBasis === basis);
+          return {
+            impact: assessment?.matrixImpact || '',
+            likelihood: assessment?.matrixLikelihood || '',
+            riskScore: assessment ? calculateRiskScore(assessment.matrixImpact, assessment.matrixLikelihood) : ''
+          };
+        };
+
+        const confidentiality = getAssessmentDetails('Confidentiality');
+        const integrity = getAssessmentDetails('Integrity');
+        const privacy = getAssessmentDetails('Privacy');
+        const availability = getAssessmentDetails('Availability');
+
         const riskRow = [
-          risk.riskName,
-          risk.id,
-          risk.riskType,
-          risk.riskStatus,
-          risk.departmentName,
-          risk.impact,
           risk.mitigation,
           risk.contingency,
-          risk.overallRiskRating,
           risk.responsibleUser,
-          risk.email,
-          risk.createdAt,
-          risk.updatedAt,
-          // Populate the Risk Assessment columns based on the assessment basis
-          risk.riskAssessments.map((assessment: any) =>
-            assessment.assessmentBasis === 'Confidentiality' ? assessment.matrixImpact : ''
-          ).join(", "),
-          risk.riskAssessments.map((assessment: any) =>
-            assessment.assessmentBasis === 'Confidentiality' ? assessment.matrixLikelihood : ''
-          ).join(", "),
-          risk.riskAssessments.map((assessment: any) =>
-            assessment.assessmentBasis === 'Integrity' ? assessment.matrixImpact : ''
-          ).join(", "),
-          risk.riskAssessments.map((assessment: any) =>
-            assessment.assessmentBasis === 'Integrity' ? assessment.matrixLikelihood : ''
-          ).join(", ")
+          risk.plannedActionDate,
+          // Assessment details
+          confidentiality.impact,
+          confidentiality.likelihood,
+          confidentiality.riskScore,
+          integrity.impact,
+          integrity.likelihood,
+          integrity.riskScore,
+          privacy.impact,
+          privacy.likelihood,
+          privacy.riskScore,
+          availability.impact,
+          availability.likelihood,
+          availability.riskScore,
+          risk.overallRiskRating,
+          risk.closedDate,
+          risk.riskResponse,
+          risk.riskStatus,
+          risk.remarks
         ];
 
-        // If the risk type is "Quality", add it to the quality sheet
         if (risk.riskType === 'Quality') {
           qualitySheetData.push(riskRow);
-        }
-
-        // If the risk type is "Security" or "Privacy", add it to the security/privacy sheet
-        if (risk.riskType === 'Security' || risk.riskType === 'Privacy') {
+        } else if (risk.riskType === 'Security' || risk.riskType === 'Privacy') {
           securityPrivacySheetData.push(riskRow);
         }
       });
 
-      // Convert data to sheets
-      const qualitySheet: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(qualitySheetData);
-      const securityPrivacySheet: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(securityPrivacySheetData);
+      // Function to calculate risk score (customize as needed)
+      function calculateRiskScore(impact: string, likelihood: string): number {
+        const impactMap = { 'High': 3, 'Medium': 2, 'Low': 1 };
+        const likelihoodMap = { 'High': 3, 'Medium': 2, 'Low': 1 };
+        return (impactMap[impact as keyof typeof impactMap] || 0) *
+               (likelihoodMap[likelihood as keyof typeof likelihoodMap] || 0);
+      }
 
-      // Add sheets to the workbook
-      const qualitySheetName = `Quality Risks`;
-      const securityPrivacySheetName = `Security & Privacy Risks`;
+      // Function to create sheet with merged headers
+      const createSheetWithHeaders = (data: any[][]) => {
+        const ws = XLSX.utils.aoa_to_sheet([headerRow1, headerRow2, headerRow3, ...data]);
 
-      workbook.SheetNames.push(qualitySheetName, securityPrivacySheetName);
-      workbook.Sheets[qualitySheetName] = qualitySheet;
-      workbook.Sheets[securityPrivacySheetName] = securityPrivacySheet;
+        // Define merged cell ranges
+        ws['!merges'] = [
+          // Assessment Response Details merge
+          { s: { r: 0, c: 4 }, e: { r: 0, c: 16 } },
+          // Category merges (P1, P2, etc.)
+          { s: { r: 1, c: 4 }, e: { r: 1, c: 6 } },  // Confidentiality
+          { s: { r: 1, c: 7 }, e: { r: 1, c: 9 } },  // Integrity
+          { s: { r: 1, c: 10 }, e: { r: 1, c: 12 } }, // Privacy
+          { s: { r: 1, c: 13 }, e: { r: 1, c: 15 } }  // Availability
+        ];
 
-      // Generate the Excel file
+        // Set column widths
+        ws['!cols'] = Array(21).fill({ wch: 15 });
+
+        return ws;
+      };
+
+      // Create sheets
+      const qualitySheet = createSheetWithHeaders(qualitySheetData);
+      const securityPrivacySheet = createSheetWithHeaders(securityPrivacySheetData);
+
+      // Add sheets to workbook
+      workbook.SheetNames.push('Quality Risks', 'Security & Privacy Risks');
+      workbook.Sheets['Quality Risks'] = qualitySheet;
+      workbook.Sheets['Security & Privacy Risks'] = securityPrivacySheet;
+
+      // Generate and download file
       const excelBuffer: any = XLSX.write(workbook, {
         bookType: 'xlsx',
-        type: 'array',
+        type: 'array'
       });
 
-      // Create Blob and trigger download
-      const blob = new Blob([excelBuffer], { type: 'application/octet-stream' });
+      const blob = new Blob([excelBuffer], {
+        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+      });
       saveAs(blob, `${fileName}.xlsx`);
 
     } catch (error) {
       console.error('Error generating Excel report:', error);
+      throw new Error(`Failed to generate Excel report: ${error}`);
     }
   }
-
-
 }
