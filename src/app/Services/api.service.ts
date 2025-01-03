@@ -129,7 +129,7 @@ constructor(private http:HttpClient, public auth:AuthService) { }
   }
   updateReviewStatusAndComments(id:number, updates:any){
     console.log("updates",updates);
-    
+
     this.http.put(`https://localhost:7216/api/Approval/update-review/${id}`,updates).subscribe(e => console.log(e)
     );
 
@@ -137,5 +137,16 @@ constructor(private http:HttpClient, public auth:AuthService) { }
   sendEmailToAssignee(id:number){
     this.http.post(`https://localhost:7216/api/emails/send-assignment-email/${id}`,{}).subscribe(e => console.log(e));
   }
-  
+
+  getRisksWithHeigestOverallRating(id:any='')
+  {
+    return this.http.get(`https://localhost:7216/api/Risk/GetRiskWithHeighestOverallRationg?id=${id}`)
+  }
+
+  getRiskApproachingDeadline(id:any='')
+  {
+    return this.http.get(`https://localhost:7216/api/Risk/GetRiskApproachingDeadline?id=${id}`)
+  }
+
+
  }
