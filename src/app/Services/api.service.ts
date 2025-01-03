@@ -198,4 +198,16 @@ export class ApiService {
     return this.http.get('https://localhost:7216/Users');
   }
 
+  getRiskCategoryCountsByDepartment(departmentList: number[]) {
+    let params = new HttpParams();
+    departmentList.forEach((departmentId) => {
+      params = params.append('departmentList', departmentId.toString());
+    });
+
+    return this.http.get(
+      'https://localhost:7216/api/Risk/RiskCategoryCountByDepartment',
+      { params }
+    );
+  }
+
  }
