@@ -4,8 +4,8 @@
   <div class="dropdown" >
 <app-department-dropdown *ngIf="authService.getUserRole() === 'Admin'"></app-department-dropdown>  </div>
   <div class="registerrisk">
-    <app-button class="btn" Content="Register Risk" bgColour="#4D4D4D" routerLink="/addrisk" height="38" width="147" color="white"></app-button>
 
+    <app-style-button (clicked)="OnRegisterRiskButtonCLicked()" label="Register Risk"></app-style-button>
   </div>
 </div>
 
