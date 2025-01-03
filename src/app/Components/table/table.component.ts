@@ -1,15 +1,17 @@
-import { Component, HostListener, output} from '@angular/core';
+import { department } from './../../Interfaces/deparments.interface';
+import { Component, HostListener, Input, output, SimpleChanges} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { SearchbarComponent } from '../../UI/searchbar/searchbar.component';
 import { PaginationComponent } from '../../UI/pagination/pagination.component';
 import { ApiService } from '../../Services/api.service';
 import { ActivatedRoute } from '@angular/router';
+import { DatepickerComponent } from "../../UI/datepicker/datepicker.component";
 
 @Component({
   selector: 'app-table',
   standalone: true,
-  imports: [SearchbarComponent, FormsModule, PaginationComponent,CommonModule],
+  imports: [SearchbarComponent, FormsModule, PaginationComponent, CommonModule, DatepickerComponent],
   templateUrl: './table.component.html',
   styleUrl: './table.component.scss'
 })
@@ -23,6 +25,7 @@ export class TableComponent {
       }
 
   items:any=[];
+  paginatedItems:any=[];
   isActive = true;
   isDisabled = false;
   open = true;
@@ -38,8 +41,9 @@ export class TableComponent {
       this.isButtonVisible = true; // Show button on page2
     }
   }
+
+  @Input() paginated:any=[];
   filteredItems = [...this.items];
-  paginatedItems:any=[];
   isDepartmentDropdownOpen: boolean = false;
   isTypeDropdownOpen: boolean = false;
 
@@ -57,29 +61,43 @@ export class TableComponent {
   uniqueDepartments: any[] = [];
 
 
-  // ngOnInit(): void {
-  //   // this.uniqueRiskIds = [...new Set(this.items.map(item => item.riskId))];
-  //   // this.uniqueRiskNames = [...new Set(this.items.map(item => item.riskName))];
-  //   this.uniqueDepartments = [...new Set(this.items.map(item => item.department))];
-  // }
-
   filterTable(): void {
 
     this.filteredItems = this.items.filter((item:any) => {
+      let matchesDateRange = true;
+
+      if (this.filteredDateRange) {
+        const { startDate, endDate } = this.filteredDateRange;
+
+        if (startDate && endDate) {
+          const itemDate = new Date(item.closedDate);
+          console.log("Database date parsed:", itemDate);
+          const start = new Date(startDate);
+          console.log("start", start);
+          const end = new Date(endDate);
+
+          matchesDateRange = itemDate >= start && itemDate <= end ;
+        }
+      }
+
       return (
-        // (this.selectedRiskId ? item.riskId === this.selectedRiskId : true) &&
-
-        (this.selectedRiskType ? item.type === this.selectedRiskType : true) &&
-        (this.selectedDepartment ? item.department === this.selectedDepartment : true)
+        matchesDateRange &&
+        (this.selectedRiskType ? item.riskType === this.selectedRiskType : true) &&
+        (this.selectedDepartment ? item.departmentName === this.selectedDepartment : true)
       );
+      // return (
+        // (this.selectedRiskId ? item.riskId === this.selectedRiskId : true) &&
+      //   (this.filteredDateRange ? item.closedDate === this.filteredDateRange : true) &&
+      //   (this.selectedRiskType ? item.riskType === this.selectedRiskType : true) &&
+      //   (this.selectedDepartment ? item.departmentName === this.selectedDepartment : true)
+      // );
     });
-
+  console.log("filtered",this.filteredItems)
   this.currentPage = 1;
   this.totalItems = this.filteredItems.length;
   this.updatePaginatedItems();
   }
 
- // hello bindu.... sugalle ?
 
   onSearch(searchText: string): void {
     const lowercasedSearchText = searchText.toLowerCase();
@@ -101,35 +119,45 @@ export class TableComponent {
 
   ngOnInit(): void {
 
-    this.api.gettabledata().subscribe((res: any) => {
-      this.items = res;
-      // console.log(this.items);
-      this.filteredItems = [...this.items];
-      this.updateUniqueDepartments();
-      this.updateUniqueTypes();
-      this.totalItems = this.filteredItems.length;
-      this.updatePaginatedItems();
-    });
+    setTimeout(()=>{
+    this.items = [...this.paginated];
+    console.log("items",this.items);
+    this.filteredItems = [...this.items];
+    console.log(this.filteredItems);
+    this.updateUniqueDepartments();
+    this.updateUniqueTypes();
+    this.totalItems = this.filteredItems.length;
+    this.updatePaginatedItems();
     this.route.url.subscribe(() => {
-      this.checkPageForButtonVisibility();
-    });
+        this.checkPageForButtonVisibility();
+      });
+
+
+    },1000)
+    this.updatePaginatedItems();
+
   }
 
   updateUniqueDepartments(): void {
-    this.uniqueDepartments = [...new Set(this.items.map((item: any) => item.department))];
+    // this.api.getDepartment().subscribe((res: any) => {
+    //   this.uniqueDepartments = res
+    //   console.log("dep",this.uniqueDepartments);
+    // });
+    this.uniqueDepartments = [...new Set(this.items.map((item: any) => item.departmentName))];
 
   }
 
   updateUniqueTypes(): void {
 
-    this.uniqueRiskTypes = [...new Set(this.items.map((item: any) => item.type))];
+    this.uniqueRiskTypes = ["Quality","Privacy","Security"];
   }
 
   updatePaginatedItems(): void {
+    console.log("insie",this.filteredItems)
     const startIndex = (this.currentPage -1 ) * this.itemsPerPage;
     const endIndex = startIndex + this.itemsPerPage;
-    this.paginatedItems = this.filteredItems.slice(startIndex, endIndex);
-    // this.totalItems = this.filteredItems.length;
+    this.paginated = this.filteredItems.slice(startIndex, endIndex);
+    this.totalItems = this.filteredItems.length;
   }
 
   onPageChange(page: number): void {
@@ -157,6 +185,7 @@ export class TableComponent {
   }
   onTypeSelect(type: string): void {
     this.selectedRiskType = type;
+    console.log(this.selectedRiskType);
     this.isTypeDropdownOpen = false;
     this.filterTable();
   }
@@ -170,4 +199,21 @@ export class TableComponent {
     }
   }
 
+  resetFilters(): void {
+    this.filteredItems = [...this.items];
+    this.currentPage = 1;
+    this.totalItems = this.filteredItems.length;
+    this.updatePaginatedItems();
+  }
+
+
+  //datepicker
+  @Input() filteredDateRange: { startDate: string; endDate: string } | null = null;
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['filteredDateRange'] && this.filteredDateRange) {
+
+      this.filterTable();
+    }
+  }
 }

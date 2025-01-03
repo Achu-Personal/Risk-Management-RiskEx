@@ -1,4 +1,4 @@
-import { NgIf } from '@angular/common';
+import { CommonModule, NgIf } from '@angular/common';
 import { Component } from '@angular/core';
 import { BodyContainerComponent } from "../../Components/body-container/body-container.component";
 import { ButtonComponent } from "../../UI/button/button.component";
@@ -7,11 +7,13 @@ import { ChartComponent } from "../../UI/chart/chart.component";
 import { Router } from '@angular/router';
 import { AuthService } from '../../Services/auth.service';
 import { ApiService } from '../../Services/api.service';
+import { BubbleGraphComponent } from "../../UI/bubble-graph/bubble-graph.component";
+import { StyleButtonComponent } from "../../UI/style-button/style-button.component";
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [NgIf,BodyContainerComponent, ButtonComponent, DepartmentDropdownComponent, ChartComponent],
+  imports: [NgIf, BodyContainerComponent, ButtonComponent, DepartmentDropdownComponent, ChartComponent, BubbleGraphComponent, CommonModule, StyleButtonComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
@@ -35,6 +37,11 @@ export class HomeComponent {
         graph2datasets:any[]=[];
         counter:number[]=[];
         risk:string[]=[];
+
+        riskApproachingDeadline:any=[]
+        risksWithHeighesOverallRating:any=[]
+
+        Criticality:any=[]
 
         ngOnInit(){
 
@@ -65,15 +72,22 @@ export class HomeComponent {
 
           this.api. getRiskCategoryCounts().subscribe((response:any)=>{
           this.list=response;
-          console.log(this.list);
+
 
           const count = this.list.map((element: { count: any; }) => element.count);
           this.counter = count
-          console.log(this.counter);
+          console.log("Criticality",this.list)
+
 
           const riskCat = this.list.map((element: {riskCategory:any})=>element.riskCategory);
           this.risk = riskCat;
-          console.log(this.risk);
+
+          this.Criticality = this.list.reduce((acc: any, item: any) => {
+            acc[item.riskCategory] = item.count;
+            return acc;
+            }, {});
+
+
 
             this.graph2datasets=[{
             data: this.counter,
@@ -85,15 +99,45 @@ export class HomeComponent {
             hoverOffset: 10
             }]
 
-            console.log(this.graph2datasets);
+
 
             this.graph2labels=this.risk
             this.graph2chartType='doughnut'
           })
+
+
+
+          this.api.getRiskApproachingDeadline().subscribe((e:any)=>{
+              this.riskApproachingDeadline=e
+              console.log("approaching",e)
+          })
+
+          this.api.getRisksWithHeigestOverallRating().subscribe((e:any)=>{
+            this.risksWithHeighesOverallRating=e
+            console.log("heigest",e)
+        })
+
+
+
+
         }
 
 
+        OnCardClicked(id:number)
+        {
+          this.router.navigate([`ViewRisk/${id}`]) //         /ViewRisk/${this.allData.id}/
+        }
 
+        onBubbleClicked(type:string)
+        {
+          this.router.navigate([`reports`], { state: { type: type} });
+        }
+
+        OnRegisterRiskButtonCLicked()
+        {
+          this.router.navigate([`/addrisk`]) //         /ViewRisk/${this.allData.id}/
+
+        }
 
 
 
