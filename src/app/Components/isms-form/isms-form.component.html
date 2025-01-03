@@ -148,8 +148,8 @@
       <div class="form-detail">
         <label for="responsibility">Responsibility<span class="required">*</span></label>
         <app-dropdown  [options]="dropdownDataassignee"
-           [displayField]="'name'"
-           [valueField]="'email'"
+           [displayField]="'fullName'"
+           [valueField]="'id'"
            width="100" formControlName="responsibileUserId">
         </app-dropdown>
       </div>

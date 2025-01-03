@@ -39,6 +39,7 @@ dropdownDataLikelihood: any[] = []
 dropdownDataImpact:any[]=[]
 dropdownDataProject:any[]=[]
 dropdownDataDepartment:any[]=[]
+dropdownDataassignee:any[]=[]
 dropdownDataReviewer: Array<{ id: number; fullName: string; email: string; type: string }> = [];
 departmentId:string='';
 showDialog = false;
@@ -215,6 +216,9 @@ ngOnInit(){
   this.api.getAllReviewer().subscribe((res:any)=>{
     this.dropdownDataReviewer=res.reviewers
   })
+  this.api.getAllUsersForAssignee().subscribe((res:any)=>{
+    this.dropdownDataassignee=res
+  })
 }
 
 onSubmit(){
@@ -372,13 +376,7 @@ onReviewerChange(selectedReviewer: any) {
 }
 
 
-dropdownDataassignee=[
-    {"name":"Achu s nair","email":"1"},
-    {"name":"Shamna Sherin","email":"2"},
-    {"name":"Deepak Denny","email":"3"},
-    { "name":"Bindhya C Philip","email":"4"},
-    { "name":"Vivek V N","email":"5"},
-  ];
+
 
 
 

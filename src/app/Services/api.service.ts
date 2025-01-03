@@ -174,4 +174,9 @@ constructor(private http:HttpClient, public auth:AuthService) { }
   getAllUsersByDepartmentName(department:string){
     return this.http.get(`https://localhost:7216/api/User/GetUsersByDepartment/${department}`)
   }
+
+  getAllUsersForAssignee(){
+    return this.http.get('https://localhost:7216/Users');
+  }
+
  }

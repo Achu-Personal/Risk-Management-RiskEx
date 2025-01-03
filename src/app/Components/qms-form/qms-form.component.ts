@@ -164,7 +164,7 @@ ngOnInit(){
   this.api.getAllReviewer().subscribe((res:any)=>{
     this.dropdownDataReviewer=res.reviewers
   })
-  this.api.getAllUsers().subscribe((res:any)=>{
+  this.api.getAllUsersForAssignee().subscribe((res:any)=>{
     this.dropdownDataassignee=res
   })
 
