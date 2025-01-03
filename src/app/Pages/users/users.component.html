@@ -222,9 +222,11 @@
 
 
       <app-reusable-table
-    [tableHeaders]="headerData"
-    [tableData]="tableBody"
+    [tableHeaders]="isAdmin ? headerData : headerDataDpt"
+    [tableData]="isAdmin ? tableBodyAdmin : tableBody" 
+    [headerDisplayMap]="headerDisplayMap"
     [IsActionRequiered]="true"
     [IsUser]="true">
   </app-reusable-table>
+
 </app-body-container>
