@@ -1,27 +1,43 @@
 import { Component, Input, SimpleChanges, OnChanges, EventEmitter, Output, OnInit } from '@angular/core';
 import { Step } from '../../Interfaces/Stepper.interface';
-import { DatePipe } from '@angular/common';
+import { DatePipe,SlicePipe } from '@angular/common';
 
 @Component({
   selector: 'app-stepper',
   standalone: true,
-  imports: [DatePipe],
+  imports: [DatePipe,SlicePipe],
   templateUrl: './stepper.component.html',
   styleUrls: ['./stepper.component.scss'], // Corrected "styleUrl" to "styleUrls"
 })
-export class StepperComponent implements OnChanges {
+export class StepperComponent{
   @Output() stepCompleted = new EventEmitter<number>();
   @Input() steps: Step[] = [];
   currentStep = 1;
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes['steps'] && this.steps) {
-      this.steps.forEach((step) => {
-        if (step.isCompleted) {
-          this.emitStepCompleted(step.id);
+  // ngOnChanges(changes: SimpleChanges) {
+  //   if (changes['steps'] && this.steps) {
+  //     this.steps.forEach((step) => {
+  //       if (step.isCompleted) {
+  //         this.emitStepCompleted(step.id);
+  //       }
+  //     });
+  //   }
+  // }
+
+  ngOnInit(){
+    console.log("steps=",this.steps)
+
+    setTimeout(()=>{
+
+      this.steps.forEach((e:any)=>{
+
+        if(e.isCompleted)
+        {
+          this.completeStep(e.id)
         }
-      });
-    }
+    })
+    },1000)
+
   }
 
   completeStep(stepId: number) {
