@@ -34,12 +34,16 @@ label{
   display: flex;
   align-items: left;
   justify-items: left;
-  max-width: 50%;
+  max-width: 80%;
   gap: 20px;
   // .report{
   //   margin-left: 600px;
   //   width: auto;
   // }
+}
+.date{
+  float: right;
+  background-color: #2ae355;
 }
 
 // .bord{
@@ -261,33 +265,44 @@ tbody {
 
 
 .green-cell {
-  // background-color: #d4edda;
+  background-color: #d4edda;
   color: #2ae355;
   font-weight: bold;
   padding: 5px;
   // border: 1px solid #0c4219 ;
   border-radius: 10px;
-  text-align: left;
+  text-align: center;
 }
 .red-cell {
-  // background-color: #edd4d5;
+  background-color: #edd4d5;
   color: #e82222;
   font-weight: bold;
   padding: 5px;
   // border: 1px solid #420c0c ;
   border-radius: 10px;
-  text-align: left;
+  text-align: center;
 }
 .yellow-cell {
-  // background-color: #edebd4;
+  background-color: #edebd4;
   color: #e1d52c;
   font-weight: bold;
   padding: 5px;
   // border: 1px solid #420c0c ;
   border-radius: 10px;
-  text-align: left;
+  text-align: center;
 }
-
+.yellow{
+  color: #e1d52c;
+  font-weight: bold;
+}
+.red{
+  color: #e82222;
+  font-weight: bold;
+}
+.green{
+  color: #2ae355;
+  font-weight: bold;
+}
 
 // fixed width for columns
 
