@@ -65,7 +65,7 @@
       </div>
       <div *ngIf="showReference" class="modal-overlay">
          <div class="modal-content-heatmap">
-           <button type="button" class="btn save" id="reference-close-button" (click)="onReferenceClick()">Close</button>
+           <button type="button" class="btn save" id="reference-close-button" (click)="onReferenceClick()"><i class="fa-solid fa-xmark"></i></button>
            <app-heatmap></app-heatmap>
          </div>
         </div>
@@ -86,8 +86,8 @@
       <div class="form-detail">
         <label for="responsibility">Responsibility<span class="required">*</span></label>
         <app-dropdown  [options]="dropdownDataassignee"
-           [displayField]="'name'"
-           [valueField]="'email'"
+           [displayField]="'fullName'"
+           [valueField]="'id'"
            selectValue="responsible person"
            width="100" formControlName="responsibileUserId">
         </app-dropdown>
