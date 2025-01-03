@@ -42,7 +42,7 @@ export const routes: Routes = [
     ]
   },
   {
-    path:'',component:DashboardComponent, canActivate: [AuthGuard], data:{title: 'Risk Management',breadcrumb: 'Dashboard' },
+    path:'',component:DashboardComponent, data:{title: 'Risk Management',breadcrumb: 'Dashboard' },
     children:[
       {
         path:'home',component:HomeComponent, data:{title: 'Risk Management' }
