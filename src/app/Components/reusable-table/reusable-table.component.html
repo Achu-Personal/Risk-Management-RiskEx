@@ -6,13 +6,13 @@
           @for(header of tableHeaders; track header){
           <th title="{{ header === 'overallRiskRating' ? 'Current Risk Rating' : headerDisplayMap[header] || header }}"> {{ headerDisplayMap[header] || header }}</th>
 
-          } @if(IsActionRequiered && !isAdmin && !IsUser || IsAssignee){ 
+          } @if(IsActionRequiered && !isAdmin && !IsUser || IsAssignee){
           <th>Actions</th>
           } @else if(IsUser){
           <th>Status</th>
           <th>Action</th>
-          
-          
+
+
            }
         </tr>
       </thead>
@@ -29,13 +29,13 @@
 
             <ng-container *ngIf="key === 'riskType'">
                {{ getRiskType(row[key]) }}
-             
+
             </ng-container>
             <ng-container *ngIf="key === 'riskStatus'">
               <span [ngClass]="getRiskStatusClass(row[key])">
                 {{ getRiskStatus(row[key]) }}
               </span>
-              
+
             </ng-container>
             <ng-container *ngIf="key === 'projects'"><ng-container *ngIf="row[key]?.length > 0; else noProjects">
               {{ row[key]?.join(', ') }}
@@ -43,7 +43,7 @@
             <ng-template #noProjects>
               No projects available
             </ng-template></ng-container>
-            
+
             @if(key!=='riskType' && key !== 'riskStatus' && key !=='overallRiskRating') {
               <ng-container>
                 {{formatDate(row[key]) | slice : 0 : 30}}
@@ -105,7 +105,7 @@
           </td>
 
           } @else if(IsUser ) {
-          
+
 
           <td *ngIf="IsUser">
             <span [ngClass]="{ 'active-status': row.isActive, 'inactive-status': !row.isActive }">
@@ -122,7 +122,7 @@
               </label>
             </div>
           </td>
-          
+
           } @else if(IsAssignee){
           <td>
             <button
@@ -227,7 +227,7 @@
             </button>
           </td>
 
-          } 
+          }
         </tr>
         }
 

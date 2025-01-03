@@ -135,7 +135,7 @@ export class ApiService {
 
 
     return this.http.get(
-      `https://localhost:7216/api/Risk/GetRiskByAssigne/${id}`
+      `https://localhost:7216/api/Risk/GetRiskByAssigne?id=${id}`
     );
   }
 
