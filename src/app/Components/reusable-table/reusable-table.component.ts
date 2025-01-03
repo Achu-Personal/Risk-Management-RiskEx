@@ -49,7 +49,7 @@ export class ReusableTableComponent {
 
 
 // rejectRisk = output();
-isToggled: boolean = false;
+// isToggled: boolean = false;
   // isActive: boolean;
 // rejectButton(event:Event,row:any) {
 //   console.log("Row",row);
@@ -59,6 +59,13 @@ isToggled: boolean = false;
 
 
 // }
+
+onToggleChange(row: any): void {
+  const newState = row.toggleState ? 'Active' : 'Inactive';
+  console.log(`Row ID: ${row.id}, New State: ${newState}`);
+  // Optional: Persist the state to a backend service
+}
+
 
 rejectButton(event: Event, row: any) {
   event.stopPropagation();
@@ -95,23 +102,23 @@ onReject(data: {comment: string}) {
 }
 
 
-// formatDate(value: any): string {
-//   if (!value) return '';
+formatDate(value: any): string {
+  if (!value) return '';
   
-//   if (typeof value === 'string' && value.includes('-')) {
-//     const date = new Date(value);
-//     if (!isNaN(date.getTime())) {
-//       const day = String(date.getDate()).padStart(2, '0');
-//       const month = String(date.getMonth() + 1).padStart(2, '0'); 
-//       const year = date.getFullYear();
-//       return `${day}-${month}-${year}`;
-//     }
-//   }
-//   return value;
-// }
+  if (typeof value === 'string' && value.includes('-')) {
+    const date = new Date(value);
+    if (!isNaN(date.getTime())) {
+      const day = String(date.getDate()).padStart(2, '0');
+      const month = String(date.getMonth() + 1).padStart(2, '0'); 
+      const year = date.getFullYear();
+      return `${day}-${month}-${year}`;
+    }
+  }
+  return value;
+}
 
-  // If not a valid date, return the original value
-  // return value.toString();
+//   If not a valid date, return the original value
+//   return value.toString();
 // }
 
 getRiskType(riskType: number): string {
