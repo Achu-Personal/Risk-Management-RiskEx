@@ -1,21 +1,19 @@
 import { Component, Input } from '@angular/core';
 import { TableComponent } from "../../Components/table/table.component";
-import { BodyContainerComponent } from "../../Components/body-container/body-container.component";
-import { Router } from '@angular/router';
-import { ButtonComponent } from "../../UI/button/button.component";
 import { DatepickerComponent } from "../../UI/datepicker/datepicker.component";
+import { BodyContainerComponent } from "../../Components/body-container/body-container.component";
 import { ApiService } from '../../Services/api.service';
+import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-history',
+  selector: 'app-single-table-page',
   standalone: true,
-  imports: [TableComponent, BodyContainerComponent, DatepickerComponent],
-  templateUrl: './history.component.html',
-  styleUrl: './history.component.scss'
+  imports: [TableComponent, DatepickerComponent, BodyContainerComponent],
+  templateUrl: './single-table-page.component.html',
+  styleUrl: './single-table-page.component.scss'
 })
-export class HistoryComponent {
-
-   constructor(private router: Router,public api: ApiService) {}
+export class SingleTablePageComponent {
+ constructor(private router: Router,public api: ApiService) {}
 
     OnClickRow(rowid:any): void {
       this.router.navigate([`/ViewRisk/${rowid}`]);
@@ -30,6 +28,6 @@ export class HistoryComponent {
         console.log(this.items);
 
       });
-      
+
     }
 }

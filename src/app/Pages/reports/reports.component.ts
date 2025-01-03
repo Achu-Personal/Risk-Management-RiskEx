@@ -48,15 +48,8 @@ export class ReportsComponent {
         this.api.gettabledata().subscribe((res: any) => {
           this.items = res;
           console.log(this.items);
-          // this.filteredItems = [...this.items];
-          // this.updateUniqueDepartments();
-          // this.updateUniqueTypes();
-          // this.totalItems = this.filteredItems.length;
-          // this.updatePaginatedItems();
         });
-        // this.route.url.subscribe(() => {
-        //   this.checkPageForButtonVisibility();
-        // });
+      
       }
 
 }

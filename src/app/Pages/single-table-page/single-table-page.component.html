@@ -1,12 +1,8 @@
-
 <app-body-container backgroundColor="transparent" [showShadow]=false >
   <div class="btnn">
-    <!-- <button>Add Columns</button> -->
-    <!-- <button>Filter by Date</button> -->
     <app-datepicker></app-datepicker>
-  </div>
 
+  </div>
   <div class="tab"></div>
   <app-table (onclickrow)="OnClickRow($event)"  [paginated]="items"></app-table>
 </app-body-container>
-
