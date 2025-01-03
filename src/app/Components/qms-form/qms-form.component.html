@@ -17,13 +17,13 @@
           </app-dropdown>
        </div>
      </div>
-     @if(isAdmin=='admin'){
+     @if(authService.getUserRole() === 'Admin'){
       <div class="form-detail">
         <label for="department">Department Name</label>
         <app-dropdown  [options]="dropdownDataDepartment"
-          [displayField]="'name'"
+          [displayField]="'departmentName'"
           [valueField]="'id'"
-          width="100" id="department" >
+          width="100" id="department" formControlName=" DepartmentId" >
          </app-dropdown>
       </div>
      }
@@ -58,11 +58,17 @@
       </div>
       <div class="form-row" [ngStyle]="{'gap':'32vw','margin-top':'30px'}">
         <h2 [ngStyle]="{'border-bottom':'0px','text-transform':'none'}">Risk Factor :<span style="margin-left: 10px;">{{riskFactor}}</span> </h2>
-        <h2 [ngStyle]="{'border-bottom':'0px','text-transform':'none'}">Overall Risk Rating :<span style="margin-left: 10px;" [ngStyle]="{'color':changeColorOverallRiskRating()}"> {{result}}</span> </h2>
+        <h2 [ngStyle]="{'border-bottom':'0px','text-transform':'none','margin-left':'-3.5%'}">Overall Risk Rating :<span style="margin-left: 10px;" [ngStyle]="{'color':changeColorOverallRiskRating()}"> {{result}}</span> </h2>
       </div>
       <div [ngStyle]="{'margin-top':'20px','font-style':'italic','color':'grey'}">
-       <p>For reference <span><a href="javascript:void(0);">click </a></span>here</p>
+       <p>For reference <span><a href="javascript:void(0);" (click)="onReferenceClick()" >click </a></span> here</p>
       </div>
+      <div *ngIf="showReference" class="modal-overlay">
+         <div class="modal-content-heatmap">
+           <button type="button" class="btn save" id="reference-close-button" (click)="onReferenceClick()"><i class="fa-solid fa-xmark"></i></button>
+           <app-heatmap></app-heatmap>
+         </div>
+        </div>
     </div>
     <div class="form-details-sub-container">
       <h2>Risk Management</h2>
@@ -79,9 +85,10 @@
       <h2>Action Plan</h2>
       <div class="form-detail">
         <label for="responsibility">Responsibility<span class="required">*</span></label>
-        <app-dropdown  [options]="dropdownDataReviewer"
-           [displayField]="'name'"
-           [valueField]="'email'"
+        <app-dropdown  [options]="dropdownDataassignee"
+           [displayField]="'fullName'"
+           [valueField]="'id'"
+           selectValue="responsible person"
            width="100" formControlName="responsibileUserId">
         </app-dropdown>
       </div>
@@ -89,14 +96,21 @@
         <p>If responsible person not in the list <span (click)="isAssigneeNotInList()"><a href="javascript:void(0);">click </a></span>here</p>
       </div>
       @if(assigneeNotInList){
-        <div class="form-detail">
-          <label for="assignee">Responsible Person Name <span class="required">*</span></label>
-          <input type="text" id="assignee" placeholder="Enter responsible person name"  >
-        </div>
-        <div class="form-detail">
-          <label for="assignee-email">Email <span class="required">*</span></label>
-          <input type="text" id="assignee-email" placeholder="Enter email"  >
-        </div>
+        <form [formGroup]="assigneeGroup">
+          <div class="form-detail">
+            <label for="assignee">Responsible Person Name <span class="required">*</span></label>
+            <input type="text" id="assignee" placeholder="Enter responsible person full name" formControlName="fullName"  >
+          </div>
+          <div class="form-detail">
+            <label for="assignee-email">Email <span class="required">*</span></label>
+            <input type="text" id="assignee-email" placeholder="Enter email" formControlName="email" >
+          </div>
+          <div class="button-group">
+            <button type="button" class="btn save" (click)="saveAssignee()" >Save</button>
+            <button type="button" class="btn cancel" (click)="isAssigneeNotInList()">Cancel</button>
+          </div>
+        </form>
+
 
       }
       <div class="form-group">
@@ -109,30 +123,67 @@
       <div class="form-group">
         <label for="reviewer">Reviewer <span class="required">*</span></label>
         <app-dropdown  [options]="dropdownDataReviewer"
-          [displayField]="'name'"
-          [valueField]="'email'"
-          width="100" formControlName="reviewerId">
+          [displayField]="'fullName'"
+          [valueField]="'id'"
+          width="100" formControlName="reviewerId" (change)="onReviewerChange($event)">
         </app-dropdown>
       </div>
       <div [ngStyle]="{'margin-top':'20px','font-style':'italic','color':'grey'}">
         <p>If reviewer not in the list <span (click)="isReviewerNotInList()"><a href="javascript:void(0);">click </a></span>here</p>
       </div>
       @if(reviewerNotInList){
-        <div class="form-detail">
-          <label for="reviewer">Reviewer Name <span class="required">*</span></label>
-          <input type="text" id="reviewer" placeholder="Enter reviewer name"  >
+        <form [formGroup]="reviewerGroup">
+          <div class="form-detail">
+            <label for="reviewer">Reviewer Name <span class="required">*</span></label>
+            <input type="text" id="reviewer" placeholder="Enter reviewer name" formControlName="fullName" >
+          </div>
+          <div class="form-detail">
+            <label for="reviewer-email">Email <span class="required">*</span></label>
+            <input type="text" id="reviewer-email" placeholder="Enter email" formControlName="email" >
+          </div>
+          <div class="form-detail">
+            <label for="department">Department Name</label>
+            <app-dropdown  [options]="dropdownDataDepartment"
+              [displayField]="'departmentName'"
+              [valueField]="'id'"
+              selectValue="reviewer"
+              width="100" id="reviewer-department" formControlName="departmentId"  >
+             </app-dropdown>
+          </div>
+        </form>
+        <div class="button-group">
+          <button type="button" class="btn save" (click)="saveExternalReviewer()" >Save</button>
+          <button type="button" class="btn cancel" (click)="isReviewerNotInList()">Cancel</button>
         </div>
-        <div class="form-detail">
-          <label for="reviewer-email">Email <span class="required">*</span></label>
-          <input type="text" id="reviewer-email" placeholder="Enter email"  >
-        </div>
+
       }
     </div>
     <div class="button-group">
-      <button type="submit" class="btn save">Save</button>
-      <button type="button" class="btn cancel">Cancel</button>
+      <button type="button" class="btn save" (click)="openConfirmationDialog()">Save</button>
+      <button type="button" class="btn cancel" (click)="onCancel()">Cancel</button>
+      <button type="button" class="btn clear" (click)="onClear()">Clear</button>
     </div>
   </form>
+
+  <div *ngIf="showDialog" class="modal-overlay">
+    <div class="modal-content">
+      <p>Are you sure you want to save?</p>
+      <div class="button-group">
+        <button type="button" class="btn confirm" (click)="onConfirm()">Yes</button>
+        <button type="button" class="btn cancel" (click)="closeDialog()">No</button>
+      </div>
+    </div>
+    <div *ngIf="showNotification" class="notification-overlay">
+      <div class="notification-content" [ngClass]="{'success': isSuccess, 'error': !isSuccess}">
+        <div class="notification-header">
+          <span class="status-icon">{{isSuccess ? '✓' : '✕'}}</span>
+          <h3>{{isSuccess ? 'Success' : 'Error'}}</h3>
+        </div>
+        <p>{{notificationMessage}}</p>
+        <button (click)="closeDialogSuccess()">OK</button>
+      </div>
+    </div>
+    </div>
 </div>
 
 
