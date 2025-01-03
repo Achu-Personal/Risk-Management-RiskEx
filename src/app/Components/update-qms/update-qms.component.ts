@@ -2,6 +2,9 @@ import { Component, Input } from '@angular/core';
 import { DropdownComponent } from "../../UI/dropdown/dropdown.component";
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { ApiService } from '../../Services/api.service';
+import { AuthService } from '../../Services/auth.service';
+
 
 @Component({
   selector: 'app-update-qms',
@@ -20,57 +23,18 @@ likelihoodValue:number=0
 impactValue:number=0
 riskFactor:number=0
 selectedResponse: string = '';
+departmentName:string=''
+departmentId:string='';
+dropdownDataLikelihood: any[] = []
+dropdownDataImpact:any[]=[]
+dropdownDataProject:any[]=[]
+dropdownDataDepartment:any[]=[]
+dropdownDataassignee:any[]=[]
+dropdownDataReviewer: Array<{ id: number; fullName: string; email: string; type: string }> = [];
+// riskResponses:Array<{ id: number; name: string; description: string; example: string; risks:string }> = [];
+riskResponses:any[]=[]
 
 
-dropdownDataLikelihood=[
-  { "type":"Select Likelihood","value":""},
-  {"type":"Low","value":"0.1"},
-  {"type":"Medium","value":"0.2"},
-  { "type":"High","value":"0.4"},
-  { "type":"Critical","value":"0.6"}
-];
-
-dropdownDataImpact=[
-  { "type":"select Impact","value":""},
-  {"type":"Low","value":"10"},
-  {"type":"Medium","value":"20"},
-  { "type":"High","value":"40"},
-  { "type":"Critical","value":"80"}
-];
-
-dropdownDataReviewer=[
-  {"name":"Select--","email":""},
-  {"name":"Achu s nair","email":"123"},
-  {"name":"Shamna Sherin","email":"123"},
-  {"name":"Deepak Denny","email":"123"},
-  { "name":"Bindhya C Philip","email":"123"},
-  { "name":"Vivek V N","email":"123"},
-];
-
-dropdownDataProject=[
-  {"name":"Select--","id":""},
-  {"name":"japanese training","id":"p12-34"},
-  {"name":"risk management","id":"p-34-56"},
-  {"name":"pit-stop","id":"p34-54"},
-  { "name":"query management","id":"p01-01"},
-  { "name":"HR inventory","id":"p03-3"},
-];
-
-dropdownDataDepartment=[
-  {"name":"Select--","id":""},
-  {"name":"SFM","id":"1"},
-  {"name":"ACE","id":"2"},
-  {"name":"HR","id":"3"},
-  { "name":"L&D","id":"4"},
-  { "name":"DU1","id":"5"},
-];
-
-riskResponses = [
-{ id: 1, label: "Avoid" },
-{ id: 2, label: "Mitigate" },
-{ id: 3, label: "Transfer" },
-{ id: 4, label: "Accept" }
-];
 
 autoResize(event: Event): void {
   const textarea = event.target as HTMLTextAreaElement;
@@ -87,13 +51,27 @@ isAssigneeNotInList(){
   this.assigneeNotInList=!this.assigneeNotInList
 }
 
-onDropdownChangelikelihood(value: any): void {
- this.likelihoodValue = value ? parseFloat(value.target.value) : 0;
+onDropdownChangelikelihood(event: any): void {
+  const selectedFactorId = Number(event.target.value);
+  const selectedFactor = this.dropdownDataLikelihood.find(factor => Number(factor.id) === selectedFactorId);
+  if (selectedFactor) {
+    this.likelihoodValue = selectedFactor.likelihood;
+    console.log('Selected Likelihood:', this.likelihoodValue);
+  } else {
+    console.log('Selected factor not found.');
+  }
  this.calculateOverallRiskRating();
 }
 
-onDropdownChangeImpact(value: any): void {
-  this.impactValue = value ? parseFloat(value.target.value) : 0;
+onDropdownChangeImpact(event: any): void {
+ const selectedFactorId = Number(event.target.value);
+ const selectedFactor = this.dropdownDataImpact.find(factor => Number(factor.id) === selectedFactorId);
+ if (selectedFactor) {
+  this.impactValue = selectedFactor.impact;
+  console.log('Selected Impact:',this.impactValue);
+ }else {
+  console.log('Selected factor not found.');
+ }
   this.calculateOverallRiskRating();
 }
 
@@ -116,6 +94,41 @@ changeColorOverallRiskRating(){
   }
 }
 
+constructor(private api:ApiService,public authService:AuthService){}
+
+ngOnInit(){
+
+  console.log('selecetd risk type value',this.riskTypeValue);
+  this.departmentName =this.authService.getDepartmentName()!;
+  console.log('department Name',this.departmentName);
+  this.departmentId=this.authService.getDepartmentId()!;
+  console.log('department id',this.departmentId)
+  this.api.getLikelyHoodDefinition().subscribe((res:any)=>{
+    this.dropdownDataLikelihood=res;
+  })
+  this.api.getImpactDefinition().subscribe((res:any)=>{
+    this.dropdownDataImpact=res
+  })
+  this.api.getProjects(this.departmentName).subscribe((res:any)=>{
+    this.dropdownDataProject=res
+  })
+  this.api.getDepartment().subscribe((res:any)=>{
+    this.dropdownDataDepartment=res
+  })
+  this.api.getAllReviewer().subscribe((res:any)=>{
+    this.dropdownDataReviewer=res.reviewers
+  })
+  this.api.getAllUsers().subscribe((res:any)=>{
+    this.dropdownDataassignee=res
+  })
+  this.api.getRiskResponses().subscribe((res:any)=>{
+    this.riskResponses=res
+    console.log(this.riskResponses)
+
+  })
+
+
+}
 
 
 }

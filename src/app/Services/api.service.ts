@@ -55,6 +55,10 @@ constructor(private http:HttpClient, public auth:AuthService) { }
     //  return this.http.get(`data/tabledata.json`)
     return this.http.get(`https://localhost:7216/api/Report`)
    }
+   gethistorytabledata(){
+    //  return this.http.get(`data/tabledata.json`)
+    return this.http.get(`https://localhost:7216/api/Report?riskStatus=close`)
+   }
    getFilteredData(department: any) {
      return this.http.get(`data/tabledata.json`).pipe(
        map((data:any) => {
@@ -85,7 +89,6 @@ constructor(private http:HttpClient, public auth:AuthService) { }
 
    }
    getRiskResponses(){
-
     return this.http.get('https://localhost:7216/api/RiskResponseData')
    }
    getLikelyHoodDefinition(){
@@ -102,7 +105,23 @@ constructor(private http:HttpClient, public auth:AuthService) { }
    }
 
    addnewQualityRisk(qualityRisk:any){
-    return this.http.get('https://localhost:7216/api/Risk/Quality',qualityRisk)
+    return this.http.post('https://localhost:7216/api/Risk/Quality',qualityRisk)
+   }
+
+   addnewSecurityOrPrivacyRisk(SecurityOrPrivacyRisk:any){
+    return this.http.post('https://localhost:7216/api/Risk/security',SecurityOrPrivacyRisk)
+   }
+   addExternalReviewer(reviewer:any){
+    return this.http.post('https://localhost:7216/api/Reviewer/add-reviewer',reviewer)
+   }
+   addResponsiblePerson(assignee:any){
+    return this.http.post('https://localhost:7216/api/User/register',assignee)
+   }
+   getAllReviewer(){
+    return this.http.get('https://localhost:7216/api/Reviewer/getAllReviewers')
+   }
+   editQualityRisk(id:any,risk:any){
+    return this.http.put(`https://localhost:7216/api/Risk/quality/${id}`,risk)
    }
 
    getRisksAssignedToUser(id:any='')
@@ -129,7 +148,7 @@ constructor(private http:HttpClient, public auth:AuthService) { }
   }
   updateReviewStatusAndComments(id:number, updates:any){
     console.log("updates",updates);
-    
+
     this.http.put(`https://localhost:7216/api/Approval/update-review/${id}`,updates).subscribe(e => console.log(e)
     );
 
@@ -137,5 +156,22 @@ constructor(private http:HttpClient, public auth:AuthService) { }
   sendEmailToAssignee(id:number){
     this.http.post(`https://localhost:7216/api/emails/send-assignment-email/${id}`,{}).subscribe(e => console.log(e));
   }
-  
+
+  getRisksWithHeigestOverallRating(id:any='')
+  {
+    return this.http.get(`https://localhost:7216/api/Risk/GetRiskWithHeighestOverallRationg?id=${id}`)
+  }
+
+  getRiskApproachingDeadline(id:any='')
+  {
+    return this.http.get(`https://localhost:7216/api/Risk/GetRiskApproachingDeadline?id=${id}`)
+  }
+
+  getAllUsers(){
+    return this.http.get('https://localhost:7216/api/User/GetAllUsers');
+  }
+
+  getAllUsersByDepartmentName(department:string){
+    return this.http.get(`https://localhost:7216/api/User/GetUsersByDepartment/${department}`)
+  }
  }

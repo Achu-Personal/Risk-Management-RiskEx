@@ -6,16 +6,18 @@
         <div class="form-detail">
           <label for="likelihood">Likelihood <span class="required">*</span></label>
           <app-dropdown  [options]="dropdownDataLikelihood"
-           [displayField]="'type'"
-           [valueField]="'value'"
-           width="40" (change)="onDropdownChangelikelihood($event)"></app-dropdown>
+           [displayField]="'assessmentFactor'"
+           [valueField]="'id'"
+           selectValue="Likelihood"
+           width="100" (change)="onDropdownChangelikelihood($event)"></app-dropdown>
         </div>
         <div class="form-detail">
           <label for="impact">Impact <span class="required">*</span></label>
           <app-dropdown  [options]="dropdownDataImpact"
-           [displayField]="'type'"
-           [valueField]="'value'"
-           width="40" (change)="onDropdownChangeImpact($event)"></app-dropdown>
+           [displayField]="'assessmentFactor'"
+           [valueField]="'id'"
+           selectValue="Impact"
+           width="100" (change)="onDropdownChangeImpact($event)"></app-dropdown>
         </div>
       </div>
       <div class="form-row" [ngStyle]="{'gap':'32vw','margin-top':'30px'}">
@@ -40,11 +42,11 @@
               <input
                 type="radio"
                 [id]="'response-' + response.id"
-                name="risk-response"
-                [value]="response.label"
+                [name]="response.name"
+                [value]="response.id"
                 [(ngModel)]="selectedResponse"
               />
-              <label [for]="'response-' + response.id">{{ response.label }}</label>
+              <label [for]="'response-' + response.id">{{ response.name }}</label>
             </div>
           }
         </div>
@@ -55,9 +57,9 @@
       <div class="form-group">
         <label for="reviewer">Reviewer <span class="required">*</span></label>
         <app-dropdown  [options]="dropdownDataReviewer"
-          [displayField]="'name'"
-          [valueField]="'email'"
-          width="82.5">
+          [displayField]="'fullName'"
+          [valueField]="'id'"
+          width="100">
         </app-dropdown>
       </div>
       <div [ngStyle]="{'margin-top':'20px','font-style':'italic','color':'grey'}">
