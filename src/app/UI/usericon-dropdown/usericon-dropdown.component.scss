@@ -1,5 +1,6 @@
-.nav-items {
+.box {
   position: relative;
+  cursor: pointer;
 
   .dropdown-card {
     position: absolute;
@@ -24,7 +25,7 @@
         margin-bottom: 10px;
       }
 
-     
+
 
       .username {
         font-style: italic;

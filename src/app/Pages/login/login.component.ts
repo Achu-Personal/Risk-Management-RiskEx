@@ -16,7 +16,8 @@ export class LoginComponent {
 
   loginForm: FormGroup;
   showError = false;
-
+  errorMessage: string = "";
+  
   constructor(
     private authServices: AuthService,
     private fb: FormBuilder,
@@ -30,16 +31,18 @@ export class LoginComponent {
 
   clearError() {
     this.showError = false;
+    this.errorMessage = ""; // Reset error message
   }
 
   onSubmit() {
     if (this.loginForm.valid) {
       this.authServices.login(this.loginForm.value).subscribe(
         (response) => {
-          this.showError = false;
+          this.clearError();
         },
         (error) => {
           this.showError = true;
+          this.errorMessage = error; // Use the error message from the backend
         }
       );
     }

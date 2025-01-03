@@ -1,17 +1,18 @@
-<div class="nav-items" style="padding: 5px;">
+<div class="box" style="padding: 5px;">
   <div  style="height: 5px;"></div>
-  <i style="margin-left: 17px; color:red;" class="fa-solid fa-right-from-bracket logout-icon"></i>
+  <img style="margin-left: 18px; " src="/Images/image 7.png" alt="">
+  <!-- <i style="margin-left: 17px; color:red;" class="fa-solid fa-right-from-bracket logout-icon"></i> -->
   <div style="height: 20px;"></div>
   <img
     (click)="toggleDropdown()"
-    src="https://w7.pngwing.com/pngs/152/155/png-transparent-male-man-person-business-avatar-icon.png"
+    src="/Images/usericon.png"
     height="50"
     width="50"
     alt="User Icon"
   />
   <div *ngIf="dropdownVisible" class="dropdown-card">
     <div class="profile-card">
-      <img src="https://w7.pngwing.com/pngs/152/155/png-transparent-male-man-person-business-avatar-icon.png" alt="Profile Picture" class="profile-image" />
+      <img src="/Images/usericon.png" alt="Profile Picture" class="profile-image" />
       <h3>{{ auth.getUserName() }}</h3>
       <p class="role">{{ auth.getUserRole() }}</p>
       <p class="department">{{ auth.getDepartmentName() }}</p>

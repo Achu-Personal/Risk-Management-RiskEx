@@ -14,12 +14,12 @@ export class SidebarComponent {
   showThemeOverlay=false;
   menuItems = [
     { id: 1, label: 'Dashboard', icon: 'fa-solid fa-house', route: '/home', active: false },
-    {id: 7, label: "Assignments", icon: "fa-solid fa-tasks", route: "/assignee",active: false},
-    { id: 5, label: 'Approvals', icon: ' fa-solid fa-clipboard-check', route: '/approvaltable', active: false },
+    {id: 2, label: "Assignments", icon: "fa-solid fa-tasks", route: "/assignee",active: false},
+    { id: 3, label: 'Approvals', icon: ' fa-solid fa-clipboard-check', route: '/approvaltable', active: false },
     { id: 4, label: 'Reports', icon: 'fa-solid fa-chart-line', route: '/reports', active: false },
-    { id: 3, label: 'History', icon: 'fa-solid fa-clock-rotate-left', route: '/history', active: false },
-    { id: 2, label: 'User Mangement', icon: 'fa-solid fa-users', route: '/users', active: false },
-    { id: 6, label: 'Reference', icon: 'fa-solid fa-book', route: '/reference', active: false }
+    { id: 5, label: 'History', icon: 'fa-solid fa-clock-rotate-left', route: '/history', active: false },
+    { id: 6, label: 'User Mangement', icon: 'fa-solid fa-users', route: '/users', active: false },
+    { id: 7, label: 'Reference', icon: 'fa-solid fa-book', route: '/reference', active: false }
 
   ];
 
