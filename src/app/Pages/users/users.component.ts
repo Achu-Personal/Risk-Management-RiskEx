@@ -36,7 +36,31 @@ export class UsersComponent {
   departments: department[] = [];
   projects: any[] = [];
   isDepartmentFieldDisabled = false;
+  isAdmin: boolean = false;
 
+  headerData: string[] = [];
+  headerDataDpt:string[]=['fullName','email','projects'];
+  headerDisplayMap: { [key: string]: string } = {
+    fullName:'Name',
+    email: 'Email Id',
+    department: 'Department',
+    projects:'Projects'
+  };
+tableBodyAdmin:any[]=[
+  {
+  fullName:'',
+  email:'',
+  department:'',
+  projects:''
+  }
+]
+tableBody:any[]=[
+  {
+    fullName:'',
+  email:'',
+  projects:[]
+  }
+]
   userForm: FormGroup;
   departmentForm: FormGroup;
   projectForm: FormGroup;
@@ -70,6 +94,28 @@ export class UsersComponent {
       this.projectForm.patchValue({ departmentName: userDepartment });
       this.projectForm.get('departmentName')?.disable();
       this.isDepartmentFieldDisabled = true;
+    }
+    if(userRole==='Admin'){
+      this.headerData=[
+        'fullName','email','department','projects'
+      ]
+      this.isAdmin=true;
+      this.api.getAllUsers().subscribe((e:any)=>{
+        this.tableBodyAdmin=e
+      });
+    }
+    else{
+      this.isAdmin=false;
+      const department= this.authService.getDepartmentName();
+      if (department) {
+        this.api.getAllUsersByDepartmentName(department).subscribe((users: any) => {
+          console.log("users",users);
+          this.tableBody=users;
+          console.log("usertablebody",this.tableBody);
+        });
+      } else {
+        console.error('Department name is null or undefined');
+      }
     }
 
     this.userForm
@@ -193,27 +239,27 @@ export class UsersComponent {
     }
   }
 
-  headerData: any = ['Name', 'Email', 'Department', 'Projects'];
-  tableBody: any = [
-    {
-      Name: 'John Doe',
-      Email: 'john.doe@example.com',
-      Department: 'Engineering',
-      Projects: 'Project A, Project B',
-    },
-    {
-      Name: 'Jane Smith',
-      Email: 'jane.smith@example.com',
-      Department: 'Marketing',
-      Projects: 'Campaign X, Campaign Y',
-    },
-    {
-      Name: 'Alice Johnson',
-      Email: 'alice.johnson@example.com',
-      Department: 'HR',
-      Projects: 'Recruitment, Employee Engagement',
-    },
-  ];
+  // headerData: any = ['Name', 'Email', 'Department', 'Projects'];
+  // tableBody: any = [
+  //   {
+  //     Name: 'John Doe',
+  //     Email: 'john.doe@example.com',
+  //     Department: 'Engineering',
+  //     Projects: 'Project A, Project B',
+  //   },
+  //   {
+  //     Name: 'Jane Smith',
+  //     Email: 'jane.smith@example.com',
+  //     Department: 'Marketing',
+  //     Projects: 'Campaign X, Campaign Y',
+  //   },
+  //   {
+  //     Name: 'Alice Johnson',
+  //     Email: 'alice.johnson@example.com',
+  //     Department: 'HR',
+  //     Projects: 'Recruitment, Employee Engagement',
+  //   },
+  // ];
   onProjectsSelected(projects: project[]) {
     console.log('Selected projects:', projects);
   }

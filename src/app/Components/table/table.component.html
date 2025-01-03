@@ -86,7 +86,7 @@
           <td>{{ item.responsibleUser }}</td>
           <td> {{item.riskAssessments[0].reviewer}}</td>
           <td> {{item.riskAssessments[0].reviewStatus }}</td>
-          <td><div [ngClass]="{'green-cell': item.riskStatus !== 'Open', 'red-cell': item.riskStatus !== 'Close'}">{{ item.riskStatus }}d</div></td>
+          <td><div [ngClass]="{'green-cell': item.riskStatus === 'open', 'red-cell': item.riskStatus === 'close'}">{{ item.riskStatus }}</div></td>
           <!-- <td><div>{{ item.riskStatus }}</div></td> -->
 
         </tr>

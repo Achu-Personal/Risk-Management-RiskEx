@@ -264,10 +264,11 @@ input:checked + .slider:before {
   
   color: red;
   font-weight: bold;
-  padding: 10px;
+  // padding: 10px;
   background-color: #edd4d5;
+  padding: 5px 15px;
   // border: 1px solid #420c0c ;
-  border-radius: 10px;
+  border-radius: 5px;
   text-align: center;
 }
 
@@ -275,10 +276,11 @@ input:checked + .slider:before {
   
   color: green;
   font-weight: bold;
-  padding: 10px;
+  // padding: 10px;
+  padding: 5px 10px;
   // border: 1px solid #0c4219 ;
   background-color: #d4edda;
-  border-radius: 10px;
+  border-radius: 5px;
   text-align: center;
 }
 
@@ -291,7 +293,7 @@ input:checked + .slider:before {
   color: green;
   font-weight: bold;
   padding: 5px;
-  border-radius: 10px;
+  border-radius: 5px;
   text-align: center;
   height: 35px;   
   width: 65px;   
@@ -302,7 +304,7 @@ input:checked + .slider:before {
   color: rgb(189, 189, 7);
   font-weight: bold;
   padding: 5px;
-  border-radius: 10px;
+  border-radius: 5px;
   text-align: center;
   height: 35px;   
   width: 65px;  
@@ -313,9 +315,79 @@ input:checked + .slider:before {
   color: red;
   font-weight: bold;
   padding: 5px;
-  border-radius: 10px;
+  border-radius: 5px;
   text-align: center;
   height: 35px;   
   width: 65px;  
   
+}
+
+
+
+
+/* Toggle Switch */
+.toggle-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 20px;
+
+    input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: red; /* Red for inactive */
+      transition: 0.4s;
+      border-radius: 20px;
+
+      &:before {
+        position: absolute;
+        content: '';
+        height: 14px;
+        width: 14px;
+        left: 3px;
+        bottom: 3px;
+        background-color: white;
+        transition: 0.4s;
+        border-radius: 50%;
+      }
+    }
+
+    input:checked + .slider {
+      background-color: green; /* Green for active */
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(20px);
+    }
+  }
+}
+
+
+.active-status {
+  color: green;
+  background-color: rgb(207, 235, 207); /* Green for Active */
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+.inactive-status {
+  color: red;
+  background-color: rgb(240, 191, 191); /* Red for Inactive */
+  padding: 5px 10px;
+  border-radius: 5px;
 }
