@@ -25,7 +25,10 @@
        @if (selectedRiskType === 1) {
         <app-qms-form  [riskTypeValue]="selectedRiskType"></app-qms-form>
        }
-       @if (selectedRiskType === 2 || selectedRiskType === 3) {
+       @if (selectedRiskType === 2) {
+        <app-isms-form  [riskTypeValue]="selectedRiskType"></app-isms-form>
+       }
+       @if (selectedRiskType === 3) {
         <app-isms-form  [riskTypeValue]="selectedRiskType"></app-isms-form>
        }
     </div>

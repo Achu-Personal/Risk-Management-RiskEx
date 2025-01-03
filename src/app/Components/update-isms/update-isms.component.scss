@@ -19,6 +19,7 @@
 }
 .form-detail {
   margin-bottom: 20px;
+  width: 100%;
 }
 
 label {
@@ -241,7 +242,23 @@ table{
   border-spacing: 15px;
 }
 
+.risk-assessment-table {
+  width: 100%;
+  border-collapse: collapse;
+}
 
+.risk-assessment-table th,
+.risk-assessment-table td {
+  width: 25%;
+  text-align: left;
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+.risk-assessment-table th {
+  font-weight: bold;
+  text-align: left;
+}
 
 
 
