@@ -46,7 +46,7 @@
             
             @if(key!=='riskType' && key !== 'riskStatus' && key !=='overallRiskRating') {
               <ng-container>
-                {{row[key] | slice : 0 : 30}}
+                {{formatDate(row[key]) | slice : 0 : 30}}
                 {{ row[key]?.toString.length > 25 ? "..." : "" }}
                 <!-- {{row[key]}} -->
               </ng-container>
