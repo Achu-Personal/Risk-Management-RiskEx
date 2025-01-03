@@ -152,5 +152,11 @@ constructor(private http:HttpClient, public auth:AuthService) { }
     return this.http.get(`https://localhost:7216/api/Risk/GetRiskApproachingDeadline?id=${id}`)
   }
 
+  getAllUsers(){
+    return this.http.get('https://localhost:7216/api/User/GetAllUsers');
+  }
 
+  getAllUsersByDepartmentName(department:string){
+    return this.http.get(`https://localhost:7216/api/User/GetUsersByDepartment/${department}`)
+  }
  }
