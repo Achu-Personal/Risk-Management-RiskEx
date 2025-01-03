@@ -113,6 +113,9 @@ export class TableComponent {
     this.route.url.subscribe(() => {
       this.checkPageForButtonVisibility();
     });
+
+    var data = history.state.type;
+    console.log("ssssss",data)
   }
 
   updateUniqueDepartments(): void {
