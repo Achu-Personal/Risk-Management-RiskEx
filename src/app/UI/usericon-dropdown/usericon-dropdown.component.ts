@@ -24,4 +24,7 @@ export class UsericonDropdownComponent {
   toggleDropdown(): void {
     this.dropdownVisible = !this.dropdownVisible;
   }
+  logout(){
+    this.auth.logout();
+  }
 }
