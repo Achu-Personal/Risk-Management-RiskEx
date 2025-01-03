@@ -3,7 +3,7 @@
   <div class="container">
     <div class="content">
       @if (riskType==="Quality"){
-        <app-qms-form></app-qms-form>
+        <app-qms-form [riskIdFromParent]="riskId"></app-qms-form>
       }
       @if (riskType==="Security" ||riskType==="Privacy"){
         <app-isms-form></app-isms-form>
