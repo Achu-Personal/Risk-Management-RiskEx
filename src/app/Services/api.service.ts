@@ -137,5 +137,11 @@ constructor(private http:HttpClient, public auth:AuthService) { }
   sendEmailToAssignee(id:number){
     this.http.post(`https://localhost:7216/api/emails/send-assignment-email/${id}`,{}).subscribe(e => console.log(e));
   }
+  getAllUsers(){
+    return this.http.get('https://localhost:7216/api/User/GetAllUsers');
+  }
   
+  getAllUsersByDepartmentName(department:string){
+    return this.http.get(`https://localhost:7216/api/User/GetUsersByDepartment/${department}`)
+  }
  }

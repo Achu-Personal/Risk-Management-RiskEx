@@ -49,7 +49,7 @@ export class ReusableTableComponent {
 
 
 // rejectRisk = output();
-isToggled: boolean = false;
+// isToggled: boolean = false;
   // isActive: boolean;
 // rejectButton(event:Event,row:any) {
 //   console.log("Row",row);
@@ -59,6 +59,13 @@ isToggled: boolean = false;
 
 
 // }
+
+onToggleChange(row: any): void {
+  const newState = row.toggleState ? 'Active' : 'Inactive';
+  console.log(`Row ID: ${row.id}, New State: ${newState}`);
+  // Optional: Persist the state to a backend service
+}
+
 
 rejectButton(event: Event, row: any) {
   event.stopPropagation();

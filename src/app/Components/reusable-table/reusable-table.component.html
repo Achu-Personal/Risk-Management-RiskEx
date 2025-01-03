@@ -6,11 +6,14 @@
           @for(header of tableHeaders; track header){
           <th title="{{ header === 'overallRiskRating' ? 'Current Risk Rating' : headerDisplayMap[header] || header }}"> {{ headerDisplayMap[header] || header }}</th>
 
-          } @if(IsActionRequiered && !isAdmin){ @if(!IsUser){
+          } @if(IsActionRequiered && !isAdmin && !IsUser || IsAssignee){ 
           <th>Actions</th>
-          } @else {
+          } @else if(IsUser){
           <th>Status</th>
-          } }
+          <th>Action</th>
+          
+          
+           }
         </tr>
       </thead>
       <tbody>
@@ -34,6 +37,13 @@
               </span>
               
             </ng-container>
+            <ng-container *ngIf="key === 'projects'"><ng-container *ngIf="row[key]?.length > 0; else noProjects">
+              {{ row[key]?.join(', ') }}
+            </ng-container>
+            <ng-template #noProjects>
+              No projects available
+            </ng-template></ng-container>
+            
             @if(key!=='riskType' && key !== 'riskStatus' && key !=='overallRiskRating') {
               <ng-container>
                 {{row[key] | slice : 0 : 30}}
@@ -44,7 +54,7 @@
             <!-- {{formatDate(row[key]) | slice : 0 : 30
             }}{{ row[key]?.toString.length > 30 ? "..." : "" }} -->
           </td>
-          } @if(IsActionRequiered && !isAdmin){ @if(!IsUser && !IsAssignee){
+          } @if(IsActionRequiered && !isAdmin && !IsUser && !IsAssignee){
           <td >
             <div class="icon-display"
               class="icon approve"
@@ -94,25 +104,25 @@
             </div>
           </td>
 
-          } @else if(IsUser) {
-          <td>
+          } @else if(IsUser ) {
+          
+
+          <td *ngIf="IsUser">
+            <span [ngClass]="{ 'active-status': row.isActive, 'inactive-status': !row.isActive }">
+              {{ row.isActive ? 'Active' : 'Inactive' }}
+            </span>
+          </td>
+
+          <!-- Action: Toggle -->
+          <td *ngIf="IsUser">
             <div class="toggle-container">
-              <!-- Display toggle state -->
-              <div
-                class="toggle-background"
-                [ngClass]="
-                  row.toggleState ? 'green-background' : 'red-background'
-                "
-              >
-                <p>{{ row.toggleState ? "Active" : "Inactive" }}</p>
-              </div>
-              <!-- Toggle Switch -->
               <label class="switch">
-                <input type="checkbox" [(ngModel)]="row.toggleState" />
+                <input type="checkbox" [(ngModel)]="row.isActive" (change)="onToggleChange(row)" />
                 <span class="slider"></span>
               </label>
             </div>
           </td>
+          
           } @else if(IsAssignee){
           <td>
             <button
@@ -217,7 +227,7 @@
             </button>
           </td>
 
-          } }
+          } 
         </tr>
         }
 
