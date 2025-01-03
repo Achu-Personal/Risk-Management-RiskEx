@@ -5,11 +5,12 @@ import { RiskDetailsSection2Component } from "../../Components/risk-details-sect
 import { RiskDetailsSection3MitigationComponent } from "../../Components/risk-details-section3-mitigation/risk-details-section3-mitigation.component";
 import { ApiService } from '../../Services/api.service';
 import { ActivatedRoute, RouterOutlet } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-view-risk',
   standalone: true,
-  imports: [RiskBasicDetailsCardComponent, BodyContainerComponent, RiskDetailsSection2Component, RiskDetailsSection3MitigationComponent,RouterOutlet],
+  imports: [RiskBasicDetailsCardComponent, BodyContainerComponent, RiskDetailsSection2Component, RiskDetailsSection3MitigationComponent,RouterOutlet,CommonModule],
   templateUrl: './view-risk.component.html',
   styleUrl: './view-risk.component.scss'
 })
@@ -33,7 +34,7 @@ export class ViewRiskComponent{
 
     })
 
-   
+
   }
 
 
