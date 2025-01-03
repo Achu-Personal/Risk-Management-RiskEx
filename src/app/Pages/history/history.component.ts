@@ -30,6 +30,13 @@ export class HistoryComponent {
         console.log(this.items);
 
       });
-      
+
     }
+
+    //datepicker
+    selectedDateRange: { startDate: string; endDate: string } | null = null;
+
+    onDateRangeSelected(dateRange: { startDate: string; endDate: string }) {
+    this.selectedDateRange = dateRange;
+  }
 }

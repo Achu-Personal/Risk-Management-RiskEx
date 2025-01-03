@@ -12,8 +12,13 @@
       <label>entries</label>
     </div>
       <app-searchbar (searchChanged)="onSearch($event)"></app-searchbar>
+      <!-- <div class="date">
+        <app-datepicker></app-datepicker>
 
+       </div> -->
    </div>
+
+
   <div class="container1">
     <div class="table-container1 fi">
     <table class="table1">
@@ -77,12 +82,12 @@
           <td>{{ item.departmentName }}</td>
           <td>{{ item.riskType }}</td>
           <td>{{ item.plannedActionDate| date: 'd MMM yyyy' }}</td>
-          <td><div [ngClass]="{'green-cell': item.overallRiskRating >= 12, 'red-cell': item.overallRiskRating >= 70, 'yellow-cell': item.overallRiskRating >= 50}">{{ item.overallRiskRating }}</div></td>
+          <td><div [ngClass]="{'green': item.overallRiskRating >=0 && item.overallRiskRating <= 50  , 'red': item.overallRiskRating > 70, 'yellow': item.overallRiskRating > 50 && item.overallRiskRating <= 70}">{{ item.overallRiskRating }}</div></td>
           <td>{{ item.responsibleUser }}</td>
           <td> {{item.riskAssessments[0].reviewer}}</td>
           <td> {{item.riskAssessments[0].reviewStatus }}</td>
-          <!-- <td><div  [ngClass]="{'green-cell': item.status === 'Open', 'red-cell': item.status === 'Closed'}">{{ item.status }}</div></td> -->
-          <td><div>{{ item.riskStatus }}</div></td>
+          <td><div [ngClass]="{'green-cell': item.riskStatus !== 'Open', 'red-cell': item.riskStatus !== 'Close'}">{{ item.riskStatus }}d</div></td>
+          <!-- <td><div>{{ item.riskStatus }}</div></td> -->
 
         </tr>
       }

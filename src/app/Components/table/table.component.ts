@@ -1,15 +1,17 @@
-import { Component, HostListener, Input, output} from '@angular/core';
+import { department } from './../../Interfaces/deparments.interface';
+import { Component, HostListener, Input, output, SimpleChanges} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { SearchbarComponent } from '../../UI/searchbar/searchbar.component';
 import { PaginationComponent } from '../../UI/pagination/pagination.component';
 import { ApiService } from '../../Services/api.service';
 import { ActivatedRoute } from '@angular/router';
+import { DatepickerComponent } from "../../UI/datepicker/datepicker.component";
 
 @Component({
   selector: 'app-table',
   standalone: true,
-  imports: [SearchbarComponent, FormsModule, PaginationComponent,CommonModule],
+  imports: [SearchbarComponent, FormsModule, PaginationComponent, CommonModule, DatepickerComponent],
   templateUrl: './table.component.html',
   styleUrl: './table.component.scss'
 })
@@ -62,12 +64,33 @@ export class TableComponent {
   filterTable(): void {
 
     this.filteredItems = this.items.filter((item:any) => {
-      return (
-        // (this.selectedRiskId ? item.riskId === this.selectedRiskId : true) &&
+      let matchesDateRange = true;
 
-        (this.selectedRiskType ? item.riskType == this.selectedRiskType : true)
-        // (this.selectedDepartment ? item.department === this.selectedDepartment : true)
+      if (this.filteredDateRange) {
+        const { startDate, endDate } = this.filteredDateRange;
+
+        if (startDate && endDate) {
+          const itemDate = new Date(item.closedDate);
+          console.log("Database date parsed:", itemDate);
+          const start = new Date(startDate);
+          console.log("start", start);
+          const end = new Date(endDate);
+
+          matchesDateRange = itemDate >= start && itemDate <= end ;
+        }
+      }
+
+      return (
+        matchesDateRange &&
+        (this.selectedRiskType ? item.riskType === this.selectedRiskType : true) &&
+        (this.selectedDepartment ? item.departmentName === this.selectedDepartment : true)
       );
+      // return (
+        // (this.selectedRiskId ? item.riskId === this.selectedRiskId : true) &&
+      //   (this.filteredDateRange ? item.closedDate === this.filteredDateRange : true) &&
+      //   (this.selectedRiskType ? item.riskType === this.selectedRiskType : true) &&
+      //   (this.selectedDepartment ? item.departmentName === this.selectedDepartment : true)
+      // );
     });
   console.log("filtered",this.filteredItems)
   this.currentPage = 1;
@@ -116,7 +139,11 @@ export class TableComponent {
   }
 
   updateUniqueDepartments(): void {
-    this.uniqueDepartments = [...new Set(this.items.map((item: any) => item.department))];
+    // this.api.getDepartment().subscribe((res: any) => {
+    //   this.uniqueDepartments = res
+    //   console.log("dep",this.uniqueDepartments);
+    // });
+    this.uniqueDepartments = [...new Set(this.items.map((item: any) => item.departmentName))];
 
   }
 
@@ -179,4 +206,14 @@ export class TableComponent {
     this.updatePaginatedItems();
   }
 
+
+  //datepicker
+  @Input() filteredDateRange: { startDate: string; endDate: string } | null = null;
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['filteredDateRange'] && this.filteredDateRange) {
+
+      this.filterTable();
+    }
+  }
 }
