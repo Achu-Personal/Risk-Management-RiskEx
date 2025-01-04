@@ -25,19 +25,15 @@
       <div class=" mytab-content">
         <div style="display: flex;flex-direction: row; justify-content: space-between; width: 100%;">
           <div style="display: flex;flex-direction: row; justify-content:space-around; gap:20px">
-            @if(type!="Quality")
-            {
+
               @for(assessment of riskAssessmentBefore ; track $index  )
               {
                 <app-likelihood-impact-card [assessment]="assessment" ></app-likelihood-impact-card>
               }
 
 
-            }
-            @else {
 
-              <app-likelihood-impact-card [assessment]="riskAssessmentAfter[0]" ></app-likelihood-impact-card>
-            }
+
           </div>
           <app-overall-rating-card title="Overall Rating" [value]="overallRiskRatingBefore" backgroundColor="white" [height]="27" [width]="27"  ></app-overall-rating-card>
         </div>
@@ -45,9 +41,9 @@
 
       </div>
       <div class="reviewer-section">
-        <h5 style="font-weight: bold;margin-top: 50px">Reviewed By: <span> {{ riskAssessmentBefore[0].review.reviewerName }}</span></h5>
+        <h5 style="font-weight: bold;margin-top: 50px">Reviewed By: <span> {{ riskAssessmentBefore.length>0?riskAssessmentBefore[0].review.reviewerName:'' }}</span></h5>
         <div style="height: 100px;width: 100%;background-color: var(--primary-color); margin-top: 10px;border-radius: 10px;padding: 20px;">
-          {{ riskAssessmentBefore[0].review.comments }}
+          {{ riskAssessmentBefore.length>0?riskAssessmentBefore[0].review.comments:'' }}
         </div>
       </div>
 
@@ -56,18 +52,14 @@
       <div class=" mytab-content">
         <div style="display: flex;flex-direction: row; justify-content: space-between; width: 100%;">
           <div style="display: flex;flex-direction: row; justify-content:space-around; gap:20px">
-        @if(type!="Quality")
-        {
+
+
           @for(assessment of riskAssessmentAfter ; track $index  )
               {
                 <app-likelihood-impact-card [assessment]="assessment" ></app-likelihood-impact-card>
               }
-        }
-        @else
-        {
-          <app-likelihood-impact-card [assessment]="riskAssessmentAfter[0]" ></app-likelihood-impact-card>
 
-        }
+
       </div>
         <app-overall-rating-card title="Overall Rating" [value]="overallRiskratingAfter" backgroundColor="white" [height]="27" [width]="27"  ></app-overall-rating-card>
       </div>
@@ -75,9 +67,9 @@
       </div>
 
       <div class="reviewer-section">
-        <h5 style="font-weight: bold;margin-top: 50px">Reviewed By: <span> {{ riskAssessmentAfter[0].review.reviewerName }}</span></h5>
+        <h5 style="font-weight: bold;margin-top: 50px">Reviewed By: <span> {{ riskAssessmentAfter.length>0? riskAssessmentAfter[0].review.reviewerName:'' }}</span></h5>
         <div style="height: 100px;width: 100%;background-color: var(--primary-color); margin-top: 10px;border-radius: 10px;padding: 20px;">
-          {{ riskAssessmentAfter[0].review.comments }}
+          {{riskAssessmentAfter.length>0? riskAssessmentAfter[0].review.comments:'' }}
         </div>
       </div>
 

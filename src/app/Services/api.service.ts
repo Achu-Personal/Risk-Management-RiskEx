@@ -33,7 +33,7 @@ export class ApiService {
   }
   getReviewSatus(id: string, isPreReview: boolean) {
     return this.http.get(
-      `https://localhost:7216/api/Review/GetReviewStatusOfARisk/${2}/${isPreReview}`
+      `https://localhost:7216/api/Review/GetReviewStatusOfARisk/${id}/${isPreReview}`
     );
   }
   getDepartment() {
@@ -56,11 +56,9 @@ export class ApiService {
   }
 
   gettabledata() {
-    //  return this.http.get(`data/tabledata.json`)
     return this.http.get(`https://localhost:7216/api/Report`);
   }
    gethistorytabledata(){
-    //  return this.http.get(`data/tabledata.json`)
     return this.http.get(`https://localhost:7216/api/Report?riskStatus=close`)
    }
   getFilteredData(department: any) {
@@ -85,7 +83,6 @@ export class ApiService {
       'https://localhost:7216/api/User/register',
       user,
       {
-        // Add this to handle text responses
         responseType: 'text' as 'json',
       }
     );
@@ -214,6 +211,11 @@ export class ApiService {
       'https://localhost:7216/api/Risk/RiskCategoryCountByDepartment',
       { params }
     );
+  }
+
+  changeUserStatus(userId:any,status:any){
+    return this.http.patch(`https://localhost:7216/api/User/IsActive/${userId}/${status}`,{}).subscribe((e)=>console.log('UserId and status:',userId,status)
+    )
   }
 
  }

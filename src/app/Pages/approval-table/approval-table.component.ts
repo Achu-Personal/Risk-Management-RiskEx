@@ -22,6 +22,7 @@ export class ApprovalTableComponent {
     description: 'Description',
     riskType: 'Risk Type',
     riskDepartment: 'Department',
+    departmentName: 'Department',
     plannedActionDate: 'Planned Action Date',
     overallRiskRating: 'CRR',
     riskStatus: 'Risk Status',
@@ -51,6 +52,7 @@ export class ApprovalTableComponent {
       riskType: '',
       plannedActionDate: Date,
       overallRiskRating: 0,
+      departmentName: '',
       riskStatus: '',
     },
   ];
@@ -86,6 +88,9 @@ export class ApprovalTableComponent {
 
       this.api.getAllRisksTobeReviewed().subscribe((response: any) => {
         this.tableBodyAdmin = response || [];
+        console.log("admin tablebody:",this.tableBodyAdmin);
+
+        
       });
     } else {
       this.headerData = [
@@ -95,20 +100,14 @@ export class ApprovalTableComponent {
         'riskType',
         'plannedActionDate',
         'overallRiskRating',
+        'departmentName',
         'riskStatus',
       ];
       this.api.getRisksByReviewerId().subscribe((response: any) => {
         console.log('API Response:', response);
       
-        // Ensure `response` is an array
         if (Array.isArray(response)) {
-          // Format `plannedActionDate` for each object in the response array
-          this.tableBody = response.map((item: any) => {
-            return {
-              ...item,
-              plannedActionDate: this.formatDate(item.plannedActionDate), // Format date
-            };
-          });
+          this.tableBody = response;
         } else {
           console.error('Expected an array but got:', response);
           this.tableBody = []; // Default to an empty array if the response is not valid
@@ -130,20 +129,20 @@ export class ApprovalTableComponent {
   showRejectDialog = false;
   selectedRow: any;
 
-  formatDate(value: any): string {
-    if (!value) return '';
+  // formatDate(value: any): string {
+  //   if (!value) return '';
     
-    if (typeof value === 'string' && value.includes('-')) {
-      const date = new Date(value);
-      if (!isNaN(date.getTime())) {
-        const day = String(date.getDate()).padStart(2, '0');
-        const month = String(date.getMonth() + 1).padStart(2, '0'); 
-        const year = date.getFullYear();
-        return `${day}-${month}-${year}`;
-      }
-    }
-    return value;
-  }
+  //   if (typeof value === 'string' && value.includes('-')) {
+  //     const date = new Date(value);
+  //     if (!isNaN(date.getTime())) {
+  //       const day = String(date.getDate()).padStart(2, '0');
+  //       const month = String(date.getMonth() + 1).padStart(2, '0'); 
+  //       const year = date.getFullYear();
+  //       return `${day}-${month}-${year}`;
+  //     }
+  //   }
+  //   return value;
+  // }
 
   approveRisk(event: {row: any, comment: string}) {
     const updates = {
