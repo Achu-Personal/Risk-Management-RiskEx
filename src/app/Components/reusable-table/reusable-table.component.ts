@@ -16,11 +16,12 @@ export class ReusableTableComponent {
 
   @Input() tableHeaders: string[] = [];
   @Input() tableData: any[] = [];
-  @Input() IsActionRequiered: boolean = true;
+  @Input() IsActionRequiered: boolean = false;
   @Input() IsUser:boolean= false;
   @Input() height:any='70%';
   @Input() IsAssignee:boolean = false;
   @Input() headerDisplayMap:any=this.tableHeaders;
+  @Input() noDataMessage:string='No Data Available'
   isEyeOpen = false;
   isAdmin: boolean=false;
 
@@ -47,18 +48,6 @@ export class ReusableTableComponent {
     }
   }
 
-
-// rejectRisk = output();
-// isToggled: boolean = false;
-  // isActive: boolean;
-// rejectButton(event:Event,row:any) {
-//   console.log("Row",row);
-//   event.stopPropagation();
-//   this.rejectRisk.emit(row.riskId);
-
-
-
-// }
 
 onToggleChange(row: any): void {
   const newState = row.toggleState ? 'Active' : 'Inactive';
@@ -145,11 +134,11 @@ getRiskStatus(riskStatus:number) : string{
 }
 
 
-getRiskStatusClass(riskStatus: number): string {
+getRiskStatusClass(riskStatus: string): string {
   switch (riskStatus) {
-    case 1:
+    case 'open':
       return 'open'; // Class for Open
-    case 2:
+    case 'close':
       return 'closed'; // Class for Closed
     default:
       return 'unknown'; // Class for unknown status
@@ -176,6 +165,6 @@ getRiskRatingStyle(riskRating: number): string {
       console.log('Table Headers:', this.tableHeaders);
       console.log('Table Data:', this.tableData);
     }
-
+  
 
 }
