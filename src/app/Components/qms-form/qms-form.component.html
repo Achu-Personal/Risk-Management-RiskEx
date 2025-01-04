@@ -3,95 +3,50 @@
     <div class="form-details-sub-container">
       <h2>Risk Details</h2>
       <div class="form-row">
-       <div class="form-detail">
-         <label for="riskName">Risk Name <span class="required">*</span></label>
-         <input type="text" id="riskName" placeholder="Enter risk name"  [ngStyle]="{'width':'100%'}" formControlName="riskName" >
-       </div>
-       <div class="form-detail">
-         <label for="project">Project Name</label>
-         <app-dropdown  [options]="dropdownDataProject"
-           [displayField]="'name'"
-           [valueField]="'id'"
-           selectValue="Project"
-           width="100" formControlName="projectId">
-          </app-dropdown>
-       </div>
+       <app-form-input label="Risk Name" required=" *" formControlName="riskName"></app-form-input>
+       <app-form-dropdown label="Project Name" [dropdownData]="dropdownProject" dropdownDisplay="name" dropdownValue="id" selectValue="Project" (change)="onDropdownChangeProject($event)" ></app-form-dropdown>
      </div>
-     @if(authService.getUserRole() === 'Admin'){
-      <div class="form-detail">
-        <label for="department">Department Name</label>
-        <app-dropdown  [options]="dropdownDataDepartment"
-          [displayField]="'departmentName'"
-          [valueField]="'id'"
-          width="100" id="department" formControlName=" DepartmentId" >
-         </app-dropdown>
-      </div>
+     @if(isAdmin === 'Admin'){
+      <app-form-dropdown label="Department Name" [dropdownData]="dropdownDepartment" dropdownDisplay="departmentName" dropdownValue="id" selectValue="department" (change)="onDropdownChangeDepartment($event)" ></app-form-dropdown>
      }
-     <div class="form-detail">
-       <label for="impactOfRisk">Impact Of Risk <span class="required">*</span></label>
-       <textarea id="description" rows="2" placeholder="Impact of risk" (input)="autoResize($event)" formControlName="impact"></textarea>
-     </div>
-     <div class="form-detail">
-       <label for="description">Description <span class="required">*</span></label>
-       <textarea id="description" rows="2" placeholder="Enter description" (input)="autoResize($event)" formControlName="description"></textarea>
-     </div>
+     <app-form-text-area label="Impact Of Risk" required="*" placeHolder="Enter impact of risk"
+      message="Impact of a risk refers to the potential consequences or effects that a risk event
+      may have on a project, system, or organization if it occurs. It can include financial loss,
+      delays, operational disruptions, or damage to reputation."  formControlName="impact" [backgroundColor]="bgColor"></app-form-text-area>
+
+      <app-form-text-area label="Description" required="*" placeHolder="Enter description of risk"
+      message="Provide a detailed description of the risk, including what could cause it" formControlName="description" [backgroundColor]="bgColor"></app-form-text-area>
     </div>
     <div class="form-details-sub-container">
       <h2>Current Risk Assessment</h2>
       <div class="form-row">
-        <div class="form-detail">
-          <label for="likelihood">Likelihood <span class="required">*</span></label>
-          <app-dropdown  [options]="dropdownDataLikelihood"
-           [displayField]="'assessmentFactor'"
-           [valueField]="'id'"
-           selectValue="Likelihood"
-           width="100" (change)="onDropdownChangelikelihood($event)" formControlName="likelihood"></app-dropdown>
-        </div>
-        <div class="form-detail">
-          <label for="impact">Impact <span class="required">*</span></label>
-          <app-dropdown  [options]="dropdownDataImpact"
-           [displayField]="'assessmentFactor'"
-           [valueField]="'id'"
-           selectValue="Impact"
-           width="100" (change)="onDropdownChangeImpact($event)" formControlName="impactValue"></app-dropdown>
-        </div>
+        <app-form-dropdown label="Likelihood" [dropdownData]="dropdownLikelihood" dropdownDisplay="assessmentFactor" dropdownValue="id" selectValue="Likelihood" (change)="onDropdownChangelikelihood($event)" ></app-form-dropdown>
+        <app-form-dropdown label="Impact" [dropdownData]="dropdownImpact" dropdownDisplay="assessmentFactor" dropdownValue="id" selectValue="Impact" (change)="onDropdownChangeImpact($event)" ></app-form-dropdown>
       </div>
       <div class="form-row" [ngStyle]="{'gap':'32vw','margin-top':'30px'}">
         <h2 [ngStyle]="{'border-bottom':'0px','text-transform':'none'}">Risk Factor :<span style="margin-left: 10px;">{{riskFactor}}</span> </h2>
-        <h2 [ngStyle]="{'border-bottom':'0px','text-transform':'none','margin-left':'-3.5%'}">Overall Risk Rating :<span style="margin-left: 10px;" [ngStyle]="{'color':changeColorOverallRiskRating()}"> {{result}}</span> </h2>
+        <h2 [ngStyle]="{'border-bottom':'0px','text-transform':'none','margin-left':'-37%'}">Overall Risk Rating :<span style="margin-left: 10px;" [ngStyle]="{'color':changeColorOverallRiskRating()}"> {{overallRiskRating}}</span> </h2>
       </div>
+      <p [ngStyle]="{'margin-top':'20px','font-style':'italic','color':'grey'}">Overall risk rating = Likelihood * Impact</p>
       <div [ngStyle]="{'margin-top':'20px','font-style':'italic','color':'grey'}">
-       <p>For reference <span><a href="javascript:void(0);" (click)="onReferenceClick()" >click </a></span> here</p>
+       <p>For more reference <span><a href="javascript:void(0);"  >click </a></span> here</p>
       </div>
-      <div *ngIf="showReference" class="modal-overlay">
-         <div class="modal-content-heatmap">
-           <button type="button" class="btn save" id="reference-close-button" (click)="onReferenceClick()"><i class="fa-solid fa-xmark"></i></button>
-           <app-heatmap></app-heatmap>
-         </div>
-        </div>
     </div>
     <div class="form-details-sub-container">
       <h2>Risk Management</h2>
-      <div class="form-detail">
-        <label for="mitigation">Risk Mitigation <span class="required">*</span></label>
-        <textarea id="mitigation" rows="2" placeholder="Enter mitigation" (input)="autoResize($event)" formControlName="mitigation"></textarea>
-      </div>
-      <div class="form-detail">
-        <label for="contingency">Risk Contingency</label>
-        <textarea id="contingency" rows="2" placeholder="Enter contingency plan" (input)="autoResize($event)" formControlName="contingency"></textarea>
-      </div>
+      <app-form-text-area label="Risk Mitigation" required="*" placeHolder="Enter mitigation plan"
+      message="Mitigation refers to actions taken to reduce the likelihood or impact of a risk.
+      Ensure preventive measures, such as implementing safety protocols or backup systems, to minimize
+      the risk." formControlName="mitigation" [backgroundColor]="bgColor"></app-form-text-area>
+
+      <app-form-text-area label="Risk Contingency" placeHolder="Enter contingency plan"
+      message="Contingency planning involves preparing for unforeseen events by having backup
+      plans in place. These plans help ensure that your project can continue with minimal disruption
+      if unexpected risks occur." formControlName="contingency" [backgroundColor]="bgColor"></app-form-text-area>
     </div>
     <div class="form-details-sub-container">
       <h2>Action Plan</h2>
-      <div class="form-detail">
-        <label for="responsibility">Responsibility<span class="required">*</span></label>
-        <app-dropdown  [options]="dropdownDataassignee"
-           [displayField]="'fullName'"
-           [valueField]="'id'"
-           selectValue="responsible person"
-           width="100" formControlName="responsibileUserId">
-        </app-dropdown>
-      </div>
+      <app-form-dropdown label="Responsibility of action" required="*" [dropdownData]="dropdownAssignee" dropdownDisplay="fullName" dropdownValue="id" selectValue="responsible person" (change)="onDropdownChangeResponsiblePerson($event)"></app-form-dropdown>
       <div [ngStyle]="{'margin-top':'20px','font-style':'italic','color':'grey'}">
         <p>If responsible person not in the list <span (click)="isAssigneeNotInList()"><a href="javascript:void(0);">click </a></span>here</p>
       </div>
@@ -113,21 +68,12 @@
 
 
       }
-      <div class="form-group">
-        <label for="actionDate">Planned Action Date<span class="required">*</span></label>
-        <input type="date" id="actionDate" formControlName="plannedActionDate">
-      </div>
+      <app-form-date-field label="Planned Action Date" required="*" formControlName="plannedActionDate"></app-form-date-field>
     </div>
     <div class="form-details-sub-container">
       <h2>Reviewer</h2>
-      <div class="form-group">
-        <label for="reviewer">Reviewer <span class="required">*</span></label>
-        <app-dropdown  [options]="dropdownDataReviewer"
-          [displayField]="'fullName'"
-          [valueField]="'id'"
-          width="100" formControlName="reviewerId" (change)="onReviewerChange($event)">
-        </app-dropdown>
-      </div>
+      <app-form-dropdown label="Reviewer" required="*" [dropdownData]="dropdownReviewer" dropdownDisplay="fullName" dropdownValue="fullName" selectValue="reviewer" (change)="onDropdownChangeReviewer($event)"></app-form-dropdown>
+
       <div [ngStyle]="{'margin-top':'20px','font-style':'italic','color':'grey'}">
         <p>If reviewer not in the list <span (click)="isReviewerNotInList()"><a href="javascript:void(0);">click </a></span>here</p>
       </div>
@@ -143,7 +89,7 @@
           </div>
           <div class="form-detail">
             <label for="department">Department Name</label>
-            <app-dropdown  [options]="dropdownDataDepartment"
+            <app-dropdown  [options]="dropdownDepartment"
               [displayField]="'departmentName'"
               [valueField]="'id'"
               selectValue="reviewer"
@@ -159,31 +105,11 @@
       }
     </div>
     <div class="button-group">
-      <button type="button" class="btn save" (click)="openConfirmationDialog()">Save</button>
-      <button type="button" class="btn cancel" (click)="onCancel()">Cancel</button>
-      <button type="button" class="btn clear" (click)="onClear()">Clear</button>
+      <button type="submit" class="btn save">Save</button>
+      <button type="button" class="btn cancel">Cancel</button>
+      <button type="button" class="btn clear">Clear</button>
     </div>
   </form>
-
-  <div *ngIf="showDialog" class="modal-overlay">
-    <div class="modal-content">
-      <p>Are you sure you want to save?</p>
-      <div class="button-group">
-        <button type="button" class="btn confirm" (click)="onConfirm()">Yes</button>
-        <button type="button" class="btn cancel" (click)="closeDialog()">No</button>
-      </div>
-    </div>
-    <div *ngIf="showNotification" class="notification-overlay">
-      <div class="notification-content" [ngClass]="{'success': isSuccess, 'error': !isSuccess}">
-        <div class="notification-header">
-          <span class="status-icon">{{isSuccess ? '✓' : '✕'}}</span>
-          <h3>{{isSuccess ? 'Success' : 'Error'}}</h3>
-        </div>
-        <p>{{notificationMessage}}</p>
-        <button (click)="closeDialogSuccess()">OK</button>
-      </div>
-    </div>
-    </div>
 </div>
 
 
