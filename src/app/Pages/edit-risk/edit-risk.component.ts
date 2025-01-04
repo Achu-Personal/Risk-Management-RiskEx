@@ -1,6 +1,4 @@
 import { Component } from '@angular/core';
-import { QmsEditComponent } from "../../Components/qms-edit/qms-edit.component";
-import { IsmsEditComponent } from "../../Components/isms-edit/isms-edit.component";
 import { BodyContainerComponent } from "../../Components/body-container/body-container.component";
 import { QMSFormComponent } from "../../Components/qms-form/qms-form.component";
 import { ISMSFormComponent } from "../../Components/isms-form/isms-form.component";
@@ -14,12 +12,16 @@ import { ISMSFormComponent } from "../../Components/isms-form/isms-form.componen
   styleUrl: './edit-risk.component.scss'
 })
 export class EditRiskComponent {
-  riskdata:any=''
-  riskType:string=''
+  riskData:any=''
+  riskType:string='Quality'
+  riskId:number=0
   ngOnInit(){
-    this. riskdata=history.state.riskData ;
-    this.riskType=this.riskdata.risk_type;
-    console.log(this.riskdata)
+    // this. riskdata=history.state.riskData ;
+    // this.riskType=this.riskdata.risk_type;
+    // console.log(this.riskdata)
+    this.riskData = history.state.riskData;
+    this.riskId=this.riskData.id
+    this.riskType=this.riskData.riskType
 
   }
 
