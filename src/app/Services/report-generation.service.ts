@@ -43,113 +43,110 @@ interface Risk {
   providedIn: 'root'
 })
 export class ReportGenerationService {
+  private readonly styles = {
+    header1: {
+      font: { bold: true, color: { rgb: "FFFFFF" }, size: 12 },
+      fill: { fgColor: { rgb: "1F4E78" } },
+      alignment: { horizontal: "center", vertical: "center", wrapText: true },
+      border: {
+        top: { style: "medium", color: { rgb: "000000" } },
+        bottom: { style: "medium", color: { rgb: "000000" } },
+        left: { style: "medium", color: { rgb: "000000" } },
+        right: { style: "medium", color: { rgb: "000000" } }
+      }
+    },
+    header2: {
+      font: { bold: true, color: { rgb: "FFFFFF" }, size: 11 },
+      fill: { fgColor: { rgb: "2F75B5" } },
+      alignment: { horizontal: "center", vertical: "center", wrapText: true },
+      border: {
+        top: { style: "thin", color: { rgb: "000000" } },
+        bottom: { style: "thin", color: { rgb: "000000" } },
+        left: { style: "thin", color: { rgb: "000000" } },
+        right: { style: "thin", color: { rgb: "000000" } }
+      }
+    },
+    header3: {
+      font: { bold: true, color: { rgb: "000000" }, size: 11 },
+      fill: { fgColor: { rgb: "BDD7EE" } },
+      alignment: { horizontal: "center", vertical: "center", wrapText: true },
+      border: {
+        top: { style: "thin", color: { rgb: "000000" } },
+        bottom: { style: "thin", color: { rgb: "000000" } },
+        left: { style: "thin", color: { rgb: "000000" } },
+        right: { style: "thin", color: { rgb: "000000" } }
+      }
+    },
+    cell: {
+      font: { color: { rgb: "000000" }, size: 11 },
+      alignment: { vertical: "center", wrapText: true },
+      border: {
+        top: { style: "thin", color: { rgb: "000000" } },
+        bottom: { style: "thin", color: { rgb: "000000" } },
+        left: { style: "thin", color: { rgb: "000000" } },
+        right: { style: "thin", color: { rgb: "000000" } }
+      }
+    }
+  };
+
   generateReport(data: Risk[], fileName: string): void {
     try {
       const workbook: XLSX.WorkBook = { SheetNames: [], Sheets: {} };
 
-      // Define header styles
-      const headerStyle = {
-        font: { bold: true, color: { rgb: "FFFFFF" } },
-        fill: { fgColor: { rgb: "0000FF" } },
-        alignment: { horizontal: "center", vertical: "center" },
-        border: {
-          top: { style: "thin" },
-          bottom: { style: "thin" },
-          left: { style: "thin" },
-          right: { style: "thin" }
-        }
-      };
-
-      // Define the main headers
       const headerRow1 = [
-        { v: 'Risk Mitigation', s: headerStyle },
-        { v: 'Risk Contingency', s: headerStyle },
-        { v: 'Responsibility Of The Action', s: headerStyle },
-        { v: 'Planned Action date', s: headerStyle },
-        // Assessment Categories
-        { v: 'Assessment Response Details', s: headerStyle },
-        { v: 'Actual Closed date', s: headerStyle },
-        { v: 'Risk Response', s: headerStyle },
-        { v: 'Risk Status', s: headerStyle },
-        { v: 'Remarks', s: headerStyle }
+        { v: 'Risk Mitigation', s: this.styles.header1 },
+        { v: 'Risk Contingency', s: this.styles.header1 },
+        { v: 'Responsibility Of The Action', s: this.styles.header1 },
+        { v: 'Planned Action Date', s: this.styles.header1 },
+        { v: 'Assessment Response Details', s: this.styles.header1 },
+        { v: 'Actual Closed Date', s: this.styles.header1 },
+        { v: 'Risk Response', s: this.styles.header1 },
+        { v: 'Risk Status', s: this.styles.header1 },
+        { v: 'Remarks', s: this.styles.header1 }
       ];
 
-      // Define sub-headers for assessment details
       const headerRow2 = [
-        '', '', '', '',  // Empty cells for non-assessment columns
-        // Confidentiality P1
-        { v: 'Confidentiality P1', s: headerStyle },
-        { v: 'Integrity P1', s: headerStyle },
-        { v: 'Privacy P1', s: headerStyle },
-        { v: 'Availability P1', s: headerStyle },
-        { v: 'Overall Risk Rating', s: headerStyle },
-        '', '', '', ''  // Empty cells for remaining columns
+        { v: '', s: this.styles.header2 },
+        { v: '', s: this.styles.header2 },
+        { v: '', s: this.styles.header2 },
+        { v: '', s: this.styles.header2 },
+        { v: 'Confidentiality P1', s: this.styles.header2 },
+        { v: 'Integrity P1', s: this.styles.header2 },
+        { v: 'Privacy P1', s: this.styles.header2 },
+        { v: 'Availability P1', s: this.styles.header2 },
+        { v: 'Overall Risk Rating', s: this.styles.header2 },
+        { v: '', s: this.styles.header2 },
+        { v: '', s: this.styles.header2 },
+        { v: '', s: this.styles.header2 },
+        { v: '', s: this.styles.header2 }
       ];
 
-      // Define the risk factor headers
       const headerRow3 = [
-        '', '', '', '',  // Empty cells for non-assessment columns
-        // Risk Factors for each category
-        'Risk Factor',
-        'Likelihood',
-        'R=Rs x Ls',
-        'Risk Factor',
-        'Likelihood',
-        'R=Rs x Ls',
-        'Risk Factor',
-        'Likelihood',
-        'R=Rs x Ls',
-        'Risk Factor',
-        'Likelihood',
-        'R=Rs x Ls',
-        'R = R1 + R2 + R3 + R4',
-        '', '', '', ''  // Empty cells for remaining columns
+        { v: '', s: this.styles.header3 },
+        { v: '', s: this.styles.header3 },
+        { v: '', s: this.styles.header3 },
+        { v: '', s: this.styles.header3 },
+        { v: 'Risk Factor', s: this.styles.header3 },
+        { v: 'Likelihood', s: this.styles.header3 },
+        { v: 'R=Rs x Ls', s: this.styles.header3 },
+        { v: 'Risk Factor', s: this.styles.header3 },
+        { v: 'Likelihood', s: this.styles.header3 },
+        { v: 'R=Rs x Ls', s: this.styles.header3 },
+        { v: 'Risk Factor', s: this.styles.header3 },
+        { v: 'Likelihood', s: this.styles.header3 },
+        { v: 'R=Rs x Ls', s: this.styles.header3 },
+        { v: 'Risk Factor', s: this.styles.header3 },
+        { v: 'Likelihood', s: this.styles.header3 },
+        { v: 'R=Rs x Ls', s: this.styles.header3 },
+        { v: 'R = R1 + R2 + R3 + R4', s: this.styles.header3 }
       ];
 
       const qualitySheetData: any[][] = [];
       const securityPrivacySheetData: any[][] = [];
 
-      // Process each risk
+      // Process risks with styled cells
       data.forEach((risk) => {
-        const getAssessmentDetails = (basis: string) => {
-          const assessment = risk.riskAssessments.find(a => a.assessmentBasis === basis);
-          return {
-            impact: assessment?.matrixImpact || '',
-            likelihood: assessment?.matrixLikelihood || '',
-            riskScore: assessment ? calculateRiskScore(assessment.matrixImpact, assessment.matrixLikelihood) : ''
-          };
-        };
-
-        const confidentiality = getAssessmentDetails('Confidentiality');
-        const integrity = getAssessmentDetails('Integrity');
-        const privacy = getAssessmentDetails('Privacy');
-        const availability = getAssessmentDetails('Availability');
-
-        const riskRow = [
-          risk.mitigation,
-          risk.contingency,
-          risk.responsibleUser,
-          risk.plannedActionDate,
-          // Assessment details
-          confidentiality.impact,
-          confidentiality.likelihood,
-          confidentiality.riskScore,
-          integrity.impact,
-          integrity.likelihood,
-          integrity.riskScore,
-          privacy.impact,
-          privacy.likelihood,
-          privacy.riskScore,
-          availability.impact,
-          availability.likelihood,
-          availability.riskScore,
-          risk.overallRiskRating,
-          risk.closedDate,
-          risk.riskResponse,
-          risk.riskStatus,
-          risk.remarks
-        ];
-
+        const riskRow = this.createStyledRiskRow(risk);
         if (risk.riskType === 'Quality') {
           qualitySheetData.push(riskRow);
         } else if (risk.riskType === 'Security' || risk.riskType === 'Privacy') {
@@ -157,38 +154,9 @@ export class ReportGenerationService {
         }
       });
 
-      // Function to calculate risk score (customize as needed)
-      function calculateRiskScore(impact: string, likelihood: string): number {
-        const impactMap = { 'High': 3, 'Medium': 2, 'Low': 1 };
-        const likelihoodMap = { 'High': 3, 'Medium': 2, 'Low': 1 };
-        return (impactMap[impact as keyof typeof impactMap] || 0) *
-               (likelihoodMap[likelihood as keyof typeof likelihoodMap] || 0);
-      }
-
-      // Function to create sheet with merged headers
-      const createSheetWithHeaders = (data: any[][]) => {
-        const ws = XLSX.utils.aoa_to_sheet([headerRow1, headerRow2, headerRow3, ...data]);
-
-        // Define merged cell ranges
-        ws['!merges'] = [
-          // Assessment Response Details merge
-          { s: { r: 0, c: 4 }, e: { r: 0, c: 16 } },
-          // Category merges (P1, P2, etc.)
-          { s: { r: 1, c: 4 }, e: { r: 1, c: 6 } },  // Confidentiality
-          { s: { r: 1, c: 7 }, e: { r: 1, c: 9 } },  // Integrity
-          { s: { r: 1, c: 10 }, e: { r: 1, c: 12 } }, // Privacy
-          { s: { r: 1, c: 13 }, e: { r: 1, c: 15 } }  // Availability
-        ];
-
-        // Set column widths
-        ws['!cols'] = Array(21).fill({ wch: 15 });
-
-        return ws;
-      };
-
-      // Create sheets
-      const qualitySheet = createSheetWithHeaders(qualitySheetData);
-      const securityPrivacySheet = createSheetWithHeaders(securityPrivacySheetData);
+      // Create sheets with enhanced styling
+      const qualitySheet = this.createStyledSheet(headerRow1, headerRow2, headerRow3, qualitySheetData);
+      const securityPrivacySheet = this.createStyledSheet(headerRow1, headerRow2, headerRow3, securityPrivacySheetData);
 
       // Add sheets to workbook
       workbook.SheetNames.push('Quality Risks', 'Security & Privacy Risks');
@@ -210,5 +178,95 @@ export class ReportGenerationService {
       console.error('Error generating Excel report:', error);
       throw new Error(`Failed to generate Excel report: ${error}`);
     }
+  }
+
+  private createStyledSheet(headerRow1: any[], headerRow2: any[], headerRow3: any[], data: any[][]): XLSX.WorkSheet {
+    const ws = XLSX.utils.aoa_to_sheet([headerRow1, headerRow2, headerRow3, ...data]);
+
+    // Define merged cell ranges
+    ws['!merges'] = [
+      { s: { r: 0, c: 4 }, e: { r: 0, c: 16 } },  // Assessment Response Details
+      { s: { r: 1, c: 4 }, e: { r: 1, c: 6 } },   // Confidentiality
+      { s: { r: 1, c: 7 }, e: { r: 1, c: 9 } },   // Integrity
+      { s: { r: 1, c: 10 }, e: { r: 1, c: 12 } }, // Privacy
+      { s: { r: 1, c: 13 }, e: { r: 1, c: 15 } }  // Availability
+    ];
+
+    // Set column widths
+    ws['!cols'] = [
+      { wch: 30 }, // Risk Mitigation
+      { wch: 30 }, // Risk Contingency
+      { wch: 25 }, // Responsibility
+      { wch: 15 }, // Planned Action Date
+      { wch: 15 }, // Risk Factor
+      { wch: 15 }, // Likelihood
+      { wch: 15 }, // Risk Score
+      { wch: 15 }, // Risk Factor
+      { wch: 15 }, // Likelihood
+      { wch: 15 }, // Risk Score
+      { wch: 15 }, // Risk Factor
+      { wch: 15 }, // Likelihood
+      { wch: 15 }, // Risk Score
+      { wch: 15 }, // Risk Factor
+      { wch: 15 }, // Likelihood
+      { wch: 15 }, // Risk Score
+      { wch: 15 }, // Overall Rating
+      { wch: 15 }, // Closed Date
+      { wch: 20 }, // Risk Response
+      { wch: 15 }, // Risk Status
+      { wch: 30 }  // Remarks
+    ];
+
+    // Set row heights
+    ws['!rows'] = Array(data.length + 3).fill({ hpt: 30 }); // 30 point height for all rows
+
+    return ws;
+  }
+
+  private createStyledRiskRow(risk: Risk): any[] {
+    const getAssessmentDetails = (basis: string) => {
+      const assessment = risk.riskAssessments.find(a => a.assessmentBasis === basis);
+      return {
+        impact: assessment?.matrixImpact || '',
+        likelihood: assessment?.matrixLikelihood || '',
+        riskScore: assessment ? this.calculateRiskScore(assessment.matrixImpact, assessment.matrixLikelihood) : ''
+      };
+    };
+
+    const confidentiality = getAssessmentDetails('Confidentiality');
+    const integrity = getAssessmentDetails('Integrity');
+    const privacy = getAssessmentDetails('Privacy');
+    const availability = getAssessmentDetails('Availability');
+
+    return [
+      { v: risk.mitigation, s: this.styles.cell },
+      { v: risk.contingency, s: this.styles.cell },
+      { v: risk.responsibleUser, s: this.styles.cell },
+      { v: risk.plannedActionDate, s: this.styles.cell },
+      { v: confidentiality.impact, s: this.styles.cell },
+      { v: confidentiality.likelihood, s: this.styles.cell },
+      { v: confidentiality.riskScore, s: this.styles.cell },
+      { v: integrity.impact, s: this.styles.cell },
+      { v: integrity.likelihood, s: this.styles.cell },
+      { v: integrity.riskScore, s: this.styles.cell },
+      { v: privacy.impact, s: this.styles.cell },
+      { v: privacy.likelihood, s: this.styles.cell },
+      { v: privacy.riskScore, s: this.styles.cell },
+      { v: availability.impact, s: this.styles.cell },
+      { v: availability.likelihood, s: this.styles.cell },
+      { v: availability.riskScore, s: this.styles.cell },
+      { v: risk.overallRiskRating, s: this.styles.cell },
+      { v: risk.closedDate, s: this.styles.cell },
+      { v: risk.riskResponse, s: this.styles.cell },
+      { v: risk.riskStatus, s: this.styles.cell },
+      { v: risk.remarks, s: this.styles.cell }
+    ];
+  }
+
+  private calculateRiskScore(impact: string, likelihood: string): number {
+    const impactMap = { 'High': 3, 'Medium': 2, 'Low': 1 };
+    const likelihoodMap = { 'High': 3, 'Medium': 2, 'Low': 1 };
+    return (impactMap[impact as keyof typeof impactMap] || 0) *
+           (likelihoodMap[likelihood as keyof typeof likelihoodMap] || 0);
   }
 }
