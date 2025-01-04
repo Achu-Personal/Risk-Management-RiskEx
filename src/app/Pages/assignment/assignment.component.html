@@ -4,7 +4,7 @@
   @if(tableBody.length>0)
   {
   <app-reusable-table [tableHeaders]="headerData"  [headerDisplayMap]="headerDisplayMap" [tableData]="tableBody" [IsActionRequiered]="true"
-    (onclickrow)="OnClickRow($event)" height="80%" [IsAssignee]="true" [IsUser]="false">
+    (onclickrow)="OnClickRow($event)" height="80%" [IsAssignee]="true" [IsUser]="false" noDataMessage="You are not resposible for solving any risks">
   </app-reusable-table>
   }
 
