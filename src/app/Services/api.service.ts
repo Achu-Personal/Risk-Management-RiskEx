@@ -113,10 +113,12 @@ export class ApiService {
    }
 
    addnewQualityRisk(qualityRisk:any){
-    return this.http.post('https://localhost:7216/api/Risk/Quality',qualityRisk)
+    console.log("quality risk payload",qualityRisk)
+     return this.http.post('https://localhost:7216/api/Risk/Quality',qualityRisk)
    }
 
    addnewSecurityOrPrivacyRisk(SecurityOrPrivacyRisk:any){
+
     return this.http.post('https://localhost:7216/api/Risk/security',SecurityOrPrivacyRisk)
    }
    addExternalReviewer(reviewer:any){
@@ -193,6 +195,10 @@ export class ApiService {
 
   getAllUsersForAssignee(){
     return this.http.get('https://localhost:7216/Users');
+  }
+
+  getAllUsersByDepartmentId(id:number){
+    return this.http.get(`https://localhost:7216/department/${id}`)
   }
 
   getRiskCategoryCountsByDepartment(departmentList: number[]) {
