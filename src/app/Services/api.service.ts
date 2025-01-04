@@ -208,9 +208,8 @@ export class ApiService {
   }
 
   changeUserStatus(userId:any,status:any){
-    return this.http.patch('https://localhost:7216/api/User/IsActive',userId,status)
+    return this.http.patch(`https://localhost:7216/api/User/IsActive/${userId}/${status}`,{}).subscribe((e)=>console.log('UserId and status:',userId,status)
+    )
   }
-
-
 
  }

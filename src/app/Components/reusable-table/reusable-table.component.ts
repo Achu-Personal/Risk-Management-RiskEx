@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common'; // Import CommonModule
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../Services/auth.service';
 import { ConfirmationPopupComponent } from "../confirmation-popup/confirmation-popup.component";
+import { ApiService } from '../../Services/api.service';
 
 @Component({
   selector: 'app-reusable-table',
@@ -24,6 +25,7 @@ export class ReusableTableComponent {
   @Input() noDataMessage:string='No Data Available'
   isEyeOpen = false;
   isAdmin: boolean=false;
+  newState:boolean=true;
 
   showApproveDialog = false;
   showRejectDialog = false;
@@ -32,7 +34,7 @@ export class ReusableTableComponent {
   @Output() rejectRisk = new EventEmitter<{row: any, comment: string}>();
 
 
-  constructor(public auth:AuthService){}
+  constructor(public auth:AuthService, public api:ApiService){}
 
   // SVG paths for eye states
   openEyePath = 'M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z';
@@ -50,9 +52,10 @@ export class ReusableTableComponent {
 
 
 onToggleChange(row: any): void {
-  const newState = row.toggleState ? 'Active' : 'Inactive';
-  console.log(`Row ID: ${row.id}, New State: ${newState}`);
-  // Optional: Persist the state to a backend service
+  // newState = row.isActive ? true : false;
+  this.newState = row.isActive;
+  this.api.changeUserStatus(row.id,this.newState)
+  console.log(`Row ID: ${row.fullName}, New State: ${this.newState}`);
 }
 
 
@@ -164,6 +167,10 @@ getRiskRatingStyle(riskRating: number): string {
     ngOnChanges(changes: SimpleChanges): void {
       console.log('Table Headers:', this.tableHeaders);
       console.log('Table Data:', this.tableData);
+    }
+
+    hasValidData(): boolean {
+      return this.tableData && this.tableData.length > 0 && this.tableData.some(row => row.riskName || row.riskId || row.fullName);
     }
 
 

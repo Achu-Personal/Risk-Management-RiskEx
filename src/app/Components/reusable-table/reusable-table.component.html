@@ -1,4 +1,4 @@
-<ng-container *ngIf="tableData && tableData.length > 0; else noData">
+<ng-container *ngIf="hasValidData(); else noData">
   <div class="table-container" [ngStyle]="{ height: height }">
     <div class="tablestyle">
       <table class="tabledata">
@@ -114,14 +114,14 @@
             } @else if(IsUser ) {
 
             <td *ngIf="IsUser">
-              <span
+              <div
                 [ngClass]="{
                   'active-status': row.isActive,
                   'inactive-status': !row.isActive
                 }"
               >
                 {{ row.isActive ? "Active" : "Inactive" }}
-              </span>
+              </div>
             </td>
 
             <!-- Action: Toggle -->
