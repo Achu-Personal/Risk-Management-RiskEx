@@ -4,6 +4,7 @@ import { ReusableTableComponent } from "../../Components/reusable-table/reusable
 import { Router } from '@angular/router';
 import { ApiService } from '../../Services/api.service';
 import { AssignmentTable } from '../../Interfaces/assignment.interface';
+import { AuthService } from '../../Services/auth.service';
 
 @Component({
   selector: 'app-assignment',
@@ -13,7 +14,7 @@ import { AssignmentTable } from '../../Interfaces/assignment.interface';
   styleUrl: './assignment.component.scss'
 })
 export class AssignmentComponent {
-  constructor(private router: Router,private api:ApiService) {}
+  constructor(private router: Router,private api:ApiService,private auth:AuthService) {}
 
   OnClickRow(row:any): void {
 
@@ -53,7 +54,8 @@ tableBody:any[]=[
 
 ngOnInit()
 {
-    this.api.getRisksAssignedToUser().subscribe((e:any)=>{
+
+    this.api.getRisksAssignedToUser(this.auth.getCurrentUserId$()).subscribe((e:any)=>{
       console.log("Risk assigned to a user=",e)
       this.tableBody=e
 

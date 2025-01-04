@@ -38,11 +38,11 @@ export const routes: Routes = [
     component: AuthComponent,
     children: [
       // { path: 'login', component: LoginComponent },
-      { path: '', redirectTo: 'login', pathMatch: 'full' }
+      { path: '', redirectTo: 'auth', pathMatch: 'full' }
     ]
   },
   {
-    path:'',component:DashboardComponent, data:{title: 'Risk Management',breadcrumb: 'Dashboard' },
+    path:'',component:DashboardComponent, canActivate: [AuthGuard], data:{title: 'Risk Management',breadcrumb: 'Dashboard' },
     children:[
       {
         path:'home',component:HomeComponent, data:{title: 'Risk Management' }
