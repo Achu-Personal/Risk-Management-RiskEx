@@ -27,8 +27,8 @@ export class ViewRiskComponent{
   {
     let id = parseInt(this.route.snapshot.paramMap.get('id')!);
     this.api.getRiskById(id).subscribe(e=>{
-      console.log("Data=",e)
-      this.data=e
+    console.log("Data=",e)
+    this.data=e
 
 
 

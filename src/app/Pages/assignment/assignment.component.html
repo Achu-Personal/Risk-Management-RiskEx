@@ -1,11 +1,10 @@
 <!-- <router-outlet></router-outlet> -->
 <app-body-container backgroundColor="transparent" [showShadow]="false">
   <!-- <h3 style="padding-bottom: 15px;">You are assigned to review</h3> -->
-  @if(tableBody.length>0)
-  {
+
   <app-reusable-table [tableHeaders]="headerData"  [headerDisplayMap]="headerDisplayMap" [tableData]="tableBody" [IsActionRequiered]="true"
     (onclickrow)="OnClickRow($event)" height="80%" [IsAssignee]="true" [IsUser]="false" noDataMessage="You are not resposible for solving any risks">
   </app-reusable-table>
-  }
+
 
 </app-body-container>

@@ -33,7 +33,7 @@ export class ApiService {
   }
   getReviewSatus(id: string, isPreReview: boolean) {
     return this.http.get(
-      `https://localhost:7216/api/Review/GetReviewStatusOfARisk/${2}/${isPreReview}`
+      `https://localhost:7216/api/Review/GetReviewStatusOfARisk/${id}/${isPreReview}`
     );
   }
   getDepartment() {
