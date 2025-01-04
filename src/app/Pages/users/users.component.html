@@ -7,8 +7,9 @@
   label="Add User"
   color="primary"
   data-bs-toggle="modal"
-  data-bs-target="#addUserModal">
- </app-style-button>
+  data-bs-target="#addUserModal"
+
+  ></app-style-button>
 
   <app-style-button
   label="Add Department"
@@ -79,7 +80,7 @@
               <app-drop-down-deparment  *ngIf="authService.getUserRole() === 'Admin'"
                 formControlName="departmentName"
               ></app-drop-down-deparment>
-              <div *ngIf="authService.getUserRole() === 'DepartmentUser'">
+              <div *ngIf="authService.getUserRole() === 'DepartmentUser'|| authService.getUserRole()?.includes('ProjectUsers')">
                 <input
                   class="form-control"
                   id="department"
@@ -223,7 +224,7 @@
 
       <app-reusable-table
     [tableHeaders]="isAdmin ? headerData : headerDataDpt"
-    [tableData]="isAdmin ? tableBodyAdmin : tableBody" 
+    [tableData]="isAdmin ? tableBodyAdmin : tableBody"
     [headerDisplayMap]="headerDisplayMap"
     [IsActionRequiered]="true"
     [IsUser]="true">

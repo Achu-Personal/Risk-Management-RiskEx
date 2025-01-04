@@ -1,5 +1,5 @@
 import { NgFor, NgIf } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ApiService } from '../../Services/api.service';
 import { department } from '../../Interfaces/deparments.interface';
@@ -94,5 +94,12 @@ export class DepartmentDropdownComponent {
       'Passing selected departments to another component:',
       this.selectedItems
     );
+  }
+  @HostListener('document:click', ['$event'])
+  onClickOutside(event: MouseEvent): void {
+    const dropdown = document.querySelector('.dropdown-content');
+    if (dropdown && !dropdown.contains(event.target as Node)) {
+      this.dropdownOpen = false;
+    }
   }
 }

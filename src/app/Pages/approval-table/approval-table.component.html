@@ -6,6 +6,7 @@
   [tableHeaders]="headerData" 
   [tableData]="isAdmin ? tableBodyAdmin : tableBody" 
   [headerDisplayMap]="headerDisplayMap"
+  noDataMessage="You are not assigned to review any risks"
   [IsActionRequiered]="true"
   (onclickrow)="OnClickRow($event)"
   (approveRisk)="approveRisk($event)"
