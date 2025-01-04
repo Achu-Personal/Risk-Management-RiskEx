@@ -239,27 +239,7 @@ tableBody:any[]=[
     }
   }
 
-  // headerData: any = ['Name', 'Email', 'Department', 'Projects'];
-  // tableBody: any = [
-  //   {
-  //     Name: 'John Doe',
-  //     Email: 'john.doe@example.com',
-  //     Department: 'Engineering',
-  //     Projects: 'Project A, Project B',
-  //   },
-  //   {
-  //     Name: 'Jane Smith',
-  //     Email: 'jane.smith@example.com',
-  //     Department: 'Marketing',
-  //     Projects: 'Campaign X, Campaign Y',
-  //   },
-  //   {
-  //     Name: 'Alice Johnson',
-  //     Email: 'alice.johnson@example.com',
-  //     Department: 'HR',
-  //     Projects: 'Recruitment, Employee Engagement',
-  //   },
-  // ];
+
   onProjectsSelected(projects: project[]) {
     console.log('Selected projects:', projects);
   }

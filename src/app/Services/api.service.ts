@@ -56,11 +56,9 @@ export class ApiService {
   }
 
   gettabledata() {
-    //  return this.http.get(`data/tabledata.json`)
     return this.http.get(`https://localhost:7216/api/Report`);
   }
    gethistorytabledata(){
-    //  return this.http.get(`data/tabledata.json`)
     return this.http.get(`https://localhost:7216/api/Report?riskStatus=close`)
    }
   getFilteredData(department: any) {
@@ -85,7 +83,6 @@ export class ApiService {
       'https://localhost:7216/api/User/register',
       user,
       {
-        // Add this to handle text responses
         responseType: 'text' as 'json',
       }
     );
@@ -209,5 +206,11 @@ export class ApiService {
       { params }
     );
   }
+
+  changeUserStatus(userId:any,status:any){
+    return this.http.patch('https://localhost:7216/api/User/IsActive',userId,status)
+  }
+
+
 
  }
