@@ -1,0 +1,10 @@
+<div class="form-detail" >
+  <label for="">{{label}} <span class="required">{{required}}</span> </label>
+  <app-dropdown  [options]="dropdownData"
+    [displayField]= "dropdownDisplay"
+    [valueField]= "dropdownValue"
+    width="100"
+    selectValue="{{selectValue}}"
+    (valueChange)="onChange($event)" >
+   </app-dropdown>
+</div>
