@@ -45,15 +45,14 @@
               </ng-container>
               <ng-container *ngIf="key === 'projects'"
                 ><ng-container *ngIf="row[key]?.length > 0; else noProjects">
-                  {{ row[key]?.join(", ") }}
+                  <span>{{ row[key]?.join(", ") }}</span>
                 </ng-container>
                 <ng-template #noProjects>
-                  No projects available
-                </ng-template></ng-container
-              >
+                  ----
+                </ng-template></ng-container>
 
               @if(key !=='riskStatus'&& key !=='overallRiskRating' && key
-              !=='plannedActionDate') {
+              !=='plannedActionDate' && key!=='projects') {
               <ng-container>
                 {{ row[key] | slice : 0 : 50 }}
               </ng-container>
@@ -148,13 +147,6 @@
   </div>
 </ng-container>
 <ng-template #noData>
-  <!-- <tbody class="no-body">
-    <tr>
-      <td [attr.colspan]="tableHeaders.length" class="text-center">
-        No data available
-      </td>
-    </tr>
-  </tbody> -->
   <div class="no-data-container">
     <h3 class="no-data-message">{{noDataMessage}}</h3>
   </div>
