@@ -168,6 +168,9 @@ getRiskRatingStyle(riskRating: number): string {
       console.log('Table Headers:', this.tableHeaders);
       console.log('Table Data:', this.tableData);
     }
-  
+    hasValidData(): boolean {
+      return this.tableData && this.tableData.length > 0 && this.tableData.some(row => row.riskName || row.riskId || row.fullName);
+    }
+    
 
 }
