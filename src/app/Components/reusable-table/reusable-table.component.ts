@@ -93,12 +93,12 @@ onReject(data: {comment: string}) {
 
 formatDate(value: any): string {
   if (!value) return '';
-  
+
   if (typeof value === 'string' && value.includes('-')) {
     const date = new Date(value);
     if (!isNaN(date.getTime())) {
       const day = String(date.getDate()).padStart(2, '0');
-      const month = String(date.getMonth() + 1).padStart(2, '0'); 
+      const month = String(date.getMonth() + 1).padStart(2, '0');
       const year = date.getFullYear();
       return `${day}-${month}-${year}`;
     }
@@ -165,6 +165,6 @@ getRiskRatingStyle(riskRating: number): string {
       console.log('Table Headers:', this.tableHeaders);
       console.log('Table Data:', this.tableData);
     }
-  
+
 
 }
