@@ -104,7 +104,7 @@ tableBody:any[]=[
         this.tableBodyAdmin=e
       });
     }
-    else{
+    else if(userRole==='DepartmentUser'){
       this.isAdmin=false;
       const department= this.authService.getDepartmentName();
       if (department) {
