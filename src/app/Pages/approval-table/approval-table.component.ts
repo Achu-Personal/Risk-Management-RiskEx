@@ -22,6 +22,7 @@ export class ApprovalTableComponent {
     description: 'Description',
     riskType: 'Risk Type',
     riskDepartment: 'Department',
+    departmentName: 'Department',
     plannedActionDate: 'Planned Action Date',
     overallRiskRating: 'CRR',
     riskStatus: 'Risk Status',
@@ -51,6 +52,7 @@ export class ApprovalTableComponent {
       riskType: '',
       plannedActionDate: Date,
       overallRiskRating: 0,
+      departmentName: '',
       riskStatus: '',
     },
   ];
@@ -98,6 +100,7 @@ export class ApprovalTableComponent {
         'riskType',
         'plannedActionDate',
         'overallRiskRating',
+        'departmentName',
         'riskStatus',
       ];
       this.api.getRisksByReviewerId().subscribe((response: any) => {
