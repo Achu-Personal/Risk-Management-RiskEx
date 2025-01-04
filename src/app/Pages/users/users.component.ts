@@ -85,12 +85,12 @@ tableBody:any[]=[
     const userRole = this.authService.getUserRole();
     const userDepartment = this.authService.getDepartmentName();
 
-    if (userRole === 'DepartmentUser') {
+    if (userRole === 'DepartmentUser'||userRole?.includes('ProjectUsers')) {
       this.userForm.patchValue({ departmentName: userDepartment });
       this.userForm.get('departmentName')?.disable();
       this.isDepartmentFieldDisabled = true;
     }
-    if (userRole === 'DepartmentUser') {
+    if (userRole === 'DepartmentUser'||userRole?.includes('ProjectUsers')) {
       this.projectForm.patchValue({ departmentName: userDepartment });
       this.projectForm.get('departmentName')?.disable();
       this.isDepartmentFieldDisabled = true;
