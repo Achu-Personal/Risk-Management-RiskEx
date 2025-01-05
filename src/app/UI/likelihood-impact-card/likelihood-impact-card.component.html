@@ -1,9 +1,47 @@
-
 <div class="likelihood-impact-card">
 
-  <h6 class="heading">{{assessment.assessmentBasis.basis}}  </h6>
-  <h6 style="margin-top: 10px;">Likehood  <span [ngStyle]="{'color': assessment.likelihoodMatrix.likeliHood=='Low'?'green':assessment.likelihoodMatrix.likeliHood=='Medium'?'#FFBF00':'red'}" >{{assessment.likelihoodMatrix.likeliHood | capitalizeFirst}}</span></h6>
-  <h6>Impact <span [ngStyle]="{'color': assessment.impactMatix.impact=='Low'?'green':assessment.impactMatix.impact=='Medium'?'#FFBF00':'red'}" >{{assessment.impactMatix.impact | capitalizeFirst}}</span></h6>
-  <h6>Risk Factor <span [ngStyle]="{'color': assessment.impactMatix.impact=='Low'?'green':assessment.impactMatix.impact=='Medium'?'#FFBF00':'red'}" >{{ assessment.riskFactor}}</span> </h6>
+  <!-- Render the basis, only if it exists -->
+  <h6 class="heading">
+    {{ assessment.assessmentBasis?.basis || '' }}
+  </h6>
+
+  <!-- Likelihood section with conditional styling -->
+  <h6 style="margin-top: 10px;">
+    Likelihood
+    <span
+      [ngStyle]="{
+        'color': assessment.likelihoodMatrix?.likeliHood === 'Low' ? 'green' :
+                 assessment.likelihoodMatrix?.likeliHood === 'Medium' ? '#FFBF00' : 'red'
+      }"
+    >
+      {{ assessment.likelihoodMatrix?.likeliHood | capitalizeFirst }}
+    </span>
+  </h6>
+
+  <!-- Impact section with conditional styling -->
+  <h6>
+    Impact
+    <span
+      [ngStyle]="{
+        'color': assessment.impactMatix?.impact === 'Low' ? 'green' :
+                 assessment.impactMatix?.impact === 'Medium' ? '#FFBF00' : 'red'
+      }"
+    >
+      {{ assessment.impactMatix?.impact | capitalizeFirst }}
+    </span>
+  </h6>
+
+  <!-- Risk Factor section with conditional styling -->
+  <h6>
+    Risk Factor
+    <span
+      [ngStyle]="{
+        'color': assessment.impactMatix?.impact === 'Low' ? 'green' :
+                 assessment.impactMatix?.impact === 'Medium' ? '#FFBF00' : 'red'
+      }"
+    >
+      {{ assessment.riskFactor }}
+    </span>
+  </h6>
 
 </div>
