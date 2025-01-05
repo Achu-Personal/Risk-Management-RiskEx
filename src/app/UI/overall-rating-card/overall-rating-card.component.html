@@ -1,9 +1,44 @@
-
 <div
+  id="OverallRiskRatingCard"
+  (mouseover)="onMouseOver()"
+  (mouseleave)="onMouseOut()"
   [ngStyle]="dynamicStyles"
- >
-  <h1 class="value">{{ value }}</h1>
-  <h6>{{ title }}</h6>
+  [ngClass]="{'hovered': isHovered, 'default-size': !isHovered}"
+>
+
+  <!-- Show the calculations if hovered and assessment data is present -->
+  <div *ngIf="isHovered && assessmentData.length > 0">
+    <h5>Calculations</h5>
+    <div class="Calculations">
+      <div *ngFor="let item of assessmentData; let i = index" class="ShowAssessmentcalculations">
+        <h5>{{ item.assessmentBasis.basis }} ({{ item.assessmentBasis.basis.split('')[0] }})</h5>
+        <h6 style="font-size: 15px;">
+          R{{ item.assessmentBasis.basis.split('')[0] }} =
+          {{ item.impactMatix.value }} (L{{ item.assessmentBasis.basis.split('')[0] }}) ×
+          {{ item.likelihoodMatrix.value }} (I{{ item.assessmentBasis.basis.split('')[0] }}) =
+          {{ item.impactMatix.value * item.likelihoodMatrix.value }}
+        </h6>
+      </div>
+    </div>
+
+    <div class="result">
+      <h6 style="font-size: 15px;">ORR = </h6>
+
+    @for(item of assessmentData; track $index)
+    {
+      <h6>R{{ item.assessmentBasis.basis.split('')[0] }}
+        {{ $index !== assessmentData.length - 1 ? '+' : '' }}
+      </h6>
+    }
+
+      <h6>= {{ value }}</h6>
+    </div>
+  </div>
+
+  <!-- Default display when not hovered -->
+  <div *ngIf="!isHovered">
+    <h1 class="value">{{ value }}</h1>
+    <h6>{{ title }}</h6>
+  </div>
+
 </div>
-
-
