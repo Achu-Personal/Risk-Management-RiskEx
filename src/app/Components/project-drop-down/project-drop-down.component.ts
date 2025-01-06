@@ -58,25 +58,6 @@ export class ProjectDropDownComponent implements OnChanges, ControlValueAccessor
   loadProjectsForDepartment() {
     this.loading = true;
     this.dropdownOpen = false;
-
-    // Check if the user is a 'ProjectUser' and fetch projects based on that role
-    if (this.authService.getUserRole() === 'ProjectUsers') {
-      this.authService.getProjects().subscribe(
-        (response: project[]) => {
-          this.filteredProjects = response;
-          this.selectedItems = [];
-          this.updateSelectedProject();
-          this.emitChanges();
-          this.loading = false;
-          console.log('Projects fetched successfully for ProjectUser:', this.filteredProjects);
-        },
-        (error) => {
-          console.error('Failed to fetch projects for ProjectUser', error);
-          this.resetComponent();
-        }
-      );
-    } else {
-      // If not a 'ProjectUser', fetch projects based on department
       this.api.getProjects(this.departmentName).subscribe(
         (response: project[]) => {
           this.filteredProjects = response;
@@ -92,7 +73,7 @@ export class ProjectDropDownComponent implements OnChanges, ControlValueAccessor
         }
       );
     }
-}
+
 
   toggleDropdown() {
     if (!this.disabled && this.filteredProjects.length > 0) {

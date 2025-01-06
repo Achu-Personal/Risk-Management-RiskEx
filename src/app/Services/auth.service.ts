@@ -76,9 +76,8 @@ export class AuthService {
 
   // Getters for all user data
   getUserRole() {
-    const role = this.userRole.value;
-  console.log('User role:', role);  // Log the role to the console
-  return role;
+    return this.userRole.value;
+
   }
   getUserName(){
     return this.userName.value;

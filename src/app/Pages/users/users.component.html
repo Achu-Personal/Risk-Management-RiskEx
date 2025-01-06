@@ -8,7 +8,7 @@
   color="primary"
   data-bs-toggle="modal"
   data-bs-target="#addUserModal"
-
+  *ngIf="authService.getUserRole() === 'Admin'|| authService.getUserRole() === 'DepartmentUser' || authService.getUserRole()?.includes('ProjectUsers')"
   ></app-style-button>
 
   <app-style-button
@@ -24,6 +24,7 @@
   color="primary"
   data-bs-target="#addProjectModal"
   data-bs-toggle="modal"
+  *ngIf="authService.getUserRole() === 'Admin'|| authService.getUserRole() === 'DepartmentUser'"
  ></app-style-button>
 
 </div>

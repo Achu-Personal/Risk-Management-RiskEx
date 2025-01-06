@@ -58,9 +58,9 @@ export class ApiService {
   gettabledata() {
     return this.http.get(`https://localhost:7216/api/Report`);
   }
-   gethistorytabledata(){
-    return this.http.get(`https://localhost:7216/api/Report?riskStatus=close`)
-   }
+  gethistorytabledata() {
+    return this.http.get(`https://localhost:7216/api/Report?riskStatus=close`);
+  }
   getFilteredData(department: any) {
     return this.http.get(`data/tabledata.json`).pipe(
       map((data: any) => {
@@ -88,55 +88,59 @@ export class ApiService {
     );
   }
 
-   getRisk()
-   {
-     console.log("hai")
-       return this.http.get(`data/getRisk.json`);
+  getRisk() {
+    console.log('hai');
+    return this.http.get(`data/getRisk.json`);
+  }
+  getRiskResponses() {
+    return this.http.get('https://localhost:7216/api/RiskResponseData');
+  }
+  getLikelyHoodDefinition() {
+    return this.http.get(
+      'https://localhost:7216/api/AssessmentMatrixLikelihood'
+    );
+  }
+  getImpactDefinition() {
+    return this.http.get('https://localhost:7216/api/AssessmentMatrixImpact');
+  }
+  getRiskCategoryCounts() {
+    return this.http.get('https://localhost:7216/api/Risk/RiskCategory-Counts');
+  }
+  getOpenRiskCountByType() {
+    return this.http.get('https://localhost:7216/api/Risk/OpenRisk-Counts');
+  }
 
+  addnewQualityRisk(qualityRisk: any) {
+    console.log('quality risk payload', qualityRisk);
+    return this.http.post(
+      'https://localhost:7216/api/Risk/Quality',
+      qualityRisk
+    );
+  }
 
-   }
-   getRiskResponses(){
-
-    return this.http.get('https://localhost:7216/api/RiskResponseData')
-   }
-   getLikelyHoodDefinition(){
-    return this.http.get('https://localhost:7216/api/AssessmentMatrixLikelihood')
-   }
-   getImpactDefinition(){
-    return this.http.get('https://localhost:7216/api/AssessmentMatrixImpact')
-   }
-   getRiskCategoryCounts(){
-    return this.http.get('https://localhost:7216/api/Risk/RiskCategory-Counts')
-   }
-   getOpenRiskCountByType(){
-    return this.http.get('https://localhost:7216/api/Risk/OpenRisk-Counts')
-   }
-
-   addnewQualityRisk(qualityRisk:any){
-    console.log("quality risk payload",qualityRisk)
-     return this.http.post('https://localhost:7216/api/Risk/Quality',qualityRisk)
-   }
-
-   addnewSecurityOrPrivacyRisk(SecurityOrPrivacyRisk:any){
-
-    return this.http.post('https://localhost:7216/api/Risk/security',SecurityOrPrivacyRisk)
-   }
-   addExternalReviewer(reviewer:any){
-    return this.http.post('https://localhost:7216/api/Reviewer/add-reviewer',reviewer)
-   }
-   addResponsiblePerson(assignee:any){
-    return this.http.post('https://localhost:7216/api/User/register',assignee)
-   }
-   getAllReviewer(){
-    return this.http.get('https://localhost:7216/api/Reviewer/getAllReviewers')
-   }
-   editQualityRisk(id:any,risk:any){
-    return this.http.put(`https://localhost:7216/api/Risk/quality/${id}`,risk)
-   }
+  addnewSecurityOrPrivacyRisk(SecurityOrPrivacyRisk: any) {
+    return this.http.post(
+      'https://localhost:7216/api/Risk/security',
+      SecurityOrPrivacyRisk
+    );
+  }
+  addExternalReviewer(reviewer: any) {
+    return this.http.post(
+      'https://localhost:7216/api/Reviewer/add-reviewer',
+      reviewer
+    );
+  }
+  addResponsiblePerson(assignee: any) {
+    return this.http.post('https://localhost:7216/api/User/register', assignee);
+  }
+  getAllReviewer() {
+    return this.http.get('https://localhost:7216/api/Reviewer/getAllReviewers');
+  }
+  editQualityRisk(id: any, risk: any) {
+    return this.http.put(`https://localhost:7216/api/Risk/quality/${id}`, risk);
+  }
 
   getRisksAssignedToUser(id: any = '') {
-
-
     return this.http.get(
       `https://localhost:7216/api/Risk/GetRiskByAssigne?id=${id}`
     );
@@ -154,10 +158,7 @@ export class ApiService {
     );
   }
   updateRiskReviewStatus(riskId: number, approvalStatus: string) {
-    // Construct the API URL with query parameters
     const url = `https://localhost:7216/api/Approval/update-review-status?riskId=${riskId}&approvalStatus=${approvalStatus}`;
-
-    // Make the HTTP PUT request
     return this.http.put(url, {});
   }
   updateReviewStatusAndComments(id: number, updates: any) {
@@ -185,20 +186,22 @@ export class ApiService {
     );
   }
 
-  getAllUsers(){
+  getAllUsers() {
     return this.http.get('https://localhost:7216/api/User/GetAllUsers');
   }
 
-  getAllUsersByDepartmentName(department:string){
-    return this.http.get(`https://localhost:7216/api/User/GetUsersByDepartment/${department}`)
+  getAllUsersByDepartmentName(department: string) {
+    return this.http.get(
+      `https://localhost:7216/api/User/GetUsersByDepartment/${department}`
+    );
   }
 
-  getAllUsersForAssignee(){
+  getAllUsersForAssignee() {
     return this.http.get('https://localhost:7216/Users');
   }
 
-  getAllUsersByDepartmentId(id:number){
-    return this.http.get(`https://localhost:7216/department/${id}`)
+  getAllUsersByDepartmentId(id: number) {
+    return this.http.get(`https://localhost:7216/department/${id}`);
   }
 
   getRiskCategoryCountsByDepartment(departmentList: number[]) {
@@ -213,9 +216,11 @@ export class ApiService {
     );
   }
 
-  changeUserStatus(userId:any,status:any){
-    return this.http.patch(`https://localhost:7216/api/User/IsActive/${userId}/${status}`,{}).subscribe((e)=>console.log('UserId and status:',userId,status)
-    )
+  changeUserStatus(userId: any, status: any) {
+    return this.http
+      .patch(`https://localhost:7216/api/User/IsActive/${userId}/${status}`, {})
+      .subscribe((e) => console.log('UserId and status:', userId, status));
   }
 
- }
+
+}
