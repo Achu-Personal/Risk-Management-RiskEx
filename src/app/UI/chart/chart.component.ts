@@ -1,4 +1,4 @@
-import { BaseChartDirective } from 'ng2-charts';
+import { BaseChartDirective} from 'ng2-charts';
 import { Component, Input, SimpleChanges} from '@angular/core';
 import { Chart, ChartConfiguration, ChartType, registerables } from 'chart.js';
 
@@ -21,6 +21,7 @@ export class ChartComponent {
   @Input() chartType: ChartType = 'line';
   @Input() datasets: any[]=[]
 
+
   chartData: ChartConfiguration['data'] = {
   datasets: this.datasets,
   labels: this.labels,
@@ -31,7 +32,24 @@ export class ChartComponent {
       line: {
         tension: 0,
       },
+
     },
+    responsive: true,
+    plugins: {
+      legend: {
+      position: 'right', // Legend on the right
+      labels: {
+      font: {
+      size: 14
+      },
+      color: '#000'
+      }
+      }
+      },
+      
+
+
+
   };
 
 
@@ -44,6 +62,7 @@ export class ChartComponent {
     if(changes['datasets']){
       this.chartData.datasets = this.datasets;
     }
+
   }
 
 }
