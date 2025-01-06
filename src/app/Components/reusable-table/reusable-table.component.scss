@@ -21,7 +21,7 @@ thead{
   tr{
     z-index: 10; 
     th{
-      text-align: center;
+      // text-align: center;
       cursor: pointer;
     }
   }
@@ -73,7 +73,7 @@ thead{
   font-size: 14px;
   color: #555;
   vertical-align: middle;
-  text-align: center;
+  // text-align: center;
 
 }
 
@@ -82,7 +82,7 @@ thead{
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 80%;
+  height: 71%;
   background-color: #ffffff;
   border-radius: 8px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
@@ -92,7 +92,7 @@ thead{
   text-align: center;
   position:fixed;
   width: 88%;
-  top: 75px;
+  top: 125px;
   left: 130px;
 }
 
@@ -207,61 +207,6 @@ tr{
 }
 
 
-/* Container for toggle switch */
-.toggle-container {
-  // margin: 20px;
-  text-align: center;
-  display: flex;
-  gap: 10px;
-}
-
-/* Hide the default checkbox */
-.switch input {
-  display: none;
-}
-
-/* Style the slider (toggle switch) */
-.switch {
-  position: relative;
-  display: inline-block;
-  width: 50px;
-  height: 26px;
-}
-
-.switch .slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #ccc;
-  transition: 0.4s;
-  border-radius: 34px;
-}
-
-/* Circle inside the switch */
-.switch .slider:before {
-  position: absolute;
-  content: "";
-  height: 20px;
-  width: 20px;
-  border-radius: 50%;
-  left: 4px;
-  bottom: 4px;
-  background-color: white;
-  transition: 0.4s;
-}
-
-/* When the switch is checked */
-input:checked + .slider {
-  background-color: #3e68b9; /* Green for ON state */
-}
-
-/* Move the circle to the right when checked */
-input:checked + .slider:before {
-  transform: translateX(26px);
-}
 
 .green-background {
   color: #188a18;
@@ -355,9 +300,9 @@ input:checked + .slider:before {
 
 /* Toggle Switch */
 .toggle-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  // display: flex;
+  // justify-content: center;
+  // align-items: center;
 
   .switch {
     position: relative;
@@ -411,6 +356,9 @@ input:checked + .slider:before {
   background-color: rgb(207, 235, 207); /* Green for Active */
   padding: 5px 10px;
   border-radius: 5px;
+  width: 70px;
+  text-align: center;
+
 }
 
 .inactive-status {
@@ -418,4 +366,6 @@ input:checked + .slider:before {
   background-color: rgb(240, 191, 191); /* Red for Inactive */
   padding: 5px 10px;
   border-radius: 5px;
+  width: 70px;
+  text-align: center;
 }

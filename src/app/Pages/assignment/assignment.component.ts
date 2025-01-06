@@ -55,7 +55,7 @@ tableBody:any[]=[
 ngOnInit()
 {
 
-    this.api.getRisksAssignedToUser(1).subscribe((e:any)=>{
+    this.api.getRisksAssignedToUser(this.auth.getCurrentUserId()).subscribe((e:any)=>{
       console.log("Risk assigned to a user=",e)
       this.tableBody=e
 
