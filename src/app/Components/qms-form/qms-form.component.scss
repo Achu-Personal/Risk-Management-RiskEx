@@ -1,9 +1,9 @@
 .form-details-sub-container {
-  background-color: var(--accent-color);
+  background-color: white;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 20px;
-  border-left: 20px solid var(--secondary-color);
+  border-left: 20px solid var(--bg-color);
   margin-top: 10px;
 }
 .required{
@@ -11,10 +11,12 @@
 }
 .form-details-sub-container h2 {
   font-size: 1.4rem;
-  color: var(--secondary-color);
+  // color: var(--bg-color);
+  color: var(--foreground-color);
   margin-bottom: 15px;
   text-transform: uppercase;
-  border-bottom: 2px solid var(--secondary-color);
+  // border-bottom: 2px solid var(--bg-color);
+  border-bottom: 2px solid black;
   padding-bottom: 8px;
 }
 .form-detail {
@@ -25,7 +27,7 @@
 label {
   margin-bottom: 5px;
   font-weight: 600;
-  color: var(--foreground-color);
+  color:black;
 }
 
 input, textarea{
@@ -51,9 +53,15 @@ input:focus, textarea:focus {
 .form-row {
   display: flex;
   gap: 20px;
+
+}
+.form-row > * {
+  flex: 1;
+  max-width: 50%;
+  box-sizing: border-box;
 }
 
-.form-row .form-group {
+.form-group {
   flex: 1;
 }
 
@@ -64,7 +72,7 @@ input:focus, textarea:focus {
 }
 
 a {
-  color:var(--secondary-color);
+  color:var(--bg-color);
   text-decoration: none;
 }
 
