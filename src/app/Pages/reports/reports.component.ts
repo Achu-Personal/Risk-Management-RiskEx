@@ -22,18 +22,28 @@ export class ReportsComponent {
   items:any=[];
   constructor(private excelService: ReportGenerationService,private router: Router,public api: ApiService) {}
 
-  onGenerateReport(): void {
-    this.api.gettabledata().subscribe((res: any) => {
-    this.data= res;
-    console.log(this.data);
-    if (Array.isArray(this.data) && this.data.length > 0) {
-      this.excelService.generateReport(this.data, 'RiskReport');
-    } else {
-      console.error('Invalid data:', this.data);
-    }
-    });
-    console.log('Data passed to generateReport:', this.data);
+  filtereddata():void{
 
+  }
+  onGenerateReport(): void {
+    // this.api.gettabledata().subscribe((res: any) => {
+    // this.data= res;
+    console.log(this.filteredTableData);
+    if (Array.isArray(this.filteredTableData) && this.filteredTableData.length > 0) {
+      this.excelService.generateReport(this.filteredTableData, 'RiskReport');
+    } else {
+      console.error('Invalid data:', this.filteredTableData);
+    }
+
+    console.log('Data passed to generateReport:', this.filteredTableData);
+
+  }
+
+  filteredTableData: any[] = [];
+
+  onFilteredData(filteredData: any[]): void {
+    this.filteredTableData = filteredData;
+    console.log('Received filtered data:', this.filteredTableData);
   }
 
   isDropdownOpen: boolean = false;

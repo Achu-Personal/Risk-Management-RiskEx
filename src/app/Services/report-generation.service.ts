@@ -12,6 +12,7 @@ interface RiskAssessment {
 }
 
 interface Risk {
+  // ... keeping same Risk interface ...
   closedDate: string;
   contingency: string;
   createdAt: string;
@@ -44,7 +45,7 @@ interface Risk {
 })
 export class ReportGenerationService {
   private readonly styles = {
-    header1: {
+    mainHeader: {
       font: { bold: true, color: { rgb: "FFFFFF" }, size: 12 },
       fill: { fgColor: { rgb: "1F4E78" } },
       alignment: { horizontal: "center", vertical: "center", wrapText: true },
@@ -55,9 +56,9 @@ export class ReportGenerationService {
         right: { style: "medium", color: { rgb: "000000" } }
       }
     },
-    header2: {
+    assessmentHeader: {
       font: { bold: true, color: { rgb: "FFFFFF" }, size: 11 },
-      fill: { fgColor: { rgb: "2F75B5" } },
+      fill: { fgColor: { rgb: "4472C4" } },
       alignment: { horizontal: "center", vertical: "center", wrapText: true },
       border: {
         top: { style: "thin", color: { rgb: "000000" } },
@@ -66,9 +67,9 @@ export class ReportGenerationService {
         right: { style: "thin", color: { rgb: "000000" } }
       }
     },
-    header3: {
-      font: { bold: true, color: { rgb: "000000" }, size: 11 },
-      fill: { fgColor: { rgb: "BDD7EE" } },
+    subHeader: {
+      font: { bold: true, color: { rgb: "FFFFFF" }, size: 11 },
+      fill: { fgColor: { rgb: "2F75B5" } },
       alignment: { horizontal: "center", vertical: "center", wrapText: true },
       border: {
         top: { style: "thin", color: { rgb: "000000" } },
@@ -93,70 +94,248 @@ export class ReportGenerationService {
     try {
       const workbook: XLSX.WorkBook = { SheetNames: [], Sheets: {} };
 
-      const headerRow1 = [
-        { v: 'Risk Mitigation', s: this.styles.header1 },
-        { v: 'Risk Contingency', s: this.styles.header1 },
-        { v: 'Responsibility Of The Action', s: this.styles.header1 },
-        { v: 'Planned Action Date', s: this.styles.header1 },
-        { v: 'Assessment Response Details', s: this.styles.header1 },
-        { v: 'Actual Closed Date', s: this.styles.header1 },
-        { v: 'Risk Response', s: this.styles.header1 },
-        { v: 'Risk Status', s: this.styles.header1 },
-        { v: 'Remarks', s: this.styles.header1 }
+      // Define headers for Security & Privacy risks
+      const securityHeaders = [
+        // Main sections header
+        [
+          { v: 'Risk Information', s: this.styles.mainHeader },
+          { v: 'Risk Assessment Matrix', s: this.styles.mainHeader }
+        ],
+        // Pre/Post mitigation headers
+        [
+          { v: '', s: this.styles.cell }, // Empty cells for Risk Information section
+          { v: '', s: this.styles.cell },
+          { v: '', s: this.styles.cell },
+          { v: '', s: this.styles.cell },
+          { v: '', s: this.styles.cell },
+          { v: '', s: this.styles.cell },
+          { v: '', s: this.styles.cell },
+          { v: '', s: this.styles.cell },
+          { v: '', s: this.styles.cell },
+          { v: '', s: this.styles.cell },
+          { v: '', s: this.styles.cell },
+          { v: '', s: this.styles.cell },
+          { v: '', s: this.styles.cell },
+          { v: '', s: this.styles.cell },
+          { v: '', s: this.styles.cell },
+          { v: 'Pre-Mitigation Assessment', s: this.styles.mainHeader },
+          { v: '', s: this.styles.mainHeader },
+          { v: '', s: this.styles.mainHeader },
+          { v: '', s: this.styles.mainHeader },
+          { v: '', s: this.styles.mainHeader },
+          { v: '', s: this.styles.mainHeader },
+          { v: '', s: this.styles.mainHeader },
+          { v: '', s: this.styles.mainHeader },
+          { v: 'Post-Mitigation Assessment', s: this.styles.mainHeader },
+          { v: '', s: this.styles.mainHeader },
+          { v: '', s: this.styles.mainHeader },
+          { v: '', s: this.styles.mainHeader },
+          { v: '', s: this.styles.mainHeader },
+          { v: '', s: this.styles.mainHeader },
+          { v: '', s: this.styles.mainHeader },
+          { v: '', s: this.styles.mainHeader }
+        ],
+        // Assessment type headers for security
+        [
+          ...Array(15).fill({ v: '', s: this.styles.cell }), // Empty cells for Risk Information
+          { v: 'Confidentiality', s: this.styles.assessmentHeader },
+          { v: '', s: this.styles.assessmentHeader },
+          { v: 'Integrity', s: this.styles.assessmentHeader },
+          { v: '', s: this.styles.assessmentHeader },
+          { v: 'Privacy', s: this.styles.assessmentHeader },
+          { v: '', s: this.styles.assessmentHeader },
+          { v: 'Availability', s: this.styles.assessmentHeader },
+          { v: '', s: this.styles.assessmentHeader },
+          { v: 'Confidentiality', s: this.styles.assessmentHeader },
+          { v: '', s: this.styles.assessmentHeader },
+          { v: 'Integrity', s: this.styles.assessmentHeader },
+          { v: '', s: this.styles.assessmentHeader },
+          { v: 'Privacy', s: this.styles.assessmentHeader },
+          { v: '', s: this.styles.assessmentHeader },
+          { v: 'Availability', s: this.styles.assessmentHeader },
+          { v: '', s: this.styles.assessmentHeader }
+        ],
+        // Column headers for security
+        [
+          { v: 'Risk ID', s: this.styles.subHeader },
+          { v: 'Risk Name', s: this.styles.subHeader },
+          { v: 'Department', s: this.styles.subHeader },
+          { v: 'Description', s: this.styles.subHeader },
+          { v: 'Risk Type', s: this.styles.subHeader },
+          { v: 'Risk Status', s: this.styles.subHeader },
+          { v: 'Impact', s: this.styles.subHeader },
+          { v: 'Mitigation', s: this.styles.subHeader },
+          { v: 'Contingency', s: this.styles.subHeader },
+          { v: 'Risk Response', s: this.styles.subHeader },
+          { v: 'Overall Risk Rating', s: this.styles.subHeader },
+          { v: 'Responsible User', s: this.styles.subHeader },
+          { v: 'Created By', s: this.styles.subHeader },
+          { v: 'Created At', s: this.styles.subHeader },
+          { v: 'Remarks', s: this.styles.subHeader },
+          ...Array(16).fill({ v: '', s: this.styles.subHeader }).map((cell, index) =>
+            ({ ...cell, v: index % 2 === 0 ? 'Impact' : 'Likelihood' }))
+        ]
       ];
 
-      const headerRow2 = [
-        { v: '', s: this.styles.header2 },
-        { v: '', s: this.styles.header2 },
-        { v: '', s: this.styles.header2 },
-        { v: '', s: this.styles.header2 },
-        { v: 'Confidentiality P1', s: this.styles.header2 },
-        { v: 'Integrity P1', s: this.styles.header2 },
-        { v: 'Privacy P1', s: this.styles.header2 },
-        { v: 'Availability P1', s: this.styles.header2 },
-        { v: 'Overall Risk Rating', s: this.styles.header2 },
-        { v: '', s: this.styles.header2 },
-        { v: '', s: this.styles.header2 },
-        { v: '', s: this.styles.header2 },
-        { v: '', s: this.styles.header2 }
+      // Define simpler headers for Quality risks
+      const qualityHeaders = [
+        // Main sections header
+        [
+          { v: 'Risk Information', s: this.styles.mainHeader },
+          { v: 'Risk Assessment', s: this.styles.mainHeader }
+        ],
+        // Pre/Post mitigation headers
+        [
+          ...Array(15).fill({ v: '', s: this.styles.cell }), // Empty cells for Risk Information
+          { v: 'Pre-Mitigation Assessment', s: this.styles.mainHeader },
+          { v: '', s: this.styles.mainHeader },
+          { v: 'Post-Mitigation Assessment', s: this.styles.mainHeader },
+          { v: '', s: this.styles.mainHeader }
+        ],
+        // Column headers for quality
+        [
+          { v: 'Risk ID', s: this.styles.subHeader },
+          { v: 'Risk Name', s: this.styles.subHeader },
+          { v: 'Department', s: this.styles.subHeader },
+          { v: 'Description', s: this.styles.subHeader },
+          { v: 'Risk Type', s: this.styles.subHeader },
+          { v: 'Risk Status', s: this.styles.subHeader },
+          { v: 'Impact', s: this.styles.subHeader },
+          { v: 'Mitigation', s: this.styles.subHeader },
+          { v: 'Contingency', s: this.styles.subHeader },
+          { v: 'Risk Response', s: this.styles.subHeader },
+          { v: 'Overall Risk Rating', s: this.styles.subHeader },
+          { v: 'Responsible User', s: this.styles.subHeader },
+          { v: 'Created By', s: this.styles.subHeader },
+          { v: 'Created At', s: this.styles.subHeader },
+          { v: 'Remarks', s: this.styles.subHeader },
+          { v: 'Impact', s: this.styles.subHeader },
+          { v: 'Likelihood', s: this.styles.subHeader },
+          { v: 'Impact', s: this.styles.subHeader },
+          { v: 'Likelihood', s: this.styles.subHeader }
+        ]
       ];
 
-      const headerRow3 = [
-        { v: '', s: this.styles.header3 },
-        { v: '', s: this.styles.header3 },
-        { v: '', s: this.styles.header3 },
-        { v: '', s: this.styles.header3 },
-        { v: 'Risk Factor', s: this.styles.header3 },
-        { v: 'Likelihood', s: this.styles.header3 },
-        { v: 'R=Rs x Ls', s: this.styles.header3 },
-        { v: 'Risk Factor', s: this.styles.header3 },
-        { v: 'Likelihood', s: this.styles.header3 },
-        { v: 'R=Rs x Ls', s: this.styles.header3 },
-        { v: 'Risk Factor', s: this.styles.header3 },
-        { v: 'Likelihood', s: this.styles.header3 },
-        { v: 'R=Rs x Ls', s: this.styles.header3 },
-        { v: 'Risk Factor', s: this.styles.header3 },
-        { v: 'Likelihood', s: this.styles.header3 },
-        { v: 'R=Rs x Ls', s: this.styles.header3 },
-        { v: 'R = R1 + R2 + R3 + R4', s: this.styles.header3 }
-      ];
+      const createSecuritySheetWithHeaders = (data: any[][]) => {
+        const ws = XLSX.utils.aoa_to_sheet([...securityHeaders, ...data]);
+        // Merge ranges for security sheet
+        ws['!merges'] = [
+          { s: { r: 0, c: 0 }, e: { r: 0, c: 14 } },  // Risk Information
+          { s: { r: 0, c: 15 }, e: { r: 0, c: 31 } }, // Risk Assessment Matrix
+          { s: { r: 1, c: 15 }, e: { r: 1, c: 22 } }, // Pre-Mitigation
+          { s: { r: 1, c: 23 }, e: { r: 1, c: 31 } }, // Post-Mitigation
+          // Assessment type headers
+          { s: { r: 2, c: 15 }, e: { r: 2, c: 16 } }, // Confidentiality
+          { s: { r: 2, c: 17 }, e: { r: 2, c: 18 } }, // Integrity
+          { s: { r: 2, c: 19 }, e: { r: 2, c: 20 } }, // Privacy
+          { s: { r: 2, c: 21 }, e: { r: 2, c: 22 } }, // Availability
+          { s: { r: 2, c: 23 }, e: { r: 2, c: 24 } }, // Post Confidentiality
+          { s: { r: 2, c: 25 }, e: { r: 2, c: 26 } }, // Post Integrity
+          { s: { r: 2, c: 27 }, e: { r: 2, c: 28 } }, // Post Privacy
+          { s: { r: 2, c: 29 }, e: { r: 2, c: 30 } }  // Post Availability
+        ];
+        ws['!cols'] = Array(32).fill({ wch: 15 });
+        return ws;
+      };
+
+      const createQualitySheetWithHeaders = (data: any[][]) => {
+        const ws = XLSX.utils.aoa_to_sheet([...qualityHeaders, ...data]);
+        // Merge ranges for quality sheet
+        ws['!merges'] = [
+          { s: { r: 0, c: 0 }, e: { r: 0, c: 14 } },  // Risk Information
+          { s: { r: 0, c: 15 }, e: { r: 0, c: 18 } }, // Risk Assessment
+          { s: { r: 1, c: 15 }, e: { r: 1, c: 16 } }, // Pre-Mitigation
+          { s: { r: 1, c: 17 }, e: { r: 1, c: 18 } }  // Post-Mitigation
+        ];
+        ws['!cols'] = Array(19).fill({ wch: 15 });
+        return ws;
+      };
 
       const qualitySheetData: any[][] = [];
       const securityPrivacySheetData: any[][] = [];
 
-      // Process risks with styled cells
+      // Process each risk
       data.forEach((risk) => {
-        const riskRow = this.createStyledRiskRow(risk);
+        const getAssessmentDetails = (assessments: any[], basis: string, isMitigated: boolean) => {
+          const assessment = assessments.find(a =>
+            a.assessmentBasis === basis && a.isMitigated === isMitigated
+          );
+          return {
+            impact: assessment?.matrixImpact || '',
+            likelihood: assessment?.matrixLikelihood || ''
+          };
+        };
+
+        const formatDate = (dateString: string | null) => {
+          if (!dateString) return '';
+          return new Date(dateString).toLocaleString();
+        };
+
+        const baseRiskInfo = [
+          { v: risk.riskId || '', s: this.styles.cell },
+          { v: risk.riskName || '', s: this.styles.cell },
+          { v: risk.departmentName || '', s: this.styles.cell },
+          { v: risk.description || '', s: this.styles.cell },
+          { v: risk.riskType || '', s: this.styles.cell },
+          { v: risk.riskStatus || '', s: this.styles.cell },
+          { v: risk.impact || '', s: this.styles.cell },
+          { v: risk.mitigation || '', s: this.styles.cell },
+          { v: risk.contingency || '', s: this.styles.cell },
+          { v: risk.riskResponse || '', s: this.styles.cell },
+          { v: risk.overallRiskRating || '', s: this.styles.cell },
+          { v: risk.responsibleUser || '', s: this.styles.cell },
+          { v: risk.createdBy || '', s: this.styles.cell },
+          { v: formatDate(risk.createdAt), s: this.styles.cell },
+          { v: risk.remarks || '', s: this.styles.cell }
+        ];
+
         if (risk.riskType === 'Quality') {
-          qualitySheetData.push(riskRow);
+          // For Quality risks, only include general impact and likelihood
+          const preAssessment = getAssessmentDetails(risk.riskAssessments || [], 'Quality', false);
+          const postAssessment = getAssessmentDetails(risk.riskAssessments || [], 'Quality', true);
+
+          const qualityRow = [
+            ...baseRiskInfo,
+            { v: preAssessment.impact, s: this.styles.cell },
+            { v: preAssessment.likelihood, s: this.styles.cell },
+            { v: postAssessment.impact, s: this.styles.cell },
+            { v: postAssessment.likelihood, s: this.styles.cell }
+          ];
+
+          qualitySheetData.push(qualityRow);
         } else if (risk.riskType === 'Security' || risk.riskType === 'Privacy') {
-          securityPrivacySheetData.push(riskRow);
+          // For Security/Privacy risks, include all assessment types
+          const assessmentTypes = ['Confidentiality', 'Integrity', 'Privacy', 'Availability'];
+          const preMitigationCells = [];
+          const postMitigationCells = [];
+
+          for (const type of assessmentTypes) {
+            const preAssessment = getAssessmentDetails(risk.riskAssessments || [], type, false);
+            const postAssessment = getAssessmentDetails(risk.riskAssessments || [], type, true);
+
+            preMitigationCells.push(
+              { v: preAssessment.impact, s: this.styles.cell },
+              { v: preAssessment.likelihood, s: this.styles.cell }
+            );
+            postMitigationCells.push(
+              { v: postAssessment.impact, s: this.styles.cell },
+              { v: postAssessment.likelihood, s: this.styles.cell }
+            );
+          }
+
+          const securityRow = [
+            ...baseRiskInfo,
+            ...preMitigationCells,
+            ...postMitigationCells
+          ];
+
+          securityPrivacySheetData.push(securityRow);
         }
       });
 
-      // Create sheets with enhanced styling
-      const qualitySheet = this.createStyledSheet(headerRow1, headerRow2, headerRow3, qualitySheetData);
-      const securityPrivacySheet = this.createStyledSheet(headerRow1, headerRow2, headerRow3, securityPrivacySheetData);
+      // Create sheets with appropriate headers
+      const qualitySheet = createQualitySheetWithHeaders(qualitySheetData);
+      const securityPrivacySheet = createSecuritySheetWithHeaders(securityPrivacySheetData);
 
       // Add sheets to workbook
       workbook.SheetNames.push('Quality Risks', 'Security & Privacy Risks');
@@ -178,95 +357,5 @@ export class ReportGenerationService {
       console.error('Error generating Excel report:', error);
       throw new Error(`Failed to generate Excel report: ${error}`);
     }
-  }
-
-  private createStyledSheet(headerRow1: any[], headerRow2: any[], headerRow3: any[], data: any[][]): XLSX.WorkSheet {
-    const ws = XLSX.utils.aoa_to_sheet([headerRow1, headerRow2, headerRow3, ...data]);
-
-    // Define merged cell ranges
-    ws['!merges'] = [
-      { s: { r: 0, c: 4 }, e: { r: 0, c: 16 } },  // Assessment Response Details
-      { s: { r: 1, c: 4 }, e: { r: 1, c: 6 } },   // Confidentiality
-      { s: { r: 1, c: 7 }, e: { r: 1, c: 9 } },   // Integrity
-      { s: { r: 1, c: 10 }, e: { r: 1, c: 12 } }, // Privacy
-      { s: { r: 1, c: 13 }, e: { r: 1, c: 15 } }  // Availability
-    ];
-
-    // Set column widths
-    ws['!cols'] = [
-      { wch: 30 }, // Risk Mitigation
-      { wch: 30 }, // Risk Contingency
-      { wch: 25 }, // Responsibility
-      { wch: 15 }, // Planned Action Date
-      { wch: 15 }, // Risk Factor
-      { wch: 15 }, // Likelihood
-      { wch: 15 }, // Risk Score
-      { wch: 15 }, // Risk Factor
-      { wch: 15 }, // Likelihood
-      { wch: 15 }, // Risk Score
-      { wch: 15 }, // Risk Factor
-      { wch: 15 }, // Likelihood
-      { wch: 15 }, // Risk Score
-      { wch: 15 }, // Risk Factor
-      { wch: 15 }, // Likelihood
-      { wch: 15 }, // Risk Score
-      { wch: 15 }, // Overall Rating
-      { wch: 15 }, // Closed Date
-      { wch: 20 }, // Risk Response
-      { wch: 15 }, // Risk Status
-      { wch: 30 }  // Remarks
-    ];
-
-    // Set row heights
-    ws['!rows'] = Array(data.length + 3).fill({ hpt: 30 }); // 30 point height for all rows
-
-    return ws;
-  }
-
-  private createStyledRiskRow(risk: Risk): any[] {
-    const getAssessmentDetails = (basis: string) => {
-      const assessment = risk.riskAssessments.find(a => a.assessmentBasis === basis);
-      return {
-        impact: assessment?.matrixImpact || '',
-        likelihood: assessment?.matrixLikelihood || '',
-        riskScore: assessment ? this.calculateRiskScore(assessment.matrixImpact, assessment.matrixLikelihood) : ''
-      };
-    };
-
-    const confidentiality = getAssessmentDetails('Confidentiality');
-    const integrity = getAssessmentDetails('Integrity');
-    const privacy = getAssessmentDetails('Privacy');
-    const availability = getAssessmentDetails('Availability');
-
-    return [
-      { v: risk.mitigation, s: this.styles.cell },
-      { v: risk.contingency, s: this.styles.cell },
-      { v: risk.responsibleUser, s: this.styles.cell },
-      { v: risk.plannedActionDate, s: this.styles.cell },
-      { v: confidentiality.impact, s: this.styles.cell },
-      { v: confidentiality.likelihood, s: this.styles.cell },
-      { v: confidentiality.riskScore, s: this.styles.cell },
-      { v: integrity.impact, s: this.styles.cell },
-      { v: integrity.likelihood, s: this.styles.cell },
-      { v: integrity.riskScore, s: this.styles.cell },
-      { v: privacy.impact, s: this.styles.cell },
-      { v: privacy.likelihood, s: this.styles.cell },
-      { v: privacy.riskScore, s: this.styles.cell },
-      { v: availability.impact, s: this.styles.cell },
-      { v: availability.likelihood, s: this.styles.cell },
-      { v: availability.riskScore, s: this.styles.cell },
-      { v: risk.overallRiskRating, s: this.styles.cell },
-      { v: risk.closedDate, s: this.styles.cell },
-      { v: risk.riskResponse, s: this.styles.cell },
-      { v: risk.riskStatus, s: this.styles.cell },
-      { v: risk.remarks, s: this.styles.cell }
-    ];
-  }
-
-  private calculateRiskScore(impact: string, likelihood: string): number {
-    const impactMap = { 'High': 3, 'Medium': 2, 'Low': 1 };
-    const likelihoodMap = { 'High': 3, 'Medium': 2, 'Low': 1 };
-    return (impactMap[impact as keyof typeof impactMap] || 0) *
-           (likelihoodMap[likelihood as keyof typeof likelihoodMap] || 0);
   }
 }
