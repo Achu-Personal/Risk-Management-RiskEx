@@ -1,8 +1,8 @@
+import { project } from './../Interfaces/projects.interface';
 import { department } from './../Interfaces/deparments.interface';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map, Observable } from 'rxjs';
-import { project } from '../Interfaces/projects.interface';
+import { catchError, map, Observable, of, throwError } from 'rxjs';
 import { UserResponse } from '../Interfaces/Userdata.interface.';
 import { AuthService } from './auth.service';
 
@@ -222,5 +222,30 @@ export class ApiService {
       .subscribe((e) => console.log('UserId and status:', userId, status));
   }
 
+  getUsersByProjects(): Observable<any> {
+    const projects = this.auth.getProjects() || [];
+    if (!projects || projects.length === 0) {
+      console.log('No projects found in auth');
+      return of([]);
+    }
+    let params = new HttpParams();
 
+    projects.forEach((project) => {
+      if (project && project.Id) {
+        params = params.append('projectIds', project.Id.toString());
+      }
+    });
+
+    return this.http
+      .get<any>(`https://localhost:7216/api/User/users-by-projects`, { params })
+      .pipe(
+        catchError((error) => {
+          if (error.status === 404) {
+            console.log('API Response:', error);
+            return of([]);
+          }
+          return throwError(() => error);
+        })
+      );
+  }
 }

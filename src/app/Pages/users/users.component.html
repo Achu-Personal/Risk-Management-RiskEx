@@ -99,7 +99,7 @@
 
             <div class="mb-3">
               <label for="projectName" class="form-label">Project</label>
-              <app-project-drop-down
+              <app-project-drop-down 
                 [departmentName]="userForm.get('departmentName')?.value"
                 formControlName="projectNames"
                 (selectedProjectsChange)="onProjectsSelected($event)"
