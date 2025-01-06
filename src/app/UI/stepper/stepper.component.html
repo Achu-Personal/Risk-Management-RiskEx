@@ -11,9 +11,9 @@
             <div class="step-title">{{ step.title }}</div>
             <div class="step-info">
               <span>by {{ step.actionBy.split(' ')[0]}} </span>
-              <span class="date">on {{ step.date | date: 'd MMM yyyy'}}</span>
+              <span class="date">on {{ step.date!="..."?  (step.date | date: 'd MMM yyyy'):'...'}}</span>
               <div class="tooltip">
-                info: {{ step.actionBy }} completed this step on {{ step.date | date: 'longDate' }}
+                info: {{ step.actionBy }} completed this step on {{ step.date!="..."?  (step.date | date: 'longDate'):'...' }}
               </div>
             </div>
           </div>
@@ -46,9 +46,9 @@
             <div class="step-title">{{ step.title }}</div>
             <div class="step-info">
               <span> by {{ step.actionBy.split(' ')[0]}} </span>
-              <span class="date">on {{ step.date | date: 'd MMM yyyy'}}</span>
+              <span class="date">on {{step.date!="..."?  (step.date | date: 'd MMM yyyy'):'...'}}</span>
               <div class="tooltip">
-                info: {{ step.actionBy }} completed this step on {{ step.date | date: 'longDate' }}
+                info: {{ step.actionBy }} completed this step on {{ step.date!="..."?  (step.date | date: 'longDate'):'...' }}
               </div>
             </div>
           </div>

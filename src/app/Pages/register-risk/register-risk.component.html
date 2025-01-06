@@ -1,20 +1,22 @@
-<app-body-container backgroundColor="var(--secondary-color)" padding="10">
+<app-body-container [backgroundColor]="bgColor" padding="10">
   <div class="container">
     <div class="content">
-      <div id="riskType" class="form-Container">
+      <div id="riskType" class="form-Container" [ngClass]="getRiskTypeClass()">
         <div class="riskType-radioButton-container">
           <div class="risk-type-label">
             <label for="riskType">Risk Type <span class="required">*</span> :</label>
           </div>
           @for (risk of riskTypes; track $index) {
-            <div  class="riskType-radioButton">
-              <label for="risk.type">
+            <div class="riskType-radioButton">
+              <label>
                 <input
-                  type="radio"
-                  name="riskType"
-                  [value]="risk.value"
-                  (click)="setRiskType(risk.value)"
-                  [checked]="selectedRiskType === risk.value">
+                type="radio"
+                name="riskType"
+                [value]="risk.value"
+                [checked]="selectedRiskType === risk.value"
+                [attr.data-risk-type]="risk.value.toString()"
+        (change)="setRiskType(risk.value)"
+        [ngClass]="{'selected-risk': selectedRiskType === risk.value}" >
                 {{ risk.type }}
               </label>
             </div>
@@ -23,13 +25,25 @@
         </div>
       </div>
        @if (selectedRiskType === 1) {
-        <app-qms-form  [riskTypeValue]="selectedRiskType"></app-qms-form>
+        <app-qms-form  [riskTypeValue]="selectedRiskType" [dropdownLikelihood]="dropdownDataLikelihood"
+        [dropdownImpact]="dropdownDataImpact" [dropdownProject]="dropdownDataProject"
+        [dropdownDepartment]="dropdownDataDepartment" [dropdownAssignee]="dropdownDataAssignee"
+        [dropdownReviewer]="dropdownDataReviewer" [departmentName]="departmentName"
+        [departmentId]="departmentId" [isAdmin]="isAdmin" (submitForm)="onFormSubmit($event)" [bgColor]="bgColor"></app-qms-form>
        }
        @if (selectedRiskType === 2) {
-        <app-isms-form  [riskTypeValue]="selectedRiskType"></app-isms-form>
+        <app-isms-form  [riskTypeValue]="selectedRiskType" [dropdownLikelihood]="dropdownDataLikelihood"
+        [dropdownImpact]="dropdownDataImpact" [dropdownProject]="dropdownDataProject"
+        [dropdownDepartment]="dropdownDataDepartment" [dropdownAssignee]="dropdownDataAssignee"
+        [dropdownReviewer]="dropdownDataReviewer" [departmentName]="departmentName"
+        [departmentId]="departmentId" [isAdmin]="isAdmin" (submitForm)="onFormSubmit($event)" [bgColor]="bgColor"></app-isms-form>
        }
        @if (selectedRiskType === 3) {
-        <app-isms-form  [riskTypeValue]="selectedRiskType"></app-isms-form>
+        <app-isms-form  [riskTypeValue]="selectedRiskType" [dropdownLikelihood]="dropdownDataLikelihood"
+        [dropdownImpact]="dropdownDataImpact" [dropdownProject]="dropdownDataProject"
+        [dropdownDepartment]="dropdownDataDepartment" [dropdownAssignee]="dropdownDataAssignee"
+        [dropdownReviewer]="dropdownDataReviewer" [departmentName]="departmentName"
+        [departmentId]="departmentId" [isAdmin]="isAdmin" (submitForm)="onFormSubmit($event)" [bgColor]="bgColor"></app-isms-form>
        }
     </div>
   </div>

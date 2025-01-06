@@ -24,25 +24,16 @@ export class TextareaComponent implements ControlValueAccessor {
   @Input()marginLeft:string=''
   binding: any;
 
-
-
-  value: string = ''; // Holds the value of the textarea
-  onChange: (value: any) => void = () => {}; // Function to call when the value changes
-  onTouched: () => void = () => {}; // Function to call when the textarea is touched
-control: any;
-
-
-
-
-
-
   autoResize(event: Event): void {
     const textarea = event.target as HTMLTextAreaElement;
     textarea.style.height = '33px';
     textarea.style.height = `${textarea.scrollHeight}px`;
   }
 
-
+  value: string = ''; // Holds the value of the textarea
+  onChange: (value: any) => void = () => {}; // Function to call when the value changes
+  onTouched: () => void = () => {}; // Function to call when the textarea is touched
+  control: any;
 
 
   writeValue(value: any): void {
