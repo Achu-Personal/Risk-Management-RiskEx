@@ -35,7 +35,7 @@
 
 
           </div>
-          <app-overall-rating-card title="Overall Rating" [value]="overallRiskRatingBefore" backgroundColor="white" [height]="27" [width]="27"  ></app-overall-rating-card>
+          <app-overall-rating-card [assessmentData]="riskAssessmentBefore" title="Overall Rating" [value]="overallRiskRatingBefore" backgroundColor="var(--primary-color)" [height]="27" [width]="27"  ></app-overall-rating-card>
         </div>
 
 
@@ -61,7 +61,7 @@
 
 
       </div>
-        <app-overall-rating-card title="Overall Rating" [value]="overallRiskratingAfter" backgroundColor="white" [height]="27" [width]="27"  ></app-overall-rating-card>
+        <app-overall-rating-card [assessmentData]="riskAssessmentAfter" title="Overall Rating" [value]="overallRiskratingAfter"  backgroundColor="var(--primary-color)" [height]="27" [width]="27"  ></app-overall-rating-card>
       </div>
 
       </div>
