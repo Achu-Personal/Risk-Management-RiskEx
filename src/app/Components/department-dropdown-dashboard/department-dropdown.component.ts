@@ -1,5 +1,5 @@
 import { NgFor, NgIf } from '@angular/common';
-import { Component, HostListener } from '@angular/core';
+import { Component, EventEmitter, HostListener, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ApiService } from '../../Services/api.service';
 import { department } from '../../Interfaces/deparments.interface';
@@ -16,10 +16,14 @@ export class DepartmentDropdownComponent {
   searchTerm = '';
   selectedItems: department[] = [];
   selectedDepartment: string = 'Select Department';
+  @Output() departmentsSelected: EventEmitter<number[]> = new EventEmitter<number[]>();
+
 
   constructor(public api: ApiService) { }
 
   dropdownOptions: department[] = [];
+  selectedDepartmentIds: number[] = [];
+
 
   ngOnInit() {
     this.api.getDepartment().subscribe(
@@ -31,8 +35,18 @@ export class DepartmentDropdownComponent {
         console.error('Failed to fetch departments', error);
       }
     );
-  }
 
+  }
+  extractDepartmentIdsAndFetchData() {
+    this.selectedDepartmentIds = this.selectedItems.map(item => item.id);
+    console.log('Extracted Department IDs:', this.selectedDepartmentIds);
+
+    if (this.selectedDepartmentIds.length > 0) {
+      this.departmentsSelected.emit(this.selectedDepartmentIds);
+    } else {
+      console.error('No department IDs selected.');
+    }
+  }
   toggleDropdown() {
     this.dropdownOpen = !this.dropdownOpen;
     console.log('Dropdown Open State:', this.dropdownOpen);
@@ -56,6 +70,7 @@ export class DepartmentDropdownComponent {
       this.selectedItems.push(item);
     }
     this.updateSelectedDepartment();
+    this.extractDepartmentIdsAndFetchData();
   }
 
   isSelected(item: department) {
@@ -69,6 +84,7 @@ export class DepartmentDropdownComponent {
       this.selectedItems = [...this.dropdownOptions];
     }
     this.updateSelectedDepartment();
+    this.extractDepartmentIdsAndFetchData();
   }
 
   isAllSelected() {

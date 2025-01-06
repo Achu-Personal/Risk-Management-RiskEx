@@ -37,10 +37,9 @@ export class ProjectDropDownComponent implements OnChanges, ControlValueAccessor
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['departmentName']) {
-      if (this.departmentName) {
+      if (this.departmentName || this.authService.getUserRole()?.includes('ProjectUsers')) {
         this.loadProjectsForDepartment();
       } else {
-        // Reset when department is cleared
         this.resetComponent();
       }
     }
@@ -54,16 +53,25 @@ export class ProjectDropDownComponent implements OnChanges, ControlValueAccessor
     this.updateSelectedProject();
     this.emitChanges();
   }
+  ngOnInit(){
+    this.loadProjectsForDepartment();
+  }
 
   loadProjectsForDepartment() {
     this.loading = true;
     this.dropdownOpen = false;
+    console.log('User Role:', this.authService.getUserRole());
 
-    // Check if the user is a 'ProjectUser' and fetch projects based on that role
-    if (this.authService.getUserRole() === 'ProjectUsers') {
-      this.authService.getProjects().subscribe(
-        (response: project[]) => {
-          this.filteredProjects = response;
+    if (this.authService.getUserRole()?.includes('ProjectUsers')) {
+      this.authService.getProjectsFor().subscribe(
+        (response: any[]) => {
+          const data = response.map((project) => {
+            return Object.keys(project).reduce((acc, key) => {
+              acc[key.toLowerCase()] = project[key];
+              return acc;
+            }, {} as any);
+          });
+          this.filteredProjects = data
           this.selectedItems = [];
           this.updateSelectedProject();
           this.emitChanges();
@@ -76,7 +84,6 @@ export class ProjectDropDownComponent implements OnChanges, ControlValueAccessor
         }
       );
     } else {
-      // If not a 'ProjectUser', fetch projects based on department
       this.api.getProjects(this.departmentName).subscribe(
         (response: project[]) => {
           this.filteredProjects = response;
@@ -93,6 +100,8 @@ export class ProjectDropDownComponent implements OnChanges, ControlValueAccessor
       );
     }
 }
+
+
 
   toggleDropdown() {
     if (!this.disabled && this.filteredProjects.length > 0) {

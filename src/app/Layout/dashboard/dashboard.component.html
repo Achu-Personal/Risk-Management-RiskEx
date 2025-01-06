@@ -1,5 +1,8 @@
 <div class="d-flex">
-    <app-sidebar></app-sidebar>
+
+  <app-changepassword style="position: absolute;" (closeModal)="hideChangePassword()" (close)="isShowPopUp=false" [isVisible]=isShowPopUp  ></app-changepassword>
+
+    <app-sidebar (changePasswordRequested)="showChangePassword()"></app-sidebar>
 
     <div class="main-content">
         <app-navbar [data]="navbarData">
@@ -7,7 +10,7 @@
         </app-navbar>
         <app-crumbs></app-crumbs>
         <!-- <app-breadcrumb></app-breadcrumb> -->
-        
+
         <router-outlet></router-outlet>
     </div>
 </div>

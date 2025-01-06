@@ -2,13 +2,10 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { BehaviorSubject, catchError, Observable, tap, throwError } from 'rxjs';
+import { BehaviorSubject, catchError, map, Observable, of, tap, throwError } from 'rxjs';
 import { project } from '../Interfaces/projects.interface';
 
-// interface Project {
-//   id: string;
-//   name: string;
-// }
+
 
 @Injectable({
   providedIn: 'root',
@@ -19,7 +16,7 @@ export class AuthService {
   private userRole = new BehaviorSubject<string | null>(null);
   private departmentName = new BehaviorSubject<string | null>(null);
   private departmentId = new BehaviorSubject<string | null>(null);
-  private projects = new BehaviorSubject<project[]>([]);
+  private projects = new BehaviorSubject<any[]>([]);
   private currentUserId = new BehaviorSubject<string | null>(null);
   private userMail = new BehaviorSubject<string | null>(null);
   private userName = new BehaviorSubject<string | null>(null);
@@ -27,7 +24,6 @@ export class AuthService {
 
 
   constructor(private http: HttpClient, private router: Router) {
-    // Initialize values from token if exists
     this.loadUserDataFromToken();
   }
 
@@ -60,6 +56,7 @@ export class AuthService {
     this.currentUserId.next(decodedToken.CurrentUserId);
     this.userMail.next(decodedToken.UserMail);
     this.userName.next(decodedToken.UserName);
+    this.projects.next(decodedToken.Projects);
 
 
     // Parse projects from the token if they exist
@@ -74,11 +71,9 @@ export class AuthService {
     }
   }
 
-  // Getters for all user data
+
   getUserRole() {
-    const role = this.userRole.value;
-  console.log('User role:', role);  // Log the role to the console
-  return role;
+    return this.userRole.value;
   }
   getUserName(){
     return this.userName.value;
@@ -101,7 +96,25 @@ export class AuthService {
   }
 
   getProjects() {
-    return this.projects.asObservable();
+    return this.projects.value;
+
+  }
+  getProjectsFor(): Observable<any[]> {
+    const value: any[] = this.projects.value;
+    console.log(value);
+
+    // Convert all object keys to lowercase
+    return of(value).pipe(
+      map((projects) =>
+        projects.map((project) => {
+          // Create a new object with lowercase keys
+          return Object.keys(project).reduce((acc, key) => {
+            acc[key.toLowerCase()] = project[key];
+            return acc;
+          }, {} as any); // Ensure the result is typed correctly
+        })
+      )
+    );
   }
 
   // Observable getters for reactive updates
@@ -137,23 +150,12 @@ export class AuthService {
   }
 
   private navigateToDashboard() {
-     // const role = this.userRole.value;
      this.router.navigate(['/home']);
-    // const role = this.userRole.value;
-    // if (role === 'ProjectUsers') {
-    //   this.router.navigate(['/home']);
-    // } else if (role === 'DepartmentUser') {
-    //   this.router.navigate(['/home']);
-    // } else {
-    //   this.router.navigate(['/home']);
-    // }
   }
 
   getToken()
   {
     const token = localStorage.getItem('token');
-
-
     return token;
   }
 }

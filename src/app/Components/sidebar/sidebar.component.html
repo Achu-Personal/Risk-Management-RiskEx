@@ -37,7 +37,8 @@
         <div style="height: 20px;"></div>
         <img (click)="setTheme('dark-theme')" src="https://cdn-icons-png.flaticon.com/128/149/149071.png" height="50" width="50"/>
       </div> -->
-      <app-usericon-dropdown></app-usericon-dropdown>
+      <app-usericon-dropdown (changePasswordClicked)="onPasswordChangeRequest()"></app-usericon-dropdown>
+
 
     </div>
   </div>

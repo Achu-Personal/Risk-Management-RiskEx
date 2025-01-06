@@ -85,6 +85,7 @@ tableBody:any[]=[
     const userRole = this.authService.getUserRole();
     const userDepartment = this.authService.getDepartmentName();
 
+
     if (userRole === 'DepartmentUser'||userRole?.includes('ProjectUsers')) {
       this.userForm.patchValue({ departmentName: userDepartment });
       this.userForm.get('departmentName')?.disable();
@@ -116,6 +117,18 @@ tableBody:any[]=[
       } else {
         console.error('Department name is null or undefined');
       }
+    }
+    else if(userRole?.includes('ProjectUsers')){
+      const projects= this.authService.getProjects();
+      console.log("Projects assigned to user",projects);
+      this.api.getUsersByProjects().subscribe({
+        next: (users) => {
+            this.tableBody = users;
+        },
+        error: (error) => {
+            console.error('Error fetching users:', error);
+        }
+    });
     }
 
     this.userForm
