@@ -122,7 +122,7 @@ export class ApprovalTableComponent {
   }
 
   OnClickRow(rowData: any): void {
-    this.router.navigate(['approvals',rowData.id], { relativeTo: this.route });
+    this.router.navigate([`approvals/${rowData.id}`]);
     console.log('rowdata', rowData);
   }
 
