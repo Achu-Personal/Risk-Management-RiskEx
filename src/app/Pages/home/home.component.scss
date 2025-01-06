@@ -2,24 +2,29 @@
 .dashboard{
   display: flex;
   flex-direction: column;
-
   height: 100%;
   width: 100%;
 }
 .topbuttons{
   display: flex;
   flex-direction: row;
+  gap: 0px;
   justify-content: end;
   padding: 0;
   // position: fixed;
   margin-right: 25px;
+
+
 }
 .dropdown{
   display: flex;
   align-items: center;
+  margin-right: -25px;
+
 }
 app-department-dropdown{
    margin-right: 40px;
+
 }
 .btn{
   font-size: 14px;
@@ -109,6 +114,10 @@ app-department-dropdown{
   align-items: flex-end;
 
 
+}
+.forchart{
+
+  background-color: red;
 }
 .graph2{
   background-color: #FFFFFF;
