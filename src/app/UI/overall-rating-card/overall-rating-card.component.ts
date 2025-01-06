@@ -19,16 +19,28 @@ export class OverallRatingCardComponent {
   @Input() assessmentData: any[] = [];
 
   isHovered: boolean = false;
+  criticality=true;
+
+
+  get getCriticality():string{
+    if (this.value <= 45) {
+      return 'Low';
+    }
+    if (this.value >= 46 && this.value <= 69) {
+      return 'Medium';
+    }
+    return 'High';
+  }
 
   // Get dynamic background color based on input or value
   get dynamicBackgroundColor(): string {
     if (this.backgroundColor) {
       return this.backgroundColor;
     }
-    if (this.value <= 30) {
+    if (this.value <= 45) {
       return 'green';
     }
-    if (this.value > 30 && this.value < 99) {
+    if (this.value >= 46 && this.value <= 69) {
       return '#FFBF00';
     }
     return 'red';
@@ -39,23 +51,13 @@ export class OverallRatingCardComponent {
     if (this.textColor) {
       return this.textColor;
     }
-    if (this.value <= 30) {
+    if (this.value <= 45) {
       return 'green';
     }
-    if (this.value > 30 && this.value < 99) {
+    if (this.value >= 46 && this.value <= 69) {
       return '#FFBF00';
     }
     return 'red';
-  }
-
-  // Trigger hover effect
-  onMouseOver() {
-    this.isHovered = true;
-  }
-
-  // Reset hover effect
-  onMouseOut() {
-    this.isHovered = false;
   }
 
   // Return dynamic styles for width, height, background, and text color
@@ -63,7 +65,8 @@ export class OverallRatingCardComponent {
     return {
       'background-color': this.dynamicBackgroundColor,  // Dynamic background color
       'color': this.dynamicTextColor,  // Dynamic text color
-
+      'height':this.height+"vh",
+      'width':this.width+"vh",
       'transition': 'all 0.5s ease',   // Transition for smooth resizing
     };
   }
