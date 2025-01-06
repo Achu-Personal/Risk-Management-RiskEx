@@ -9,6 +9,15 @@ import { AuthService } from '../../Services/auth.service';
 import { ApiService } from '../../Services/api.service';
 import { BubbleGraphComponent } from "../../UI/bubble-graph/bubble-graph.component";
 import { StyleButtonComponent } from "../../UI/style-button/style-button.component";
+import {
+  Chart as ChartJS,
+  Title,
+  Tooltip,
+  Legend,
+  ArcElement,
+  CategoryScale,
+  LinearScale,
+} from 'chart.js';
 
 @Component({
   selector: 'app-home',
@@ -42,6 +51,7 @@ export class HomeComponent {
         risksWithHeighesOverallRating:any=[]
 
         Criticality:any=[]
+        graph2options:any
 
         ngOnInit(){
 
@@ -103,6 +113,28 @@ export class HomeComponent {
                 ],
                 hoverOffset: 10
                 }]
+
+
+
+
+              //    options = {
+              //     responsive: true,
+              //     maintainAspectRatio: false,
+              //     plugins: {
+              //         legend: {
+              //             position: 'right' as const,
+              //             align: 'center' as const,
+              //             labels: {
+              //                 boxWidth: 10,
+              //                 padding: 10,
+              //             },
+              //         },
+              //         tooltip: {
+              //             enabled: true,
+              //         },
+              //     },
+              //     cutout: '50%', // Adjust the hole size
+              // };
 
 
 

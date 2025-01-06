@@ -2,11 +2,12 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApiService } from '../../Services/api.service';
+import { ChangepasswordComponent } from "../../Components/changepassword/changepassword.component";
 
 @Component({
   selector: 'app-forgetpswrd',
   standalone: true,
-  imports: [],
+  imports: [ChangepasswordComponent],
   templateUrl: './forgetpswrd.component.html',
   styleUrl: './forgetpswrd.component.scss'
 })
