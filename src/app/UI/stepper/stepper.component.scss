@@ -64,6 +64,8 @@
   position: relative;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
+
+
   &.completed {
     background: #4c6ef5;
     border-color: #4c6ef5;
@@ -74,6 +76,8 @@
       opacity: 0;
       animation: fadeInZoom 0.5s ease forwards;
     }
+
+
   }
 
   &.current {
@@ -227,3 +231,38 @@
   height: 62px;
   background-color: #4c6ef5;
 }
+
+// @media (max-width: 600px) {
+//   .step-item {
+//     flex: none;
+//     margin: 5px; /* Smaller margins on mobile */
+//     width: 100%; /* Ensure step items are full width */
+//   }
+//   .timeline {
+//     flex-direction: column; /* Stack the steps vertically */
+//     align-items: center;
+//   }
+//   .stepper-container {
+//       padding: 10px;
+//       max-width: 100%;
+//     }
+//     .step-icon {
+//       width: 30px;
+//       height: 30px;
+//       font-size: 14px; /* Smaller font size */
+//     }
+//     .step-content {
+//       font-size: 12px; /* Smaller text for mobile */
+//     }
+//     .step-info {
+//       font-size: 14px;
+//       align-items: center; /* Center-align text on mobile */
+//     }
+//     .step-info span {
+//       font-size: 12px; /* Smaller font size for smaller screens */
+//     }
+//     .stepper-container {
+//       padding: 5px;
+//       max-width: 100%;
+//     }
+// }
