@@ -1,8 +1,8 @@
+import { project } from './../Interfaces/projects.interface';
 import { department } from './../Interfaces/deparments.interface';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map, Observable } from 'rxjs';
-import { project } from '../Interfaces/projects.interface';
+import { catchError, map, Observable, of, throwError } from 'rxjs';
 import { UserResponse } from '../Interfaces/Userdata.interface.';
 import { AuthService } from './auth.service';
 
@@ -58,19 +58,21 @@ export class ApiService {
   gettabledata() {
     return this.http.get(`https://localhost:7216/api/Report`);
   }
-   gethistorytabledata(){
+  gethistorytabledata(){
     return this.http.get(`https://localhost:7216/api/Report?riskStatus=close`)
-   }
-  getFilteredData(department: any) {
-    return this.http.get(`data/tabledata.json`).pipe(
-      map((data: any) => {
-        const filteredData = data.filter(
-          (item: any) =>
-            item.department.toLowerCase() === String(department).toLowerCase()
-        );
-        return filteredData;
-      })
-    );
+  }
+  getDepartmentTable(department:any) {
+    return this.http.get(`https://localhost:7216/api/Report/DepartmentwiseRisk/${department}`)
+  }
+  getDepartmentHistoryTable(department:any) {
+    return this.http.get(`https://localhost:7216/api/Report/DepartmentwiseRisk/${department}?riskStatus=close`)
+  }
+  getProjectTable(projectList:any) {
+    // let params = new HttpParams();
+    // projectList.forEach((id) => {
+    //   params = params.append('projectIds', id);
+    // });
+    return this.http.get(`https://localhost:7216/api/Report/projectrisks?projectIds=${projectList}`)
   }
   addNewProject(project: any) {
     return this.http.post(
@@ -88,13 +90,13 @@ export class ApiService {
     );
   }
 
-   getRisk()
-   {
-     console.log("hai")
-       return this.http.get(`data/getRisk.json`);
+  getRisk() {
+    console.log('hai');
+    return this.http.get(`data/getRisk.json`);
+  }
 
 
-   }
+
    getRiskResponses(){
 
     return this.http.get('https://localhost:7216/api/RiskResponseData')
@@ -130,13 +132,14 @@ export class ApiService {
    getAllReviewer(){
     return this.http.get('https://localhost:7216/api/Reviewer/getAllReviewers')
    }
-   editQualityRisk(id:any,risk:any){
+   editQualityRisk(id:number,risk:any){
     return this.http.put(`https://localhost:7216/api/Risk/quality/${id}`,risk)
+   }
+   editSecurityOrPrivacyRisk(id:number,risk:any){
+    return this.http.put(`https://localhost:7216/api/Risk/SecurityOrPrivacy/${id}`,risk)
    }
 
   getRisksAssignedToUser(id: any = '') {
-
-
     return this.http.get(
       `https://localhost:7216/api/Risk/GetRiskByAssigne?id=${id}`
     );
@@ -154,10 +157,7 @@ export class ApiService {
     );
   }
   updateRiskReviewStatus(riskId: number, approvalStatus: string) {
-    // Construct the API URL with query parameters
     const url = `https://localhost:7216/api/Approval/update-review-status?riskId=${riskId}&approvalStatus=${approvalStatus}`;
-
-    // Make the HTTP PUT request
     return this.http.put(url, {});
   }
   updateReviewStatusAndComments(id: number, updates: any) {
@@ -185,20 +185,22 @@ export class ApiService {
     );
   }
 
-  getAllUsers(){
+  getAllUsers() {
     return this.http.get('https://localhost:7216/api/User/GetAllUsers');
   }
 
-  getAllUsersByDepartmentName(department:string){
-    return this.http.get(`https://localhost:7216/api/User/GetUsersByDepartment/${department}`)
+  getAllUsersByDepartmentName(department: string) {
+    return this.http.get(
+      `https://localhost:7216/api/User/GetUsersByDepartment/${department}`
+    );
   }
 
-  getAllUsersForAssignee(){
+  getAllUsersForAssignee() {
     return this.http.get('https://localhost:7216/Users');
   }
 
-  getAllUsersByDepartmentId(id:number){
-    return this.http.get(`https://localhost:7216/department/${id}`)
+  getAllUsersByDepartmentId(id: number) {
+    return this.http.get(`https://localhost:7216/department/${id}`);
   }
 
   getRiskCategoryCountsByDepartment(departmentList: number[]) {

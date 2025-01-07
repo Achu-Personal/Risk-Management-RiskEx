@@ -17,11 +17,14 @@ export class FormDropdownComponent {
   @Input() required:string=''
   @Input() selectValue:string=''
   @Output() change = new EventEmitter<any>();
+  @Input() selectedValue: any = null;
 
   onChange(event: any): void {
-    console.log("event is ",event);
+    
 
     this.change.emit(event);
+
+
   }
 
 

@@ -7,8 +7,9 @@
   label="Add User"
   color="primary"
   data-bs-toggle="modal"
-  data-bs-target="#addUserModal">
- </app-style-button>
+  data-bs-target="#addUserModal"
+  *ngIf="authService.getUserRole() === 'Admin'|| authService.getUserRole() === 'DepartmentUser' || authService.getUserRole()?.includes('ProjectUsers')"
+  ></app-style-button>
 
   <app-style-button
   label="Add Department"
@@ -23,6 +24,7 @@
   color="primary"
   data-bs-target="#addProjectModal"
   data-bs-toggle="modal"
+  *ngIf="authService.getUserRole() === 'Admin'|| authService.getUserRole() === 'DepartmentUser'"
  ></app-style-button>
 
 </div>
@@ -79,7 +81,7 @@
               <app-drop-down-deparment  *ngIf="authService.getUserRole() === 'Admin'"
                 formControlName="departmentName"
               ></app-drop-down-deparment>
-              <div *ngIf="authService.getUserRole() === 'DepartmentUser'">
+              <div *ngIf="authService.getUserRole() === 'DepartmentUser'|| authService.getUserRole()?.includes('ProjectUsers')">
                 <input
                   class="form-control"
                   id="department"
@@ -97,7 +99,7 @@
 
             <div class="mb-3">
               <label for="projectName" class="form-label">Project</label>
-              <app-project-drop-down
+              <app-project-drop-down 
                 [departmentName]="userForm.get('departmentName')?.value"
                 formControlName="projectNames"
                 (selectedProjectsChange)="onProjectsSelected($event)"
@@ -223,7 +225,7 @@
 
       <app-reusable-table
     [tableHeaders]="isAdmin ? headerData : headerDataDpt"
-    [tableData]="isAdmin ? tableBodyAdmin : tableBody" 
+    [tableData]="isAdmin ? tableBodyAdmin : tableBody"
     [headerDisplayMap]="headerDisplayMap"
     [IsActionRequiered]="true"
     [IsUser]="true">
