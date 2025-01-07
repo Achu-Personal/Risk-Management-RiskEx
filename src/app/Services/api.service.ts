@@ -58,19 +58,21 @@ export class ApiService {
   gettabledata() {
     return this.http.get(`https://localhost:7216/api/Report`);
   }
-  gethistorytabledata() {
-    return this.http.get(`https://localhost:7216/api/Report?riskStatus=close`);
+  gethistorytabledata(){
+    return this.http.get(`https://localhost:7216/api/Report?riskStatus=close`)
   }
-  getFilteredData(department: any) {
-    return this.http.get(`data/tabledata.json`).pipe(
-      map((data: any) => {
-        const filteredData = data.filter(
-          (item: any) =>
-            item.department.toLowerCase() === String(department).toLowerCase()
-        );
-        return filteredData;
-      })
-    );
+  getDepartmentTable(department:any) {
+    return this.http.get(`https://localhost:7216/api/Report/DepartmentwiseRisk/${department}`)
+  }
+  getDepartmentHistoryTable(department:any) {
+    return this.http.get(`https://localhost:7216/api/Report/DepartmentwiseRisk/${department}?riskStatus=close`)
+  }
+  getProjectTable(projectList:any) {
+    // let params = new HttpParams();
+    // projectList.forEach((id) => {
+    //   params = params.append('projectIds', id);
+    // });
+    return this.http.get(`https://localhost:7216/api/Report/projectrisks?projectIds=${projectList}`)
   }
   addNewProject(project: any) {
     return this.http.post(
@@ -213,46 +215,9 @@ export class ApiService {
     );
   }
 
-  changeUserStatus(userId: any, status: any) {
-    return this.http
-      .patch(`https://localhost:7216/api/User/IsActive/${userId}/${status}`, {})
-      .subscribe((e) => console.log('UserId and status:', userId, status));
+  changeUserStatus(userId:any,status:any){
+    return this.http.patch(`https://localhost:7216/api/User/IsActive/${userId}/${status}`,{}).subscribe((e)=>console.log('UserId and status:',userId,status)
+    )
   }
 
-  getUsersByProjects(): Observable<any> {
-    const projects = this.auth.getProjects() || [];
-    if (!projects || projects.length === 0) {
-      console.log('No projects found in auth');
-      return of([]);
-    }
-    let params = new HttpParams();
-
-    projects.forEach((project) => {
-      if (project && project.Id) {
-        params = params.append('projectIds', project.Id.toString());
-      }
-    });
-
-    return this.http
-      .get<any>(`https://localhost:7216/api/User/users-by-projects`, { params })
-      .pipe(
-        catchError((error) => {
-          if (error.status === 404) {
-            console.log('API Response:', error);
-            return of([]);
-          }
-          return throwError(() => error);
-        })
-      );
-  }
-  updateQualityRisk(updated:any,riskId:number){
-    return this.http.put(`https://localhost:7216/api/Risk/update/Quality/${riskId}`,updated)
-  }
-
-  updateSecurityOrPrivacyRisk(updated:any,riskId:number){
-    return this.http.put(`https://localhost:7216/api/Risk/update/${riskId}`,updated)
-  }
-}
-
-
-
+ }
