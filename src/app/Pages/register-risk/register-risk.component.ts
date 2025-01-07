@@ -246,8 +246,7 @@ receiveValue(value: any) {
 (error:any)=>{
   this.dropdownDataProjectForAdmin=[]
 })
-
-this.api.getAllUsersByDepartmentId(Number(this.receivedDepartmentIdForAdmin)).subscribe((res:any)=>{
+this.api.getAllUsersByDepartmentName(departmentName).subscribe((res:any)=>{
   this.dropdownAssigneeForAdmin=res
 
 },
