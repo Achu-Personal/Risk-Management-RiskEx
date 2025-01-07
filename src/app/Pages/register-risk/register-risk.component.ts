@@ -5,6 +5,7 @@ import { ISMSFormComponent } from "../../Components/isms-form/isms-form.componen
 import { ApiService } from '../../Services/api.service';
 import { AuthService } from '../../Services/auth.service';
 import { CommonModule } from '@angular/common';
+import { EmailService } from '../../Services/email.service';
 
 
 
@@ -16,8 +17,9 @@ import { CommonModule } from '@angular/common';
   styleUrl: './register-risk.component.scss'
 })
 export class RegisterRiskComponent {
+reviewer: any;
 
-constructor(private api:ApiService,public authService:AuthService,private cdRef: ChangeDetectorRef){}
+constructor(private api:ApiService,public authService:AuthService,private cdRef: ChangeDetectorRef,public email:EmailService){}
 bgColor:string=''
 selectedRiskType: number = 1;
 departmentName:string=''
@@ -29,7 +31,7 @@ dropdownDataProject:any[]=[]
 dropdownDataDepartment:any[]=[]
 dropdownDataAssignee:any[]=[]
 dropdownDataReviewer: Array<{ id: number; fullName: string; email: string; type: string }> = [];
-
+context:any;
 ngOnInit(){
   this.departmentName =this.authService.getDepartmentName()!;
 
@@ -79,10 +81,89 @@ setRiskType(riskValue: number){
 onFormSubmit(payload: any) {
   console.log('Payload received from child:', payload);
   if (payload.riskType == 1) {
-    this.api.addnewQualityRisk(payload).subscribe((res:any)=>{
-      console.log(res);
+    // this.api.addnewQualityRisk(payload).subscribe((res:any)=>{
+    //   console.log(res);
+    //   console.log("id:",res.id);
+    //   this.api.getRevieverDetails(res.id).subscribe((r:any)=>{
+        
+        
+    //     this.reviewer=r.fullName;
+    //     console.log("REVIEWER:",this.reviewer);  
+    //     const context = {
+    //       responsibleUser: this.reviewer,
+    //       riskId: res.riskId,
+    //       riskName: res.riskName,
+    //       description: res.description,
+    //       riskType:res.riskType,
+    //       plannedActionDate:res.plannedActionDate,
+    //       overallRiskRating:res.overallRiskRatingBefore,
 
-    })
+    //     };
+    //     console.log("context:",context);
+    //     this.email.sendAssigneeEmail(r.email,context).subscribe({
+          
+          
+    //       next: () => {
+    //         console.log('reviewer email:',r.email)
+    //         console.log('context:',context);
+            
+    //         console.log('reviewer email sent successfully');
+            
+    //       },
+    //       error: (emailError) => {
+    //         console.error('Failed to send email to reviewer:', emailError);
+          
+    //       }
+    //     })
+        
+    //   });
+
+    // })
+    this.api.addnewQualityRisk(payload).subscribe({
+      next: (res: any) => {
+        console.log('Risk saved successfully:', res);
+        console.log('Generated Risk ID:', res.id);
+
+        // Fetch reviewer details
+        this.api.getRevieverDetails(res.id).subscribe({
+          next: (r: any) => {
+            this.reviewer = r[0].fullName;
+            console.log('Reviewer Details:', this.reviewer);
+
+             this.context = {
+              responsibleUser: this.reviewer,
+              riskId: res.riskId,
+              riskName: res.riskName,
+              description: res.description,
+              riskType: res.riskType,
+              plannedActionDate: res.plannedActionDate,
+              overallRiskRating: res.overallRiskRatingBefore,
+              id:res.id
+            };
+            console.log('Email Context:', this.context);
+
+            // Send email to reviewer
+            this.email.sendReviewerEmail(r[0].email, this.context).subscribe({
+              next: () => {
+                console.log('Reviewer Email:', r.email);
+                console.log('Email Sent Successfully.');
+              },
+              error: (emailError) => {
+                console.error('Failed to send email to reviewer:', emailError);
+              },
+            });
+          },
+          error: (reviewerError) => {
+            console.error('Failed to fetch reviewer details:', reviewerError);
+          },
+        });
+      },
+      error: (saveError) => {
+        console.error('Failed to save risk:', saveError);
+      },
+    });
+  
+    
   }
   else if (payload.riskType == 2) {
     this.api.addnewSecurityOrPrivacyRisk(payload).subscribe((res:any)=>{

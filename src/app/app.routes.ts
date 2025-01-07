@@ -30,6 +30,8 @@ import { AssignmentComponent } from './Pages/assignment/assignment.component';
 import { AuthGuard } from './Gaurd/auth.guard';
 import { UpdateRiskComponent } from './Pages/update-risk/update-risk.component';
 import { ApprovalLayoutComponent } from './Layout/approval-layout/approval-layout.component';
+import { ThankyouComponent } from './Pages/approved-response/approved-response.component';
+import { RejectedResponseComponent } from './Pages/rejected-response/rejected-response.component';
 
 
 export const routes: Routes = [
@@ -118,6 +120,9 @@ export const routes: Routes = [
   {
     path:"sso",component:SsoComponent
   },
+ 
+  {path:'thankyou/:id',component:ThankyouComponent},          //AprovalResponse component
+  {path:'sorry/:id',component:RejectedResponseComponent},
 
 
 
@@ -126,7 +131,7 @@ export const routes: Routes = [
     path:'**',component:WildComponentComponent
 
   },
-
+  
 
 
 ];

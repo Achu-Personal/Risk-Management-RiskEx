@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Risk Assignment Notification</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        h2 {
+            color: #dc143c;
+        }
+        ul {
+            padding-left: 20px;
+        }
+        ul li {
+            margin-bottom: 10px;
+        }
+        p {
+            margin: 10px 0;
+        }
+        .footer {
+            margin-top: 30px;
+            font-size: 14px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <h2>Risk Assignment Notification</h2>
+    <p>Dear {{responsibleUser}},</p>
+
+    <p>A new risk has been assigned to you for review:</p>
+
+    <ul>
+        <li><strong>Risk ID:</strong> {{riskId}}</li>
+        <li><strong>Risk Name:</strong> {{riskName}}</li>
+        <li><strong>Description:</strong> {{description}}</li>
+        <li><strong>Risk Type:</strong> {{riskType}}</li>
+        <li><strong>Planned Date of Action:</strong> {{plannedActionDate}}</li>
+        <li><strong>Overall Risk Rating:</strong> {{overallRiskRating}}</li>
+    </ul>
+
+    <p>Please Approve or Reject </p>
+
+    <a href="http://localhost:4200/thankyou/{{id}}"
+   style="margin:20px 20px; padding:10px 15px; background-color:green; color:white; text-decoration:none; border-radius:5px;"
+   >
+   Approve
+</a>
+
+<a href="http://localhost:4200/sorry/{{id}}"
+   style="margin:20px 20px; padding:10px 15px; background-color:red; color:white; text-decoration:none; border-radius:5px; margin-left:10px;"
+  >
+   Reject
+</a>
+
+
+    <p>Thank you.</p>
+
+    <div class="footer">
+        <p>Risk Management Team,</p>
+        <p>Experion Technologies Pvt. Ltd</p>
+    </div>
+</body>
+
+</html>
+
+
+
+
