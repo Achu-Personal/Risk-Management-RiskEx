@@ -181,9 +181,9 @@ export class HomeComponent {
           }
 
 
+          
 
-
-          this.api.getRiskApproachingDeadline(this.authService.getUserRole() === 'Admin'?'':this.authService.getDepartmentId()).subscribe((e:any)=>{
+          this.api.getRiskApproachingDeadline(this.authService.getUserRole() === 'Admin'?'' :this.authService.getDepartmentId()).subscribe((e:any)=>{
               this.riskApproachingDeadline=e
               console.log("approaching",e)
           })

@@ -184,6 +184,9 @@ export class ApiService {
       `https://localhost:7216/api/Risk/GetRiskApproachingDeadline?id=${id}`
     );
   }
+  // getRiskCategoryCountsbasedonroles(id:any = ''){
+  //   return this.http.get(`https://localhost:7216/api/Risk/RiskCategoryCountByDepartment?id=${id}`)
+  //  }
 
   getAllUsers(){
     return this.http.get('https://localhost:7216/api/User/GetAllUsers');
