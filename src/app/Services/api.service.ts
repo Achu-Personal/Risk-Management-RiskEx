@@ -74,6 +74,7 @@ export class ApiService {
     // });
     return this.http.get(`https://localhost:7216/api/Report/projectrisks?projectIds=${projectList}`)
   }
+  
   addNewProject(project: any) {
     return this.http.post(
       'https://localhost:7216/api/Project/Project',

@@ -38,7 +38,7 @@ export class HistoryComponent {
     this.isAdmin = role === 'Admin';
     const department = this.auth.getDepartmentId();
     this.isDepartmentUser = role ==='DepartmentUser';
-      // console.log( "sssss",this.auth.getProjects().)
+    console.log( "sssss",this.auth.getProjects())
   //   this.auth.getProjects().subscribe(
   //     (projects: project[]) => {
   //         this.projectList = projects;
