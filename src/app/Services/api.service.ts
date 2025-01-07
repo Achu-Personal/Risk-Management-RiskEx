@@ -180,9 +180,7 @@ export class ApiService {
   getRiskApproachingDeadline(id: any = '') {
     return this.http.get(`${this.baseUrl}/Risk/GetRiskApproachingDeadline?id=${id}`);
   }
-  // getRiskCategoryCountsbasedonroles(id:any = ''){
-  //   return this.http.get(`https://localhost:7216/api/Risk/RiskCategoryCountByDepartment?id=${id}`)
-  //  }
+
 
   getAllUsers() {
     return this.http.get(`${this.baseUrl}/User/GetAllUsers`);
@@ -196,9 +194,6 @@ export class ApiService {
     return this.http.get(`${this.baseUrl}/Users`);
   }
 
-  getAllUsersByDepartmentId(id: number) {
-    return this.http.get(`${this.baseUrl}/department/${id}`);
-  }
 
   getRiskCategoryCountsByDepartment(departmentList: number[]) {
     let params = new HttpParams();
