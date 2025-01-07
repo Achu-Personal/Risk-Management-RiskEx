@@ -99,7 +99,8 @@ export class AuthService {
   }
 
   getProjects() {
-    return this.projects.asObservable();
+    console.log(this.projects.asObservable());
+    return this.projects;
   }
 
   // Observable getters for reactive updates

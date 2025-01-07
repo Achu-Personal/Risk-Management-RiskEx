@@ -58,19 +58,21 @@ export class ApiService {
   gettabledata() {
     return this.http.get(`https://localhost:7216/api/Report`);
   }
-   gethistorytabledata(){
+  gethistorytabledata(){
     return this.http.get(`https://localhost:7216/api/Report?riskStatus=close`)
-   }
-  getFilteredData(department: any) {
-    return this.http.get(`data/tabledata.json`).pipe(
-      map((data: any) => {
-        const filteredData = data.filter(
-          (item: any) =>
-            item.department.toLowerCase() === String(department).toLowerCase()
-        );
-        return filteredData;
-      })
-    );
+  }
+  getDepartmentTable(department:any) {
+    return this.http.get(`https://localhost:7216/api/Report/DepartmentwiseRisk/${department}`)
+  }
+  getDepartmentHistoryTable(department:any) {
+    return this.http.get(`https://localhost:7216/api/Report/DepartmentwiseRisk/${department}?riskStatus=close`)
+  }
+  getProjectTable(projectList:any) {
+    // let params = new HttpParams();
+    // projectList.forEach((id) => {
+    //   params = params.append('projectIds', id);
+    // });
+    return this.http.get(`https://localhost:7216/api/Report/projectrisks?projectIds=${projectList}`)
   }
   addNewProject(project: any) {
     return this.http.post(

@@ -47,6 +47,7 @@
       transform: scaleX(1) translateY(-50%);
     }
   }
+
 }
 
 .step-icon {
@@ -232,37 +233,15 @@
   background-color: #4c6ef5;
 }
 
-// @media (max-width: 600px) {
-//   .step-item {
-//     flex: none;
-//     margin: 5px; /* Smaller margins on mobile */
-//     width: 100%; /* Ensure step items are full width */
-//   }
-//   .timeline {
-//     flex-direction: column; /* Stack the steps vertically */
-//     align-items: center;
-//   }
-//   .stepper-container {
-//       padding: 10px;
-//       max-width: 100%;
-//     }
-//     .step-icon {
-//       width: 30px;
-//       height: 30px;
-//       font-size: 14px; /* Smaller font size */
-//     }
-//     .step-content {
-//       font-size: 12px; /* Smaller text for mobile */
-//     }
-//     .step-info {
-//       font-size: 14px;
-//       align-items: center; /* Center-align text on mobile */
-//     }
-//     .step-info span {
-//       font-size: 12px; /* Smaller font size for smaller screens */
-//     }
-//     .stepper-container {
-//       padding: 5px;
-//       max-width: 100%;
-//     }
-// }
+@media (max-width: 600px) {
+
+  .step-icon {
+      width: 30px;
+      height: 30px;
+      font-size: 14px; /* Smaller font size */
+  }
+  .stepper-container {
+      padding: 5px;
+      max-width: 100%;
+    }
+}
