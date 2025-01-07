@@ -35,13 +35,13 @@
 /* Front face styles */
 .flip-card-front {
 
-  color: white;
+
 }
 
 /* Back face styles */
 .flip-card-back {
 
-  color: white;
+
   transform: rotateY(180deg); /* Initially rotate the back face by 180 degrees */
 }
 

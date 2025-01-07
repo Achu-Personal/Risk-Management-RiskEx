@@ -31,6 +31,7 @@ dropdownDataReviewer: Array<{ id: number; fullName: string; email: string; type:
 riskResponses:Array<{ id: number; name: string; description: string; example: string; risks:string }> = [];
 isSuccess:boolean=false
 isError:boolean=false
+error:string=''
 riskData:any
 context:any
 reviewer:any
@@ -78,6 +79,7 @@ onFormSubmit(event: { payload: any, riskType: number }) {
 
   (error:any)=>{
     this.isError=true
+    this.error=error.message
   })
   console.log("riskid:",Number(this.riskId));
   
