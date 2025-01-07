@@ -130,8 +130,11 @@ export class ApiService {
    getAllReviewer(){
     return this.http.get('https://localhost:7216/api/Reviewer/getAllReviewers')
    }
-   editQualityRisk(id:any,risk:any){
+   editQualityRisk(id:number,risk:any){
     return this.http.put(`https://localhost:7216/api/Risk/quality/${id}`,risk)
+   }
+   editSecurityOrPrivacyRisk(id:number,risk:any){
+    return this.http.put(`https://localhost:7216/api/Risk/SecurityOrPrivacy/${id}`,risk)
    }
 
   getRisksAssignedToUser(id: any = '') {
@@ -216,6 +219,14 @@ export class ApiService {
   changeUserStatus(userId:any,status:any){
     return this.http.patch(`https://localhost:7216/api/User/IsActive/${userId}/${status}`,{}).subscribe((e)=>console.log('UserId and status:',userId,status)
     )
+  }
+
+  updateQualityRisk(updated:any,riskId:number){
+    return this.http.put(`https://localhost:7216/api/Risk/update/Quality/${riskId}`,updated)
+  }
+
+  updateSecurityOrPrivacyRisk(updated:any,riskId:number){
+    return this.http.put(`https://localhost:7216/api/Risk/update/${riskId}`,updated)
   }
 
  }

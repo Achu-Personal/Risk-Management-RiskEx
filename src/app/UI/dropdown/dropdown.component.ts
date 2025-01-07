@@ -224,10 +224,21 @@ export class DropdownComponent implements ControlValueAccessor {
   @Input() selectValue: string = 'Select an option';
   @Input() width: string = '100%';
   @Output() valueChange = new EventEmitter<any>();
+  @Input() selectedValue: any = null;
+
 
   value: any = '';
   isDropdownOpen = false;
   searchQuery: string = '';
+  ngOnInit(){
+    console.log("get value of likelihhod is ",this.selectedValue);
+
+    if (this.selectedValue !== null) {
+      this.value = this.selectedValue;
+      console.log("get value of this.value is ",this.value);
+
+    }
+  }
 
   // Functions for ControlValueAccessor (this enables ngModel support)
   onChange = (value: any) => {};
@@ -279,7 +290,8 @@ export class DropdownComponent implements ControlValueAccessor {
   // Get selected option's display text
   getSelectedText(): string {
     const selectedOption = this.options.find(opt => opt[this.valueField] === this.value);
-    return selectedOption ? selectedOption[this.displayField] : this.selectValue;
+    const selectedpreoption=this.options.find(opt=>opt[this.valueField]===this.selectedValue)
+    return selectedOption ? selectedOption[this.displayField] : selectedpreoption? selectedpreoption[this.displayField]:this.selectValue ;
   }
 
 
