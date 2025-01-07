@@ -105,13 +105,6 @@ export class ApiService {
    getImpactDefinition(){
     return this.http.get('https://localhost:7216/api/AssessmentMatrixImpact')
    }
-   getRiskCategoryCounts(){
-    return this.http.get('https://localhost:7216/api/Risk/RiskCategory-Counts')
-   }
-   getOpenRiskCountByType(){
-    return this.http.get('https://localhost:7216/api/Risk/OpenRisk-Counts')
-   }
-
    addnewQualityRisk(qualityRisk:any){
     console.log("quality risk payload",qualityRisk)
      return this.http.post('https://localhost:7216/api/Risk/Quality',qualityRisk)
@@ -220,5 +213,18 @@ export class ApiService {
     return this.http.patch(`https://localhost:7216/api/User/IsActive/${userId}/${status}`,{}).subscribe((e)=>console.log('UserId and status:',userId,status)
     )
   }
+
+  getOpenRiskCountByType(id: any = ''){
+    return this.http.get(`https://localhost:7216/api/Risk/CountOfRiskType(Open)?id=${id}`);
+   }
+
+   getRiskCategoryCounts(id:any = ''){
+    return this.http.get(`https://localhost:7216/api/Risk/RiskCategory-Counts?id=${id}`);
+   }
+
+
+
+
+
 
  }
