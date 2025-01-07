@@ -101,10 +101,9 @@ onFormSubmit(payload: any) {
         console.log('Risk saved successfully(Quality):', res);
         console.log('Generated Risk ID:', res.id);
         this.isSuccess=true
-        this.riskId=res.id
 
         // Fetch reviewer details
-        this.api.getRevieverDetails(res.id).subscribe({
+        this.api.getRevieverDetails(res.id,'ReviewPending').subscribe({
           next: (r: any) => {
             this.reviewer = r[0].fullName;
             console.log('Reviewer Details:', this.reviewer);
@@ -186,39 +185,33 @@ onFormSubmit(payload: any) {
 
   }
   else if (payload.riskType == 2) {
-    this.api.addnewSecurityOrPrivacyRisk(payload).subscribe({
-      next: (res: any) => {
-        console.log('Risk saved successfully:', res);
-        console.log('Generated Risk ID:', res.id);
+    this.api.addnewSecurityOrPrivacyRisk(payload).subscribe((res:any)=>{
+      console.log(res);
+      if(res.id){
         this.isSuccess=true
-        this.riskId=res.id
-
-      },
-      error: (saveError) => {
-        console.error('Failed to save risk:', saveError);
-        this.isError=true
-      },
-    });
+       }
+    },
+  (error:any)=>{
+    this.isError=true
+  })
   }
   else{
-    this.api.addnewSecurityOrPrivacyRisk(payload).subscribe({
-      next: (res: any) => {
-        console.log('Risk saved successfully:', res);
-        console.log('Generated Risk ID:', res.id);
+    this.api.addnewSecurityOrPrivacyRisk(payload).subscribe((res:any)=>{
+      console.log(res);
+      if(res.id){
         this.isSuccess=true
-        this.riskId=res.id
-
-      },
-      error: (saveError) => {
-        console.error('Failed to save risk:', saveError);
-        this.isError=true
-      },
-    });
+       }
+    },
+  (error:any)=>{
+    this.isError=true
+  })
   }
+
 }
 
 getRiskTypeClass() {
   if (this.selectedRiskType === 1) {
+
     this.bgColor="var(--quality-color)"
     return 'risk-type-1';
   } else if (this.selectedRiskType === 2) {
@@ -262,4 +255,5 @@ closeDialog() {
   this.isError=false
   // this.router.navigate(['/home']);
 }
+
 }

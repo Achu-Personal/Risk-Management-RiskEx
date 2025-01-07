@@ -2,7 +2,15 @@ import { project } from './../Interfaces/projects.interface';
 import { department } from './../Interfaces/deparments.interface';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, map, Observable, of, Subject, tap, throwError } from 'rxjs';
+import {
+  catchError,
+  map,
+  Observable,
+  of,
+  Subject,
+  tap,
+  throwError,
+} from 'rxjs';
 import { UserResponse } from '../Interfaces/Userdata.interface.';
 import { AuthService } from './auth.service';
 
@@ -34,19 +42,29 @@ export class ApiService {
   }
 
   getMitigationSatus(id: string) {
-    return this.http.get(`${this.baseUrl}/Risk/GetMitigationStatusOfARisk/${id}`);
+    return this.http.get(
+      `${this.baseUrl}/Risk/GetMitigationStatusOfARisk/${id}`
+    );
   }
 
   getReviewSatus(id: string, isPreReview: boolean) {
-    return this.http.get(`${this.baseUrl}/Review/GetReviewStatusOfARisk/${id}/${isPreReview}`);
+    return this.http.get(
+      `${this.baseUrl}/Review/GetReviewStatusOfARisk/${id}/${isPreReview}`
+    );
   }
 
   getDepartment() {
-    return this.http.get<department[]>(`${this.baseUrl}/Department/Departments`);
+    return this.http.get<department[]>(
+      `${this.baseUrl}/Department/Departments`
+    );
   }
 
   addNewDepartment(department: any): Observable<{ message: string }> {
-    return this.http.post<{ message: string }>(`${this.baseUrl}/Department/Department`, department)
+    return this.http
+      .post<{ message: string }>(
+        `${this.baseUrl}/Department/Department`,
+        department
+      )
       .pipe(tap(() => this.departmentUpdateSubject.next()));
   }
 
@@ -55,7 +73,9 @@ export class ApiService {
   }
 
   getProjects(departmentName: string) {
-    return this.http.get<project[]>(`${this.baseUrl}/Project/ProjectsBy/${departmentName}`);
+    return this.http.get<project[]>(
+      `${this.baseUrl}/Project/ProjectsBy/${departmentName}`
+    );
   }
 
   gettabledata() {
@@ -67,21 +87,30 @@ export class ApiService {
   }
 
   getDepartmentTable(department: any) {
-    return this.http.get(`${this.baseUrl}/Report/DepartmentwiseRisk/${department}`);
+    return this.http.get(
+      `${this.baseUrl}/Report/DepartmentwiseRisk/${department}`
+    );
   }
 
   getDepartmentHistoryTable(department: any) {
-    return this.http.get(`${this.baseUrl}/Report/DepartmentwiseRisk/${department}?riskStatus=close`);
+    return this.http.get(
+      `${this.baseUrl}/Report/DepartmentwiseRisk/${department}?riskStatus=close`
+    );
   }
-  getProjectHistroyTable(projectList:any) {
-    const queryParams = projectList.map((id: number) => `projectIds=${id}`).join('&');
-    return this.http.get(`${this.baseUrl}/Report/projectrisks?${queryParams}&riskStatus=close`,)
+  getProjectHistroyTable(projectList: any) {
+    const queryParams = projectList
+      .map((id: number) => `projectIds=${id}`)
+      .join('&');
+    return this.http.get(
+      `${this.baseUrl}/Report/projectrisks?${queryParams}&riskStatus=close`
+    );
   }
-  getProjectTable(projectList:any) {
-    const queryParams = projectList.map((id: number) => `projectIds=${id}`).join('&');
-    return this.http.get(`${this.baseUrl}/Report/projectrisks?${queryParams}`,)
+  getProjectTable(projectList: any) {
+    const queryParams = projectList
+      .map((id: number) => `projectIds=${id}`)
+      .join('&');
+    return this.http.get(`${this.baseUrl}/Report/projectrisks?${queryParams}`);
   }
-
 
   addNewProject(project: any) {
     return this.http.post(`${this.baseUrl}/Project/Project`, project);
@@ -155,30 +184,42 @@ export class ApiService {
   }
 
   updateRiskReviewStatus(riskId: number, approvalStatus: string) {
-    return this.http.put(`${this.baseUrl}/Approval/update-review-status?riskId=${riskId}&approvalStatus=${approvalStatus}`, {});
+    return this.http.put(
+      `${this.baseUrl}/Approval/update-review-status?riskId=${riskId}&approvalStatus=${approvalStatus}`,
+      {}
+    );
   }
 
   updateExternalReivewStatus(updates: any) {
-    return this.http.post(`${this.baseUrl}/Approval/api/external-review/status/update`, updates);
+    return this.http.post(
+      `${this.baseUrl}/Approval/api/external-review/status/update`,
+      updates
+    );
   }
 
   updateReviewStatusAndComments(id: number, updates: any) {
     console.log('updates', updates);
-    this.http.put(`${this.baseUrl}/Approval/update-review/${id}`, updates)
+    this.http
+      .put(`${this.baseUrl}/Approval/update-review/${id}`, updates)
       .subscribe((e) => console.log(e));
   }
 
   sendEmailToAssignee(id: number) {
-    this.http.post(`${this.baseUrl}/emails/send-assignment-email/${id}`, {})
+    this.http
+      .post(`${this.baseUrl}/emails/send-assignment-email/${id}`, {})
       .subscribe((e) => console.log(e));
   }
 
   getRisksWithHeigestOverallRating(id: any = '') {
-    return this.http.get(`${this.baseUrl}/Risk/GetRiskWithHeighestOverallRationg?id=${id}`);
+    return this.http.get(
+      `${this.baseUrl}/Risk/GetRiskWithHeighestOverallRationg?id=${id}`
+    );
   }
 
   getRiskApproachingDeadline(id: any = '') {
-    return this.http.get(`${this.baseUrl}/Risk/GetRiskApproachingDeadline?id=${id}`);
+    return this.http.get(
+      `${this.baseUrl}/Risk/GetRiskApproachingDeadline?id=${id}`
+    );
   }
 
 
@@ -187,7 +228,9 @@ export class ApiService {
   }
 
   getAllUsersByDepartmentName(department: string) {
-    return this.http.get(`${this.baseUrl}/User/GetUsersByDepartment/${department}`);
+    return this.http.get(
+      `${this.baseUrl}/User/GetUsersByDepartment/${department}`
+    );
   }
 
   getAllUsersForAssignee() {
@@ -200,11 +243,14 @@ export class ApiService {
     departmentList.forEach((departmentId) => {
       params = params.append('departmentList', departmentId.toString());
     });
-    return this.http.get(`${this.baseUrl}/Risk/RiskCategoryCountByDepartment`, { params });
+    return this.http.get(`${this.baseUrl}/Risk/RiskCategoryCountByDepartment`, {
+      params,
+    });
   }
 
   changeUserStatus(userId: any, status: any) {
-    return this.http.patch(`${this.baseUrl}/User/IsActive/${userId}/${status}`, {})
+    return this.http
+      .patch(`${this.baseUrl}/User/IsActive/${userId}/${status}`, {})
       .subscribe((e) => console.log('UserId and status:', userId, status));
   }
 
@@ -221,7 +267,8 @@ export class ApiService {
       }
     });
 
-    return this.http.get<any>(`${this.baseUrl}/User/users-by-projects`, { params })
+    return this.http
+      .get<any>(`${this.baseUrl}/User/users-by-projects`, { params })
       .pipe(
         catchError((error) => {
           if (error.status === 404) {
@@ -242,13 +289,16 @@ export class ApiService {
     return this.http.post(`${this.baseUrl}/emails`, null, { params });
   }
 
-
   getAssigneeByRiskId(riskId: number) {
-    return this.http.get(`${this.baseUrl}/User/GetInfoOfAssigneeByRiskId/${riskId}`);
+    return this.http.get(
+      `${this.baseUrl}/User/GetInfoOfAssigneeByRiskId/${riskId}`
+    );
   }
 
-  getRevieverDetails(riskId: number) {
-    return this.http.get(`${this.baseUrl}/Reviewer/gettheReviewer/${riskId}`);
+  getRevieverDetails(riskId: number, reviewStatus: string) {
+    return this.http.get(
+      `https://localhost:7216/api/Reviewer/gettheReviewer/${riskId}?reviewStatus=${reviewStatus}`
+    );
   }
 
   updateQualityRisk(updated: any, riskId: number) {
@@ -265,4 +315,10 @@ export class ApiService {
    getRiskCategoryCounts(id:any = ''){
     return this.http.get(`https://localhost:7216/api/Risk/RiskCategory-Counts?id=${id}`);
    }
+
+  getriskOwnerEmailandName(id: number) {
+    return this.http.get(
+      `https://localhost:7216/api/User/GetEmailAndNameOfAUserbyRiskId/${id}`
+    );
+  }
 }
