@@ -22,6 +22,9 @@ export class RiskDetailsSection3MitigationComponent {
   @Input() riskId=""
   @Input() status:string="";
   @Input() riskAssessments!:any;
+  @Input() residualRisk=""
+  @Input()residualValue=""
+  @Input() percentageReducation=""
 
   riskAssessmentBefore:any=[]
   riskAssessmentAfter:any=[]

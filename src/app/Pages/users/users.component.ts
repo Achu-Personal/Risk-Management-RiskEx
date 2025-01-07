@@ -85,13 +85,14 @@ tableBody:any[]=[
     const userRole = this.authService.getUserRole();
     const userDepartment = this.authService.getDepartmentName();
 
-    if (userRole === 'DepartmentUser') {
+
+    if (userRole === 'DepartmentUser' || userRole?.includes('ProjectUsers')) {
+      // Set department name in both forms
       this.userForm.patchValue({ departmentName: userDepartment });
-      this.userForm.get('departmentName')?.disable();
-      this.isDepartmentFieldDisabled = true;
-    }
-    if (userRole === 'DepartmentUser') {
       this.projectForm.patchValue({ departmentName: userDepartment });
+
+      // Disable department fields
+      this.userForm.get('departmentName')?.disable();
       this.projectForm.get('departmentName')?.disable();
       this.isDepartmentFieldDisabled = true;
     }
@@ -117,9 +118,17 @@ tableBody:any[]=[
         console.error('Department name is null or undefined');
       }
     }
-    else if(userRole==='ProjectUsers'){
-      const projects= this.authService.getProjects()
-    
+    else if(userRole?.includes('ProjectUsers')){
+      const projects= this.authService.getProjects();
+      console.log("Projects assigned to user",projects);
+      this.api.getUsersByProjects().subscribe({
+        next: (users) => {
+            this.tableBody = users;
+        },
+        error: (error) => {
+            console.error('Error fetching users:', error);
+        }
+    });
     }
 
     this.userForm
@@ -218,15 +227,21 @@ tableBody:any[]=[
 
   onSubmitProject() {
     if (this.projectForm.valid) {
-      const projectData = this.projectForm.value;
+      // Get the raw value to include disabled controls
+      const projectData = this.projectForm.getRawValue();
 
       console.log('Submitting project data:', projectData);
 
       this.api.addNewProject(projectData).subscribe(
         (response) => {
           console.log('Project saved successfully:', response);
-
           this.projectForm.reset();
+
+          // If user is department user, reset the form but maintain the department
+          if (this.authService.getUserRole() === 'DepartmentUser') {
+            const userDepartment = this.authService.getDepartmentName();
+            this.projectForm.patchValue({ departmentName: userDepartment });
+          }
 
           const modal = document.getElementById('addProjectModal');
           if (modal) {

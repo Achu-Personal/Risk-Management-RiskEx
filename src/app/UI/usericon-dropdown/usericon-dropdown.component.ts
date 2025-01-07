@@ -18,7 +18,7 @@ export class UsericonDropdownComponent {
 
   dropdownVisible: boolean = false;
   user = {
-    image: 'https://w7.pngwing.com/pngs/152/155/png-transparent-male-man-person-business-avatar-icon.png', // Replace with actual user image URL
+    image: 'https://w7.pngwing.com/pngs/152/155/png-transparent-male-man-person-business-avatar-icon.png',
     name: 'SreeHari',
     username: 'Sreehari',
     role: 'Admin',
@@ -51,4 +51,11 @@ export class UsericonDropdownComponent {
 closeDropdown(): void {
   this.dropdownVisible = false;
 }
+  getPrimaryRole(): string | null {
+    const roles = this.auth.getUserRole();
+    if (Array.isArray(roles) && roles.length > 1) {
+      return roles[1];
+    }
+    return roles
+  }
 }
