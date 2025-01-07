@@ -48,7 +48,9 @@ export class OverallRatingCardComponent {
 
   // Get dynamic text color based on input or value
   get dynamicTextColor(): string {
-    if (this.textColor) {
+
+
+    if (this.textColor!='') {
       return this.textColor;
     }
     if (this.value <= 45) {
