@@ -11,12 +11,14 @@ import { FormInputComponent } from '../form-input/form-input.component';
 import { FormDropdownComponent } from '../form-dropdown/form-dropdown.component';
 import { FormTextAreaComponent } from '../form-text-area/form-text-area.component';
 import { FormDateFieldComponent } from '../form-date-field/form-date-field.component';
+import { FormButtonComponent } from '../../UI/form-button/form-button.component';
+import { FormDataNotInListComponent } from '../form-data-not-in-list/form-data-not-in-list.component';
 
 
 @Component({
   selector: 'app-isms-form',
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule, ButtonComponent, DropdownComponent, TextareaComponent, OverallRatingCardComponent,CommonModule,FormInputComponent,FormDropdownComponent,FormTextAreaComponent,FormDateFieldComponent],
+  imports: [FormsModule, ReactiveFormsModule, ButtonComponent, DropdownComponent, TextareaComponent, OverallRatingCardComponent,CommonModule,FormInputComponent,FormDropdownComponent,FormTextAreaComponent,FormDateFieldComponent,FormButtonComponent,FormDataNotInListComponent],
   templateUrl: './isms-form.component.html',
   styleUrl: './isms-form.component.scss'
 })
@@ -385,6 +387,7 @@ export class ISMSFormComponent {
 // }
 
   @Output() submitForm = new EventEmitter<any>();
+  @Output() departmentSelectedByAdmin = new EventEmitter<any>();
   @Input() bgColor: string = ''
   @Input() riskTypeValue: number=1
   @Input() departmentName: string=''
@@ -396,6 +399,8 @@ export class ISMSFormComponent {
   @Input() dropdownDepartment:any[]=[]
   @Input() dropdownAssignee:any[]=[]
   @Input() dropdownReviewer: Array<{ id: number; fullName: string; email: string; type: string }> = [];
+  @Input() dropdownDataProjectForAdmin:any[]=[]
+  @Input() dropdownAssigneeForAdmin:any[]=[]
   overallRiskRating: number = 0;
   reviewerNotInList:boolean=false
   assigneeNotInList:boolean=false
@@ -440,7 +445,13 @@ constructor(private api:ApiService,public authService:AuthService,private el: El
 ngOnInit(){
   this.el.nativeElement.style.setProperty('--bg-color', this.bgColor);
 }
+isReviewerNotInList(){
+  this.reviewerNotInList=!this.reviewerNotInList
+}
 
+isAssigneeNotInList(){
+  this.assigneeNotInList=!this.assigneeNotInList
+}
 onDropdownChangeProject(event: any): void {
   const selectedFactorId = Number(event);
   this.projectId=selectedFactorId
@@ -449,6 +460,8 @@ onDropdownChangeProject(event: any): void {
 onDropdownChangeDepartment(event: any): void {
   const selectedFactorId = Number(event);
   this.departmentIdForAdminToAdd=selectedFactorId
+  this.departmentSelectedByAdmin.emit(this.departmentIdForAdminToAdd);
+
 }
 
 onDropdownChange(event: any, type: string, category: string): void {
@@ -652,7 +665,7 @@ onSubmit(){
     impact: formValue.impact,
     mitigation: formValue.mitigation,
     contingency: formValue.contingency || " ",
-    overallRiskRating: Number(this.overallRiskRating),
+    OverallRiskRatingBefore: Number(this.overallRiskRating),
     responsibleUserId:Number(this.responsiblePersonId)!=0 ?+Number(this.responsiblePersonId):Number(this.newAssigneeId) ,
     plannedActionDate: `${formValue.plannedActionDate}T00:00:00.000Z`,
     departmentId:Number(this.departmentId)!=0 ? + Number(this.departmentId) : Number(this.departmentIdForAdminToAdd),
@@ -714,9 +727,54 @@ onSubmit(){
   };
 
   this.submitForm.emit(payload);
+}
 
+receiveCancel(value: any) {
+  if(value==true){
+    this.isAssigneeNotInList();
+  }
+  if(value==false){
+    this.isReviewerNotInList();
+  }
+}
+saveAssignee(value: any){
+
+  const departmentNameDetails=this.dropdownDepartment.find(factor => factor.id === value.departmentId)
+  const departmentName= departmentNameDetails.departmentName
+
+  const payload = {
+    email:value.email,
+    fullName:value.fullName,
+    departmentName: departmentName
+  }
+  this.api.addResponsiblePerson(payload).subscribe((res:any)=>{
+    this.newAssigneeId=res.id
+    console.log("new assignee id: ",this.newAssigneeId)
+  })
 
 }
 
+saveReviewer(value: any){
+
+  const departmentNameDetails=this.dropdownDepartment.find(factor => factor.id === value.departmentId)
+  const departmentName= departmentNameDetails.departmentName
+
+  const payload = {
+    email:value.email,
+    fullName:value.fullName,
+    departmentId:value.departmentId
+  }
+ this.api.addExternalReviewer(payload).subscribe((res:any)=>{
+    this.externalReviewerIdFromInput = res.reviewerId
+    console.log("reviewer response",this.externalReviewerIdFromInput);
+
+  })
+
+}
+
+saveConfirmation(){}
+clearAllData(){}
+cancelRisk(){}
+saveAsDraft(){}
 
 }

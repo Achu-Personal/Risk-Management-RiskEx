@@ -1,14 +1,40 @@
-<app-body-container backgroundColor="var(--secondary-color)"padding="10">
+<app-body-container [backgroundColor]="bgColor" padding="10">
   <div class="container">
-    <div class="content">
+    <div class="content" [ngClass]="getRiskTypeClass()">
       @if (riskType==="Quality"){
-        <app-update-qms></app-update-qms>
+        <app-update-qms [dropdownLikelihood]="dropdownDataLikelihood"
+        [dropdownImpact]="dropdownDataImpact" [dropdownReviewer]="dropdownDataReviewer"
+        [bgColor]="bgColor" [riskResponses]="riskResponses" [overallRiskRatingBefore]="overallRiskRatingBefore" [riskTypeId]="riskTypeId"
+        (submitForm)="onFormSubmit($event)" [dropdownDepartment]="dropdownDataDepartment"></app-update-qms>
 
       }
-      @if (riskType==="Security" ||riskType==="Privacy"){
-        <app-update-isms></app-update-isms>
+      @if (riskType==="Security"){
+        <app-update-isms [dropdownLikelihood]="dropdownDataLikelihood"
+        [dropdownImpact]="dropdownDataImpact" [dropdownReviewer]="dropdownDataReviewer"
+        [bgColor]="bgColor" [riskResponses]="riskResponses" [overallRiskRatingBefore]="overallRiskRatingBefore" [riskTypeId]="riskTypeId" (submitForm)="onFormSubmit($event)"></app-update-isms>
+
+      }
+      @if (riskType==="Privacy"){
+        <app-update-isms [dropdownLikelihood]="dropdownDataLikelihood"
+        [dropdownImpact]="dropdownDataImpact" [dropdownReviewer]="dropdownDataReviewer"
+        [bgColor]="bgColor" [riskResponses]="riskResponses" [overallRiskRatingBefore]="overallRiskRatingBefore" [riskTypeId]="riskTypeId" (submitForm)="onFormSubmit($event)"></app-update-isms>
 
       }
     </div>
+    @if(isSuccess){
+      <app-form-successfull
+      message="Update risk successfully!"
+      [isSuccessfull] ="true"
+      (closeDialog)="closeDialog()" [bgColor]="bgColor">
+      </app-form-successfull>
+   }
+   @if(isError){
+    <app-form-successfull
+      message="Something went wrong. Please try again!"
+      [isSuccessfull]= "false"
+      (closeDialog)="closeDialog()" [bgColor]="bgColor">
+      </app-form-successfull>
+
+   }
   </div>
 </app-body-container>

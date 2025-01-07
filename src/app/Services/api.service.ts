@@ -136,9 +136,12 @@ export class ApiService {
   getAllReviewer() {
     return this.http.get('https://localhost:7216/api/Reviewer/getAllReviewers');
   }
-  editQualityRisk(id: any, risk: any) {
+  editQualityRisk(id: number, risk: any) {
     return this.http.put(`https://localhost:7216/api/Risk/quality/${id}`, risk);
   }
+   editSecurityOrPrivacyRisk(id:number,risk:any){
+    return this.http.put(`https://localhost:7216/api/Risk/SecurityOrPrivacy/${id}`,risk)
+   }
 
   getRisksAssignedToUser(id: any = '') {
     return this.http.get(
@@ -216,36 +219,9 @@ export class ApiService {
     );
   }
 
-  changeUserStatus(userId: any, status: any) {
-    return this.http
-      .patch(`https://localhost:7216/api/User/IsActive/${userId}/${status}`, {})
-      .subscribe((e) => console.log('UserId and status:', userId, status));
+  changeUserStatus(userId:any,status:any){
+    return this.http.patch(`https://localhost:7216/api/User/IsActive/${userId}/${status}`,{}).subscribe((e)=>console.log('UserId and status:',userId,status)
+    )
   }
 
-  getUsersByProjects(): Observable<any> {
-    const projects = this.auth.getProjects() || [];
-    if (!projects || projects.length === 0) {
-      console.log('No projects found in auth');
-      return of([]);
-    }
-    let params = new HttpParams();
-
-    projects.forEach((project) => {
-      if (project && project.Id) {
-        params = params.append('projectIds', project.Id.toString());
-      }
-    });
-
-    return this.http
-      .get<any>(`https://localhost:7216/api/User/users-by-projects`, { params })
-      .pipe(
-        catchError((error) => {
-          if (error.status === 404) {
-            console.log('API Response:', error);
-            return of([]);
-          }
-          return throwError(() => error);
-        })
-      );
-  }
-}
+ }

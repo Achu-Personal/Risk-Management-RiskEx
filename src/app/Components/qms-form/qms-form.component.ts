@@ -1,31 +1,32 @@
 import { Component, ElementRef, EventEmitter, Input, Output, Renderer2} from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DropdownComponent } from "../../UI/dropdown/dropdown.component";
-// import { ButtonComponent } from "../../UI/button/button.component";
 import { CommonModule } from '@angular/common';
-// import { TextareaComponent } from "../../UI/textarea/textarea.component";
-// import { OverallRatingCardComponent } from "../../UI/overall-rating-card/overall-rating-card.component";
 import { BodyContainerComponent } from "../body-container/body-container.component";
-// import { ApiService } from '../../Services/api.service';
-// import { AuthService } from '../../Services/auth.service';
 import { HeatmapComponent } from '../heatmap/heatmap.component';
 import { FormInputComponent } from '../form-input/form-input.component';
 import { FormDropdownComponent } from '../form-dropdown/form-dropdown.component';
 import { FormTextAreaComponent } from '../form-text-area/form-text-area.component';
 import { FormDateFieldComponent } from '../form-date-field/form-date-field.component';
+import { FormButtonComponent } from '../../UI/form-button/form-button.component';
+import { FormDataNotInListComponent } from '../form-data-not-in-list/form-data-not-in-list.component';
+import { ApiService } from '../../Services/api.service';
+import { FormSuccessfullComponent } from '../form-successfull/form-successfull.component';
+import { FormReferenceHeatmapPopupComponent } from '../form-reference-heatmap-popup/form-reference-heatmap-popup.component';
 
 
 
 @Component({
   selector: 'app-qms-form',
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule, DropdownComponent, CommonModule, BodyContainerComponent,HeatmapComponent,FormInputComponent,FormDropdownComponent,FormTextAreaComponent,FormDateFieldComponent],
+  imports: [FormsModule, ReactiveFormsModule, DropdownComponent, CommonModule, BodyContainerComponent,HeatmapComponent,FormInputComponent,FormDropdownComponent,FormTextAreaComponent,FormDateFieldComponent ,FormButtonComponent,FormDataNotInListComponent,FormSuccessfullComponent,FormReferenceHeatmapPopupComponent],
   templateUrl: './qms-form.component.html',
   styleUrl: './qms-form.component.scss'
 })
 export class QMSFormComponent {
 
   @Output() submitForm = new EventEmitter<any>();
+  @Output() departmentSelectedByAdmin = new EventEmitter<any>();
   @Input() bgColor: string = ''
   @Input() riskTypeValue: number=1
   @Input() departmentName: string=''
@@ -37,6 +38,8 @@ export class QMSFormComponent {
   @Input() dropdownDepartment:any[]=[]
   @Input() dropdownAssignee:any[]=[]
   @Input() dropdownReviewer: Array<{ id: number; fullName: string; email: string; type: string }> = [];
+  @Input() dropdownDataProjectForAdmin:any[]=[]
+  @Input() dropdownAssigneeForAdmin:any[]=[]
   overallRiskRating: number = 0;
   reviewerNotInList:boolean=false
   assigneeNotInList:boolean=false
@@ -54,8 +57,9 @@ export class QMSFormComponent {
   externalReviewerIdFromInput:number=0
   newAssigneeId:number=0
   isInternal:boolean=true
+  HeatMapRefernce:boolean=false
 
-  constructor(private el: ElementRef, private renderer: Renderer2){}
+  constructor(private el: ElementRef, private renderer: Renderer2, private api:ApiService){}
   ngOnInit(){
     console.log('Received bgColor from parent:', this.bgColor);
     this.el.nativeElement.style.setProperty('--bg-color', this.bgColor);
@@ -70,18 +74,8 @@ export class QMSFormComponent {
     plannedActionDate:new FormControl('',Validators.required),
   })
 
-  reviewerGroup= new FormGroup({
-    fullName:new FormControl(''),
-    email:new FormControl(''),
-    departmentId:new FormControl('')
-  })
 
-  assigneeGroup=new FormGroup({
-    fullName:new FormControl(''),
-    email:new FormControl(''),
-    departmentName:new FormControl('')
 
-  })
 
 
 
@@ -99,6 +93,9 @@ export class QMSFormComponent {
   isAssigneeNotInList(){
     this.assigneeNotInList=!this.assigneeNotInList
   }
+  isHeatMapReference(){
+    this.HeatMapRefernce=!this.HeatMapRefernce
+  }
 
   onDropdownChangeProject(event: any): void {
     const selectedFactorId = Number(event);
@@ -108,6 +105,7 @@ export class QMSFormComponent {
   onDropdownChangeDepartment(event: any): void {
     const selectedFactorId = Number(event);
     this.departmentIdForAdminToAdd=selectedFactorId
+    this.departmentSelectedByAdmin.emit(this.departmentIdForAdminToAdd);
   }
 
   onDropdownChangelikelihood(event: any): void {
@@ -208,7 +206,7 @@ export class QMSFormComponent {
       impact: formValue.impact ,
       mitigation: formValue.mitigation,
       contingency: formValue.contingency || " ",
-      overallRiskRating:Number(this.overallRiskRating) ,
+      OverallRiskRatingBefore:Number(this.overallRiskRating) ,
       responsibleUserId:Number(this.responsiblePersonId)!=0 ?+Number(this.responsiblePersonId):Number(this.newAssigneeId),
       plannedActionDate: `${formValue.plannedActionDate}T00:00:00.000Z` ,
       departmentId:Number(this.departmentId)!=0 ? + Number(this.departmentId) : Number(this.departmentIdForAdminToAdd),
@@ -240,34 +238,82 @@ export class QMSFormComponent {
   //   console.log('Form cleared.');
   // }
 
-  saveExternalReviewer(){
-    // console.log(this.reviewerGroup);
+  // saveExternalReviewer(){
+  //   // console.log(this.reviewerGroup);
 
-    // this.api.addExternalReviewer(this.reviewerGroup.value).subscribe((res:any)=>{
-    //   this.externalReviewerIdFromInput = res.reviewerId
-    //   console.log("reviewer response",this.externalReviewerIdFromInput);
+  //   // this.api.addExternalReviewer(this.reviewerGroup.value).subscribe((res:any)=>{
+  //   //   this.externalReviewerIdFromInput = res.reviewerId
+  //   //   console.log("reviewer response",this.externalReviewerIdFromInput);
 
-    // })
+  //   // })
 
-  }
+  // }
 
-  saveAssignee(){
-    const formValue = this.assigneeGroup.value;
-    const payload = {
-      email:formValue.email,
-      fullName:formValue.fullName,
-      departmentName:this.departmentName
-    }
-    console.log(payload)
+  // saveAssignee(){
+  //   const formValue = this.assigneeGroup.value;
+  //   const payload = {
+  //     email:formValue.email,
+  //     fullName:formValue.fullName,
+  //     departmentName:this.departmentName
+  //   }
+    // console.log(payload)
     // this.api.addResponsiblePerson(payload).subscribe((res:any)=>{
     //   this.newAssigneeId=res.id
     //   console.log("new assignee id: ",this.newAssigneeId)
     // })
 
 
+  // }
+  receiveCancel(value: any) {
+    if(value==true){
+      this.isAssigneeNotInList();
+    }
+    if(value==false){
+      this.isReviewerNotInList();
+    }
+  }
+  saveAssignee(value: any){
+
+    const departmentNameDetails=this.dropdownDepartment.find(factor => factor.id === value.departmentId)
+    const departmentName= departmentNameDetails.departmentName
+
+    const payload = {
+      email:value.email,
+      fullName:value.fullName,
+      departmentName: departmentName
+    }
+    this.api.addResponsiblePerson(payload).subscribe((res:any)=>{
+      this.newAssigneeId=res.id
+      console.log("new assignee id: ",this.newAssigneeId)
+    })
+
   }
 
+  saveReviewer(value: any){
 
+    const departmentNameDetails=this.dropdownDepartment.find(factor => factor.id === value.departmentId)
+    const departmentName= departmentNameDetails.departmentName
+
+    const payload = {
+      email:value.email,
+      fullName:value.fullName,
+      departmentId:value.departmentId
+    }
+   this.api.addExternalReviewer(payload).subscribe((res:any)=>{
+      this.externalReviewerIdFromInput = res.reviewerId
+      console.log("reviewer response",this.externalReviewerIdFromInput);
+
+    })
+
+  }
+
+  closeHeatMap(){
+    this.HeatMapRefernce=false
+  }
+
+ clearAllData(){}
+ cancelRisk(){}
+ saveAsDraft(){}
 
 
 

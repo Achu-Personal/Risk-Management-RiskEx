@@ -19,6 +19,7 @@ import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/f
 export class FormInputComponent implements ControlValueAccessor {
   @Input() label:string=''
   @Input() required:string=''
+  @Input() placeholder:string='Enter risk name'
 
   value: string = '';
   onChange: (value: any) => void = () => {};
