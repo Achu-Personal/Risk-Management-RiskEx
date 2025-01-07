@@ -245,6 +245,8 @@ export class ApiService {
     return this.http.post(`${this.baseUrl}/emails`, null, { params });
   }
 
+
+
   getAssigneeByRiskId(riskId: number) {
     return this.http.get(`${this.baseUrl}/User/GetInfoOfAssigneeByRiskId/${riskId}`);
   }
