@@ -39,15 +39,15 @@ export class HistoryComponent {
     const department = this.auth.getDepartmentId();
     this.isDepartmentUser = role ==='DepartmentUser';
       // console.log( "sssss",this.auth.getProjects().)
-    this.auth.getProjects().subscribe(
-      (projects: project[]) => {
-          this.projectList = projects;
-          console.log("projids",this.projectList);
-      },
-      (error) => {
-          console.error('Error loading projects:', error);
-      }
-  )
+  //   this.auth.getProjects().subscribe(
+  //     (projects: project[]) => {
+  //         this.projectList = projects;
+  //         console.log("projids",this.projectList);
+  //     },
+  //     (error) => {
+  //         console.error('Error loading projects:', error);
+  //     }
+  // )
     console.log("projids",this.projectList);
     console.log("dep",department);
     console.log("role",role);

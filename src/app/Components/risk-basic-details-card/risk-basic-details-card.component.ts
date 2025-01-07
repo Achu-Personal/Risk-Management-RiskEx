@@ -45,7 +45,7 @@ export class RiskBasicDetailsCardComponent {
   {
     console.log("id",this.allData.id);
 
-    this.router.navigate(['update'], { queryParams: {riskId:this.allData.id ,riskType:this.riskType} }); //         /ViewRisk/${this.allData.id}
+    this.router.navigate(['update'], { queryParams: {riskId:this.allData.id ,riskType:this.riskType,overallRiskRatingBefore:this.overallRiskRating} }); //         /ViewRisk/${this.allData.id}
   }
 
 }

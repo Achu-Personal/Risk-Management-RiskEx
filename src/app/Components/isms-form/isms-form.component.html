@@ -4,8 +4,13 @@
       <h2>Risk Details</h2>
      <div class="form-row">
        <app-form-input label="Risk Name" required=" *" formControlName="riskName" ></app-form-input>
-       <app-form-dropdown label="Project Name" [dropdownData]="dropdownProject" dropdownDisplay="name" dropdownValue="id" selectValue="Project" (change)="onDropdownChangeProject($event)"  ></app-form-dropdown>
-     </div>
+       @if(isAdmin!=='Admin'){
+        <app-form-dropdown label="Project Name" [dropdownData]="dropdownProject" dropdownDisplay="name" dropdownValue="id" selectValue="Project" (change)="onDropdownChangeProject($event)" ></app-form-dropdown>
+       }
+       @if(isAdmin==='Admin'){
+        <app-form-dropdown label="Project Name" [dropdownData]="dropdownDataProjectForAdmin" dropdownDisplay="name" dropdownValue="id" selectValue="Project" (change)="onDropdownChangeProject($event)" ></app-form-dropdown>
+       }
+      </div>
       @if(isAdmin === 'Admin'){
       <app-form-dropdown label="Department Name" [dropdownData]="dropdownDepartment" dropdownDisplay="departmentName" dropdownValue="id" selectValue="department" (change)="onDropdownChangeDepartment($event)"  ></app-form-dropdown>
       }
@@ -73,6 +78,8 @@
       <div class="form-row" [ngStyle]="{'margin-top':'30px'}">
        <h2 [ngStyle]="{'border-bottom':'0px','text-transform':'none'}">Overall Risk Rating : <span style="margin-left: 10px;" [ngStyle]="{'color': changeColorOverallRiskRating()}" >{{overallRiskRating}}</span></h2>
       </div>
+      <p [ngStyle]="{'margin-top':'20px','font-style':'italic','color':'grey'}">Risk Factor = Likelihood * Impact</p>
+      <p [ngStyle]="{'margin-top':'20px','font-style':'italic','color':'grey'}">Overall risk rating = Risk Factor(Confidentiality)+Risk Factor(Integrity)+Risk Factor(Availability)+Risk Factor(Privacy)</p>
       <div [ngStyle]="{'margin-top':'20px','font-style':'italic','color':'grey'}">
        <p>For reference <span><a href="javascript:void(0);">click </a></span>here</p>
       </div>
@@ -91,24 +98,40 @@
     </div>
     <div class="form-details-sub-container">
       <h2>Action Plan</h2>
-      <app-form-dropdown label="Responsibility of action" required="*" [dropdownData]="dropdownAssignee" dropdownDisplay="fullName" dropdownValue="id" selectValue="responsible person" (change)="onDropdownChangeResponsiblePerson($event)" ></app-form-dropdown>
-
+      @if(isAdmin === 'Admin'){
+        <app-form-dropdown label="Responsibility of action" required="*" [dropdownData]="dropdownAssigneeForAdmin" dropdownDisplay="fullName" dropdownValue="id" selectValue="responsible person" (change)="onDropdownChangeResponsiblePerson($event)"></app-form-dropdown>
+      }
+       @if(isAdmin !== 'Admin'){
+        <app-form-dropdown label="Responsibility of action" required="*" [dropdownData]="dropdownAssignee" dropdownDisplay="fullName" dropdownValue="id" selectValue="responsible person" (change)="onDropdownChangeResponsiblePerson($event)"></app-form-dropdown>
+       }
       <div [ngStyle]="{'margin-top':'20px','font-style':'italic','color':'grey'}">
-        <p>If responsible person not in the list <span ><a href="javascript:void(0);">click </a></span>here</p>
+        <p>If responsible person not in the list <span (click)="isAssigneeNotInList()" ><a href="javascript:void(0);">click </a></span>here</p>
       </div>
+      @if(assigneeNotInList){
+
+        <app-form-data-not-in-list placeholder="Enter responsible person name" [isAssignee]="true" textLabel="Responsible person name" [dropdownDepartment]="dropdownDepartment" (cancelForm)="receiveCancel($event)" (sendData)="saveAssignee($event)" [bgColor]="bgColor"></app-form-data-not-in-list>
+
+
+      }
       <app-form-date-field label="Planned Action Date" required="*" formControlName="plannedActionDate"></app-form-date-field>
     </div>
     <div class="form-details-sub-container">
       <h2>Reviewer</h2>
       <app-form-dropdown label="Reviewer" required="*" [dropdownData]="dropdownReviewer" dropdownDisplay="fullName" dropdownValue="fullName" selectValue="reviewer" (change)="onDropdownChangeReviewer($event)"></app-form-dropdown>
       <div [ngStyle]="{'margin-top':'20px','font-style':'italic','color':'grey'}">
-        <p>If reviewer not in the list <span ><a href="javascript:void(0);">click </a></span>here</p>
+        <p>If reviewer not in the list <span (click)="isReviewerNotInList()" ><a href="javascript:void(0);">click </a></span>here</p>
       </div>
+      @if(reviewerNotInList){
+        <app-form-data-not-in-list placeholder="Enter reviewer name" [isAssignee]="false" textLabel="Reviewer name" [dropdownDepartment]="dropdownDepartment" (cancelForm)="receiveCancel($event)" (sendData)="saveReviewer($event)" [bgColor]="bgColor"></app-form-data-not-in-list>
+      }
     </div>
-    <div class="button-group">
-      <button type="submit" class="btn save" >Save</button>
-      <button type="button" class="btn cancel" >Cancel</button>
-      <button type="button" class="btn clear">Clear</button>
+    <div class="form-details-sub-container">
+      <div class="button-group">
+         <app-form-button label="Save" type="submit" (clicked)="saveConfirmation()"></app-form-button>
+         <app-form-button label="Save Draft" (clicked)="saveAsDraft()"></app-form-button>
+         <app-form-button label="Clear" (clicked)="clearAllData()"></app-form-button>
+         <app-form-button label="Cancel" (clicked)="cancelRisk()"></app-form-button>
+      </div>
     </div>
   </form>
 </div>

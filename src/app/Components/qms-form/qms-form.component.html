@@ -4,7 +4,12 @@
       <h2>Risk Details</h2>
       <div class="form-row">
        <app-form-input label="Risk Name" required=" *" formControlName="riskName"></app-form-input>
-       <app-form-dropdown label="Project Name" [dropdownData]="dropdownProject" dropdownDisplay="name" dropdownValue="id" selectValue="Project" (change)="onDropdownChangeProject($event)" ></app-form-dropdown>
+       @if(isAdmin!=='Admin'){
+        <app-form-dropdown label="Project Name" [dropdownData]="dropdownProject" dropdownDisplay="name" dropdownValue="id" selectValue="Project" (change)="onDropdownChangeProject($event)" ></app-form-dropdown>
+       }
+       @if(isAdmin==='Admin'){
+        <app-form-dropdown label="Project Name" [dropdownData]="dropdownDataProjectForAdmin" dropdownDisplay="name" dropdownValue="id" selectValue="Project" (change)="onDropdownChangeProject($event)" ></app-form-dropdown>
+       }
      </div>
      @if(isAdmin === 'Admin'){
       <app-form-dropdown label="Department Name" [dropdownData]="dropdownDepartment" dropdownDisplay="departmentName" dropdownValue="id" selectValue="department" (change)="onDropdownChangeDepartment($event)" ></app-form-dropdown>
@@ -29,9 +34,14 @@
       </div>
       <p [ngStyle]="{'margin-top':'20px','font-style':'italic','color':'grey'}">Overall risk rating = Likelihood * Impact</p>
       <div [ngStyle]="{'margin-top':'20px','font-style':'italic','color':'grey'}">
-       <p>For more reference <span><a href="javascript:void(0);"  >click </a></span> here</p>
+       <p>For more reference <span (click)="isHeatMapReference()"><a href="javascript:void(0);"  >click </a></span> here</p>
       </div>
+      @if(HeatMapRefernce){
+        <h5>For Reference</h5>
+        <app-form-reference-heatmap-popup (closeHeatMap)="closeHeatMap()"></app-form-reference-heatmap-popup>
+       }
     </div>
+
     <div class="form-details-sub-container">
       <h2>Risk Management</h2>
       <app-form-text-area label="Risk Mitigation" required="*" placeHolder="Enter mitigation plan"
@@ -46,25 +56,18 @@
     </div>
     <div class="form-details-sub-container">
       <h2>Action Plan</h2>
-      <app-form-dropdown label="Responsibility of action" required="*" [dropdownData]="dropdownAssignee" dropdownDisplay="fullName" dropdownValue="id" selectValue="responsible person" (change)="onDropdownChangeResponsiblePerson($event)"></app-form-dropdown>
-      <div [ngStyle]="{'margin-top':'20px','font-style':'italic','color':'grey'}">
+      @if(isAdmin === 'Admin'){
+        <app-form-dropdown label="Responsibility of action" required="*" [dropdownData]="dropdownAssigneeForAdmin" dropdownDisplay="fullName" dropdownValue="id" selectValue="responsible person" (change)="onDropdownChangeResponsiblePerson($event)"></app-form-dropdown>
+      }
+       @if(isAdmin !== 'Admin'){
+        <app-form-dropdown label="Responsibility of action" required="*" [dropdownData]="dropdownAssignee" dropdownDisplay="fullName" dropdownValue="id" selectValue="responsible person" (change)="onDropdownChangeResponsiblePerson($event)"></app-form-dropdown>
+       }
+        <div [ngStyle]="{'margin-top':'20px','font-style':'italic','color':'grey'}">
         <p>If responsible person not in the list <span (click)="isAssigneeNotInList()"><a href="javascript:void(0);">click </a></span>here</p>
       </div>
       @if(assigneeNotInList){
-        <form [formGroup]="assigneeGroup">
-          <div class="form-detail">
-            <label for="assignee">Responsible Person Name <span class="required">*</span></label>
-            <input type="text" id="assignee" placeholder="Enter responsible person full name" formControlName="fullName"  >
-          </div>
-          <div class="form-detail">
-            <label for="assignee-email">Email <span class="required">*</span></label>
-            <input type="text" id="assignee-email" placeholder="Enter email" formControlName="email" >
-          </div>
-          <div class="button-group">
-            <button type="button" class="btn save" (click)="saveAssignee()" >Save</button>
-            <button type="button" class="btn cancel" (click)="isAssigneeNotInList()">Cancel</button>
-          </div>
-        </form>
+
+        <app-form-data-not-in-list placeholder="Enter responsible person name" [isAssignee]="true" textLabel="Responsible person name" [dropdownDepartment]="dropdownDepartment" (cancelForm)="receiveCancel($event)" (sendData)="saveAssignee($event)" [bgColor]="bgColor"></app-form-data-not-in-list>
 
 
       }
@@ -78,38 +81,20 @@
         <p>If reviewer not in the list <span (click)="isReviewerNotInList()"><a href="javascript:void(0);">click </a></span>here</p>
       </div>
       @if(reviewerNotInList){
-        <form [formGroup]="reviewerGroup">
-          <div class="form-detail">
-            <label for="reviewer">Reviewer Name <span class="required">*</span></label>
-            <input type="text" id="reviewer" placeholder="Enter reviewer name" formControlName="fullName" >
-          </div>
-          <div class="form-detail">
-            <label for="reviewer-email">Email <span class="required">*</span></label>
-            <input type="text" id="reviewer-email" placeholder="Enter email" formControlName="email" >
-          </div>
-          <div class="form-detail">
-            <label for="department">Department Name</label>
-            <app-dropdown  [options]="dropdownDepartment"
-              [displayField]="'departmentName'"
-              [valueField]="'id'"
-              selectValue="reviewer"
-              width="100" id="reviewer-department" formControlName="departmentId"  >
-             </app-dropdown>
-          </div>
-        </form>
-        <div class="button-group">
-          <button type="button" class="btn save" (click)="saveExternalReviewer()" >Save</button>
-          <button type="button" class="btn cancel" (click)="isReviewerNotInList()">Cancel</button>
-        </div>
-
+        <app-form-data-not-in-list placeholder="Enter reviewer name" [isAssignee]="false" textLabel="Reviewer name" [dropdownDepartment]="dropdownDepartment" (cancelForm)="receiveCancel($event)" (sendData)="saveReviewer($event)" [bgColor]="bgColor"></app-form-data-not-in-list>
       }
     </div>
-    <div class="button-group">
-      <button type="submit" class="btn save">Save</button>
-      <button type="button" class="btn cancel">Cancel</button>
-      <button type="button" class="btn clear">Clear</button>
+    <div class="form-details-sub-container">
+      <div class="button-group">
+         <app-form-button label="Save" type="submit"></app-form-button>
+         <app-form-button label="Save Draft" (clicked)="saveAsDraft()"></app-form-button>
+         <app-form-button label="Clear" (clicked)="clearAllData()"></app-form-button>
+         <app-form-button label="Cancel" (clicked)="cancelRisk()"></app-form-button>
+      </div>
     </div>
+
   </form>
+
 </div>
 
 

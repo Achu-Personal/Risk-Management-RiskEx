@@ -13,5 +13,5 @@ export class BodyContainerComponent {
 
   @Input() backgroundColor="white"
    @Input() showShadow=true;
-   @Input() padding='20'
+   @Input() padding='10'
 }
