@@ -28,9 +28,13 @@ export class EmailService {
       .replace('{{riskName}}', context.riskName)
       .replace('{{description}}', context.description)
       .replace('{{riskType}}', context.riskType)
+      .replace('{{impact}}', context.impact)
+      .replace('{{mitigation}}', context.mitigation)
       .replace('{{plannedActionDate}}', context.plannedActionDate)
       .replace('{{overallRiskRating}}', context.overallRiskRating)
       .replace('{{id}}', context.id)
+      .replace('{{rid}}', context.rid)
+
 
   }
   sendReviewerEmail(email: string, context:any): Observable<boolean> {

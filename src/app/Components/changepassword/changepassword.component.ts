@@ -1,5 +1,5 @@
-import { NgIf } from '@angular/common';
-import { Component, EventEmitter, Output } from '@angular/core';
+import { CommonModule, NgIf } from '@angular/common';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-changepassword',
   standalone: true,
-  imports: [ReactiveFormsModule,NgIf],
+  imports: [ReactiveFormsModule,NgIf,CommonModule],
   templateUrl: './changepassword.component.html',
   styleUrl: './changepassword.component.scss'
 })
@@ -16,6 +16,10 @@ export class ChangepasswordComponent {
   @Output() close = new EventEmitter<void>();
   changePasswordForm: FormGroup;
   passwordChanged = false;
+
+
+  @Input() isVisible=false;
+  @Output() closeModal = new EventEmitter<void>(); // Emit when the modal needs to close
 
   constructor(
     private fb: FormBuilder,private router: Router
@@ -61,5 +65,5 @@ export class ChangepasswordComponent {
   onCancel() {
     this.close.emit();
   }
-
+ 
 }

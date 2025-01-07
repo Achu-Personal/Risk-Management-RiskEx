@@ -67,7 +67,7 @@
         <div class="graphchart"  >
         <app-chart [labels]="graph2labels" [chartType]="graph2chartType" [datasets]="graph2datasets"></app-chart>
         </div>
-        <div class="graph2Legend">
+        <!-- <div class="graph2Legend">
           <div>
             <div style="background-color: blue;" ></div>
             <h5>Low</h5>
@@ -83,10 +83,7 @@
             <h5>Critical</h5>
             <h6>{{Criticality.Cri}}</h6>
           </div>
-
-
-
-        </div>
+        </div> -->
       </div>
       </div>
     </div>
@@ -130,7 +127,7 @@
               <div style="display: flex;flex-direction: column;">
                 <div class="top">
                   <div class="risk-text">{{item.riskName}}</div>
-                  <div class="risk-count">{{item.overallRiskRating}}</div>
+                  <div class="risk-count">{{item.overallRiskRatingBefore}}</div>
                 </div>
                 <div class="risk-date">{{item.plannedActionDate | date: 'd MMM yyyy'}}</div>
               </div>

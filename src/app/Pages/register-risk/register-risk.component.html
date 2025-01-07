@@ -1,6 +1,5 @@
 <app-body-container [backgroundColor]="bgColor" padding="10">
   <div class="container">
-    <div class="content">
       <div id="riskType" class="form-Container" [ngClass]="getRiskTypeClass()">
         <div class="riskType-radioButton-container">
           <div class="risk-type-label">
@@ -29,23 +28,43 @@
         [dropdownImpact]="dropdownDataImpact" [dropdownProject]="dropdownDataProject"
         [dropdownDepartment]="dropdownDataDepartment" [dropdownAssignee]="dropdownDataAssignee"
         [dropdownReviewer]="dropdownDataReviewer" [departmentName]="departmentName"
-        [departmentId]="departmentId" [isAdmin]="isAdmin" (submitForm)="onFormSubmit($event)" [bgColor]="bgColor"></app-qms-form>
+        [departmentId]="departmentId" [isAdmin]="isAdmin" (submitForm)="onFormSubmit($event)" [bgColor]="bgColor"
+        (departmentSelectedByAdmin)="receiveValue($event)" [dropdownDataProjectForAdmin]="dropdownDataProjectForAdmin"
+        [dropdownAssigneeForAdmin]="dropdownAssigneeForAdmin"></app-qms-form>
        }
        @if (selectedRiskType === 2) {
         <app-isms-form  [riskTypeValue]="selectedRiskType" [dropdownLikelihood]="dropdownDataLikelihood"
         [dropdownImpact]="dropdownDataImpact" [dropdownProject]="dropdownDataProject"
         [dropdownDepartment]="dropdownDataDepartment" [dropdownAssignee]="dropdownDataAssignee"
         [dropdownReviewer]="dropdownDataReviewer" [departmentName]="departmentName"
-        [departmentId]="departmentId" [isAdmin]="isAdmin" (submitForm)="onFormSubmit($event)" [bgColor]="bgColor"></app-isms-form>
+        [departmentId]="departmentId" [isAdmin]="isAdmin" (submitForm)="onFormSubmit($event)" [bgColor]="bgColor"
+        (departmentSelectedByAdmin)="receiveValue($event)" [dropdownDataProjectForAdmin]="dropdownDataProjectForAdmin"
+        [dropdownAssigneeForAdmin]="dropdownAssigneeForAdmin"></app-isms-form>
        }
        @if (selectedRiskType === 3) {
         <app-isms-form  [riskTypeValue]="selectedRiskType" [dropdownLikelihood]="dropdownDataLikelihood"
         [dropdownImpact]="dropdownDataImpact" [dropdownProject]="dropdownDataProject"
         [dropdownDepartment]="dropdownDataDepartment" [dropdownAssignee]="dropdownDataAssignee"
         [dropdownReviewer]="dropdownDataReviewer" [departmentName]="departmentName"
-        [departmentId]="departmentId" [isAdmin]="isAdmin" (submitForm)="onFormSubmit($event)" [bgColor]="bgColor"></app-isms-form>
+        [departmentId]="departmentId" [isAdmin]="isAdmin" (submitForm)="onFormSubmit($event)" [bgColor]="bgColor"
+        (departmentSelectedByAdmin)="receiveValue($event)" [dropdownDataProjectForAdmin]="dropdownDataProjectForAdmin"
+        [dropdownAssigneeForAdmin]="dropdownAssigneeForAdmin"></app-isms-form>
        }
-    </div>
+     @if(isSuccess){
+        <app-form-successfull
+        message="Add new risk successfully!"
+        [isSuccessfull] ="true"
+        (closeDialog)="closeDialog()" [bgColor]="bgColor">
+        </app-form-successfull>
+     }
+     @if(isError){
+      <app-form-successfull
+        message="Something went wrong. Please try again!"
+        [isSuccessfull]= "false"
+        (closeDialog)="closeDialog()" [bgColor]="bgColor">
+        </app-form-successfull>
+
+     }
   </div>
 </app-body-container>
 

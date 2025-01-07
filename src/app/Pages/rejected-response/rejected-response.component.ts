@@ -16,7 +16,6 @@ constructor(private api:ApiService,private route: ActivatedRoute) {
   riskId:number = 0;
   approvalStatus: string | null = null;
 ngOnInit(){
-  // this.api.updateRiskReviewStatus(riskId: number, approvalStatus: string)
   const idParam = this.route.snapshot.paramMap.get('id');
     this.riskId = idParam ? +idParam : 0;
     this.approvalStatus="Rejected"
