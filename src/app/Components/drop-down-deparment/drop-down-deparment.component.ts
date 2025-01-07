@@ -3,6 +3,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { department } from '../../Interfaces/deparments.interface';
 import { ApiService } from '../../Services/api.service';
 import { NgFor, NgIf } from '@angular/common';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-drop-down-deparment',
@@ -23,6 +24,8 @@ export class DropDownDeparmentComponent implements OnInit, ControlValueAccessor 
   selectedDepartment: string = '';
   disabled = false;
   dropdownOpen = false;
+  private subscription: Subscription = new Subscription();
+
 
   private onChange: (value: string) => void = () => {};
   private onTouched: () => void = () => {};
@@ -40,21 +43,37 @@ export class DropDownDeparmentComponent implements OnInit, ControlValueAccessor 
   }
 
   ngOnInit() {
+    // Initial load of departments
     this.loadDepartments();
+
+    // Subscribe to department updates
+    this.subscription.add(
+      this.api.departmentUpdate$.subscribe(() => {
+        console.log('Department update detected, refreshing list...');
+        this.loadDepartments();
+      })
+    );
+  }
+  ngOnDestroy() {
+    // Clean up subscription to prevent memory leaks
+    this.subscription.unsubscribe();
   }
 
-  loadDepartments() {
-    this.api.getDepartment().subscribe({
-      next: (response) => {
-        this.departments = response;
-        console.log('Departments fetched successfully:', this.departments);
-      },
-      error: (error) => {
-        console.error('Failed to fetch departments', error);
-        this.departments = [];
-      }
-    });
-  }
+ loadDepartments() {
+  this.api.getDepartment().subscribe({
+    next: (response) => {
+      // Sort the departments array by name in ascending order
+      this.departments = response.sort((a, b) =>
+        a.departmentName.localeCompare(b.departmentName)
+      );
+      console.log('Departments fetched and sorted:', this.departments);
+    },
+    error: (error) => {
+      console.error('Failed to fetch departments', error);
+      this.departments = [];
+    }
+  });
+}
 
   selectDepartment(departmentName: string) {
     if (!this.disabled) {

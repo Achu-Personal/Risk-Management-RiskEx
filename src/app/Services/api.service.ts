@@ -2,7 +2,7 @@ import { project } from './../Interfaces/projects.interface';
 import { department } from './../Interfaces/deparments.interface';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, map, Observable, of, throwError } from 'rxjs';
+import { catchError, map, Observable, of, Subject, tap, throwError } from 'rxjs';
 import { UserResponse } from '../Interfaces/Userdata.interface.';
 import { AuthService } from './auth.service';
 
@@ -10,6 +10,10 @@ import { AuthService } from './auth.service';
   providedIn: 'root',
 })
 export class ApiService {
+
+  private departmentUpdateSubject = new Subject<void>();
+  departmentUpdate$ = this.departmentUpdateSubject.asObservable();
+
   constructor(private http: HttpClient, public auth: AuthService) {}
   //Just for now to test can be removed later
   getAllRisk() {
@@ -46,7 +50,15 @@ export class ApiService {
     return this.http.post<{ message: string }>(
       'https://localhost:7216/api/Department/Department',
       department
+    ).pipe(
+      tap(() => {
+        // Emit update notification after successful department addition
+        this.departmentUpdateSubject.next();
+      })
     );
+  }
+  notifyDepartmentUpdate() {
+    this.departmentUpdateSubject.next();
   }
 
   getProjects(departmentName: string) {
