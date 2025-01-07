@@ -101,6 +101,7 @@ onFormSubmit(payload: any) {
         console.log('Risk saved successfully(Quality):', res);
         console.log('Generated Risk ID:', res.id);
         this.isSuccess=true
+        this.riskId=res.id
 
         // Fetch reviewer details
         this.api.getRevieverDetails(res.id,'ReviewPending').subscribe({
@@ -190,6 +191,9 @@ onFormSubmit(payload: any) {
       console.log(res);
       if(res.id){
         this.isSuccess=true
+        this.riskId=res.id
+        console.log("response id for njnnmbhh security",this.riskId);
+
        }
     },
     error:(error: HttpErrorResponse) => {
@@ -236,6 +240,7 @@ onFormSubmit(payload: any) {
       console.log(res);
       if(res.id){
         this.isSuccess=true
+        this.riskId=res.id
        }
     },
     error:(error: HttpErrorResponse) => {
