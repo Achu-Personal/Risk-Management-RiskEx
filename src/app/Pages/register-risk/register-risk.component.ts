@@ -39,7 +39,6 @@ dropdownDataProjectForAdmin:any[]=[]
 dropdownAssigneeForAdmin:any[]=[]
 isSuccess:boolean=false
 isError:boolean=false
-riskId:number=0
 
 
 ngOnInit(){
@@ -71,7 +70,7 @@ ngOnInit(){
     this.dropdownDataReviewer=res.reviewers
   })
 
-  this.api.getAllUsersByDepartmentId(Number(this.departmentId)).subscribe((res:any)=>{
+  this.api.getAllUsersByDepartmentName(this.departmentName).subscribe((res:any)=>{
     this.dropdownDataAssignee=res
   })
 
@@ -96,7 +95,6 @@ onFormSubmit(payload: any) {
         console.log('Risk saved successfully:', res);
         console.log('Generated Risk ID:', res.id);
         this.isSuccess=true
-        this.riskId=res.id
 
         // Fetch reviewer details
         this.api.getRevieverDetails(res.id,'ReviewPending').subscribe({
@@ -136,7 +134,7 @@ onFormSubmit(payload: any) {
           },
           error: (reviewerError) => {
             console.error('Failed to fetch reviewer details:', reviewerError);
-
+            
           },
         });
       },
@@ -145,44 +143,37 @@ onFormSubmit(payload: any) {
         this.isError=true
       },
     });
-
-
+  
+    
   }
   else if (payload.riskType == 2) {
-    this.api.addnewSecurityOrPrivacyRisk(payload).subscribe({
-      next: (res: any) => {
-        console.log('Risk saved successfully:', res);
-        console.log('Generated Risk ID:', res.id);
+    this.api.addnewSecurityOrPrivacyRisk(payload).subscribe((res:any)=>{
+      console.log(res);
+      if(res.id){
         this.isSuccess=true
-        this.riskId=res.id
-
-      },
-      error: (saveError) => {
-        console.error('Failed to save risk:', saveError);
-        this.isError=true
-      },
-    });
+       }
+    },
+  (error:any)=>{
+    this.isError=true
+  })
   }
   else{
-    this.api.addnewSecurityOrPrivacyRisk(payload).subscribe({
-      next: (res: any) => {
-        console.log('Risk saved successfully:', res);
-        console.log('Generated Risk ID:', res.id);
+    this.api.addnewSecurityOrPrivacyRisk(payload).subscribe((res:any)=>{
+      console.log(res);
+      if(res.id){
         this.isSuccess=true
-        this.riskId=res.id
-
-      },
-      error: (saveError) => {
-        console.error('Failed to save risk:', saveError);
-        this.isError=true
-      },
-    });
+       }
+    },
+  (error:any)=>{
+    this.isError=true
+  })
   }
 
 }
 
 getRiskTypeClass() {
   if (this.selectedRiskType === 1) {
+    
     this.bgColor="var(--quality-color)"
     return 'risk-type-1';
   } else if (this.selectedRiskType === 2) {
@@ -211,7 +202,7 @@ receiveValue(value: any) {
   this.dropdownDataProjectForAdmin=[]
 })
 
-this.api.getAllUsersByDepartmentId(Number(this.receivedDepartmentIdForAdmin)).subscribe((res:any)=>{
+this.api.getAllUsersByDepartmentName(departmentName).subscribe((res:any)=>{
   this.dropdownAssigneeForAdmin=res
 
 },
