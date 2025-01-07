@@ -4,6 +4,7 @@ import { ReusableTableComponent } from '../../Components/reusable-table/reusable
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from '../../Services/api.service';
 import { AuthService } from '../../Services/auth.service';
+import { EmailService } from '../../Services/email.service';
 
 @Component({
   selector: 'app-approval-table',
@@ -14,6 +15,7 @@ import { AuthService } from '../../Services/auth.service';
 })
 export class ApprovalTableComponent {
   headerData: string[] = [];
+  assignee:any;
   // updates:any={};
   //"SI NO",
   headerDisplayMap: { [key: string]: string } = {
@@ -67,7 +69,8 @@ export class ApprovalTableComponent {
     private router: Router,
     private api: ApiService,
     public auth: AuthService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    public email:EmailService
     
   ) {}
 
@@ -131,20 +134,6 @@ export class ApprovalTableComponent {
   showRejectDialog = false;
   selectedRow: any;
 
-  // formatDate(value: any): string {
-  //   if (!value) return '';
-    
-  //   if (typeof value === 'string' && value.includes('-')) {
-  //     const date = new Date(value);
-  //     if (!isNaN(date.getTime())) {
-  //       const day = String(date.getDate()).padStart(2, '0');
-  //       const month = String(date.getMonth() + 1).padStart(2, '0'); 
-  //       const year = date.getFullYear();
-  //       return `${day}-${month}-${year}`;
-  //     }
-  //   }
-  //   return value;
-  // }
 
   approveRisk(event: {row: any, comment: string}) {
     const updates = {
@@ -153,7 +142,36 @@ export class ApprovalTableComponent {
     };
     let id = event.row.id;
     this.api.updateReviewStatusAndComments(id,updates);
-    this.api.sendEmailToAssignee(id);
+    this.api.getAssigneeByRiskId(id).subscribe((res:any)=>{
+      this.assignee=res;
+      // console.log(this.assignee);  
+      const context = {
+        responsibleUser: this.assignee.fullName,
+        riskId: event.row.riskId,
+        riskName: event.row.riskName,
+        description: event.row.description,
+        riskType:event.row.riskType,
+        plannedActionDate:event.row.plannedActionDate,
+        overallRiskRating:event.row.overallRiskRating,
+        riskStatus:event.row.riskStatus
+      };
+      console.log("context:",context);
+      this.email.sendAssigneeEmail(this.assignee.email,context).subscribe({
+        next: () => {
+          console.log('Assignee email sent successfully');
+          // this.router.navigate(['/thankyou']);
+        },
+        error: (emailError) => {
+          console.error('Failed to send email to assignee:', emailError);
+          // Navigate to thank you page even if email fails
+          // this.router.navigate(['/thankyou']);
+        }
+      })
+      
+    });
+
+
+    // this.api.sendEmailToAssignee(id);    
     console.log('Approved:', event.row);
     console.log('Comment:', event.comment);
   }

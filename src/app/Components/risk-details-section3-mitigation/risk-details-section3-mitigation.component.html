@@ -66,6 +66,12 @@
 
       </div>
 
+      <div style="width: 100%;display: flex;justify-content: center;margin-top: 40px;">
+        <div class="residual-div">
+          Residual Risk :{{residualRisk}}   |   Residual Value  :  {{residualValue}}    |   Percentage Reduction  : {{percentageReducation}}
+        </div>
+      </div>
+
       <div class="reviewer-section">
         <h5 style="font-weight: bold;margin-top: 50px">Reviewed By: <span> {{ riskAssessmentAfter.length>0? riskAssessmentAfter[0].review.reviewerName:'' }}</span></h5>
         <div style="height: 100px;width: 100%;background-color: var(--primary-color); margin-top: 10px;border-radius: 10px;padding: 20px;">
