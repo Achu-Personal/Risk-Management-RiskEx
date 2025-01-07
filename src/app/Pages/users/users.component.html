@@ -99,7 +99,7 @@
 
             <div class="mb-3">
               <label for="projectName" class="form-label">Project</label>
-              <app-project-drop-down 
+              <app-project-drop-down
                 [departmentName]="userForm.get('departmentName')?.value"
                 formControlName="projectNames"
                 (selectedProjectsChange)="onProjectsSelected($event)"
@@ -158,7 +158,7 @@
     </div>
   </div>
 
-  <!-- ------------add project modal------------------- -->
+  <!-- ------------Add project modal------------------- -->
 
   <div class="modal fade" id="addProjectModal" tabindex="-1" aria-labelledby="addProjectModalLabel"
   aria-hidden="true">
@@ -190,13 +190,14 @@
             <app-drop-down-deparment  *ngIf="authService.getUserRole() === 'Admin'"
                 formControlName="departmentName"
               ></app-drop-down-deparment>
-              <div *ngIf="authService.getUserRole() === 'DepartmentUser'">
+              <div >
                 <input
-                  class="form-control"
-                  id="department"
-                  type="text"
-                  formControlName="departmentName"
-                  [value]="authService.getDepartmentName()"
+                *ngIf="authService.getUserRole() === 'DepartmentUser'"
+                class="form-control"
+                id="departmentForProject"
+                type="text"
+                formControlName="departmentName"
+                [attr.readonly]="true"
                 />
               </div>
             @if (userForm.get('department')?.invalid && userForm.get('department')?.touched) {
