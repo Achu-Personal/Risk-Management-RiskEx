@@ -1,5 +1,5 @@
 
-<!-- <div class="body"> -->
+<div class="body">
 
     <div class="header1">
       <div class="entries">
@@ -65,17 +65,69 @@
           <th>CRR</th>
           <th>Assignee</th>
           <th>Reviewer</th>
-          <th>Review Status</th>
-          <th>Status</th>
+          <th>
+            <div class="dropdown-container">
+              <button class="dropdown-button" (click)="toggleReviewStatusDropdown()">
+                Review Status &#9662;
+              </button>
+              @if(isReviewStatusDropdownOpen ){
+              <ul [class.open]="isReviewStatusDropdownOpen"  class="dropdown-options">
+
+                @for(type of uniqueReviewStatus;track type){
+                <li
+                  (click)="onReviewStatusSelect(type)">
+                  {{ type }}
+                </li>
+              }
+                <li (click)="onReviewStatusSelect('')">All  Review Status</li>
+              </ul>
+              }
+            </div>
+          </th>
+          <th>
+            <div class="dropdown-container">
+              <button class="dropdown-button" (click)="toggleStatusDropdown()">
+                Status &#9662;
+              </button>
+              @if(isStatusDropdownOpen ){
+              <ul [class.open]="isStatusDropdownOpen"  class="dropdown-options">
+
+                @for(type of uniqueStatus;track type){
+                <li
+                  (click)="onStatusSelect(type)">
+                  {{ type }}
+                </li>
+              }
+                <li (click)="onStatusSelect('')">All Status</li>
+              </ul>
+              }
+            </div>
+          </th>
           @if(isButtonVisible){
-            <th>Residual Risk</th>
-            <!-- <th>RR Percentage</th>
-            <th>RR Value</th> -->
+            <th>
+              <div class="dropdown-container">
+                <button class="dropdown-button" (click)="toggleResidualDropdown()">
+                  Residual Risk &#9662;
+                </button>
+                @if(isResidualRiskDropdownOpen ){
+                <ul [class.open]="isResidualRiskDropdownOpen"  class="dropdown-options">
+
+                  @for(type of uniqueResidual;track type){
+                  <li
+                    (click)="onResidualSelect(type)">
+                    {{ type }}
+                  </li>
+                }
+                  <li (click)="onResidualSelect('')">All  Residual Status</li>
+                </ul>
+                }
+              </div>
+            </th>
           }
         </tr>
       </thead>
       <tbody>
-        @for(item of paginated ;track item){
+        @for(item of paginated ;track item.id){
         <tr (click)="rowClick(item.id)" style="height:10px;">
           <td>{{ $index+1 }}</td>
           <!-- <td>{{ item.riskId }}</td> -->
@@ -91,10 +143,10 @@
           <td>{{ item.responsibleUser }}</td>
           <td> {{item.riskAssessments[0].reviewer}}</td>
           <td> {{item.riskAssessments[0].reviewStatus }}</td>
-          <td><div [ngClass]="{'green-cell': item.riskStatus === 'open', 'red-cell': item.riskStatus === 'close'}">{{ item.riskStatus }}</div></td>
+          <td><div [ngClass]="{'red-cell': item.riskStatus === 'open', 'green-cell': item.riskStatus === 'close'}">{{ item.riskStatus }}</div></td>
           <!-- <td><div>{{ item.riskStatus }}</div></td> -->
           @if(isButtonVisible){
-            <td><div [ngClass]="{'green-cell': item.residualRisk === 'Low', 'red-cell': item.residualRisk === 'High'}">{{ item.residualRisk }}</div></td>
+            <td><div [ngClass]="{'green-cell': item.residualRisk === 'Low','yellow-cell': item.residualRisk === 'Medium', 'red-cell': item.residualRisk === 'High'}">{{ item.residualRisk }}</div></td>
 
             <!-- <td>{{ item.responsibleUser }}</td>
             <td>{{ item.percentageRedution }}</td> -->
@@ -117,4 +169,4 @@
 
     <!-- </div> -->
   </div>
-<!-- </div> -->
+</div>

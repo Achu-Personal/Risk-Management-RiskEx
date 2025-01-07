@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SingleTablePageComponent } from './single-table-page.component';
+import { ThankyouComponent } from './approved-response.component';
 
-describe('SingleTablePageComponent', () => {
-  let component: SingleTablePageComponent;
-  let fixture: ComponentFixture<SingleTablePageComponent>;
+describe('ThankyouComponent', () => {
+  let component: ThankyouComponent;
+  let fixture: ComponentFixture<ThankyouComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SingleTablePageComponent]
+      imports: [ThankyouComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(SingleTablePageComponent);
+    fixture = TestBed.createComponent(ThankyouComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -47,6 +47,7 @@
       transform: scaleX(1) translateY(-50%);
     }
   }
+
 }
 
 .step-icon {
@@ -64,6 +65,8 @@
   position: relative;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
+
+
   &.completed {
     background: #4c6ef5;
     border-color: #4c6ef5;
@@ -74,6 +77,8 @@
       opacity: 0;
       animation: fadeInZoom 0.5s ease forwards;
     }
+
+
   }
 
   &.current {
@@ -226,4 +231,17 @@
   // width: .1px;
   height: 62px;
   background-color: #4c6ef5;
+}
+
+@media (max-width: 600px) {
+
+  .step-icon {
+      width: 30px;
+      height: 30px;
+      font-size: 14px; /* Smaller font size */
+  }
+  .stepper-container {
+      padding: 5px;
+      max-width: 100%;
+    }
 }
