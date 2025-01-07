@@ -92,53 +92,47 @@ export class ApiService {
     console.log('hai');
     return this.http.get(`data/getRisk.json`);
   }
-  getRiskResponses() {
-    return this.http.get('https://localhost:7216/api/RiskResponseData');
-  }
-  getLikelyHoodDefinition() {
-    return this.http.get(
-      'https://localhost:7216/api/AssessmentMatrixLikelihood'
-    );
-  }
-  getImpactDefinition() {
-    return this.http.get('https://localhost:7216/api/AssessmentMatrixImpact');
-  }
-  getRiskCategoryCounts() {
-    return this.http.get('https://localhost:7216/api/Risk/RiskCategory-Counts');
-  }
-  getOpenRiskCountByType() {
-    return this.http.get('https://localhost:7216/api/Risk/OpenRisk-Counts');
-  }
 
-  addnewQualityRisk(qualityRisk: any) {
-    console.log('quality risk payload', qualityRisk);
-    return this.http.post(
-      'https://localhost:7216/api/Risk/Quality',
-      qualityRisk
-    );
-  }
 
-  addnewSecurityOrPrivacyRisk(SecurityOrPrivacyRisk: any) {
-    return this.http.post(
-      'https://localhost:7216/api/Risk/security',
-      SecurityOrPrivacyRisk
-    );
-  }
-  addExternalReviewer(reviewer: any) {
-    return this.http.post(
-      'https://localhost:7216/api/Reviewer/add-reviewer',
-      reviewer
-    );
-  }
-  addResponsiblePerson(assignee: any) {
-    return this.http.post('https://localhost:7216/api/User/register', assignee);
-  }
-  getAllReviewer() {
-    return this.http.get('https://localhost:7216/api/Reviewer/getAllReviewers');
-  }
-  editQualityRisk(id: number, risk: any) {
-    return this.http.put(`https://localhost:7216/api/Risk/quality/${id}`, risk);
-  }
+
+   getRiskResponses(){
+
+    return this.http.get('https://localhost:7216/api/RiskResponseData')
+   }
+   getLikelyHoodDefinition(){
+    return this.http.get('https://localhost:7216/api/AssessmentMatrixLikelihood')
+   }
+   getImpactDefinition(){
+    return this.http.get('https://localhost:7216/api/AssessmentMatrixImpact')
+   }
+   getRiskCategoryCounts(){
+    return this.http.get('https://localhost:7216/api/Risk/RiskCategory-Counts')
+   }
+   getOpenRiskCountByType(){
+    return this.http.get('https://localhost:7216/api/Risk/OpenRisk-Counts')
+   }
+
+   addnewQualityRisk(qualityRisk:any){
+    console.log("quality risk payload",qualityRisk)
+     return this.http.post('https://localhost:7216/api/Risk/Quality',qualityRisk)
+   }
+
+   addnewSecurityOrPrivacyRisk(SecurityOrPrivacyRisk:any){
+
+    return this.http.post('https://localhost:7216/api/Risk/security',SecurityOrPrivacyRisk)
+   }
+   addExternalReviewer(reviewer:any){
+    return this.http.post('https://localhost:7216/api/Reviewer/add-reviewer',reviewer)
+   }
+   addResponsiblePerson(assignee:any){
+    return this.http.post('https://localhost:7216/api/User/register',assignee)
+   }
+   getAllReviewer(){
+    return this.http.get('https://localhost:7216/api/Reviewer/getAllReviewers')
+   }
+   editQualityRisk(id:number,risk:any){
+    return this.http.put(`https://localhost:7216/api/Risk/quality/${id}`,risk)
+   }
    editSecurityOrPrivacyRisk(id:number,risk:any){
     return this.http.put(`https://localhost:7216/api/Risk/SecurityOrPrivacy/${id}`,risk)
    }
@@ -219,9 +213,46 @@ export class ApiService {
     );
   }
 
-  changeUserStatus(userId:any,status:any){
-    return this.http.patch(`https://localhost:7216/api/User/IsActive/${userId}/${status}`,{}).subscribe((e)=>console.log('UserId and status:',userId,status)
-    )
+  changeUserStatus(userId: any, status: any) {
+    return this.http
+      .patch(`https://localhost:7216/api/User/IsActive/${userId}/${status}`, {})
+      .subscribe((e) => console.log('UserId and status:', userId, status));
   }
 
- }
+  getUsersByProjects(): Observable<any> {
+    const projects = this.auth.getProjects() || [];
+    if (!projects || projects.length === 0) {
+      console.log('No projects found in auth');
+      return of([]);
+    }
+    let params = new HttpParams();
+
+    projects.forEach((project) => {
+      if (project && project.Id) {
+        params = params.append('projectIds', project.Id.toString());
+      }
+    });
+
+    return this.http
+      .get<any>(`https://localhost:7216/api/User/users-by-projects`, { params })
+      .pipe(
+        catchError((error) => {
+          if (error.status === 404) {
+            console.log('API Response:', error);
+            return of([]);
+          }
+          return throwError(() => error);
+        })
+      );
+  }
+  updateQualityRisk(updated:any,riskId:number){
+    return this.http.put(`https://localhost:7216/api/Risk/update/Quality/${riskId}`,updated)
+  }
+
+  updateSecurityOrPrivacyRisk(updated:any,riskId:number){
+    return this.http.put(`https://localhost:7216/api/Risk/update/${riskId}`,updated)
+  }
+}
+
+
+
