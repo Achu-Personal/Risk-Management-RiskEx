@@ -88,6 +88,7 @@ export class ApprovalComponent {
       let id = parseInt(this.route.snapshot.paramMap.get('id')!);
       this.api.updateReviewStatusAndComments(id,updates);
       
+      
     }
   }
 
