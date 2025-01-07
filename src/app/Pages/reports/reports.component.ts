@@ -6,6 +6,7 @@ import { StyleButtonComponent } from "../../UI/style-button/style-button.compone
 import { DatepickerComponent } from "../../UI/datepicker/datepicker.component";
 import { ReportGenerationService } from '../../Services/report-generation.service';
 import { ApiService } from '../../Services/api.service';
+import { AuthService } from '../../Services/auth.service';
 
 @Component({
   selector: 'app-reports',
@@ -15,12 +16,17 @@ import { ApiService } from '../../Services/api.service';
   styleUrl: './reports.component.scss'
 })
 export class ReportsComponent {
-
+  isAdmin: boolean = false;
+  isDepartmentUser: boolean = false;
+  isProjectUser : boolean = false;
+  projectList: number[] =[];
+  item:any=[];
   @Input() label: string = 'Generate Report';
   // @Input() data?: any[]; // Optional input for custom data
   data:any;
   items:any=[];
-  constructor(private excelService: ReportGenerationService,private router: Router,public api: ApiService) {}
+  type: any;
+  constructor(private excelService: ReportGenerationService,private router: Router,public api: ApiService,public auth: AuthService) {}
 
   filtereddata():void{
 
@@ -67,11 +73,94 @@ export class ReportsComponent {
       }
 
       ngOnInit(): void {
+      this.type = history.state.type;
+      console.log("histroyile type",this.type);
+        // setTimeout(()=>{
+      const role = this.auth.getUserRole();
+      this.isAdmin = role === 'Admin';
+      console.log("admin",this.isAdmin);
+      if (Array.isArray(role)) {
+        this.isDepartmentUser = role.includes("DepartmentUser");
+        console.log("dep",this.isDepartmentUser);
+        this.isProjectUser = role.includes("ProjectUsers");
+      }
+      const department = this.auth.getDepartmentId();
 
+      console.log("dep",department);
+      console.log("role",role);
+
+    if(this.type !== null){
+      if(this.isAdmin){
+        this.api.gettabledata().subscribe((res: any) => {
+          this.items = res.filter((item: { riskType: any; }) => item.riskType === this.type);
+          console.log(this.items);
+        });
+
+      }
+      if(this.isDepartmentUser&&this.isProjectUser){
+        this.api.getDepartmentTable(department).subscribe((res:any)=>{
+          this.item = res.filter((item: { riskType: any; }) => item.riskType === this.type);
+          this.items =[...this.item];
+          console.log("depart",this.items);
+
+        })
+      }
+      if(this.isDepartmentUser ){
+        this.api.getDepartmentTable(department).subscribe((res:any)=>{
+          this.item = res.filter((item: { riskType: any; }) => item.riskType === this.type);
+          this.items =[...this.item];
+          console.log("depart",this.items);
+
+        })
+      }
+      if(this.isProjectUser){
+        const pro = this.auth.getProjects();
+        this.projectList = pro.map((project) => project.Id);
+        console.log("output",this.projectList);
+        this.api.getProjectTable(this.projectList).subscribe((res:any)=>{
+          this.item = res.filter((item: { riskType: any; }) => item.riskType === this.type);
+          this.items =[...this.item];
+          console.log("pro",this.items);
+        })
+      }
+    }
+    if(this.type==null){
+      if(this.isAdmin){
         this.api.gettabledata().subscribe((res: any) => {
           this.items = res;
           console.log(this.items);
         });
+
+      }
+      if(this.isDepartmentUser&&this.isProjectUser){
+        this.api.getDepartmentTable(department).subscribe((res:any)=>{
+          this.item = res;
+          this.items =[...this.item];
+          console.log("depart",this.items);
+
+        })
+      }
+      if(this.isDepartmentUser ){
+        this.api.getDepartmentTable(department).subscribe((res:any)=>{
+          this.item = res;
+          this.items =[...this.item];
+          console.log("depart",this.items);
+
+        })
+      }
+      if(this.isProjectUser){
+        const pro = this.auth.getProjects();
+        this.projectList = pro.map((project) => project.Id);
+        console.log("output",this.projectList);
+        this.api.getProjectTable(this.projectList).subscribe((res:any)=>{
+          this.item = res;
+          this.items =[...this.item];
+          console.log("pro",this.items);
+        })
+      }
+    }
+
+    // },1000);
 
       }
       //datepicker
