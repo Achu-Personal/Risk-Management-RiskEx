@@ -39,6 +39,8 @@ export class HistoryComponent {
     // setTimeout(()=>{
       const role = this.auth.getUserRole();
       this.isAdmin = role === 'Admin';
+      this.isDepartmentUser = role ==='DepartmentUser';
+      this.isProjectUser = role ==='ProjectUsers'
       console.log("admin",this.isAdmin);
       if (Array.isArray(role)) {
         this.isDepartmentUser = role.includes("DepartmentUser");

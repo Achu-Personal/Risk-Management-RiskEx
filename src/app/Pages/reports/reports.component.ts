@@ -78,6 +78,8 @@ export class ReportsComponent {
         // setTimeout(()=>{
       const role = this.auth.getUserRole();
       this.isAdmin = role === 'Admin';
+      this.isDepartmentUser = role ==='DepartmentUser';
+      this.isProjectUser = role ==='ProjectUsers'
       console.log("admin",this.isAdmin);
       if (Array.isArray(role)) {
         this.isDepartmentUser = role.includes("DepartmentUser");
@@ -97,14 +99,14 @@ export class ReportsComponent {
         });
 
       }
-      if(this.isDepartmentUser&&this.isProjectUser){
-        this.api.getDepartmentTable(department).subscribe((res:any)=>{
-          this.item = res.filter((item: { riskType: any; }) => item.riskType === this.type);
-          this.items =[...this.item];
-          console.log("depart",this.items);
+      // if(this.isDepartmentUser&&this.isProjectUser){
+      //   this.api.getDepartmentTable(department).subscribe((res:any)=>{
+      //     this.item = res.filter((item: { riskType: any; }) => item.riskType === this.type);
+      //     this.items =[...this.item];
+      //     console.log("depart",this.items);
 
-        })
-      }
+      //   })
+      // }
       if(this.isDepartmentUser ){
         this.api.getDepartmentTable(department).subscribe((res:any)=>{
           this.item = res.filter((item: { riskType: any; }) => item.riskType === this.type);
