@@ -67,14 +67,15 @@ export class ApiService {
   getDepartmentHistoryTable(department:any) {
     return this.http.get(`https://localhost:7216/api/Report/DepartmentwiseRisk/${department}?riskStatus=close`)
   }
-  getProjectTable(projectList:any) {
-    // let params = new HttpParams();
-    // projectList.forEach((id) => {
-    //   params = params.append('projectIds', id);
-    // });
-    return this.http.get(`https://localhost:7216/api/Report/projectrisks?projectIds=${projectList}`)
+  getProjectHistroyTable(projectList:any) {
+    const queryParams = projectList.map((id: number) => `projectIds=${id}`).join('&');
+    return this.http.get(`https://localhost:7216/api/Report/projectrisks?${queryParams}&riskStatus=close`,)
   }
-  
+  getProjectTable(projectList:any) {
+    const queryParams = projectList.map((id: number) => `projectIds=${id}`).join('&');
+    return this.http.get(`https://localhost:7216/api/Report/projectrisks?${queryParams}`,)
+  }
+
   addNewProject(project: any) {
     return this.http.post(
       'https://localhost:7216/api/Project/Project',
@@ -269,7 +270,7 @@ export class ApiService {
       return this.http.post('https://localhost:7216/api/emails', null, { params });
 
   }
-  
+
   getAssigneeByRiskId(riskId:number){
     return this.http.get(`https://localhost:7216/api/User/GetInfoOfAssigneeByRiskId/${riskId}`)
   }
