@@ -4,3 +4,14 @@
   border-radius: 7px;
 
 }
+.risk-type-1 {
+  border-left: 0px solid var(--quality-color);
+}
+
+.risk-type-2 {
+  border-left: 0px solid var(--security-color);
+}
+
+.risk-type-3 {
+  border-left: 0px solid var(--privacy-color);
+}

@@ -1,0 +1,18 @@
+<div class="form-group">
+  <label for="response" class="form-label">{{label}}<span class="required"> {{required}}</span></label>
+  <div class="radio-group">
+    @for ( response of riskResponses; track $index) {
+      <div class="radio-option">
+        <input
+          type="radio"
+          [id]="'response-' + response.id"
+          [name]="response.name"
+          [value]="response.id"
+          [(ngModel)]="selectedResponse"
+          (change)="onRadioChange($event)"
+        />
+        <label [for]="'response-' + response.id">{{ response.name }}</label>
+      </div>
+    }
+  </div>
+</div>
