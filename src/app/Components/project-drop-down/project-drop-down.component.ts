@@ -60,30 +60,8 @@ export class ProjectDropDownComponent implements OnChanges, ControlValueAccessor
   loadProjectsForDepartment() {
     this.loading = true;
     this.dropdownOpen = false;
-    console.log('User Role:', this.authService.getUserRole());
 
-    if (this.authService.getUserRole()?.includes('ProjectUsers')) {
-      this.authService.getProjectsFor().subscribe(
-        (response: any[]) => {
-          const data = response.map((project) => {
-            return Object.keys(project).reduce((acc, key) => {
-              acc[key.toLowerCase()] = project[key];
-              return acc;
-            }, {} as any);
-          });
-          this.filteredProjects = data
-          this.selectedItems = [];
-          this.updateSelectedProject();
-          this.emitChanges();
-          this.loading = false;
-          console.log('Projects fetched successfully for ProjectUser:', this.filteredProjects);
-        },
-        (error) => {
-          console.error('Failed to fetch projects for ProjectUser', error);
-          this.resetComponent();
-        }
-      );
-    } else {
+
       this.api.getProjects(this.departmentName).subscribe(
         (response: project[]) => {
           this.filteredProjects = response;
@@ -99,7 +77,7 @@ export class ProjectDropDownComponent implements OnChanges, ControlValueAccessor
         }
       );
     }
-}
+
 
 
 

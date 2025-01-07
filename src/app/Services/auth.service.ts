@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { BehaviorSubject, catchError, map, Observable, of, tap, throwError } from 'rxjs';
-import { project } from '../Interfaces/projects.interface';
 
 
 
@@ -59,7 +58,6 @@ export class AuthService {
     this.projects.next(decodedToken.Projects);
 
 
-    // Parse projects from the token if they exist
     if (decodedToken.Projects) {
       try {
         const projectsData = JSON.parse(decodedToken.Projects);
@@ -103,15 +101,13 @@ export class AuthService {
     const value: any[] = this.projects.value;
     console.log(value);
 
-    // Convert all object keys to lowercase
     return of(value).pipe(
       map((projects) =>
         projects.map((project) => {
-          // Create a new object with lowercase keys
           return Object.keys(project).reduce((acc, key) => {
             acc[key.toLowerCase()] = project[key];
             return acc;
-          }, {} as any); // Ensure the result is typed correctly
+          }, {} as any); 
         })
       )
     );
