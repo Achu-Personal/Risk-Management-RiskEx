@@ -2,7 +2,7 @@ import { project } from './../Interfaces/projects.interface';
 import { department } from './../Interfaces/deparments.interface';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, map, Observable, of, throwError } from 'rxjs';
+import { catchError, map, Observable, of, Subject, tap, throwError } from 'rxjs';
 import { UserResponse } from '../Interfaces/Userdata.interface.';
 import { AuthService } from './auth.service';
 
@@ -10,6 +10,10 @@ import { AuthService } from './auth.service';
   providedIn: 'root',
 })
 export class ApiService {
+
+  private departmentUpdateSubject = new Subject<void>();
+  departmentUpdate$ = this.departmentUpdateSubject.asObservable();
+
   constructor(private http: HttpClient, public auth: AuthService) {}
   //Just for now to test can be removed later
   getAllRisk() {
@@ -46,7 +50,15 @@ export class ApiService {
     return this.http.post<{ message: string }>(
       'https://localhost:7216/api/Department/Department',
       department
+    ).pipe(
+      tap(() => {
+        // Emit update notification after successful department addition
+        this.departmentUpdateSubject.next();
+      })
     );
+  }
+  notifyDepartmentUpdate() {
+    this.departmentUpdateSubject.next();
   }
 
   getProjects(departmentName: string) {
@@ -58,19 +70,21 @@ export class ApiService {
   gettabledata() {
     return this.http.get(`https://localhost:7216/api/Report`);
   }
-  gethistorytabledata() {
-    return this.http.get(`https://localhost:7216/api/Report?riskStatus=close`);
+  gethistorytabledata(){
+    return this.http.get(`https://localhost:7216/api/Report?riskStatus=close`)
   }
-  getFilteredData(department: any) {
-    return this.http.get(`data/tabledata.json`).pipe(
-      map((data: any) => {
-        const filteredData = data.filter(
-          (item: any) =>
-            item.department.toLowerCase() === String(department).toLowerCase()
-        );
-        return filteredData;
-      })
-    );
+  getDepartmentTable(department:any) {
+    return this.http.get(`https://localhost:7216/api/Report/DepartmentwiseRisk/${department}`)
+  }
+  getDepartmentHistoryTable(department:any) {
+    return this.http.get(`https://localhost:7216/api/Report/DepartmentwiseRisk/${department}?riskStatus=close`)
+  }
+  getProjectTable(projectList:any) {
+    // let params = new HttpParams();
+    // projectList.forEach((id) => {
+    //   params = params.append('projectIds', id);
+    // });
+    return this.http.get(`https://localhost:7216/api/Report/projectrisks?projectIds=${projectList}`)
   }
   addNewProject(project: any) {
     return this.http.post(
@@ -92,6 +106,7 @@ export class ApiService {
     console.log('hai');
     return this.http.get(`data/getRisk.json`);
   }
+
   getRiskResponses() {
     return this.http.get('https://localhost:7216/api/RiskResponseData');
   }
@@ -136,8 +151,14 @@ export class ApiService {
   getAllReviewer() {
     return this.http.get('https://localhost:7216/api/Reviewer/getAllReviewers');
   }
-  editQualityRisk(id: any, risk: any) {
+  editQualityRisk(id: number, risk: any) {
     return this.http.put(`https://localhost:7216/api/Risk/quality/${id}`, risk);
+  }
+  editSecurityOrPrivacyRisk(id: number, risk: any) {
+    return this.http.put(
+      `https://localhost:7216/api/Risk/SecurityOrPrivacy/${id}`,
+      risk
+    );
   }
 
   getRisksAssignedToUser(id: any = '') {
@@ -158,8 +179,10 @@ export class ApiService {
     );
   }
   updateRiskReviewStatus(riskId: number, approvalStatus: string) {
-    const url = `https://localhost:7216/api/Approval/update-review-status?riskId=${riskId}&approvalStatus=${approvalStatus}`;
-    return this.http.put(url, {});
+    return this.http.put(`https://localhost:7216/api/Approval/update-review-status?riskId=${riskId}&approvalStatus=${approvalStatus}`,{});
+  }
+  updateExternalReivewStatus(updates:any){
+    return this.http.post(`https://localhost:7216/api/Approval/api/external-review/status/update`,updates)
   }
   updateReviewStatusAndComments(id: number, updates: any) {
     console.log('updates', updates);
@@ -247,5 +270,35 @@ export class ApiService {
           return throwError(() => error);
         })
       );
+  }
+  sendMail(email:string, subject:string, body:string){
+    const params = new HttpParams()
+      .set('receptor', email)
+      .set('subject', subject)
+      .set('body', body)
+      .set('isBodyHtml', 'true');
+      return this.http.post('https://localhost:7216/api/emails', null, { params });
+
+  }
+  
+  getAssigneeByRiskId(riskId:number){
+    return this.http.get(`https://localhost:7216/api/User/GetInfoOfAssigneeByRiskId/${riskId}`)
+  }
+
+  getRevieverDetails(riskId:number){
+    return this.http.get(`https://localhost:7216/api/Reviewer/gettheReviewer/${riskId}`)
+  }
+  updateQualityRisk(updated: any, riskId: number) {
+    return this.http.put(
+      `https://localhost:7216/api/Risk/update/Quality/${riskId}`,
+      updated
+    );
+  }
+
+  updateSecurityOrPrivacyRisk(updated: any, riskId: number) {
+    return this.http.put(
+      `https://localhost:7216/api/Risk/update/${riskId}`,
+      updated
+    );
   }
 }

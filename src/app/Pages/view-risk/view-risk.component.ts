@@ -18,6 +18,7 @@ export class ViewRiskComponent{
 
   data:any=[]
 
+
   constructor(public api:ApiService,public route:ActivatedRoute)
   {
 
