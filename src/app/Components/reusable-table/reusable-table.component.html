@@ -54,7 +54,7 @@
               @if(key !=='riskStatus'&& key !=='overallRiskRating' && key
               !=='plannedActionDate' && key!=='projects') {
               <ng-container>
-                {{ row[key] | slice : 0 : 50 }}
+                {{ row[key] | slice : 0 : 40 }}
               </ng-container>
               }
               <!-- {{formatDate(row[key]) | slice : 0 : 30

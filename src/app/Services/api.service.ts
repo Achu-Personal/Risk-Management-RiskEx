@@ -167,8 +167,10 @@ export class ApiService {
     );
   }
   updateRiskReviewStatus(riskId: number, approvalStatus: string) {
-    const url = `https://localhost:7216/api/Approval/update-review-status?riskId=${riskId}&approvalStatus=${approvalStatus}`;
-    return this.http.put(url, {});
+    return this.http.put(`https://localhost:7216/api/Approval/update-review-status?riskId=${riskId}&approvalStatus=${approvalStatus}`,{});
+  }
+  updateExternalReivewStatus(updates:any){
+    return this.http.post(`https://localhost:7216/api/Approval/api/external-review/status/update`,updates)
   }
   updateReviewStatusAndComments(id: number, updates: any) {
     console.log('updates', updates);
@@ -256,6 +258,23 @@ export class ApiService {
           return throwError(() => error);
         })
       );
+  }
+  sendMail(email:string, subject:string, body:string){
+    const params = new HttpParams()
+      .set('receptor', email)
+      .set('subject', subject)
+      .set('body', body)
+      .set('isBodyHtml', 'true');
+      return this.http.post('https://localhost:7216/api/emails', null, { params });
+
+  }
+  
+  getAssigneeByRiskId(riskId:number){
+    return this.http.get(`https://localhost:7216/api/User/GetInfoOfAssigneeByRiskId/${riskId}`)
+  }
+
+  getRevieverDetails(riskId:number){
+    return this.http.get(`https://localhost:7216/api/Reviewer/gettheReviewer/${riskId}`)
   }
   updateQualityRisk(updated: any, riskId: number) {
     return this.http.put(
