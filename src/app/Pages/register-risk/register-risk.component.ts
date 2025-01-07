@@ -97,7 +97,7 @@ onFormSubmit(payload: any) {
         this.isSuccess=true
 
         // Fetch reviewer details
-        this.api.getRevieverDetails(res.id).subscribe({
+        this.api.getRevieverDetails(res.id,'ReviewPending').subscribe({
           next: (r: any) => {
             this.reviewer = r[0].fullName;
             console.log('Reviewer Details:', this.reviewer);
@@ -168,6 +168,7 @@ onFormSubmit(payload: any) {
     this.isError=true
   })
   }
+
 }
 
 getRiskTypeClass() {
@@ -216,4 +217,5 @@ closeDialog() {
   this.isError=false
   this.router.navigate(['/home']);
 }
+
 }

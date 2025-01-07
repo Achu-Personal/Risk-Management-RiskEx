@@ -273,8 +273,8 @@ export class ApiService {
     return this.http.get(`https://localhost:7216/api/User/GetInfoOfAssigneeByRiskId/${riskId}`)
   }
 
-  getRevieverDetails(riskId:number){
-    return this.http.get(`https://localhost:7216/api/Reviewer/gettheReviewer/${riskId}`)
+  getRevieverDetails(riskId:number, reviewStatus:string){
+    return this.http.get(`https://localhost:7216/api/Reviewer/gettheReviewer/${riskId}?reviewStatus=${reviewStatus}`)
   }
   updateQualityRisk(updated: any, riskId: number) {
     return this.http.put(
