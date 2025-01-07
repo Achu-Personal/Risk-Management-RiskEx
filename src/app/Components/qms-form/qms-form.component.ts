@@ -220,7 +220,7 @@ export class QMSFormComponent {
           riskFactor:Number(this.riskFactor) ,
           review: {
             userId: this.isInternal && Number(this.internalReviewerIdFromDropdown)!=0? Number(this.internalReviewerIdFromDropdown) : null,
-            externalReviewerId:!this.isInternal&&Number(this.externalReviewerIdFromDropdown)!=0?Number(this.externalReviewerIdFromDropdown): Number(this.externalReviewerIdFromInput)!=0 ?  Number(this.externalReviewerIdFromInput): null,
+            externalReviewerId:!this.isInternal&&Number(this.externalReviewerIdFromDropdown)!=0?Number(this.externalReviewerIdFromDropdown): Number(this.externalReviewerIdFromInput) ?  Number(this.externalReviewerIdFromInput): null,
             comments:" ",
             reviewStatus:1,
           },

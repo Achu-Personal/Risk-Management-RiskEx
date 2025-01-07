@@ -220,4 +220,39 @@ export class ApiService {
     )
   }
 
+  updateQualityRisk(updated:any,riskId:number){
+    return this.http.put(`https://localhost:7216/api/Risk/update/Quality/${riskId}`,updated)
+  }
+
+  updateSecurityOrPrivacyRisk(updated:any,riskId:number){
+    return this.http.put(`https://localhost:7216/api/Risk/update/${riskId}`,updated)
+  }
+
+  getUsersByProjects(): Observable<any> {
+    const projects = this.auth.getProjects() || [];
+    if (!projects || projects.length === 0) {
+      console.log('No projects found in auth');
+      return of([]);
+    }
+    let params = new HttpParams();
+
+    projects.forEach((project) => {
+      if (project && project.Id) {
+        params = params.append('projectIds', project.Id.toString());
+      }
+    });
+
+    return this.http
+      .get<any>(`https://localhost:7216/api/User/users-by-projects`, { params })
+      .pipe(
+        catchError((error) => {
+          if (error.status === 404) {
+            console.log('API Response:', error);
+            return of([]);
+          }
+          return throwError(() => error);
+        })
+      );
+  }
+
  }
