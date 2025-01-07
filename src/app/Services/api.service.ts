@@ -93,49 +93,59 @@ export class ApiService {
     return this.http.get(`data/getRisk.json`);
   }
 
+  getRiskResponses() {
+    return this.http.get('https://localhost:7216/api/RiskResponseData');
+  }
+  getLikelyHoodDefinition() {
+    return this.http.get(
+      'https://localhost:7216/api/AssessmentMatrixLikelihood'
+    );
+  }
+  getImpactDefinition() {
+    return this.http.get('https://localhost:7216/api/AssessmentMatrixImpact');
+  }
+  getRiskCategoryCounts() {
+    return this.http.get('https://localhost:7216/api/Risk/RiskCategory-Counts');
+  }
+  getOpenRiskCountByType() {
+    return this.http.get('https://localhost:7216/api/Risk/OpenRisk-Counts');
+  }
 
+  addnewQualityRisk(qualityRisk: any) {
+    console.log('quality risk payload', qualityRisk);
+    return this.http.post(
+      'https://localhost:7216/api/Risk/Quality',
+      qualityRisk
+    );
+  }
 
-   getRiskResponses(){
-
-    return this.http.get('https://localhost:7216/api/RiskResponseData')
-   }
-   getLikelyHoodDefinition(){
-    return this.http.get('https://localhost:7216/api/AssessmentMatrixLikelihood')
-   }
-   getImpactDefinition(){
-    return this.http.get('https://localhost:7216/api/AssessmentMatrixImpact')
-   }
-   getRiskCategoryCounts(){
-    return this.http.get('https://localhost:7216/api/Risk/RiskCategory-Counts')
-   }
-   getOpenRiskCountByType(){
-    return this.http.get('https://localhost:7216/api/Risk/OpenRisk-Counts')
-   }
-
-   addnewQualityRisk(qualityRisk:any){
-    console.log("quality risk payload",qualityRisk)
-     return this.http.post('https://localhost:7216/api/Risk/Quality',qualityRisk)
-   }
-
-   addnewSecurityOrPrivacyRisk(SecurityOrPrivacyRisk:any){
-
-    return this.http.post('https://localhost:7216/api/Risk/security',SecurityOrPrivacyRisk)
-   }
-   addExternalReviewer(reviewer:any){
-    return this.http.post('https://localhost:7216/api/Reviewer/add-reviewer',reviewer)
-   }
-   addResponsiblePerson(assignee:any){
-    return this.http.post('https://localhost:7216/api/User/register',assignee)
-   }
-   getAllReviewer(){
-    return this.http.get('https://localhost:7216/api/Reviewer/getAllReviewers')
-   }
-   editQualityRisk(id:number,risk:any){
-    return this.http.put(`https://localhost:7216/api/Risk/quality/${id}`,risk)
-   }
-   editSecurityOrPrivacyRisk(id:number,risk:any){
-    return this.http.put(`https://localhost:7216/api/Risk/SecurityOrPrivacy/${id}`,risk)
-   }
+  addnewSecurityOrPrivacyRisk(SecurityOrPrivacyRisk: any) {
+    return this.http.post(
+      'https://localhost:7216/api/Risk/security',
+      SecurityOrPrivacyRisk
+    );
+  }
+  addExternalReviewer(reviewer: any) {
+    return this.http.post(
+      'https://localhost:7216/api/Reviewer/add-reviewer',
+      reviewer
+    );
+  }
+  addResponsiblePerson(assignee: any) {
+    return this.http.post('https://localhost:7216/api/User/register', assignee);
+  }
+  getAllReviewer() {
+    return this.http.get('https://localhost:7216/api/Reviewer/getAllReviewers');
+  }
+  editQualityRisk(id: number, risk: any) {
+    return this.http.put(`https://localhost:7216/api/Risk/quality/${id}`, risk);
+  }
+  editSecurityOrPrivacyRisk(id: number, risk: any) {
+    return this.http.put(
+      `https://localhost:7216/api/Risk/SecurityOrPrivacy/${id}`,
+      risk
+    );
+  }
 
   getRisksAssignedToUser(id: any = '') {
     return this.http.get(
@@ -245,14 +255,17 @@ export class ApiService {
         })
       );
   }
-  updateQualityRisk(updated:any,riskId:number){
-    return this.http.put(`https://localhost:7216/api/Risk/update/Quality/${riskId}`,updated)
+  updateQualityRisk(updated: any, riskId: number) {
+    return this.http.put(
+      `https://localhost:7216/api/Risk/update/Quality/${riskId}`,
+      updated
+    );
   }
 
-  updateSecurityOrPrivacyRisk(updated:any,riskId:number){
-    return this.http.put(`https://localhost:7216/api/Risk/update/${riskId}`,updated)
+  updateSecurityOrPrivacyRisk(updated: any, riskId: number) {
+    return this.http.put(
+      `https://localhost:7216/api/Risk/update/${riskId}`,
+      updated
+    );
   }
 }
-
-
-
