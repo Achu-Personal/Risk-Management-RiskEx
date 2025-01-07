@@ -8,7 +8,7 @@
   color="primary"
   data-bs-toggle="modal"
   data-bs-target="#addUserModal"
-  *ngIf="authService.getUserRole() === 'Admin'|| authService.getUserRole() === 'DepartmentUser' || authService.getUserRole()?.includes('ProjectUsers')"
+  *ngIf="authService.getUserRole() === 'Admin'|| authService.getUserRole() === 'DepartmentUser'"
   ></app-style-button>
 
   <app-style-button
@@ -110,7 +110,7 @@
               <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
                 Cancel
               </button>
-              <button type="submit" class="btn btn-success" [disabled]="userForm.invalid">
+              <button type="submit" data-bs-dismiss="modal" class="btn btn-success" [disabled]="userForm.invalid">
                 Save
               </button>
             </div>
@@ -148,7 +148,7 @@
               <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
                 Cancel
               </button>
-              <button type="submit" class="btn btn-success" [disabled]="departmentForm.invalid">
+              <button type="submit" data-bs-dismiss="modal" class="btn btn-success" [disabled]="departmentForm.invalid">
                 Save
               </button>
             </div>
@@ -211,7 +211,7 @@
             <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
               Cancel
             </button>
-            <button type="submit" class="btn btn-success" [disabled]="projectForm.invalid">
+            <button type="submit" data-bs-dismiss="modal" class="btn btn-success" [disabled]="projectForm.invalid">
               Save
             </button>
           </div>
