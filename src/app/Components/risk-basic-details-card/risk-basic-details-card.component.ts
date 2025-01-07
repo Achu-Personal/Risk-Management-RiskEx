@@ -32,11 +32,13 @@ export class RiskBasicDetailsCardComponent {
   @Input() allData:any={}
 
 
+
+
   onEditButtonClicked()
   {
     console.log("id",this.allData.id);
 
-      this.router.navigate([`edit`], { state: { riskData: this.allData } }) //         /ViewRisk/${this.allData.id}/
+    this.router.navigate([`edit`], { state: { riskData: this.allData } }) //         /ViewRisk/${this.allData.id}/
   }
 
   onUpdateButtonCLick()

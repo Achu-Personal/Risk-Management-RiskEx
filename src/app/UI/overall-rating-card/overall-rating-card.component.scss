@@ -1,17 +1,84 @@
+/* Container for the entire flip effect */
+.flip-card {
+  width: 35vh; /* Adjust size as needed */
+  height: 35vh;
+  perspective: 1000px; /* Adds depth to the flip effect */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  transition: all 0.5s ease;
+}
 
+/* The container that holds both sides of the card */
+.flip-card-inner {
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d; /* Maintain 3D perspective for the children */
+  transition: transform 0.5s; /* Smooth flip transition */
+}
 
+/* Front of the card */
+.flip-card-front, .flip-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 10px;
+  border-radius: 10px;
+  backface-visibility: hidden; /* Hide the back when flipped */
+}
 
-.value
-{
+/* Front face styles */
+.flip-card-front {
+
+  color: white;
+}
+
+/* Back face styles */
+.flip-card-back {
+
+  color: white;
+  transform: rotateY(180deg); /* Initially rotate the back face by 180 degrees */
+}
+
+/* Flip the card when hovered */
+.flip-card:hover .flip-card-inner {
+  transform: rotateY(180deg); /* This flips the card */
+}
+
+/* Value styling for front face */
+.value {
   font-size: 60px;
 }
 
-div{
+/* Adjust the front content layout */
+div {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height:90%;
-  width:200px;
-  border-radius: 10px;
+  gap: 10px;
+}
+
+/* Additional classes for default size and hover effect */
+.default-size {
+  width: 35vh;
+  height: 35vh;
+}
+
+.hovered {
+  width: 55vh;
+  height: 55vh;
+}
+
+
+.criticality
+{
+padding: 10px;
+background-color: rgba(245, 245, 245, 0.3);
+border-radius: 10px;
 }
