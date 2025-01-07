@@ -143,14 +143,11 @@ export class ApiService {
 
   addnewQualityRisk(qualityRisk: any) {
     console.log('quality risk payload', qualityRisk);
-    return this.http.post(`${this.baseUrl}/Risk/Quality`, qualityRisk);
+    return this.http.post(`${this.baseUrl}/Risk/add/quality`, qualityRisk);
   }
 
   addnewSecurityOrPrivacyRisk(SecurityOrPrivacyRisk: any) {
-    return this.http.post(
-      `${this.baseUrl}/Risk/security`,
-      SecurityOrPrivacyRisk
-    );
+    return this.http.post(`${this.baseUrl}/Risk/add/securityOrPrivacy`, SecurityOrPrivacyRisk);
   }
 
   addExternalReviewer(reviewer: any) {
@@ -166,11 +163,11 @@ export class ApiService {
   }
 
   editQualityRisk(id: number, risk: any) {
-    return this.http.put(`${this.baseUrl}/Risk/quality/${id}`, risk);
+    return this.http.put(`${this.baseUrl}/Risk/edit/quality/${id}`, risk);
   }
 
   editSecurityOrPrivacyRisk(id: number, risk: any) {
-    return this.http.put(`${this.baseUrl}/Risk/SecurityOrPrivacy/${id}`, risk);
+    return this.http.put(`${this.baseUrl}/Risk/edit/SecurityOrPrivacy/${id}`, risk);
   }
 
   getRisksAssignedToUser(id: any = '') {
@@ -305,14 +302,11 @@ export class ApiService {
   }
 
   updateQualityRisk(updated: any, riskId: number) {
-    return this.http.put(
-      `${this.baseUrl}/Risk/update/Quality/${riskId}`,
-      updated
-    );
+    return this.http.put(`${this.baseUrl}/Risk/update/quality/${riskId}`, updated);
   }
 
   updateSecurityOrPrivacyRisk(updated: any, riskId: number) {
-    return this.http.put(`${this.baseUrl}/Risk/update/${riskId}`, updated);
+    return this.http.put(`${this.baseUrl}/Risk/update/securityOrPrivacy/${riskId}`, updated);
   }
   getOpenRiskCountByType(id: any = ''){
     return this.http.get(`https://localhost:7216/api/Risk/CountOfRiskType(Open)?id=${id}`);

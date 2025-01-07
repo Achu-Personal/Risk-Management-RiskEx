@@ -8,6 +8,7 @@ import { CommonModule } from '@angular/common';
 import { FormSuccessfullComponent } from '../../Components/form-successfull/form-successfull.component';
 import { Router } from '@angular/router';
 import { EmailService } from '../../Services/email.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 
 
@@ -39,6 +40,10 @@ dropdownDataProjectForAdmin:any[]=[]
 dropdownAssigneeForAdmin:any[]=[]
 isSuccess:boolean=false
 isError:boolean=false
+riskId:number=0
+error:string=''
+errorMessage: string = "";
+  errorDetails: string = "";
 
 
 ngOnInit(){
@@ -70,8 +75,9 @@ ngOnInit(){
     this.dropdownDataReviewer=res.reviewers
   })
 
-  this.api.getAllUsersByDepartmentName(this.departmentName).subscribe((res:any)=>{
+  this.api.getAllUsersByDepartmentName((this.departmentName)).subscribe((res:any)=>{
     this.dropdownDataAssignee=res
+    console.log("departments",res)
   })
 
 }
@@ -92,7 +98,7 @@ onFormSubmit(payload: any) {
   if (payload.riskType == 1) {
     this.api.addnewQualityRisk(payload).subscribe({
       next: (res: any) => {
-        console.log('Risk saved successfully:', res);
+        console.log('Risk saved successfully(Quality):', res);
         console.log('Generated Risk ID:', res.id);
         this.isSuccess=true
 
@@ -134,17 +140,49 @@ onFormSubmit(payload: any) {
           },
           error: (reviewerError) => {
             console.error('Failed to fetch reviewer details:', reviewerError);
-            
+
           },
         });
       },
-      error: (saveError) => {
-        console.error('Failed to save risk:', saveError);
-        this.isError=true
-      },
-    });
-  
-    
+      error:(error: HttpErrorResponse) => {
+        this.isError = true;
+
+        let userFriendlyMessage = "An unexpected error occurred. Please try again later.";
+
+        if (error.status === 400) {
+          // Handle validation errors
+          if (error.error && error.error.errors) {
+            const errorMessages = Object.values(error.error.errors)
+              .flat()
+              .join("\n"); // Show all validation errors line by line
+
+            // Provide specific messages for certain errors
+            if (errorMessages.includes("The riskDto field is required")) {
+              userFriendlyMessage = "Please fill in all required fields.";
+            } else if (errorMessages.includes("The JSON value could not be converted to System.DateTime")) {
+              userFriendlyMessage = "The date format for the Planned Action Date is invalid. Please provide a valid date.";
+            } else {
+              userFriendlyMessage = errorMessages;
+            }
+          } else {
+            userFriendlyMessage = error.error.message || userFriendlyMessage;
+          }
+        } else if (error.status === 500) {
+          // Handle database errors
+          userFriendlyMessage = error.error.message || "A server error occurred. Please contact support.";
+
+          if (error.error.details) {
+            userFriendlyMessage += ` Details: ${error.error.details}`;
+          }
+        }
+
+        this.errorMessage = userFriendlyMessage;
+        console.error("Error details:", error); // Keep debugging information in the console for developers
+      }
+    }
+    );
+
+
   }
   else if (payload.riskType == 2) {
     this.api.addnewSecurityOrPrivacyRisk(payload).subscribe((res:any)=>{
@@ -173,7 +211,7 @@ onFormSubmit(payload: any) {
 
 getRiskTypeClass() {
   if (this.selectedRiskType === 1) {
-    
+
     this.bgColor="var(--quality-color)"
     return 'risk-type-1';
   } else if (this.selectedRiskType === 2) {
@@ -201,7 +239,6 @@ receiveValue(value: any) {
 (error:any)=>{
   this.dropdownDataProjectForAdmin=[]
 })
-
 this.api.getAllUsersByDepartmentName(departmentName).subscribe((res:any)=>{
   this.dropdownAssigneeForAdmin=res
 
@@ -216,7 +253,7 @@ this.api.getAllUsersByDepartmentName(departmentName).subscribe((res:any)=>{
 closeDialog() {
   this.isSuccess=false
   this.isError=false
-  this.router.navigate(['/home']);
+  // this.router.navigate(['/home']);
 }
 
 }
