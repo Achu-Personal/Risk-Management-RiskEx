@@ -185,26 +185,96 @@ onFormSubmit(payload: any) {
 
   }
   else if (payload.riskType == 2) {
-    this.api.addnewSecurityOrPrivacyRisk(payload).subscribe((res:any)=>{
+    this.api.addnewSecurityOrPrivacyRisk(payload).subscribe({
+      next: (res: any) => {
       console.log(res);
       if(res.id){
         this.isSuccess=true
        }
     },
-  (error:any)=>{
-    this.isError=true
-  })
+    error:(error: HttpErrorResponse) => {
+      this.isError = true;
+
+      let userFriendlyMessage = "An unexpected error occurred. Please try again later.";
+
+      if (error.status === 400) {
+        // Handle validation errors
+        if (error.error && error.error.errors) {
+          const errorMessages = Object.values(error.error.errors)
+            .flat()
+            .join("\n"); // Show all validation errors line by line
+
+          // Provide specific messages for certain errors
+          if (errorMessages.includes("The riskDto field is required")) {
+            userFriendlyMessage = "Please fill in all required fields.";
+          } else if (errorMessages.includes("The JSON value could not be converted to System.DateTime")) {
+            userFriendlyMessage = "The date format for the Planned Action Date is invalid. Please provide a valid date.";
+          } else {
+            userFriendlyMessage = errorMessages;
+          }
+        } else {
+          userFriendlyMessage = error.error.message || userFriendlyMessage;
+        }
+      } else if (error.status === 500) {
+        // Handle database errors
+        userFriendlyMessage = error.error.message || "A server error occurred. Please contact support.";
+
+        if (error.error.details) {
+          userFriendlyMessage += ` Details: ${error.error.details}`;
+        }
+      }
+
+      this.errorMessage = userFriendlyMessage;
+      console.error("Error details:", error); // Keep debugging information in the console for developers
+    }
+  }
+  );
   }
   else{
-    this.api.addnewSecurityOrPrivacyRisk(payload).subscribe((res:any)=>{
+    this.api.addnewSecurityOrPrivacyRisk(payload).subscribe({
+      next: (res: any) => {
       console.log(res);
       if(res.id){
         this.isSuccess=true
        }
     },
-  (error:any)=>{
-    this.isError=true
-  })
+    error:(error: HttpErrorResponse) => {
+      this.isError = true;
+
+      let userFriendlyMessage = "An unexpected error occurred. Please try again later.";
+
+      if (error.status === 400) {
+        // Handle validation errors
+        if (error.error && error.error.errors) {
+          const errorMessages = Object.values(error.error.errors)
+            .flat()
+            .join("\n"); // Show all validation errors line by line
+
+          // Provide specific messages for certain errors
+          if (errorMessages.includes("The riskDto field is required")) {
+            userFriendlyMessage = "Please fill in all required fields.";
+          } else if (errorMessages.includes("The JSON value could not be converted to System.DateTime")) {
+            userFriendlyMessage = "The date format for the Planned Action Date is invalid. Please provide a valid date.";
+          } else {
+            userFriendlyMessage = errorMessages;
+          }
+        } else {
+          userFriendlyMessage = error.error.message || userFriendlyMessage;
+        }
+      } else if (error.status === 500) {
+        // Handle database errors
+        userFriendlyMessage = error.error.message || "A server error occurred. Please contact support.";
+
+        if (error.error.details) {
+          userFriendlyMessage += ` Details: ${error.error.details}`;
+        }
+      }
+
+      this.errorMessage = userFriendlyMessage;
+      console.error("Error details:", error); // Keep debugging information in the console for developers
+    }
+  }
+  );
   }
 
 }
