@@ -241,8 +241,9 @@ export class ApiService {
   getRiskCategoryCountsByDepartment(departmentList: number[]) {
     let params = new HttpParams();
     departmentList.forEach((departmentId) => {
-      params = params.append('departmentList', departmentId.toString());
+      params = params.append('departmentIds', departmentId.toString());
     });
+    console.log("params",params)
     return this.http.get(`${this.baseUrl}/Risk/RiskCategoryCountByDepartment`, {
       params,
     });

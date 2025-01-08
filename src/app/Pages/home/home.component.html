@@ -2,7 +2,7 @@
 <div class="dashboard">
 <div class="topbuttons">
   <div class="dropdown" >
-<app-department-dropdown *ngIf="authService.getUserRole() === 'Admin'"></app-department-dropdown>  </div>
+<app-department-dropdown *ngIf="authService.getUserRole() === 'Admin'    "  (departmentsSelected)="GetSelectedDepartment($event)"></app-department-dropdown>  </div>
   <div class="registerrisk">
 
     <app-style-button (clicked)="OnRegisterRiskButtonCLicked()" label="Register Risk"></app-style-button>
@@ -72,38 +72,18 @@
 
       <div class="riskdetails">
 
-        <!-- <div class="urgentrisks" data-aos="zoom-in">
-          <h5>Upcoming Risk Deadlines</h5>
-          <div class="maindiv1">
-            @for(item of riskApproachingDeadline; track $index )
-            {
-              <div class="risk-card1">
-                <div class="riskCard1-left">
-                  <div class="risk-text1">{{item.riskName}}</div>
-                  <div class="risk-date1">{{item.plannedActionDate | date: 'd MMM yyyy'}}</div>
-                </div>
-                <div class="riskCard1-right">
-                  <button (click)="OnCardClicked(item.id)" class="view-risk-button1">View Risk</button>
-                </div>
-              </div>
-            }
-          </div>
-        </div> -->
+
         <div class="urgentrisks" data-aos="zoom-in">
           <h5>Upcoming Risk Deadlines</h5>
           <div class="maindiv1">
             <!-- Check if the riskApproachingDeadline array has values -->
             <ng-container *ngIf="riskApproachingDeadline && riskApproachingDeadline.length > 0; else noRisksTemplate">
-              <!-- Iterate through items when the array is not empty -->
-              <div class="risk-card1" *ngFor="let item of riskApproachingDeadline; let i = index">
-                <div class="riskCard1-left">
-                  <div class="risk-text1">{{ item.riskName }}</div>
-                  <div class="risk-date1">{{ item.plannedActionDate | date: 'd MMM yyyy' }}</div>
-                </div>
-                <div class="riskCard1-right">
-                  <button (click)="OnCardClicked(item.id)" class="view-risk-button1">View Risk</button>
-                </div>
-              </div>
+
+              @for(item of riskApproachingDeadline ;track $index)
+              {
+                  <app-dashboardviewrisk [data]="item"></app-dashboardviewrisk>
+              }
+
             </ng-container>
 
             <!-- Template for no risks -->
@@ -113,29 +93,7 @@
           </div>
         </div>
 
-      <!-- <div class="imprisk" data-aos="zoom-in">
-        <h5>Risks With Highest Overall Rating</h5>
-        <div class="maindiv">
 
-          @for(item of risksWithHeighesOverallRating; track $index )
-          {
-            <div class="risk-card">
-              <div style="display: flex;flex-direction: column;">
-                <div class="top">
-                  <div class="risk-text">{{item.riskName}}</div>
-                  <div class="risk-count">{{item.overallRiskRatingBefore}}</div>
-                </div>
-                <div class="risk-date">{{item.plannedActionDate | date: 'd MMM yyyy'}}</div>
-              </div>
-
-              <div class="bottom">
-
-                <button (click)="OnCardClicked(item.id)" class="view-risk-button">View Risk →</button>
-              </div>
-            </div>
-          }
-        </div>
-    </div> -->
 
     <div class="imprisk" data-aos="zoom-in">
       <h5>Risks With Highest Overall Rating</h5>
@@ -146,18 +104,10 @@
         </div>
 
         <!-- Loop through risks if they exist -->
-        <div class="risk-card" *ngFor="let item of risksWithHeighesOverallRating">
-          <div style="display: flex;flex-direction: column;">
-            <div class="top">
-              <div class="risk-text">{{item.riskName}}</div>
-              <div class="risk-count">{{item.overallRiskRatingBefore}}</div>
-            </div>
-            <div class="risk-date">{{item.plannedActionDate | date: 'd MMM yyyy'}}</div>
-          </div>
-          <div class="bottom">
-            <button (click)="OnCardClicked(item.id)" class="view-risk-button">View Risk →</button>
-          </div>
-        </div>
+        @for(item of  risksWithHeighesOverallRating;track $index)
+        {
+              <app-dashboardviewrisk [data]="item"></app-dashboardviewrisk>
+        }
       </div>
     </div>
   </div>
