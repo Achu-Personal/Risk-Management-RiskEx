@@ -56,7 +56,7 @@ export class HistoryComponent {
 
         // Fetch data based on conditions
         this.fetchAllData(department);
-      }, 200);
+      }, 100);
     }
 
     fetchAllData(department: any): void {

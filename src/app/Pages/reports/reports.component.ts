@@ -1,4 +1,4 @@
-import { Component, HostListener, Input } from '@angular/core';
+import { ChangeDetectorRef, Component, HostListener, Input } from '@angular/core';
 import { TableComponent } from "../../Components/table/table.component";
 import { BodyContainerComponent } from "../../Components/body-container/body-container.component";
 import { Router } from '@angular/router';
@@ -26,14 +26,12 @@ export class ReportsComponent {
   data:any;
   items:any=[];
   type: any;
-  constructor(private excelService: ReportGenerationService,private router: Router,public api: ApiService,public auth: AuthService) {}
+  constructor(private excelService: ReportGenerationService,private router: Router,public api: ApiService,public auth: AuthService, private cdr: ChangeDetectorRef) {}
 
   filtereddata():void{
 
   }
   onGenerateReport(): void {
-    // this.api.gettabledata().subscribe((res: any) => {
-    // this.data= res;
     console.log(this.filteredTableData);
     if (Array.isArray(this.filteredTableData) && this.filteredTableData.length > 0) {
       this.excelService.generateReport(this.filteredTableData, 'RiskReport');
@@ -109,18 +107,21 @@ export class ReportsComponent {
         if (this.isAdmin) {
           this.api.gettabledata().subscribe((res: any) => {
             this.items = res.filter((item: { riskType: any }) => item.riskType === type);
+            this.cdr.detectChanges();
             console.log("Admin Filtered Data:", this.items);
           });
         }
         if (this.isDepartmentUser) {
           this.api.getDepartmentTable(department).subscribe((res: any) => {
             this.items = res.filter((item: { riskType: any }) => item.riskType === type);
+            this.cdr.detectChanges();
             console.log("Department User Filtered Data:", this.items);
           });
         }
         if (this.isProjectUser) {
           this.api.getProjectTable(this.projectList).subscribe((res: any) => {
             this.items = res.filter((item: { riskType: any }) => item.riskType === type);
+            this.cdr.detectChanges();
             console.log("Project User Filtered Data:", this.items);
           });
         }
@@ -130,18 +131,21 @@ export class ReportsComponent {
         if (this.isAdmin) {
           this.api.gettabledata().subscribe((res: any) => {
             this.items = res;
+            this.cdr.detectChanges();
             console.log("Admin All Data:", this.items);
           });
         }
         if (this.isDepartmentUser) {
           this.api.getDepartmentTable(department).subscribe((res: any) => {
             this.items = res;
+            this.cdr.detectChanges();
             console.log("Department User All Data:", this.items);
           });
         }
         if (this.isProjectUser) {
           this.api.getProjectTable(this.projectList).subscribe((res: any) => {
             this.items = res;
+            this.cdr.detectChanges();
             console.log("Project User All Data:", this.items);
           });
         }

@@ -324,6 +324,55 @@ export class ReportGenerationService {
         }
       });
 
+      /////////////////////////////////////////////////////
+
+      // if (risk.riskType === 'Quality') {
+        // For Quality risks, only include general impact and likelihood
+    //     const preAssessment = getAssessmentDetails(risk.riskAssessments || [], 'Quality', false);
+    //     const postAssessment = getAssessmentDetails(risk.riskAssessments || [], 'Quality', true);
+
+    //     const qualityRow = [
+    //       ...baseRiskInfo,
+    //       { v: preAssessment.impact, s: this.styles.cell },
+    //       { v: preAssessment.likelihood, s: this.styles.cell },
+    //       { v: postAssessment.impact, s: this.styles.cell },
+    //       { v: postAssessment.likelihood, s: this.styles.cell }
+    //     ];
+
+    //     qualitySheet.addRow(qualityRow);
+    //   } else if (risk.riskType === 'Security' || risk.riskType === 'Privacy') {
+    //     // For Security/Privacy risks, include all assessment types
+    //     const assessmentTypes = ['Confidentiality', 'Integrity', 'Privacy', 'Availability'];
+    //     const preMitigationCells = [];
+    //     const postMitigationCells = [];
+
+    //     for (const type of assessmentTypes) {
+    //       const preAssessment = getAssessmentDetails(risk.riskAssessments || [], type, false);
+    //       const postAssessment = getAssessmentDetails(risk.riskAssessments || [], type, true);
+
+    //       preMitigationCells.push(
+    //         { v: preAssessment.impact, s: this.styles.cell },
+    //         { v: preAssessment.likelihood, s: this.styles.cell }
+    //       );
+    //       postMitigationCells.push(
+    //         { v: postAssessment.impact, s: this.styles.cell },
+    //         { v: postAssessment.likelihood, s: this.styles.cell }
+    //       );
+    //     }
+
+    //     const securityRow = [
+    //       ...baseRiskInfo,
+    //       ...preMitigationCells,
+    //       ...postMitigationCells
+    //     ];
+
+    //     securitySheet.addRow(securityRow);
+    //     // applyRowStyles(securityRow, this.styles.cell
+    //   }
+    // });
+
+    /////////////////////////////////////////////////////////////////////////
+
       // Generate and save file
       const buffer = await workbook.xlsx.writeBuffer();
       const blob = new Blob([buffer], {
