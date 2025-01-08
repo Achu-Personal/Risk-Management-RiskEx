@@ -4,24 +4,20 @@
 
 
             <div class="circle circle-1 "></div>
-            <div class="glass">{{securityRiskCount}}</div>
+            <div class="glass">{{securityRiskCount ? securityRiskCount : 0}}</div>
           </div>
 
           <div [ngStyle]="{'width':getDimension(qualityRiskCount)+'px','height':getDimension(qualityRiskCount)+'px'}" >
 
 
             <div class="circle circle-2 "></div>
-            <div class="glass">{{qualityRiskCount}}</div>
+            <div class="glass">{{qualityRiskCount ? qualityRiskCount : 0}}</div>
           </div>
           <div [ngStyle]="{'width':getDimension(privacyRiskCount)+'px','height':getDimension(privacyRiskCount)+'px'}"   style="margin-top: 0px;margin-left: 100px;">
 
 
             <div class="circle circle-3 "></div>
             <div class="glass">{{privacyRiskCount ? privacyRiskCount : 0}}</div>
+            <!-- ? privacyRiskCount : 0 -->
           </div>
-
-
-
-
-
         </div>
