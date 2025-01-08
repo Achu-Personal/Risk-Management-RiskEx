@@ -6,6 +6,7 @@ import { SearchbarComponent } from '../../UI/searchbar/searchbar.component';
 import { PaginationComponent } from '../../UI/pagination/pagination.component';
 import { ApiService } from '../../Services/api.service';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { AuthService } from '../../Services/auth.service';
 
 @Component({
   selector: 'app-table',
@@ -16,7 +17,7 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
   styleUrl: './table.component.scss'
 })
 export class TableComponent {
-  constructor( public api: ApiService,private route:ActivatedRoute,private router: Router,private cdr: ChangeDetectorRef){}
+  constructor( public api: ApiService,private route:ActivatedRoute,private router: Router,private cdr: ChangeDetectorRef,public auth: AuthService){}
 
    onclickrow = output()
     rowClick(row:any) {
@@ -102,7 +103,7 @@ export class TableComponent {
   this.totalItems = this.filteredItems.length;
   this.updatePaginatedItems();
   // this.filteredData.emit(this.filteredItems);
-  }, 300); // 300ms debounce
+  }, 100); // 300ms debounce
   }
 
 
@@ -137,9 +138,11 @@ export class TableComponent {
 
     this.updatePaginatedItems();
   }
-
+  isDepartmentUser:boolean=false;
   private initializeItems(): void {
     setTimeout(()=>{
+      const role = this.auth.getUserRole();
+      this.isDepartmentUser = Array.isArray(role) ? role.includes('DepartmentUser') : role === 'DepartmentUser';
       this.items = [...this.paginated];
       console.log("items",this.items);
       this.filteredItems = [...this.items];
@@ -153,7 +156,7 @@ export class TableComponent {
       this.updatePaginatedItems();
 
 
-      },1000)
+      },500)
   }
 
   updateUniqueDepartments(): void {
@@ -293,12 +296,18 @@ export class TableComponent {
 
       this.filterTable();
     }
-
-
   }
+
+
+  @Input() noDataMessage:string='No Data Available'
+  hasValidData(): boolean {
+    return this.filteredItems.length > 0 ;
+  }
+
+
   shouldDisplayPagination(): boolean {
     console.log(this.paginated.length)
-    return this.paginated.length > this.itemsPerPage;
+    return this.filteredItems.length > this.itemsPerPage;
 
   }
 }

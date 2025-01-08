@@ -1,5 +1,6 @@
+import { CommonModule } from '@angular/common';
 import { department } from './../../Interfaces/deparments.interface';
-import { Component, Input } from '@angular/core';
+import { ChangeDetectorRef, Component, Input } from '@angular/core';
 import { TableComponent } from "../../Components/table/table.component";
 import { BodyContainerComponent } from "../../Components/body-container/body-container.component";
 import { Router } from '@angular/router';
@@ -13,7 +14,7 @@ import { AuthService } from '../../Services/auth.service';
 @Component({
   selector: 'app-history',
   standalone: true,
-  imports: [TableComponent, BodyContainerComponent, DatepickerComponent],
+  imports: [TableComponent, BodyContainerComponent, DatepickerComponent, CommonModule],
   templateUrl: './history.component.html',
   styleUrl: './history.component.scss'
 })
@@ -25,7 +26,7 @@ export class HistoryComponent {
   item:any=[];
   @Input() items:any=[];
 
-  constructor(private router: Router,public api: ApiService,public auth: AuthService) {}
+  constructor(private router: Router,public api: ApiService,public auth: AuthService, private cdr: ChangeDetectorRef) {}
 
     OnClickRow(rowid:any): void {
       this.router.navigate([`/ViewRisk/${rowid}`]);
@@ -55,25 +56,28 @@ export class HistoryComponent {
 
         // Fetch data based on conditions
         this.fetchAllData(department);
-      }, 200);
+      }, 100);
     }
 
     fetchAllData(department: any): void {
       if (this.isAdmin) {
         this.api.gethistorytabledata().subscribe((res: any) => {
           this.items = res;
+          this.cdr.detectChanges();
           console.log("Admin All Data:", this.items);
         });
       }
       if (this.isDepartmentUser) {
         this.api.getDepartmentHistoryTable(department).subscribe((res: any) => {
           this.items = res;
+          this.cdr.detectChanges();
           console.log("Department User All Data:", this.items);
         });
       }
       if (this.isProjectUser) {
         this.api.getProjectHistroyTable(this.projectList).subscribe((res: any) => {
           this.items = res;
+          this.cdr.detectChanges();
           console.log("Project User All Data:", this.items);
         });
       }
