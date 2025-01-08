@@ -40,6 +40,7 @@ dropdownDataProjectForAdmin:any[]=[]
 dropdownAssigneeForAdmin:any[]=[]
 isSuccess:boolean=false
 isError:boolean=false
+isDraft:boolean=false
 riskId:number=0
 error:string=''
 errorMessage: string = "";
@@ -79,6 +80,8 @@ ngOnInit(){
     this.dropdownDataAssignee=res
     console.log("departments",res)
   })
+
+  this.cdRef.detectChanges();
 
 }
 
@@ -331,4 +334,7 @@ closeDialog() {
   // this.router.navigate(['/home']);
 }
 
+closeDialogSuccess(){
+  this.router.navigate(['/home']);
+}
 }

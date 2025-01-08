@@ -4,6 +4,13 @@
       <h2>Risk Details</h2>
       <div class="form-row">
        <app-form-input label="Risk Name" required=" *" formControlName="riskName"></app-form-input>
+       @if(qmsForm.get("riskName")){
+
+        @if (qmsForm.get("riskName")?.hasError('required')&& qmsForm.get("riskName")?.dirty) {
+          <div class="text-danger">Risk name is required</div>
+        }
+
+      }
        <app-form-dropdown label="Project Name" [dropdownData]="dropdownProject" dropdownDisplay="name" dropdownValue="id" selectValue="Project" (change)="onDropdownChangeProject($event)" [selectedValue]="preSelectedProject" [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)" ></app-form-dropdown>
      </div>
      @if(isAdmin === 'Admin'){
@@ -14,8 +21,40 @@
       may have on a project, system, or organization if it occurs. It can include financial loss,
       delays, operational disruptions, or damage to reputation."  formControlName="impact" [backgroundColor]="bgColor"></app-form-text-area>
 
+      @if(qmsForm.get("impact")){
+
+        @if (qmsForm.get("impact")?.hasError('maxlength')) {
+          <div class="text-danger">maximum length is 1000</div>
+
+        }
+        @else if (qmsForm.get("impact")?.hasError('minlength')) {
+          <div class="text-danger">minimum length is 15</div>
+
+        }
+        @else if (qmsForm.get("impact")?.hasError('required')&& qmsForm.get("impact")?.dirty) {
+          <div class="text-danger">Impact of risk is required</div>
+        }
+
+      }
+
       <app-form-text-area label="Description" required="*" placeHolder="Enter description of risk"
       message="Provide a detailed description of the risk, including what could cause it" formControlName="description" [backgroundColor]="bgColor"></app-form-text-area>
+
+      @if(qmsForm.get("description")){
+
+        @if (qmsForm.get("description")?.hasError('maxlength')) {
+          <div class="text-danger">maximum length is 1000</div>
+
+        }
+        @else if (qmsForm.get("description")?.hasError('minlength')) {
+          <div class="text-danger">minimum length is 15</div>
+
+        }
+        @else if (qmsForm.get("description")?.hasError('required')&& qmsForm.get("description")?.dirty) {
+          <div class="text-danger">Description of risk is required</div>
+        }
+
+      }
     </div>
     <div class="form-details-sub-container">
       <h2>Current Risk Assessment</h2>
@@ -40,6 +79,22 @@
       Ensure preventive measures, such as implementing safety protocols or backup systems, to minimize
       the risk." formControlName="mitigation" [backgroundColor]="bgColor"></app-form-text-area>
 
+      @if(qmsForm.get("mitigation")){
+
+        @if (qmsForm.get("mitigation")?.hasError('maxlength')) {
+          <div class="text-danger">maximum length is 1000</div>
+
+        }
+        @else if (qmsForm.get("mitigation")?.hasError('minlength')) {
+          <div class="text-danger">minimum length is 15</div>
+
+        }
+        @else if (qmsForm.get("mitigation")?.hasError('required')&& qmsForm.get("mitigation")?.dirty) {
+          <div class="text-danger">Mitigation of risk is required</div>
+        }
+
+      }
+
       <app-form-text-area label="Risk Contingency" placeHolder="Enter contingency plan"
       message="Contingency planning involves preparing for unforeseen events by having backup
       plans in place. These plans help ensure that your project can continue with minimal disruption
@@ -56,6 +111,14 @@
       </div>
 
       <app-form-date-field label="Planned Action Date" required="*" formControlName="plannedActionDate"></app-form-date-field>
+
+      @if(qmsForm.get("plannedActionDate")){
+
+        @if (qmsForm.get("plannedActionDate")?.hasError('required')&& qmsForm.get("plannedActionDate")?.dirty) {
+          <div class="text-danger">planned action date is required</div>
+        }
+
+      }
     </div>
     <div class="form-details-sub-container">
       <h2>Reviewer</h2>
@@ -72,10 +135,8 @@
     </div>
     <div class="form-details-sub-container">
       <div class="button-group">
-         <app-form-button label="Save" type="submit" (clicked)="saveConfirmation()"></app-form-button>
-         <app-form-button label="Save Draft" (clicked)="saveAsDraft()"></app-form-button>
-         <app-form-button label="Clear" (clicked)="clearAllData()"></app-form-button>
-         <app-form-button label="Cancel" (clicked)="cancelRisk()"></app-form-button>
+        <app-form-button label="Save" (clicked)="saveConfirmation()"></app-form-button>
+        <app-form-button label="Cancel" (clicked)="cancelRisk()"></app-form-button>
       </div>
     </div>
   </form>
@@ -116,6 +177,14 @@ message="Something went Wrong!"
 [isSuccessfull] ="false"
 (closeDialog)="closeAssignee()" [bgColor]="bgColor">
 </app-form-successfull>
+}
+
+@if(isSave){
+  <app-form-conform-popup message="Do you want to save the entered risk details? You can check and edit them later if needed." [bgColor]="bgColor" (closeDialog)="saveRisk()" (notCloseDialog)="saveConfirmation()"></app-form-conform-popup>
+}
+
+@if(isCancel){
+  <app-form-conform-popup message="Are you sure you want to cancel? Any unsaved changes will be lost." [bgColor]="bgColor" (closeDialog)="closeRisk()" (notCloseDialog)="cancelRisk()"></app-form-conform-popup>
 }
 
 </div>

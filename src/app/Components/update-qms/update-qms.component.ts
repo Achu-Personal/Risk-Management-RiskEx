@@ -11,12 +11,14 @@ import { ApiService } from '../../Services/api.service';
 import { FormButtonComponent } from '../../UI/form-button/form-button.component';
 import { FormSuccessfullComponent } from '../form-successfull/form-successfull.component';
 import { FormReferenceHeatmapPopupComponent } from '../form-reference-heatmap-popup/form-reference-heatmap-popup.component';
+import { FormConformPopupComponent } from '../form-conform-popup/form-conform-popup.component';
+import { Router } from '@angular/router';
 
 
 @Component({
   selector: 'app-update-qms',
   standalone: true,
-  imports: [DropdownComponent,FormsModule,CommonModule,FormDropdownComponent,FormDateFieldComponent,FormRiskResponseComponent,ReactiveFormsModule,FormTextAreaComponent,FormDataNotInListComponent,FormButtonComponent,FormSuccessfullComponent,FormReferenceHeatmapPopupComponent],
+  imports: [DropdownComponent,FormsModule,CommonModule,FormDropdownComponent,FormDateFieldComponent,FormRiskResponseComponent,ReactiveFormsModule,FormTextAreaComponent,FormDataNotInListComponent,FormButtonComponent,FormSuccessfullComponent,FormReferenceHeatmapPopupComponent,FormConformPopupComponent],
   templateUrl: './update-qms.component.html',
   styleUrl: './update-qms.component.scss'
 })
@@ -168,7 +170,11 @@ error:string=''
 openDropdownId: string | undefined = undefined;
 
 
-constructor(private el: ElementRef, private renderer: Renderer2,private api:ApiService){}
+  isCancel:boolean=false
+  isSave:boolean=false
+
+
+constructor(private el: ElementRef, private renderer: Renderer2,private api:ApiService,private router: Router){}
 
 
 
@@ -366,9 +372,27 @@ closeReviewer() {
 closeHeatMap(){
   this.HeatMapRefernce=false
 }
+saveConfirmation(){
+  this.isSave=!this.isSave
+ }
+ saveRisk(){
+  this.onSubmit();
+  this.isSave=false
 
-saveConfirmation(){}
-clearAllData(){}
-cancelRisk(){}
-saveAsDraft(){}
+ }
+
+ closeDialogSuccess(){
+  this.router.navigate(['/home']);
+
+ }
+
+ cancelRisk(){
+  this.isCancel=!this.isCancel
+
+ }
+ closeRisk(){
+  this.router.navigate(['/home']);
+ }
+
+
 }

@@ -52,9 +52,9 @@
        }
      @if(isSuccess){
         <app-form-successfull
-        message="Add new risk successfully!"
+        message="Risk has been added successfully! You can now check it in the risk management dashboard. If you need to make changes, you can edit it anytime."
         [isSuccessfull] ="true"
-        (closeDialog)="closeDialog()" [bgColor]="bgColor">
+        (closeDialog)="closeDialogSuccess()" [bgColor]="bgColor">
         </app-form-successfull>
      }
      @if(isError){

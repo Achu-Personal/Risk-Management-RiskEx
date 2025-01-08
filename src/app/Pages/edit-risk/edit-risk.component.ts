@@ -108,6 +108,9 @@ constructor(private api:ApiService,public authService:AuthService,private router
 
 
   onFormSubmit(payload: any) {
+    if(payload=false){
+      this.isError=true
+    }
     if (payload.riskType == 1) {
       this.api.editQualityRisk(Number(this.riskId),payload).subscribe((res:any)=>{
         console.log(res);
