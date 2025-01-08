@@ -10,12 +10,13 @@ import { ApiService } from '../../Services/api.service';
 import { BubbleGraphComponent } from "../../UI/bubble-graph/bubble-graph.component";
 import { StyleButtonComponent } from "../../UI/style-button/style-button.component";
 import { DashboardviewriskComponent } from "../../UI/dashboardviewrisk/dashboardviewrisk.component";
+import { DashbaordCardContainerComponent } from "../../Components/dashbaord-card-container/dashbaord-card-container.component";
 
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [NgIf, BodyContainerComponent, ButtonComponent, DepartmentDropdownComponent, ChartComponent, BubbleGraphComponent, CommonModule, StyleButtonComponent, DashboardviewriskComponent],
+  imports: [NgIf, BodyContainerComponent, ButtonComponent, DepartmentDropdownComponent, ChartComponent, BubbleGraphComponent, CommonModule, StyleButtonComponent, DashboardviewriskComponent, DashbaordCardContainerComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })

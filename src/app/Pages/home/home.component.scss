@@ -7,7 +7,7 @@
 // html, body {
 //   overflow: hidden; /* Prevents scrolling */
 // }
-// .container {
+// .container {maindiv1
 //   max-width: 100vw; /* Prevent horizontal overflow */
 //   max-height: 100vh; /* Prevent vertical overflow */
 // }
@@ -100,21 +100,20 @@ app-department-dropdown{
     font-weight: 600;
   }
 }
-// .labels{
-//   // background-color: red;
-// }
+
 .risk-indicator {
   display: flex;
   align-items: center;
   margin-bottom: 10px;
   span{
     font-weight: bold;
+    width: 120px;
   }
   h6{
     font-weight: bold;
-    margin-left: 20px;
-    margin-top: 5px;
+
     font-size: 14px;
+    margin: 0px;
 
   }
 }
@@ -125,13 +124,13 @@ app-department-dropdown{
   border-radius: 5px;
 }
 .privacy-risk {
-  background-color:var(--privacy-color);
+  background-color:#0047AB;
 }
 .quality-risk {
-  background-color:var(--quality-color);
+  background-color:#0097a7;
 }
 .security-risk {
-  background-color: var(--security-color);
+  background-color: #6742c1;
 }
 .rightside{
   // background-color: red;
@@ -181,17 +180,20 @@ app-department-dropdown{
   margin-top: -20px;
   height: 50%;
   width: 100%;
+
 }
 .urgentrisks{
-  background-color: #FFFFFF;
+  background-color: var(--accent-color);
   height: 90%;
   width: 50%;
   border-radius: 20px;
+  padding: 20px;
+
   h5{
     color: black;
     font-weight: 600;
-    padding: 10px;
-    margin-left: 20px;
+
+
   }
   // overflow: auto;
   // overflow-y: scroll;
@@ -204,9 +206,10 @@ app-department-dropdown{
   display: flex;
   flex-direction: column;
   gap: 5px;
+  height: 30vh;
   // background-color: #FEE378;
-  margin-top: -8px;
-  height: 235px;
+
+
   // overflow: auto;
   // overflow-y: auto;
   // overflow-x: hidden;

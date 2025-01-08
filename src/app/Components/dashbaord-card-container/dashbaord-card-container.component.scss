@@ -1,0 +1,24 @@
+:host {
+  display: block;
+  width: 50%;
+}
+
+.urgentrisks {
+  background-color: var(--accent-color);
+  height: 90%;
+
+  border-radius: 20px;
+  padding: 20px;
+
+  h5 {
+    color: black;
+    font-weight: 600;
+  }
+}
+
+.maindiv1 {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  height: 30vh;
+}
