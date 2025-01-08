@@ -69,33 +69,35 @@ export class RegisterRiskComponent {
     this.isAdmin = this.authService.getUserRole()!;
     console.log(this.isAdmin);
 
-    this.api.getLikelyHoodDefinition().subscribe((res: any) => {
-      this.dropdownDataLikelihood = res;
-    });
 
-    this.api.getImpactDefinition().subscribe((res: any) => {
-      this.dropdownDataImpact = res;
-    });
+  this.api.getLikelyHoodDefinition().subscribe((res:any)=>{
+    this.dropdownDataLikelihood=res;
+  })
 
-    this.api.getProjects(this.departmentName).subscribe((res: any) => {
-      this.dropdownDataProject = res;
-    });
+  this.api.getImpactDefinition().subscribe((res:any)=>{
+    this.dropdownDataImpact=res
+  })
 
-    this.api.getDepartment().subscribe((res: any) => {
-      this.dropdownDataDepartment = res;
-    });
+  this.api.getProjects(this.departmentName).subscribe((res:any)=>{
+    this.dropdownDataProject=res
+  })
 
-    this.api.getAllReviewer().subscribe((res: any) => {
-      this.dropdownDataReviewer = res.reviewers;
-    });
+  this.api.getDepartment().subscribe((res:any)=>{
+    this.dropdownDataDepartment=res
+  })
 
-    this.api
-      .getAllUsersByDepartmentName(this.departmentName)
-      .subscribe((res: any) => {
-        this.dropdownDataAssignee = res;
-        console.log('departments', res);
-      });
-  }
+  this.api.getAllReviewer().subscribe((res:any)=>{
+    this.dropdownDataReviewer=res.reviewers
+  })
+
+  this.api.getAllUsersByDepartmentName(this.departmentName).subscribe((res:any)=>{
+    this.dropdownDataAssignee=res
+    console.log("departments",res)
+  })
+
+  this.cdRef.detectChanges();
+
+}
 
   riskTypes = [
     { type: 'Quality', value: 1 },
@@ -119,48 +121,7 @@ export class RegisterRiskComponent {
           this.riskId = res.id;
           this.riskData = res;
           isSubmited = true;
-
-          // // Fetch reviewer details
-          // this.api.getRevieverDetails(res.id,'ReviewPending').subscribe({
-          //   next: (r: any) => {
-          //     this.reviewer = r[0].fullName;
-          //     console.log('Reviewer Details:', this.reviewer);
-
-          //      this.context = {
-          //       responsibleUser: this.reviewer,
-          //       riskId: res.riskId,
-          //       riskName: res.riskName,
-          //       description: res.description,
-          //       riskType: res.riskType === 1 ? 'Quality' : res.riskType === 2 ? 'Security' : 'Privacy',
-          //       impact: res.impact,
-          //       mitigation: res.mitigation,
-          //       plannedActionDate: new Date(res.plannedActionDate).toLocaleDateString('en-US', {
-          //         year: 'numeric',
-          //         month: 'long',
-          //         day: 'numeric'
-          //       }),
-          //       overallRiskRating: res.overallRiskRatingBefore,
-          //       id:res.id,
-          //       rid:res.id
-          //     };
-          //     console.log('Email Context:', this.context);
-
-          //     // Send email to reviewer
-          //     this.email.sendReviewerEmail(r[0].email, this.context).subscribe({
-          //       next: () => {
-          //         console.log('Reviewer Email:', r[0].email);
-          //         console.log('Email Sent Successfully.');
-          //       },
-          //       error: (emailError) => {
-          //         console.error('Failed to send email to reviewer:', emailError);
-          //       },
-          //     });
-          //   },
-          //   error: (reviewerError) => {
-          //     console.error('Failed to fetch reviewer details:', reviewerError);
-
-          //   },
-          // });
+          this.sendEmailOnRegisterRisk(res.id,res);
         },
         error: (error: HttpErrorResponse) => {
           this.isError = true;
@@ -216,6 +177,7 @@ export class RegisterRiskComponent {
             this.riskData = res;
             console.log('response id for njnnmbhh security', this.riskId);
             isSubmited = true;
+            this.sendEmailOnRegisterRisk(res.id,res);
           }
         },
         error: (error: HttpErrorResponse) => {
@@ -272,6 +234,7 @@ export class RegisterRiskComponent {
             this.riskId = res.id;
             this.riskData = res;
             isSubmited = true;
+            this.sendEmailOnRegisterRisk(res.id,res);
           }
         },
         error: (error: HttpErrorResponse) => {
@@ -323,59 +286,7 @@ export class RegisterRiskComponent {
       
 
     }
-    setTimeout(()=>{
-      console.log('before is submit:', this.isSuccess);
-      if (this.isSuccess) {
-        console.log('after is submit');
-        // Fetch reviewer details
-        this.api.getRevieverDetails(this.riskId, 'ReviewPending').subscribe({
-          next: (r: any) => {
-            this.reviewer = r[0].fullName;
-            console.log('Reviewer Details:', this.reviewer);
-
-            this.context = {
-              responsibleUser: this.reviewer,
-              riskId: this.riskData.riskId,
-              riskName: this.riskData.riskName,
-              description: this.riskData.description,
-              riskType:
-                this.riskData.riskType === 1
-                  ? 'Quality'
-                  : this.riskData.riskType === 2
-                  ? 'Security'
-                  : 'Privacy',
-              impact: this.riskData.impact,
-              mitigation: this.riskData.mitigation,
-              plannedActionDate: new Date(
-                this.riskData.plannedActionDate
-              ).toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-              }),
-              overallRiskRating: this.riskData.overallRiskRatingBefore,
-              id: this.riskData.id,
-              rid: this.riskData.id,
-            };
-            console.log('Email Context:', this.context);
-
-            // Send email to reviewer
-            this.email.sendReviewerEmail(r[0].email, this.context).subscribe({
-              next: () => {
-                console.log('Reviewer Email:', r[0].email);
-                console.log('Email Sent Successfully.');
-              },
-              error: (emailError) => {
-                console.error('Failed to send email to reviewer:', emailError);
-              },
-            });
-          },
-          error: (reviewerError) => {
-            console.error('Failed to fetch reviewer details:', reviewerError);
-          },
-        });
-      }
-    },1000)
+   
   }
 
   getRiskTypeClass() {
@@ -427,5 +338,63 @@ export class RegisterRiskComponent {
     this.isSuccess = false;
     this.isError = false;
     // this.router.navigate(['/home']);
+  }
+
+
+  sendEmailOnRegisterRisk(riskId:number,riskData:any){
+      console.log('before is submit:', this.isSuccess);
+      if (this.isSuccess) {
+        console.log('after is submit');
+        // Fetch reviewer details
+        this.api.getRevieverDetails(riskId, 'ReviewPending').subscribe({
+          next: (r: any) => {
+            const reviewer = r[0].fullName;
+            console.log('Reviewer Details:', reviewer);
+
+           const context = {
+              responsibleUser: reviewer,
+              riskId: riskData.riskId,
+              riskName: riskData.riskName,
+              description:riskData.description,
+              riskType:
+                riskData.riskType === 1
+                  ? 'Quality'
+                  : this.riskData.riskType === 2
+                  ? 'Security'
+                  : 'Privacy',
+              impact:riskData.impact,
+              mitigation:riskData.mitigation,
+              plannedActionDate: new Date(
+                riskData.plannedActionDate
+              ).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+              }),
+              overallRiskRating: riskData.overallRiskRatingBefore,
+              // reason:riskData.riskAssessments[0].review.comments,
+              id: riskData.id,
+              rid: riskData.id,
+            };
+            console.log('Email Context:', context);
+            console.log('Reviewer Email:', r[0].email);
+
+            // Send email to reviewer
+            this.email.sendReviewerEmail(r[0].email, context).subscribe({
+              next: () => {
+                console.log('Reviewer Email:', r[0].email);
+                console.log('Email Sent Successfully.');
+              },
+              error: (emailError) => {
+                console.error('Failed to send email to reviewer:', emailError);
+              },
+            });
+          },
+          error: (reviewerError) => {
+            console.error('Failed to fetch reviewer details:', reviewerError);
+          },
+        });
+      }
+
   }
 }
