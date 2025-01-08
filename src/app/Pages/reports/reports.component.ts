@@ -74,7 +74,7 @@ export class ReportsComponent {
         this.type = history.state.type;
         console.log("history type:", this.type);
 
-        setTimeout(() => {
+        // setTimeout(() => {
           const role = this.auth.getUserRole();
           const department = this.auth.getDepartmentId();
           const pro = this.auth.getProjects();
@@ -92,7 +92,8 @@ export class ReportsComponent {
 
           // Fetch data based on conditions
           this.fetchData(department);
-        }, 100);
+          this.cdr.detectChanges();
+        // }, 50);
       }
 
       fetchData(department: any): void {

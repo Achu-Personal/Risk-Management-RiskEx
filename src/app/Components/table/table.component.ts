@@ -103,7 +103,7 @@ export class TableComponent {
   this.totalItems = this.filteredItems.length;
   this.updatePaginatedItems();
   // this.filteredData.emit(this.filteredItems);
-  }, 300); // 300ms debounce
+  }, 100); // 300ms debounce
   }
 
 
