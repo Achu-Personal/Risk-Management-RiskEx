@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { NavigationEnd, Router, RouterLink } from '@angular/router';
 import { UsericonDropdownComponent } from "../../UI/usericon-dropdown/usericon-dropdown.component";
 
@@ -10,14 +10,32 @@ import { UsericonDropdownComponent } from "../../UI/usericon-dropdown/usericon-d
   styleUrl: './sidebar.component.scss'
 })
 export class SidebarComponent {
+  @Output() changePasswordRequested = new EventEmitter<void>();
+
+  onPasswordChangeRequest(): void {
+    this.changePasswordRequested.emit(); // Emit the event to DashboardComponent
+  }
 
   showThemeOverlay=false;
+
+  isShowPopUp:boolean=false
+  showChangePassword(): void {
+    this.isShowPopUp = true; // Show the change password component
+  }
+
+  hideChangePassword(): void {
+    this.isShowPopUp = false; // Hide the change password component
+  }
+
+
+
+
   menuItems = [
     { id: 1, label: 'Dashboard', icon: 'fa-solid fa-house', route: '/home', active: false },
     {id: 2, label: "Assignments", icon: "fa-solid fa-tasks", route: "/assignee",active: false},
     { id: 3, label: 'Approvals', icon: ' fa-solid fa-clipboard-check', route: '/approvaltable', active: false },
-    { id: 4, label: 'Reports', icon: 'fa-solid fa-chart-line', route: '/reports', active: false },
-    { id: 5, label: 'History', icon: 'fa-solid fa-clock-rotate-left', route: '/history', active: false },
+    { id: 4, label: 'Reports', icon: 'fa-solid fa-chart-simple', route: '/reports', active: false },
+    { id: 5, label: 'History', icon: 'fa-solid fa-clock', route: '/history', active: false },
     { id: 6, label: 'User Mangement', icon: 'fa-solid fa-users', route: '/users', active: false },
     { id: 7, label: 'Reference', icon: 'fa-solid fa-book', route: '/reference', active: false }
 

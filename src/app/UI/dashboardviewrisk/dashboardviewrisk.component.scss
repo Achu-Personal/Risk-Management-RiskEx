@@ -1,0 +1,53 @@
+.risk-card1 {
+  width: 91%;
+  height: 70px;
+  border-radius: 10px;
+  background-color: #F4F1EC;
+  margin-left: 25px;
+  display: flex;
+  flex-direction: row;
+  padding: 10px;
+  // margin-top: -20px;
+}
+.riskCard1-left
+{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.risk-text1 {
+  font-weight: 600;
+  color: black;
+  font-size: 16px;
+}
+.riskCard1-right{
+  display: flex;
+  flex-direction:column ;
+  width: 30%;
+  justify-content: center;
+  align-items: end;
+}
+
+.view-risk-button1 {
+  background-color: black;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  width: 80px;
+  height: 30px;
+  font-weight: 500;
+  font-size: 12px;
+}
+.risk-date1 {
+  color: #666;
+  font-size: 13px;
+  width: 200px;
+}
+
+.riskCard1-left>div{
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  background-color: var(--foregroundColor);
+}

@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { BodyContainerComponent } from '../../Components/body-container/body-container.component';
 import { ReusableTableComponent } from '../../Components/reusable-table/reusable-table.component';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from '../../Services/api.service';
 import { AuthService } from '../../Services/auth.service';
+import { EmailService } from '../../Services/email.service';
 
 @Component({
   selector: 'app-approval-table',
@@ -14,6 +15,7 @@ import { AuthService } from '../../Services/auth.service';
 })
 export class ApprovalTableComponent {
   headerData: string[] = [];
+  assignee:any;
   // updates:any={};
   //"SI NO",
   headerDisplayMap: { [key: string]: string } = {
@@ -22,6 +24,7 @@ export class ApprovalTableComponent {
     description: 'Description',
     riskType: 'Risk Type',
     riskDepartment: 'Department',
+    departmentName: 'Department',
     plannedActionDate: 'Planned Action Date',
     overallRiskRating: 'CRR',
     riskStatus: 'Risk Status',
@@ -51,6 +54,7 @@ export class ApprovalTableComponent {
       riskType: '',
       plannedActionDate: Date,
       overallRiskRating: 0,
+      departmentName: '',
       riskStatus: '',
     },
   ];
@@ -64,7 +68,10 @@ export class ApprovalTableComponent {
   constructor(
     private router: Router,
     private api: ApiService,
-    public auth: AuthService
+    public auth: AuthService,
+    private route: ActivatedRoute,
+    public email:EmailService
+    
   ) {}
 
   ngOnInit(): void {
@@ -86,6 +93,9 @@ export class ApprovalTableComponent {
 
       this.api.getAllRisksTobeReviewed().subscribe((response: any) => {
         this.tableBodyAdmin = response || [];
+        console.log("admin tablebody:",this.tableBodyAdmin);
+
+        
       });
     } else {
       this.headerData = [
@@ -95,20 +105,14 @@ export class ApprovalTableComponent {
         'riskType',
         'plannedActionDate',
         'overallRiskRating',
+        'departmentName',
         'riskStatus',
       ];
       this.api.getRisksByReviewerId().subscribe((response: any) => {
         console.log('API Response:', response);
       
-        // Ensure `response` is an array
         if (Array.isArray(response)) {
-          // Format `plannedActionDate` for each object in the response array
-          this.tableBody = response.map((item: any) => {
-            return {
-              ...item,
-              plannedActionDate: this.formatDate(item.plannedActionDate), // Format date
-            };
-          });
+          this.tableBody = response;
         } else {
           console.error('Expected an array but got:', response);
           this.tableBody = []; // Default to an empty array if the response is not valid
@@ -121,7 +125,7 @@ export class ApprovalTableComponent {
   }
 
   OnClickRow(rowData: any): void {
-    this.router.navigate([`/approvals/${rowData.id}`]);
+    this.router.navigate([`approvals/${rowData.id}`]);
     console.log('rowdata', rowData);
   }
 
@@ -130,20 +134,6 @@ export class ApprovalTableComponent {
   showRejectDialog = false;
   selectedRow: any;
 
-  formatDate(value: any): string {
-    if (!value) return '';
-    
-    if (typeof value === 'string' && value.includes('-')) {
-      const date = new Date(value);
-      if (!isNaN(date.getTime())) {
-        const day = String(date.getDate()).padStart(2, '0');
-        const month = String(date.getMonth() + 1).padStart(2, '0'); 
-        const year = date.getFullYear();
-        return `${day}-${month}-${year}`;
-      }
-    }
-    return value;
-  }
 
   approveRisk(event: {row: any, comment: string}) {
     const updates = {
@@ -152,7 +142,40 @@ export class ApprovalTableComponent {
     };
     let id = event.row.id;
     this.api.updateReviewStatusAndComments(id,updates);
-    this.api.sendEmailToAssignee(id);
+    console.log("risk status:",event.row.riskStatus);
+    
+    if(event.row.riskStatus==='open'){
+      this.api.getAssigneeByRiskId(id).subscribe((res:any)=>{
+        this.assignee=res;
+        // console.log(this.assignee);  
+        const context = {
+          responsibleUser: this.assignee.fullName,
+          riskId: event.row.riskId,
+          riskName: event.row.riskName,
+          description: event.row.description,
+          riskType:event.row.riskType,
+          plannedActionDate:event.row.plannedActionDate,
+          overallRiskRating:event.row.overallRiskRating,
+          riskStatus:event.row.riskStatus
+        };
+        console.log("context:",context);
+        this.email.sendAssigneeEmail(this.assignee.email,context).subscribe({
+          next: () => {
+            console.log('Assignee email sent successfully');
+            
+          },
+          error: (emailError) => {
+            console.error('Failed to send email to assignee:', emailError);
+            
+          }
+        })
+        
+      });
+    }
+    
+
+
+    // this.api.sendEmailToAssignee(id);    
     console.log('Approved:', event.row);
     console.log('Comment:', event.comment);
   }
@@ -164,6 +187,69 @@ export class ApprovalTableComponent {
     };
     let id = event.row.id;
     this.api.updateReviewStatusAndComments(id,updates);
+
+    if(event.row.riskStatus==='open' || event.row.riskStatus==='close'){
+      this.api.getriskOwnerEmailandName(id).subscribe((res:any)=>{
+        this.assignee=res;
+        // console.log(this.assignee);  
+        const context = {
+          responsibleUser: res[0].name,
+          riskId: event.row.riskId,
+          riskName: event.row.riskName,
+          description: event.row.description,
+          riskType:event.row.riskType,
+          plannedActionDate:event.row.plannedActionDate,
+          overallRiskRating:event.row.overallRiskRating,
+          riskStatus:event.row.riskStatus,
+          reason:event.comment 
+        };
+        console.log("context:",context);
+        this.email.sendOwnerEmail(res[0].email,context).subscribe({
+          next: () => {
+            console.log('owner email sent successfully');
+            // this.router.navigate(['/thankyou']);
+          },
+          error: (emailError) => {
+            console.error('Failed to send email to risk owner:', emailError);
+            // Navigate to thank you page even if email fails
+            // this.router.navigate(['/thankyou']);
+          }
+        })
+        
+      });
+    }
+    if(event.row.riskStatus==='close'){
+      this.api.getAssigneeByRiskId(id).subscribe((res:any)=>{
+        this.assignee=res;
+        // console.log(this.assignee);  
+        const context = {
+          responsibleUser: res[0].fullName,
+          riskId: event.row.riskId,
+          riskName: event.row.riskName,
+          description: event.row.description,
+          riskType:event.row.riskType,
+          plannedActionDate:event.row.plannedActionDate,
+          overallRiskRating:event.row.overallRiskRating,
+          riskStatus:event.row.riskStatus,
+          reason:event.comment 
+        };
+        console.log("context:",context);
+        this.email.sendOwnerEmail(res[0].email,context).subscribe({
+          next: () => {
+            console.log('owner email sent successfully');
+            // this.router.navigate(['/thankyou']);
+          },
+          error: (emailError) => {
+            console.error('Failed to send email to risk owner:', emailError);
+            // Navigate to thank you page even if email fails
+            // this.router.navigate(['/thankyou']);
+          }
+        })
+        
+      });
+    }
+
+   
     console.log('Rejected:', event.row);
     console.log('Comment:', event.comment);
   }

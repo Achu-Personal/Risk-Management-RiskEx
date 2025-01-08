@@ -8,6 +8,7 @@ import { StyleButtonComponent } from '../../UI/style-button/style-button.compone
 import { ConfirmationPopupComponent } from '../../Components/confirmation-popup/confirmation-popup.component';
 import { ActivatedRoute } from '@angular/router';
 import { NgIf } from '@angular/common';
+import { EmailService } from '../../Services/email.service';
 
 @Component({
   selector: 'app-approval',
@@ -27,7 +28,7 @@ import { NgIf } from '@angular/common';
 })
 export class ApprovalComponent {
   data:any=[];
-  constructor(public api: ApiService, public route:ActivatedRoute) {}
+  constructor(public api: ApiService, public route:ActivatedRoute, private email:EmailService) {}
   ngOnInit(){
     console.log("initial data:",this.data);
     
@@ -79,6 +80,70 @@ export class ApprovalComponent {
       };
       let id = parseInt(this.route.snapshot.paramMap.get('id')!);
       this.api.updateReviewStatusAndComments(id,updates);
+      this.api.getRiskById(id).subscribe((res:any)=>{
+        if(res.riskStatus==='open' || res.riskStatus==='close'){
+          
+            const context = {
+              responsibleUser: res.createdBy.fullName,
+              riskId: res.riskId,
+              riskName: res.riskName,
+              description: res.description,
+              riskType:res.riskType,
+              plannedActionDate:res.plannedActionDate,
+              overallRiskRating:res.overallRiskRating,
+              riskStatus:res.riskStatus,
+              reason:event.comment 
+            };
+            console.log("context:",context);
+            this.email.sendOwnerEmail(res.createdBy.email,context).subscribe({
+              next: () => {
+                console.log('owner email sent successfully');
+                // this.router.navigate(['/thankyou']);
+              },
+              error: (emailError) => {
+                console.error('Failed to send email to risk owner:', emailError);
+                // Navigate to thank you page even if email fails
+                // this.router.navigate(['/thankyou']);
+              }
+            })
+            
+        
+        }
+        if(res.riskStatus === 'close'){
+
+          const context = {
+            responsibleUser: res.responsibleUser.fullName,
+            riskId: res.riskId,
+            riskName: res.riskName,
+            description: res.description,
+            riskType: res.riskType,
+            impact: res.impact,
+            mitigation: res.mitigation,
+            plannedActionDate: new Date(res.plannedActionDate).toLocaleDateString(
+              'en-US',
+              {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+              }
+            ),
+            overallRiskRating: res.overallRiskRating,
+            reason: event.comment,
+          };
+          // Send email to reviewer
+          this.email.sendOwnerEmail(res.responsibleUser.email, context).subscribe({
+            next: () => {
+              console.log('Reviewer Email:', res.responsibleUser.email);
+              console.log('Email Sent Successfully.');
+            },
+            error: (emailError) => {
+              console.error('Failed to send email to reviewer:', emailError);
+            },
+          });
+  
+        }
+      })
+
     } else {
       console.log('Risk approved with comment:', event.comment);
       const updates = {
@@ -87,6 +152,42 @@ export class ApprovalComponent {
       };
       let id = parseInt(this.route.snapshot.paramMap.get('id')!);
       this.api.updateReviewStatusAndComments(id,updates);
+      this.api.getRiskById(id).subscribe((res:any)=>{
+        if(res.riskStatus==='open'){
+          const context = {
+            responsibleUser: res.responsibleUser.fullName,
+            riskId: res.riskId,
+            riskName: res.riskName,
+            description: res.description,
+            riskType:res.riskType,
+            plannedActionDate:new Date(res.plannedActionDate).toLocaleDateString(
+              'en-US',
+              {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+              }
+            ),
+            overallRiskRating:res.overallRiskRating,
+            riskStatus:res.riskStatus
+          };
+          console.log("context:",context);
+          this.email.sendAssigneeEmail(res.responsibleUser.email,context).subscribe({
+            next: () => {
+              console.log('Assignee email sent successfully');
+              // this.router.navigate(['/thankyou']);
+            },
+            error: (emailError) => {
+              console.error('Failed to send email to assignee:', emailError);
+              // Navigate to thank you page even if email fails
+              // this.router.navigate(['/thankyou']);
+            }
+          })
+        }
+       
+      })
+
+      
       
     }
   }

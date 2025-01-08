@@ -3,6 +3,8 @@
   // padding: 20px;
   // max-width: 800px;
   margin: 0 auto;
+
+
 }
 
 .timeline {
@@ -45,6 +47,7 @@
       transform: scaleX(1) translateY(-50%);
     }
   }
+
 }
 
 .step-icon {
@@ -62,6 +65,8 @@
   position: relative;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
+
+
   &.completed {
     background: #4c6ef5;
     border-color: #4c6ef5;
@@ -72,6 +77,8 @@
       opacity: 0;
       animation: fadeInZoom 0.5s ease forwards;
     }
+
+
   }
 
   &.current {
@@ -95,6 +102,42 @@
     opacity: 1;
     transform: translateY(0);
   }
+
+  /* Tooltip styling */
+  .tooltip {
+    display: none; /* Hidden by default */
+    position: absolute;
+    bottom: 100%; /* Position above the step-info */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.8); /* Dark background */
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 10px;
+    white-space: nowrap;
+    z-index: 10;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  /* Arrow for the tooltip */
+  .tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 5px;
+    border-style: solid;
+    border-color: rgba(0, 0, 0, 0.8) transparent transparent transparent;
+  }
+
+  /* Show tooltip on hover */
+  &:hover .tooltip {
+    display: block;
+    opacity: 1;
+  }
 }
 
 .step-title {
@@ -117,6 +160,42 @@
   }
   .date {
     color: #999;
+  }
+
+  /* Tooltip styling */
+  .tooltip {
+    display: none; /* Hidden by default */
+    position: absolute;
+    bottom: 100%; /* Position above the step-info */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.8); /* Dark background */
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 10px;
+    white-space: nowrap;
+    z-index: 10;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  /* Arrow for the tooltip */
+  .tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 5px;
+    border-style: solid;
+    border-color: rgba(0, 0, 0, 0.8) transparent transparent transparent;
+  }
+
+  /* Show tooltip on hover */
+  &:hover .tooltip {
+    display: block;
+    opacity: 1;
   }
 }
 
@@ -149,6 +228,20 @@
 
 
 .step{
-  width: 50px;
-  height: 60px;
+  // width: .1px;
+  height: 62px;
+  background-color: #4c6ef5;
+}
+
+@media (max-width: 600px) {
+
+  .step-icon {
+      width: 30px;
+      height: 30px;
+      font-size: 14px; /* Smaller font size */
+  }
+  .stepper-container {
+      padding: 5px;
+      max-width: 100%;
+    }
 }

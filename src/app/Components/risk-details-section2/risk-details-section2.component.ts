@@ -43,8 +43,8 @@ export class RiskDetailsSection2Component {
         id: 1,
         title: 'Open',
         isCompleted: false,
-        actionBy: 'Sreehari',
-        date: '21 June 2024',
+        actionBy: '...',
+        date: '2025-01-03 05:04:00.059418+00',
         stepNumber: '01'
       },
       {
@@ -67,16 +67,16 @@ export class RiskDetailsSection2Component {
         id: 4,
         title: 'Post Review',
         isCompleted: false,
-        actionBy: 'Tony',
-        date: '23 June 2024',
+        actionBy: '...',
+        date: '2025-01-03 05:04:00.059418+00',
         stepNumber: '04'
       },
       {
         id: 5,
         title: 'Closed',
         isCompleted: false,
-        actionBy: '',
-        date: '',
+        actionBy: '...',
+        date: '2025-01-03 05:04:00.059418+00',
         stepNumber: '05'
       }
     ]
@@ -87,16 +87,19 @@ export class RiskDetailsSection2Component {
 
       let id= params.get('id');
 
+
       this.stepperData[0].actionBy=this.CreatedBy;
       this.stepperData[0].isCompleted=true;
       this.stepperData[0].date=this.CreatedAt;
 
       this.api.getReviewSatus(id!,true).subscribe((e:any)=>{
+        console.log("ReviewSatus",e)
         this.stepperData[1].actionBy=e.actionBy;
         this.stepperData[1].isCompleted=e.isReviewed;
         this.stepperData[1].date=e.date;
       })
      this.api.getReviewSatus(id!,false).subscribe((e:any)=>{
+      console.log("ReviewSatusafter",e)
         this.stepperData[3].actionBy=e.actionBy;
         this.stepperData[3].isCompleted=e.isReviewed;
         this.stepperData[3].date=e.date;

@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, model} from '@angular/core';
+import {ChangeDetectionStrategy, EventEmitter, HostListener, model, Output} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {provideNativeDateAdapter} from '@angular/material/core';
 import {MatDatepickerModule} from '@angular/material/datepicker';
@@ -25,6 +25,8 @@ export class DatepickerComponent {
   endDate: string | null = null;
   dateRange: string = '';
 
+  @Output() dateRangeSelected = new EventEmitter<{ startDate: string; endDate: string }>();
+
   toggleDropdown() {
     this.showDropdown = !this.showDropdown;
   }
@@ -32,6 +34,7 @@ export class DatepickerComponent {
   updateDateRange() {
     if (this.startDate && this.endDate) {
       this.dateRange = `${this.startDate} to ${this.endDate}`;
+      this.emitDateRange();
     }
   }
 
@@ -40,7 +43,19 @@ export class DatepickerComponent {
     if (range.length === 2) {
       this.startDate = range[0];
       this.endDate = range[1];
+      this.emitDateRange();
     }
   }
 
+  emitDateRange() {
+    this.dateRangeSelected.emit({ startDate: this.startDate!, endDate: this.endDate! });
+  }
+
+  @HostListener('document:click', ['$event'])
+    onDocumentClick(event: MouseEvent): void {
+      const target = event.target as HTMLElement;
+      if (!target.closest('.filter-by-date')) {
+        this.showDropdown = false;
+      }
+    }
 }

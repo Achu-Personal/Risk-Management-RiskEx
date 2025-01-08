@@ -3,7 +3,7 @@
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 20px;
-  border-left: 20px solid var(--secondary-color);
+  border-left: 20px solid var(--bg-color);
   margin-top: 10px;
 }
 .required{
@@ -11,10 +11,12 @@
 }
 .form-details-sub-container h2 {
   font-size: 1.4rem;
-  color: var(--secondary-color);
+  // color: var(--bg-color);
+  color: var(--foreground-color);
   margin-bottom: 15px;
   text-transform: uppercase;
-  border-bottom: 2px solid var(--secondary-color);
+  // border-bottom: 2px solid var(--bg-color);
+  border-bottom: 2px solid var(--foreground-color);
   padding-bottom: 8px;
 }
 .form-detail {
@@ -51,6 +53,12 @@ input:focus, textarea:focus {
 .form-row {
   display: flex;
   gap: 20px;
+
+}
+.form-row > * {
+  flex: 1;
+  max-width: 50%;
+  box-sizing: border-box;
 }
 
 .form-row .form-group {
@@ -65,7 +73,7 @@ input:focus, textarea:focus {
 }
 
 a {
-  color:var(--secondary-color);
+  color:var(--bg-color);
   text-decoration: none;
 }
 
@@ -105,7 +113,7 @@ a:hover {
 
 .risk-assessment-table th {
   font-weight: bold;
-  text-align: center;
+  text-align: left;
 }
 
 
@@ -274,3 +282,29 @@ a:hover {
   }
 }
 
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+  width: 30%;
+}
+.btn.clear {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}

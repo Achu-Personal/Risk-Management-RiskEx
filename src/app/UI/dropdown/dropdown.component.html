@@ -1,7 +1,39 @@
 
-<select class="custom-dropdown"  [(ngModel)]="selectedValue" (ngModelChange)="onSelectionChange($event)" [ngStyle]="{'width': width+'%','margin-bottom': bottom}">
+<!-- <select class="custom-dropdown"  [(ngModel)]="selectedValue" (ngModelChange)="onSelectionChange($event)" [ngStyle]="{'width': width+'%','margin-bottom': bottom}">
   <option value="">Select {{selectValue}}</option>
+
   @for (item of options; track $index) {
     <option  value="{{item[valueField]}}" >{{item[displayField]}}</option>
   }
-</select>
+</select> -->
+
+<div class="dropdown-container" [ngStyle]="{'width': width+'%'}" >
+  <!-- Dropdown Box -->
+  <div class="dropdown-header" (click)="toggleDropdown($event)" [class.open]="isDropdownOpen" >
+    {{ getSelectedText() }}
+    <span class="arrow">&#9662;</span>
+  </div>
+
+  <!-- Dropdown List -->
+  <div class="dropdown-list" *ngIf="isDropdownOpen && isGlobalDropdownOpen" >
+    <!-- Search Bar -->
+    <input
+      type="text"
+      [(ngModel)]="searchQuery"
+      placeholder="Search..."
+      class="search-box"
+      (click)="$event.stopPropagation()"
+    />
+
+    <!-- Scrollable Options -->
+    <div class="dropdown-items" >
+      <div
+        *ngFor="let item of filteredOptions"
+        (click)="selectOption(item)"
+        class="dropdown-item"
+        (click)="$event.stopPropagation()">
+        {{ item[displayField] }}
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,283 +1,172 @@
-<!-- <div class="container">
-  <div class="form">
-    <form [formGroup]="ismsForm"  (ngSubmit)="onsubmit()">
-      <div class="field" id="editableDiv">
-        <div class="firstDiv">
-          <div>
-            <app-edit-text-area label="Risk Name" [isEditable]="isEditableRiskName"(editToggled)="onEditToggled('RiskName', $event)" formControlName="riskName"></app-edit-text-area>
-            <app-edit-text-area label="Risk Description" [isEditable]="isEditableRiskDescription"(editToggled)="onEditToggled('RiskDescription', $event)" formControlName="description" ></app-edit-text-area>
-            <app-edit-text-area label="Impact Of Risk" [isEditable]="isEditableImpact"(editToggled)="onEditToggled('Impact', $event)" formControlName="riskImpact"></app-edit-text-area>
-            <app-edit-text-area label="Risk Mitigation" [isEditable]="isEditableMitigation"(editToggled)="onEditToggled('mitigation', $event)" formControlName="mitigation"></app-edit-text-area>
-            <app-edit-text-area label="Risk Contingency" [isEditable]="isEditableContingency"(editToggled)="onEditToggled('Contingency', $event)" formControlName="contingency"></app-edit-text-area>
-
-          </div>
-
-          <app-overall-rating-card class="col-2 rating-card" [value]="result" title="Overal Risk Rating" textColor="black" [ngStyle]="{'margin-left':'50px','margin-top':'20px'}"></app-overall-rating-card>
-
-
-        </div>
-
-
-      </div>
-      <div class="field"  >
-        <h5>Current Risk Assessment</h5>
-
-        <table>
-          <tr>
-            <th> </th>
-            <th>Confidenciality</th>
-            <th>Integrity</th>
-            <th>Availability</th>
-            <th>Privacy</th>
-          </tr>
-          <tr>
-            <td>Likelihood</td>
-            <td>
-
-            <app-dropdown  [options]="dropdownDataLikelihood"
-            [displayField]="'type'"
-            [valueField]="'value'"
-            width="13.33"
-            id="dropdownassessmentLikelihood" formControlName="confidentialityLikelihood" ></app-dropdown>
-          </td>
-            <td> <app-dropdown  [options]="dropdownDataLikelihood"
-              [displayField]="'type'"
-              [valueField]="'value'"
-              width="13.33"
-              id="dropdownassessmentLikelihood" class="dropdownassessment" formControlName="IntegrityLikelihood"  ></app-dropdown>
-            </td>
-            <td> <app-dropdown  [options]="dropdownDataLikelihood"
-              [displayField]="'type'"
-              [valueField]="'value'"
-              width="13.33"
-              id="dropdownassessmentLikelihood" class="dropdownassessment" formControlName="availabiltyLikelihood" ></app-dropdown></td>
-            <td> <app-dropdown  [options]="dropdownDataLikelihood"
-              [displayField]="'type'"
-              [valueField]="'value'"
-              width="13.33"
-              id="dropdownassessmentLikelihood" class="dropdownassessment"  formControlName="privacyLikelihood" ></app-dropdown></td>
-
-          </tr>
-          <tr>
-            <td>Impact</td>
-            <td><app-dropdown  [options]="dropdownDataImpact"
-              [displayField]="'type'"
-              [valueField]="'value'"
-              width="13.33"
-              id="dropdownassessmentimpact" class="dropdownassessment" formControlName="confidentialityImpact"  ></app-dropdown></td>
-            <td><app-dropdown  [options]="dropdownDataImpact"
-              [displayField]="'type'"
-              [valueField]="'value'"
-              width="13.33"
-              id="dropdownassessmentimpact" class="dropdownassessment" formControlName="IntegrityImpact"  ></app-dropdown></td>
-            <td><app-dropdown  [options]="dropdownDataImpact"
-              [displayField]="'type'"
-              [valueField]="'value'"
-              width="13.33"
-              id="dropdownassessmentimpact" class="dropdownassessment" formControlName="availabiltyImpact"  ></app-dropdown></td>
-            <td><app-dropdown  [options]="dropdownDataImpact"
-              [displayField]="'type'"
-              [valueField]="'value'"
-              width="13.33"
-              id="dropdownassessmentimpact" class="dropdownassessment" formControlName="privacyImpact" ></app-dropdown></td>
-
-          </tr>
-        </table>
-      </div>
-
-
-
-      <div class="field"  >
-        <h5>Post Assessment After Implimentation</h5>
-
-        <table>
-          <tr>
-            <th> </th>
-            <th>Confidenciality</th>
-            <th>Integrity</th>
-            <th>Availability</th>
-            <th>Privacy</th>
-          </tr>
-          <tr>
-            <td>Likelihood</td>
-            <td>
-
-            <app-dropdown  [options]="dropdownDataLikelihood"
-            [displayField]="'type'"
-            [valueField]="'value'"
-            width="13.33"
-            id="dropdownassessmentLikelihood" formControlName="postConfidentialityLikelihood" ></app-dropdown>
-          </td>
-            <td> <app-dropdown  [options]="dropdownDataLikelihood"
-              [displayField]="'type'"
-              [valueField]="'value'"
-              width="13.33"
-              id="dropdownassessmentLikelihood" class="dropdownassessment" formControlName="postIntegrityLikelihood"  ></app-dropdown>
-            </td>
-            <td> <app-dropdown  [options]="dropdownDataLikelihood"
-              [displayField]="'type'"
-              [valueField]="'value'"
-              width="13.33"
-              id="dropdownassessmentLikelihood" class="dropdownassessment" formControlName="postAvailabiltyLikelihood" ></app-dropdown></td>
-            <td> <app-dropdown  [options]="dropdownDataLikelihood"
-              [displayField]="'type'"
-              [valueField]="'value'"
-              width="13.33"
-              id="dropdownassessmentLikelihood" class="dropdownassessment" formControlName="postPrivacyLikelihood"  ></app-dropdown></td>
-
-          </tr>
-          <tr>
-            <td>Impact</td>
-            <td><app-dropdown  [options]="dropdownDataImpact"
-              [displayField]="'type'"
-              [valueField]="'value'"
-              width="13.33"
-              id="dropdownassessmentimpact" class="dropdownassessment"  formControlName="postConfidentialityImpact" ></app-dropdown></td>
-            <td><app-dropdown  [options]="dropdownDataImpact"
-              [displayField]="'type'"
-              [valueField]="'value'"
-              width="13.33"
-              id="dropdownassessmentimpact" class="dropdownassessment" formControlName="postIntegrityImpact"  ></app-dropdown></td>
-            <td><app-dropdown  [options]="dropdownDataImpact"
-              [displayField]="'type'"
-              [valueField]="'value'"
-              width="13.33"
-              id="dropdownassessmentimpact" class="dropdownassessment" formControlName="postAvailabiltyImpact"  ></app-dropdown></td>
-            <td><app-dropdown  [options]="dropdownDataImpact"
-              [displayField]="'type'"
-              [valueField]="'value'"
-              width="13.33"
-              id="dropdownassessmentimpact" class="dropdownassessment" formControlName="postPrivacyImpact" ></app-dropdown></td>
-
-          </tr>
-        </table>
-
-
-
-
-
-      </div>
-      <div class="field" id="thirdField">
-        <div class="actionDate">
-          <div class="plannedActionDate">
-            <label for="">Planned Action Date:
-            <input type="date" class="textarea" id="actionDateinput" formControlName="plannedActionDate" ></label>
-          </div>
-          <div class="closeDate">
-            <label for="">Actual Close Date:
-            <input type="date" class="textarea" id="actionDateinput" formControlName="actualCloseDate"></label>
-          </div>
-
-        </div>
-        <app-textarea label="Responsibility Of Action"  marginLeft="10" formControlName="responsibilityOfAction"></app-textarea>
-
-        <div class="reviewer">
-          <div>
-            <label >Reviewer :
-
-            <app-dropdown  [options]="dropdownDataReviewer"
-            [displayField]="'name'"
-            [valueField]="'email'"
-            width="47.25"
-            class="reviewerDropdown"  formControlName="reviewer"></app-dropdown></label>
-          </div>
-        </div>
-        <div class="riskresponse">
-          <div>
-            <label for="">Risk Response :</label>
-          </div>
-
-          <div class="radioButton">
-            <div>
-              <label>
-                <input type="radio"value="Accept" formControlName="riskResponse"/>
-                Accept
-              </label>
-            </div>
-            <div>
-              <label>
-                <input type="radio"  value="Transfer" formControlName="riskResponse" />
-                Transfer
-              </label>
-            </div>
-            <div>
-              <label>
-                <input type="radio"  value="Mitigate" formControlName="riskResponse" />
-                Mitigate
-              </label>
-            </div>
-            <div>
-              <label>
-                <input type="radio"  value="Avoid" formControlName="riskResponse" />
-                Avoid
-              </label>
-            </div>
-          </div>
-        </div>
-        <div class="action">
-          <div>
-            <button type="submit" value="Save" class="savecancel">Save</button>
-          </div>
-          <div>
-            <button value="Cancel" id="cancelbtn" class="savecancel" (click)="onCancel()">Cancel</button>
-
-
-          </div>
-        </div>
-
-      </div>
-    </form>
-  </div>
-</div>
- -->
-
-
-
- <div class="content">
-  <form action="">
+<div class="ismsForm">
+  <form [formGroup]="ismsForm" (ngSubmit)="onSubmit()" >
     <div class="form-details-sub-container">
-      <h2>Risk Details
-        <button (click)="toggleEdit()" class="icon-btn">
-         <i [ngClass]="isEditable ? 'fas fa-save' : 'fas fa-pen'"[title]="isEditable ? 'Save changes' : 'Edit details'"></i>
-        </button>
-      </h2>
-      <div class="form-row">
-        <div class="form-detail">
-          <label for="riskName">Risk Name</label>
-          <p>risk name is here</p>
-        </div>
-        <div class="form-detail">
-          <label for="Project">Project Name</label>
-          <p>project name is here</p>
-        </div>
-      </div>
-      <div class="form-detail">
-        <label for="description">Risk Description</label>
-        <textarea id="description" rows="2" placeholder="Enter description" (input)="autoResize($event)" [readonly]="!isEditable"></textarea>
-      </div>
-      <div class="form-detail">
-        <label for="impact">Impact Of Risk</label>
-        <textarea id="impact" rows="2" placeholder="Enter impact" (input)="autoResize($event)" [readonly]="!isEditable"></textarea>
-      </div>
+      <h2>Risk Details</h2>
+     <div class="form-row">
+       <app-form-input label="Risk Name" required=" *" formControlName="riskName" ></app-form-input>
+       <app-form-dropdown label="Project Name" [dropdownData]="dropdownProject" dropdownDisplay="name" dropdownValue="id" selectValue="Project" (change)="onDropdownChangeProject($event)" [selectedValue]="preSelectedProject" [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)"></app-form-dropdown>
+     </div>
+      @if(isAdmin === 'Admin'){
+      <app-form-dropdown label="Department Name" [dropdownData]="dropdownDepartment" dropdownDisplay="departmentName" dropdownValue="id" selectValue="department" (change)="onDropdownChangeDepartment($event)" [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)" ></app-form-dropdown>
+      }
+      <app-form-text-area label="Impact Of Risk" required="*" placeHolder="Enter impact of risk"
+      message="Impact of a risk refers to the potential consequences or effects that a risk event
+      may have on a project, system, or organization if it occurs. It can include financial loss,
+      delays, operational disruptions, or damage to reputation." formControlName="impact"   [backgroundColor]="bgColor"></app-form-text-area>
+
+      <app-form-text-area label="Description" required="*" placeHolder="Enter description of risk"
+     message="Provide a detailed description of the risk, including what could cause it" formControlName="description"  [backgroundColor]="bgColor"></app-form-text-area>
     </div>
     <div class="form-details-sub-container">
       <h2>Current Risk Assessment</h2>
+      <table  class="risk-assessment-table">
+      <tr>
+        <th></th>
+        <th>Likelihood <span class="required">*</span></th>
+        <th>Impact <span class="required">*</span></th>
+        <th> <span style="margin-left: 30px;"> Risk Factor</span></th>
+      </tr>
+      <tr>
+        <td><h2 [ngStyle]="{'border-bottom':'0px','text-transform':'none'}">Confidentiality</h2></td>
+        <td>
+            <app-form-dropdown  [dropdownData]="dropdownLikelihood" dropdownDisplay="assessmentFactor" dropdownValue="id" selectValue="Likelihood" (change)="onDropdownChange($event,'Likelihood','Confidentiality')" [selectedValue]="preSelectedConfidentialityLikelihood" [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)"></app-form-dropdown>
+        </td>
+        <td>
+            <app-form-dropdown  [dropdownData]="dropdownImpact" dropdownDisplay="assessmentFactor" dropdownValue="id" selectValue="Impact" (change)="onDropdownChange($event,'Impact','Confidentiality')" [selectedValue]="preSelectedConfidentialityImpact" [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)"></app-form-dropdown>
+        </td>
+        <td><h2 [ngStyle]="{'border-bottom':'0px','text-transform':'none','margin-left':'5vw','color': changeColorRiskFactor('Confidentiality')}">{{confidentialityRiskFactor}}</h2></td>
+      </tr>
 
+      <tr>
+        <td><h2 [ngStyle]="{'border-bottom':'0px','text-transform':'none'}">Integrity</h2></td>
+        <td>
+            <app-form-dropdown  [dropdownData]="dropdownLikelihood" dropdownDisplay="assessmentFactor" dropdownValue="id" selectValue="Likelihood" (change)="onDropdownChange($event,'Likelihood','Integrity')" [selectedValue]="preSelectedIntegrityLikelihood" [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)"></app-form-dropdown>
+        </td>
+        <td>
+            <app-form-dropdown  [dropdownData]="dropdownImpact" dropdownDisplay="assessmentFactor" dropdownValue="id" selectValue="Impact" (change)="onDropdownChange($event,'Impact','Integrity')" [selectedValue]="preSelectedIntegrityImpact" [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)"></app-form-dropdown>
+        </td>
+        <td><h2 [ngStyle]="{'border-bottom':'0px','text-transform':'none','margin-left':'5vw','color': changeColorRiskFactor('Integrity')}">{{integrityRiskFactor}}</h2></td>
+      </tr>
+
+      <tr>
+        <td><h2 [ngStyle]="{'border-bottom':'0px','text-transform':'none'}">Availability</h2></td>
+        <td>
+            <app-form-dropdown  [dropdownData]="dropdownLikelihood" dropdownDisplay="assessmentFactor" dropdownValue="id" selectValue="Likelihood" (change)="onDropdownChange($event,'Likelihood','Availability')" [selectedValue]="preSelectedAvailabilityLikelihood" [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)"></app-form-dropdown>
+        </td>
+        <td>
+            <app-form-dropdown  [dropdownData]="dropdownImpact" dropdownDisplay="assessmentFactor" dropdownValue="id" selectValue="Impact" (change)="onDropdownChange($event,'Impact','Availability')" [selectedValue]="preSelectedAvailabilityImpact" [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)"></app-form-dropdown>
+        </td>
+        <td><h2 [ngStyle]="{'border-bottom':'0px','text-transform':'none','margin-left':'5vw','color': changeColorRiskFactor('Availability')}">{{availabilityRiskFactor}}</h2></td>
+      </tr>
+
+      <tr>
+        <td><h2 [ngStyle]="{'border-bottom':'0px','text-transform':'none'}">Privacy</h2></td>
+        <td>
+            <app-form-dropdown  [dropdownData]="dropdownLikelihood" dropdownDisplay="assessmentFactor" dropdownValue="id" selectValue="Likelihood" (change)="onDropdownChange($event,'Likelihood','Privacy')" [selectedValue]="preSelectedPrivacyLikelihood" [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)"></app-form-dropdown>
+        </td>
+        <td>
+            <app-form-dropdown  [dropdownData]="dropdownImpact" dropdownDisplay="assessmentFactor" dropdownValue="id" selectValue="Impact" (change)="onDropdownChange($event,'Impact','Privacy')" [selectedValue]="preSelectedPrivacyImpact" [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)"></app-form-dropdown>
+        </td>
+        <td><h2 [ngStyle]="{'border-bottom':'0px','text-transform':'none','margin-left':'5vw','color': changeColorRiskFactor('Privacy')}">{{privacyRiskFactor}}</h2></td>
+      </tr>
+      </table>
+      <div class="form-row" [ngStyle]="{'margin-top':'30px'}">
+       <h2 [ngStyle]="{'border-bottom':'0px','text-transform':'none'}">Overall Risk Rating : <span style="margin-left: 10px;" [ngStyle]="{'color': changeColorOverallRiskRating()}" >{{overallRiskRating}}</span></h2>
+      </div>
+      <div [ngStyle]="{'margin-top':'20px','font-style':'italic','color':'grey'}">
+       <p>For reference <span (click)="isHeatMapReference()" ><a href="javascript:void(0);">click </a></span>here</p>
+      </div>
     </div>
-
     <div class="form-details-sub-container">
       <h2>Risk Management</h2>
+      <app-form-text-area label="Risk Mitigation" required="*" placeHolder="Enter mitigation plan"
+      message="Mitigation refers to actions taken to reduce the likelihood or impact of a risk.
+      Ensure preventive measures, such as implementing safety protocols or backup systems, to minimize
+      the risk." formControlName="mitigation"  [backgroundColor]="bgColor"></app-form-text-area>
 
+      <app-form-text-area label="Risk Contingency" placeHolder="Enter contingency plan"
+      message="Contingency planning involves preparing for unforeseen events by having backup
+      plans in place. These plans help ensure that your project can continue with minimal disruption
+      if unexpected risks occur." formControlName="contingency"  [backgroundColor]="bgColor"></app-form-text-area>
     </div>
     <div class="form-details-sub-container">
       <h2>Action Plan</h2>
+      <app-form-dropdown label="Responsibility of action" required="*" [dropdownData]="dropdownAssignee" dropdownDisplay="fullName"
+      dropdownValue="id" selectValue="responsible person" (change)="onDropdownChangeResponsiblePerson($event)"
+      [selectedValue]="preSelectedResponsiblePerson" [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)"
+      message="You can select an existing responsible person from the dropdown
+      or enter a new one. If you enter a new name, it will take priority over the dropdown selection." [backgroundColor]="bgColor" ></app-form-dropdown>
 
+      <div [ngStyle]="{'margin-top':'20px','font-style':'italic','color':'grey'}">
+        <p>If responsible person not in the list <span (click)="isAssigneeNotInList()" ><a href="javascript:void(0);">click </a></span>here</p>
+      </div>
+
+      <app-form-date-field label="Planned Action Date" required="*" formControlName="plannedActionDate"></app-form-date-field>
     </div>
     <div class="form-details-sub-container">
       <h2>Reviewer</h2>
+      <app-form-dropdown label="Reviewer" required="*" [dropdownData]="dropdownReviewer" dropdownDisplay="fullName" dropdownValue="fullName"
+      selectValue="reviewer" (change)="onDropdownChangeReviewer($event)"
+      [selectedValue]="preSelectedReviewer" [openDropdownId]="openDropdownId"
+      (openDropdown)="handleDropdownOpen($event)" message="You can select an existing reviewer from the dropdown
+      or enter a new one. If you enter a new name, it will take priority over the dropdown selection." [backgroundColor]="bgColor"></app-form-dropdown>
+      <div [ngStyle]="{'margin-top':'20px','font-style':'italic','color':'grey'}">
+        <p>If reviewer not in the list <span (click)="isReviewerNotInList()" ><a href="javascript:void(0);">click </a></span>here</p>
+      </div>
 
     </div>
-
-
+    <div class="form-details-sub-container">
+      <div class="button-group">
+        <app-form-button label="Save" (clicked)="saveConfirmation()"></app-form-button>
+        <app-form-button label="Cancel" (clicked)="cancelRisk()"></app-form-button>
+      </div>
+    </div>
   </form>
+  @if(HeatMapRefernce){
+    <h5>For Reference</h5>
+    <app-form-reference-heatmap-popup (closeHeatMap)="closeHeatMap()"></app-form-reference-heatmap-popup>
+   }
+  @if(assigneeNotInList){
+    <app-form-data-not-in-list placeholder="Enter responsible person name" [isAssignee]="true" textLabel="Responsible person name" [dropdownDepartment]="dropdownDepartment" (cancelForm)="receiveCancel($event)" (sendData)="saveAssignee($event)" [bgColor]="bgColor" [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)"></app-form-data-not-in-list>
+  }
+  @if(reviewerNotInList){
+    <app-form-data-not-in-list placeholder="Enter reviewer name" [isAssignee]="false" textLabel="Reviewer name" [dropdownDepartment]="dropdownDepartment" (cancelForm)="receiveCancel($event)" (sendData)="saveReviewer($event)" [bgColor]="bgColor" [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)"></app-form-data-not-in-list>
+  }
+  @if(isSuccessReviewer){
+    <app-form-successfull
+    message="Add new reviewer successfully!"
+    [isSuccessfull] ="true"
+    (closeDialog)="closeReviewer()" [bgColor]="bgColor">
+    </app-form-successfull>
+ }
+ @if(isErrorReviewer){
+  <app-form-successfull
+  message="Something went Wrong!"
+  [isSuccessfull] ="false"
+  (closeDialog)="closeReviewer()" [bgColor]="bgColor">
+  </app-form-successfull>
+}
+@if(isSuccessAssignee){
+  <app-form-successfull
+  message="Add new Assignee successfully!"
+  [isSuccessfull] ="true"
+  (closeDialog)="closeAssignee()" [bgColor]="bgColor">
+  </app-form-successfull>
+}
+@if(isErrorAssignee){
+<app-form-successfull
+message="Something went Wrong!"
+[isSuccessfull] ="false"
+(closeDialog)="closeAssignee()" [bgColor]="bgColor">
+</app-form-successfull>
+}
+
+@if(isSave){
+  <app-form-conform-popup message="Do you want to save the entered risk details? You can check and edit them later if needed." [bgColor]="bgColor" (closeDialog)="saveRisk()" (notCloseDialog)="saveConfirmation()"></app-form-conform-popup>
+}
+
+@if(isCancel){
+  <app-form-conform-popup message="Are you sure you want to cancel? Any unsaved changes will be lost." [bgColor]="bgColor" (closeDialog)="closeRisk()" (notCloseDialog)="cancelRisk()"></app-form-conform-popup>
+}
 </div>
+

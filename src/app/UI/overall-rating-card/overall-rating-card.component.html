@@ -1,9 +1,24 @@
-
 <div
+  id="OverallRiskRatingCard"
   [ngStyle]="dynamicStyles"
- >
-  <h1 class="value">{{ value }}</h1>
-  <h6>{{ title }}</h6>
+  class="flip-card"
+>
+
+  <div class="flip-card-inner">
+    <!-- Front of the card -->
+    <div class="flip-card-front">
+      <h1 class="value">{{ value }}</h1>
+      <h6>{{ title }}</h6>
+      <div class="criticality">
+          {{getCriticality}}
+      </div>
+    </div>
+
+    <!-- Back of the card -->
+    <div class="flip-card-back">
+      <!-- Your content for the back side -->
+      <h5>Here, the current overall risk rating is displayed, calculated by summing the risk factors associated with key risk bases</h5>
+    </div>
+  </div>
+
 </div>
-
-

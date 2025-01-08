@@ -21,7 +21,7 @@ thead{
   tr{
     z-index: 10; 
     th{
-      text-align: center;
+      // text-align: center;
       cursor: pointer;
     }
   }
@@ -73,17 +73,45 @@ thead{
   font-size: 14px;
   color: #555;
   vertical-align: middle;
-  text-align: center;
+  // text-align: center;
 
 }
 
 
-
-.text-center {
+.no-data-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 71%;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  margin-top: 30px;
+  border: 1px solid #e2e6ea;
+  padding: 20px;
   text-align: center;
-  color: #888; /* Subtle gray color for 'No data available' */
+  position:fixed;
+  width: 88%;
+  top: 125px;
+  left: 130px;
+}
+
+.no-data-message {
+  font-size: 18px;
+  font-weight: 500;
+  color: #6c757d;
+  margin: 0;
   font-style: italic;
 }
+
+.no-data-message span {
+  color: #dc3545; /* Accent color for emphasis */
+  font-weight: 600;
+  font-size: 20px;
+}
+
+
+
 
 
 tbody tr:hover {
@@ -179,61 +207,6 @@ tr{
 }
 
 
-/* Container for toggle switch */
-.toggle-container {
-  // margin: 20px;
-  text-align: center;
-  display: flex;
-  gap: 10px;
-}
-
-/* Hide the default checkbox */
-.switch input {
-  display: none;
-}
-
-/* Style the slider (toggle switch) */
-.switch {
-  position: relative;
-  display: inline-block;
-  width: 50px;
-  height: 26px;
-}
-
-.switch .slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #ccc;
-  transition: 0.4s;
-  border-radius: 34px;
-}
-
-/* Circle inside the switch */
-.switch .slider:before {
-  position: absolute;
-  content: "";
-  height: 20px;
-  width: 20px;
-  border-radius: 50%;
-  left: 4px;
-  bottom: 4px;
-  background-color: white;
-  transition: 0.4s;
-}
-
-/* When the switch is checked */
-input:checked + .slider {
-  background-color: #3e68b9; /* Green for ON state */
-}
-
-/* Move the circle to the right when checked */
-input:checked + .slider:before {
-  transform: translateX(26px);
-}
 
 .green-background {
   color: #188a18;
@@ -264,10 +237,11 @@ input:checked + .slider:before {
   
   color: red;
   font-weight: bold;
-  padding: 10px;
+  // padding: 10px;
   background-color: #edd4d5;
+  padding: 5px 15px;
   // border: 1px solid #420c0c ;
-  border-radius: 10px;
+  border-radius: 5px;
   text-align: center;
 }
 
@@ -275,10 +249,11 @@ input:checked + .slider:before {
   
   color: green;
   font-weight: bold;
-  padding: 10px;
+  // padding: 10px;
+  padding: 5px 10px;
   // border: 1px solid #0c4219 ;
   background-color: #d4edda;
-  border-radius: 10px;
+  border-radius: 5px;
   text-align: center;
 }
 
@@ -289,33 +264,108 @@ input:checked + .slider:before {
 .green-risk {
  
   color: green;
-  font-weight: bold;
-  padding: 5px;
-  border-radius: 10px;
-  text-align: center;
-  height: 35px;   
-  width: 65px;   
+  // font-weight: bold;
+  // padding: 5px;
+  // border-radius: 5px;
+  // text-align: center;
+  // height: 35px;   
+  // width: 65px;   
 }
 
 .yellow-risk {
   
   color: rgb(189, 189, 7);
-  font-weight: bold;
-  padding: 5px;
-  border-radius: 10px;
-  text-align: center;
-  height: 35px;   
-  width: 65px;  
+  // font-weight: bold;
+  // padding: 5px;
+  // border-radius: 5px;
+  // text-align: center;
+  // height: 35px;   
+  // width: 65px;  
 }
 
 .red-risk {
   
   color: red;
-  font-weight: bold;
-  padding: 5px;
-  border-radius: 10px;
-  text-align: center;
-  height: 35px;   
-  width: 65px;  
+  // font-weight: bold;
+  // padding: 5px;
+  // border-radius: 5px;
+  // text-align: center;
+  // height: 35px;   
+  // width: 65px;  
   
+}
+
+
+
+
+/* Toggle Switch */
+.toggle-container {
+  // display: flex;
+  // justify-content: center;
+  // align-items: center;
+
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 20px;
+
+    input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: red; /* Red for inactive */
+      transition: 0.4s;
+      border-radius: 20px;
+
+      &:before {
+        position: absolute;
+        content: '';
+        height: 14px;
+        width: 14px;
+        left: 3px;
+        bottom: 3px;
+        background-color: white;
+        transition: 0.4s;
+        border-radius: 50%;
+      }
+    }
+
+    input:checked + .slider {
+      background-color: green; /* Green for active */
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(20px);
+    }
+  }
+}
+
+
+.active-status {
+  color: green;
+  background-color: rgb(207, 235, 207); /* Green for Active */
+  padding: 5px 10px;
+  border-radius: 5px;
+  width: 70px;
+  text-align: center;
+
+}
+
+.inactive-status {
+  color: red;
+  background-color: rgb(240, 191, 191); /* Red for Inactive */
+  padding: 5px 10px;
+  border-radius: 5px;
+  width: 70px;
+  text-align: center;
 }

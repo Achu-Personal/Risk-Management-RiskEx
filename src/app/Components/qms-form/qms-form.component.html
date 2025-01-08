@@ -3,136 +3,219 @@
     <div class="form-details-sub-container">
       <h2>Risk Details</h2>
       <div class="form-row">
-       <div class="form-detail">
-         <label for="riskName">Risk Name <span class="required">*</span></label>
-         <input type="text" id="riskName" placeholder="Enter risk name"  [ngStyle]="{'width':'100%'}" formControlName="riskName" >
-       </div>
-       <div class="form-detail">
-         <label for="project">Project Name</label>
-         <app-dropdown  [options]="dropdownDataProject"
-           [displayField]="'name'"
-           [valueField]="'id'"
-           selectValue="Project"
-           width="100" formControlName="projectId">
-          </app-dropdown>
-       </div>
+       <app-form-input label="Risk Name" required=" *" formControlName="riskName"></app-form-input>
+       @if(qmsForm.get("riskName")){
+
+        @if (qmsForm.get("riskName")?.hasError('required')&& qmsForm.get("riskName")?.dirty) {
+          <div class="text-danger">Risk name is required</div>
+        }
+
+      }
+
+       @if(isAdmin!=='Admin'){
+        <app-form-dropdown label="Project Name" [dropdownData]="dropdownProject" dropdownDisplay="name" dropdownValue="id" selectValue="Select project" [selectedValue]="preSelectedProject" (change)="onDropdownChangeProject($event)" [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)" ></app-form-dropdown>
+       }
+       @if(isAdmin==='Admin'){
+        <app-form-dropdown label="Project Name" [dropdownData]="dropdownDataProjectForAdmin" dropdownDisplay="name" dropdownValue="id" selectValue="Select project" (change)="onDropdownChangeProject($event)" [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)" ></app-form-dropdown>
+       }
      </div>
-     @if(isAdmin=='admin'){
-      <div class="form-detail">
-        <label for="department">Department Name</label>
-        <app-dropdown  [options]="dropdownDataDepartment"
-          [displayField]="'name'"
-          [valueField]="'id'"
-          width="100" id="department" >
-         </app-dropdown>
-      </div>
+     @if(isAdmin === 'Admin'){
+      <app-form-dropdown label="Department Name" [dropdownData]="dropdownDepartment" dropdownDisplay="departmentName" dropdownValue="id" selectValue="Select department" (change)="onDropdownChangeDepartment($event)"  [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)"></app-form-dropdown>
      }
-     <div class="form-detail">
-       <label for="impactOfRisk">Impact Of Risk <span class="required">*</span></label>
-       <textarea id="description" rows="2" placeholder="Impact of risk" (input)="autoResize($event)" formControlName="impact"></textarea>
-     </div>
-     <div class="form-detail">
-       <label for="description">Description <span class="required">*</span></label>
-       <textarea id="description" rows="2" placeholder="Enter description" (input)="autoResize($event)" formControlName="description"></textarea>
-     </div>
+     <app-form-text-area label="Impact Of Risk" required="*" placeHolder="Enter impact of risk"
+      message="Impact of a risk refers to the potential consequences or effects that a risk event
+      may have on a project, system, or organization if it occurs. It can include financial loss,
+      delays, operational disruptions, or damage to reputation."  formControlName="impact" [backgroundColor]="bgColor"></app-form-text-area>
+
+      @if(qmsForm.get("impact")){
+
+        @if (qmsForm.get("impact")?.hasError('maxlength')) {
+          <div class="text-danger">maximum length is 1000</div>
+
+        }
+        @else if (qmsForm.get("impact")?.hasError('minlength')) {
+          <div class="text-danger">minimum length is 15</div>
+
+        }
+        @else if (qmsForm.get("impact")?.hasError('required')&& qmsForm.get("impact")?.dirty) {
+          <div class="text-danger">Impact of risk is required</div>
+        }
+
+      }
+
+      <app-form-text-area label="Description" required="*" placeHolder="Enter description of risk"
+      message="Provide a detailed description of the risk, including what could cause it" formControlName="description" [backgroundColor]="bgColor"></app-form-text-area>
+
+      @if(qmsForm.get("description")){
+
+        @if (qmsForm.get("description")?.hasError('maxlength')) {
+          <div class="text-danger">maximum length is 1000</div>
+
+        }
+        @else if (qmsForm.get("description")?.hasError('minlength')) {
+          <div class="text-danger">minimum length is 15</div>
+
+        }
+        @else if (qmsForm.get("description")?.hasError('required')&& qmsForm.get("description")?.dirty) {
+          <div class="text-danger">Description of risk is required</div>
+        }
+
+      }
     </div>
     <div class="form-details-sub-container">
       <h2>Current Risk Assessment</h2>
       <div class="form-row">
-        <div class="form-detail">
-          <label for="likelihood">Likelihood <span class="required">*</span></label>
-          <app-dropdown  [options]="dropdownDataLikelihood"
-           [displayField]="'assessmentFactor'"
-           [valueField]="'id'"
-           selectValue="Likelihood"
-           width="100" (change)="onDropdownChangelikelihood($event)" formControlName="likelihood"></app-dropdown>
-        </div>
-        <div class="form-detail">
-          <label for="impact">Impact <span class="required">*</span></label>
-          <app-dropdown  [options]="dropdownDataImpact"
-           [displayField]="'assessmentFactor'"
-           [valueField]="'id'"
-           selectValue="Impact"
-           width="100" (change)="onDropdownChangeImpact($event)" formControlName="impactValue"></app-dropdown>
-        </div>
+        <app-form-dropdown label="Likelihood" required="*" [dropdownData]="dropdownLikelihood" dropdownDisplay="assessmentFactor" dropdownValue="id" selectValue="Select likelihood" [selectedValue]="preSelectedLikelihood" (change)="onDropdownChangelikelihood($event)" [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)"></app-form-dropdown>
+        <app-form-dropdown label="Impact"  required="*" [dropdownData]="dropdownImpact" dropdownDisplay="assessmentFactor" dropdownValue="id" selectValue="Select impact" [selectedValue]="preSelectedImpact" (change)="onDropdownChangeImpact($event)" [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)" ></app-form-dropdown>
       </div>
       <div class="form-row" [ngStyle]="{'gap':'32vw','margin-top':'30px'}">
         <h2 [ngStyle]="{'border-bottom':'0px','text-transform':'none'}">Risk Factor :<span style="margin-left: 10px;">{{riskFactor}}</span> </h2>
-        <h2 [ngStyle]="{'border-bottom':'0px','text-transform':'none'}">Overall Risk Rating :<span style="margin-left: 10px;" [ngStyle]="{'color':changeColorOverallRiskRating()}"> {{result}}</span> </h2>
+        <h2 [ngStyle]="{'border-bottom':'0px','text-transform':'none','margin-left':'-37%'}">Overall Risk Rating :<span style="margin-left: 10px;" [ngStyle]="{'color':changeColorOverallRiskRating()}"> {{overallRiskRating}}</span> </h2>
       </div>
+      <p [ngStyle]="{'margin-top':'20px','font-style':'italic','color':'grey'}">Risk factor = Likelihood * Impact</p>
+
+      <p [ngStyle]="{'margin-top':'20px','font-style':'italic','color':'grey'}">Overall risk rating = Likelihood * Impact</p>
       <div [ngStyle]="{'margin-top':'20px','font-style':'italic','color':'grey'}">
-       <p>For reference <span><a href="javascript:void(0);">click </a></span>here</p>
+       <p>For more reference <span (click)="isHeatMapReference()"><a href="javascript:void(0);"  >click </a></span> here</p>
       </div>
+
     </div>
+
     <div class="form-details-sub-container">
       <h2>Risk Management</h2>
-      <div class="form-detail">
-        <label for="mitigation">Risk Mitigation <span class="required">*</span></label>
-        <textarea id="mitigation" rows="2" placeholder="Enter mitigation" (input)="autoResize($event)" formControlName="mitigation"></textarea>
-      </div>
-      <div class="form-detail">
-        <label for="contingency">Risk Contingency</label>
-        <textarea id="contingency" rows="2" placeholder="Enter contingency plan" (input)="autoResize($event)" formControlName="contingency"></textarea>
-      </div>
+      <app-form-text-area label="Risk Mitigation" required="*" placeHolder="Enter mitigation plan"
+      message="Mitigation refers to actions taken to reduce the likelihood or impact of a risk.
+      Ensure preventive measures, such as implementing safety protocols or backup systems, to minimize
+      the risk." formControlName="mitigation" [backgroundColor]="bgColor"></app-form-text-area>
+
+      @if(qmsForm.get("mitigation")){
+
+        @if (qmsForm.get("mitigation")?.hasError('maxlength')) {
+          <div class="text-danger">maximum length is 1000</div>
+
+        }
+        @else if (qmsForm.get("mitigation")?.hasError('minlength')) {
+          <div class="text-danger">minimum length is 15</div>
+
+        }
+        @else if (qmsForm.get("mitigation")?.hasError('required')&& qmsForm.get("mitigation")?.dirty) {
+          <div class="text-danger">Mitigation of risk is required</div>
+        }
+
+      }
+
+      <app-form-text-area label="Risk Contingency" placeHolder="Enter contingency plan"
+      message="Contingency planning involves preparing for unforeseen events by having backup
+      plans in place. These plans help ensure that your project can continue with minimal disruption
+      if unexpected risks occur." formControlName="contingency" [backgroundColor]="bgColor"></app-form-text-area>
     </div>
     <div class="form-details-sub-container">
       <h2>Action Plan</h2>
-      <div class="form-detail">
-        <label for="responsibility">Responsibility<span class="required">*</span></label>
-        <app-dropdown  [options]="dropdownDataReviewer"
-           [displayField]="'name'"
-           [valueField]="'email'"
-           width="100" formControlName="responsibileUserId">
-        </app-dropdown>
-      </div>
-      <div [ngStyle]="{'margin-top':'20px','font-style':'italic','color':'grey'}">
+      @if(isAdmin === 'Admin'){
+        <app-form-dropdown label="Responsibility of action" required="*" [dropdownData]="dropdownAssigneeForAdmin"
+        dropdownDisplay="fullName" dropdownValue="id" selectValue="Select responsible person" (change)="onDropdownChangeResponsiblePerson($event)"
+        [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)" message="You can select an existing responsible person from the dropdown
+        or enter a new one. If you enter a new name, it will take priority over the dropdown selection." [backgroundColor]="bgColor"></app-form-dropdown>
+      }
+       @if(isAdmin !== 'Admin'){
+        <app-form-dropdown label="Responsibility of action" required="*" [dropdownData]="dropdownAssignee" dropdownDisplay="fullName" [selectedValue]="preSelectedResponsiblePerson"
+        dropdownValue="id" selectValue="Select responsible person" (change)="onDropdownChangeResponsiblePerson($event)" [openDropdownId]="openDropdownId"
+        (openDropdown)="handleDropdownOpen($event)"  message="You can select an existing responsible person from the dropdown
+        or enter a new one. If you enter a new name, it will take priority over the dropdown selection." [backgroundColor]="bgColor"></app-form-dropdown>
+       }
+        <div [ngStyle]="{'margin-top':'20px','font-style':'italic','color':'grey'}">
         <p>If responsible person not in the list <span (click)="isAssigneeNotInList()"><a href="javascript:void(0);">click </a></span>here</p>
       </div>
-      @if(assigneeNotInList){
-        <div class="form-detail">
-          <label for="assignee">Responsible Person Name <span class="required">*</span></label>
-          <input type="text" id="assignee" placeholder="Enter responsible person name"  >
-        </div>
-        <div class="form-detail">
-          <label for="assignee-email">Email <span class="required">*</span></label>
-          <input type="text" id="assignee-email" placeholder="Enter email"  >
-        </div>
+
+      <app-form-date-field label="Planned Action Date" required="*" formControlName="plannedActionDate"></app-form-date-field>
+      @if(qmsForm.get("plannedActionDate")){
+
+        @if (qmsForm.get("plannedActionDate")?.hasError('required')&& qmsForm.get("plannedActionDate")?.dirty) {
+          <div class="text-danger">planned action date is required</div>
+        }
 
       }
-      <div class="form-group">
-        <label for="actionDate">Planned Action Date<span class="required">*</span></label>
-        <input type="date" id="actionDate" formControlName="plannedActionDate">
-      </div>
     </div>
     <div class="form-details-sub-container">
       <h2>Reviewer</h2>
-      <div class="form-group">
-        <label for="reviewer">Reviewer <span class="required">*</span></label>
-        <app-dropdown  [options]="dropdownDataReviewer"
-          [displayField]="'name'"
-          [valueField]="'email'"
-          width="100" formControlName="reviewerId">
-        </app-dropdown>
-      </div>
+      <app-form-dropdown label="Reviewer" required="*" [dropdownData]="dropdownReviewer" dropdownDisplay="fullName" dropdownValue="fullName" [selectedValue]="preSelectedReviewer"
+      selectValue="Select reviewer" (change)="onDropdownChangeReviewer($event)" [openDropdownId]="openDropdownId"
+      (openDropdown)="handleDropdownOpen($event)" message="You can select an existing reviewer from the dropdown
+      or enter a new one. If you enter a new name, it will take priority over the dropdown selection." [backgroundColor]="bgColor"></app-form-dropdown>
+
       <div [ngStyle]="{'margin-top':'20px','font-style':'italic','color':'grey'}">
         <p>If reviewer not in the list <span (click)="isReviewerNotInList()"><a href="javascript:void(0);">click </a></span>here</p>
       </div>
-      @if(reviewerNotInList){
-        <div class="form-detail">
-          <label for="reviewer">Reviewer Name <span class="required">*</span></label>
-          <input type="text" id="reviewer" placeholder="Enter reviewer name"  >
-        </div>
-        <div class="form-detail">
-          <label for="reviewer-email">Email <span class="required">*</span></label>
-          <input type="text" id="reviewer-email" placeholder="Enter email"  >
-        </div>
-      }
+
     </div>
-    <div class="button-group">
-      <button type="submit" class="btn save">Save</button>
-      <button type="button" class="btn cancel">Cancel</button>
+    <div class="form-details-sub-container">
+      <div class="button-group">
+         <app-form-button label="Save" (clicked)="saveConfirmation()"></app-form-button>
+         <app-form-button label="Save Draft" (clicked)="saveAsDraft()"></app-form-button>
+         <app-form-button label="Cancel" (clicked)="cancelRisk()"></app-form-button>
+      </div>
     </div>
+
   </form>
+  @if(HeatMapRefernce){
+
+    <app-form-reference-heatmap-popup (closeHeatMap)="closeHeatMap()"></app-form-reference-heatmap-popup>
+   }
+  @if(assigneeNotInList){
+    <app-form-data-not-in-list placeholder="Enter responsible person name" [isAssignee]="true" textLabel="Responsible person name" [dropdownDepartment]="dropdownDepartment" (cancelForm)="receiveCancel($event)" (sendData)="saveAssignee($event)" [bgColor]="bgColor" [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)"></app-form-data-not-in-list>
+  }
+  @if(reviewerNotInList){
+    <app-form-data-not-in-list placeholder="Enter reviewer name" [isAssignee]="false" textLabel="Reviewer name" [dropdownDepartment]="dropdownDepartment" (cancelForm)="receiveCancel($event)" (sendData)="saveReviewer($event)" [bgColor]="bgColor" [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)"></app-form-data-not-in-list>
+  }
+  @if(isSuccessReviewer){
+    <app-form-successfull
+    message="Add new reviewer successfully!"
+    [isSuccessfull] ="true"
+    (closeDialog)="closeReviewer()" [bgColor]="bgColor">
+    </app-form-successfull>
+ }
+ @if(isErrorReviewer){
+  <app-form-successfull
+  message="Something went Wrong!"
+  [isSuccessfull] ="false"
+  (closeDialog)="closeReviewer()" [bgColor]="bgColor">
+  </app-form-successfull>
+}
+@if(isSuccessAssignee){
+  <app-form-successfull
+  message="Add new Assignee successfully!"
+  [isSuccessfull] ="true"
+  (closeDialog)="closeAssignee()" [bgColor]="bgColor">
+  </app-form-successfull>
+}
+@if(isErrorAssignee){
+<app-form-successfull
+message="Something went Wrong!"
+[isSuccessfull] ="false"
+(closeDialog)="closeAssignee()" [bgColor]="bgColor">
+</app-form-successfull>
+}
+@if(isSave){
+  <app-form-conform-popup message="Do you want to save the entered risk details? You can check and edit them later if needed." [bgColor]="bgColor" (closeDialog)="saveRisk()" (notCloseDialog)="saveConfirmation()"></app-form-conform-popup>
+}
+
+@if(isCancel){
+  <app-form-conform-popup message="Are you sure you want to cancel? Any unsaved changes will be lost." [bgColor]="bgColor" (closeDialog)="closeRisk()" (notCloseDialog)="cancelRisk()"></app-form-conform-popup>
+}
+
+@if(isdraft){
+  <app-form-conform-popup message="Do you want to save the entered risk details as a draft? You can continue editing them the next time you open this page." [bgColor]="bgColor" (closeDialog)="closeDraft()" (notCloseDialog)="saveAsDraft()"></app-form-conform-popup>
+
+
+}
+@if(isdraftConform){
+  <app-form-successfull
+  message="Draft saved successfully. Your progress will be available the next time you access this page."
+  [isSuccessfull] ="true"
+  (closeDialog)="closeDialogSuccess()" [bgColor]="bgColor">
+  </app-form-successfull>
+}
+
 </div>
 
 

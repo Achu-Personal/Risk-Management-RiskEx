@@ -1,5 +1,5 @@
-
-<!-- <div class="body"> -->
+<ng-container *ngIf="hasValidData(); else noData">
+<div class="body">
 
     <div class="header1">
       <div class="entries">
@@ -12,8 +12,9 @@
       <label>entries</label>
     </div>
       <app-searchbar (searchChanged)="onSearch($event)"></app-searchbar>
-
    </div>
+
+
   <div class="container1">
     <div class="table-container1 fi">
     <table class="table1">
@@ -21,8 +22,9 @@
         <tr class="bord">
           <th>SL No</th>
           <!-- <th>Risk ID</th> -->
-          <th>Risk Name</th>
-          <th>
+          <th title="Risk Name">Risk Name</th>
+          @if(!isDepartmentUser){
+          <th title="Department">
             <div class="dropdown-container">
             <button class="dropdown-button" (click)="toggleDepartmentDropdown()">
               Department &#9662;
@@ -41,7 +43,8 @@
             }
           </div>
           </th>
-          <th>
+        }
+          <th title="Risk Type">
             <div class="dropdown-container">
             <button class="dropdown-button" (click)="toggleTypeDropdown()">
               Risk Type &#9662;
@@ -60,36 +63,107 @@
             }
           </div>
           </th>
-          <th>End Date</th>
-          <th>CRR</th>
-          <th>Assignee</th>
+          <th title="Expected closing date">End Date</th>
+          <th  title="Current overall risk rating">CRR</th>
+
+          <th title="Responsibility">Assignee</th>
           <th>Reviewer</th>
-          <th>Review Status</th>
-          <th>Status</th>
+          <th title="Current status of review">
+            <div class="dropdown-container">
+              <button class="dropdown-button" (click)="toggleReviewStatusDropdown()">
+                Review Status &#9662;
+              </button>
+              @if(isReviewStatusDropdownOpen ){
+              <ul [class.open]="isReviewStatusDropdownOpen"  class="dropdown-options">
+
+                @for(type of uniqueReviewStatus;track type){
+                <li
+                  (click)="onReviewStatusSelect(type)">
+                  {{ type }}
+                </li>
+              }
+                <li (click)="onReviewStatusSelect('')">All  Review Status</li>
+              </ul>
+              }
+            </div>
+          </th>
+          <th title="Current risk status">
+            <div class="dropdown-container">
+              <button class="dropdown-button" (click)="toggleStatusDropdown()">
+                Status &#9662;
+              </button>
+              @if(isStatusDropdownOpen ){
+              <ul [class.open]="isStatusDropdownOpen"  class="dropdown-options">
+
+                @for(type of uniqueStatus;track type){
+                <li
+                  (click)="onStatusSelect(type)">
+                  {{ type }}
+                </li>
+              }
+                <li (click)="onStatusSelect('')">All Status</li>
+              </ul>
+              }
+            </div>
+          </th>
+          @if(isButtonVisible){
+            <th title="Current difference between post and pre overall risk rating">
+              <div class="dropdown-container">
+                <button class="dropdown-button" (click)="toggleResidualDropdown()">
+                  Residual Risk &#9662;
+                </button>
+                @if(isResidualRiskDropdownOpen ){
+                <ul [class.open]="isResidualRiskDropdownOpen"  class="dropdown-options">
+
+                  @for(type of uniqueResidual;track type){
+                  <li
+                    (click)="onResidualSelect(type)">
+                    {{ type }}
+                  </li>
+                }
+                  <li (click)="onResidualSelect('')">All  Residual Status</li>
+                </ul>
+                }
+              </div>
+            </th>
+          }
         </tr>
       </thead>
+
       <tbody>
-        @for(item of paginatedItems ;track item){
+
+        @for(item of paginated ;track item.id){
         <tr (click)="rowClick(item.id)" style="height:10px;">
-          <td>{{ item.id }}</td>
-          <!-- <td>{{ item.riskId }}</td> -->
-          <td>{{ item.riskName }}</td>
+          <td>{{ ((currentPage-1)*10)+($index+1) }}</td>
+          <td title={{item.riskName}}>{{ item.riskName | slice:0:25 }}</td>
+          @if(!isDepartmentUser){
           <td>{{ item.departmentName }}</td>
+          }
           <td>{{ item.riskType }}</td>
           <td>{{ item.plannedActionDate| date: 'd MMM yyyy' }}</td>
-          <td><div [ngClass]="{'green-cell': item.overallRiskRating >= 12, 'red-cell': item.overallRiskRating >= 70, 'yellow-cell': item.overallRiskRating >= 50}">{{ item.overallRiskRating }}</div></td>
+          @if(item.riskAssessments[0].isMitigated){
+          <td><div [ngClass]="{'green': item.overallRiskRatingAfter >=0 && item.overallRiskRatingAfter <= 30  , 'red': item.overallRiskRatingAfter > 99, 'yellow': item.overallRiskRatingAfter > 30 && item.overallRiskRatingAfter <= 99}">{{ item.overallRiskRatingAfter }}</div></td>
+          }@else{
+          <td><div [ngClass]="{'green': item.overallRiskRatingBefore >=0 && item.overallRiskRatingBefore <= 30  , 'red': item.overallRiskRatingBefore > 99, 'yellow': item.overallRiskRatingBefore > 30 && item.overallRiskRatingBefore <= 99}">{{ item.overallRiskRatingBefore }}</div></td>
+          }
           <td>{{ item.responsibleUser }}</td>
           <td> {{item.riskAssessments[0].reviewer}}</td>
           <td> {{item.riskAssessments[0].reviewStatus }}</td>
-          <!-- <td><div  [ngClass]="{'green-cell': item.status === 'Open', 'red-cell': item.status === 'Closed'}">{{ item.status }}</div></td> -->
-          <td><div>{{ item.riskStatus }}</div></td>
+          <td><div [ngClass]="{'red-cell': item.riskStatus === 'open', 'green-cell': item.riskStatus === 'close'}">{{ item.riskStatus }}</div></td>
+          
+          @if(isButtonVisible){
+            <td><div [ngClass]="{'green-cell': item.residualRisk === 'Low','yellow-cell': item.residualRisk === 'Medium', 'red-cell': item.residualRisk === 'High'}">{{ item.residualRisk }}</div></td>
+
+            <!-- <td>{{ item.responsibleUser }}</td>
+            <td>{{ item.percentageRedution }}</td> -->
+          }
 
         </tr>
       }
       </tbody>
     </table>
     </div>
-    <!-- <div class="foot"> -->
+
    @if(shouldDisplayPagination()){
     <app-pagination  [totalItems]="totalItems"
     [itemsPerPage]="itemsPerPage"
@@ -99,6 +173,11 @@
     </app-pagination>
    }
 
-    <!-- </div> -->
   </div>
-<!-- </div> -->
+</div>
+</ng-container>
+<ng-template #noData>
+  <div class="no-data-container">
+    <h3 class="no-data-message">{{noDataMessage}}</h3>
+  </div>
+</ng-template>
