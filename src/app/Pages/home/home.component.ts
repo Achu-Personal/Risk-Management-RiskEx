@@ -9,15 +9,7 @@ import { AuthService } from '../../Services/auth.service';
 import { ApiService } from '../../Services/api.service';
 import { BubbleGraphComponent } from "../../UI/bubble-graph/bubble-graph.component";
 import { StyleButtonComponent } from "../../UI/style-button/style-button.component";
-import {
-  Chart as ChartJS,
-  Title,
-  Tooltip,
-  Legend,
-  ArcElement,
-  CategoryScale,
-  LinearScale,
-} from 'chart.js';
+
 
 @Component({
   selector: 'app-home',
@@ -35,6 +27,7 @@ export class HomeComponent {
         securityRiskCount: number = 0; // Default value
 
         graph2labels:string[]=[];
+        // graph2labels:string[]=["Critical","Moderate","Low"];
         graph2chartType:any;
         graph2datasets:any[]=[];
         counter:number[]=[];
@@ -82,18 +75,20 @@ export class HomeComponent {
             }, {});
 
             this.graph2datasets=[{
-            data: this.counter,
-            backgroundColor: [
-            '#962DFF',
-            '#E0C6FD',
-            '#C6D2FD'
-            ],
-            hoverOffset: 20
+              data: this.counter,
+              backgroundColor: [
+
+              '#962DFF',
+              '#E0C6FD',
+              '#C6D2FD'
+
+              ],
             }]
 
-            this.graph2labels=this.risk
-            this.graph2chartType='doughnut'
 
+
+            this.graph2chartType='doughnut'
+            this.graph2labels=this.risk
             console.log("criticalitylevel",e)
         })
 
