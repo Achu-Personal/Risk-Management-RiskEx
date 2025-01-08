@@ -1,6 +1,6 @@
 import { project } from './../Interfaces/projects.interface';
 import { department } from './../Interfaces/deparments.interface';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
   catchError,
@@ -289,6 +289,17 @@ export class ApiService {
     return this.http.post(`${this.baseUrl}/emails`, null, { params });
   }
 
+  sendReviewMail(email: string, subject: string, body: string): Observable<any> {
+    const payload = {
+      receptor: email,
+      subject: subject,
+      body: body,
+      isBodyHtml: true
+    };
+    console.log('Sending payload:', payload); 
+    return this.http.post(`${this.baseUrl}/emails`, payload);
+  }
+
   getAssigneeByRiskId(riskId: number) {
     return this.http.get(
       `${this.baseUrl}/User/GetInfoOfAssigneeByRiskId/${riskId}`
@@ -297,7 +308,7 @@ export class ApiService {
 
   getRevieverDetails(riskId: number, reviewStatus: string) {
     return this.http.get(
-      `https://localhost:7216/api/Reviewer/gettheReviewer/${riskId}?reviewStatus=${reviewStatus}`
+      `${this.baseUrl}/Reviewer/gettheReviewer/${riskId}?reviewStatus=${reviewStatus}`
     );
   }
 
@@ -309,20 +320,30 @@ export class ApiService {
     return this.http.put(`${this.baseUrl}/Risk/update/securityOrPrivacy/${riskId}`, updated);
   }
   getOpenRiskCountByType(id: any = ''){
-    return this.http.get(`https://localhost:7216/api/Risk/CountOfRiskType(Open)?id=${id}`);
+    return this.http.get(`${this.baseUrl}/Risk/CountOfRiskType(Open)?id=${id}`);
    }
 
    getRiskCategoryCounts(id:any = ''){
-    return this.http.get(`https://localhost:7216/api/Risk/RiskCategory-Counts?id=${id}`);
+    return this.http.get(`${this.baseUrl}/Risk/RiskCategory-Counts?id=${id}`);
    }
 
   getriskOwnerEmailandName(id:any) {
     return this.http.get(
-      `https://localhost:7216/api/User/GetEmailAndNameOfAUserbyRiskId/${id}`
+      `${this.baseUrl}/User/GetEmailAndNameOfAUserbyRiskId/${id}`
     );
   }
 
   getNewRiskId(id:number){
     return this.http.get(`${this.baseUrl}/Risk/riskid/new/${id}`)
   }
+
+
+
+updateDepartment(updateData: any) {
+  return this.http.put(`${this.baseUrl}/Department`, updateData);
+}
+
+updateProject(updateData: any, id: number) {
+  return this.http.put<{ message: string }>(`${this.baseUrl}/Project/${id}`, updateData);
+}
 }
