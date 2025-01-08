@@ -2,17 +2,18 @@
   <div class="dashboard">
     <div class="topbuttons">
       <div class="dropdown">
-        <app-department-dropdown *ngIf="authService.getUserRole() === 'Admin'    "
+        <app-department-dropdown *ngIf="authService.getUserRole() === 'Admin'|| authService.getUserRole()?.includes('EMTUser')    "
           (departmentsSelected)="GetSelectedDepartment($event)"></app-department-dropdown>
       </div>
       <div class="registerrisk">
 
-        <app-style-button (clicked)="OnRegisterRiskButtonCLicked()" label="Register Risk"></app-style-button>
+        <app-style-button *ngIf="!authService.getUserRole()?.includes('EMTUser')" (clicked)="OnRegisterRiskButtonCLicked()" label="Register Risk"></app-style-button>
       </div>
     </div>
 
     <div class="graphs">
       <div class="graph1" data-aos="zoom-in">
+
         <div class="leftside">
           <div class="heading">
             <h4>Open Risks</h4>
@@ -80,7 +81,7 @@
       <app-dashbaord-card-container title="Upcoming risk deadlines"  [list]="riskApproachingDeadline"  > </app-dashbaord-card-container>
 
       <app-dashbaord-card-container title="Risks with highest overall rating"  [list]="risksWithHeighesOverallRating"  > </app-dashbaord-card-container>
-      
+
     </div>
   </div>
 </app-body-container>

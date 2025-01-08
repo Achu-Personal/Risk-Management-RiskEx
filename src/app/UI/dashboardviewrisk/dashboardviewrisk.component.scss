@@ -53,12 +53,14 @@
 }
 
 .riskCard1-left>div>h5{
-  background-color: var( --foreground-color);
+  background-color: var(--foreground-color);
+
   font-size: 15px;
   padding: 5px;
   border-radius: 10px;
   width: 50px;
   text-align: center;
+  opacity: 0.2;
 
   color: white;
 }
