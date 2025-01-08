@@ -13,7 +13,7 @@
        }
       </div>
       @if(isAdmin === 'Admin'){
-      <app-form-dropdown label="Department Name" [dropdownData]="dropdownDepartment" dropdownDisplay="departmentName" dropdownValue="id" selectValue="department" (change)="onDropdownChangeDepartment($event)" [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)"  ></app-form-dropdown>
+      <app-form-dropdown label="Department Name" [dropdownData]="dropdownDepartment" dropdownDisplay="departmentName" dropdownValue="id" selectValue="Select department" (change)="onDropdownChangeDepartment($event)" [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)"  ></app-form-dropdown>
       }
       <app-form-text-area label="Impact Of Risk" required="*" placeHolder="Enter impact of risk"
       message="Impact of a risk refers to the potential consequences or effects that a risk event
