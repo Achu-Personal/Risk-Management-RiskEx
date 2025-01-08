@@ -5,9 +5,9 @@ import { FormsModule } from '@angular/forms';
 import { of, throwError } from 'rxjs';
 
 const mockDepartments = [
-  { id: 1, departmentName: 'Engineering' },
-  { id: 2, departmentName: 'Marketing' },
-  { id: 3, departmentName: 'Sales' }
+  { id: 1, departmentName: 'Engineering',departmentCode:'En' },
+  { id: 2, departmentName: 'Marketing',departmentCode:'mr' },
+  { id: 3, departmentName: 'Sales',departmentCode:'Sl' }
 ];
 
 class MockApiService {
