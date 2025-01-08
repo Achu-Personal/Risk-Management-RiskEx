@@ -88,6 +88,13 @@ label{
     }
   }
 
+  th[title]:hover::after {
+    content: attr();
+    position: absolute;
+    z-index: 1000;
+  }
+
+
   tbody tr {
     // background-color: #fff;
     background-color: var(--accent-color);
@@ -382,6 +389,7 @@ tbody {
 // td:nth-child(9) {
 //   width: 150px;
 // }
+
 
 
 

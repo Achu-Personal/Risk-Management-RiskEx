@@ -263,8 +263,9 @@ export class ReportGenerationService {
         //     likelihood: assessment?.matrixLikelihood || ''
         //   };
         // };
-        const getAssessmentDetails = (assessments: any[], basis: string, isMitigated: boolean) => {
+        const getAssessmentDetails = (assessments: any[], basis: any, isMitigated: boolean) => {
           const assessment = assessments.find(a => a.assessmentBasis === basis && a.isMitigated === isMitigated);
+          console.log(assessment)
           return { impact: assessment?.matrixImpact || '', likelihood: assessment?.matrixLikelihood || '' };
         };
 
@@ -289,9 +290,17 @@ export class ReportGenerationService {
 
 
         if (risk.riskType === 'Quality') {
-          const preAssessment = getAssessmentDetails(risk.riskAssessments || [], 'Quality', false);
-          const postAssessment = getAssessmentDetails(risk.riskAssessments || [], 'Quality', true);
-
+          const preAssessment = getAssessmentDetails(risk.riskAssessments || [], null, false);
+          const postAssessment = getAssessmentDetails(risk.riskAssessments || [], null, true);
+          const assessments = [];
+          assessments.push(
+            preAssessment.impact,
+            preAssessment.likelihood
+          );
+          assessments.push(
+            postAssessment.impact,
+            postAssessment.likelihood
+          );
           const row = qualitySheet.addRow([
             ...baseRiskInfo,
             preAssessment.impact,

@@ -6,6 +6,7 @@ import { SearchbarComponent } from '../../UI/searchbar/searchbar.component';
 import { PaginationComponent } from '../../UI/pagination/pagination.component';
 import { ApiService } from '../../Services/api.service';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { AuthService } from '../../Services/auth.service';
 
 @Component({
   selector: 'app-table',
@@ -16,7 +17,7 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
   styleUrl: './table.component.scss'
 })
 export class TableComponent {
-  constructor( public api: ApiService,private route:ActivatedRoute,private router: Router,private cdr: ChangeDetectorRef){}
+  constructor( public api: ApiService,private route:ActivatedRoute,private router: Router,private cdr: ChangeDetectorRef,public auth: AuthService){}
 
    onclickrow = output()
     rowClick(row:any) {
@@ -137,9 +138,11 @@ export class TableComponent {
 
     this.updatePaginatedItems();
   }
-
+  isDepartmentUser:boolean=false;
   private initializeItems(): void {
     setTimeout(()=>{
+      const role = this.auth.getUserRole();
+      this.isDepartmentUser = Array.isArray(role) ? role.includes('DepartmentUser') : role === 'DepartmentUser';
       this.items = [...this.paginated];
       console.log("items",this.items);
       this.filteredItems = [...this.items];

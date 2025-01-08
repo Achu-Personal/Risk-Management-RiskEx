@@ -22,8 +22,9 @@
         <tr class="bord">
           <th>SL No</th>
           <!-- <th>Risk ID</th> -->
-          <th>Risk Name</th>
-          <th>
+          <th title="Risk Name">Risk Name</th>
+          @if(!isDepartmentUser){
+          <th title="Department">
             <div class="dropdown-container">
             <button class="dropdown-button" (click)="toggleDepartmentDropdown()">
               Department &#9662;
@@ -42,7 +43,8 @@
             }
           </div>
           </th>
-          <th>
+        }
+          <th title="Risk Type">
             <div class="dropdown-container">
             <button class="dropdown-button" (click)="toggleTypeDropdown()">
               Risk Type &#9662;
@@ -61,11 +63,12 @@
             }
           </div>
           </th>
-          <th>End Date</th>
-          <th>CRR</th>
-          <th>Assignee</th>
+          <th title="Expected closing date">End Date</th>
+          <th  title="Current overall risk rating">CRR</th>
+
+          <th title="Responsibility">Assignee</th>
           <th>Reviewer</th>
-          <th>
+          <th title="Current status of review">
             <div class="dropdown-container">
               <button class="dropdown-button" (click)="toggleReviewStatusDropdown()">
                 Review Status &#9662;
@@ -84,7 +87,7 @@
               }
             </div>
           </th>
-          <th>
+          <th title="Current risk status">
             <div class="dropdown-container">
               <button class="dropdown-button" (click)="toggleStatusDropdown()">
                 Status &#9662;
@@ -104,7 +107,7 @@
             </div>
           </th>
           @if(isButtonVisible){
-            <th>
+            <th title="Current difference between post and pre overall risk rating">
               <div class="dropdown-container">
                 <button class="dropdown-button" (click)="toggleResidualDropdown()">
                   Residual Risk &#9662;
@@ -132,8 +135,10 @@
         @for(item of paginated ;track item.id){
         <tr (click)="rowClick(item.id)" style="height:10px;">
           <td>{{ ((currentPage-1)*10)+($index+1) }}</td>
-          <td>{{ item.riskName }}</td>
+          <td title={{item.riskName}}>{{ item.riskName | slice:0:25 }}</td>
+          @if(!isDepartmentUser){
           <td>{{ item.departmentName }}</td>
+          }
           <td>{{ item.riskType }}</td>
           <td>{{ item.plannedActionDate| date: 'd MMM yyyy' }}</td>
           @if(item.riskAssessments[0].isMitigated){
@@ -145,7 +150,7 @@
           <td> {{item.riskAssessments[0].reviewer}}</td>
           <td> {{item.riskAssessments[0].reviewStatus }}</td>
           <td><div [ngClass]="{'red-cell': item.riskStatus === 'open', 'green-cell': item.riskStatus === 'close'}">{{ item.riskStatus }}</div></td>
-          <!-- <td><div>{{ item.riskStatus }}</div></td> -->
+          
           @if(isButtonVisible){
             <td><div [ngClass]="{'green-cell': item.residualRisk === 'Low','yellow-cell': item.residualRisk === 'Medium', 'red-cell': item.residualRisk === 'High'}">{{ item.residualRisk }}</div></td>
 
