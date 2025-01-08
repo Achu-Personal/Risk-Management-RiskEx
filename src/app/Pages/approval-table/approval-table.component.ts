@@ -142,33 +142,37 @@ export class ApprovalTableComponent {
     };
     let id = event.row.id;
     this.api.updateReviewStatusAndComments(id,updates);
-    this.api.getAssigneeByRiskId(id).subscribe((res:any)=>{
-      this.assignee=res;
-      // console.log(this.assignee);  
-      const context = {
-        responsibleUser: this.assignee.fullName,
-        riskId: event.row.riskId,
-        riskName: event.row.riskName,
-        description: event.row.description,
-        riskType:event.row.riskType,
-        plannedActionDate:event.row.plannedActionDate,
-        overallRiskRating:event.row.overallRiskRating,
-        riskStatus:event.row.riskStatus
-      };
-      console.log("context:",context);
-      this.email.sendAssigneeEmail(this.assignee.email,context).subscribe({
-        next: () => {
-          console.log('Assignee email sent successfully');
-          // this.router.navigate(['/thankyou']);
-        },
-        error: (emailError) => {
-          console.error('Failed to send email to assignee:', emailError);
-          // Navigate to thank you page even if email fails
-          // this.router.navigate(['/thankyou']);
-        }
-      })
-      
-    });
+    console.log("risk status:",event.row.riskStatus);
+    
+    if(event.row.riskStatus==='open'){
+      this.api.getAssigneeByRiskId(id).subscribe((res:any)=>{
+        this.assignee=res;
+        // console.log(this.assignee);  
+        const context = {
+          responsibleUser: this.assignee.fullName,
+          riskId: event.row.riskId,
+          riskName: event.row.riskName,
+          description: event.row.description,
+          riskType:event.row.riskType,
+          plannedActionDate:event.row.plannedActionDate,
+          overallRiskRating:event.row.overallRiskRating,
+          riskStatus:event.row.riskStatus
+        };
+        console.log("context:",context);
+        this.email.sendAssigneeEmail(this.assignee.email,context).subscribe({
+          next: () => {
+            console.log('Assignee email sent successfully');
+            
+          },
+          error: (emailError) => {
+            console.error('Failed to send email to assignee:', emailError);
+            
+          }
+        })
+        
+      });
+    }
+    
 
 
     // this.api.sendEmailToAssignee(id);    
@@ -183,34 +187,69 @@ export class ApprovalTableComponent {
     };
     let id = event.row.id;
     this.api.updateReviewStatusAndComments(id,updates);
-    this.api.getriskOwnerEmailandName(id).subscribe((res:any)=>{
-      this.assignee=res;
-      // console.log(this.assignee);  
-      const context = {
-        responsibleUser: res[0].name,
-        riskId: event.row.riskId,
-        riskName: event.row.riskName,
-        description: event.row.description,
-        riskType:event.row.riskType,
-        plannedActionDate:event.row.plannedActionDate,
-        overallRiskRating:event.row.overallRiskRating,
-        riskStatus:event.row.riskStatus,
-        reason:event.comment 
-      };
-      console.log("context:",context);
-      this.email.sendOwnerEmail(res[0].email,context).subscribe({
-        next: () => {
-          console.log('owner email sent successfully');
-          // this.router.navigate(['/thankyou']);
-        },
-        error: (emailError) => {
-          console.error('Failed to send email to risk owner:', emailError);
-          // Navigate to thank you page even if email fails
-          // this.router.navigate(['/thankyou']);
-        }
-      })
-      
-    });
+
+    if(event.row.riskStatus==='open' || event.row.riskStatus==='close'){
+      this.api.getriskOwnerEmailandName(id).subscribe((res:any)=>{
+        this.assignee=res;
+        // console.log(this.assignee);  
+        const context = {
+          responsibleUser: res[0].name,
+          riskId: event.row.riskId,
+          riskName: event.row.riskName,
+          description: event.row.description,
+          riskType:event.row.riskType,
+          plannedActionDate:event.row.plannedActionDate,
+          overallRiskRating:event.row.overallRiskRating,
+          riskStatus:event.row.riskStatus,
+          reason:event.comment 
+        };
+        console.log("context:",context);
+        this.email.sendOwnerEmail(res[0].email,context).subscribe({
+          next: () => {
+            console.log('owner email sent successfully');
+            // this.router.navigate(['/thankyou']);
+          },
+          error: (emailError) => {
+            console.error('Failed to send email to risk owner:', emailError);
+            // Navigate to thank you page even if email fails
+            // this.router.navigate(['/thankyou']);
+          }
+        })
+        
+      });
+    }
+    if(event.row.riskStatus==='close'){
+      this.api.getAssigneeByRiskId(id).subscribe((res:any)=>{
+        this.assignee=res;
+        // console.log(this.assignee);  
+        const context = {
+          responsibleUser: res[0].fullName,
+          riskId: event.row.riskId,
+          riskName: event.row.riskName,
+          description: event.row.description,
+          riskType:event.row.riskType,
+          plannedActionDate:event.row.plannedActionDate,
+          overallRiskRating:event.row.overallRiskRating,
+          riskStatus:event.row.riskStatus,
+          reason:event.comment 
+        };
+        console.log("context:",context);
+        this.email.sendOwnerEmail(res[0].email,context).subscribe({
+          next: () => {
+            console.log('owner email sent successfully');
+            // this.router.navigate(['/thankyou']);
+          },
+          error: (emailError) => {
+            console.error('Failed to send email to risk owner:', emailError);
+            // Navigate to thank you page even if email fails
+            // this.router.navigate(['/thankyou']);
+          }
+        })
+        
+      });
+    }
+
+   
     console.log('Rejected:', event.row);
     console.log('Comment:', event.comment);
   }
