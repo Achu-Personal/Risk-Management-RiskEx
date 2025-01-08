@@ -9,7 +9,7 @@
     <div class="profile-card">
       <img src="/Images/usericon.png" alt="Profile Picture" class="profile-image" />
       <h3>{{ auth.getUserName() }}</h3>
-      <p class="role">{{ auth.getUserRole() }}</p>
+      <p class="role">{{ getPrimaryRole() }}</p>
       <p class="department">{{ auth.getDepartmentName() }}</p>
       <p class="email">{{ auth.getUserMail() }}</p>
       <hr>

@@ -12,7 +12,7 @@
   </button>
 
 
-  @for(page of pages;track page){
+  @for(page of visiblePages;track page){
   <button  class="page-btn"
   [class.active]="page === currentPage"
   (click)="changePage(page)">

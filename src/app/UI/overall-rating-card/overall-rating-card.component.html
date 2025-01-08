@@ -1,70 +1,24 @@
 <div
   id="OverallRiskRatingCard"
-  (mouseover)="onMouseOver()"
-  (mouseleave)="onMouseOut()"
   [ngStyle]="dynamicStyles"
-  [ngClass]="{'hovered': isHovered, 'default-size': !isHovered}"
+  class="flip-card"
 >
 
-
-   @if(isHovered && assessmentData.length > 0)
-   {
-    <div>
-      <h5>Calculations</h5>
-      <div class="Calculations">
-
-        @for( item of assessmentData; track $index )
-        {
-          <div class="ShowAssessmentcalculations">
-            @if(item.assessmentBasis?.basis; )
-            {
-              <h5>{{ item.assessmentBasis.basis }} ({{ item.assessmentBasis.basis.split('')[0] }})</h5>
-            }
-
-
-            <h6 style="font-size: 15px;">
-              R{{ item.assessmentBasis?.basis ? item.assessmentBasis.basis.split('')[0] : 'N/A' }} =
-              {{ item.impactMatix.value }} (L{{ item.assessmentBasis?.basis ? item.assessmentBasis.basis.split('')[0] : 'N/A' }}) ×
-              {{ item.likelihoodMatrix.value }} (I{{ item.assessmentBasis?.basis ? item.assessmentBasis.basis.split('')[0] : 'N/A' }}) =
-              {{ item.impactMatix.value * item.likelihoodMatrix.value }}
-            </h6>
-          </div>
-        }
-
-      </div>
-
-      <div class="result">
-        <h6 style="font-size: 15px;">ORR = </h6>
-
-        @for(item of assessmentData; track $index)
-        {
-
-          @if(item.assessmentBasis?.basis)
-          {
-            <h6>R{{ item.assessmentBasis.basis.split('')[0] }}
-              {{ $index !== assessmentData.length - 1 ? '+' : '' }}
-            </h6>
-          }
-
-
-
-
-        }
-
-
-        <h6>= {{ value }}</h6>
+  <div class="flip-card-inner">
+    <!-- Front of the card -->
+    <div class="flip-card-front">
+      <h1 class="value">{{ value }}</h1>
+      <h6>{{ title }}</h6>
+      <div class="criticality">
+          {{getCriticality}}
       </div>
     </div>
-   }
 
-
-  <!-- Default display when not hovered -->
-
-  @if(!isHovered)
-  {
-    <h1 class="value">{{ value }}</h1>
-    <h6>{{ title }}</h6>
-  }
-
+    <!-- Back of the card -->
+    <div class="flip-card-back">
+      <!-- Your content for the back side -->
+      <h5>Here, the current overall risk rating is displayed, calculated by summing the risk factors associated with key risk bases</h5>
+    </div>
+  </div>
 
 </div>

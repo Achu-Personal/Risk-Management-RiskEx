@@ -11,12 +11,16 @@ import { FormInputComponent } from '../form-input/form-input.component';
 import { FormDropdownComponent } from '../form-dropdown/form-dropdown.component';
 import { FormTextAreaComponent } from '../form-text-area/form-text-area.component';
 import { FormDateFieldComponent } from '../form-date-field/form-date-field.component';
+import { FormButtonComponent } from '../../UI/form-button/form-button.component';
+import { FormDataNotInListComponent } from '../form-data-not-in-list/form-data-not-in-list.component';
+import { FormSuccessfullComponent } from '../form-successfull/form-successfull.component';
+import { FormReferenceHeatmapPopupComponent } from '../form-reference-heatmap-popup/form-reference-heatmap-popup.component';
 
 
 @Component({
   selector: 'app-isms-form',
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule, ButtonComponent, DropdownComponent, TextareaComponent, OverallRatingCardComponent,CommonModule,FormInputComponent,FormDropdownComponent,FormTextAreaComponent,FormDateFieldComponent],
+  imports: [FormsModule, ReactiveFormsModule, ButtonComponent, DropdownComponent, TextareaComponent, OverallRatingCardComponent,CommonModule,FormInputComponent,FormDropdownComponent,FormTextAreaComponent,FormDateFieldComponent,FormButtonComponent,FormDataNotInListComponent,FormSuccessfullComponent,FormReferenceHeatmapPopupComponent],
   templateUrl: './isms-form.component.html',
   styleUrl: './isms-form.component.scss'
 })
@@ -385,6 +389,7 @@ export class ISMSFormComponent {
 // }
 
   @Output() submitForm = new EventEmitter<any>();
+  @Output() departmentSelectedByAdmin = new EventEmitter<any>();
   @Input() bgColor: string = ''
   @Input() riskTypeValue: number=1
   @Input() departmentName: string=''
@@ -396,13 +401,15 @@ export class ISMSFormComponent {
   @Input() dropdownDepartment:any[]=[]
   @Input() dropdownAssignee:any[]=[]
   @Input() dropdownReviewer: Array<{ id: number; fullName: string; email: string; type: string }> = [];
+  @Input() dropdownDataProjectForAdmin:any[]=[]
+  @Input() dropdownAssigneeForAdmin:any[]=[]
   overallRiskRating: number = 0;
   reviewerNotInList:boolean=false
   assigneeNotInList:boolean=false
   likelihoodValue:number=0
   impactValue:number=0
   riskFactor:number=0
-  riskId:string='SFM-001'
+  riskId:string=''
   likelihoodId:number=0
   impactId:number=0
   projectId:number=0
@@ -434,13 +441,43 @@ export class ISMSFormComponent {
   privacyLikelihoodId:number=0
   privacyImpactId:number=0
 
+  isSuccessReviewer:boolean=false
+  isErrorReviewer:boolean=false
+  isSuccessAssignee:boolean=false
+  isErrorAssignee:boolean=false
+  HeatMapRefernce:boolean=false
+  openDropdownId: string | undefined = undefined;
+
+
+
 
 constructor(private api:ApiService,public authService:AuthService,private el: ElementRef, private renderer: Renderer2){}
 
 ngOnInit(){
   this.el.nativeElement.style.setProperty('--bg-color', this.bgColor);
+  this.api.getNewRiskId(Number(this.departmentId)).subscribe({
+    next: (res: any) => {
+      this.riskId = res.riskId;
+      console.log("Risk ID received:", this.riskId);  // Log the riskId to see if it's what you expect
+    },
+    error: (err) => {
+      console.error("Error occurred:", err);  // Log the full error to see what went wrong
+    }
+  });
+}
+handleDropdownOpen(dropdownId: string) {
+  this.openDropdownId = this.openDropdownId === dropdownId ? undefined : dropdownId;
+}
+isReviewerNotInList(){
+  this.reviewerNotInList=!this.reviewerNotInList
+}
+isHeatMapReference(){
+  this.HeatMapRefernce=!this.HeatMapRefernce
 }
 
+isAssigneeNotInList(){
+  this.assigneeNotInList=!this.assigneeNotInList
+}
 onDropdownChangeProject(event: any): void {
   const selectedFactorId = Number(event);
   this.projectId=selectedFactorId
@@ -449,6 +486,8 @@ onDropdownChangeProject(event: any): void {
 onDropdownChangeDepartment(event: any): void {
   const selectedFactorId = Number(event);
   this.departmentIdForAdminToAdd=selectedFactorId
+  this.departmentSelectedByAdmin.emit(this.departmentIdForAdminToAdd);
+
 }
 
 onDropdownChange(event: any, type: string, category: string): void {
@@ -652,7 +691,7 @@ onSubmit(){
     impact: formValue.impact,
     mitigation: formValue.mitigation,
     contingency: formValue.contingency || " ",
-    overallRiskRating: Number(this.overallRiskRating),
+    OverallRiskRatingBefore: Number(this.overallRiskRating),
     responsibleUserId:Number(this.responsiblePersonId)!=0 ?+Number(this.responsiblePersonId):Number(this.newAssigneeId) ,
     plannedActionDate: `${formValue.plannedActionDate}T00:00:00.000Z`,
     departmentId:Number(this.departmentId)!=0 ? + Number(this.departmentId) : Number(this.departmentIdForAdminToAdd),
@@ -666,7 +705,7 @@ onSubmit(){
         riskFactor: this.confidentialityRiskFactor,
         review: {
           userId: this.isInternal && Number(this.internalReviewerIdFromDropdown)!=0? Number(this.internalReviewerIdFromDropdown) : null,
-          externalReviewerId:!this.isInternal&&Number(this.externalReviewerIdFromDropdown)!=0?Number(this.externalReviewerIdFromDropdown): Number(this.externalReviewerIdFromInput)!=0 ?  Number(this.externalReviewerIdFromInput): null,
+          externalReviewerId:Number(this.externalReviewerIdFromInput) ?  Number(this.externalReviewerIdFromInput):!this.isInternal&&Number(this.externalReviewerIdFromDropdown)!=0?Number(this.externalReviewerIdFromDropdown): null,
           comments:" ",
           reviewStatus:1,
         },
@@ -679,7 +718,7 @@ onSubmit(){
         riskFactor: this.integrityRiskFactor,
         review: {
           userId: this.isInternal && Number(this.internalReviewerIdFromDropdown)!=0? Number(this.internalReviewerIdFromDropdown) : null,
-          externalReviewerId:!this.isInternal&&Number(this.externalReviewerIdFromDropdown)!=0?Number(this.externalReviewerIdFromDropdown): Number(this.externalReviewerIdFromInput)!=0 ?  Number(this.externalReviewerIdFromInput): null,
+          externalReviewerId:Number(this.externalReviewerIdFromInput) ?  Number(this.externalReviewerIdFromInput):!this.isInternal&&Number(this.externalReviewerIdFromDropdown)!=0?Number(this.externalReviewerIdFromDropdown): null,
           comments:" ",
           reviewStatus:1,
         },
@@ -692,7 +731,7 @@ onSubmit(){
         riskFactor: this.availabilityRiskFactor,
         review: {
           userId: this.isInternal && Number(this.internalReviewerIdFromDropdown)!=0? Number(this.internalReviewerIdFromDropdown) : null,
-          externalReviewerId:!this.isInternal&&Number(this.externalReviewerIdFromDropdown)!=0?Number(this.externalReviewerIdFromDropdown): Number(this.externalReviewerIdFromInput)!=0 ?  Number(this.externalReviewerIdFromInput): null,
+          externalReviewerId:Number(this.externalReviewerIdFromInput) ?  Number(this.externalReviewerIdFromInput):!this.isInternal&&Number(this.externalReviewerIdFromDropdown)!=0?Number(this.externalReviewerIdFromDropdown): null,
           comments:" ",
           reviewStatus:1,
         },
@@ -705,7 +744,7 @@ onSubmit(){
         riskFactor: this.privacyRiskFactor,
         review: {
           userId: this.isInternal && Number(this.internalReviewerIdFromDropdown)!=0? Number(this.internalReviewerIdFromDropdown) : null,
-          externalReviewerId:!this.isInternal&&Number(this.externalReviewerIdFromDropdown)!=0?Number(this.externalReviewerIdFromDropdown): Number(this.externalReviewerIdFromInput)!=0 ?  Number(this.externalReviewerIdFromInput): null,
+          externalReviewerId:Number(this.externalReviewerIdFromInput) ?  Number(this.externalReviewerIdFromInput):!this.isInternal&&Number(this.externalReviewerIdFromDropdown)!=0?Number(this.externalReviewerIdFromDropdown): null,
           comments:" ",
           reviewStatus:1,
         },
@@ -714,9 +753,79 @@ onSubmit(){
   };
 
   this.submitForm.emit(payload);
+}
 
+receiveCancel(value: any) {
+  if(value==true){
+    this.isAssigneeNotInList();
+  }
+  if(value==false){
+    this.isReviewerNotInList();
+  }
+}
+saveAssignee(value: any){
+
+  const departmentNameDetails=this.dropdownDepartment.find(factor => factor.id === value.departmentId)
+  const departmentName= departmentNameDetails.departmentName
+
+  const payload = {
+    email:value.email,
+    fullName:value.fullName,
+    departmentName: departmentName
+  }
+  this.api.addResponsiblePerson(payload).subscribe((res:any)=>{
+    this.newAssigneeId=res.id
+    console.log("new assignee id: ",this.newAssigneeId)
+    this.isSuccessAssignee=true
+
+  },
+  (error:any)=>{
+    this.isErrorAssignee=true
+  }
+)
 
 }
 
+saveReviewer(value: any){
+
+
+
+  const payload = {
+    email:value.email,
+    fullName:value.fullName,
+    departmentId:value.departmentId
+  }
+ this.api.addExternalReviewer(payload).subscribe((res:any)=>{
+    this.externalReviewerIdFromInput = res.reviewerId
+    console.log("reviewer response",this.externalReviewerIdFromInput);
+    this.isSuccessReviewer=true
+
+  },
+  (error:any)=>{
+    this.isErrorReviewer=true
+  }
+)
+
+}
+
+
+
+closeReviewer() {
+  this.isSuccessReviewer=false
+  this.isErrorReviewer=false
+
+}
+closeAssignee(){
+  this.isSuccessAssignee=false
+  this.isErrorAssignee=false
+}
+closeHeatMap(){
+  this.HeatMapRefernce=false
+}
+
+saveConfirmation(){}
+clearAllData(){}
+cancelRisk(){}
+saveAsDraft(){}
 
 }

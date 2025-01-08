@@ -4,10 +4,15 @@
       <h2>Risk Details</h2>
       <div class="form-row">
        <app-form-input label="Risk Name" required=" *" formControlName="riskName"></app-form-input>
-       <app-form-dropdown label="Project Name" [dropdownData]="dropdownProject" dropdownDisplay="name" dropdownValue="id" selectValue="Project" (change)="onDropdownChangeProject($event)" ></app-form-dropdown>
+       @if(isAdmin!=='Admin'){
+        <app-form-dropdown label="Project Name" [dropdownData]="dropdownProject" dropdownDisplay="name" dropdownValue="id" selectValue="Select project" [selectedValue]="preSelectedProject" (change)="onDropdownChangeProject($event)" [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)" ></app-form-dropdown>
+       }
+       @if(isAdmin==='Admin'){
+        <app-form-dropdown label="Project Name" [dropdownData]="dropdownDataProjectForAdmin" dropdownDisplay="name" dropdownValue="id" selectValue="Select project" (change)="onDropdownChangeProject($event)" [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)" ></app-form-dropdown>
+       }
      </div>
      @if(isAdmin === 'Admin'){
-      <app-form-dropdown label="Department Name" [dropdownData]="dropdownDepartment" dropdownDisplay="departmentName" dropdownValue="id" selectValue="department" (change)="onDropdownChangeDepartment($event)" ></app-form-dropdown>
+      <app-form-dropdown label="Department Name" [dropdownData]="dropdownDepartment" dropdownDisplay="departmentName" dropdownValue="id" selectValue="Select department" (change)="onDropdownChangeDepartment($event)"  [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)"></app-form-dropdown>
      }
      <app-form-text-area label="Impact Of Risk" required="*" placeHolder="Enter impact of risk"
       message="Impact of a risk refers to the potential consequences or effects that a risk event
@@ -20,18 +25,22 @@
     <div class="form-details-sub-container">
       <h2>Current Risk Assessment</h2>
       <div class="form-row">
-        <app-form-dropdown label="Likelihood" [dropdownData]="dropdownLikelihood" dropdownDisplay="assessmentFactor" dropdownValue="id" selectValue="Likelihood" (change)="onDropdownChangelikelihood($event)" ></app-form-dropdown>
-        <app-form-dropdown label="Impact" [dropdownData]="dropdownImpact" dropdownDisplay="assessmentFactor" dropdownValue="id" selectValue="Impact" (change)="onDropdownChangeImpact($event)" ></app-form-dropdown>
+        <app-form-dropdown label="Likelihood" [dropdownData]="dropdownLikelihood" dropdownDisplay="assessmentFactor" dropdownValue="id" selectValue="Select likelihood" [selectedValue]="preSelectedLikelihood" (change)="onDropdownChangelikelihood($event)" [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)"></app-form-dropdown>
+        <app-form-dropdown label="Impact" [dropdownData]="dropdownImpact" dropdownDisplay="assessmentFactor" dropdownValue="id" selectValue="Select impact" [selectedValue]="preSelectedImpact" (change)="onDropdownChangeImpact($event)" [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)" ></app-form-dropdown>
       </div>
       <div class="form-row" [ngStyle]="{'gap':'32vw','margin-top':'30px'}">
         <h2 [ngStyle]="{'border-bottom':'0px','text-transform':'none'}">Risk Factor :<span style="margin-left: 10px;">{{riskFactor}}</span> </h2>
         <h2 [ngStyle]="{'border-bottom':'0px','text-transform':'none','margin-left':'-37%'}">Overall Risk Rating :<span style="margin-left: 10px;" [ngStyle]="{'color':changeColorOverallRiskRating()}"> {{overallRiskRating}}</span> </h2>
       </div>
+      <p [ngStyle]="{'margin-top':'20px','font-style':'italic','color':'grey'}">Risk factor = Likelihood * Impact</p>
+
       <p [ngStyle]="{'margin-top':'20px','font-style':'italic','color':'grey'}">Overall risk rating = Likelihood * Impact</p>
       <div [ngStyle]="{'margin-top':'20px','font-style':'italic','color':'grey'}">
-       <p>For more reference <span><a href="javascript:void(0);"  >click </a></span> here</p>
+       <p>For more reference <span (click)="isHeatMapReference()"><a href="javascript:void(0);"  >click </a></span> here</p>
       </div>
+
     </div>
+
     <div class="form-details-sub-container">
       <h2>Risk Management</h2>
       <app-form-text-area label="Risk Mitigation" required="*" placeHolder="Enter mitigation plan"
@@ -46,70 +55,92 @@
     </div>
     <div class="form-details-sub-container">
       <h2>Action Plan</h2>
-      <app-form-dropdown label="Responsibility of action" required="*" [dropdownData]="dropdownAssignee" dropdownDisplay="fullName" dropdownValue="id" selectValue="responsible person" (change)="onDropdownChangeResponsiblePerson($event)"></app-form-dropdown>
-      <div [ngStyle]="{'margin-top':'20px','font-style':'italic','color':'grey'}">
+      @if(isAdmin === 'Admin'){
+        <app-form-dropdown label="Responsibility of action" required="*" [dropdownData]="dropdownAssigneeForAdmin"
+        dropdownDisplay="fullName" dropdownValue="id" selectValue="Select responsible person" (change)="onDropdownChangeResponsiblePerson($event)"
+        [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)" message="You can select an existing responsible person from the dropdown
+        or enter a new one. If you enter a new name, it will take priority over the dropdown selection." [backgroundColor]="bgColor"></app-form-dropdown>
+      }
+       @if(isAdmin !== 'Admin'){
+        <app-form-dropdown label="Responsibility of action" required="*" [dropdownData]="dropdownAssignee" dropdownDisplay="fullName" [selectedValue]="preSelectedResponsiblePerson"
+        dropdownValue="id" selectValue="Select responsible person" (change)="onDropdownChangeResponsiblePerson($event)" [openDropdownId]="openDropdownId"
+        (openDropdown)="handleDropdownOpen($event)"  message="You can select an existing responsible person from the dropdown
+        or enter a new one. If you enter a new name, it will take priority over the dropdown selection." [backgroundColor]="bgColor"></app-form-dropdown>
+       }
+        <div [ngStyle]="{'margin-top':'20px','font-style':'italic','color':'grey'}">
         <p>If responsible person not in the list <span (click)="isAssigneeNotInList()"><a href="javascript:void(0);">click </a></span>here</p>
       </div>
-      @if(assigneeNotInList){
-        <form [formGroup]="assigneeGroup">
-          <div class="form-detail">
-            <label for="assignee">Responsible Person Name <span class="required">*</span></label>
-            <input type="text" id="assignee" placeholder="Enter responsible person full name" formControlName="fullName"  >
-          </div>
-          <div class="form-detail">
-            <label for="assignee-email">Email <span class="required">*</span></label>
-            <input type="text" id="assignee-email" placeholder="Enter email" formControlName="email" >
-          </div>
-          <div class="button-group">
-            <button type="button" class="btn save" (click)="saveAssignee()" >Save</button>
-            <button type="button" class="btn cancel" (click)="isAssigneeNotInList()">Cancel</button>
-          </div>
-        </form>
 
-
-      }
       <app-form-date-field label="Planned Action Date" required="*" formControlName="plannedActionDate"></app-form-date-field>
     </div>
     <div class="form-details-sub-container">
       <h2>Reviewer</h2>
-      <app-form-dropdown label="Reviewer" required="*" [dropdownData]="dropdownReviewer" dropdownDisplay="fullName" dropdownValue="fullName" selectValue="reviewer" (change)="onDropdownChangeReviewer($event)"></app-form-dropdown>
+      <app-form-dropdown label="Reviewer" required="*" [dropdownData]="dropdownReviewer" dropdownDisplay="fullName" dropdownValue="fullName" [selectedValue]="preSelectedReviewer"
+      selectValue="Select reviewer" (change)="onDropdownChangeReviewer($event)" [openDropdownId]="openDropdownId"
+      (openDropdown)="handleDropdownOpen($event)" message="You can select an existing reviewer from the dropdown
+      or enter a new one. If you enter a new name, it will take priority over the dropdown selection." [backgroundColor]="bgColor"></app-form-dropdown>
 
       <div [ngStyle]="{'margin-top':'20px','font-style':'italic','color':'grey'}">
         <p>If reviewer not in the list <span (click)="isReviewerNotInList()"><a href="javascript:void(0);">click </a></span>here</p>
       </div>
-      @if(reviewerNotInList){
-        <form [formGroup]="reviewerGroup">
-          <div class="form-detail">
-            <label for="reviewer">Reviewer Name <span class="required">*</span></label>
-            <input type="text" id="reviewer" placeholder="Enter reviewer name" formControlName="fullName" >
-          </div>
-          <div class="form-detail">
-            <label for="reviewer-email">Email <span class="required">*</span></label>
-            <input type="text" id="reviewer-email" placeholder="Enter email" formControlName="email" >
-          </div>
-          <div class="form-detail">
-            <label for="department">Department Name</label>
-            <app-dropdown  [options]="dropdownDepartment"
-              [displayField]="'departmentName'"
-              [valueField]="'id'"
-              selectValue="reviewer"
-              width="100" id="reviewer-department" formControlName="departmentId"  >
-             </app-dropdown>
-          </div>
-        </form>
-        <div class="button-group">
-          <button type="button" class="btn save" (click)="saveExternalReviewer()" >Save</button>
-          <button type="button" class="btn cancel" (click)="isReviewerNotInList()">Cancel</button>
-        </div>
 
-      }
     </div>
-    <div class="button-group">
-      <button type="submit" class="btn save">Save</button>
-      <button type="button" class="btn cancel">Cancel</button>
-      <button type="button" class="btn clear">Clear</button>
+    <div class="form-details-sub-container">
+      <div class="button-group">
+         <app-form-button label="Save" (clicked)="saveConfirmation()"></app-form-button>
+         <app-form-button label="Save Draft" (clicked)="saveAsDraft()"></app-form-button>
+         <!-- <app-form-button label="Clear" (clicked)="clearAllData()"></app-form-button> -->
+         <app-form-button label="Cancel" (clicked)="cancelRisk()"></app-form-button>
+      </div>
     </div>
+
   </form>
+  @if(HeatMapRefernce){
+
+    <app-form-reference-heatmap-popup (closeHeatMap)="closeHeatMap()"></app-form-reference-heatmap-popup>
+   }
+  @if(assigneeNotInList){
+    <app-form-data-not-in-list placeholder="Enter responsible person name" [isAssignee]="true" textLabel="Responsible person name" [dropdownDepartment]="dropdownDepartment" (cancelForm)="receiveCancel($event)" (sendData)="saveAssignee($event)" [bgColor]="bgColor" [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)"></app-form-data-not-in-list>
+  }
+  @if(reviewerNotInList){
+    <app-form-data-not-in-list placeholder="Enter reviewer name" [isAssignee]="false" textLabel="Reviewer name" [dropdownDepartment]="dropdownDepartment" (cancelForm)="receiveCancel($event)" (sendData)="saveReviewer($event)" [bgColor]="bgColor" [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)"></app-form-data-not-in-list>
+  }
+  @if(isSuccessReviewer){
+    <app-form-successfull
+    message="Add new reviewer successfully!"
+    [isSuccessfull] ="true"
+    (closeDialog)="closeReviewer()" [bgColor]="bgColor">
+    </app-form-successfull>
+ }
+ @if(isErrorReviewer){
+  <app-form-successfull
+  message="Something went Wrong!"
+  [isSuccessfull] ="false"
+  (closeDialog)="closeReviewer()" [bgColor]="bgColor">
+  </app-form-successfull>
+}
+@if(isSuccessAssignee){
+  <app-form-successfull
+  message="Add new Assignee successfully!"
+  [isSuccessfull] ="true"
+  (closeDialog)="closeAssignee()" [bgColor]="bgColor">
+  </app-form-successfull>
+}
+@if(isErrorAssignee){
+<app-form-successfull
+message="Something went Wrong!"
+[isSuccessfull] ="false"
+(closeDialog)="closeAssignee()" [bgColor]="bgColor">
+</app-form-successfull>
+}
+@if(isSave){
+  <app-form-conform-popup message="Do you want to Save ?" [bgColor]="bgColor" (closeDialog)="saveRisk()" (notCloseDialog)="saveConfirmation()"></app-form-conform-popup>
+}
+
+@if(isCancel){
+  <app-form-conform-popup message="Do you want to cancel ?" [bgColor]="bgColor" (closeDialog)="closeRisk()" (notCloseDialog)="cancelRisk()"></app-form-conform-popup>
+}
+
 </div>
 
 

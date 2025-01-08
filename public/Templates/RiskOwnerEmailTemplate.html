@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Risk Rejected</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        h2 {
+            color: #dc143c;
+        }
+        ul {
+            padding-left: 20px;
+        }
+        ul li {
+            margin-bottom: 10px;
+        }
+        p {
+            margin: 10px 0;
+        }
+        .footer {
+            margin-top: 30px;
+            font-size: 14px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <h2>Risk Rejection Notification</h2>
+    <p>Dear {{responsibleUser}},</p>
+
+    <p>The below Risk has been rejected by the  reviewer</p>
+
+    <ul>
+        <li><strong>Risk ID:</strong> {{riskId}}</li>
+        <li><strong>Risk Name:</strong> {{riskName}}</li>
+        <li><strong>Description:</strong> {{description}}</li>
+        <li><strong>Risk Type:</strong> {{riskType}}</li>
+        <li><strong>Impact Of Risk:</strong> {{impact}}</li>
+        <li><strong>Mitigation Plans:</strong> {{mitigation}}</li>
+        <li><strong>Planned Date of Action:</strong> {{plannedActionDate}}</li>
+        <li><strong>Overall Risk Rating:</strong> {{overallRiskRating}}</li>
+        <li><strong>Reason For Regection:</strong> {{reason}}</li>
+
+    </ul>
+
+    <p>Please take necessary actions </p>
+
+    <p>Thank you.</p>
+
+    <div class="footer">
+        <p>Risk Management Team,</p>
+        <p>Experion Technologies Pvt. Ltd</p>
+    </div>
+</body>
+
+</html>
+
+
+
+

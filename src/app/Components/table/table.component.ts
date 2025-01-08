@@ -25,7 +25,7 @@ export class TableComponent {
       }
 
   items:any=[];
-  paginatedItems:any=[];
+  // paginatedItems:any=[];
   isActive = true;
   isDisabled = false;
   open = true;
@@ -36,6 +36,9 @@ export class TableComponent {
   filteredItems = [...this.items];
   isDepartmentDropdownOpen: boolean = false;
   isTypeDropdownOpen: boolean = false;
+  isStatusDropdownOpen:boolean =false;
+  isReviewStatusDropdownOpen:boolean =false;
+  isResidualRiskDropdownOpen:boolean =false;
 
   itemsPerPage = 10;
   currentPage = 1;
@@ -45,10 +48,16 @@ export class TableComponent {
   selectedRiskId = '';
   selectedRiskType = '';
   selectedDepartment = '';
+  selectedStatus = '';
+  selectedReviewStatus = '';
+  selectedResidual ='';
 
   // uniqueRiskIds: string[] = [];
   uniqueRiskTypes: any[] = [];
   uniqueDepartments: any[] = [];
+  uniqueStatus: any[] = [];
+  uniqueReviewStatus: any[] = [];
+  uniqueResidual:any[]=[];
 
   @Output() filteredData = new EventEmitter<any[]>();
 
@@ -75,14 +84,12 @@ export class TableComponent {
       return (
         matchesDateRange &&
         (this.selectedRiskType ? item.riskType === this.selectedRiskType : true) &&
+        (this.selectedStatus ? item.riskStatus === this.selectedStatus : true) &&
+        (this.selectedResidual ? item.residualRisk === this.selectedResidual : true) &&
+        (this.selectedReviewStatus ? item.riskAssessments[0].reviewStatus  === this.selectedReviewStatus : true) &&
         (this.selectedDepartment ? item.departmentName === this.selectedDepartment : true)
       );
-      // return (
-        // (this.selectedRiskId ? item.riskId === this.selectedRiskId : true) &&
-      //   (this.filteredDateRange ? item.closedDate === this.filteredDateRange : true) &&
-      //   (this.selectedRiskType ? item.riskType === this.selectedRiskType : true) &&
-      //   (this.selectedDepartment ? item.departmentName === this.selectedDepartment : true)
-      // );
+
     });
   console.log("filtered",this.filteredItems)
   this.currentPage = 1;
@@ -108,9 +115,7 @@ export class TableComponent {
     this.updatePaginatedItems();
   }
 
-  shouldDisplayPagination(): boolean {
-    return this.filteredItems.length > this.itemsPerPage;
-  }
+
 
   ngOnInit(): void {
 
@@ -135,11 +140,14 @@ export class TableComponent {
       console.log(this.filteredItems);
       this.updateUniqueDepartments();
       this.updateUniqueTypes();
+      this.updateUniqueReviewStatus();
+      this.updateUniqueStatus();
+      this.updateResidualRiskStatus();
       this.totalItems = this.filteredItems.length;
       this.updatePaginatedItems();
 
 
-      },1000)
+      },500)
   }
 
   updateUniqueDepartments(): void {
@@ -155,14 +163,27 @@ export class TableComponent {
 
     this.uniqueRiskTypes = ["Quality","Privacy","Security"];
   }
+  updateUniqueStatus(): void {
+
+    this.uniqueStatus = ["close","open"];
+  }
+  updateUniqueReviewStatus(): void {
+
+    this.uniqueReviewStatus = ["ReviewPending","ReviewCompleted","ApprovalPending","ApprovalCompleted","Rejected","HasValue"];
+  }
+  updateResidualRiskStatus(): void {
+
+    this.uniqueResidual = ["Low","Medium","High"];
+  }
 
   updatePaginatedItems(): void {
     console.log("insie",this.filteredItems)
     const startIndex = (this.currentPage -1 ) * this.itemsPerPage;
     const endIndex = startIndex + this.itemsPerPage;
     this.paginated = this.filteredItems.slice(startIndex, endIndex);
-    this.totalItems = this.paginated.length;
-    this.filteredData.emit(this.paginated);
+    this.totalItems = this.filteredItems.length;
+    // this.itemsPerPage=this.paginated.length;
+    this.filteredData.emit(this.filteredItems);
   }
 
   onPageChange(page: number): void {
@@ -175,12 +196,40 @@ export class TableComponent {
   toggleDepartmentDropdown(): void {
     this.isDepartmentDropdownOpen = !this.isDepartmentDropdownOpen;
     this.isTypeDropdownOpen = false;
+    this.isStatusDropdownOpen = false;
+    this.isReviewStatusDropdownOpen = false;
+    this.isResidualRiskDropdownOpen = false;
   }
 
   toggleTypeDropdown(): void {
     this.isTypeDropdownOpen = !this.isTypeDropdownOpen;
     this.isDepartmentDropdownOpen = false;
+    this.isStatusDropdownOpen = false;
+    this.isReviewStatusDropdownOpen = false;
+    this.isResidualRiskDropdownOpen = false;
   }
+  toggleStatusDropdown(): void {
+    this.isStatusDropdownOpen = !this.isStatusDropdownOpen;
+    this.isDepartmentDropdownOpen = false;
+    this.isTypeDropdownOpen = false;
+    this.isReviewStatusDropdownOpen = false;
+    this.isResidualRiskDropdownOpen = false;
+  }
+  toggleReviewStatusDropdown(): void {
+    this.isReviewStatusDropdownOpen = !this.isReviewStatusDropdownOpen;
+    this.isDepartmentDropdownOpen = false;
+    this.isTypeDropdownOpen = false;
+    this.isStatusDropdownOpen = false;
+    this.isResidualRiskDropdownOpen = false;
+  }
+  toggleResidualDropdown(): void {
+    this.isResidualRiskDropdownOpen = !this.isResidualRiskDropdownOpen;
+    this.isDepartmentDropdownOpen = false;
+    this.isTypeDropdownOpen = false;
+    this.isStatusDropdownOpen = false;
+    this.isReviewStatusDropdownOpen = false;
+  }
+
 
 
   onDepartmentSelect(department: string): void {
@@ -194,6 +243,25 @@ export class TableComponent {
     this.isTypeDropdownOpen = false;
     this.filterTable();
   }
+  onStatusSelect(status: string): void {
+    this.selectedStatus = status;
+    console.log(this.selectedStatus);
+    this.isStatusDropdownOpen = false;
+    this.filterTable();
+  }
+  onReviewStatusSelect(status: string): void {
+    this.selectedReviewStatus = status;
+    console.log(this.selectedReviewStatus);
+    this.isReviewStatusDropdownOpen = false;
+    this.filterTable();
+  }
+  onResidualSelect(status: string): void {
+    this.selectedResidual = status;
+    console.log(this.selectedResidual);
+    this.isResidualRiskDropdownOpen = false;
+    this.filterTable();
+  }
+
 
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent): void {
@@ -201,15 +269,17 @@ export class TableComponent {
     if (!target.closest('.dropdown-container')) {
       this.isDepartmentDropdownOpen = false;
       this.isTypeDropdownOpen = false;
+      this.isStatusDropdownOpen = false;
+      this.isReviewStatusDropdownOpen = false;
     }
   }
 
-  resetFilters(): void {
-    this.filteredItems = [...this.items];
-    this.currentPage = 1;
-    this.totalItems = this.filteredItems.length;
-    this.updatePaginatedItems();
-  }
+  // resetFilters(): void {
+  //   this.filteredItems = [...this.items];
+  //   this.currentPage = 1;
+  //   this.totalItems = this.filteredItems.length;
+  //   this.updatePaginatedItems();
+  // }
 
 
   //datepicker
@@ -220,5 +290,12 @@ export class TableComponent {
 
       this.filterTable();
     }
+
+
+  }
+  shouldDisplayPagination(): boolean {
+    console.log(this.paginated.length)
+    return this.filteredItems.length > this.itemsPerPage;
+
   }
 }

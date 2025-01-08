@@ -1,0 +1,23 @@
+
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: bold;
+  text-transform: uppercase;
+
+}
+
+.btn.save {
+  background-color: var(--bg-color);
+  color: #fff;
+  box-shadow: 0 3px 6px rgba(62, 104, 185, 0.4);
+}
+
+.btn.save:hover {
+  background-color: var(--bg-color);
+  box-shadow: 0 6px 10px rgba(62, 104, 185, 0.6);
+}
