@@ -226,7 +226,7 @@ export class ApiService {
   getAllUsers() {
     return this.http.get(`${this.baseUrl}/User/GetAllUsers`);
   }
-
+//needed some cases
   getAllUsersByDepartmentName(department: string) {
     return this.http.get(
       `${this.baseUrl}/User/GetUsersByDepartment/${department}`
@@ -341,10 +341,17 @@ export class ApiService {
 
 
 updateDepartment(updateData: any) {
-  return this.http.put(`${this.baseUrl}/Department`, updateData);
+  return this.http.put(`${this.baseUrl}/Department`, updateData).pipe(tap(() => this.departmentUpdateSubject.next()));;
 }
 
 updateProject(updateData: any, id: number) {
   return this.http.put<{ message: string }>(`${this.baseUrl}/Project/${id}`, updateData);
 }
+
+getUsersByDepartmentId(departmentId:number){
+  return this.http.get(
+    `${this.baseUrl}/User/${departmentId}`
+  );
+}
+
 }

@@ -162,7 +162,7 @@
 
 /* Rotate arrow when dropdown is open */
 .dropdown-header.open .arrow {
-  transform: rotate(180deg);
+  transform: rotate(180deg) scale(1.5);
   color: #3e68b9; /* Change color when dropdown is open */
 }
 

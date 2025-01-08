@@ -90,9 +90,10 @@ export class RegisterRiskComponent {
     this.dropdownDataReviewer=res.reviewers
   })
 
-  this.api.getAllUsersByDepartmentName(this.departmentName).subscribe((res:any)=>{
-    this.dropdownDataAssignee=res
-    console.log("departments",res)
+
+  const departmentId:any = this.authService.getDepartmentId();
+  this.api.getUsersByDepartmentId(departmentId).subscribe((res:any) => {
+    this.dropdownDataAssignee = res
   })
 
   this.cdRef.detectChanges();
@@ -283,10 +284,10 @@ export class RegisterRiskComponent {
       });
 
 
-      
+
 
     }
-   
+
   }
 
   getRiskTypeClass() {
@@ -340,6 +341,9 @@ export class RegisterRiskComponent {
     // this.router.navigate(['/home']);
   }
 
+closeDialogSuccess(){
+  this.router.navigate(['/home']);
+}
 
   sendEmailOnRegisterRisk(riskId:number,riskData:any){
       console.log('before is submit:', this.isSuccess);

@@ -95,7 +95,7 @@ export class EmailService {
     );
 
     console.log('Email Subject:', subject); // Debug log
-    console.log('Email Body:', body); // Debug log
+    // console.log('Email Body:', body); // Debug log
 
     return this.api.sendMail(email, subject, body).pipe(
       map((response: any) => {
