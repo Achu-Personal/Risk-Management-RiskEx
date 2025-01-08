@@ -293,12 +293,18 @@ export class TableComponent {
 
       this.filterTable();
     }
-
-
   }
+
+
+  @Input() noDataMessage:string='No Data Available'
+  hasValidData(): boolean {
+    return this.filteredItems.length > 0 ;
+  }
+
+
   shouldDisplayPagination(): boolean {
     console.log(this.paginated.length)
-    return this.paginated.length > this.itemsPerPage;
+    return this.filteredItems.length > this.itemsPerPage;
 
   }
 }

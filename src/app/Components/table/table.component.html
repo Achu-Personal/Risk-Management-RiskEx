@@ -1,4 +1,4 @@
-
+<ng-container *ngIf="hasValidData(); else noData">
 <div class="body">
 
     <div class="header1">
@@ -126,7 +126,9 @@
           }
         </tr>
       </thead>
+
       <tbody>
+
         @for(item of paginated ;track item.id){
         <tr (click)="rowClick(item.id)" style="height:10px;">
           <td>{{ $index+1 }}</td>
@@ -157,7 +159,7 @@
       </tbody>
     </table>
     </div>
-    <!-- <div class="foot"> -->
+    
    @if(shouldDisplayPagination()){
     <app-pagination  [totalItems]="totalItems"
     [itemsPerPage]="itemsPerPage"
@@ -167,6 +169,11 @@
     </app-pagination>
    }
 
-    <!-- </div> -->
   </div>
 </div>
+</ng-container>
+<ng-template #noData>
+  <div class="no-data-container">
+    <h3 class="no-data-message">{{noDataMessage}}</h3>
+  </div>
+</ng-template>
