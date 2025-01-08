@@ -109,6 +109,8 @@ export class RejectedResponseComponent {
           riskName: res.riskName,
           description: res.description,
           riskType: res.riskType,
+          impact: res.impact,
+          mitigation: res.mitigation,
           plannedActionDate: new Date(res.plannedActionDate).toLocaleDateString(
             'en-US',
             {
@@ -121,9 +123,9 @@ export class RejectedResponseComponent {
           reason: this.rejectionReason,
         };
         // Send email to reviewer
-        this.email.sendAssigneeEmail(res.responsibleUser.email, this.context).subscribe({
+        this.email.sendOwnerEmail(res.responsibleUser.email, this.context).subscribe({
           next: () => {
-            console.log('assignee Email:', res.responsibleUser.email);
+            console.log('Reviewer Email:', res.responsibleUser.email);
             console.log('Email Sent Successfully.');
           },
           error: (emailError) => {
