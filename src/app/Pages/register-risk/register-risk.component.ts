@@ -341,6 +341,9 @@ export class RegisterRiskComponent {
     // this.router.navigate(['/home']);
   }
 
+closeDialogSuccess(){
+  this.router.navigate(['/home']);
+}
 
   sendEmailOnRegisterRisk(riskId:number,riskData:any){
       console.log('before is submit:', this.isSuccess);
