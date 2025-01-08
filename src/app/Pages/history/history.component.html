@@ -7,6 +7,14 @@
   </div>
 
   <div class="tab"></div>
-  <app-table (onclickrow)="OnClickRow($event)"  [paginated]="items" [filteredDateRange]="selectedDateRange"></app-table>
+
+  <app-table
+
+    (onclickrow)="OnClickRow($event)"
+    [paginated]="items"
+    [filteredDateRange]="selectedDateRange">
+  </app-table>
+
+
 </app-body-container>
 

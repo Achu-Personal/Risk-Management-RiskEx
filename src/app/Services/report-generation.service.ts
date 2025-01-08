@@ -9,6 +9,7 @@ interface RiskAssessment {
   matrixLikelihood: string;
   reviewStatus: string;
   reviewer: string;
+  riskFactor:number;
   // isMitigated: boolean;
 }
 
@@ -139,8 +140,8 @@ export class ReportGenerationService {
         }
       };
 
-      setColumnWidths(qualitySheet, 19);
-      setColumnWidths(securitySheet, 32);
+      setColumnWidths(qualitySheet, 21);
+      setColumnWidths(securitySheet, 40);
 
       // Helper function to apply styles to a row
       const applyRowStyles = (row: ExcelJS.Row, styles: any) => {
@@ -155,31 +156,31 @@ export class ReportGenerationService {
         const mainHeader = sheet.addRow(['Risk Information', 'Risk Assessment Matrix']);
         applyRowStyles(mainHeader, this.styles.mainHeader);
         sheet.mergeCells(1, 1, 1, 15);
-        sheet.mergeCells(1, 16, 1, 32);
+        sheet.mergeCells(1, 16, 1, 40);
 
         // Pre/Post mitigation headers
-        const mitigationHeader = sheet.addRow(Array(32).fill(''));
+        const mitigationHeader = sheet.addRow(Array(40).fill(''));
         applyRowStyles(mitigationHeader, this.styles.mainHeader);
         mitigationHeader.getCell(16).value = 'Pre-Mitigation Assessment';
-        mitigationHeader.getCell(24).value = 'Post-Mitigation Assessment';
-        sheet.mergeCells(2, 16, 2, 23);
-        sheet.mergeCells(2, 24, 2, 32);
+        mitigationHeader.getCell(28).value = 'Post-Mitigation Assessment';
+        sheet.mergeCells(2, 16, 2, 27);
+        sheet.mergeCells(2, 28, 2, 40);
 
         // Assessment type headers
-        const typeHeader = sheet.addRow(Array(32).fill(''));
+        const typeHeader = sheet.addRow(Array(40).fill(''));
         applyRowStyles(typeHeader, this.styles.assessmentHeader);
         const assessmentTypes = ['Confidentiality', 'Integrity', 'Privacy', 'Availability'];
         let col = 16;
         assessmentTypes.forEach(type => {
           typeHeader.getCell(col).value = type;
-          sheet.mergeCells(3, col, 3, col + 1);
-          col += 2;
+          sheet.mergeCells(3, col, 3, col + 2);
+          col += 3;
         });
-        col = 24;
+        col = 28;
         assessmentTypes.forEach(type => {
           typeHeader.getCell(col).value = type;
-          sheet.mergeCells(3, col, 3, col + 1);
-          col += 2;
+          sheet.mergeCells(3, col, 3, col + 2);
+          col += 3;
         });
 
         // Column headers
@@ -189,9 +190,13 @@ export class ReportGenerationService {
           'Overall Risk Rating', 'Responsible User', 'Created By', 'Created At', 'Remarks'
         ];
 
-        const assessmentHeaders = Array(16).fill('').map((_, i) =>
-          i % 2 === 0 ? 'Impact' : 'Likelihood'
-        );
+        // const assessmentHeaders = Array(16).fill('').map((_, i) =>
+        //   i % 2 === 0 ? 'Impact' : 'Likelihood':'riskfactor'
+        // );
+        const assessmentHeaders = ['Impact', 'Likelihood', 'Risk Factor','Impact', 'Likelihood', 'Risk Factor',
+          'Impact', 'Likelihood', 'Risk Factor','Impact', 'Likelihood', 'Risk Factor',
+        'Impact', 'Likelihood', 'Risk Factor','Impact', 'Likelihood', 'Risk Factor',
+      'Impact', 'Likelihood', 'Risk Factor','Impact', 'Likelihood', 'Risk Factor'];
 
         const headerRow = sheet.addRow([...columnHeaders, ...assessmentHeaders]);
         applyRowStyles(headerRow, this.styles.subHeader);
@@ -203,22 +208,22 @@ export class ReportGenerationService {
         const mainHeader = sheet.addRow(['Risk Information', 'Risk Assessment']);
         applyRowStyles(mainHeader, this.styles.mainHeader);
         sheet.mergeCells(1, 1, 1, 15);
-        sheet.mergeCells(1, 16, 1, 19);
+        sheet.mergeCells(1, 16, 1, 21);
 
         // Pre/Post mitigation headers
-        const mitigationHeader = sheet.addRow(Array(19).fill(''));
+        const mitigationHeader = sheet.addRow(Array(21).fill(''));
         applyRowStyles(mitigationHeader, this.styles.mainHeader);
         mitigationHeader.getCell(16).value = 'Pre-Mitigation Assessment';
-        mitigationHeader.getCell(18).value = 'Post-Mitigation Assessment';
-        sheet.mergeCells(2, 16, 2, 17);
-        sheet.mergeCells(2, 18, 2, 19);
+        mitigationHeader.getCell(19).value = 'Post-Mitigation Assessment';
+        sheet.mergeCells(2, 16, 2, 18);
+        sheet.mergeCells(2, 19, 2, 21);
 
         // Column headers
         const columnHeaders = [
           'Risk ID', 'Risk Name', 'Department', 'Description', 'Risk Type',
           'Risk Status', 'Impact', 'Mitigation', 'Contingency', 'Risk Response',
           'Overall Risk Rating', 'Responsible User', 'Created By', 'Created At', 'Remarks',
-          'Impact', 'Likelihood', 'Impact', 'Likelihood'
+          'Impact', 'Likelihood', 'Risk Factor','Impact', 'Likelihood', 'Risk Factor'
         ];
 
         const headerRow = sheet.addRow(columnHeaders);
@@ -254,75 +259,64 @@ export class ReportGenerationService {
           risk.remarks || ''
         ];
 
-        // const getAssessmentDetails = (assessments: RiskAssessment[], basis: string, isMitigated: boolean) => {
-        //   const assessment = assessments.find(a =>
-        //     a.assessmentBasis === basis && a.isMitigated === isMitigated
-        //   );
-        //   return {
-        //     impact: assessment?.matrixImpact || '',
-        //     likelihood: assessment?.matrixLikelihood || ''
-        //   };
-        // };
-        const getAssessmentDetails = (assessments: any[], basis: string, isMitigated: boolean) => {
+         // getting assessment values
+
+        const getAssessmentDetails = (assessments: any[], basis: any, isMitigated: boolean) => {
           const assessment = assessments.find(a => a.assessmentBasis === basis && a.isMitigated === isMitigated);
-          return { impact: assessment?.matrixImpact || '', likelihood: assessment?.matrixLikelihood || '' };
+          console.log(assessment)
+          return { impact: assessment?.matrixImpact || '', likelihood: assessment?.matrixLikelihood || '',riskfactor:assessment?.riskFactor || '' };
         };
 
-        // const getAssessmentDetails = (
-        //   assessments: RiskAssessment[],
-        //   basis: string,
-        //   isMitigated: boolean
-        // ) => {
-        //   const assessment = assessments.find((a) =>
-        //     a.assessmentBasis?.toLowerCase() === basis.toLowerCase() && a.isMitigated === isMitigated
-        //   );
-
-        //   if (!assessment) {
-        //     console.warn(`No assessment found for basis: ${basis}, isMitigated: ${isMitigated}`);
-        //   }
-
-        //   return {
-        //     impact: assessment?.matrixImpact || 'N/A',
-        //     likelihood: assessment?.matrixLikelihood || 'N/A'
-        //   };
-        // };
-
+        // adding assessment values
 
         if (risk.riskType === 'Quality') {
-          const preAssessment = getAssessmentDetails(risk.riskAssessments || [], 'Quality', false);
-          const postAssessment = getAssessmentDetails(risk.riskAssessments || [], 'Quality', true);
-
+          const preAssessment = getAssessmentDetails(risk.riskAssessments || [], null, false);
+          const postAssessment = getAssessmentDetails(risk.riskAssessments || [], null, true);
+          // const assessments = [];
+          // assessments.push(
+          //   preAssessment.impact,
+          //   preAssessment.likelihood
+          // );
+          // assessments.push(
+          //   postAssessment.impact,
+          //   postAssessment.likelihood
+          // );
           const row = qualitySheet.addRow([
             ...baseRiskInfo,
             preAssessment.impact,
             preAssessment.likelihood,
+            preAssessment.riskfactor,
             postAssessment.impact,
-            postAssessment.likelihood
+            postAssessment.likelihood,
+            postAssessment.riskfactor
           ]);
 
           applyRowStyles(row, this.styles.cell);
         } else if (risk.riskType === 'Security' || risk.riskType === 'Privacy') {
           const assessmentTypes = ['Confidentiality', 'Integrity', 'Privacy', 'Availability'];
-          const assessments = [];
-
+          const oassessments = [];
+          const eassessments = [];
           for (const type of assessmentTypes) {
             const preAssessment = getAssessmentDetails(risk.riskAssessments || [], type, false);
             const postAssessment = getAssessmentDetails(risk.riskAssessments || [], type, true);
 
-            assessments.push(
+            oassessments.push(
               preAssessment.impact,
-              preAssessment.likelihood
+              preAssessment.likelihood,
+              preAssessment.riskfactor
             );
-            assessments.push(
+            eassessments.push(
               postAssessment.impact,
-              postAssessment.likelihood
+              postAssessment.likelihood,
+              postAssessment.riskfactor
             );
           }
 
-          const row = securitySheet.addRow([...baseRiskInfo, ...assessments]);
+          const row = securitySheet.addRow([...baseRiskInfo, ...oassessments, ...eassessments]);
           applyRowStyles(row, this.styles.cell);
         }
       });
+
 
       // Generate and save file
       const buffer = await workbook.xlsx.writeBuffer();
