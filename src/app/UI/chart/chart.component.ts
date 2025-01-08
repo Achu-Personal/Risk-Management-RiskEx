@@ -53,15 +53,15 @@ export class ChartComponent {
         }
       },
       legend: {
-      position: 'right', // Legend on the right
+      // position: 'right', // Legend on the right
       labels: {
 
-        padding: 30, // Adjust this to increase the gap
-        boxWidth: 35,
-        boxHeight: 10,
+        // padding: 30, // Adjust this to increase the gap
+        boxWidth: 25,
+        boxHeight: 8,
       font: {
-      size: 15,
-      // family: 'Montserrat', // Font family
+      size: 10,
+      family: 'Montserrat', // Font family
       weight: 'normal' // Font weight
       },
       color: '#000000'

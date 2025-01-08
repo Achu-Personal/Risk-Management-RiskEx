@@ -13,6 +13,13 @@ export class BubbleGraphComponent {
   @Input() qualityRiskCount: number = 4;
   @Input() securityRiskCount: number = 10;
 
+  ngOnInit() {
+
+
+    // Log the value of qualityRiskCount
+    console.log('qualityRiskCount on init:', this.securityRiskCount);
+  }
+
 
   getDimension(value:number)
   {

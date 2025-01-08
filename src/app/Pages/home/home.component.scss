@@ -74,9 +74,10 @@ app-department-dropdown{
   margin-top: 15px;
   // padding-top: 40px;
 }
+
 .graph1{
   background-color:#D0C6B6 ;
-  height: 95%;
+  height: 88%;
   width: 60%;
   border-radius: 20px;
   display: flex;
@@ -138,7 +139,7 @@ app-department-dropdown{
 }
 .graph2{
   background-color: #FFFFFF;
-  height: 95%;
+  height: 88%;
   width: 40%;
   border-radius: 20px;
   overflow: hidden;
@@ -159,6 +160,7 @@ app-department-dropdown{
   height: 200px;
   margin-top: -25px;
   margin-left: 60px;
+  // background-color: red;
 }
 .graphchart{
   overflow: hidden;
@@ -169,7 +171,7 @@ app-department-dropdown{
   justify-content: space-around;
   gap: 15px;
   // gap: 10px;
-  // margin-top: 10px;
+  margin-top: -20px;
   height: 50%;
   width: 100%;
 }
@@ -367,34 +369,42 @@ app-department-dropdown{
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding-left: 15px;
+  padding-left: 20px;
+  margin-top: 30px;
 }
 .graph2Legend>div
 {
 display: flex;
 flex-direction: row;
 align-items: center;
-gap: 20px;
+gap: 15px;
 }
-// .graph2Legend>div>h5
-// {
-// font-size: 15px;
-// font-weight: bold;
-// margin: 0px;
-// }
-.graph2Legend>div>h6
+.graph2Legend>div>h5
 {
 font-size: 15px;
+font-weight: bold;
+margin: 0px;
+}
+.graph2Legend>div>h6
+{
+font-size: 13px;
 font-weight: 500;
 margin: 0px;
 color: grey;
 }
 .graph2Legend>div>div
 {
-  height: 20px;
+  height: 8px;
   width: 20px;
   background-color: red;
-  border-radius: 50%;
+  // border-radius: 50%;
+}
+.no-risks-message {
+  font-size: 18px;
+  font-style: italic;
+  color: gray;
+  text-align: center;
+  margin-top: 70px;
 }
 // .circle-1 {
 //   width: 80%;
