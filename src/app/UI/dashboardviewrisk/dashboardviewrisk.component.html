@@ -1,0 +1,9 @@
+<div class="risk-card1"  >
+  <div class="riskCard1-left">
+    <div class="risk-text1">{{ data.riskName }}</div>
+    <div class="risk-date1">{{ data.plannedActionDate | date: 'd MMM yyyy' }}</div>
+  </div>
+  <div class="riskCard1-right">
+    <button (click)="OnCardClicked(data.id)" class="view-risk-button1">View Risk</button>
+  </div>
+</div>

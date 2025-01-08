@@ -241,8 +241,9 @@ export class ApiService {
   getRiskCategoryCountsByDepartment(departmentList: number[]) {
     let params = new HttpParams();
     departmentList.forEach((departmentId) => {
-      params = params.append('departmentList', departmentId.toString());
+      params = params.append('departmentIds', departmentId.toString());
     });
+    console.log("params",params)
     return this.http.get(`${this.baseUrl}/Risk/RiskCategoryCountByDepartment`, {
       params,
     });
@@ -296,7 +297,7 @@ export class ApiService {
       body: body,
       isBodyHtml: true
     };
-    console.log('Sending payload:', payload); 
+    console.log('Sending payload:', payload);
     return this.http.post(`${this.baseUrl}/emails`, payload);
   }
 
