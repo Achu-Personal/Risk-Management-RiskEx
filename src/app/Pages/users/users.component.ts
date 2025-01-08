@@ -116,9 +116,9 @@ tableBody:any[]=[
         }
       });
     } else if (userRole === 'DepartmentUser'||userRole?.includes('EMTUser')) {
-      const department = this.authService.getDepartmentName();
+      const department:any = this.authService.getDepartmentId();
       if (department) {
-        this.api.getAllUsersByDepartmentName(department).subscribe({
+        this.api.getUsersByDepartmentId(department).subscribe({
           next: (users: any) => {
             this.tableBody = users;
           },
@@ -347,12 +347,14 @@ tableBody:any[]=[
         newDepartmentName: this.updateDepartmentForm.get('newDepartmentName')?.value,
         newDepartmentCode: this.updateDepartmentForm.get('newDepartmentCode')?.value
       };
-        console.log(updateData)
+     
       this.api.updateDepartment(updateData).subscribe({
         next: (response) => {
           console.log('Department updated successfully:', response);
           this.updateDepartmentForm.reset();
+
           this.loadDepartments();
+
           const modal = document.getElementById('updateDepartmentModal');
           if (modal) {
             (modal as HTMLElement).click();
