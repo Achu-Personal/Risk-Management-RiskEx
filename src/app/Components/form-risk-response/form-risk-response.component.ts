@@ -13,16 +13,11 @@ export class FormRiskResponseComponent {
 @Output() selectedValueChange = new EventEmitter<any>();
 @Input() label:string=''
 @Input() required:string=''
-@Input() bgColor:string=''
+
 
 selectedResponse: any = null
 
 constructor(private el: ElementRef){}
-ngOnInit(){
-
-  this.el.nativeElement.style.setProperty('--bg-color', this.bgColor);
-
-}
 
 onRadioChange(event: any) {
   this.selectedValueChange.emit(this.selectedResponse);

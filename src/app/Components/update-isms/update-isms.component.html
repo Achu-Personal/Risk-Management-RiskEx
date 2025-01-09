@@ -56,6 +56,8 @@
       <div class="form-row" [ngStyle]="{'margin-top':'30px'}">
        <h2 [ngStyle]="{'border-bottom':'0px','text-transform':'none'}">Overall Risk Rating : <span style="margin-left: 10px;" [ngStyle]="{'color': changeColorOverallRiskRating()}" >{{overallRiskRating}}</span></h2>
       </div>
+      <p [ngStyle]="{'margin-top':'20px','font-style':'italic','color':'grey'}">Risk Factor = Likelihood * Impact</p>
+      <p [ngStyle]="{'margin-top':'20px','font-style':'italic','color':'grey'}">Overall risk rating = Risk Factor(Confidentiality)+Risk Factor(Integrity)+Risk Factor(Availability)+Risk Factor(Privacy)</p>
       <div [ngStyle]="{'margin-top':'20px','font-style':'italic','color':'grey'}">
        <p>For reference <span (click)="isHeatMapReference()"><a href="javascript:void(0);">click </a></span>here</p>
       </div>
@@ -63,14 +65,14 @@
     <div class="form-details-sub-container" >
       <h2>RISK CLOSURE</h2>
       <app-form-date-field label="Actual Close Date" required="*" formControlName="closeDate" ></app-form-date-field>
-      <app-form-risk-response label="Risk Response" required="*" [riskResponses]="riskResponses" (selectedValueChange)="onRadioSelectionChange($event)" [bgColor]="bgColor"></app-form-risk-response>
+      <app-form-risk-response label="Risk Response" required="*" [riskResponses]="riskResponses" (selectedValueChange)="onRadioSelectionChange($event)" ></app-form-risk-response>
     </div>
     <div class="form-details-sub-container">
       <h2>Reviewer</h2>
       <app-form-dropdown label="Reviewer" required="*" [dropdownData]="dropdownReviewer" dropdownDisplay="fullName"
       dropdownValue="fullName" selectValue="reviewer" (change)="onDropdownChangeReviewer($event)"
       [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)" message="You can select an existing reviewer from the dropdown
-      or enter a new one. If you enter a new name, it will take priority over the dropdown selection." [backgroundColor]="bgColor"></app-form-dropdown>
+      or enter a new one. If you enter a new name, it will take priority over the dropdown selection." ></app-form-dropdown>
 
       <div [ngStyle]="{'margin-top':'20px','font-style':'italic','color':'grey'}">
         <p>If reviewer not in the list <span (click)="isReviewerNotInList()" ><a href="javascript:void(0);">click </a></span>here</p>
@@ -79,15 +81,15 @@
     </div>
     <div class="form-details-sub-container">
       <h2>Remarks</h2>
-      <app-form-text-area label="Remarks" required="*" placeHolder="Enter remark"
+      <app-form-text-area label="Remarks" placeHolder="Enter remark"
       message="Remarks on risk after mitigation indicate the effectiveness of applied controls,
       the remaining (residual) risk level, and whether further actions are needed to manage the
-      risk within acceptable limits."  formControlName="remarks" [backgroundColor]="bgColor"></app-form-text-area>
+      risk within acceptable limits."  formControlName="remarks" ></app-form-text-area>
     </div>
     <div class="form-details-sub-container">
       <div class="button-group">
-        <app-form-button label="Save" (clicked)="saveConfirmation()"></app-form-button>
-        <app-form-button label="Cancel" (clicked)="cancelRisk()"></app-form-button>
+        <app-style-button (clicked)="saveConfirmation()" label="Save" type="button"></app-style-button>
+        <app-style-button (clicked)="cancelRisk()" label="Cancel" type="button"></app-style-button>
       </div>
     </div>
   </form>
@@ -96,28 +98,28 @@
     <app-form-reference-heatmap-popup (closeHeatMap)="closeHeatMap()"></app-form-reference-heatmap-popup>
    }
   @if(reviewerNotInList){
-    <app-form-data-not-in-list placeholder="Enter reviewer name" [isAssignee]="false" textLabel="Reviewer name" [dropdownDepartment]="dropdownDepartment" (cancelForm)="receiveCancel($event)" (sendData)="saveReviewer($event)" [bgColor]="bgColor" [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)"></app-form-data-not-in-list>
+    <app-form-data-not-in-list placeholder="Enter reviewer name" [isAssignee]="false" textLabel="Reviewer name" [dropdownDepartment]="dropdownDepartment" (cancelForm)="receiveCancel($event)" (sendData)="saveReviewer($event)"  [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)"></app-form-data-not-in-list>
   }
   @if(isSuccessReviewer){
     <app-form-successfull
     message="Add new reviewer successfully!"
     [isSuccessfull] ="true"
-    (closeDialog)="closeReviewer()" [bgColor]="bgColor">
+    (closeDialog)="closeReviewer()" >
     </app-form-successfull>
  }
  @if(isErrorReviewer){
   <app-form-successfull
   message="Something went Wrong!"
   [isSuccessfull] ="false"
-  (closeDialog)="closeReviewer()" [bgColor]="bgColor">
+  (closeDialog)="closeReviewer()" >
   </app-form-successfull>
 }
 @if(isSave){
-  <app-form-conform-popup message="Do you want to save the entered risk details? You can check and edit them later if needed." [bgColor]="bgColor" (closeDialog)="saveRisk()" (notCloseDialog)="saveConfirmation()"></app-form-conform-popup>
+  <app-form-conform-popup message="Do you want to save the entered risk details? You can check and edit them later if needed."  (closeDialog)="saveRisk()" (notCloseDialog)="saveConfirmation()"></app-form-conform-popup>
 }
 
 @if(isCancel){
-  <app-form-conform-popup message="Are you sure you want to cancel? Any unsaved changes will be lost." [bgColor]="bgColor" (closeDialog)="closeRisk()" (notCloseDialog)="cancelRisk()"></app-form-conform-popup>
+  <app-form-conform-popup message="Are you sure you want to cancel? Any unsaved changes will be lost."  (closeDialog)="closeRisk()" (notCloseDialog)="cancelRisk()"></app-form-conform-popup>
 }
 </div>
 
