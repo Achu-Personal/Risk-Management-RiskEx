@@ -39,17 +39,34 @@
         <thead>
           <tr class="bord">
             @for(header of tableHeaders; track header){
-            <th
-              title="{{
-                header === 'overallRiskRating'
-                  ? 'Current Risk Rating'
-                  : headerDisplayMap[header] || header
-              }}"
-            >
-              {{ headerDisplayMap[header] || header }}
-            </th>
-
-            } @if(IsActionRequiered && !isAdmin && !IsUser && !IsAssignee){
+              <th title="{{header === 'overallRiskRating' ? 'Current Risk Rating' : headerDisplayMap[header] || header}}">
+                <div class="header-with-filter">
+                  {{ headerDisplayMap[header] || header }}
+                  @if(header === 'departmentName' || header === 'riskType'){
+                    <span class="filter-icon" (click)="toggleFilter($event, header)">&#9662;</span>
+                    @if(showFilterDropdown && currentFilterColumn === header){
+                      <div class="filter-dropdown" (click)="$event.stopPropagation()">
+                        <div class="filter-search">
+                          <input 
+                            type="text" 
+                            [(ngModel)]="filterSearchText" 
+                            placeholder="Search..."
+                            (input)="searchFilterOptions()">
+                        </div>
+                        <div class="filter-options">
+                          @for(option of getFilteredOptions(); track option){
+                            <div class="filter-option" (click)="applyFilter(header, option)">
+                              {{ option }}
+                            </div>
+                          }
+                        </div>
+                      </div>
+                    }
+                  }
+                </div>
+              </th>
+              }
+           @if(IsActionRequiered && !isAdmin && !IsUser && !IsAssignee){
             <th>Actions</th>
             } @else if(IsUser && (isAdmin || isDepartmentUser) ){
             <th>Status</th>

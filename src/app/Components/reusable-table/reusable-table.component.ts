@@ -41,6 +41,7 @@ export class ReusableTableComponent {
 
   constructor(public auth:AuthService, public api:ApiService,private cdr: ChangeDetectorRef){}
 
+
   // SVG paths for eye states
   openEyePath = 'M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z';
   closedEyePath = 'M1 12s4-8 11-8 11 8 11 8M2 12h20';
@@ -173,15 +174,95 @@ getRiskRatingStyle(riskRating: number): string {
 
     this.onclickrow.emit(row);
     }
-    ngOnChanges(changes: SimpleChanges): void {
-      console.log('Table Headers:', this.tableHeaders);
-      console.log('Table Data:', this.tableData);
-    }
+    // ngOnChanges(changes: SimpleChanges): void {
+    //   console.log('Table Headers:', this.tableHeaders);
+    //   console.log('Table Data:', this.tableData);
+    // }
 
     hasValidData(): boolean {
       return this.tableData && this.tableData.length > 0 && this.tableData.some(row => row.riskName || row.riskId || row.fullName);
     }
 
    
+  showFilterDropdown = false;
+  currentFilterColumn: string | null = null;
+  filterSearchText = '';
+  activeFilters: { [key: string]: string } = {};
+  originalTableData: any[] = [];
+
+  toggleFilter(event: Event, header: string) {
+    event.stopPropagation();
+    
+    if (this.currentFilterColumn === header && this.showFilterDropdown) {
+      this.showFilterDropdown = false;
+      this.currentFilterColumn = null;
+    } else {
+      this.showFilterDropdown = true;
+      this.currentFilterColumn = header;
+      this.filterSearchText = '';
+    }
+  }
+
+  // Get unique values for the current column
+  getColumnValues(column: string): string[] {
+    return [...new Set(this.tableData.map(row => row[column]))].filter(Boolean);
+  }
+
+  // Get filtered options based on search text
+  getFilteredOptions(): string[] {
+    if (!this.currentFilterColumn) return [];
+    
+    const options = this.getColumnValues(this.currentFilterColumn);
+    if (!this.filterSearchText) return options;
+    
+    return options.filter(option => 
+      option.toLowerCase().includes(this.filterSearchText.toLowerCase())
+    );
+  }
+
+  searchFilterOptions() {
+    // This will trigger a re-render of the filtered options
+  }
+
+  applyFilter(column: string, value: string) {
+    this.activeFilters[column] = value;
+    this.filterData();
+    this.showFilterDropdown = false;
+    this.currentFilterColumn = null;
+  }
+
+  clearFilter(column: string) {
+    delete this.activeFilters[column];
+    this.filterData();
+  }
+
+  private filterData() {
+    // Start with original data
+    let filteredData = [...this.originalTableData];
+    
+    // Apply all active filters
+    Object.entries(this.activeFilters).forEach(([column, value]) => {
+      filteredData = filteredData.filter(row => row[column] === value);
+    });
+    
+    this.tableData = filteredData;
+  }
+
+  // Close dropdown when clicking outside
+  @HostListener('document:click', ['$event'])
+onDocumentClick(event: Event): void {
+  const targetElement = event.target as HTMLElement;
+  
+  // Check if the click was inside the filter dropdown or toggle button
+  if (this.showFilterDropdown && !targetElement.closest('.filter-dropdown') && !targetElement.closest('.filter-icon')) {
+    this.showFilterDropdown = false;
+    this.currentFilterColumn = null;
+  }
+}
+
+  
+
+
+
     
 }
