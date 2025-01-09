@@ -161,16 +161,19 @@ onFormSubmit(event: { payload: any, riskType: number }) {
   // console.log("riskid:",Number(this.riskId));
 
   if (riskType == 1) {
-    this.api.updateQualityRisk(payload,Number(this.riskId)).subscribe((res:any)=>{
-      console.log("updated quality api response:",res)
-      this.isSuccess=true
-
-    },
-
-  (error:any)=>{
-    this.isError=true
-    this.error=error.message
-  })
+    this.api.updateQualityRisk(payload, Number(this.riskId)).subscribe({
+      next: (res: any) => {
+        console.log("Updated quality API response:", res);
+        this.isSuccess = true;
+      },
+      error: (error: any) => {
+        this.isError = true;
+        this.error = error.message.replace(/\n/g, '<br>'); // Replace newlines with <br> for display
+      },
+      complete: () => {
+        console.log("Update quality risk request completed.");
+      }
+    });
   console.log("riskid:",Number(this.riskId));
 
   // this.api.getRevieverDetails(Number(this.riskId)).subscribe({
@@ -218,24 +221,23 @@ onFormSubmit(event: { payload: any, riskType: number }) {
   //   },
   // });
   }
-  else if (riskType == 2) {
-    this.api.updateSecurityOrPrivacyRisk(payload,Number(this.riskId)).subscribe((res:any)=>{
-      console.log("updated security api response:",res)
-      this.isSuccess=true
-    },
-  (error:any)=>{
-    this.isError=true
-  })
+  else if (riskType == 2 || riskType==3) {
+    this.api.updateSecurityOrPrivacyRisk(payload, Number(this.riskId)).subscribe({
+      next: (res: any) => {
+        console.log("Updated security API response:", res);
+        this.isSuccess = true;
+      },
+      error: (error: any) => {
+        this.isError = true;
+        this.error = error.message.replace(/\n/g, '<br>');
+        console.error("Error updating security risk:", error);
+      },
+      complete: () => {
+        console.log("Update security risk request completed.");
+      }
+    });
   }
-  else{
-    this.api.updateSecurityOrPrivacyRisk(payload,Number(this.riskId)).subscribe((res:any)=>{
-      console.log("updated privacy api response:",res)
-      this.isSuccess=true
-    },
-  (error:any)=>{
-    this.isError=true
-  })
-  }
+  
   this.api.getRevieverDetails(Number(this.riskId),'ApprovalPending').subscribe({
     next: (r: any) => {
       console.log('reviewer details fetching');

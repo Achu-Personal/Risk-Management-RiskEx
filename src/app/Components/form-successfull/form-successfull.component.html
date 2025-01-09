@@ -5,8 +5,9 @@
         <h4 [ngStyle]="{'color': isSuccessfull ? 'green' : 'red'}">
           {{ isSuccessfull ? 'Success' : 'Error' }}
         </h4>
-        <p>{{HeaderMessage}}</p>
-        <p>{{ message }}</p>
+        <p [innerHTML]="HeaderMessage"></p>
+        <p [innerHTML]="message"></p>
+
         <!-- <button class="close-btn" (click)="close()">OK</button> -->
         <app-style-button (clicked)="close()" label="OK" type="button"></app-style-button>
 

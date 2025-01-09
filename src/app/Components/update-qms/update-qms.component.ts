@@ -174,6 +174,8 @@ openDropdownId: string | undefined = undefined;
   isCancel:boolean=false
   isSave:boolean=false
   isValid:boolean=false
+  newReviewername:string=''
+  isnewReviewernameDisplay:boolean=false
 
 
 constructor(private el: ElementRef, private renderer: Renderer2,private api:ApiService,private router: Router){}
@@ -376,6 +378,8 @@ saveReviewer(value: any){
       if (res) {
         this.externalReviewerIdFromInput = res.reviewerId
         this.isSuccessReviewer=true
+        this.newReviewername=payload.fullName
+        this.isnewReviewernameDisplay=true
       } else {
         console.error("External Reviewer ID is not available in the response:", res);
       }
