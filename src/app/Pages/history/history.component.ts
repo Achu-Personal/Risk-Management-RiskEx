@@ -23,6 +23,7 @@ export class HistoryComponent {
   isDepartmentUser: boolean = false;
   isProjectUser : boolean = false;
   isEmtUser:boolean =false;
+  isLoading = false;
   projectList: number[] =[];
   item:any=[];
   @Input() items:any=[];
@@ -43,6 +44,7 @@ export class HistoryComponent {
         const role = this.auth.getUserRole();
         const department = this.auth.getDepartmentId();
         const pro = this.auth.getProjects();
+        this.isLoading = true;
 
         // Set roles
         this.isAdmin = Array.isArray(role) ? role.includes('Admin') : role === 'Admin';
@@ -65,6 +67,7 @@ export class HistoryComponent {
         this.api.gethistorytabledata().subscribe((res: any) => {
           this.items = res;
           this.cdr.detectChanges();
+          this.isLoading = false;
           console.log("Admin All Data:", this.items);
         });
       }
@@ -72,6 +75,7 @@ export class HistoryComponent {
         this.api.getDepartmentHistoryTable(department).subscribe((res: any) => {
           this.items = res;
           this.cdr.detectChanges();
+          this.isLoading = false;
           console.log("Department User All Data:", this.items);
         });
       }
@@ -79,6 +83,7 @@ export class HistoryComponent {
         this.api.getProjectHistroyTable(this.projectList).subscribe((res: any) => {
           this.items = res;
           this.cdr.detectChanges();
+          this.isLoading = false;
           console.log("Project User All Data:", this.items);
         });
       }
