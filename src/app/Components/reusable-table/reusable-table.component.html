@@ -1,4 +1,38 @@
-<ng-container *ngIf="hasValidData(); else noData">
+
+<!-- Add the loading state before the main ng-container -->
+<div class="loading-skeleton" *ngIf="isLoading">
+  <div class="tablestyle">
+    <table class="tabledata">
+      <thead>
+        <tr class="bord">
+          <th *ngFor="let header of tableHeaders">
+            <div class="skeleton-cell"></div>
+          </th>
+          <th *ngIf="IsActionRequiered || IsUser">
+            <div class="skeleton-cell"></div>
+          </th>
+          <th *ngIf="IsUser">
+            <div class="skeleton-cell"></div>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of [1,2,3,4,5]">
+          <td *ngFor="let header of tableHeaders">
+            <div class="skeleton-cell"></div>
+          </td>
+          <td *ngIf="IsActionRequiered || IsUser">
+            <div class="skeleton-cell"></div>
+          </td>
+          <td *ngIf="IsUser">
+            <div class="skeleton-cell"></div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<ng-container *ngIf="!isLoading && hasValidData(); else noData">
   <div class="table-container" [ngStyle]="{ height: height }">
     <div class="tablestyle">
       <table class="tabledata">
@@ -162,7 +196,7 @@
   </div>
 </ng-container>
 <ng-template #noData>
-  <div class="no-data-container">
+  <div class="no-data-container" *ngIf=" !isLoading"  >
     <h3 class="no-data-message">{{noDataMessage}}</h3>
   </div>
 </ng-template>
