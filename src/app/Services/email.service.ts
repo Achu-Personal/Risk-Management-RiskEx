@@ -47,7 +47,7 @@ export class EmailService {
       this.reviewerEmailTemplate,
       context
     );
-    console.log("body:",body);
+    // console.log("body:",body);
     
 
     return this.api.sendMail(email, subject, body).pipe(

@@ -231,7 +231,7 @@ export class ApprovalTableComponent {
         this.assignee=res;
         // console.log(this.assignee);  
         const context = {
-          responsibleUser: res[0].fullName,
+          responsibleUser: res.fullName,
           riskId: event.row.riskId,
           riskName: event.row.riskName,
           description: event.row.description,
@@ -242,7 +242,7 @@ export class ApprovalTableComponent {
           reason:event.comment 
         };
         console.log("context:",context);
-        this.email.sendOwnerEmail(res[0].email,context).subscribe({
+        this.email.sendOwnerEmail(res.email,context).subscribe({
           next: () => {
             console.log('owner email sent successfully');
             // this.router.navigate(['/thankyou']);

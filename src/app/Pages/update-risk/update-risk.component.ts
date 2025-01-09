@@ -129,59 +129,56 @@ export class UpdateRiskComponent {
         );
     }
 
-          // console.log('API Response:', r);
-          
-          console.log('risk id:', Number(this.riskId));
-
-          console.log('reviewer details fetching');
-          // const reviewer = r[0].fullName;
-          // console.log('Reviewer Details:', reviewer);
-          this.api.getRiskById(Number(this.riskId)).subscribe((res: any) => {
-           this.getReviewerNameandEmail(Number(this.riskId),'ApprovalPending',(reviewer)=>{
-            this.riskData = res;
-            console.log("reviewer:",reviewer);
-            
-            // const reviewer = res.riskAssessments[1].review.reviewerName;
-            console.log('risk Data:', this.riskData);
-            this.context = {
-              responsibleUser: reviewer.name,
-              riskId: res.riskId,
-              riskName: res.riskName,
-              description: res.description,
-              riskType: res.riskType,
-              impact: res.impact,
-              mitigation: res.mitigation,
-              plannedActionDate: new Date(
-                res.plannedActionDate
-              ).toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-              }),
-              overallRiskRating: res.overallRiskRating,
-              id: res.id,
-              rid: res.id,
-            };
-            console.log('Email Context:', this.context);
-            // console.log('API Response:', r);
-            // Send email to reviewer
-            this.email
-              .sendReviewerEmail(reviewer.email, this.context)
-              .subscribe({
-                next: () => {
-                  // console.log('Reviewer Email:', r[0].email);
-                  console.log('Email Sent Successfully.');
-                },
-                error: (emailError) => {
-                  console.error(
-                    'Failed to send email to reviewer:',
-                    emailError
-                  );
-                },
-              });
-            })
-            
+    this.api.getRevieverDetails(Number(this.riskId),'ApprovalPending').subscribe({
+      next: (r: any) => {
+        console.log("response:",r);
+        
+        console.log('reviewer details fetching');
+   
+        this.reviewer = r.fullName;
+        console.log('Reviewer Details:', this.reviewer);
+        this.api.getRiskById(Number(this.riskId)).subscribe((res:any)=>{
+          this.riskData=res
+          console.log("risk Data:",this.riskData);
+          this.context = {
+            responsibleUser: this.reviewer,
+            riskId: res.riskId,
+            riskName: res.riskName,
+            description: res.description,
+            riskType: res.riskType,
+            impact: res.impact,
+            mitigation: res.mitigation,
+            plannedActionDate: new Date(
+              res.plannedActionDate
+            ).toLocaleDateString('en-US', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+            }),
+            overallRiskRating: res.overallRiskRating,
+            id: res.id,
+            rid: res.id,
+          };
+          console.log('Email Context:', this.context);
+   
+          // Send email to reviewer
+          this.email.sendReviewerEmail(r.email, this.context).subscribe({
+            next: () => {
+              console.log('Reviewer Email:', r.email);
+              console.log('Email Sent Successfully.');
+            },
+            error: (emailError) => {
+              console.error('Failed to send email to reviewer:', emailError);
+            },
           });
+         
+        })
+       
+      },
+      error: (reviewerError) => {
+        console.error('Failed to fetch reviewer details:', reviewerError);
+      },
+    });
 
   }
 
