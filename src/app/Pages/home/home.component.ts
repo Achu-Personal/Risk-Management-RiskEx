@@ -10,12 +10,14 @@ import { ApiService } from '../../Services/api.service';
 import { BubbleGraphComponent } from "../../UI/bubble-graph/bubble-graph.component";
 import { StyleButtonComponent } from "../../UI/style-button/style-button.component";
 import { DashboardviewriskComponent } from "../../UI/dashboardviewrisk/dashboardviewrisk.component";
+import { DashbaordCardContainerComponent } from "../../Components/dashbaord-card-container/dashbaord-card-container.component";
+import { DashbaordOpenRiskGraphComponent } from "../../UI/dashbaord-open-risk-graph/dashbaord-open-risk-graph.component";
 
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [NgIf, BodyContainerComponent, ButtonComponent, DepartmentDropdownComponent, ChartComponent, BubbleGraphComponent, CommonModule, StyleButtonComponent, DashboardviewriskComponent],
+  imports: [NgIf, BodyContainerComponent, ButtonComponent, DepartmentDropdownComponent, ChartComponent, BubbleGraphComponent, CommonModule, StyleButtonComponent, DashboardviewriskComponent, DashbaordCardContainerComponent, DashbaordOpenRiskGraphComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
@@ -48,7 +50,7 @@ export class HomeComponent {
         ngOnInit(){
 
           this.ApiInvocations()
-          this.cdr.detectChanges()
+
 
         }
 
@@ -57,8 +59,8 @@ export class HomeComponent {
       ApiInvocations()
       {
 
-
-        this.api. getOpenRiskCountByType(this.authService.getUserRole() === 'Admin'?'' :this.authService.getDepartmentId()).subscribe((e:any)=>{
+        let isAdminOrEMTuser=this.authService.getUserRole() === 'Admin'||this.authService.getUserRole()?.includes("EMTUser")
+        this.api. getOpenRiskCountByType(isAdminOrEMTuser?[] :[parseInt(this.authService.getDepartmentId()!) ]).subscribe((e:any)=>{
           this.openRiskCountByType=e
           this.list=e
           const riskcounts = this.list.reduce((acc: any, item: any) => {
@@ -74,7 +76,8 @@ export class HomeComponent {
         })
 
 
-          this.api.getRiskCategoryCounts(this.authService.getUserRole() === 'Admin'?'' :this.authService.getDepartmentId()).subscribe((e:any)=>{
+
+          this.api.getRiskCategoryCounts(isAdminOrEMTuser?'' :this.authService.getDepartmentId()).subscribe((e:any)=>{
           this.riskCategoryCounts=e
           this.list=e
               const count = this.list.map((element: { count: any; }) => element.count);
@@ -104,12 +107,12 @@ export class HomeComponent {
               console.log("criticalitylevel",e)
           })
 
-            this.api.getRiskApproachingDeadline(this.authService.getUserRole() === 'Admin'?'' :this.authService.getDepartmentId()).subscribe((e:any)=>{
+            this.api.getRiskApproachingDeadline(isAdminOrEMTuser?[] :[parseInt(this.authService.getDepartmentId()!) ]).subscribe((e:any)=>{
             this.riskApproachingDeadline=e
             console.log("approaching",e)
             })
 
-            this.api.getRisksWithHeigestOverallRating(this.authService.getUserRole() === 'Admin'?'':this.authService.getDepartmentId()).subscribe((e:any)=>{
+            this.api.getRisksWithHeigestOverallRating(isAdminOrEMTuser?[] :[parseInt(this.authService.getDepartmentId()!) ]).subscribe((e:any)=>{
             this.risksWithHeighesOverallRating=e
             console.log("heigest",e)
           })
@@ -169,9 +172,41 @@ export class HomeComponent {
                   this.graph2chartType='doughnut'
                   this.graph2labels=this.risk
                   console.log("criticalitylevel",e)
+                  this.cdr.detectChanges()
+            })
+
+
+              this.api. getOpenRiskCountByType(event).subscribe((e:any)=>{
+                console.log("hai",e)
+                this.openRiskCountByType=e
+                this.list=e
+                const riskcounts = this.list.reduce((acc: any, item: any) => {
+                acc[item.riskType] = item.riskCount;
+                return acc;
+                }, {});
+
+                this.privacyRiskCount = riskcounts['Privacy'] ;
+                this.qualityRiskCount = riskcounts['Quality'] ;
+                this.securityRiskCount = riskcounts['Security'];
+                console.log(this.privacyRiskCount,this.qualityRiskCount,this.securityRiskCount)
+
+                console.log("OpenRiskCount",e)
+                this.cdr.detectChanges()
               })
 
-              this.cdr.detectChanges()
+              this.api.getRisksWithHeigestOverallRating(event).subscribe((e:any)=>{
+                this.risksWithHeighesOverallRating=e
+                console.log("heigest",e)
+                this.cdr.detectChanges()
+              })
+
+              this.api.getRiskApproachingDeadline(event).subscribe((e:any)=>{
+                this.riskApproachingDeadline=e
+                console.log("approaching",e)
+                })
+
+
+
 
         }
 

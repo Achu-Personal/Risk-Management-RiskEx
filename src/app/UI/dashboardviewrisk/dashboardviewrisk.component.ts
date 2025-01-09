@@ -23,5 +23,17 @@ export class DashboardviewriskComponent {
     {
       this.router.navigate([`ViewRisk/${id}`]) //         /ViewRisk/${this.allData.id}/
     }
+    get dynamicBackgroundColor(): string {
+
+      if (this.data.overallRiskRatingBefore <= 45) {
+        return 'green';
+      }
+      if (this.data.overallRiskRatingBefore >= 46 && this.data.overallRiskRatingBefore <= 69) {
+        return '#FFBF00';
+      }
+      return 'red';
+    }
+
+
 
 }

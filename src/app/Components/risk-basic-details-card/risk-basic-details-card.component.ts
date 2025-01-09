@@ -5,6 +5,7 @@ import { EditButtonComponent } from "../../UI/edit-button/edit-button.component"
 import {  Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { UpdateButtonComponent } from "../../UI/update-button/update-button.component";
+import { AuthService } from '../../Services/auth.service';
 
 @Component({
   selector: 'app-risk-basic-details-card',
@@ -15,7 +16,7 @@ import { UpdateButtonComponent } from "../../UI/update-button/update-button.comp
 })
 export class RiskBasicDetailsCardComponent {
 
-  constructor(public router :Router)
+  constructor(public router :Router,public authService:AuthService)
   {
 
   }
