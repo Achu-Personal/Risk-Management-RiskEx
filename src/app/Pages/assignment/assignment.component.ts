@@ -34,12 +34,13 @@ headerData:any=[
 
 
 headerDisplayMap: { [key: string]: string } = {
+
   riskId: "Risk Id",
   riskName: "Risk Name",
   description: "Description",
   riskType: "Risk Type",
   overallRiskRating: "CRR",
-  departmentName:'Department Name',
+  departmentName:'Department ',
   responsibleUser:'Responsible User',
 
   plannedActionDate:"End Date",
@@ -79,7 +80,6 @@ ngOnInit()
           overallRiskRating: 0,
           departmentName:"",
           responsibleUser:"",
-
           plannedActionDate: Date,
           riskStatus: '',
         },
@@ -104,8 +104,6 @@ ngOnInit()
           description: '',
           riskType: '',
           overallRiskRating: 0,
-
-
           plannedActionDate: Date,
           riskStatus: '',
         },
