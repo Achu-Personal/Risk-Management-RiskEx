@@ -41,6 +41,10 @@
               {
               <div class="text-danger"> Name is required. </div>
               }
+              @if (projectForm.get('projectName')?.invalid && projectForm.get('projectName')?.touched)
+              {
+              <div class="text-danger">Project name is required.</div>
+              }
             </div>
 
             <div class="mb-3">
@@ -85,7 +89,7 @@
             <div class="mb-3">
               <label for="projectName" class="form-label">Project</label>
               <app-project-drop-down [departmentName]="userForm.get('departmentName')?.value"
-                formControlName="projectNames"
+                formControlName="projectIds"
                 (selectedProjectsChange)="onProjectsSelected($event)"></app-project-drop-down>
             </div>
 
@@ -192,7 +196,7 @@
               }
 
               <label for="projectCode" class="form-label p-2">
-                Project Name <span class="text-danger">*</span>
+                Project Code <span class="text-danger">*</span>
               </label>
               <input type="text" class="form-control" id="projectCode" placeholder="Enter Project Code"
                 formControlName="projectCode" />

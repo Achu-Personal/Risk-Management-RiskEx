@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from '../../Services/api.service';
 import { AuthService } from '../../Services/auth.service';
 import { EmailService } from '../../Services/email.service';
+import { NotificationService } from '../../Services/notification.service';
 
 @Component({
   selector: 'app-approval-table',
@@ -74,62 +75,96 @@ export class ApprovalTableComponent {
     public auth: AuthService,
     private route: ActivatedRoute,
     public email:EmailService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private notification:NotificationService
 
   ) {}
 
+
+  private refreshTableDataAdmin(){
+    this.isLoading = true;
+    this.headerData = [
+      'riskId',
+      'riskName',
+      'description',
+      'riskType',
+      'riskDepartment',
+      'plannedActionDate',
+      'overallRiskRating',
+      'riskStatus',
+      'reviewerName',
+      'reviewerDepartment',
+    ];
+    this.tableBodyAdmin = [
+      {
+        riskId: '',
+        riskName: '',
+        description: '',
+        riskType: '',
+        riskDepartment: 'N/A',
+        plannedActionDate: Date,
+        overallRiskRating: 0,
+        riskStatus: '',
+        reviewerName: 'N/A',
+        reviewerDepartment: 'N/A',
+      },
+    ]
+
+    this.api.getAllRisksTobeReviewed().subscribe((response: any) => {
+      console.log("admin tablebody:",response);
+      this.tableBodyAdmin = response ;
+      this.isLoading = false;
+
+
+    });
+
+
+  }
+  private refershTableData(){
+    this.isLoading = true;
+    this.headerData = [
+      'riskId',
+      'riskName',
+      'description',
+      'riskType',
+      'plannedActionDate',
+      'overallRiskRating',
+      'departmentName',
+      'riskStatus',
+    ];
+    this.tableBody= [
+      {
+        riskId: '',
+        riskName: '',
+        description: '',
+        riskType: '',
+        plannedActionDate: Date,
+        overallRiskRating: 0,
+        departmentName: '',
+        riskStatus: '',
+      },
+    ]
+    this.api.getRisksByReviewerId(this.auth.getCurrentUserId()).subscribe((response: any) => {
+      console.log('API Response:', response);
+      this.tableBody=response;
+      console.log('tableBody:', this.tableBody);
+      this.isLoading = false;
+
+    });
+  }
+
   ngOnInit(): void {
 
-    // const role = this.auth.getUserRole(); // Fetch user role
-    // this.isAdmin = role === 'Admin';
-    // // this.isEMT = role?.includes('EMTUser') || false;
+    const role = this.auth.getUserRole();
+    this.isAdmin = role === 'Admin';
+
     this.isLoading = true;
-    if (this.auth.getUserRole()=="Admin" ) {
-      this.headerData = [
-        'riskId',
-        'riskName',
-        'description',
-        'riskType',
-        'riskDepartment',
-        'plannedActionDate',
-        'overallRiskRating',
-        'riskStatus',
-        'reviewerName',
-        'reviewerDepartment',
-      ];
+    if (this.isAdmin) {
 
-      this.api.getAllRisksTobeReviewed().subscribe((response: any) => {
-        this.tableBodyAdmin = response || [];
-        console.log("admin tablebody:",this.tableBodyAdmin);
-        this.isLoading = false;
+      this.refreshTableDataAdmin();
 
-
-      });
     } else {
-      this.headerData = [
-        'riskId',
-        'riskName',
-        'description',
-        'riskType',
-        'plannedActionDate',
-        'overallRiskRating',
-        'departmentName',
-        'riskStatus',
-      ];
-      this.api.getRisksByReviewerId().subscribe((response: any) => {
-        console.log('API Response:', response);
-
-        if (Array.isArray(response)) {
-          this.tableBody = response;
-        } else {
-          console.error('Expected an array but got:', response);
-          this.tableBody = []; // Default to an empty array if the response is not valid
-        }
-
-        console.log('tableBody:', this.tableBody);
-        this.isLoading = false;
-
-      });
+      this.refershTableData();
 
     }
   }
@@ -170,6 +205,7 @@ export class ApprovalTableComponent {
           overallRiskRating:event.row.overallRiskRating,
           riskStatus:event.row.riskStatus
         };
+
         console.log("context:",context);
         this.email.sendAssigneeEmail(this.assignee.email,context).subscribe({
           next: () => {
@@ -185,6 +221,10 @@ export class ApprovalTableComponent {
       });
 
       this.cdr.markForCheck();
+
+    }
+    if(event.row.riskStatus==='close'){
+      this.notification.success("The risk has closed successfully")
     }
 
 
@@ -192,6 +232,7 @@ export class ApprovalTableComponent {
     // this.api.sendEmailToAssignee(id);
     console.log('Approved:', event.row);
     console.log('Comment:', event.comment);
+    this.refershTableData();
   }
 
   rejectRisk(event: {row: any, comment: string}) {
@@ -205,6 +246,7 @@ export class ApprovalTableComponent {
     if(event.row.riskStatus==='open' || event.row.riskStatus==='close'){
       this.api.getriskOwnerEmailandName(id).subscribe((res:any)=>{
         this.assignee=res;
+
         // console.log(this.assignee);
         const context = {
           responsibleUser: res[0].name,
@@ -235,9 +277,10 @@ export class ApprovalTableComponent {
     if(event.row.riskStatus==='close'){
       this.api.getAssigneeByRiskId(id).subscribe((res:any)=>{
         this.assignee=res;
+
         // console.log(this.assignee);
         const context = {
-          responsibleUser: res[0].fullName,
+          responsibleUser: res.fullName,
           riskId: event.row.riskId,
           riskName: event.row.riskName,
           description: event.row.description,
@@ -248,7 +291,7 @@ export class ApprovalTableComponent {
           reason:event.comment
         };
         console.log("context:",context);
-        this.email.sendOwnerEmail(res[0].email,context).subscribe({
+        this.email.sendOwnerEmail(res.email,context).subscribe({
           next: () => {
             console.log('owner email sent successfully');
             // this.router.navigate(['/thankyou']);
@@ -267,5 +310,6 @@ export class ApprovalTableComponent {
     console.log('Rejected:', event.row);
     console.log('Comment:', event.comment);
     this.cdr.markForCheck();
+    this.refershTableData();
   }
 }

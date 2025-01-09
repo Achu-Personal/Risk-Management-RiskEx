@@ -9,7 +9,7 @@
   <div class="tab"></div>
 
   <app-table
-
+    [isLoading]="isLoading"
     (onclickrow)="OnClickRow($event)"
     [paginated]="items"
     [filteredDateRange]="selectedDateRange">
