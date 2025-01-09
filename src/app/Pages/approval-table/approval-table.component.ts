@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { BodyContainerComponent } from '../../Components/body-container/body-container.component';
 import { ReusableTableComponent } from '../../Components/reusable-table/reusable-table.component';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -64,20 +64,24 @@ export class ApprovalTableComponent {
   cancelMessage: string = '';
   approveMessage: string = '';
   isAdmin: boolean = false;
+  isEMT=false;
 
   constructor(
     private router: Router,
     private api: ApiService,
     public auth: AuthService,
     private route: ActivatedRoute,
-    public email:EmailService
+    public email:EmailService,
+    private cdr: ChangeDetectorRef
     
   ) {}
 
   ngOnInit(): void {
     const role = this.auth.getUserRole(); // Fetch user role
     this.isAdmin = role === 'Admin';
-    if (this.isAdmin) {
+    // this.isEMT = role?.includes('EMTUser') || false;
+
+    if (this.isAdmin ) {
       this.headerData = [
         'riskId',
         'riskName',
@@ -142,6 +146,8 @@ export class ApprovalTableComponent {
     };
     let id = event.row.id;
     this.api.updateReviewStatusAndComments(id,updates);
+    this.cdr.detectChanges();
+    this.cdr.markForCheck();
     console.log("risk status:",event.row.riskStatus);
     
     if(event.row.riskStatus==='open'){
@@ -171,6 +177,8 @@ export class ApprovalTableComponent {
         })
         
       });
+
+      this.cdr.markForCheck();
     }
     
 
@@ -252,5 +260,6 @@ export class ApprovalTableComponent {
    
     console.log('Rejected:', event.row);
     console.log('Comment:', event.comment);
+    this.cdr.markForCheck();
   }
 }

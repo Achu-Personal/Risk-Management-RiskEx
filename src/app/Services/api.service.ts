@@ -307,6 +307,8 @@ export class ApiService {
   }
 
   getRevieverDetails(riskId: number, reviewStatus: string) {
+    
+    
     return this.http.get(
       `${this.baseUrl}/Reviewer/gettheReviewer/${riskId}?reviewStatus=${reviewStatus}`
     );

@@ -17,9 +17,12 @@
 
             } @if(IsActionRequiered && !isAdmin && !IsUser && !IsAssignee){
             <th>Actions</th>
-            } @else if(IsUser ){
+            } @else if(IsUser && (isAdmin || isDepartmentUser) ){
             <th>Status</th>
             <th>Action</th>
+            }
+            @else if(IsUser && !isAdmin && !isDepartmentUser){
+              <th>Status</th>
             }
           </tr>
         </thead>
@@ -111,7 +114,7 @@
               </div>
             </td>
 
-            } @else if(IsUser ) {
+            } @else if(IsUser && (isAdmin || isDepartmentUser) ) {
 
             <td *ngIf="IsUser">
               <div
@@ -138,6 +141,18 @@
               </div>
             </td>
 
+            }
+            @else if(IsUser && !isAdmin && !isDepartmentUser){
+              <td *ngIf="IsUser">
+                <div
+                  [ngClass]="{
+                    'active-status': row.isActive,
+                    'inactive-status': !row.isActive
+                  }"
+                >
+                  {{ row.isActive ? "Active" : "Inactive" }}
+                </div>
+              </td>
             }
           </tr>
           }
