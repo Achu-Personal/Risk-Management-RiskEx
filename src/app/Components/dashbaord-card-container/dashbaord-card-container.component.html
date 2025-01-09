@@ -7,6 +7,13 @@
       {
       <app-dashboardviewrisk [data]="item"></app-dashboardviewrisk>
       }
+      @if(list.length==0)
+      {
+        <div class="placeholderr">
+          <h5>No risk to show</h5>
+        </div>
+
+      }
 
   </div>
 </div>
