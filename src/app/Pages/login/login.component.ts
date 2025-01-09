@@ -3,7 +3,6 @@ import { FormBuilder,  FormGroup, ReactiveFormsModule, Validators } from '@angul
 import { Router } from '@angular/router';
 import { AuthService } from '../../Services/auth.service';
 import { NgIf } from '@angular/common';
-import { UsericonDropdownComponent } from "../../UI/usericon-dropdown/usericon-dropdown.component";
 
 @Component({
   selector: 'app-login',
@@ -17,7 +16,8 @@ export class LoginComponent {
   loginForm: FormGroup;
   showError = false;
   errorMessage: string = "";
-  
+  isLoading = false;
+
   constructor(
     private authServices: AuthService,
     private fb: FormBuilder,
@@ -31,16 +31,19 @@ export class LoginComponent {
 
   clearError() {
     this.showError = false;
-    this.errorMessage = ""; // Reset error message
+    this.errorMessage = "";
   }
 
   onSubmit() {
     if (this.loginForm.valid) {
+      this.isLoading = true;
+      this.clearError();
       this.authServices.login(this.loginForm.value).subscribe(
         (response) => {
-          this.clearError();
+          this.isLoading = false;
         },
         (error) => {
+          this.isLoading = false;
           this.showError = true;
           this.errorMessage = error; // Use the error message from the backend
         }

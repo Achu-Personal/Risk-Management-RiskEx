@@ -37,13 +37,9 @@
                 Name <span class="text-danger">*</span>
               </label>
               <input type="text" class="form-control" id="name" placeholder="Enter Name" formControlName="fullName" />
-              @if (userForm.get('name')?.invalid && userForm.get('name')?.touched)
+              @if (userForm.get('fullName')?.invalid && userForm.get('fullName')?.touched)
               {
               <div class="text-danger"> Name is required. </div>
-              }
-              @if (projectForm.get('projectName')?.invalid && projectForm.get('projectName')?.touched)
-              {
-              <div class="text-danger">Project name is required.</div>
               }
             </div>
 

@@ -108,7 +108,7 @@ tableBody:any[]=[
  private refreshUsersData() {
   this.isLoading = true;
     const userRole = this.authService.getUserRole();
-    if (userRole === 'Admin') {
+    if (userRole === 'Admin'||userRole?.includes('EMTUser')) {
       this.api.getAllUsers().subscribe({
         next: (users: any) => {
           this.tableBodyAdmin = users;
@@ -119,7 +119,7 @@ tableBody:any[]=[
           this.isLoading = false;
         }
       });
-    } else if (userRole === 'DepartmentUser'||userRole?.includes('EMTUser')) {
+    } else if (userRole === 'DepartmentUser') {
       const department:any = this.authService.getDepartmentId();
       if (department) {
         this.api.getUsersByDepartmentId(department).subscribe({
@@ -189,11 +189,11 @@ tableBody:any[]=[
       this.isDepartmentFieldDisabled = true;
     }
 
-    if (userRole === 'Admin') {
+    if (userRole === 'Admin'||userRole?.includes('EMTUser')) {
       this.headerData = ['fullName', 'email', 'department', 'projects'];
       this.isAdmin = true;
       this.refreshUsersData();
-    } else if (userRole === 'DepartmentUser'||userRole?.includes('EMTUser')) {
+    } else if (userRole === 'DepartmentUser') {
       this.isAdmin = false;
       this.refreshUsersData();
     } else if (userRole?.includes('ProjectUsers')) {

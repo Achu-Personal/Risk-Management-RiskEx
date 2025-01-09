@@ -141,6 +141,7 @@ export class ApiService {
 
 
 
+
   addnewQualityRisk(qualityRisk: any) {
     console.log('quality risk payload', qualityRisk);
     return this.http.post(`${this.baseUrl}/Risk/add/quality`, qualityRisk);
@@ -382,6 +383,17 @@ getUsersByDepartmentId(departmentId:number){
   return this.http.get(
     `${this.baseUrl}/User/${departmentId}`
   );
+}
+
+changePassword(currentPassword: string, newPassword: string, confirmPassword: string): Observable<any> {
+  const userId = this.auth.getCurrentUserId();
+  const url = `${this.baseUrl}/Account/ChangePassword/${userId}`;
+  const payload = {
+    currentPassword,
+    newPassword,
+    confirmPassword
+  };
+  return this.http.post(url, payload);
 }
 
 }
