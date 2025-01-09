@@ -17,12 +17,13 @@ import { FormSuccessfullComponent } from '../form-successfull/form-successfull.c
 import { FormReferenceHeatmapPopupComponent } from '../form-reference-heatmap-popup/form-reference-heatmap-popup.component';
 import { FormConformPopupComponent } from '../form-conform-popup/form-conform-popup.component';
 import { Router } from '@angular/router';
+import { StyleButtonComponent } from '../../UI/style-button/style-button.component';
 
 
 @Component({
   selector: 'app-isms-form',
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule, ButtonComponent, DropdownComponent, TextareaComponent, OverallRatingCardComponent,CommonModule,FormInputComponent,FormDropdownComponent,FormTextAreaComponent,FormDateFieldComponent,FormButtonComponent,FormDataNotInListComponent,FormSuccessfullComponent,FormReferenceHeatmapPopupComponent,FormConformPopupComponent],
+  imports: [FormsModule, ReactiveFormsModule, ButtonComponent, DropdownComponent, TextareaComponent, OverallRatingCardComponent,CommonModule,FormInputComponent,FormDropdownComponent,FormTextAreaComponent,FormDateFieldComponent,FormButtonComponent,FormDataNotInListComponent,FormSuccessfullComponent,FormReferenceHeatmapPopupComponent,FormConformPopupComponent,StyleButtonComponent],
   templateUrl: './isms-form.component.html',
   styleUrl: './isms-form.component.scss'
 })
@@ -31,7 +32,6 @@ export class ISMSFormComponent {
 
   @Output() submitForm = new EventEmitter<any>();
   @Output() departmentSelectedByAdmin = new EventEmitter<any>();
-  @Input() bgColor: string = ''
   @Input() riskTypeValue: number=1
   @Input() departmentName: string=''
   @Input() departmentId: string=''
@@ -106,6 +106,7 @@ export class ISMSFormComponent {
   isdraftConform:boolean=false
   isCancel:boolean=false
   isSave:boolean=false
+  isValid:boolean=false
 
 
 
@@ -113,36 +114,23 @@ export class ISMSFormComponent {
 constructor(private api:ApiService,public authService:AuthService,private el: ElementRef,private router: Router){}
 
 ngOnInit(){
-  this.el.nativeElement.style.setProperty('--bg-color', this.bgColor);
   this.api.getNewRiskId(Number(this.departmentId)).subscribe({
     next: (res: any) => {
-      this.riskId = res.riskId;
-      console.log("Risk ID received:", this.riskId);  // Log the riskId to see if it's what you expect
+      if (res && res.riskId) {
+        this.riskId = res.riskId;
+        console.log("Risk ID received:", this.riskId);  // Log the riskId to see if it's what you expect
+      } else {
+        console.error("Risk ID is not available in the response:", res);
+      }
     },
     error: (err) => {
-      console.error("Error occurred:", err);  // Log the full error to see what went wrong
+      console.error("Error occurred while fetching Risk ID:", err);  // Log the full error to see what went wrong
     }
   });
-  this.loadDraft();
+    this.loadDraft();
 
 
 
-
-    this.ismsForm.patchValue({
-      riskName:this.draft.riskName,
-      description:this.draft.description,
-      impact:this.draft.impact,
-      mitigation:this.draft.mitigation,
-      contingency:this.draft.contingency,
-      plannedActionDate:this.draft.plannedActionDate,
-    })
-   this.overallRiskRating=this.draft.overallRiskRating
-
-  this.confidentialityRiskFactor=this.draft.riskAssessments[0].riskFactor
-  this.integrityRiskFactor=this.draft.riskAssessments[1].riskFactor
-  this.availabilityRiskFactor=this.draft.riskAssessments[2].riskFactor
-  this.privacyRiskFactor=this.draft.riskAssessments[3].riskFactor
-  console.log(this.confidentialityRiskFactor);
 }
 
 
@@ -364,6 +352,38 @@ onSubmit(){
   console.log(this.ismsForm.value);
   const formValue = this.ismsForm.value;
 
+  if (this.ismsForm.invalid) {
+    console.log("Form is invalid, submission blocked");
+    this.ismsForm.markAllAsTouched(); // Highlights all errors
+    this.isValid=true
+    return; // Stop execution if form is invalid
+  }
+
+  if (
+    Number(this.riskTypeValue) <= 0 ||
+    Number(this.overallRiskRating) <= 0 ||
+    (Number(this.responsiblePersonId) <= 0 && Number(this.preSelectedResponsiblePerson) <= 0 && Number(this.newAssigneeId) <= 0) ||
+    (Number(this.departmentId) <= 0 && Number(this.departmentIdForAdminToAdd) <= 0) ||
+    (Number(this.confidentialityLikelihoodId) <= 0 && Number(this.preSelectedConfidentialityLikelihood) <= 0) ||
+    (Number(this.confidentialityImpactId) <= 0 && Number(this.preSelectedConfidentialityImpact) <= 0) ||
+    (Number(this.integrityLikelihoodId) <= 0 && Number(this.preSelectedIntegrityLikelihood) <= 0) ||
+    (Number(this.integrityImpactId) <= 0 && Number(this.preSelectedIntegrityImpact) <= 0) ||
+    (Number(this.availabilityLikelihoodId) <= 0 && Number(this.preSelectedAvailabilityLikelihood) <= 0) ||
+    (Number(this.availabilityImpactId) <= 0 && Number(this.preSelectedAvailabilityImpact) <= 0) ||
+    (Number(this.privacyLikelihoodId) <= 0 && Number(this.preSelectedPrivacyLikelihood) <= 0) ||
+    (Number(this.privacyImpactId) <= 0 && Number(this.preSelectedPrivacyImpact) <= 0)||
+    (this.isInternal &&
+      Number(this.internalReviewerIdFromDropdown) <= 0 &&
+      Number(this.externalReviewerIdFromInput) <= 0 &&
+      Number(this.externalReviewerIdFromDropdown) <= 0)
+
+  ) {
+    console.error("Form validation failed. Please ensure all required fields are filled correctly.");
+    this.isValid=true
+    return; // Stop form submission if validation fails
+  }
+
+
   const payload = {
     riskId:this.riskId ,
     riskName: formValue.riskName ,
@@ -459,16 +479,21 @@ saveAssignee(value: any){
     fullName:value.fullName,
     departmentName: departmentName
   }
-  this.api.addResponsiblePerson(payload).subscribe((res:any)=>{
-    this.newAssigneeId=res.id
-    console.log("new assignee id: ",this.newAssigneeId)
-    this.isSuccessAssignee=true
+  this.api.addResponsiblePerson(payload).subscribe({
+    next: (res: any) => {
+      if (res) {
+        this.newAssigneeId=res.id
+        this.isSuccessAssignee=true
 
-  },
-  (error:any)=>{
-    this.isErrorAssignee=true
-  }
-)
+      } else {
+        console.error("External Responsible ID is not available in the response:", res);
+      }
+    },
+    error: (err) => {
+      console.error("Error occurred while fetching Responsible person ID:", err);  // Log the full error to see what went wrong
+      this.isErrorAssignee=true
+    }
+  });
 
 }
 
@@ -481,16 +506,20 @@ saveReviewer(value: any){
     fullName:value.fullName,
     departmentId:value.departmentId
   }
- this.api.addExternalReviewer(payload).subscribe((res:any)=>{
-    this.externalReviewerIdFromInput = res.reviewerId
-    console.log("reviewer response",this.externalReviewerIdFromInput);
-    this.isSuccessReviewer=true
-
-  },
-  (error:any)=>{
-    this.isErrorReviewer=true
-  }
-)
+  this.api.addExternalReviewer(payload).subscribe({
+    next: (res: any) => {
+      if (res) {
+        this.externalReviewerIdFromInput = res.reviewerId
+        this.isSuccessReviewer=true
+      } else {
+        console.error("External Reviewer ID is not available in the response:", res);
+      }
+    },
+    error: (err) => {
+      console.error("Error occurred while fetching Reviewer ID:", err);  // Log the full error to see what went wrong
+      this.isErrorReviewer=true
+    }
+  });
 
 }
 
@@ -588,16 +617,14 @@ closeDraft(){
     console.log('Draft Loaded:', this.draft);
     this.ismsForm.patchValue(this.draft.formValues);
     this.overallRiskRating=this.draft.OverallRiskRatingBefore
-    this.riskFactor=this.draft.riskAssessments[0].riskFactor
+
+  this.confidentialityRiskFactor=this.draft.riskAssessments[0].riskFactor
+  this.integrityRiskFactor=this.draft.riskAssessments[1].riskFactor
+  this.availabilityRiskFactor=this.draft.riskAssessments[2].riskFactor
+  this.privacyRiskFactor=this.draft.riskAssessments[3].riskFactor
+
+
   }
-  console.log("datttttttttttttttttttttttttttttttttttttttttttt1", this.draft.riskAssessments[0].likelihood);
-  console.log("datttttttttttttttttttttttttttttttttttttttttttt2", this.draft.riskAssessments[1].likelihood);
-
-  console.log("datttttttttttttttttttttttttttttttttttttttttttt3", this.draft.riskAssessments[2].likelihood);
-
-  console.log("datttttttttttttttttttttttttttttttttttttttttttt4", this.draft.riskAssessments[3].likelihood);
-
-
 
 }
 
@@ -632,9 +659,7 @@ this.router.navigate(['/home']);
 
 ngOnChanges(changes: SimpleChanges): void {
 
-
-
-   if (this.draft.riskAssessments) {
+   if (this.draft&&this.draft?.length > 0) {
     if (changes['dropdownLikelihood']&& this.draft?.riskAssessments) {
       const riskFactors = ['Confidentiality', 'Integrity', 'Availability', 'Privacy'];
       riskFactors.forEach((factor, index) => {
@@ -719,7 +744,9 @@ ngOnChanges(changes: SimpleChanges): void {
   }
 }
 
-
+closepopupIsValidCheck(){
+  this.isValid=false
+ }
 
 
 }

@@ -4,6 +4,13 @@
       <h2>Risk Details</h2>
      <div class="form-row">
        <app-form-input label="Risk Name" required=" *" formControlName="riskName" ></app-form-input>
+       @if(ismsForm.get("riskName")){
+
+        @if (ismsForm.get("riskName")?.hasError('required')&& ismsForm.get("riskName")?.dirty) {
+          <div class="text-danger">Risk name is required</div>
+        }
+
+      }
        @if(isAdmin!=='Admin'){
 
         <app-form-dropdown label="Project Name" [dropdownData]="dropdownProject" dropdownDisplay="name" dropdownValue="id" selectValue="Project" (change)="onDropdownChangeProject($event)" [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)" [selectedValue]="preSelectedProject"  ></app-form-dropdown>
@@ -18,10 +25,42 @@
       <app-form-text-area label="Impact Of Risk" required="*" placeHolder="Enter impact of risk"
       message="Impact of a risk refers to the potential consequences or effects that a risk event
       may have on a project, system, or organization if it occurs. It can include financial loss,
-      delays, operational disruptions, or damage to reputation." formControlName="impact"   [backgroundColor]="bgColor"></app-form-text-area>
+      delays, operational disruptions, or damage to reputation." formControlName="impact" backgroundColor=" var(--form-color)"  ></app-form-text-area>
+
+      @if(ismsForm.get("impact")){
+
+        @if (ismsForm.get("impact")?.hasError('maxlength')) {
+          <div class="text-danger">maximum length is 1000</div>
+
+        }
+        @else if (ismsForm.get("impact")?.hasError('minlength')) {
+          <div class="text-danger">minimum length is 15</div>
+
+        }
+        @else if (ismsForm.get("impact")?.hasError('required')&& ismsForm.get("impact")?.dirty) {
+          <div class="text-danger">Impact of risk is required</div>
+        }
+
+      }
 
       <app-form-text-area label="Description" required="*" placeHolder="Enter description of risk"
-     message="Provide a detailed description of the risk, including what could cause it" formControlName="description"  [backgroundColor]="bgColor"></app-form-text-area>
+     message="Provide a detailed description of the risk, including what could cause it" formControlName="description" backgroundColor=" var(--form-color)" ></app-form-text-area>
+
+     @if(ismsForm.get("description")){
+
+      @if (ismsForm.get("description")?.hasError('maxlength')) {
+        <div class="text-danger">maximum length is 1000</div>
+
+      }
+      @else if (ismsForm.get("description")?.hasError('minlength')) {
+        <div class="text-danger">minimum length is 15</div>
+
+      }
+      @else if (ismsForm.get("description")?.hasError('required')&& ismsForm.get("description")?.dirty) {
+        <div class="text-danger">Description of risk is required</div>
+      }
+
+    }
     </div>
     <div class="form-details-sub-container">
       <h2>Current Risk Assessment</h2>
@@ -90,12 +129,28 @@
       <app-form-text-area label="Risk Mitigation" required="*" placeHolder="Enter mitigation plan"
       message="Mitigation refers to actions taken to reduce the likelihood or impact of a risk.
       Ensure preventive measures, such as implementing safety protocols or backup systems, to minimize
-      the risk." formControlName="mitigation"  [backgroundColor]="bgColor"></app-form-text-area>
+      the risk." formControlName="mitigation" backgroundColor=" var(--form-color)" ></app-form-text-area>
+
+      @if(ismsForm.get("mitigation")){
+
+        @if (ismsForm.get("mitigation")?.hasError('maxlength')) {
+          <div class="text-danger">maximum length is 1000</div>
+
+        }
+        @else if (ismsForm.get("mitigation")?.hasError('minlength')) {
+          <div class="text-danger">minimum length is 15</div>
+
+        }
+        @else if (ismsForm.get("mitigation")?.hasError('required')&& ismsForm.get("mitigation")?.dirty) {
+          <div class="text-danger">Mitigation of risk is required</div>
+        }
+
+      }
 
       <app-form-text-area label="Risk Contingency" placeHolder="Enter contingency plan"
       message="Contingency planning involves preparing for unforeseen events by having backup
       plans in place. These plans help ensure that your project can continue with minimal disruption
-      if unexpected risks occur." formControlName="contingency"  [backgroundColor]="bgColor"></app-form-text-area>
+      if unexpected risks occur." formControlName="contingency" backgroundColor=" var(--form-color)"  ></app-form-text-area>
     </div>
     <div class="form-details-sub-container">
       <h2>Action Plan</h2>
@@ -103,26 +158,33 @@
         <app-form-dropdown label="Responsibility of action" required="*" [dropdownData]="dropdownAssigneeForAdmin" dropdownDisplay="fullName"
         dropdownValue="id" selectValue="responsible person" (change)="onDropdownChangeResponsiblePerson($event)" [openDropdownId]="openDropdownId"
         [selectedValue]="preSelectedResponsiblePerson"(openDropdown)="handleDropdownOpen($event)" message="You can select an existing responsible person from the dropdown
-        or enter a new one. If you enter a new name, it will take priority over the dropdown selection." [backgroundColor]="bgColor"></app-form-dropdown>
+        or enter a new one. If you enter a new name, it will take priority over the dropdown selection."  backgroundColor=" var(--form-color)"></app-form-dropdown>
       }
        @if(isAdmin !== 'Admin'){
         <app-form-dropdown label="Responsibility of action" required="*" [dropdownData]="dropdownAssignee" dropdownDisplay="fullName"
         dropdownValue="id" selectValue="responsible person" (change)="onDropdownChangeResponsiblePerson($event)" [openDropdownId]="openDropdownId"
         [selectedValue]="preSelectedResponsiblePerson"(openDropdown)="handleDropdownOpen($event)" message="You can select an existing responsible person from the dropdown
-        or enter a new one. If you enter a new name, it will take priority over the dropdown selection." [backgroundColor]="bgColor"></app-form-dropdown>
+        or enter a new one. If you enter a new name, it will take priority over the dropdown selection." backgroundColor=" var(--form-color)" ></app-form-dropdown>
        }
       <div [ngStyle]="{'margin-top':'20px','font-style':'italic','color':'grey'}">
         <p>If responsible person not in the list <span (click)="isAssigneeNotInList()" ><a href="javascript:void(0);">click </a></span>here</p>
       </div>
 
       <app-form-date-field label="Planned Action Date" required="*" formControlName="plannedActionDate"></app-form-date-field>
+      @if(ismsForm.get("plannedActionDate")){
+
+        @if (ismsForm.get("plannedActionDate")?.hasError('required')&& ismsForm.get("plannedActionDate")?.dirty) {
+          <div class="text-danger">planned action date is required</div>
+        }
+
+      }
     </div>
     <div class="form-details-sub-container">
       <h2>Reviewer</h2>
       <app-form-dropdown label="Reviewer" required="*" [dropdownData]="dropdownReviewer" dropdownDisplay="fullName"
       dropdownValue="fullName" selectValue="reviewer" (change)="onDropdownChangeReviewer($event)" [openDropdownId]="openDropdownId"
       [selectedValue]="preSelectedReviewer"(openDropdown)="handleDropdownOpen($event)" message="You can select an existing reviewer from the dropdown
-      or enter a new one. If you enter a new name, it will take priority over the dropdown selection." [backgroundColor]="bgColor"></app-form-dropdown>
+      or enter a new one. If you enter a new name, it will take priority over the dropdown selection." backgroundColor=" var(--form-color)" ></app-form-dropdown>
       <div [ngStyle]="{'margin-top':'20px','font-style':'italic','color':'grey'}">
         <p>If reviewer not in the list <span (click)="isReviewerNotInList()" ><a href="javascript:void(0);">click </a></span>here</p>
       </div>
@@ -130,9 +192,9 @@
     </div>
     <div class="form-details-sub-container">
       <div class="button-group">
-        <app-form-button label="Save" (clicked)="saveConfirmation()"></app-form-button>
-        <app-form-button label="Save Draft" (clicked)="saveAsDraft()"></app-form-button>
-        <app-form-button label="Cancel" (clicked)="cancelRisk()"></app-form-button>
+        <app-style-button (clicked)="saveConfirmation()" label="Save" type="button"></app-style-button>
+        <app-style-button (clicked)="saveAsDraft()" label="Save Draft" type="button"></app-style-button>
+        <app-style-button (clicked)="cancelRisk()" label="Cancel" type="button"></app-style-button>
       </div>
     </div>
   </form>
@@ -141,49 +203,49 @@
     <app-form-reference-heatmap-popup (closeHeatMap)="closeHeatMap()"></app-form-reference-heatmap-popup>
    }
   @if(assigneeNotInList){
-    <app-form-data-not-in-list placeholder="Enter responsible person name" [isAssignee]="true" textLabel="Responsible person name" [dropdownDepartment]="dropdownDepartment" (cancelForm)="receiveCancel($event)" (sendData)="saveAssignee($event)" [bgColor]="bgColor" [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)"></app-form-data-not-in-list>
+    <app-form-data-not-in-list placeholder="Enter responsible person name" [isAssignee]="true" textLabel="Responsible person name" [dropdownDepartment]="dropdownDepartment" (cancelForm)="receiveCancel($event)" (sendData)="saveAssignee($event)"  [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)"></app-form-data-not-in-list>
   }
   @if(reviewerNotInList){
-    <app-form-data-not-in-list placeholder="Enter reviewer name" [isAssignee]="false" textLabel="Reviewer name" [dropdownDepartment]="dropdownDepartment" (cancelForm)="receiveCancel($event)" (sendData)="saveReviewer($event)" [bgColor]="bgColor" [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)"></app-form-data-not-in-list>
+    <app-form-data-not-in-list placeholder="Enter reviewer name" [isAssignee]="false" textLabel="Reviewer name" [dropdownDepartment]="dropdownDepartment" (cancelForm)="receiveCancel($event)" (sendData)="saveReviewer($event)"  [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)"></app-form-data-not-in-list>
   }
   @if(isSuccessReviewer){
     <app-form-successfull
     message="Add new reviewer successfully!"
     [isSuccessfull] ="true"
-    (closeDialog)="closeReviewer()" [bgColor]="bgColor">
+    (closeDialog)="closeReviewer()" >
     </app-form-successfull>
  }
  @if(isErrorReviewer){
   <app-form-successfull
   message="Something went Wrong!"
   [isSuccessfull] ="false"
-  (closeDialog)="closeReviewer()" [bgColor]="bgColor">
+  (closeDialog)="closeReviewer()" >
   </app-form-successfull>
 }
 @if(isSuccessAssignee){
   <app-form-successfull
   message="Add new Assignee successfully!"
   [isSuccessfull] ="true"
-  (closeDialog)="closeAssignee()" [bgColor]="bgColor">
+  (closeDialog)="closeAssignee()" >
   </app-form-successfull>
 }
 @if(isErrorAssignee){
 <app-form-successfull
 message="Something went Wrong!"
 [isSuccessfull] ="false"
-(closeDialog)="closeAssignee()" [bgColor]="bgColor">
+(closeDialog)="closeAssignee()" >
 </app-form-successfull>
 }
 @if(isSave){
-  <app-form-conform-popup message="Do you want to save the entered risk details? You can check and edit them later if needed." [bgColor]="bgColor" (closeDialog)="saveRisk()" (notCloseDialog)="saveConfirmation()"></app-form-conform-popup>
+  <app-form-conform-popup message="Do you want to save the entered risk details? You can check and edit them later if needed."  (closeDialog)="saveRisk()" (notCloseDialog)="saveConfirmation()"></app-form-conform-popup>
 }
 
 @if(isCancel){
-  <app-form-conform-popup message="Are you sure you want to cancel? Any unsaved changes will be lost." [bgColor]="bgColor" (closeDialog)="closeRisk()" (notCloseDialog)="cancelRisk()"></app-form-conform-popup>
+  <app-form-conform-popup message="Are you sure you want to cancel? Any unsaved changes will be lost."  (closeDialog)="closeRisk()" (notCloseDialog)="cancelRisk()"></app-form-conform-popup>
 }
 
 @if(isdraft){
-  <app-form-conform-popup message="Do you want to save the entered risk details as a draft? You can continue editing them the next time you open this page." [bgColor]="bgColor" (closeDialog)="closeDraft()" (notCloseDialog)="saveAsDraft()"></app-form-conform-popup>
+  <app-form-conform-popup message="Do you want to save the entered risk details as a draft? You can continue editing them the next time you open this page."  (closeDialog)="closeDraft()" (notCloseDialog)="saveAsDraft()"></app-form-conform-popup>
 
 
 }
@@ -191,9 +253,17 @@ message="Something went Wrong!"
   <app-form-successfull
   message="Draft saved successfully. Your progress will be available the next time you access this page."
   [isSuccessfull] ="true"
-  (closeDialog)="closeDialogSuccess()" [bgColor]="bgColor">
+  (closeDialog)="closeDialogSuccess()" >
   </app-form-successfull>
 }
+
+@if(isValid){
+  <app-form-successfull
+  message="Please check the form fields and ensure all mandatory fields are satisfied "
+  [isSuccessfull] ="false"
+  (closeDialog)="closepopupIsValidCheck()" >
+  </app-form-successfull>
+  }
 
 </div>
 
