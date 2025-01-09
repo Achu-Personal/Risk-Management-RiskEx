@@ -118,7 +118,6 @@ export class HomeComponent {
         })
 
 
-
           this.api.getRiskCategoryCounts(isAdminOrEMTuser?'' :this.authService.getDepartmentId()).subscribe((e:any)=>{
           this.riskCategoryCounts=e
           this.list=e
@@ -139,9 +138,10 @@ export class HomeComponent {
               this.graph2datasets=[{
                 data: counter,
                 backgroundColor: [
-                '#E0C6FD',
                 '#962DFF',
-                '#C6D2FD'
+                '#C6D2FD',
+                '#E0C6FD'
+
                 ],
                 hoverOffset: 10
               }]
@@ -187,6 +187,9 @@ export class HomeComponent {
 
             this.api.getRiskCategoryCountsByDepartment(event).subscribe((e:any)=>{
               console.log("darat",e)
+
+
+
               //this
               //   this.list=e
 
@@ -226,9 +229,9 @@ export class HomeComponent {
 
                     backgroundColor: [
 
-                    '#962DFF',
-                    '#E0C6FD',
-                    '#C6D2FD',
+                      '#962DFF',
+                      '#C6D2FD',
+                      '#E0C6FD'
 
 
                     ],
