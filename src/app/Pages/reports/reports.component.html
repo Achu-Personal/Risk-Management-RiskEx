@@ -11,6 +11,11 @@
 
   </div>
   <div class="tab"></div>
-  <app-table (onclickrow)="OnClickRow($event)" [paginated]="items" [filteredDateRange]="selectedDateRange" (filteredData)="onFilteredData($event)"></app-table>
+  <app-table [isLoading]="isLoading"
+    (onclickrow)="OnClickRow($event)"
+    [paginated]="items"
+    [filteredDateRange]="selectedDateRange"
+    (filteredData)="onFilteredData($event)">
+  </app-table>
 </app-body-container>
 
