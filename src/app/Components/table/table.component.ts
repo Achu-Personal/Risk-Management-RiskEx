@@ -316,10 +316,14 @@ export class TableComponent {
     }
   }
 
+  // hasValidData(): boolean {
+  //   return this.tableData && this.tableData.length > 0 && this.tableData.some(row => row.riskName || row.riskId || row.fullName);
+  // }
+  @Input() isLoading: boolean = false;
 
   @Input() noDataMessage:string='No Data Available'
   hasValidData(): boolean {
-    return this.filteredItems.length > 0 ;
+    return this.paginated && this.paginated.length >0;
   }
 
 

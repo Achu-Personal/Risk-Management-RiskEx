@@ -9,6 +9,7 @@ import { ConfirmationPopupComponent } from '../../Components/confirmation-popup/
 import { ActivatedRoute } from '@angular/router';
 import { NgIf } from '@angular/common';
 import { EmailService } from '../../Services/email.service';
+import { AuthService } from '../../Services/auth.service';
 
 @Component({
   selector: 'app-approval',
@@ -28,10 +29,15 @@ import { EmailService } from '../../Services/email.service';
 })
 export class ApprovalComponent {
   data:any=[];
-  constructor(public api: ApiService, public route:ActivatedRoute, private email:EmailService) {}
+  isAdmin:boolean=false;
+  showButtons:boolean=true;
+  constructor(public api: ApiService, public route:ActivatedRoute, private email:EmailService,private auth:AuthService) {}
+
+
   ngOnInit(){
     console.log("initial data:",this.data);
-    
+    const role = this.auth.getUserRole(); // Fetch user role
+    this.isAdmin = role === 'Admin';
     let id = parseInt(this.route.snapshot.paramMap.get('id')!);
     this.api.getRiskById(id).subscribe(e=>{
       console.log("Data=",e)
@@ -80,6 +86,7 @@ export class ApprovalComponent {
       };
       let id = parseInt(this.route.snapshot.paramMap.get('id')!);
       this.api.updateReviewStatusAndComments(id,updates);
+      this.showButtons = false;
       this.api.getRiskById(id).subscribe((res:any)=>{
         if(res.riskStatus==='open' || res.riskStatus==='close'){
           
@@ -152,6 +159,7 @@ export class ApprovalComponent {
       };
       let id = parseInt(this.route.snapshot.paramMap.get('id')!);
       this.api.updateReviewStatusAndComments(id,updates);
+      this.showButtons = false;
       this.api.getRiskById(id).subscribe((res:any)=>{
         if(res.riskStatus==='open'){
           const context = {

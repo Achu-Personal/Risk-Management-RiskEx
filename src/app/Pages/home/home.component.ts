@@ -15,6 +15,7 @@ import { DashbaordOpenRiskGraphComponent } from "../../UI/dashbaord-open-risk-gr
 
 
 
+
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -125,7 +126,7 @@ export class HomeComponent {
               const count = this.list.map((element: { count: any; }) => element.count);
               // this.counter = count
               const counter:number[]=count;
-              console.log("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",count);
+              console.log("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",counter);
 
               const riskCat = this.list.map((element: {riskCategory:any})=>element.riskCategory);
               this.risk = riskCat;
@@ -225,7 +226,7 @@ export class HomeComponent {
 
 
                   this.graph2datasets=[{
-                    data: count,
+                    data: counter,
 
                     backgroundColor: [
 
