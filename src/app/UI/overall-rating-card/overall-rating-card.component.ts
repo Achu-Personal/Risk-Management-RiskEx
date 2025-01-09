@@ -17,6 +17,7 @@ export class OverallRatingCardComponent {
   @Input() height: number = 45; // Default height in vh
   @Input() width: number = 45; // Default width in vh
   @Input() assessmentData: any[] = [];
+  @Input() riskType="Quality"
 
   isHovered: boolean = false;
   criticality=true;
@@ -32,35 +33,58 @@ export class OverallRatingCardComponent {
     return 'High';
   }
 
-  // Get dynamic background color based on input or value
   get dynamicBackgroundColor(): string {
     if (this.backgroundColor) {
       return this.backgroundColor;
     }
-    if (this.value <= 45) {
-      return 'green';
+
+    if (this.riskType === 'Quality') {
+      // Calculation specific to Quality risk type
+      if (this.value <= 8) {
+        return 'green';
+      }
+      if (this.value > 8 && this.value <= 32) {
+        return '#FFBF00'; // Moderate
+      }
+      return 'red'; // Critical
+    } else {
+      // Calculation for other risk types
+      if (this.value <= 45) {
+        return 'green';
+      }
+      if (this.value >= 46 && this.value <= 69) {
+        return '#FFBF00'; // Moderate
+      }
+      return 'red'; // Critical
     }
-    if (this.value >= 46 && this.value <= 69) {
-      return '#FFBF00';
-    }
-    return 'red';
   }
 
-  // Get dynamic text color based on input or value
   get dynamicTextColor(): string {
-
-
-    if (this.textColor!='') {
+    if (this.textColor) {
       return this.textColor;
     }
-    if (this.value <= 45) {
-      return 'green';
+
+    if (this.riskType === 'Quality') {
+      // Calculation specific to Quality risk type
+      if (this.value <= 8) {
+        return 'green';
+      }
+      if (this.value > 8 && this.value <= 32) {
+        return '#FFBF00'; // Moderate
+      }
+      return 'red'; // Critical
+    } else {
+      // Calculation for other risk types
+      if (this.value <= 45) {
+        return 'green';
+      }
+      if (this.value >= 46 && this.value <= 69) {
+        return '#FFBF00'; // Moderate
+      }
+      return 'red'; // Critical
     }
-    if (this.value >= 46 && this.value <= 69) {
-      return '#FFBF00';
-    }
-    return 'red';
   }
+
 
   // Return dynamic styles for width, height, background, and text color
   get dynamicStyles(): { [key: string]: string } {
