@@ -34,6 +34,7 @@ headerData:any=[
 
 
 headerDisplayMap: { [key: string]: string } = {
+
   riskId: "Risk Id",
   riskName: "Risk Name",
   description: "Description",
@@ -43,7 +44,7 @@ headerDisplayMap: { [key: string]: string } = {
   responsibleUser:'Responsible User',
 
   plannedActionDate:"End Date",
-  riskStatus: "Status"
+  riskStatus: "Risk Status"
 };
 
 tableBody:any[]=[
