@@ -178,9 +178,9 @@ export class ApiService {
     return this.http.get(`${this.baseUrl}/Risk/GetAllRisksAssigned`);
   }
 
-  getRisksByReviewerId() {
-    const userId = this.auth.getCurrentUserId();
-    return this.http.get(`${this.baseUrl}/Approval/Approval${userId}`);
+  getRisksByReviewerId(id:any='') {
+    // const userId = this.auth.getCurrentUserId();
+    return this.http.get(`${this.baseUrl}/Approval/Approval${id}`);
   }
 
   getAllRisksTobeReviewed() {
@@ -326,9 +326,9 @@ export class ApiService {
   }
 
   getRevieverDetails(riskId: number, reviewStatus: string) {
-    
+
     console.log("api url:",`${this.baseUrl}/Reviewer/gettheReviewer/${riskId}?reviewStatus=${reviewStatus}`);
-    
+
     return this.http.get(
       `${this.baseUrl}/Reviewer/gettheReviewer/${riskId}?reviewStatus=${reviewStatus}`
     );

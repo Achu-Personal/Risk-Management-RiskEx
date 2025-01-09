@@ -34,16 +34,16 @@ headerData:any=[
 
 
 headerDisplayMap: { [key: string]: string } = {
-  riskId: "RiskId",
-  riskName: "RiskName",
+  riskId: "Risk Id",
+  riskName: "Risk Name",
   description: "Description",
   riskType: "Risk Type",
   overallRiskRating: "CRR",
-  departmentName:'DepartmentName',
-  responsibleUser:'ResponsibleUser',
+  departmentName:'Department ',
+  responsibleUser:'Responsible User',
 
   plannedActionDate:"End Date",
-  riskStatus: "RiskStatus"
+  riskStatus: "Status"
 };
 
 tableBody:any[]=[
@@ -79,7 +79,6 @@ ngOnInit()
           overallRiskRating: 0,
           departmentName:"",
           responsibleUser:"",
-
           plannedActionDate: Date,
           riskStatus: '',
         },
@@ -104,8 +103,6 @@ ngOnInit()
           description: '',
           riskType: '',
           overallRiskRating: 0,
-
-
           plannedActionDate: Date,
           riskStatus: '',
         },
