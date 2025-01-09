@@ -1,7 +1,7 @@
 import { Component, ElementRef, EventEmitter, Input, Output, Renderer2 } from '@angular/core';
 import { DropdownComponent } from "../../UI/dropdown/dropdown.component";
 import { CommonModule } from '@angular/common';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FormDropdownComponent } from '../form-dropdown/form-dropdown.component';
 import { FormDateFieldComponent } from '../form-date-field/form-date-field.component';
 import { FormRiskResponseComponent } from '../form-risk-response/form-risk-response.component';
@@ -13,11 +13,12 @@ import { FormSuccessfullComponent } from '../form-successfull/form-successfull.c
 import { FormReferenceHeatmapPopupComponent } from '../form-reference-heatmap-popup/form-reference-heatmap-popup.component';
 import { FormConformPopupComponent } from '../form-conform-popup/form-conform-popup.component';
 import { Router } from '@angular/router';
+import { StyleButtonComponent } from '../../UI/style-button/style-button.component';
 
 @Component({
   selector: 'app-update-isms',
   standalone: true,
-  imports: [DropdownComponent,CommonModule,FormsModule,FormDropdownComponent,FormDateFieldComponent,FormRiskResponseComponent,ReactiveFormsModule,FormTextAreaComponent,FormDataNotInListComponent,FormButtonComponent,FormSuccessfullComponent,FormReferenceHeatmapPopupComponent,FormConformPopupComponent],
+  imports: [DropdownComponent,CommonModule,FormsModule,FormDropdownComponent,FormDateFieldComponent,FormRiskResponseComponent,ReactiveFormsModule,FormTextAreaComponent,FormDataNotInListComponent,FormButtonComponent,FormSuccessfullComponent,FormReferenceHeatmapPopupComponent,FormConformPopupComponent,StyleButtonComponent],
   templateUrl: './update-isms.component.html',
   styleUrl: './update-isms.component.scss'
 })
@@ -251,7 +252,6 @@ export class UpdateIsmsComponent {
 @Input() dropdownDepartment:any[]=[]
 @Input() dropdownReviewer: Array<{ id: number; fullName: string; email: string; type: string }> = [];
 @Input() riskResponses:Array<{ id: number; name: string; description: string; example: string; risks:string }> = [];
-@Input() bgColor:any
 @Input() riskTypeId:number=0
 overallRiskRating: number = 0;
 riskResponseValue:number=0
@@ -291,15 +291,14 @@ openDropdownId: string | undefined = undefined;
 
 isCancel:boolean=false
 isSave:boolean=false
+isValid:boolean=false
+
+newReviewername:string=''
+isnewReviewernameDisplay:boolean=false
 
 
 constructor(private el: ElementRef, private renderer: Renderer2,private api:ApiService,private router: Router){}
-ngOnInit(){
-  console.log("overall risk rating is before",this.overallRiskRatingBefore);
-  this.el.nativeElement.style.setProperty('--bg-color', this.bgColor);
 
-
-}
 handleDropdownOpen(dropdownId: string) {
   this.openDropdownId = this.openDropdownId === dropdownId ? undefined : dropdownId;
 }
@@ -385,7 +384,7 @@ calculateRiskFactor(category: string): void {
 
     this.overallRiskRating= this.confidentialityRiskFactor + this.integrityRiskFactor + this.availabilityRiskFactor + this.privacyRiskFactor
     this.residualValue=this.overallRiskRatingBefore-this.overallRiskRating
-    this.percentageRedution=(this.residualValue/this.overallRiskRatingBefore)*100
+    this.percentageRedution=parseFloat(((this.residualValue / this.overallRiskRatingBefore) * 100).toFixed(2));
     if(this.percentageRedution>60){
       this.residualRisk=1;
 
@@ -506,13 +505,39 @@ onDropdownChangeReviewer(selectedReviewer: any) {
 }
 
 updateQmsForm=new FormGroup({
-  closeDate:new FormControl(''),
+  closeDate:new FormControl('',Validators.required),
   remarks:new FormControl('')
 })
 
 onSubmit(){
   const formValue = this.updateQmsForm.value;
   console.log(formValue);
+
+  if (
+    !formValue.closeDate ||
+    this.riskResponseValue <= 0 ||
+    this.overallRiskRating <= 0 ||
+    this.percentageRedution <= 0 ||
+    this.residualRisk <= 0 ||
+    this.residualValue <= 0 ||
+    (Number(this.confidentialityLikelihoodId) <= 0) ||
+    (Number(this.confidentialityImpactId) <= 0 ) ||
+    (Number(this.integrityLikelihoodId) <= 0 ) ||
+    (Number(this.integrityImpactId) <= 0 ) ||
+    (Number(this.availabilityLikelihoodId) <= 0  )||
+    (Number(this.availabilityImpactId) <= 0 ) ||
+    (Number(this.privacyLikelihoodId) <= 0 ) ||
+    (Number(this.privacyImpactId) <= 0 )||
+    (this.isInternal &&
+      Number(this.internalReviewerIdFromDropdown) <= 0 &&
+      Number(this.externalReviewerIdFromInput) <= 0 &&
+      Number(this.externalReviewerIdFromDropdown) <= 0)
+  ) {
+    console.log("Invalid Input: Please ensure all required fields have valid values.");
+    this.isValid = false;
+    return;
+  }
+
 
   const payload={
     closedDate: `${formValue.closeDate}T00:00:00.000Z`,
@@ -598,16 +623,22 @@ saveReviewer(value: any){
     fullName:value.fullName,
     departmentId:value.departmentId
   }
- this.api.addExternalReviewer(payload).subscribe((res:any)=>{
-    this.externalReviewerIdFromInput = res.reviewerId
-    console.log("reviewer response",this.externalReviewerIdFromInput);
-    this.isSuccessReviewer=true
-
-  },
-  (error:any)=>{
-    this.isErrorReviewer=true
-  }
-)
+  this.api.addExternalReviewer(payload).subscribe({
+    next: (res: any) => {
+      if (res) {
+        this.externalReviewerIdFromInput = res.reviewerId
+        this.isSuccessReviewer=true
+        this.newReviewername=payload.fullName
+        this.isnewReviewernameDisplay=true
+      } else {
+        console.error("External Reviewer ID is not available in the response:", res);
+      }
+    },
+    error: (err) => {
+      console.error("Error occurred while fetching Reviewer ID:", err);  // Log the full error to see what went wrong
+      this.isErrorReviewer=true
+    }
+  });
 
 }
 

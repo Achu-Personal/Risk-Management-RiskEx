@@ -1,13 +1,13 @@
 
-<app-body-container [backgroundColor]="bgColor" padding="10">
+<app-body-container backgroundColor=" var(--form-color)"  padding="10">
   <div class="container">
-    <div class="content" [ngClass]="getRiskTypeClass()" >
+    <div class="content" >
       @if (riskType==="Quality"){
         <app-qms-edit [riskTypeValue]="selectedRiskType" [dropdownLikelihood]="dropdownDataLikelihood"
         [dropdownImpact]="dropdownDataImpact" [dropdownProject]="dropdownDataProject"
         [dropdownDepartment]="dropdownDataDepartment" [dropdownAssignee]="dropdownDataAssignee"
         [dropdownReviewer]="dropdownDataReviewer" [departmentName]="departmentName"
-        [departmentId]="departmentId" [isAdmin]="isAdmin" (submitForm)="onFormSubmit($event)" [bgColor]="bgColor" [riskData]="riskData"></app-qms-edit>
+        [departmentId]="departmentId" [isAdmin]="isAdmin" (submitForm)="onFormSubmit($event)" [riskData]="riskData"></app-qms-edit>
 
       }
       @if (riskType==="Security"){
@@ -15,28 +15,28 @@
        [dropdownImpact]="dropdownDataImpact" [dropdownProject]="dropdownDataProject"
        [dropdownDepartment]="dropdownDataDepartment" [dropdownAssignee]="dropdownDataAssignee"
        [dropdownReviewer]="dropdownDataReviewer" [departmentName]="departmentName"
-       [departmentId]="departmentId" [isAdmin]="isAdmin" (submitForm)="onFormSubmit($event)" [bgColor]="bgColor" [riskData]="riskData"></app-isms-edit>
+       [departmentId]="departmentId" [isAdmin]="isAdmin" (submitForm)="onFormSubmit($event)"  [riskData]="riskData"></app-isms-edit>
       }
       @if (riskType==="Privacy"){
         <app-isms-edit [riskTypeValue]="selectedRiskType" [dropdownLikelihood]="dropdownDataLikelihood"
         [dropdownImpact]="dropdownDataImpact" [dropdownProject]="dropdownDataProject"
         [dropdownDepartment]="dropdownDataDepartment" [dropdownAssignee]="dropdownDataAssignee"
         [dropdownReviewer]="dropdownDataReviewer" [departmentName]="departmentName"
-        [departmentId]="departmentId" [isAdmin]="isAdmin" (submitForm)="onFormSubmit($event)" [bgColor]="bgColor" [riskData]="riskData"></app-isms-edit>
+        [departmentId]="departmentId" [isAdmin]="isAdmin" (submitForm)="onFormSubmit($event)"  [riskData]="riskData"></app-isms-edit>
        }
     </div>
     @if(isSuccess){
       <app-form-successfull
-      message="Risk has been edited successfully! You can now check it in the risk management dashboard."
+      message="Risk has been edited successfully!<br> You can now check it in the risk management dashboard."
       [isSuccessfull] ="true"
-      (closeDialog)="closeDialog()" [bgColor]="bgColor">
+      (closeDialog)="closeDialog()" >
       </app-form-successfull>
    }
    @if(isError){
     <app-form-successfull
-      message="Something went wrong. Please try again!"
+      [message]="error"
       [isSuccessfull]= "false"
-      (closeDialog)="closeDialog()" [bgColor]="bgColor">
+      (closeDialog)="closeDialog()" >
       </app-form-successfull>
 
    }

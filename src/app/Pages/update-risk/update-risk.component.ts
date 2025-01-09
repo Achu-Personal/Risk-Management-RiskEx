@@ -1,12 +1,16 @@
-import { Component } from '@angular/core';
-import { BodyContainerComponent } from '../../Components/body-container/body-container.component';
-import { UpdateQmsComponent } from '../../Components/update-qms/update-qms.component';
-import { UpdateIsmsComponent } from '../../Components/update-isms/update-isms.component';
+import { ChangeDetectorRef, Component } from '@angular/core';
+import { BodyContainerComponent } from "../../Components/body-container/body-container.component";
+import { UpdateQmsComponent } from "../../Components/update-qms/update-qms.component";
+import { UpdateIsmsComponent } from "../../Components/update-isms/update-isms.component";
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from '../../Services/api.service';
 import { CommonModule } from '@angular/common';
 import { FormSuccessfullComponent } from '../../Components/form-successfull/form-successfull.component';
 import { EmailService } from '../../Services/email.service';
+import { catchError } from 'rxjs/operators';
+import { of } from 'rxjs';
+import { AuthService } from '../../Services/auth.service';
+
 
 @Component({
   selector: 'app-update-risk',
@@ -22,70 +26,124 @@ import { EmailService } from '../../Services/email.service';
   styleUrl: './update-risk.component.scss',
 })
 export class UpdateRiskComponent {
-  bgColor: string = '';
-  riskId: string = '';
-  riskType: string = '';
-  riskTypeId: number = 0;
-  overallRiskRatingBefore: number = 0;
-  departmentName: string = '';
-  departmentId: string = '';
-  dropdownDataLikelihood: any[] = [];
-  dropdownDataImpact: any[] = [];
-  dropdownDataDepartment: any[] = [];
-  dropdownDataReviewer: Array<{
-    id: number;
-    fullName: string;
-    email: string;
-    type: string;
-  }> = [];
-  riskResponses: Array<{
-    id: number;
-    name: string;
-    description: string;
-    example: string;
-    risks: string;
-  }> = [];
-  isSuccess: boolean = false;
-  isError: boolean = false;
-  error: string = '';
-  riskData: any;
-  context: any;
-  reviewer: any;
 
-  constructor(
-    private route: ActivatedRoute,
-    private api: ApiService,
-    private router: Router,
-    public email: EmailService
-  ) {}
+riskId: string='';
+riskType: string='';
+riskTypeId:number=0
+overallRiskRatingBefore:number=0
+departmentName:string=''
+departmentId:string='';
+dropdownDataLikelihood: any[] = []
+dropdownDataImpact:any[]=[]
+dropdownDataDepartment:any[]=[]
+dropdownDataReviewer: Array<{ id: number; fullName: string; email: string; type: string }> = [];
+riskResponses:Array<{ id: number; name: string; description: string; example: string; risks:string }> = [];
+isSuccess:boolean=false
+isError:boolean=false
+error:string=''
+riskData:any
+context:any
+reviewer:any
 
-  ngOnInit() {
-    this.route.queryParams.subscribe((params) => {
-      this.riskId = params['riskId'];
-      this.riskType = params['riskType'];
-      this.overallRiskRatingBefore = params['overallRiskRatingBefore'];
-    });
+constructor(private route: ActivatedRoute,private api:ApiService,private router: Router,public email:EmailService, public authService: AuthService,
+  private cdRef: ChangeDetectorRef,) {}
 
-    this.api.getLikelyHoodDefinition().subscribe((res: any) => {
-      this.dropdownDataLikelihood = res;
-    });
+ngOnInit(){
+  this.route.queryParams.subscribe(params =>{
+    this.riskId = params['riskId'];
+    this.riskType = params['riskType'];
+    this.overallRiskRatingBefore = params['overallRiskRatingBefore'];
 
-    this.api.getImpactDefinition().subscribe((res: any) => {
-      this.dropdownDataImpact = res;
-    });
 
-    this.api.getAllReviewer().subscribe((res: any) => {
-      this.dropdownDataReviewer = res.reviewers;
-    });
+  });
+  if( this.riskType='Quality'){
+    this.riskTypeId=1
+  }else if(this.riskType='Security'){
+    this.riskTypeId=2
+  }else{
+    this.riskTypeId=3
 
-    this.api.getRiskResponses().subscribe((res: any) => {
-      this.riskResponses = res;
-    });
-    this.api.getDepartment().subscribe((res: any) => {
-      this.dropdownDataDepartment = res;
-    });
   }
 
+
+  // this.api.getLikelyHoodDefinition().subscribe((res:any)=>{
+  //   this.dropdownDataLikelihood=res;
+  // })
+
+  // this.api.getImpactDefinition().subscribe((res:any)=>{
+  //   this.dropdownDataImpact=res
+  // })
+
+  // this.api.getAllReviewer().subscribe((res:any)=>{
+  //   this.dropdownDataReviewer=res.reviewers
+  // })
+
+  // this.api.getRiskResponses().subscribe((res:any)=>{
+  //   this.riskResponses=res
+  // })
+  // this.api.getDepartment().subscribe((res:any)=>{
+  //   this.dropdownDataDepartment=res
+  // })
+
+  this.api.getRiskResponses().pipe(
+    catchError((error) => {
+      console.error('Error fetching Reviewer responses:', error);
+      return of([]); // Return an empty array to prevent app crash
+    })
+  ).subscribe((res: any) => {
+    this.riskResponses=res
+    this.cdRef.detectChanges();
+  });
+
+
+  this.api.getLikelyHoodDefinition().pipe(
+    catchError((error) => {
+      console.error('Error fetching Likelihood Definitions:', error);
+      return of([]); // Return an empty array to prevent app crash
+    })
+  ).subscribe((res: any) => {
+    this.dropdownDataLikelihood = res;
+    this.cdRef.detectChanges();
+  });
+
+  this.api.getImpactDefinition().pipe(
+    catchError((error) => {
+      console.error('Error fetching Impact Definitions:', error);
+      return of([]);
+    })
+  ).subscribe((res: any) => {
+    this.dropdownDataImpact = res;
+    this.cdRef.detectChanges();
+  });
+
+
+  
+
+    
+  this.api.getDepartment().pipe(
+    catchError((error) => {
+      console.error('Error fetching Departments:', error);
+      return of([]);
+    })
+  ).subscribe((res: any) => {
+    this.dropdownDataDepartment = res;
+    this.cdRef.detectChanges();
+  });
+
+  this.api.getAllReviewer().pipe(
+    catchError((error) => {
+      console.error('Error fetching Reviewers:', error);
+      return of({ reviewers: [] });
+    })
+  ).subscribe((res: any) => {
+    this.dropdownDataReviewer = res.reviewers;
+    this.cdRef.detectChanges();
+  });
+
+
+  }
+
+  
   onFormSubmit(event: { payload: any, riskType: number }) {
     const payload = event.payload;
     const riskType = event.riskType;
@@ -129,21 +187,7 @@ export class UpdateRiskComponent {
 
   }
 
-  getRiskTypeClass() {
-    if (this.riskType === 'Quality') {
-      this.riskTypeId = 1;
-      this.bgColor = 'var(--quality-color)';
-      return 'risk-type-1';
-    } else if (this.riskType === 'Security') {
-      this.riskTypeId = 2;
-      this.bgColor = 'var(--security-color)';
-      return 'risk-type-2';
-    } else if (this.riskType === 'Privacy') {
-      this.riskTypeId = 3;
-      this.bgColor = 'var(--privacy-color)';
-    }
-    return ''; // Default or no class
-  }
+
 
   closeDialog() {
     this.isSuccess = false;
@@ -211,4 +255,5 @@ export class UpdateRiskComponent {
      
     });
   }
+
 }

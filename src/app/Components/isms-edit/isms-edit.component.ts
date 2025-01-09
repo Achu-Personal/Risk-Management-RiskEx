@@ -17,11 +17,12 @@ import { FormSuccessfullComponent } from '../form-successfull/form-successfull.c
 import { FormReferenceHeatmapPopupComponent } from '../form-reference-heatmap-popup/form-reference-heatmap-popup.component';
 import { Router } from '@angular/router';
 import { FormConformPopupComponent } from '../form-conform-popup/form-conform-popup.component';
+import { StyleButtonComponent } from '../../UI/style-button/style-button.component';
 
 @Component({
   selector: 'app-isms-edit',
   standalone: true,
-  imports: [ FormsModule, ReactiveFormsModule, ButtonComponent, DropdownComponent, TextareaComponent, OverallRatingCardComponent,CommonModule,FormInputComponent,FormDropdownComponent,FormTextAreaComponent,FormDateFieldComponent,FormButtonComponent,FormDataNotInListComponent,FormSuccessfullComponent,FormReferenceHeatmapPopupComponent,FormConformPopupComponent],
+  imports: [ FormsModule, ReactiveFormsModule, ButtonComponent, DropdownComponent, TextareaComponent, OverallRatingCardComponent,CommonModule,FormInputComponent,FormDropdownComponent,FormTextAreaComponent,FormDateFieldComponent,FormButtonComponent,FormDataNotInListComponent,FormSuccessfullComponent,FormReferenceHeatmapPopupComponent,FormConformPopupComponent,StyleButtonComponent],
   templateUrl: './isms-edit.component.html',
   styleUrl: './isms-edit.component.scss'
 })
@@ -29,7 +30,6 @@ export class IsmsEditComponent {
 
   @Output() submitForm = new EventEmitter<any>();
   @Input() riskData:any={}
-  @Input() bgColor: string = ''
   @Input() riskTypeValue: number=1
   @Input() departmentName: string=''
   @Input() departmentId: string=''
@@ -100,15 +100,18 @@ export class IsmsEditComponent {
 
   isCancel:boolean=false
   isSave:boolean=false
+  isValid:boolean=false
+
+  newReviewername:string=''
+  newAssigneename:string=''
+  isnewAssigneenameDisplay:boolean=false
+  isnewReviewernameDisplay:boolean=false
 
 
 constructor(private api:ApiService,public authService:AuthService,private el: ElementRef, private renderer: Renderer2,private router: Router){}
 
 ngOnInit(){
-  this.el.nativeElement.style.setProperty('--bg-color', this.bgColor);
-  console.log("data:", this.riskData)
-    console.log('Received bgColor from parent:', this.bgColor);
-    this.el.nativeElement.style.setProperty('--bg-color', this.bgColor);
+
     const dateObj = new Date(this.riskData.plannedActionDate);
     this.ismsForm.patchValue({
       riskName:this.riskData.riskName,
@@ -438,70 +441,258 @@ onSubmit(){
   console.log(this.ismsForm.value);
   const formValue = this.ismsForm.value;
 
-    const payload = {
-      riskId:this.riskId ,
-      riskName: formValue.riskName ,
-      description: formValue.description,
-      riskType:Number(this.riskTypeValue) ,
-      impact: formValue.impact ,
-      mitigation: formValue.mitigation,
-      contingency: formValue.contingency || " ",
-      OverallRiskRatingBefore:Number(this.overallRiskRating) ,
-      responsibleUserId:Number(this.responsiblePersonId)!=0 ?+Number(this.responsiblePersonId):Number(this.preSelectedResponsiblePerson!=0) ? Number(this.preSelectedResponsiblePerson): Number(this.newAssigneeId),
-      plannedActionDate: `${formValue.plannedActionDate}T00:00:00.000Z` ,
-      departmentId:Number(this.departmentId)!=0 ? + Number(this.departmentId) : Number(this.departmentIdForAdminToAdd),
-      projectId:Number(this.projectId)!=0 ? +Number(this.projectId):Number(this.preSelectedProject!=0)? Number(this.preSelectedProject): null,
-      riskAssessments: [
+  if (this.ismsForm.invalid) {
+    console.log("Form is invalid, submission blocked");
+    this.ismsForm.markAllAsTouched(); // Highlights all errors
+    this.isValid=true
+    return; // Stop execution if form is invalid
+  }
+
+  if (
+    Number(this.riskTypeValue) <= 0 ||
+    Number(this.overallRiskRating) <= 0 ||
+    (Number(this.responsiblePersonId) <= 0 && Number(this.preSelectedResponsiblePerson) <= 0 && Number(this.newAssigneeId) <= 0) ||
+    (Number(this.departmentId) <= 0 && Number(this.departmentIdForAdminToAdd) <= 0) ||
+    (Number(this.confidentialityLikelihoodId) <= 0 && Number(this.preSelectedConfidentialityLikelihood) <= 0) ||
+    (Number(this.confidentialityImpactId) <= 0 && Number(this.preSelectedConfidentialityImpact) <= 0) ||
+    (Number(this.integrityLikelihoodId) <= 0 && Number(this.preSelectedIntegrityLikelihood) <= 0) ||
+    (Number(this.integrityImpactId) <= 0 && Number(this.preSelectedIntegrityImpact) <= 0) ||
+    (Number(this.availabilityLikelihoodId) <= 0 && Number(this.preSelectedAvailabilityLikelihood) <= 0) ||
+    (Number(this.availabilityImpactId) <= 0 && Number(this.preSelectedAvailabilityImpact) <= 0) ||
+    (Number(this.privacyLikelihoodId) <= 0 && Number(this.preSelectedPrivacyLikelihood) <= 0) ||
+    (Number(this.privacyImpactId) <= 0 && Number(this.preSelectedPrivacyImpact) <= 0)||
+    (this.isInternal &&
+      Number(this.internalReviewerIdFromDropdown) <= 0 &&
+      Number(this.externalReviewerIdFromInput) <= 0 &&
+      Number(this.externalReviewerIdFromDropdown) <= 0)
+
+  ) {
+    console.error("Form validation failed. Please ensure all required fields are filled correctly.");
+    this.isValid=true
+    return; // Stop form submission if validation fails
+  }
+
+  //   const payload = {
+  //     riskId:this.riskId ,
+  //     riskName: formValue.riskName ,
+  //     description: formValue.description,
+  //     riskType:Number(this.riskTypeValue) ,
+  //     impact: formValue.impact ,
+  //     mitigation: formValue.mitigation,
+  //     contingency: formValue.contingency || " ",
+  //     OverallRiskRatingBefore:Number(this.overallRiskRating) ,
+  //     responsibleUserId:Number(this.responsiblePersonId)!=0 ?+Number(this.responsiblePersonId):Number(this.preSelectedResponsiblePerson!=0) ? Number(this.preSelectedResponsiblePerson): Number(this.newAssigneeId),
+  //     plannedActionDate: `${formValue.plannedActionDate}T00:00:00.000Z` ,
+  //     departmentId:Number(this.departmentId)!=0 ? + Number(this.departmentId) : Number(this.departmentIdForAdminToAdd),
+  //     projectId:Number(this.projectId)!=0 ? +Number(this.projectId):Number(this.preSelectedProject!=0)? Number(this.preSelectedProject): null,
+  //     riskAssessments: [
+  //     {
+  //       likelihood: Number(this.confidentialityLikelihoodId)?Number(this.confidentialityLikelihoodId):Number(this.preSelectedConfidentialityLikelihood),
+  //       impact: Number(this.confidentialityImpactId)?Number(this.confidentialityImpactId):Number(this.preSelectedConfidentialityImpact),
+  //       isMitigated: false,
+  //       assessmentBasisId: 1, // Example ID; replace if dynamic
+  //       riskFactor: this.confidentialityRiskFactor,
+  //       review: {
+  //         userId: this.isInternal && Number(this.internalReviewerIdFromDropdown)!=0? Number(this.internalReviewerIdFromDropdown) : null,
+  //         externalReviewerId:Number(this.externalReviewerIdFromInput) ?  Number(this.externalReviewerIdFromInput):!this.isInternal&&Number(this.externalReviewerIdFromDropdown)!=0?Number(this.externalReviewerIdFromDropdown): null,
+  //         comments:" ",
+  //         reviewStatus:1,
+  //       },
+  //     },
+  //     {
+  //       likelihood: Number(this.integrityLikelihoodId)?Number(this.integrityLikelihoodId):Number(this.preSelectedIntegrityLikelihood),
+  //       impact: Number(this.integrityImpactId)?Number(this.integrityImpactId):Number(this.preSelectedIntegrityImpact),
+  //       isMitigated: false,
+  //       assessmentBasisId: 2, // Example ID; replace if dynamic
+  //       riskFactor: this.integrityRiskFactor,
+  //       review: {
+  //         userId: this.isInternal && Number(this.internalReviewerIdFromDropdown)!=0? Number(this.internalReviewerIdFromDropdown) : null,
+  //         externalReviewerId:Number(this.externalReviewerIdFromInput) ?  Number(this.externalReviewerIdFromInput):!this.isInternal&&Number(this.externalReviewerIdFromDropdown)!=0?Number(this.externalReviewerIdFromDropdown): null,
+  //         comments:" ",
+  //         reviewStatus:1,
+  //       },
+  //     },
+  //     {
+  //       likelihood: Number(this.availabilityLikelihoodId)?Number(this.availabilityLikelihoodId):Number(this.preSelectedAvailabilityLikelihood),
+  //       impact: Number(this.availabilityImpactId)?Number(this.availabilityImpactId):Number(this.preSelectedAvailabilityImpact),
+  //       isMitigated: false,
+  //       assessmentBasisId: 3, // Example ID; replace if dynamic
+  //       riskFactor: this.availabilityRiskFactor,
+  //       review: {
+  //         userId: this.isInternal && Number(this.internalReviewerIdFromDropdown)!=0? Number(this.internalReviewerIdFromDropdown) : null,
+  //         externalReviewerId:Number(this.externalReviewerIdFromInput) ?  Number(this.externalReviewerIdFromInput):!this.isInternal&&Number(this.externalReviewerIdFromDropdown)!=0?Number(this.externalReviewerIdFromDropdown): null,
+  //         comments:" ",
+  //         reviewStatus:1,
+  //       },
+  //     },
+  //     {
+  //       likelihood: Number(this.privacyLikelihoodId)?Number(this.privacyLikelihoodId):Number(this.preSelectedPrivacyLikelihood),
+  //       impact: Number(this.privacyImpactId)?Number(this.privacyImpactId):Number(this.preSelectedPrivacyImpact),
+  //       isMitigated: false,
+  //       assessmentBasisId: 4, // Example ID; replace if dynamic
+  //       riskFactor: this.privacyRiskFactor,
+  //       review: {
+  //         userId: this.isInternal && Number(this.internalReviewerIdFromDropdown)!=0? Number(this.internalReviewerIdFromDropdown) : null,
+  //         externalReviewerId:Number(this.externalReviewerIdFromInput) ?  Number(this.externalReviewerIdFromInput):!this.isInternal&&Number(this.externalReviewerIdFromDropdown)!=0?Number(this.externalReviewerIdFromDropdown): null,
+  //         comments:" ",
+  //         reviewStatus:1,
+  //       },
+  //     },
+  //   ],
+  // };
+  const payload = {
+    riskId: this.riskId,
+    riskName: formValue.riskName,
+    description: formValue.description,
+    riskType: Number(this.riskTypeValue),
+    impact: formValue.impact,
+    mitigation: formValue.mitigation,
+    contingency: formValue.contingency || " ",
+    OverallRiskRatingBefore: Number(this.overallRiskRating),
+    responsibleUserId:
+      (Number(this.responsiblePersonId) !== 0 && !isNaN(Number(this.responsiblePersonId)))
+      ? Number(this.responsiblePersonId)
+      : (this.preSelectedResponsiblePerson !== 0 && !isNaN(Number(this.preSelectedResponsiblePerson)))
+          ? Number(this.preSelectedResponsiblePerson)
+          : (this.newAssigneeId && !isNaN(Number(this.newAssigneeId)))
+              ? Number(this.newAssigneeId)
+              : null,
+    plannedActionDate: `${formValue.plannedActionDate}T00:00:00.000Z`,
+    departmentId:
+      (Number(this.departmentId) !== 0 && !isNaN(Number(this.departmentId)))
+      ? Number(this.departmentId)
+      : (this.departmentIdForAdminToAdd && !isNaN(Number(this.departmentIdForAdminToAdd)))
+          ? Number(this.departmentIdForAdminToAdd)
+          : null,
+    projectId:
+      (Number(this.projectId) !== 0 && !isNaN(Number(this.projectId)))
+      ? Number(this.projectId)
+      : (this.preSelectedProject !== 0 && !isNaN(Number(this.preSelectedProject)))
+          ? Number(this.preSelectedProject)
+          : null,
+    riskAssessments: [
       {
-        likelihood: Number(this.confidentialityLikelihoodId)?Number(this.confidentialityLikelihoodId):Number(this.preSelectedConfidentialityLikelihood),
-        impact: Number(this.confidentialityImpactId)?Number(this.confidentialityImpactId):Number(this.preSelectedConfidentialityImpact),
+        likelihood:
+          (Number(this.confidentialityLikelihoodId) && !isNaN(Number(this.confidentialityLikelihoodId)))
+          ? Number(this.confidentialityLikelihoodId)
+          : (this.preSelectedConfidentialityLikelihood && !isNaN(Number(this.preSelectedConfidentialityLikelihood)))
+              ? Number(this.preSelectedConfidentialityLikelihood)
+              : null,
+        impact:
+          (Number(this.confidentialityImpactId) && !isNaN(Number(this.confidentialityImpactId)))
+          ? Number(this.confidentialityImpactId)
+          : (this.preSelectedConfidentialityImpact && !isNaN(Number(this.preSelectedConfidentialityImpact)))
+              ? Number(this.preSelectedConfidentialityImpact)
+              : null,
         isMitigated: false,
-        assessmentBasisId: 1, // Example ID; replace if dynamic
+        assessmentBasisId: 1,
         riskFactor: this.confidentialityRiskFactor,
         review: {
-          userId: this.isInternal && Number(this.internalReviewerIdFromDropdown)!=0? Number(this.internalReviewerIdFromDropdown) : null,
-          externalReviewerId:Number(this.externalReviewerIdFromInput) ?  Number(this.externalReviewerIdFromInput):!this.isInternal&&Number(this.externalReviewerIdFromDropdown)!=0?Number(this.externalReviewerIdFromDropdown): null,
-          comments:" ",
-          reviewStatus:1,
+          userId:
+            (this.isInternal && Number(this.internalReviewerIdFromDropdown) !== 0 && !isNaN(Number(this.internalReviewerIdFromDropdown)))
+            ? Number(this.internalReviewerIdFromDropdown)
+            : null,
+          externalReviewerId:
+            (Number(this.externalReviewerIdFromInput) && !isNaN(Number(this.externalReviewerIdFromInput)))
+            ? Number(this.externalReviewerIdFromInput)
+            : (!this.isInternal && Number(this.externalReviewerIdFromDropdown) !== 0 && !isNaN(Number(this.externalReviewerIdFromDropdown)))
+                ? Number(this.externalReviewerIdFromDropdown)
+                : null,
+          comments: " ",
+          reviewStatus: 1,
         },
       },
       {
-        likelihood: Number(this.integrityLikelihoodId)?Number(this.integrityLikelihoodId):Number(this.preSelectedIntegrityLikelihood),
-        impact: Number(this.integrityImpactId)?Number(this.integrityImpactId):Number(this.preSelectedIntegrityImpact),
+        likelihood:
+          (Number(this.integrityLikelihoodId) && !isNaN(Number(this.integrityLikelihoodId)))
+          ? Number(this.integrityLikelihoodId)
+          : (this.preSelectedIntegrityLikelihood && !isNaN(Number(this.preSelectedIntegrityLikelihood)))
+              ? Number(this.preSelectedIntegrityLikelihood)
+              : null,
+        impact:
+          (Number(this.integrityImpactId) && !isNaN(Number(this.integrityImpactId)))
+          ? Number(this.integrityImpactId)
+          : (this.preSelectedIntegrityImpact && !isNaN(Number(this.preSelectedIntegrityImpact)))
+              ? Number(this.preSelectedIntegrityImpact)
+              : null,
         isMitigated: false,
-        assessmentBasisId: 2, // Example ID; replace if dynamic
+        assessmentBasisId: 2,
         riskFactor: this.integrityRiskFactor,
         review: {
-          userId: this.isInternal && Number(this.internalReviewerIdFromDropdown)!=0? Number(this.internalReviewerIdFromDropdown) : null,
-          externalReviewerId:Number(this.externalReviewerIdFromInput) ?  Number(this.externalReviewerIdFromInput):!this.isInternal&&Number(this.externalReviewerIdFromDropdown)!=0?Number(this.externalReviewerIdFromDropdown): null,
-          comments:" ",
-          reviewStatus:1,
+          userId:
+            (this.isInternal && Number(this.internalReviewerIdFromDropdown) !== 0 && !isNaN(Number(this.internalReviewerIdFromDropdown)))
+            ? Number(this.internalReviewerIdFromDropdown)
+            : null,
+          externalReviewerId:
+            (Number(this.externalReviewerIdFromInput) && !isNaN(Number(this.externalReviewerIdFromInput)))
+            ? Number(this.externalReviewerIdFromInput)
+            : (!this.isInternal && Number(this.externalReviewerIdFromDropdown) !== 0 && !isNaN(Number(this.externalReviewerIdFromDropdown)))
+                ? Number(this.externalReviewerIdFromDropdown)
+                : null,
+          comments: " ",
+          reviewStatus: 1,
         },
       },
       {
-        likelihood: Number(this.availabilityLikelihoodId)?Number(this.availabilityLikelihoodId):Number(this.preSelectedAvailabilityLikelihood),
-        impact: Number(this.availabilityImpactId)?Number(this.availabilityImpactId):Number(this.preSelectedAvailabilityImpact),
+        likelihood:
+          (Number(this.availabilityLikelihoodId) && !isNaN(Number(this.availabilityLikelihoodId)))
+          ? Number(this.availabilityLikelihoodId)
+          : (this.preSelectedAvailabilityLikelihood && !isNaN(Number(this.preSelectedAvailabilityLikelihood)))
+              ? Number(this.preSelectedAvailabilityLikelihood)
+              : null,
+        impact:
+          (Number(this.availabilityImpactId) && !isNaN(Number(this.availabilityImpactId)))
+          ? Number(this.availabilityImpactId)
+          : (this.preSelectedAvailabilityImpact && !isNaN(Number(this.preSelectedAvailabilityImpact)))
+              ? Number(this.preSelectedAvailabilityImpact)
+              : null,
         isMitigated: false,
-        assessmentBasisId: 3, // Example ID; replace if dynamic
+        assessmentBasisId: 3,
         riskFactor: this.availabilityRiskFactor,
         review: {
-          userId: this.isInternal && Number(this.internalReviewerIdFromDropdown)!=0? Number(this.internalReviewerIdFromDropdown) : null,
-          externalReviewerId:Number(this.externalReviewerIdFromInput) ?  Number(this.externalReviewerIdFromInput):!this.isInternal&&Number(this.externalReviewerIdFromDropdown)!=0?Number(this.externalReviewerIdFromDropdown): null,
-          comments:" ",
-          reviewStatus:1,
+          userId:
+            (this.isInternal && Number(this.internalReviewerIdFromDropdown) !== 0 && !isNaN(Number(this.internalReviewerIdFromDropdown)))
+            ? Number(this.internalReviewerIdFromDropdown)
+            : null,
+          externalReviewerId:
+            (Number(this.externalReviewerIdFromInput) && !isNaN(Number(this.externalReviewerIdFromInput)))
+            ? Number(this.externalReviewerIdFromInput)
+            : (!this.isInternal && Number(this.externalReviewerIdFromDropdown) !== 0 && !isNaN(Number(this.externalReviewerIdFromDropdown)))
+                ? Number(this.externalReviewerIdFromDropdown)
+                : null,
+          comments: " ",
+          reviewStatus: 1,
         },
       },
       {
-        likelihood: Number(this.privacyLikelihoodId)?Number(this.privacyLikelihoodId):Number(this.preSelectedPrivacyLikelihood),
-        impact: Number(this.privacyImpactId)?Number(this.privacyImpactId):Number(this.preSelectedPrivacyImpact),
+        likelihood:
+          (Number(this.privacyLikelihoodId) && !isNaN(Number(this.privacyLikelihoodId)))
+          ? Number(this.privacyLikelihoodId)
+          : (this.preSelectedPrivacyLikelihood && !isNaN(Number(this.preSelectedPrivacyLikelihood)))
+              ? Number(this.preSelectedPrivacyLikelihood)
+              : null,
+        impact:
+          (Number(this.privacyImpactId) && !isNaN(Number(this.privacyImpactId)))
+          ? Number(this.privacyImpactId)
+          : (this.preSelectedPrivacyImpact && !isNaN(Number(this.preSelectedPrivacyImpact)))
+              ? Number(this.preSelectedPrivacyImpact)
+              : null,
         isMitigated: false,
-        assessmentBasisId: 4, // Example ID; replace if dynamic
+        assessmentBasisId: 4,
         riskFactor: this.privacyRiskFactor,
         review: {
-          userId: this.isInternal && Number(this.internalReviewerIdFromDropdown)!=0? Number(this.internalReviewerIdFromDropdown) : null,
-          externalReviewerId:Number(this.externalReviewerIdFromInput) ?  Number(this.externalReviewerIdFromInput):!this.isInternal&&Number(this.externalReviewerIdFromDropdown)!=0?Number(this.externalReviewerIdFromDropdown): null,
-          comments:" ",
-          reviewStatus:1,
+          userId:
+            (this.isInternal && Number(this.internalReviewerIdFromDropdown) !== 0 && !isNaN(Number(this.internalReviewerIdFromDropdown)))
+            ? Number(this.internalReviewerIdFromDropdown)
+            : null,
+          externalReviewerId:
+            (Number(this.externalReviewerIdFromInput) && !isNaN(Number(this.externalReviewerIdFromInput)))
+            ? Number(this.externalReviewerIdFromInput)
+            : (!this.isInternal && Number(this.externalReviewerIdFromDropdown) !== 0 && !isNaN(Number(this.externalReviewerIdFromDropdown)))
+                ? Number(this.externalReviewerIdFromDropdown)
+                : null,
+          comments: " ",
+          reviewStatus: 1,
         },
       },
     ],
@@ -530,16 +721,23 @@ saveAssignee(value: any){
     fullName:value.fullName,
     departmentName: departmentName
   }
-  this.api.addResponsiblePerson(payload).subscribe((res:any)=>{
-    this.newAssigneeId=res.id
-    console.log("new assignee id: ",this.newAssigneeId)
-    this.isSuccessAssignee=true
+  this.api.addResponsiblePerson(payload).subscribe({
+    next: (res: any) => {
+      if (res) {
+        this.newAssigneeId=res.id
+        this.isSuccessAssignee=true
+        this.newAssigneename=payload.fullName
+        this.isnewAssigneenameDisplay=true
 
-  },
-  (error:any)=>{
-    this.isErrorAssignee=true
-  }
-)
+      } else {
+        console.error("External Responsible ID is not available in the response:", res);
+      }
+    },
+    error: (err) => {
+      console.error("Error occurred while fetching Responsible person ID:", err);  // Log the full error to see what went wrong
+      this.isErrorAssignee=true
+    }
+  });
 
 }
 
@@ -552,16 +750,22 @@ saveReviewer(value: any){
     fullName:value.fullName,
     departmentId:value.departmentId
   }
- this.api.addExternalReviewer(payload).subscribe((res:any)=>{
-    this.externalReviewerIdFromInput = res.reviewerId
-    console.log("reviewer response",this.externalReviewerIdFromInput);
-    this.isSuccessReviewer=true
-
-  },
-  (error:any)=>{
-    this.isErrorReviewer=true
-  }
-)
+  this.api.addExternalReviewer(payload).subscribe({
+    next: (res: any) => {
+      if (res) {
+        this.externalReviewerIdFromInput = res.reviewerId
+        this.isSuccessReviewer=true
+        this.newReviewername=payload.fullName
+        this.isnewReviewernameDisplay=true
+      } else {
+        console.error("External Reviewer ID is not available in the response:", res);
+      }
+    },
+    error: (err) => {
+      console.error("Error occurred while fetching Reviewer ID:", err);  // Log the full error to see what went wrong
+      this.isErrorReviewer=true
+    }
+  });
 
 }
 
@@ -602,6 +806,10 @@ saveConfirmation(){
  }
  closeRisk(){
   this.router.navigate(['/home']);
+ }
+
+ closepopupIsValidCheck(){
+  this.isValid=false
  }
 
 
