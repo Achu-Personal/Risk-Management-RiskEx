@@ -86,100 +86,142 @@ export class UpdateRiskComponent {
     });
   }
 
-  onFormSubmit(event: { payload: any; riskType: number }) {
+  onFormSubmit(event: { payload: any, riskType: number }) {
     const payload = event.payload;
     const riskType = event.riskType;
 
+   
     if (riskType == 1) {
-      this.api.updateQualityRisk(payload, Number(this.riskId)).subscribe(
-        (res: any) => {
-          console.log('updated quality api response:', res);
+      this.api.updateQualityRisk(payload, Number(this.riskId)).subscribe({
+        next: (res: any) => {
+          console.log("Updated quality API response:", res);
           this.isSuccess = true;
+          this.sendReviewerMailOnClose();
         },
-
-        (error: any) => {
+        error: (error: any) => {
           this.isError = true;
-          this.error = error.message;
+          this.error = error.message.replace(/\n/g, '<br>'); // Replace newlines with <br> for display
+        },
+        complete: () => {
+          console.log("Update quality risk request completed.");
         }
-      );
-      console.log('riskid:', Number(this.riskId));
-    } else if (riskType == 2) {
-      this.api
-        .updateSecurityOrPrivacyRisk(payload, Number(this.riskId))
-        .subscribe(
-          (res: any) => {
-            console.log('updated security api response:', res);
-            this.isSuccess = true;
-          },
-          (error: any) => {
-            this.isError = true;
-          }
-        );
-    } else {
-      this.api
-        .updateSecurityOrPrivacyRisk(payload, Number(this.riskId))
-        .subscribe(
-          (res: any) => {
-            console.log('updated privacy api response:', res);
-            this.isSuccess = true;
-          },
-          (error: any) => {
-            this.isError = true;
-          }
-        );
+      });
+    console.log("riskid:",Number(this.riskId));
+   
+    // this.api.getRevieverDetails(Number(this.riskId)).subscribe({
+    //   next: (r: any) => {
+    //     console.log("reviewer details fetching");
+   
+    //     this.reviewer = r[0].fullName;
+    //     console.log('Reviewer Details:', this.reviewer);
+    //       const riskDetails=this.getRiskDetails(Number(this.riskId));
+    //       console.log(riskDetails);
+   
+    //      this.context = {
+    //       responsibleUser: this.reviewer,
+    //       riskId: riskDetails.riskId,
+    //       riskName: riskDetails.riskName,
+    //       description: riskDetails.description,
+    //       riskType: riskDetails.riskType ,
+    //       impact: riskDetails.impact,
+    //       mitigation: riskDetails.mitigation,
+    //       plannedActionDate: new Date(riskDetails.plannedActionDate).toLocaleDateString('en-US', {
+    //         year: 'numeric',
+    //         month: 'long',
+    //         day: 'numeric'
+    //       }),
+    //       overallRiskRating: riskDetails.overallRiskRatingBefore,
+    //       id:riskDetails.id,
+    //       rid:riskDetails.id
+    //     };
+    //     console.log('Email Context:', this.context);
+   
+    //     // Send email to reviewer
+    //     this.email.sendReviewerEmail(r[0].email, this.context).subscribe({
+    //       next: () => {
+    //         console.log('Reviewer Email:', r[0].email);
+    //         console.log('Email Sent Successfully.');
+    //       },
+    //       error: (emailError) => {
+    //         console.error('Failed to send email to reviewer:', emailError);
+    //       },
+    //     });
+    //   },
+    //   error: (reviewerError) => {
+    //     console.error('Failed to fetch reviewer details:', reviewerError);
+   
+    //   },
+    // });
     }
-
-    this.api.getRevieverDetails(Number(this.riskId),'ApprovalPending').subscribe({
-      next: (r: any) => {
-        console.log("response:",r);
-        
-        console.log('reviewer details fetching');
+    else if (riskType == 2 || riskType==3) {
+      this.api.updateSecurityOrPrivacyRisk(payload, Number(this.riskId)).subscribe({
+        next: (res: any) => {
+          console.log("Updated security API response:", res);
+          this.isSuccess = true;
+          this.sendReviewerMailOnClose();
+        },
+        error: (error: any) => {
+          this.isError = true;
+          this.error = error.message.replace(/\n/g, '<br>');
+          console.error("Error updating security risk:", error);
+        },
+        complete: () => {
+          console.log("Update security risk request completed.");
+        }
+      });
+    }
    
-        this.reviewer = r.fullName;
-        console.log('Reviewer Details:', this.reviewer);
-        this.api.getRiskById(Number(this.riskId)).subscribe((res:any)=>{
-          this.riskData=res
-          console.log("risk Data:",this.riskData);
-          this.context = {
-            responsibleUser: this.reviewer,
-            riskId: res.riskId,
-            riskName: res.riskName,
-            description: res.description,
-            riskType: res.riskType,
-            impact: res.impact,
-            mitigation: res.mitigation,
-            plannedActionDate: new Date(
-              res.plannedActionDate
-            ).toLocaleDateString('en-US', {
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric',
-            }),
-            overallRiskRating: res.overallRiskRating,
-            id: res.id,
-            rid: res.id,
-          };
-          console.log('Email Context:', this.context);
+    // this.api.getRevieverDetails(Number(this.riskId),'ApprovalPending').subscribe({
+    //   next: (r: any) => {
+    //     console.log('reviewer details fetching');
    
-          // Send email to reviewer
-          this.email.sendReviewerEmail(r.email, this.context).subscribe({
-            next: () => {
-              console.log('Reviewer Email:', r.email);
-              console.log('Email Sent Successfully.');
-            },
-            error: (emailError) => {
-              console.error('Failed to send email to reviewer:', emailError);
-            },
-          });
-         
-        })
-       
-      },
-      error: (reviewerError) => {
-        console.error('Failed to fetch reviewer details:', reviewerError);
-      },
-    });
-
+    //     this.reviewer = r[0].fullName;
+    //     console.log('Reviewer Details:', this.reviewer);
+    //     this.api.getRiskById(Number(this.riskId)).subscribe((res:any)=>{
+    //       this.riskData=res
+    //       console.log("risk Data:",this.riskData);
+    //       this.context = {
+    //         responsibleUser: this.reviewer,
+    //         riskId: res.riskId,
+    //         riskName: res.riskName,
+    //         description: res.description,
+    //         riskType: res.riskType,
+    //         impact: res.impact,
+    //         mitigation: res.mitigation,
+    //         plannedActionDate: new Date(
+    //           res.plannedActionDate
+    //         ).toLocaleDateString('en-US', {
+    //           year: 'numeric',
+    //           month: 'long',
+    //           day: 'numeric',
+    //         }),
+    //         overallRiskRating: res.overallRiskRating,
+    //         id: res.id,
+    //         rid: res.id,
+    //       };
+    //       console.log('Email Context:', this.context);
+   
+    //       // Send email to reviewer
+    //       this.email.sendReviewerEmail(r[0].email, this.context).subscribe({
+    //         next: () => {
+    //           console.log('Reviewer Email:', r[0].email);
+    //           console.log('Email Sent Successfully.');
+    //         },
+    //         error: (emailError) => {
+    //           console.error('Failed to send email to reviewer:', emailError);
+    //         },
+    //       });
+   
+    //     })
+    //     // const riskDetails = this.getRiskDetails(Number(this.riskId));
+    //     // console.log("risk Details after function call:",riskDetails);
+   
+   
+    //   },
+    //   error: (reviewerError) => {
+    //     console.error('Failed to fetch reviewer details:', reviewerError);
+    //   },
+    // });
   }
 
   getRiskTypeClass() {
@@ -216,5 +258,52 @@ export class UpdateRiskComponent {
       callback(reviewer);
     });
   }
-  
+  sendReviewerMailOnClose(){
+    this.api.getRevieverDetails(Number(this.riskId),'ApprovalPending').subscribe((r:any)=>{
+      
+      console.log("response:",r);
+      
+      console.log('reviewer details fetching');
+ 
+      this.reviewer = r[0].fullName;
+      console.log('Reviewer Details:', this.reviewer);
+      this.api.getRiskById(Number(this.riskId)).subscribe((res:any)=>{
+        this.riskData=res
+        console.log("risk Data:",this.riskData);
+        this.context = {
+          responsibleUser: this.reviewer,
+          riskId: res.riskId,
+          riskName: res.riskName,
+          description: res.description,
+          riskType: res.riskType,
+          impact: res.impact,
+          mitigation: res.mitigation,
+          plannedActionDate: new Date(
+            res.plannedActionDate
+          ).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+          }),
+          overallRiskRating: res.overallRiskRating,
+          id: res.id,
+          rid: res.id,
+        };
+        console.log('Email Context:', this.context);
+ 
+        // Send email to reviewer
+        this.email.sendReviewerEmail(r[0].email, this.context).subscribe({
+          next: () => {
+            console.log('Reviewer Email:', r.email);
+            console.log('Email Sent Successfully.');
+          },
+          error: (emailError) => {
+            console.error('Failed to send email to reviewer:', emailError);
+          },
+        });
+       
+      })
+     
+    });
+  }
 }

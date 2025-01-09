@@ -327,6 +327,7 @@ export class ApiService {
 
   getRevieverDetails(riskId: number, reviewStatus: string) {
     
+    console.log("api url:",`${this.baseUrl}/Reviewer/gettheReviewer/${riskId}?reviewStatus=${reviewStatus}`);
     
     return this.http.get(
       `${this.baseUrl}/Reviewer/gettheReviewer/${riskId}?reviewStatus=${reviewStatus}`
