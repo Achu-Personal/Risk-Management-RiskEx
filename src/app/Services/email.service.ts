@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { catchError, map, Observable, of } from 'rxjs';
 import { ApiService } from './api.service';
+import { NotificationService } from './notification.service';
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +12,7 @@ export class EmailService {
   assigneeEmailTemplate: string = '';
   ownerEmailTemplate: string = '';
 
-  constructor(private api: ApiService) {
+  constructor(private api: ApiService,private notificationService: NotificationService) {
     this.loadReviewTemplate();
     this.loadAssigneeTemplate();
     this.loadOwnerTemplate();
@@ -53,12 +54,13 @@ export class EmailService {
     return this.api.sendMail(email, subject, body).pipe(
       map((response: any) => {
         console.log('Email sent successfully', response);
-        alert('Email sent to the reviewer successfully');
+        // alert('Email sent to the reviewer successfully');
+        this.notificationService.success('Email sent to the reviewer successfully');
         return true; // Return success
       }),
       catchError((error) => {
         console.error('Error sending email:', error);
-        alert('Failed to send email to reviewer');
+        this.notificationService.error('Failed to send email to reviewer');
         return of(false); // Return failure
       })
     );
@@ -100,12 +102,12 @@ export class EmailService {
     return this.api.sendMail(email, subject, body).pipe(
       map((response: any) => {
         console.log('Email sent successfully', response);
-        alert('Email sent to responsible user successfully');
+        this.notificationService.success('Email sent to the responsible user successfully');
         return true;
       }),
       catchError((error) => {
         console.error('Error sending email:', error);
-        alert('Failed to send email to assignee');
+        this.notificationService.error('Failed to send email to assignee');
         return of(false);
       })
     );
@@ -143,12 +145,12 @@ export class EmailService {
     return this.api.sendMail(email, subject, body).pipe(
       map((response:any) => {
         console.log('Email sent successfully', response);
-        alert('Email sent to the Owner successfully');
+        this.notificationService.success('Email sent to the risk owner successfully');
         return true; // Return success
       }),
       catchError((error) => {
         console.error('Error sending email:', error);
-        alert('Failed to send email to Owner');
+        this.notificationService.error('Failed to send email to risk owner');
         return of(false); // Return failure
       })
     );
