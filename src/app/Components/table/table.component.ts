@@ -1,22 +1,24 @@
 import { department } from './../../Interfaces/deparments.interface';
-import { Component, HostListener, Input, Output, output, SimpleChanges, EventEmitter } from '@angular/core';
+import { Component, HostListener, Input, Output, output, SimpleChanges, EventEmitter, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { SearchbarComponent } from '../../UI/searchbar/searchbar.component';
 import { PaginationComponent } from '../../UI/pagination/pagination.component';
 import { ApiService } from '../../Services/api.service';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { DatepickerComponent } from "../../UI/datepicker/datepicker.component";
+import { AuthService } from '../../Services/auth.service';
+import { StyleButtonComponent } from "../../UI/style-button/style-button.component";
 
 @Component({
   selector: 'app-table',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [SearchbarComponent, FormsModule, PaginationComponent, CommonModule, DatepickerComponent],
+  imports: [SearchbarComponent, FormsModule, PaginationComponent, CommonModule, StyleButtonComponent],
   templateUrl: './table.component.html',
   styleUrl: './table.component.scss'
 })
 export class TableComponent {
-  constructor( public api: ApiService,private route:ActivatedRoute,private router: Router){}
+  constructor( public api: ApiService,private route:ActivatedRoute,private router: Router,private cdr: ChangeDetectorRef,public auth: AuthService){}
 
    onclickrow = output()
     rowClick(row:any) {
@@ -60,9 +62,29 @@ export class TableComponent {
   uniqueResidual:any[]=[];
 
   @Output() filteredData = new EventEmitter<any[]>();
-
+  filterTimeout: ReturnType<typeof setTimeout> | null = null;
+  reviewStatusMap: Record<string, string> = {
+    ReviewPending: "Review Pending",
+    ReviewCompleted:"Review Completed",
+    ApprovalPending:"Approval Pending",
+    ApprovalCompleted:"Approval Completed",
+    Rejected:"Rejected"
+  };
+  getReviewStatus(status: string): string {
+    switch (status) {
+      case 'Review Pending': return 'ReviewPending';
+      case 'Review Completed': return 'ReviewCompleted';
+      case 'Approval Pending': return 'ApprovalPending';
+      case 'Approval Completed': return 'ApprovalCompleted';
+      case 'Rejected': return 'Rejected';
+      default: return 'Unknown Status';
+    }
+  }
 
   filterTable(): void {
+    const reviewStatus = this.getReviewStatus(this.selectedReviewStatus);
+    if (this.filterTimeout) clearTimeout(this.filterTimeout);
+    this.filterTimeout = setTimeout(() => {
 
     this.filteredItems = this.items.filter((item:any) => {
       let matchesDateRange = true;
@@ -86,17 +108,20 @@ export class TableComponent {
         (this.selectedRiskType ? item.riskType === this.selectedRiskType : true) &&
         (this.selectedStatus ? item.riskStatus === this.selectedStatus : true) &&
         (this.selectedResidual ? item.residualRisk === this.selectedResidual : true) &&
-        (this.selectedReviewStatus ? item.riskAssessments[0].reviewStatus  === this.selectedReviewStatus : true) &&
+        (this.selectedReviewStatus ? item.riskAssessments[0].reviewStatus === reviewStatus : true) &&
         (this.selectedDepartment ? item.departmentName === this.selectedDepartment : true)
       );
 
     });
+
+
+
   console.log("filtered",this.filteredItems)
   this.currentPage = 1;
   this.totalItems = this.filteredItems.length;
   this.updatePaginatedItems();
   // this.filteredData.emit(this.filteredItems);
-
+  }, 300); // 300ms debounce
   }
 
 
@@ -131,9 +156,11 @@ export class TableComponent {
 
     this.updatePaginatedItems();
   }
-
+  isDepartmentUser:boolean=false;
   private initializeItems(): void {
     setTimeout(()=>{
+      const role = this.auth.getUserRole();
+      this.isDepartmentUser = Array.isArray(role) ? role.includes('DepartmentUser') : role === 'DepartmentUser';
       this.items = [...this.paginated];
       console.log("items",this.items);
       this.filteredItems = [...this.items];
@@ -147,16 +174,12 @@ export class TableComponent {
       this.updatePaginatedItems();
 
 
-      },500)
+      },800)
   }
 
   updateUniqueDepartments(): void {
-    // this.api.getDepartment().subscribe((res: any) => {
-    //   this.uniqueDepartments = res
-    //   console.log("dep",this.uniqueDepartments);
-    // });
-    this.uniqueDepartments = [...new Set(this.items.map((item: any) => item.departmentName))];
 
+    this.uniqueDepartments = [...new Set(this.items.map((item: any) => item.departmentName))];
   }
 
   updateUniqueTypes(): void {
@@ -169,7 +192,7 @@ export class TableComponent {
   }
   updateUniqueReviewStatus(): void {
 
-    this.uniqueReviewStatus = ["ReviewPending","ReviewCompleted","ApprovalPending","ApprovalCompleted","Rejected","HasValue"];
+    this.uniqueReviewStatus = ["Review Pending","Review Completed","Approval Pending","Approval Completed","Rejected"];
   }
   updateResidualRiskStatus(): void {
 
@@ -182,6 +205,7 @@ export class TableComponent {
     const endIndex = startIndex + this.itemsPerPage;
     this.paginated = this.filteredItems.slice(startIndex, endIndex);
     this.totalItems = this.filteredItems.length;
+    this.cdr.markForCheck();
     // this.itemsPerPage=this.paginated.length;
     this.filteredData.emit(this.filteredItems);
   }
@@ -274,12 +298,12 @@ export class TableComponent {
     }
   }
 
-  // resetFilters(): void {
-  //   this.filteredItems = [...this.items];
-  //   this.currentPage = 1;
-  //   this.totalItems = this.filteredItems.length;
-  //   this.updatePaginatedItems();
-  // }
+  resetFilters(): void {
+    this.filteredItems = [...this.items];
+    this.currentPage = 1;
+    this.totalItems = this.filteredItems.length;
+    this.updatePaginatedItems();
+  }
 
 
   //datepicker
@@ -290,9 +314,15 @@ export class TableComponent {
 
       this.filterTable();
     }
-
-
   }
+
+
+  @Input() noDataMessage:string='No Data Available'
+  hasValidData(): boolean {
+    return this.filteredItems.length > 0 ;
+  }
+
+
   shouldDisplayPagination(): boolean {
     console.log(this.paginated.length)
     return this.filteredItems.length > this.itemsPerPage;

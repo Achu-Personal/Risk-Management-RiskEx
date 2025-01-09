@@ -1,41 +1,24 @@
 .circle {
   position: relative;
   border-radius: 50%;
-  // background-color: red;
+  background-color: red;
 }
 .circlegraph{
-
   width: 500px;
   height: 100%;
   position: relative;
   padding: 40px;
-
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
-
 }
-
-
 .circlegraph>div{
-
-
   display: flex;
   justify-content: center;
   align-items: center;
   position: relative;
-
-
-
 }
-
-
-
-
-
-
 .circle-1 {
   width: 80%;
   height: 80%;
@@ -43,8 +26,6 @@
   color: white;
   text-align: center;
   line-height: 50px;
-
-
 }
 .circle-2 {
   width: 80%;
@@ -54,9 +35,6 @@
   text-align: center;
   line-height: 150px;
   font-size: 50px;
-
-
-
 }
 .circle-3 {
   width: 80%;
@@ -66,12 +44,8 @@
   text-align: center;
   line-height: 100px;
   font-size: 30px;
-
-
 }
-
 .glass {
-
   background: rgba(255, 255, 255, 0.2); /* Semi-transparent white */
   height: 100%;
   width: 100%;
@@ -88,4 +62,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  transition: transform 0.3s ease-in-out;
+  &:hover
+    {
+      transform: scale(1.1);
+    }
 }

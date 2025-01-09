@@ -88,6 +88,13 @@ label{
     }
   }
 
+  th[title]:hover::after {
+    content: attr();
+    position: absolute;
+    z-index: 1000;
+  }
+
+
   tbody tr {
     // background-color: #fff;
     background-color: var(--accent-color);
@@ -279,7 +286,7 @@ tbody {
 .green-cell {
   background-color: #d4edda;
   color: #2ae355;
-  font-weight: bold;
+  // font-weight: bold;
   padding: 5px;
   // border: 1px solid #0c4219 ;
   border-radius: 10px;
@@ -288,7 +295,7 @@ tbody {
 .red-cell {
   background-color: #edd4d5;
   color: #e82222;
-  font-weight: bold;
+  // font-weight: bold;
   padding: 5px;
   // border: 1px solid #420c0c ;
   border-radius: 10px;
@@ -297,25 +304,57 @@ tbody {
 .yellow-cell {
   background-color: #edebd4;
   color: #e1d52c;
-  font-weight: bold;
+  // font-weight: bold;
   padding: 5px;
   // border: 1px solid #420c0c ;
   border-radius: 10px;
   text-align: center;
 }
 .yellow{
-  color: #e1d52c;
+  color: rgb(189, 189, 7);
   font-weight: bold;
 }
 .red{
-  color: #e82222;
+  color: red;
   font-weight: bold;
 }
 .green{
-  color: #2ae355;
+  color: green;
   font-weight: bold;
 }
 
+
+.no-data-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 71%;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  margin-top: 30px;
+  border: 1px solid #e2e6ea;
+  padding: 20px;
+  text-align: center;
+  position:fixed;
+  width: 88%;
+  top: 125px;
+  left: 130px;
+}
+
+.no-data-message {
+  font-size: 18px;
+  font-weight: 500;
+  color: #6c757d;
+  margin: 0;
+  font-style: italic;
+}
+
+.no-data-message span {
+  color: #dc3545; /* Accent color for emphasis */
+  font-weight: 600;
+  font-size: 20px;
+}
 // fixed width for columns
 
 
@@ -350,6 +389,7 @@ tbody {
 // td:nth-child(9) {
 //   width: 150px;
 // }
+
 
 
 

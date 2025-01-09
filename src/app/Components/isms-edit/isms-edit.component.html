@@ -117,10 +117,8 @@
     </div>
     <div class="form-details-sub-container">
       <div class="button-group">
-         <app-form-button label="Save" type="submit" (clicked)="saveConfirmation()"></app-form-button>
-         <app-form-button label="Save Draft" (clicked)="saveAsDraft()"></app-form-button>
-         <app-form-button label="Clear" (clicked)="clearAllData()"></app-form-button>
-         <app-form-button label="Cancel" (clicked)="cancelRisk()"></app-form-button>
+        <app-form-button label="Save" (clicked)="saveConfirmation()"></app-form-button>
+        <app-form-button label="Cancel" (clicked)="cancelRisk()"></app-form-button>
       </div>
     </div>
   </form>
@@ -161,6 +159,14 @@ message="Something went Wrong!"
 [isSuccessfull] ="false"
 (closeDialog)="closeAssignee()" [bgColor]="bgColor">
 </app-form-successfull>
+}
+
+@if(isSave){
+  <app-form-conform-popup message="Do you want to save the entered risk details? You can check and edit them later if needed." [bgColor]="bgColor" (closeDialog)="saveRisk()" (notCloseDialog)="saveConfirmation()"></app-form-conform-popup>
+}
+
+@if(isCancel){
+  <app-form-conform-popup message="Are you sure you want to cancel? Any unsaved changes will be lost." [bgColor]="bgColor" (closeDialog)="closeRisk()" (notCloseDialog)="cancelRisk()"></app-form-conform-popup>
 }
 </div>
 

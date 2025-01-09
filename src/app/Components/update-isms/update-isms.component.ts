@@ -11,11 +11,13 @@ import { FormButtonComponent } from '../../UI/form-button/form-button.component'
 import { ApiService } from '../../Services/api.service';
 import { FormSuccessfullComponent } from '../form-successfull/form-successfull.component';
 import { FormReferenceHeatmapPopupComponent } from '../form-reference-heatmap-popup/form-reference-heatmap-popup.component';
+import { FormConformPopupComponent } from '../form-conform-popup/form-conform-popup.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-update-isms',
   standalone: true,
-  imports: [DropdownComponent,CommonModule,FormsModule,FormDropdownComponent,FormDateFieldComponent,FormRiskResponseComponent,ReactiveFormsModule,FormTextAreaComponent,FormDataNotInListComponent,FormButtonComponent,FormSuccessfullComponent,FormReferenceHeatmapPopupComponent],
+  imports: [DropdownComponent,CommonModule,FormsModule,FormDropdownComponent,FormDateFieldComponent,FormRiskResponseComponent,ReactiveFormsModule,FormTextAreaComponent,FormDataNotInListComponent,FormButtonComponent,FormSuccessfullComponent,FormReferenceHeatmapPopupComponent,FormConformPopupComponent],
   templateUrl: './update-isms.component.html',
   styleUrl: './update-isms.component.scss'
 })
@@ -287,8 +289,11 @@ isErrorReviewer:boolean=false
 HeatMapRefernce:boolean=false
 openDropdownId: string | undefined = undefined;
 
+isCancel:boolean=false
+isSave:boolean=false
 
-constructor(private el: ElementRef, private renderer: Renderer2,private api:ApiService){}
+
+constructor(private el: ElementRef, private renderer: Renderer2,private api:ApiService,private router: Router){}
 ngOnInit(){
   console.log("overall risk rating is before",this.overallRiskRatingBefore);
   this.el.nativeElement.style.setProperty('--bg-color', this.bgColor);
@@ -617,9 +622,28 @@ closeHeatMap(){
   this.HeatMapRefernce=false
 }
 
-saveConfirmation(){}
-clearAllData(){}
-cancelRisk(){}
-saveAsDraft(){}
+saveConfirmation(){
+  this.isSave=!this.isSave
+ }
+ saveRisk(){
+  this.onSubmit();
+  this.isSave=false
+
+ }
+
+ closeDialogSuccess(){
+  this.router.navigate(['/home']);
+
+ }
+
+ cancelRisk(){
+  this.isCancel=!this.isCancel
+
+ }
+ closeRisk(){
+  this.router.navigate(['/home']);
+ }
+
+
 
 }

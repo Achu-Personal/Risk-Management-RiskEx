@@ -15,11 +15,13 @@ import { FormDataNotInListComponent } from '../form-data-not-in-list/form-data-n
 import { ApiService } from '../../Services/api.service';
 import { FormSuccessfullComponent } from '../form-successfull/form-successfull.component';
 import { FormReferenceHeatmapPopupComponent } from '../form-reference-heatmap-popup/form-reference-heatmap-popup.component';
+import { FormConformPopupComponent } from '../form-conform-popup/form-conform-popup.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-qms-edit',
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule, DropdownComponent, CommonModule, BodyContainerComponent,HeatmapComponent,FormInputComponent,FormDropdownComponent,FormTextAreaComponent,FormDateFieldComponent,FormButtonComponent,FormDataNotInListComponent,FormSuccessfullComponent,FormReferenceHeatmapPopupComponent],
+  imports: [FormsModule, ReactiveFormsModule, DropdownComponent, CommonModule, BodyContainerComponent,HeatmapComponent,FormInputComponent,FormDropdownComponent,FormTextAreaComponent,FormDateFieldComponent,FormButtonComponent,FormDataNotInListComponent,FormSuccessfullComponent,FormReferenceHeatmapPopupComponent,FormConformPopupComponent],
   templateUrl: './qms-edit.component.html',
   styleUrl: './qms-edit.component.scss'
 })
@@ -44,7 +46,7 @@ export class QmsEditComponent {
   likelihoodValue:number=0
   impactValue:number=0
   riskFactor:number=0
-  riskId:string='SFM-001'
+  riskId:string=''
   likelihoodId:number=0
   impactId:number=0
   projectId:number=0
@@ -68,7 +70,10 @@ export class QmsEditComponent {
   isErrorAssignee:boolean=false
   openDropdownId: string | undefined = undefined;
 
-  constructor(private el: ElementRef, private renderer: Renderer2,private api:ApiService){}
+  isCancel:boolean=false
+  isSave:boolean=false
+
+  constructor(private el: ElementRef, private renderer: Renderer2,private api:ApiService,private router: Router){}
   ngOnInit(){
     console.log("data:", this.riskData)
     console.log('Received bgColor from parent:', this.bgColor);
@@ -82,6 +87,7 @@ export class QmsEditComponent {
       contingency:this.riskData.contingency,
       plannedActionDate:dateObj.toISOString().split('T')[0],
     })
+    this.riskId=this.riskData.riskId
    this.overallRiskRating=this.riskData.overallRiskRating
   this.riskFactor=this.riskData.riskAssessments[0].riskFactor
 
@@ -300,6 +306,7 @@ export class QmsEditComponent {
   console.log(payload);
 
     this.submitForm.emit(payload);
+
   }
 
 
@@ -407,11 +414,30 @@ export class QmsEditComponent {
     this.HeatMapRefernce=false
   }
 
+  saveConfirmation(){
+    this.isSave=!this.isSave
+   }
+   saveRisk(){
+    this.onSubmit();
+    this.isSave=false
 
- saveConfirmation(){}
- clearAllData(){}
- cancelRisk(){}
- saveAsDraft(){}
+   }
+
+   closeDialogSuccess(){
+    this.router.navigate(['/home']);
+
+   }
+
+   cancelRisk(){
+    this.isCancel=!this.isCancel
+
+   }
+   closeRisk(){
+    this.router.navigate(['/home']);
+   }
+
+
+
 
 
 }

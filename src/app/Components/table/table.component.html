@@ -1,4 +1,4 @@
-
+<ng-container *ngIf="hasValidData(); else noData">
 <div class="body">
 
     <div class="header1">
@@ -12,8 +12,9 @@
       <label>entries</label>
     </div>
       <app-searchbar (searchChanged)="onSearch($event)"></app-searchbar>
-   </div>
+      <!-- <app-style-button label="reset" onclick="resetFilters()"></app-style-button> -->
 
+   </div>
 
   <div class="container1">
     <div class="table-container1 fi">
@@ -22,8 +23,9 @@
         <tr class="bord">
           <th>SL No</th>
           <!-- <th>Risk ID</th> -->
-          <th>Risk Name</th>
-          <th>
+          <th title="Risk Name">Risk Name</th>
+          @if(!isDepartmentUser){
+          <th title="Department">
             <div class="dropdown-container">
             <button class="dropdown-button" (click)="toggleDepartmentDropdown()">
               Department &#9662;
@@ -42,7 +44,8 @@
             }
           </div>
           </th>
-          <th>
+        }
+          <th title="Risk Type">
             <div class="dropdown-container">
             <button class="dropdown-button" (click)="toggleTypeDropdown()">
               Risk Type &#9662;
@@ -61,11 +64,12 @@
             }
           </div>
           </th>
-          <th>End Date</th>
-          <th>CRR</th>
-          <th>Assignee</th>
+          <th title="Expected closing date">End Date</th>
+          <th  title="Current overall risk rating">CRR</th>
+
+          <th title="Responsibility">Assignee</th>
           <th>Reviewer</th>
-          <th>
+          <th title="Current status of review">
             <div class="dropdown-container">
               <button class="dropdown-button" (click)="toggleReviewStatusDropdown()">
                 Review Status &#9662;
@@ -83,8 +87,10 @@
               </ul>
               }
             </div>
+
           </th>
-          <th>
+          @if(!isButtonVisible){
+          <th title="Current risk status">
             <div class="dropdown-container">
               <button class="dropdown-button" (click)="toggleStatusDropdown()">
                 Status &#9662;
@@ -103,8 +109,9 @@
               }
             </div>
           </th>
+          }
           @if(isButtonVisible){
-            <th>
+            <th title="Current difference between post and pre overall risk rating">
               <div class="dropdown-container">
                 <button class="dropdown-button" (click)="toggleResidualDropdown()">
                   Residual Risk &#9662;
@@ -126,25 +133,31 @@
           }
         </tr>
       </thead>
+
       <tbody>
+
         @for(item of paginated ;track item.id){
         <tr (click)="rowClick(item.id)" style="height:10px;">
-          <td>{{ $index+1 }}</td>
-          <!-- <td>{{ item.riskId }}</td> -->
-          <td>{{ item.riskName }}</td>
+          <td>{{ ((currentPage-1)*10)+($index+1) }}</td>
+          <td title={{item.riskName}}>{{ item.riskName | slice:0:25 }}</td>
+          @if(!isDepartmentUser){
           <td>{{ item.departmentName }}</td>
+          }
           <td>{{ item.riskType }}</td>
           <td>{{ item.plannedActionDate| date: 'd MMM yyyy' }}</td>
-          @if(item.riskAssessments[0].isMitigated){
-          <td><div [ngClass]="{'green': item.overallRiskRatingAfter >=0 && item.overallRiskRatingAfter <= 50  , 'red': item.overallRiskRatingAfter > 70, 'yellow': item.overallRiskRatingAfter > 50 && item.overallRiskRatingAfter <= 70}">{{ item.overallRiskRatingAfter }}</div></td>
-          }@else{
-          <td><div [ngClass]="{'green': item.overallRiskRatingBefore >=0 && item.overallRiskRatingBefore <= 50  , 'red': item.overallRiskRatingBefore > 70, 'yellow': item.overallRiskRatingBefore > 50 && item.overallRiskRatingBefore <= 70}">{{ item.overallRiskRatingBefore }}</div></td>
+          @if(item.overallRiskRatingAfter !== null){
+          <td><div [ngClass]="{'green': item.overallRiskRatingAfter >=0 && item.overallRiskRatingAfter <= 30  , 'red': item.overallRiskRatingAfter > 99, 'yellow': item.overallRiskRatingAfter > 30 && item.overallRiskRatingAfter <= 99}">{{ item.overallRiskRatingAfter }}</div></td>
+          }
+          @else{
+          <td><div [ngClass]="{'green': item.overallRiskRatingBefore >=0 && item.overallRiskRatingBefore <= 30  , 'red': item.overallRiskRatingBefore > 99, 'yellow': item.overallRiskRatingBefore > 30 && item.overallRiskRatingBefore <= 99}">{{ item.overallRiskRatingBefore }}</div></td>
           }
           <td>{{ item.responsibleUser }}</td>
           <td> {{item.riskAssessments[0].reviewer}}</td>
-          <td> {{item.riskAssessments[0].reviewStatus }}</td>
+
+          <td> {{reviewStatusMap[item.riskAssessments[0].reviewStatus] }}</td>
+          @if(!isButtonVisible){
           <td><div [ngClass]="{'red-cell': item.riskStatus === 'open', 'green-cell': item.riskStatus === 'close'}">{{ item.riskStatus }}</div></td>
-          <!-- <td><div>{{ item.riskStatus }}</div></td> -->
+          }
           @if(isButtonVisible){
             <td><div [ngClass]="{'green-cell': item.residualRisk === 'Low','yellow-cell': item.residualRisk === 'Medium', 'red-cell': item.residualRisk === 'High'}">{{ item.residualRisk }}</div></td>
 
@@ -157,7 +170,7 @@
       </tbody>
     </table>
     </div>
-    <!-- <div class="foot"> -->
+
    @if(shouldDisplayPagination()){
     <app-pagination  [totalItems]="totalItems"
     [itemsPerPage]="itemsPerPage"
@@ -167,6 +180,11 @@
     </app-pagination>
    }
 
-    <!-- </div> -->
   </div>
 </div>
+</ng-container>
+<ng-template #noData>
+  <div class="no-data-container">
+    <h3 class="no-data-message">{{noDataMessage}}</h3>
+  </div>
+</ng-template>

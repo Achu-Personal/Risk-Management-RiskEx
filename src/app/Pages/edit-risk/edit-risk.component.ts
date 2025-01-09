@@ -81,9 +81,9 @@ constructor(private api:ApiService,public authService:AuthService,private router
     this.dropdownDataReviewer=res.reviewers
   })
 
-  this.api.getAllUsersByDepartmentName((this.departmentName)).subscribe((res:any)=>{
-    this.dropdownDataAssignee=res
-    console.log("departments",res)
+  const departmentId:any = this.authService.getDepartmentId();
+  this.api.getUsersByDepartmentId(departmentId).subscribe((res:any) => {
+    this.dropdownDataAssignee = res
   })
 
 
@@ -108,6 +108,9 @@ constructor(private api:ApiService,public authService:AuthService,private router
 
 
   onFormSubmit(payload: any) {
+    if(payload=false){
+      this.isError=true
+    }
     if (payload.riskType == 1) {
       this.api.editQualityRisk(Number(this.riskId),payload).subscribe((res:any)=>{
         console.log(res);

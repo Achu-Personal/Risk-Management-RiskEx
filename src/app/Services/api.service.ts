@@ -1,6 +1,6 @@
 import { project } from './../Interfaces/projects.interface';
 import { department } from './../Interfaces/deparments.interface';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
   catchError,
@@ -210,23 +210,37 @@ export class ApiService {
       .subscribe((e) => console.log(e));
   }
 
-  getRisksWithHeigestOverallRating(id: any = '') {
-    return this.http.get(
-      `${this.baseUrl}/Risk/GetRiskWithHeighestOverallRationg?id=${id}`
-    );
+  getRisksWithHeigestOverallRating(departmentList: number[]) {
+
+    let params = new HttpParams();
+    departmentList.forEach((departmentId) => {
+      params = params.append('departmentIds', departmentId.toString());
+    });
+    console.log("params",params)
+    return this.http.get(`${this.baseUrl}/Risk/GetRiskWithHeighestOverallRationg`, {
+      params,
+    });
+
   }
 
-  getRiskApproachingDeadline(id: any = '') {
-    return this.http.get(
-      `${this.baseUrl}/Risk/GetRiskApproachingDeadline?id=${id}`
-    );
+  getRiskApproachingDeadline(departmentList: number[]) {
+
+    let params = new HttpParams();
+    departmentList.forEach((departmentId) => {
+      params = params.append('departmentIds', departmentId.toString());
+    });
+    console.log("params",params)
+    return this.http.get(`${this.baseUrl}/Risk/GetRiskApproachingDeadline`, {
+      params,
+    });
+
   }
 
 
   getAllUsers() {
     return this.http.get(`${this.baseUrl}/User/GetAllUsers`);
   }
-
+//needed some cases
   getAllUsersByDepartmentName(department: string) {
     return this.http.get(
       `${this.baseUrl}/User/GetUsersByDepartment/${department}`
@@ -241,8 +255,9 @@ export class ApiService {
   getRiskCategoryCountsByDepartment(departmentList: number[]) {
     let params = new HttpParams();
     departmentList.forEach((departmentId) => {
-      params = params.append('departmentList', departmentId.toString());
+      params = params.append('departmentIds', departmentId.toString());
     });
+    console.log("params",params)
     return this.http.get(`${this.baseUrl}/Risk/RiskCategoryCountByDepartment`, {
       params,
     });
@@ -289,6 +304,17 @@ export class ApiService {
     return this.http.post(`${this.baseUrl}/emails`, null, { params });
   }
 
+  sendReviewMail(email: string, subject: string, body: string): Observable<any> {
+    const payload = {
+      receptor: email,
+      subject: subject,
+      body: body,
+      isBodyHtml: true
+    };
+    console.log('Sending payload:', payload);
+    return this.http.post(`${this.baseUrl}/emails`, payload);
+  }
+
   getAssigneeByRiskId(riskId: number) {
     return this.http.get(
       `${this.baseUrl}/User/GetInfoOfAssigneeByRiskId/${riskId}`
@@ -297,7 +323,7 @@ export class ApiService {
 
   getRevieverDetails(riskId: number, reviewStatus: string) {
     return this.http.get(
-      `https://localhost:7216/api/Reviewer/gettheReviewer/${riskId}?reviewStatus=${reviewStatus}`
+      `${this.baseUrl}/Reviewer/gettheReviewer/${riskId}?reviewStatus=${reviewStatus}`
     );
   }
 
@@ -308,21 +334,47 @@ export class ApiService {
   updateSecurityOrPrivacyRisk(updated: any, riskId: number) {
     return this.http.put(`${this.baseUrl}/Risk/update/securityOrPrivacy/${riskId}`, updated);
   }
-  getOpenRiskCountByType(id: any = ''){
-    return this.http.get(`https://localhost:7216/api/Risk/CountOfRiskType(Open)?id=${id}`);
+  getOpenRiskCountByType(list:number[]){
+    //https://localhost:7216/api/Risk/CountOfRiskType(Open)?isAdmin=false&departmentIds=4
+    let params = new HttpParams();
+    list.forEach((departmentId) => {
+      params = params.append('departmentIds', departmentId.toString());
+    });
+    console.log("params",params)
+    return this.http.get(`${this.baseUrl}/Risk/CountOfRiskType(Open)`, {
+      params,
+    });
+
    }
 
    getRiskCategoryCounts(id:any = ''){
-    return this.http.get(`https://localhost:7216/api/Risk/RiskCategory-Counts?id=${id}`);
+    return this.http.get(`${this.baseUrl}/Risk/RiskCategory-Counts?id=${id}`);
    }
 
   getriskOwnerEmailandName(id:any) {
     return this.http.get(
-      `https://localhost:7216/api/User/GetEmailAndNameOfAUserbyRiskId/${id}`
+      `${this.baseUrl}/User/GetEmailAndNameOfAUserbyRiskId/${id}`
     );
   }
 
   getNewRiskId(id:number){
     return this.http.get(`${this.baseUrl}/Risk/riskid/new/${id}`)
   }
+
+
+
+updateDepartment(updateData: any) {
+  return this.http.put(`${this.baseUrl}/Department`, updateData).pipe(tap(() => this.departmentUpdateSubject.next()));;
+}
+
+updateProject(updateData: any, id: number) {
+  return this.http.put<{ message: string }>(`${this.baseUrl}/Project/${id}`, updateData);
+}
+
+getUsersByDepartmentId(departmentId:number){
+  return this.http.get(
+    `${this.baseUrl}/User/${departmentId}`
+  );
+}
+
 }

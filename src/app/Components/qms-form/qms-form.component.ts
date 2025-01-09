@@ -65,14 +65,17 @@ export class QMSFormComponent {
   isSuccessAssignee:boolean=false
   isErrorAssignee:boolean=false
   openDropdownId: string | undefined = undefined;
-  isCancel:boolean=false
-  isSave:boolean=false
+
   draft:any={}
   preSelectedLikelihood:any
   preSelectedImpact:any
   preSelectedReviewer:any
   preSelectedResponsiblePerson:any
   preSelectedProject:any
+  isdraft:boolean=false
+  isdraftConform:boolean=false
+  isCancel:boolean=false
+  isSave:boolean=false
 
   constructor(private el: ElementRef, private renderer: Renderer2, private api:ApiService,private router: Router){}
   ngOnInit(){
@@ -238,14 +241,14 @@ export class QMSFormComponent {
       mitigation: formValue.mitigation,
       contingency: formValue.contingency || " ",
       OverallRiskRatingBefore:Number(this.overallRiskRating) ,
-      responsibleUserId:Number(this.responsiblePersonId)!=0 ?+Number(this.responsiblePersonId):Number(this.newAssigneeId),
+      responsibleUserId:Number(this.responsiblePersonId)!=0 ?+Number(this.responsiblePersonId):Number(this.preSelectedResponsiblePerson!=0) ? Number(this.preSelectedResponsiblePerson): Number(this.newAssigneeId),
       plannedActionDate: `${formValue.plannedActionDate}T00:00:00.000Z` ,
       departmentId:Number(this.departmentId)!=0 ? + Number(this.departmentId) : Number(this.departmentIdForAdminToAdd),
-      projectId:Number(this.projectId)!=0 ? +Number(this.projectId) : null,
+      projectId:Number(this.projectId)!=0 ? +Number(this.projectId):Number(this.preSelectedProject!=0)? Number(this.preSelectedProject): null,
       riskAssessments: [
         {
-          likelihood: Number(this.likelihoodId) ,
-          impact: Number(this.impactId) ,
+          likelihood:this.likelihoodId? Number(this.likelihoodId):Number(this.preSelectedLikelihood) ,
+          impact:this.impactValue? Number(this.impactId):Number(this.preSelectedImpact) ,
           isMitigated: false,
           assessmentBasisId:null,
           riskFactor:Number(this.riskFactor) ,
@@ -261,7 +264,7 @@ export class QMSFormComponent {
 
     this.submitForm.emit(payload);
 
-    localStorage.removeItem('draft'); // Delete draft after saving
+    localStorage.removeItem('draftQuality'); // Delete draft after saving
   console.log('Draft Removed!');
   }
 
@@ -335,50 +338,46 @@ export class QMSFormComponent {
     this.isErrorAssignee=false
   }
 
- clearAllData(){
-  this.qmsForm.reset();
-  this.internalReviewerIdFromDropdown=0
- }
- cancelRisk(){
-  this.isCancel=!this.isCancel
 
- }
- closeRisk(){
-  this.router.navigate(['/home']);
- }
- saveAsDraft(){
+
+ closeDraft(){
   const draft = {
 
-      formValues: this.qmsForm.value,
-      riskType:Number(this.riskTypeValue) ,
-      OverallRiskRatingBefore:Number(this.overallRiskRating) ,
-      responsibleUserId:Number(this.responsiblePersonId)!=0 ?+Number(this.responsiblePersonId):Number(this.newAssigneeId),
-      departmentId:Number(this.departmentId)!=0 ? + Number(this.departmentId) : Number(this.departmentIdForAdminToAdd),
-      projectId:Number(this.projectId)!=0 ? +Number(this.projectId) : null,
-      riskAssessments: [
-        {
-          likelihood: Number(this.likelihoodId) ,
-          impact: Number(this.impactId) ,
-          isMitigated: false,
-          assessmentBasisId:null,
-          riskFactor:Number(this.riskFactor) ,
-          review: {
-            userId: this.isInternal && Number(this.internalReviewerIdFromDropdown)!=0? Number(this.internalReviewerIdFromDropdown) : null,
-            externalReviewerId:Number(this.externalReviewerIdFromInput) ?  Number(this.externalReviewerIdFromInput):!this.isInternal&&Number(this.externalReviewerIdFromDropdown)!=0?Number(this.externalReviewerIdFromDropdown): null,
-            comments:" ",
-            reviewStatus:1,
-          },
+    formValues: this.qmsForm.value,
+    riskType:Number(this.riskTypeValue) ,
+    OverallRiskRatingBefore:Number(this.overallRiskRating) ,
+    responsibleUserId:Number(this.responsiblePersonId)!=0 ?+Number(this.responsiblePersonId):Number(this.newAssigneeId),
+    departmentId:Number(this.departmentId)!=0 ? + Number(this.departmentId) : Number(this.departmentIdForAdminToAdd),
+    projectId:Number(this.projectId)!=0 ? +Number(this.projectId) : null,
+    riskAssessments: [
+      {
+        likelihood: Number(this.likelihoodId) ,
+        impact: Number(this.impactId) ,
+        isMitigated: false,
+        assessmentBasisId:null,
+        riskFactor:Number(this.riskFactor) ,
+        review: {
+          userId: this.isInternal && Number(this.internalReviewerIdFromDropdown)!=0? Number(this.internalReviewerIdFromDropdown) : null,
+          externalReviewerId:Number(this.externalReviewerIdFromInput) ?  Number(this.externalReviewerIdFromInput):!this.isInternal&&Number(this.externalReviewerIdFromDropdown)!=0?Number(this.externalReviewerIdFromDropdown): null,
+          comments:" ",
+          reviewStatus:1,
         },
-      ],
-    };
-    localStorage.setItem('draft', JSON.stringify(draft));
-    console.log('Draft Saved as JSON:', JSON.stringify(draft));
-  }
+      },
+    ],
+  };
+  localStorage.setItem('draftQuality', JSON.stringify(draft));
+  console.log('Draft Saved as JSON:', JSON.stringify(draft));
+  this.saveAsDraft();
+  this.isdraftConform=true
+
+ }
+
 
   ngOnChanges(changes: SimpleChanges): void {
     if (this.draft) {
       if (changes['dropdownLikelihood']) {
         this.preSelectedLikelihood = this.draft.riskAssessments[0].likelihood;
+
       }
 
       if (changes['dropdownImpact']) {
@@ -413,7 +412,7 @@ export class QMSFormComponent {
 
 
   loadDraft() {
-    const draft = localStorage.getItem('draft');
+    const draft = localStorage.getItem('draftQuality');
     if (draft) {
       this.draft = JSON.parse(draft); // Store draft data
       console.log('Draft Loaded:', this.draft);
@@ -423,6 +422,11 @@ export class QMSFormComponent {
     }
   }
 
+
+  saveAsDraft(){
+    this.isdraft=!this.isdraft
+
+    }
  saveConfirmation(){
   this.isSave=!this.isSave
  }
@@ -432,7 +436,18 @@ export class QMSFormComponent {
 
  }
 
+ closeDialogSuccess(){
+  this.router.navigate(['/home']);
 
+ }
+
+ cancelRisk(){
+  this.isCancel=!this.isCancel
+
+ }
+ closeRisk(){
+  this.router.navigate(['/home']);
+ }
 
 
 

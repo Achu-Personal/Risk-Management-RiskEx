@@ -1,131 +1,91 @@
 <app-body-container class="main" backgroundColor="transparent" padding="5" [showShadow]="false">
-<div class="dashboard">
-<div class="topbuttons">
-  <div class="dropdown" >
-<app-department-dropdown *ngIf="authService.getUserRole() === 'Admin'"></app-department-dropdown>  </div>
-  <div class="registerrisk">
+  <div class="dashboard">
+    <div class="topbuttons">
+      <div class="dropdown">
+        <app-department-dropdown *ngIf="authService.getUserRole() === 'Admin'|| authService.getUserRole()?.includes('EMTUser')    "
+          (departmentsSelected)="GetSelectedDepartment($event)"></app-department-dropdown>
+      </div>
+      <div class="registerrisk">
 
-    <app-style-button (clicked)="OnRegisterRiskButtonCLicked()" label="Register Risk"></app-style-button>
-  </div>
-</div>
+        <app-style-button *ngIf="!authService.getUserRole()?.includes('EMTUser')" (clicked)="OnRegisterRiskButtonCLicked()" label="Register Risk"></app-style-button>
+      </div>
+    </div>
 
-  <div class="graphs">
-    <div class="graph1" data-aos="zoom-in">
-      <div class="leftside">
-        <div class="heading">
-          <h4>Open Risks</h4>
-        </div>
-        <div class="labels">
-          <div class="risk-indicator">
-            <div class="privacy-risk"></div>
-             <span>Privacy Risk</span>
+    <div class="graphs">
+      <div class="graph1" data-aos="zoom-in">
+
+        <div class="leftside">
+          <div class="heading">
+            <h4>Open Risks</h4>
           </div>
-                        <div class="risk-indicator">
-                         <div class="quality-risk"></div>
-                          <span>Quality Risk</span>
-                            </div>
-                              <div class="risk-indicator">
+          <div class="labels">
+            <div class="risk-indicator">
+              <div class="privacy-risk"></div>
+              <span>Privacy Risk</span>
+              <h6>{{privacyRiskCount ? privacyRiskCount : 0}}</h6>
+            </div>
+            <div class="risk-indicator">
+              <div class="quality-risk"></div>
+              <span>Quality Risk</span>
+              <h6>{{qualityRiskCount ? qualityRiskCount :0}}</h6>
+            </div>
+            <div class="risk-indicator">
               <div class="security-risk"></div>
-            <span>Security Risk</span>
+              <span>Security Risk</span>
+              <h6>{{securityRiskCount ? securityRiskCount : 0}}</h6>
+            </div>
+          </div>
+        </div>
+        <div class="rightside ">
+
+          <div class="circlegraph">
+
+
+            <app-bubble-graph class="bubbly" [securityRiskCount]="securityRiskCount ? securityRiskCount : 0"
+              [privacyRiskCount]="privacyRiskCount ? privacyRiskCount : 0"
+              [qualityRiskCount]="qualityRiskCount ? qualityRiskCount :0"></app-bubble-graph>
+
           </div>
         </div>
       </div>
-      <div class="rightside ">
-        <div class="circlegraph">
-
-          <app-bubble-graph [securityRiskCount]="securityRiskCount ? securityRiskCount : 0" [privacyRiskCount]="privacyRiskCount ? privacyRiskCount : 0"  [qualityRiskCount]="qualityRiskCount ? qualityRiskCount :0" ></app-bubble-graph>
-
-        </div>
-      </div>
-    </div>
-    <div class="graph2" >
-      <div class="riskratingcategory">
-      <h4>Risk Rating</h4>
-      <div class="forchart" >
-        <div class="graphchart"  >
-        <app-chart class="mainchart" [labels]="graph2labels" [chartType]="graph2chartType" [datasets]="graph2datasets"></app-chart>
-        </div>
-        <div class="graph2Legend">
-          <div>
-            <!-- <div style="background-color: blue;" ></div>
-            <h5>Low</h5> -->
-            <h6>{{Criticality.Critical ? Criticality.Critical : 0}}</h6>
-          </div>
-          <div>
-            <!-- <div  style="background-color: rgb(251, 213, 255);"></div>
-            <h5>Moderate</h5> -->
-            <h6>{{Criticality.Moderate ? Criticality.Moderate : 0}}</h6>
-          </div>
-          <div>
-            <!-- <div style="background-color: rgb(206, 206, 255);"></div>
-            <h5>Critical</h5> -->
-            <h6>{{Criticality.Low ?  Criticality.Low: 0}}</h6>
-          </div>
-        </div>
-      </div>
-      </div>
-    </div>
-  </div>
-            <div class="riskdetails">
-        <div class="urgentrisks" data-aos="zoom-in">
-          <h5>Upcoming Risk Deadlines</h5>
-          <div class="maindiv1">
-
-            @for(item of riskApproachingDeadline; track $index )
-            {
-
-              <div class="risk-card1">
-                <div class="riskCard1-left">
-                  <div class="risk-text1">{{item.riskName}}</div>
-                  <div class="risk-date1">{{item.plannedActionDate | date: 'd MMM yyyy'}}</div>
-
-                </div>
-                <div class="riskCard1-right">
-
-                  <button (click)="OnCardClicked(item.id)" class="view-risk-button1">View Risk</button>
-                </div>
+      <div class="graph2">
+        <div class="riskratingcategory">
+          <h4>Risk Rating</h4>
+          <div class="forchart">
+            <div class="graphchart">
+              <app-chart class="mainchart" [labels]="graph2labels" [chartType]="graph2chartType"
+                [datasets]="graph2datasets"></app-chart>
+            </div>
+            <div class="graph2Legend">
+              <div>
+                <div style="background-color:#962DFF;"></div>
+                <h5>Critical</h5>
+                <h6>{{Criticality.Critical ? Criticality.Critical : 0}}</h6>
               </div>
-
-
-            }
-
-
-
-          </div>
-
-
-        </div>
-      <div class="imprisk" data-aos="zoom-in">
-        <h5>Risks With Highest Overall Rating</h5>
-        <div class="maindiv">
-
-          @for(item of risksWithHeighesOverallRating; track $index )
-          {
-            <div class="risk-card">
-              <div style="display: flex;flex-direction: column;">
-                <div class="top">
-                  <div class="risk-text">{{item.riskName}}</div>
-                  <div class="risk-count">{{item.overallRiskRatingBefore}}</div>
-                </div>
-                <div class="risk-date">{{item.plannedActionDate | date: 'd MMM yyyy'}}</div>
+              <div>
+                <div style="background-color:#C6D2FD;"></div>
+                <h5>Moderate</h5>
+                <h6>{{Criticality.Moderate ? Criticality.Moderate : 0}}</h6>
               </div>
-
-              <div class="bottom">
-
-                <button (click)="OnCardClicked(item.id)" class="view-risk-button">View Risk →</button>
+              <div>
+                <div style="background-color:#E0C6FD;"></div>
+                <h5>Low</h5>
+                <h6>{{Criticality.Low ? Criticality.Low: 0}}</h6>
               </div>
             </div>
-          }
-
-
-
+          </div>
         </div>
+      </div>
+    </div>
 
+    <div class="riskdetails">
 
+      <app-dashbaord-card-container title="Upcoming risk deadlines"  [list]="riskApproachingDeadline"  > </app-dashbaord-card-container>
+
+      <app-dashbaord-card-container title="Risks with highest overall rating"  [list]="risksWithHeighesOverallRating"  > </app-dashbaord-card-container>
 
     </div>
   </div>
-</div>
 </app-body-container>
 
 
@@ -133,7 +93,7 @@
 
 
 
-    <!-- <div class="searchbuttons">
+<!-- <div class="searchbuttons">
       <div class="dropdown">
         <app-department-dropdown></app-department-dropdown>
       </div>

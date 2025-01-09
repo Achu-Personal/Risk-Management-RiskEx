@@ -71,6 +71,8 @@ export class AuthService {
 
 
   getUserRole() {
+    console.log("role=",this.userRole.value);
+
     return this.userRole.value;
   }
   getUserName(){
@@ -107,7 +109,7 @@ export class AuthService {
           return Object.keys(project).reduce((acc, key) => {
             acc[key.toLowerCase()] = project[key];
             return acc;
-          }, {} as any); 
+          }, {} as any);
         })
       )
     );

@@ -1,5 +1,5 @@
 import { BaseChartDirective} from 'ng2-charts';
-import { Component, Input, SimpleChanges} from '@angular/core';
+import { ChangeDetectorRef, Component, Input, SimpleChanges} from '@angular/core';
 import { Chart, ChartConfiguration, ChartType, registerables } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels'; // Import the plugin
 
@@ -31,6 +31,12 @@ export class ChartComponent {
   // datalabels:this.datalabels
   };
 
+
+  constructor(private cdr: ChangeDetectorRef)
+  {
+
+  }
+
   public lineChartOptions: ChartConfiguration['options'] = {
     elements: {
       line: {
@@ -53,15 +59,15 @@ export class ChartComponent {
         }
       },
       legend: {
-      position: 'right', // Legend on the right
+      // position: 'right', // Legend on the right
       labels: {
 
-        padding: 30, // Adjust this to increase the gap
-        boxWidth: 35,
-        boxHeight: 10,
+        // padding: 30, // Adjust this to increase the gap
+        boxWidth: 25,
+        boxHeight: 8,
       font: {
-      size: 15,
-      // family: 'Montserrat', // Font family
+      size: 10,
+      family: 'Montserrat', // Font family
       weight: 'normal' // Font weight
       },
       color: '#000000'
@@ -103,6 +109,17 @@ export class ChartComponent {
 
 
   };
+
+  ngOnInit()
+  {
+
+      this.chartData.labels = this.labels;
+
+
+
+      this.chartData.datasets = this.datasets;
+
+  }
 
 
 
