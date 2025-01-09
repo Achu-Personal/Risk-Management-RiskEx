@@ -52,11 +52,26 @@ export class UsericonDropdownComponent {
 closeDropdown(): void {
   this.dropdownVisible = false;
 }
-  getPrimaryRole(): string | null {
-    const roles = this.auth.getUserRole();
-    if (Array.isArray(roles) && roles.length > 1) {
-      return roles[1];
-    }
-    return roles
+getPrimaryRole(): string | null {
+  const roles = this.auth.getUserRole();
+  if (Array.isArray(roles) && roles.length > 1) {
+    return roles[1];
   }
+  return roles;
 }
+
+formatRoleName(role: string | null): string {
+  if (!role) return '';
+
+  let formattedRole = role.replace(/([A-Z]+)([A-Z][a-z])/g, '$1 $2');
+
+  formattedRole = formattedRole.replace(/([a-z])([A-Z])/g, '$1 $2');
+
+  formattedRole = formattedRole.replace(/([A-Z]+)([A-Z][a-z])/g, '$1 $2');
+
+  return formattedRole.split(' ')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+}
+}
+

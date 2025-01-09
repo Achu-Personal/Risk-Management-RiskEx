@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-bubble-graph',
@@ -13,6 +14,11 @@ export class BubbleGraphComponent {
   @Input() qualityRiskCount: number = 4;
   @Input() securityRiskCount: number = 10;
 
+  constructor(private router:Router)
+  {
+
+  }
+
   ngOnInit() {
 
 
@@ -25,5 +31,10 @@ export class BubbleGraphComponent {
   {
     let sum=this.privacyRiskCount+this.qualityRiskCount+this.securityRiskCount
       return (((value/sum)*100)*2.5)
+  }
+
+  onBubbleClicked(type:string)
+  {
+    this.router.navigate([`reports`], { state: { type: type} });
   }
 }

@@ -1,13 +1,15 @@
 
 .btn {
   padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
+  color: #ffffff ;
   font-weight: bold;
   text-transform: uppercase;
+  box-shadow: 0px 0px 4px rgba(185, 154, 62, 0.5);
+  border: none;
+  border-radius: 5px;  /* Rounded corners */
+  font-size: small;  /* Button text size */
+  cursor: pointer;  /* Pointer cursor on hover */
+  transition: background-color 0.3s, border-color 0.3s;  /* Smooth transition */
 
 }
 
@@ -18,6 +20,11 @@
 }
 
 .btn.save:hover {
-  background-color: var(--bg-color);
-  box-shadow: 0 6px 10px rgba(62, 104, 185, 0.6);
+  background-color: #d0c6b6;
+  color: rgb(43, 28, 6);
+}
+
+.btn button:focus {
+  outline: none;  /* Remove default focus outline */
+  box-shadow: 0 0 5px rgba(255, 166, 0, 0.5);  /* Add custom focus outline */
 }

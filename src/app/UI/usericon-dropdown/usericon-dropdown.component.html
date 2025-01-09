@@ -1,7 +1,6 @@
  <div class="box" style="padding: 5px;" (click)="$event.stopPropagation()">
   <div  style="height: 5px;"></div>
   <img style="margin-left: 18px; " src="/Images/image 7.png" alt="" (click)="logout()">
-   <!-- <i style="margin-left: 17px; color:red;" class="fa-solid fa-right-from-bracket logout-icon"></i> -->
   <div style="height: 20px;"></div>
 
   <i (click)="toggleDropdown()" class="fa-solid fa-circle-user"></i>
@@ -9,12 +8,11 @@
     <div class="profile-card">
       <img src="/Images/usericon.png" alt="Profile Picture" class="profile-image" />
       <h3>{{ auth.getUserName() }}</h3>
-      <p class="role">{{ getPrimaryRole() }}</p>
+      <p class="role">{{ formatRoleName(getPrimaryRole()) }}</p>
       <p class="department">{{ auth.getDepartmentName() }}</p>
       <p class="email">{{ auth.getUserMail() }}</p>
       <hr>
 
-<!-- <button class="changebutton" (click)="onChangePassword()">Change Password</button> -->
  <div class="changebutton">
 <app-style-button (clicked)="onChangePassword()" label="Change Password"></app-style-button></div>
 

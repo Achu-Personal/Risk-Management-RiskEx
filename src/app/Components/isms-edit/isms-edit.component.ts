@@ -15,11 +15,13 @@ import { FormButtonComponent } from '../../UI/form-button/form-button.component'
 import { FormDataNotInListComponent } from '../form-data-not-in-list/form-data-not-in-list.component';
 import { FormSuccessfullComponent } from '../form-successfull/form-successfull.component';
 import { FormReferenceHeatmapPopupComponent } from '../form-reference-heatmap-popup/form-reference-heatmap-popup.component';
+import { Router } from '@angular/router';
+import { FormConformPopupComponent } from '../form-conform-popup/form-conform-popup.component';
 
 @Component({
   selector: 'app-isms-edit',
   standalone: true,
-  imports: [ FormsModule, ReactiveFormsModule, ButtonComponent, DropdownComponent, TextareaComponent, OverallRatingCardComponent,CommonModule,FormInputComponent,FormDropdownComponent,FormTextAreaComponent,FormDateFieldComponent,FormButtonComponent,FormDataNotInListComponent,FormSuccessfullComponent,FormReferenceHeatmapPopupComponent],
+  imports: [ FormsModule, ReactiveFormsModule, ButtonComponent, DropdownComponent, TextareaComponent, OverallRatingCardComponent,CommonModule,FormInputComponent,FormDropdownComponent,FormTextAreaComponent,FormDateFieldComponent,FormButtonComponent,FormDataNotInListComponent,FormSuccessfullComponent,FormReferenceHeatmapPopupComponent,FormConformPopupComponent],
   templateUrl: './isms-edit.component.html',
   styleUrl: './isms-edit.component.scss'
 })
@@ -44,7 +46,7 @@ export class IsmsEditComponent {
   likelihoodValue:number=0
   impactValue:number=0
   riskFactor:number=0
-  riskId:string='SFM-001'
+  riskId:string=''
   likelihoodId:number=0
   impactId:number=0
   projectId:number=0
@@ -96,8 +98,11 @@ export class IsmsEditComponent {
   HeatMapRefernce:boolean=false
   openDropdownId: string | undefined = undefined;
 
+  isCancel:boolean=false
+  isSave:boolean=false
 
-constructor(private api:ApiService,public authService:AuthService,private el: ElementRef, private renderer: Renderer2){}
+
+constructor(private api:ApiService,public authService:AuthService,private el: ElementRef, private renderer: Renderer2,private router: Router){}
 
 ngOnInit(){
   this.el.nativeElement.style.setProperty('--bg-color', this.bgColor);
@@ -113,6 +118,7 @@ ngOnInit(){
       contingency:this.riskData.contingency,
       plannedActionDate:dateObj.toISOString().split('T')[0],
     })
+    this.riskId=this.riskData.riskId
    this.overallRiskRating=this.riskData.overallRiskRating
   // this.riskFactor=this.riskData.riskAssessments[0].riskFactor
   this.confidentialityRiskFactor=this.riskData.riskAssessments[0].riskFactor
@@ -575,9 +581,28 @@ closeHeatMap(){
 }
 
 
-saveConfirmation(){}
-clearAllData(){}
-cancelRisk(){}
-saveAsDraft(){}
+
+saveConfirmation(){
+  this.isSave=!this.isSave
+ }
+ saveRisk(){
+  this.onSubmit();
+  this.isSave=false
+
+ }
+
+ closeDialogSuccess(){
+  this.router.navigate(['/home']);
+
+ }
+
+ cancelRisk(){
+  this.isCancel=!this.isCancel
+
+ }
+ closeRisk(){
+  this.router.navigate(['/home']);
+ }
+
 
 }
