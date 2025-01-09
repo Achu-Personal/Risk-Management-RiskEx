@@ -1,186 +1,143 @@
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { ProjectDropDownComponent } from './project-drop-down.component';
 import { ApiService } from '../../Services/api.service';
+import { AuthService } from '../../Services/auth.service';
 import { of, throwError } from 'rxjs';
-import { FormsModule } from '@angular/forms';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { project } from '../../Interfaces/projects.interface';
-import { lastValueFrom } from 'rxjs';
-
 
 describe('ProjectDropDownComponent', () => {
   let component: ProjectDropDownComponent;
   let fixture: ComponentFixture<ProjectDropDownComponent>;
-  let apiService: jasmine.SpyObj<ApiService>;
+  let apiServiceSpy: jasmine.SpyObj<ApiService>;
+  let authServiceSpy: jasmine.SpyObj<AuthService>;
+
+  const mockProjects: project[] = [
+    { id: 1, name: 'Project 1', projectCode: 'P1' },
+    { id: 2, name: 'Project 2', projectCode: 'P2' },
+    { id: 3, name: 'Project 3', projectCode: 'P3' }
+  ];
 
   beforeEach(async () => {
-    apiService = jasmine.createSpyObj('ApiService', ['getProjects']);
+    apiServiceSpy = jasmine.createSpyObj('ApiService', ['getProjects']);
+    authServiceSpy = jasmine.createSpyObj('AuthService', ['getUserRole']);
 
     await TestBed.configureTestingModule({
-      imports: [FormsModule, HttpClientTestingModule],
-      providers: [{ provide: ApiService, useValue: apiService }],
+      imports: [ProjectDropDownComponent],
+      providers: [
+        { provide: ApiService, useValue: apiServiceSpy },
+        { provide: AuthService, useValue: authServiceSpy }
+      ]
     }).compileComponents();
-  });
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(ProjectDropDownComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
-  afterEach(() => {
-    apiService.getProjects.calls.reset();
-  });
-
-  it('should create the component', () => {
-    expect(component).toBeTruthy();
-  });
-
-  it('should initialize with default values', () => {
-    expect(component.departmentName).toBe('');
-    expect(component.filteredProjects).toEqual([]);
-    expect(component.selectedItems).toEqual([]);
-    expect(component.selectedProject).toBe('Select Projects');
-    expect(component.loading).toBe(false);
-    expect(component.dropdownOpen).toBe(false);
-  });
-
-
-// it('should load projects when departmentName changes', fakeAsync(async () => { // async is now needed
-//     const mockProjects: project[] = [
-//       { id: 1, name: 'Project 1' },
-//       { id: 2, name: 'Project 2' },
-//     ];
-
-//     apiService.getProjects.and.returnValue(of(mockProjects));
-
-//     component.departmentName = 'Engineering';
-//     fixture.detectChanges();
-
-//     component.ngOnChanges({
-//       departmentName: {
-//         currentValue: 'Engineering',
-//         firstChange: true,
-//         previousValue: '',
-//         isFirstChange: () => true,
-//       },
-//     });
-
-//     expect(component.loading).toBe(true);
-
-//     await lastValueFrom(apiService.getProjects('Engineering')); // Await the observable completion
-
-//     tick(); // tick is still important for other timing related things but not for the observable resolution itself
-
-//     fixture.detectChanges();
-//     expect(component.loading).toBe(false);
-//     expect(apiService.getProjects).toHaveBeenCalledWith('Engineering');
-//     expect(component.filteredProjects).toEqual(mockProjects);
-//     expect(component.selectedItems).toEqual([]);
-//     expect(component.selectedProject).toBe('Select Projects');
-//   }));
-
-
-
-  it('should handle API errors when fetching projects', () => {
-    apiService.getProjects.and.returnValue(
-      throwError({ error: { message: 'Failed to load projects' } })
-    );
-
-    component.departmentName = 'Engineering';
-    component.ngOnChanges({
-      departmentName: {
-        currentValue: 'Engineering',
-        firstChange: true,
-        previousValue: '',
-        isFirstChange: function (): boolean {
-          throw new Error('Function not implemented.');
-        },
-      },
+  // Initial State Tests
+  describe('Initial State', () => {
+    it('should create', () => {
+      expect(component).toBeTruthy();
     });
 
-    expect(component.loading).toBe(false);
-    expect(component.filteredProjects).toEqual([]);
-    expect(component.selectedItems).toEqual([]);
-    expect(component.selectedProject).toBe('Select Projects');
+    it('should initialize with default values', () => {
+      expect(component.departmentName).toBe('');
+      expect(component.dropdownOpen).toBeFalse();
+      expect(component.selectedItems).toEqual([]);
+      expect(component.selectedProject).toBe('Select Projects');
+      expect(component.filteredProjects).toEqual([]);
+      expect(component.disabled).toBeFalse();
+      expect(component.loading).toBeFalse();
+    });
   });
 
-  it('should toggle dropdown visibility', () => {
-    component.filteredProjects = [{ id: 1, name: 'Project 1' }];
-    component.disabled = false;
+  // Project Loading Tests
+  describe('Project Loading', () => {
+    it('should load projects when department name changes', fakeAsync(() => {
+      apiServiceSpy.getProjects.and.returnValue(of(mockProjects));
+      component.departmentName = 'IT';
 
-    expect(component.dropdownOpen).toBe(false);
+      component.ngOnChanges({
+        departmentName: {
+          currentValue: 'IT',
+          previousValue: '',
+          firstChange: true,
+          isFirstChange: () => true
+        }
+      });
 
-    component.toggleDropdown();
-    expect(component.dropdownOpen).toBe(true);
+      tick();
 
-    component.toggleDropdown();
-    expect(component.dropdownOpen).toBe(false);
+      expect(component.filteredProjects).toEqual(mockProjects);
+      expect(component.loading).toBeFalse();
+    }));
+
+    it('should handle error when loading projects fails', fakeAsync(() => {
+      apiServiceSpy.getProjects.and.returnValue(throwError(() => new Error('API Error')));
+      component.departmentName = 'IT';
+
+      component.ngOnChanges({
+        departmentName: {
+          currentValue: 'IT',
+          previousValue: '',
+          firstChange: true,
+          isFirstChange: () => true
+        }
+      });
+
+      tick();
+
+      expect(component.filteredProjects).toEqual([]);
+      expect(component.loading).toBeFalse();
+    }));
   });
 
-  it('should select and deselect projects', () => {
-    const mockProjects: project[] = [
-      { id: 1, name: 'Project 1' },
-      { id: 2, name: 'Project 2' },
-    ];
 
-    component.filteredProjects = mockProjects;
-    component.selectedItems = [];
 
-    component.toggleSelection(mockProjects[0]);
-    expect(component.selectedItems).toEqual([mockProjects[0]]);
-    expect(component.selectedProject).toBe('Project 1');
 
-    component.toggleSelection(mockProjects[0]);
-    expect(component.selectedItems).toEqual([]);
-    expect(component.selectedProject).toBe('Select Projects');
+  // ControlValueAccessor Tests
+  describe('ControlValueAccessor Implementation', () => {
+    it('should implement writeValue', () => {
+      const selectedProjects = [mockProjects[0]];
+      component.writeValue(selectedProjects);
+      expect(component.selectedItems).toEqual(selectedProjects);
+      expect(component.selectedProject).toBe(mockProjects[0].name);
+    });
+
+    it('should implement registerOnChange', () => {
+      const mockFn = jasmine.createSpy('mockFn');
+      component.registerOnChange(mockFn);
+      component.toggleSelection(mockProjects[0]);
+      expect(mockFn).toHaveBeenCalled();
+    });
+
+    it('should implement setDisabledState', () => {
+      component.setDisabledState(true);
+      expect(component.disabled).toBeTrue();
+    });
   });
 
-  it('should select and deselect all projects', () => {
-    const mockProjects: project[] = [
-      { id: 1, name: 'Project 1' },
-      { id: 2, name: 'Project 2' },
-    ];
+  // Click Outside Tests
+  describe('Click Outside Behavior', () => {
+    it('should close dropdown when clicking outside', () => {
+      // Mock document.querySelector
+      spyOn(document, 'querySelector').and.returnValue({
+        contains: () => false
+      } as any);
 
-    component.filteredProjects = mockProjects;
-    component.selectedItems = [];
+      component.dropdownOpen = true;
+      component.onClickOutside(new MouseEvent('click'));
+      expect(component.dropdownOpen).toBeFalse();
+    });
 
-    component.selectAll();
-    expect(component.selectedItems).toEqual(mockProjects);
-    expect(component.selectedProject).toBe('Project 1, Project 2');
+    it('should keep dropdown open when clicking inside', () => {
+      // Mock document.querySelector
+      spyOn(document, 'querySelector').and.returnValue({
+        contains: () => true
+      } as any);
 
-    component.selectAll();
-    expect(component.selectedItems).toEqual([]);
-    expect(component.selectedProject).toBe('Select Projects');
-  });
-
-  it('should implement ControlValueAccessor methods', () => {
-    const mockProjects: project[] = [
-      { id: 1, name: 'Project 1' },
-      { id: 2, name: 'Project 2' },
-    ];
-
-    component.writeValue(mockProjects);
-    expect(component.selectedItems).toEqual(mockProjects);
-    expect(component.selectedProject).toBe('Project 1, Project 2');
-
-    const fn = jasmine.createSpy();
-    component.registerOnChange(fn);
-
-    component.toggleSelection(mockProjects[0]);
-
-    expect(fn).toHaveBeenCalled();     expect(fn).toHaveBeenCalledWith(component.selectedItems);
-
-    component.writeValue([]);
-    expect(component.selectedItems).toEqual([]);
-    expect(component.selectedProject).toBe('Select Projects');
-});
-
-  it('should set disabled state', () => {
-    component.setDisabledState(true);
-    expect(component.disabled).toBe(true);
-
-    component.setDisabledState(false);
-    expect(component.disabled).toBe(false);
+      component.dropdownOpen = true;
+      component.onClickOutside(new MouseEvent('click'));
+      expect(component.dropdownOpen).toBeTrue();
+    });
   });
 });

@@ -74,6 +74,11 @@ export class QmsEditComponent {
   isSave:boolean=false
   isValid:boolean=false
 
+  newReviewername:string=''
+  newAssigneename:string=''
+  isnewAssigneenameDisplay:boolean=false
+  isnewReviewernameDisplay:boolean=false
+
   constructor(private el: ElementRef, private renderer: Renderer2,private api:ApiService,private router: Router){}
   ngOnInit(){
     console.log("data:", this.riskData)
@@ -301,34 +306,83 @@ export class QmsEditComponent {
       return;
     }
     const payload = {
-      riskId:this.riskId ,
-      riskName: formValue.riskName ,
-      description: formValue.description,
-      riskType:Number(this.riskTypeValue) ,
-      impact: formValue.impact ,
-      mitigation: formValue.mitigation,
-      contingency: formValue.contingency || " ",
-      OverallRiskRatingBefore:Number(this.overallRiskRating) ,
-      responsibleUserId:Number(this.responsiblePersonId)!=0 ?+Number(this.responsiblePersonId):Number(this.preSelectedResponsiblePerson!=0) ? Number(this.preSelectedResponsiblePerson): Number(this.newAssigneeId),
-      plannedActionDate: `${formValue.plannedActionDate}T00:00:00.000Z` ,
-      departmentId:Number(this.departmentId)!=0 ? + Number(this.departmentId) : Number(this.departmentIdForAdminToAdd),
-      projectId:Number(this.projectId)!=0 ? +Number(this.projectId):Number(this.preSelectedProject!=0)? Number(this.preSelectedProject): null,
-      riskAssessments: [
-        {
-          likelihood:this.likelihoodId? Number(this.likelihoodId):Number(this.preSelectedLikelihood) ,
-          impact:this.impactValue? Number(this.impactId):Number(this.preSelectedImpact) ,
-          isMitigated: false,
-          assessmentBasisId:null,
-          riskFactor:Number(this.riskFactor) ,
-          review: {
-            userId: this.isInternal && Number(this.internalReviewerIdFromDropdown)!=0? Number(this.internalReviewerIdFromDropdown) : null,
-            externalReviewerId:Number(this.externalReviewerIdFromInput) ?  Number(this.externalReviewerIdFromInput):!this.isInternal&&Number(this.externalReviewerIdFromDropdown)!=0?Number(this.externalReviewerIdFromDropdown): null,
-            comments:" ",
-            reviewStatus:1,
+    //   riskId:this.riskId ,
+    //   riskName: formValue.riskName ,
+    //   description: formValue.description,
+    //   riskType:Number(this.riskTypeValue) ,
+    //   impact: formValue.impact ,
+    //   mitigation: formValue.mitigation,
+    //   contingency: formValue.contingency || " ",
+    //   OverallRiskRatingBefore:Number(this.overallRiskRating) ,
+    //   responsibleUserId:Number(this.responsiblePersonId)!=0 ?+Number(this.responsiblePersonId):Number(this.preSelectedResponsiblePerson!=0) ? Number(this.preSelectedResponsiblePerson): Number(this.newAssigneeId),
+    //   plannedActionDate: `${formValue.plannedActionDate}T00:00:00.000Z` ,
+    //   departmentId:Number(this.departmentId)!=0 ? + Number(this.departmentId) : Number(this.departmentIdForAdminToAdd),
+    //   projectId:Number(this.projectId)!=0 ? +Number(this.projectId):Number(this.preSelectedProject!=0)? Number(this.preSelectedProject): null,
+    //   riskAssessments: [
+    //     {
+    //       likelihood:this.likelihoodId? Number(this.likelihoodId):Number(this.preSelectedLikelihood) ,
+    //       impact:this.impactValue? Number(this.impactId):Number(this.preSelectedImpact) ,
+    //       isMitigated: false,
+    //       assessmentBasisId:null,
+    //       riskFactor:Number(this.riskFactor) ,
+    //       review: {
+    //         userId: this.isInternal && Number(this.internalReviewerIdFromDropdown)!=0? Number(this.internalReviewerIdFromDropdown) : null,
+    //         externalReviewerId:Number(this.externalReviewerIdFromInput) ?  Number(this.externalReviewerIdFromInput):!this.isInternal&&Number(this.externalReviewerIdFromDropdown)!=0?Number(this.externalReviewerIdFromDropdown): null,
+    //         comments:" ",
+    //         reviewStatus:1,
+    //       },
+    //     },
+    //   ],
+    // };
+
+    riskId: this.riskId,
+    riskName: formValue.riskName,
+    description: formValue.description,
+    riskType: Number(this.riskTypeValue),
+    impact: formValue.impact,
+    mitigation: formValue.mitigation,
+    contingency: formValue.contingency || " ",
+    OverallRiskRatingBefore: Number(this.overallRiskRating),
+    responsibleUserId: (Number(this.responsiblePersonId) !== 0 && !isNaN(Number(this.responsiblePersonId)))
+      ? Number(this.responsiblePersonId)
+      : (this.preSelectedResponsiblePerson !== 0 && !isNaN(Number(this.preSelectedResponsiblePerson)))
+          ? Number(this.preSelectedResponsiblePerson)
+          : (this.newAssigneeId && !isNaN(Number(this.newAssigneeId)))
+              ? Number(this.newAssigneeId)
+              : null,
+    plannedActionDate: `${formValue.plannedActionDate}T00:00:00.000Z`,
+    departmentId: (Number(this.departmentId) !== 0 && !isNaN(Number(this.departmentId)))
+      ? Number(this.departmentId)
+      : (Number(this.departmentIdForAdminToAdd) && !isNaN(Number(this.departmentIdForAdminToAdd)))
+        ? Number(this.departmentIdForAdminToAdd)
+        : null,
+    projectId: (Number(this.projectId) !== 0 && !isNaN(Number(this.projectId)))
+      ? Number(this.projectId)
+      : (this.preSelectedProject !== 0 && !isNaN(Number(this.preSelectedProject)))
+        ? Number(this.preSelectedProject)
+        : null,
+    riskAssessments: [
+      {
+        likelihood: this.likelihoodId ? Number(this.likelihoodId) : (this.preSelectedLikelihood && !isNaN(Number(this.preSelectedLikelihood))) ? Number(this.preSelectedLikelihood) : null,
+        impact: this.impactValue ? Number(this.impactId) : (this.preSelectedImpact && !isNaN(Number(this.preSelectedImpact))) ? Number(this.preSelectedImpact) : null,
+        isMitigated: false,
+        assessmentBasisId: null,
+        riskFactor: Number(this.riskFactor),
+        review: {
+          userId: this.isInternal && Number(this.internalReviewerIdFromDropdown) !== 0
+            ? Number(this.internalReviewerIdFromDropdown)
+            : null,
+          externalReviewerId: Number(this.externalReviewerIdFromInput)
+            ? Number(this.externalReviewerIdFromInput)
+            : !this.isInternal && Number(this.externalReviewerIdFromDropdown) !== 0
+              ? Number(this.externalReviewerIdFromDropdown)
+              : null,
+          comments: " ",
+          reviewStatus: 1,
+            },
           },
-        },
-      ],
-    };
+        ],
+      };
   console.log(payload);
 
     this.submitForm.emit(payload);
@@ -394,6 +448,8 @@ export class QmsEditComponent {
         if (res) {
           this.newAssigneeId=res.id
           this.isSuccessAssignee=true
+          this.newAssigneename=payload.fullName
+          this.isnewAssigneenameDisplay=true
 
         } else {
           console.error("External Responsible ID is not available in the response:", res);
@@ -422,6 +478,8 @@ export class QmsEditComponent {
         if (res) {
           this.externalReviewerIdFromInput = res.reviewerId
           this.isSuccessReviewer=true
+          this.newReviewername=payload.fullName
+          this.isnewReviewernameDisplay=true
         } else {
           console.error("External Reviewer ID is not available in the response:", res);
         }

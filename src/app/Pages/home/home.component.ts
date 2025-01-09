@@ -44,7 +44,7 @@ export class HomeComponent {
         // graph3datasets:any[]=[];
 
 
-        // counter:number[]=[];
+        counter:number[]=[];
         risk:string[]=[];
 
         riskApproachingDeadline:any=[]
@@ -114,6 +114,7 @@ export class HomeComponent {
           this.securityRiskCount = riskcounts['Security'];
 
           console.log("OpenRiskCount",e)
+          this.cdr.detectChanges()
 
         })
 
@@ -122,7 +123,7 @@ export class HomeComponent {
           this.api.getRiskCategoryCounts(isAdminOrEMTuser?'' :this.authService.getDepartmentId()).subscribe((e:any)=>{
           this.riskCategoryCounts=e
           this.list=e
-          console.log(this.list);
+
               const count = this.list.map((element: { count: any; }) => element.count);
               // this.counter = count
               const counter:number[]=count;
@@ -139,28 +140,29 @@ export class HomeComponent {
               this.graph2datasets=[{
                 data: counter,
                 backgroundColor: [
-                '#962DFF',
                 '#E0C6FD',
+                '#962DFF',
                 '#C6D2FD'
                 ],
                 hoverOffset: 10
               }]
 
               this.graph2chartType='doughnut'
-              this.graph2labels=this.risk
-              this.graph2chartType.update();
-
+              this.graph2labels=riskCat
               console.log("criticalitylevel",e)
+              this.cdr.detectChanges()
           })
 
             this.api.getRiskApproachingDeadline(isAdminOrEMTuser?[] :[parseInt(this.authService.getDepartmentId()!) ]).subscribe((e:any)=>{
             this.riskApproachingDeadline=e
             console.log("approaching",e)
+            this.cdr.detectChanges()
             })
 
             this.api.getRisksWithHeigestOverallRating(isAdminOrEMTuser?[] :[parseInt(this.authService.getDepartmentId()!) ]).subscribe((e:any)=>{
             this.risksWithHeighesOverallRating=e
             console.log("heigest",e)
+            this.cdr.detectChanges()
           })
       }
 
@@ -186,16 +188,32 @@ export class HomeComponent {
 
             this.api.getRiskCategoryCountsByDepartment(event).subscribe((e:any)=>{
               console.log("darat",e)
+              //this
+              //   this.list=e
+
+              //       const count = this.list.map((element: { count: any; }) => element.count);
+              //       // this.counter = count
+              //       const counter:number[]=count;
+              //       console.log("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",count);
+
+              //       const riskCat = this.list.map((element: {riskCategory:any})=>element.riskCategory);
+              //       this.risk = riskCat;
+
+              //       this.Criticality = this.list.reduce((acc: any, item: any) => {
+              //       acc[item.riskCategory] = item.count;
+              //       return acc;
+              //       }, {});
+              //tothis
 
               this.riskCategoryCounts=e
               this.list=e
                   const count = this.list.map((element: { count: any; }) => element.count);
-                  // this.counter = count
+                  this.counter = count
                   const counter:number[]=count;
                   console.log("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",counter);
 
-                  // const riskCat = this.list.map((element: {riskCategory:any})=>element.riskCategory);
-                  // this.risk = riskCat;
+                  const riskCat = this.list.map((element: {riskCategory:any})=>element.riskCategory);
+                  this.risk = riskCat;
 
                   this.Criticality = this.list.reduce((acc: any, item: any) => {
                   acc[item.riskCategory] = item.count;
@@ -222,7 +240,7 @@ export class HomeComponent {
 
 
                   this.graph2chartType='doughnut'
-                  // this.graph2labels=this.risk
+                  this.graph2labels=this.risk
                   console.log("criticalitylevel",e)
                   this.cdr.detectChanges()
             })

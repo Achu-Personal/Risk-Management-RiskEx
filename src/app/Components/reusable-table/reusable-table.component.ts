@@ -23,6 +23,7 @@ export class ReusableTableComponent {
   @Input() IsAssignee:boolean = false;
   @Input() headerDisplayMap:any=this.tableHeaders;
   @Input() noDataMessage:string='No Data Available'
+  @Input() isLoading: boolean = false;
   isEyeOpen = false;
   isAdmin: boolean=false;
   isDepartmentUser=false;
@@ -33,6 +34,7 @@ export class ReusableTableComponent {
   currentRow: any;
   @Output() approveRisk = new EventEmitter<{row: any, comment: string}>();
   @Output() rejectRisk = new EventEmitter<{row: any, comment: string}>();
+
 
 
   constructor(public auth:AuthService, public api:ApiService,private cdr: ChangeDetectorRef){}
@@ -175,6 +177,7 @@ getRiskRatingStyle(riskRating: number): string {
     hasValidData(): boolean {
       return this.tableData && this.tableData.length > 0 && this.tableData.some(row => row.riskName || row.riskId || row.fullName);
     }
+
 
 
 }
