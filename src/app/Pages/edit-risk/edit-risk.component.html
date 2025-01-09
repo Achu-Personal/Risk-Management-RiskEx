@@ -27,14 +27,14 @@
     </div>
     @if(isSuccess){
       <app-form-successfull
-      message="Risk has been edited successfully! You can now check it in the risk management dashboard."
+      message="Risk has been edited successfully!<br> You can now check it in the risk management dashboard."
       [isSuccessfull] ="true"
       (closeDialog)="closeDialog()" >
       </app-form-successfull>
    }
    @if(isError){
     <app-form-successfull
-      message="Something went wrong. Please try again!"
+      [message]="error"
       [isSuccessfull]= "false"
       (closeDialog)="closeDialog()" >
       </app-form-successfull>

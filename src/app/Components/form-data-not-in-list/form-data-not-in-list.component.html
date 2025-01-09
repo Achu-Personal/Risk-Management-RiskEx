@@ -8,12 +8,33 @@
         <label for="name">{{textLabel}} <span class="required"> *</span></label>
         <input type="text" id="name" placeholder="{{placeholder}}" formControlName="fullName"  >
       </div>
+      @if(group.get("fullName")){
+
+
+        @if (group.get("fullName")?.hasError('minlength')) {
+          <div class="text-danger">minimum length is 3</div>
+
+        }
+        @else if (group.get("fullName")?.hasError('required')&& group.get("fullName")?.dirty) {
+          <div class="text-danger">Full name is required</div>
+        }
+
+      }
+
       <!-- <app-form-input label="textLabel" required=" *" placeholder="Enter responsible person full name" formControlName="riskName"></app-form-input> -->
 
       <div class="form-detail">
         <label for="email">Email <span class="required"> *</span></label>
         <input type="text" id="email" placeholder="Enter email" formControlName="email" >
       </div>
+      @if(group.get("email")){
+
+        @if (group.get("email")?.hasError('email')) {
+          <div class="text-danger">Please enter proper email</div>
+
+        }
+
+      }
       <!-- <app-form-input label="Email" required=" *" placeholder="Enter email" formControlName="email"></app-form-input> -->
 
         <div class="form-detail">
@@ -28,6 +49,15 @@
             width="100" id="reviewer-department" formControlName="departmentId"  >
            </app-dropdown>
         </div>
+
+        @if(group.get("departmentId")){
+
+          @if (group.get("departmentId")?.hasError('required')) {
+            <div class="text-danger">Department is required</div>
+          }
+
+        }
+
 
 
       <div class="form-detail">

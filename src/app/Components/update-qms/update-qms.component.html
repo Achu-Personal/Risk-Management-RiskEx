@@ -3,8 +3,8 @@
     <div class="form-details-sub-container">
       <h2>ASSESSMENT POST IMPLEMENTATION OF ACTION</h2>
       <div class="form-row">
-        <app-form-dropdown label="Likelihood" [dropdownData]="dropdownLikelihood" dropdownDisplay="assessmentFactor" dropdownValue="id" selectValue="Likelihood" (change)="onDropdownChangelikelihood($event)" [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)" ></app-form-dropdown>
-        <app-form-dropdown label="Impact" [dropdownData]="dropdownImpact" dropdownDisplay="assessmentFactor" dropdownValue="id" selectValue="Impact" (change)="onDropdownChangeImpact($event)" [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)" ></app-form-dropdown>
+        <app-form-dropdown label="Likelihood" [dropdownData]="dropdownLikelihood" dropdownDisplay="assessmentFactor" dropdownValue="id" selectValue="Select likelihood" (change)="onDropdownChangelikelihood($event)" [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)" ></app-form-dropdown>
+        <app-form-dropdown label="Impact" [dropdownData]="dropdownImpact" dropdownDisplay="assessmentFactor" dropdownValue="id" selectValue="Select impact" (change)="onDropdownChangeImpact($event)" [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)" ></app-form-dropdown>
       </div>
       <div class="form-row" [ngStyle]="{'gap':'32vw','margin-top':'30px'}">
         <h2 [ngStyle]="{'border-bottom':'0px','text-transform':'none'}">Risk Factor :<span style="margin-left: 10px;">{{riskFactor}}</span> </h2>
@@ -32,9 +32,13 @@
     <div class="form-details-sub-container">
       <h2>Reviewer</h2>
       <app-form-dropdown label="Reviewer" required="*" [dropdownData]="dropdownReviewer" dropdownDisplay="fullName"
-      dropdownValue="fullName" selectValue="reviewer" (change)="onDropdownChangeReviewer($event)"
+      dropdownValue="fullName" selectValue="Select reviewer" (change)="onDropdownChangeReviewer($event)"
       [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)" message="You can select an existing reviewer from the dropdown
       or enter a new one. If you enter a new name, it will take priority over the dropdown selection."   ></app-form-dropdown>
+
+      @if(isnewReviewernameDisplay){
+        <h6>Reviewer Name: <span style="font-weight: bolder;">{{newReviewername}}</span></h6>
+      }
 
       <div [ngStyle]="{'margin-top':'20px','font-style':'italic','color':'grey'}">
         <p>If reviewer not in the list <span (click)="isReviewerNotInList()" ><a href="javascript:void(0);">click </a></span>here</p>
@@ -64,28 +68,28 @@
   }
   @if(isSuccessReviewer){
     <app-form-successfull
-    message="Add new reviewer successfully!"
+    message="The new Reviewer has been added successfully!"
     [isSuccessfull] ="true"
     (closeDialog)="closeReviewer()" >
     </app-form-successfull>
  }
  @if(isErrorReviewer){
   <app-form-successfull
-  message="Something went Wrong!"
+  message="Something went wrong! <br> Please ensure all required fields are filled in correctly and check your internet connection.<br> If the issue persists, try again later or contact support."
   [isSuccessfull] ="false"
   (closeDialog)="closeReviewer()" >
   </app-form-successfull>
 }
 @if(isSave){
-  <app-form-conform-popup message="Do you want to save the entered risk details? You can check and edit them later if needed."  (closeDialog)="saveRisk()" (notCloseDialog)="saveConfirmation()"></app-form-conform-popup>
+  <app-form-conform-popup message="Do you want to save the entered risk details?<br>You can check and edit them later if needed."  (closeDialog)="saveRisk()" (notCloseDialog)="saveConfirmation()"></app-form-conform-popup>
 }
 
 @if(isCancel){
-  <app-form-conform-popup message="Are you sure you want to cancel? Any unsaved changes will be lost."  (closeDialog)="closeRisk()" (notCloseDialog)="cancelRisk()"></app-form-conform-popup>
+  <app-form-conform-popup message="Are you sure you want to cancel? <br> Any unsaved changes will be lost."  (closeDialog)="closeRisk()" (notCloseDialog)="cancelRisk()"></app-form-conform-popup>
 }
 @if(isValid){
   <app-form-successfull
-  message="Please check the form fields and ensure all mandatory fields are satisfied "
+  message="Please check the form fields and <br> ensure all mandatory fields are satisfied "
   [isSuccessfull] ="false"
   (closeDialog)="closepopupIsValidCheck()" >
   </app-form-successfull>

@@ -35,6 +35,7 @@ dropdownDataAssignee:any[]=[]
 dropdownDataReviewer: Array<{ id: number; fullName: string; email: string; type: string }> = [];
 isSuccess:boolean=false
 isError:boolean=false
+error:string=''
 
 constructor(private api:ApiService,public authService:AuthService,private router: Router){}
 
@@ -129,6 +130,7 @@ constructor(private api:ApiService,public authService:AuthService,private router
     if (!payload || !payload.riskType || !this.riskId) {
       console.error("Invalid payload or missing risk ID.");
       alert("Error: Missing required data. Please check the form and try again.");
+      this.error="Error: Missing required data. Please check the form and try again."
       return;
     }
 
@@ -154,12 +156,15 @@ constructor(private api:ApiService,public authService:AuthService,private router
         if (error.status === 404) {
           console.error("Error 404: Resource not found. Check the risk ID or API endpoint.");
           alert("Error: The requested resource was not found (404). Please verify the data and try again.");
+          this.error="Error: The requested resource was not found (404).<br> Please verify the data and try again."
         } else if (error.status === 500) {
           console.error("Error 500: Internal Server Error. Something went wrong on the server.");
           alert("Error: A server issue occurred (500). Please try again later.");
+          this.error="Error: A server issue occurred (500).<br> Please try again later."
         } else {
           console.error("Unexpected Error:", error);
           alert("An unexpected error occurred. Please try again.");
+          this.error="An unexpected error occurred. Please try again."
         }
       },
       complete: () => {
