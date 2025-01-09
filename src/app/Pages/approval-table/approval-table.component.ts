@@ -80,11 +80,11 @@ export class ApprovalTableComponent {
 
   ngOnInit(): void {
 
-    // const role = this.auth.getUserRole(); // Fetch user role
-    // this.isAdmin = role === 'Admin';
-    // // this.isEMT = role?.includes('EMTUser') || false;
+    const role = this.auth.getUserRole();
+    this.isAdmin = role === 'Admin';
+
     this.isLoading = true;
-    if (this.auth.getUserRole()=="Admin" ) {
+    if (this.isAdmin) {
       this.headerData = [
         'riskId',
         'riskName',
@@ -97,10 +97,24 @@ export class ApprovalTableComponent {
         'reviewerName',
         'reviewerDepartment',
       ];
+      this.tableBodyAdmin = [
+        {
+          riskId: '',
+          riskName: '',
+          description: '',
+          riskType: '',
+          riskDepartment: 'N/A',
+          plannedActionDate: Date,
+          overallRiskRating: 0,
+          riskStatus: '',
+          reviewerName: 'N/A',
+          reviewerDepartment: 'N/A',
+        },
+      ]
 
       this.api.getAllRisksTobeReviewed().subscribe((response: any) => {
-        this.tableBodyAdmin = response || [];
-        console.log("admin tablebody:",this.tableBodyAdmin);
+        console.log("admin tablebody:",response);
+        this.tableBodyAdmin = response ;
         this.isLoading = false;
 
 
@@ -116,16 +130,21 @@ export class ApprovalTableComponent {
         'departmentName',
         'riskStatus',
       ];
-      this.api.getRisksByReviewerId().subscribe((response: any) => {
+      this.tableBody= [
+        {
+          riskId: '',
+          riskName: '',
+          description: '',
+          riskType: '',
+          plannedActionDate: Date,
+          overallRiskRating: 0,
+          departmentName: '',
+          riskStatus: '',
+        },
+      ]
+      this.api.getRisksByReviewerId(this.auth.getCurrentUserId()).subscribe((response: any) => {
         console.log('API Response:', response);
-
-        if (Array.isArray(response)) {
-          this.tableBody = response;
-        } else {
-          console.error('Expected an array but got:', response);
-          this.tableBody = []; // Default to an empty array if the response is not valid
-        }
-
+        this.tableBody=response;
         console.log('tableBody:', this.tableBody);
         this.isLoading = false;
 
@@ -237,7 +256,7 @@ export class ApprovalTableComponent {
         this.assignee=res;
         // console.log(this.assignee);
         const context = {
-          responsibleUser: res[0].fullName,
+          responsibleUser: res.fullName,
           riskId: event.row.riskId,
           riskName: event.row.riskName,
           description: event.row.description,
@@ -248,7 +267,7 @@ export class ApprovalTableComponent {
           reason:event.comment
         };
         console.log("context:",context);
-        this.email.sendOwnerEmail(res[0].email,context).subscribe({
+        this.email.sendOwnerEmail(res.email,context).subscribe({
           next: () => {
             console.log('owner email sent successfully');
             // this.router.navigate(['/thankyou']);
