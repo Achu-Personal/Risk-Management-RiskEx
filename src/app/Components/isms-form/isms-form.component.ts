@@ -103,6 +103,7 @@ export class ISMSFormComponent {
 
   draft:any={}
   isdraft:boolean=false
+  isNothingInDraft:boolean=false
   isdraftConform:boolean=false
   isCancel:boolean=false
   isSave:boolean=false
@@ -618,8 +619,19 @@ const payload = {
 
   this.submitForm.emit(payload);
 
-  localStorage.removeItem('draftSecurity'); // Delete draft after saving
+  if(this.riskTypeValue==2){
+    localStorage.removeItem('draftSecurity'); // Delete draft after saving
   console.log('Draft Removed!');
+
+  }
+  else{
+    localStorage.removeItem('draftPrivacy'); // Delete draft after saving
+  console.log('Draft Removed!');
+
+
+  }
+
+
 }
 
 
@@ -709,79 +721,100 @@ closeHeatMap(){
 
 
 closeDraft(){
-  const draft = {
+  if(this.ismsForm&&this.ismsForm.dirty){
+    const draft = {
+      riskType: Number(this.riskTypeValue),
+      formValues: this.ismsForm.value,
+      OverallRiskRatingBefore:Number(this.overallRiskRating) ,
+      responsibleUserId:Number(this.responsiblePersonId)!=0 ?+Number(this.responsiblePersonId) : Number(this.newAssigneeId),
+      departmentId:Number(this.departmentId)!=0 ? + Number(this.departmentId) : Number(this.departmentIdForAdminToAdd),
+      projectId:Number(this.projectId)!=0 ? +Number(this.projectId): null,
+      riskAssessments: [
+      {
+        likelihood: Number(this.confidentialityLikelihoodId),
+        impact: Number(this.confidentialityImpactId),
+        isMitigated: false,
+        assessmentBasisId: 1, // Example ID; replace if dynamic
+        riskFactor: this.confidentialityRiskFactor,
+        review: {
+          userId: this.isInternal && Number(this.internalReviewerIdFromDropdown)!=0? Number(this.internalReviewerIdFromDropdown) : null,
+          externalReviewerId:Number(this.externalReviewerIdFromInput) ?  Number(this.externalReviewerIdFromInput):!this.isInternal&&Number(this.externalReviewerIdFromDropdown)!=0?Number(this.externalReviewerIdFromDropdown): null,
+          comments:" ",
+          reviewStatus:1,
+        },
+      },
+      {
+        likelihood: Number(this.integrityLikelihoodId),
+        impact: Number(this.integrityImpactId),
+        isMitigated: false,
+        assessmentBasisId: 2, // Example ID; replace if dynamic
+        riskFactor: this.integrityRiskFactor,
+        review: {
+          userId: this.isInternal && Number(this.internalReviewerIdFromDropdown)!=0? Number(this.internalReviewerIdFromDropdown) : null,
+          externalReviewerId:Number(this.externalReviewerIdFromInput) ?  Number(this.externalReviewerIdFromInput):!this.isInternal&&Number(this.externalReviewerIdFromDropdown)!=0?Number(this.externalReviewerIdFromDropdown): null,
+          comments:" ",
+          reviewStatus:1,
+        },
+      },
+      {
+        likelihood: Number(this.availabilityLikelihoodId),
+        impact: Number(this.availabilityImpactId),
+        isMitigated: false,
+        assessmentBasisId: 3, // Example ID; replace if dynamic
+        riskFactor: this.availabilityRiskFactor,
+        review: {
+          userId: this.isInternal && Number(this.internalReviewerIdFromDropdown)!=0? Number(this.internalReviewerIdFromDropdown) : null,
+          externalReviewerId:Number(this.externalReviewerIdFromInput) ?  Number(this.externalReviewerIdFromInput):!this.isInternal&&Number(this.externalReviewerIdFromDropdown)!=0?Number(this.externalReviewerIdFromDropdown): null,
+          comments:" ",
+          reviewStatus:1,
+        },
+      },
+      {
+        likelihood: Number(this.privacyLikelihoodId),
+        impact: Number(this.privacyImpactId),
+        isMitigated: false,
+        assessmentBasisId: 4, // Example ID; replace if dynamic
+        riskFactor: this.privacyRiskFactor,
+        review: {
+          userId: this.isInternal && Number(this.internalReviewerIdFromDropdown)!=0? Number(this.internalReviewerIdFromDropdown) : null,
+          externalReviewerId:Number(this.externalReviewerIdFromInput) ?  Number(this.externalReviewerIdFromInput):!this.isInternal&&Number(this.externalReviewerIdFromDropdown)!=0?Number(this.externalReviewerIdFromDropdown): null,
+          comments:" ",
+          reviewStatus:1,
+        },
+      },
+    ],
+  };
+  if(this.riskTypeValue==2){
+    localStorage.setItem('draftSecurity', JSON.stringify(draft));
+  }
+  else{
+    localStorage.setItem('draftPrivacy', JSON.stringify(draft));
 
-    formValues: this.ismsForm.value,
-    OverallRiskRatingBefore:Number(this.overallRiskRating) ,
-    responsibleUserId:Number(this.responsiblePersonId)!=0 ?+Number(this.responsiblePersonId) : Number(this.newAssigneeId),
-    departmentId:Number(this.departmentId)!=0 ? + Number(this.departmentId) : Number(this.departmentIdForAdminToAdd),
-    projectId:Number(this.projectId)!=0 ? +Number(this.projectId): null,
-    riskAssessments: [
-    {
-      likelihood: Number(this.confidentialityLikelihoodId),
-      impact: Number(this.confidentialityImpactId),
-      isMitigated: false,
-      assessmentBasisId: 1, // Example ID; replace if dynamic
-      riskFactor: this.confidentialityRiskFactor,
-      review: {
-        userId: this.isInternal && Number(this.internalReviewerIdFromDropdown)!=0? Number(this.internalReviewerIdFromDropdown) : null,
-        externalReviewerId:Number(this.externalReviewerIdFromInput) ?  Number(this.externalReviewerIdFromInput):!this.isInternal&&Number(this.externalReviewerIdFromDropdown)!=0?Number(this.externalReviewerIdFromDropdown): null,
-        comments:" ",
-        reviewStatus:1,
-      },
-    },
-    {
-      likelihood: Number(this.integrityLikelihoodId),
-      impact: Number(this.integrityImpactId),
-      isMitigated: false,
-      assessmentBasisId: 2, // Example ID; replace if dynamic
-      riskFactor: this.integrityRiskFactor,
-      review: {
-        userId: this.isInternal && Number(this.internalReviewerIdFromDropdown)!=0? Number(this.internalReviewerIdFromDropdown) : null,
-        externalReviewerId:Number(this.externalReviewerIdFromInput) ?  Number(this.externalReviewerIdFromInput):!this.isInternal&&Number(this.externalReviewerIdFromDropdown)!=0?Number(this.externalReviewerIdFromDropdown): null,
-        comments:" ",
-        reviewStatus:1,
-      },
-    },
-    {
-      likelihood: Number(this.availabilityLikelihoodId),
-      impact: Number(this.availabilityImpactId),
-      isMitigated: false,
-      assessmentBasisId: 3, // Example ID; replace if dynamic
-      riskFactor: this.availabilityRiskFactor,
-      review: {
-        userId: this.isInternal && Number(this.internalReviewerIdFromDropdown)!=0? Number(this.internalReviewerIdFromDropdown) : null,
-        externalReviewerId:Number(this.externalReviewerIdFromInput) ?  Number(this.externalReviewerIdFromInput):!this.isInternal&&Number(this.externalReviewerIdFromDropdown)!=0?Number(this.externalReviewerIdFromDropdown): null,
-        comments:" ",
-        reviewStatus:1,
-      },
-    },
-    {
-      likelihood: Number(this.privacyLikelihoodId),
-      impact: Number(this.privacyImpactId),
-      isMitigated: false,
-      assessmentBasisId: 4, // Example ID; replace if dynamic
-      riskFactor: this.privacyRiskFactor,
-      review: {
-        userId: this.isInternal && Number(this.internalReviewerIdFromDropdown)!=0? Number(this.internalReviewerIdFromDropdown) : null,
-        externalReviewerId:Number(this.externalReviewerIdFromInput) ?  Number(this.externalReviewerIdFromInput):!this.isInternal&&Number(this.externalReviewerIdFromDropdown)!=0?Number(this.externalReviewerIdFromDropdown): null,
-        comments:" ",
-        reviewStatus:1,
-      },
-    },
-  ],
-};
-  localStorage.setItem('draftSecurity', JSON.stringify(draft));
-  console.log('Draft Saved as JSON:', JSON.stringify(draft));
-  this.saveAsDraft();
-  this.isdraftConform=true
+  }
+
+    console.log('Draft Saved as JSON:', JSON.stringify(draft));
+    this.saveAsDraft();
+    this.isdraftConform=true
+
+  }
+  else{
+    this.isNothingInDraft=true
+    this.saveAsDraft();
+
+  }
+
+
+
+
+
 
  }
  loadDraft() {
-  const draft = localStorage.getItem('draftSecurity');
-  if (draft) {
-    this.draft = JSON.parse(draft); // Store draft data
-    console.log('Draft Loaded:', this.draft);
+  if(this.riskTypeValue==2){
+    const draft = localStorage.getItem('draftSecurity');
+    if(draft){
+      this.draft = JSON.parse(draft);
+      console.log('Draft Loaded:', this.draft);
     this.ismsForm.patchValue(this.draft.formValues);
     this.overallRiskRating=this.draft.OverallRiskRatingBefore
 
@@ -789,12 +822,31 @@ closeDraft(){
   this.integrityRiskFactor=this.draft.riskAssessments[1].riskFactor
   this.availabilityRiskFactor=this.draft.riskAssessments[2].riskFactor
   this.privacyRiskFactor=this.draft.riskAssessments[3].riskFactor
-
+    }
 
   }
+  else{
+    const draft = localStorage.getItem('draftPrivacy');
+    if(draft){
+      this.draft = JSON.parse(draft);
+      console.log('Draft Loaded:', this.draft);
+    this.ismsForm.patchValue(this.draft.formValues);
+    this.overallRiskRating=this.draft.OverallRiskRatingBefore
+
+  this.confidentialityRiskFactor=this.draft.riskAssessments[0].riskFactor
+  this.integrityRiskFactor=this.draft.riskAssessments[1].riskFactor
+  this.availabilityRiskFactor=this.draft.riskAssessments[2].riskFactor
+  this.privacyRiskFactor=this.draft.riskAssessments[3].riskFactor
+    }
+  }
+
+
 
 }
+closeDraftWhenNoDraft(){
+  this.isNothingInDraft=! this.isNothingInDraft
 
+}
 
 saveAsDraft(){
   this.isdraft=!this.isdraft

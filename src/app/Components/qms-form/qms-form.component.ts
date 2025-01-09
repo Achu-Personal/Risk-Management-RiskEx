@@ -30,7 +30,6 @@ export class QMSFormComponent {
 
   @Output() submitForm = new EventEmitter<any>();
   @Output() departmentSelectedByAdmin = new EventEmitter<any>();
-  // @Input() bgColor: string = ''
   @Input() riskTypeValue: number=1
   @Input() departmentName: string=''
   @Input() departmentId: string=''
@@ -75,6 +74,7 @@ export class QMSFormComponent {
   preSelectedProject:any
   isdraft:boolean=false
   isdraftConform:boolean=false
+  isNothingInDraft:boolean=false
   isCancel:boolean=false
   isSave:boolean=false
   isValid:boolean=false
@@ -456,34 +456,43 @@ export class QMSFormComponent {
 
 
  closeDraft(){
-  const draft = {
+  if(this.qmsForm && this.qmsForm.dirty){
+    const draft = {
 
-    formValues: this.qmsForm.value,
-    riskType:Number(this.riskTypeValue) ,
-    OverallRiskRatingBefore:Number(this.overallRiskRating) ,
-    responsibleUserId:Number(this.responsiblePersonId)!=0 ?+Number(this.responsiblePersonId):Number(this.newAssigneeId),
-    departmentId:Number(this.departmentId)!=0 ? + Number(this.departmentId) : Number(this.departmentIdForAdminToAdd),
-    projectId:Number(this.projectId)!=0 ? +Number(this.projectId) : null,
-    riskAssessments: [
-      {
-        likelihood: Number(this.likelihoodId) ,
-        impact: Number(this.impactId) ,
-        isMitigated: false,
-        assessmentBasisId:null,
-        riskFactor:Number(this.riskFactor) ,
-        review: {
-          userId: this.isInternal && Number(this.internalReviewerIdFromDropdown)!=0? Number(this.internalReviewerIdFromDropdown) : null,
-          externalReviewerId:Number(this.externalReviewerIdFromInput) ?  Number(this.externalReviewerIdFromInput):!this.isInternal&&Number(this.externalReviewerIdFromDropdown)!=0?Number(this.externalReviewerIdFromDropdown): null,
-          comments:" ",
-          reviewStatus:1,
+      formValues: this.qmsForm.value,
+      riskType:Number(this.riskTypeValue) ,
+      OverallRiskRatingBefore:Number(this.overallRiskRating) ,
+      responsibleUserId:Number(this.responsiblePersonId)!=0 ?+Number(this.responsiblePersonId):Number(this.newAssigneeId),
+      departmentId:Number(this.departmentId)!=0 ? + Number(this.departmentId) : Number(this.departmentIdForAdminToAdd),
+      projectId:Number(this.projectId)!=0 ? +Number(this.projectId) : null,
+      riskAssessments: [
+        {
+          likelihood: Number(this.likelihoodId) ,
+          impact: Number(this.impactId) ,
+          isMitigated: false,
+          assessmentBasisId:null,
+          riskFactor:Number(this.riskFactor) ,
+          review: {
+            userId: this.isInternal && Number(this.internalReviewerIdFromDropdown)!=0? Number(this.internalReviewerIdFromDropdown) : null,
+            externalReviewerId:Number(this.externalReviewerIdFromInput) ?  Number(this.externalReviewerIdFromInput):!this.isInternal&&Number(this.externalReviewerIdFromDropdown)!=0?Number(this.externalReviewerIdFromDropdown): null,
+            comments:" ",
+            reviewStatus:1,
+          },
         },
-      },
-    ],
-  };
-  localStorage.setItem('draftQuality', JSON.stringify(draft));
-  console.log('Draft Saved as JSON:', JSON.stringify(draft));
-  this.saveAsDraft();
-  this.isdraftConform=true
+      ],
+    };
+    localStorage.setItem('draftQuality', JSON.stringify(draft));
+    console.log('Draft Saved as JSON:', JSON.stringify(draft));
+    this.saveAsDraft();
+    this.isdraftConform=true
+
+  }
+  else{
+    this.isNothingInDraft=true
+    this.saveAsDraft();
+
+  }
+
 
  }
 
@@ -537,6 +546,10 @@ export class QMSFormComponent {
     }
   }
 
+  closeDraftWhenNoDraft(){
+    this.isNothingInDraft=! this.isNothingInDraft
+
+  }
 
   saveAsDraft(){
     this.isdraft=!this.isdraft
