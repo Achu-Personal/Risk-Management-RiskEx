@@ -10,6 +10,7 @@ import { EmailService } from '../../Services/email.service';
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { AuthService } from '../../Services/auth.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-update-risk',
@@ -137,9 +138,18 @@ ngOnInit(){
           this.isSuccess = true;
           this.sendReviewerMailOnClose();
         },
-        error: (error: any) => {
+        error: (error: HttpErrorResponse) => {
           this.isError = true;
-          this.error = error.message.replace(/\n/g, '<br>'); // Replace newlines with <br> for display
+
+          // Extract error message from backend response
+          this.error = error.error?.details
+            ? error.error.details
+            : "An unexpected error occurred. Please try again.";
+
+          console.error("Error updating risk:", error);
+
+          // Show the error message in a popup
+
         },
         complete: () => {
           console.log("Update quality risk request completed.");
@@ -155,10 +165,18 @@ ngOnInit(){
           this.isSuccess = true;
           this.sendReviewerMailOnClose();
         },
-        error: (error: any) => {
+        error: (error: HttpErrorResponse) => {
           this.isError = true;
-          this.error = error.message.replace(/\n/g, '<br>');
-          console.error("Error updating security risk:", error);
+
+          // Extract error message from backend response
+          this.error = error.error?.message
+            ? error.error.message
+            : "An unexpected error occurred. Please try again.";
+
+          console.error("Error updating risk:", error);
+
+          // Show the error message in a popup
+
         },
         complete: () => {
           console.log("Update security risk request completed.");
