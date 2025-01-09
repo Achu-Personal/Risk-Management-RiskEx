@@ -10,7 +10,7 @@ import { EmailService } from '../../Services/email.service';
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { AuthService } from '../../Services/auth.service';
-
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-update-risk',
@@ -26,7 +26,6 @@ import { AuthService } from '../../Services/auth.service';
   styleUrl: './update-risk.component.scss',
 })
 export class UpdateRiskComponent {
-
 riskId: string='';
 riskType: string='';
 riskTypeId:number=0
@@ -44,16 +43,13 @@ error:string=''
 riskData:any
 context:any
 reviewer:any
-
 constructor(private route: ActivatedRoute,private api:ApiService,private router: Router,public email:EmailService, public authService: AuthService,
   private cdRef: ChangeDetectorRef,) {}
-
 ngOnInit(){
   this.route.queryParams.subscribe(params =>{
     this.riskId = params['riskId'];
     this.riskType = params['riskType'];
     this.overallRiskRatingBefore = params['overallRiskRatingBefore'];
-
 
   });
   if( this.riskType='Quality'){
@@ -62,29 +58,23 @@ ngOnInit(){
     this.riskTypeId=2
   }else{
     this.riskTypeId=3
-
   }
-
 
   // this.api.getLikelyHoodDefinition().subscribe((res:any)=>{
   //   this.dropdownDataLikelihood=res;
   // })
-
   // this.api.getImpactDefinition().subscribe((res:any)=>{
   //   this.dropdownDataImpact=res
   // })
-
   // this.api.getAllReviewer().subscribe((res:any)=>{
   //   this.dropdownDataReviewer=res.reviewers
   // })
-
   // this.api.getRiskResponses().subscribe((res:any)=>{
   //   this.riskResponses=res
   // })
   // this.api.getDepartment().subscribe((res:any)=>{
   //   this.dropdownDataDepartment=res
   // })
-
   this.api.getRiskResponses().pipe(
     catchError((error) => {
       console.error('Error fetching Reviewer responses:', error);
@@ -95,7 +85,6 @@ ngOnInit(){
     this.cdRef.detectChanges();
   });
 
-
   this.api.getLikelyHoodDefinition().pipe(
     catchError((error) => {
       console.error('Error fetching Likelihood Definitions:', error);
@@ -105,7 +94,6 @@ ngOnInit(){
     this.dropdownDataLikelihood = res;
     this.cdRef.detectChanges();
   });
-
   this.api.getImpactDefinition().pipe(
     catchError((error) => {
       console.error('Error fetching Impact Definitions:', error);
@@ -117,9 +105,7 @@ ngOnInit(){
   });
 
 
-  
 
-    
   this.api.getDepartment().pipe(
     catchError((error) => {
       console.error('Error fetching Departments:', error);
@@ -129,7 +115,6 @@ ngOnInit(){
     this.dropdownDataDepartment = res;
     this.cdRef.detectChanges();
   });
-
   this.api.getAllReviewer().pipe(
     catchError((error) => {
       console.error('Error fetching Reviewers:', error);
@@ -140,15 +125,12 @@ ngOnInit(){
     this.cdRef.detectChanges();
   });
 
-
   }
 
-  
   onFormSubmit(event: { payload: any, riskType: number }) {
     const payload = event.payload;
     const riskType = event.riskType;
 
-   
     if (riskType == 1) {
       this.api.updateQualityRisk(payload, Number(this.riskId)).subscribe({
         next: (res: any) => {
@@ -156,16 +138,25 @@ ngOnInit(){
           this.isSuccess = true;
           this.sendReviewerMailOnClose();
         },
-        error: (error: any) => {
+        error: (error: HttpErrorResponse) => {
           this.isError = true;
-          this.error = error.message.replace(/\n/g, '<br>'); // Replace newlines with <br> for display
+
+          // Extract error message from backend response
+          this.error = error.error?.details
+            ? error.error.details
+            : "An unexpected error occurred. Please try again.";
+
+          console.error("Error updating risk:", error);
+
+          // Show the error message in a popup
+
         },
         complete: () => {
           console.log("Update quality risk request completed.");
         }
       });
     console.log("riskid:",Number(this.riskId));
-   
+
     }
     else if (riskType == 2 || riskType==3) {
       this.api.updateSecurityOrPrivacyRisk(payload, Number(this.riskId)).subscribe({
@@ -174,20 +165,25 @@ ngOnInit(){
           this.isSuccess = true;
           this.sendReviewerMailOnClose();
         },
-        error: (error: any) => {
+        error: (error: HttpErrorResponse) => {
           this.isError = true;
-          this.error = error.message.replace(/\n/g, '<br>');
-          console.error("Error updating security risk:", error);
+
+          // Extract error message from backend response
+          this.error = error.error?.message
+            ? error.error.message
+            : "An unexpected error occurred. Please try again.";
+
+          console.error("Error updating risk:", error);
+
+          // Show the error message in a popup
+
         },
         complete: () => {
           console.log("Update security risk request completed.");
         }
       });
     }
-
   }
-
-
 
   closeDialog() {
     this.isSuccess = false;
@@ -209,11 +205,11 @@ ngOnInit(){
   }
   sendReviewerMailOnClose(){
     this.api.getRevieverDetails(Number(this.riskId),'ApprovalPending').subscribe((r:any)=>{
-      
+
       console.log("response:",r);
-      
+
       console.log('reviewer details fetching');
- 
+
       this.reviewer = r[0].fullName;
       console.log('Reviewer Details:', this.reviewer);
       this.api.getRiskById(Number(this.riskId)).subscribe((res:any)=>{
@@ -239,7 +235,7 @@ ngOnInit(){
           rid: res.id,
         };
         console.log('Email Context:', this.context);
- 
+
         // Send email to reviewer
         this.email.sendReviewerEmail(r[0].email, this.context).subscribe({
           next: () => {
@@ -250,10 +246,10 @@ ngOnInit(){
             console.error('Failed to send email to reviewer:', emailError);
           },
         });
-       
+
       })
-     
+
     });
   }
-
 }
+
