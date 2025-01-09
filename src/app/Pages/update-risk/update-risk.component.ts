@@ -15,9 +15,15 @@ import { AuthService } from '../../Services/auth.service';
 @Component({
   selector: 'app-update-risk',
   standalone: true,
-  imports: [BodyContainerComponent, UpdateQmsComponent, UpdateIsmsComponent,CommonModule,FormSuccessfullComponent],
+  imports: [
+    BodyContainerComponent,
+    UpdateQmsComponent,
+    UpdateIsmsComponent,
+    CommonModule,
+    FormSuccessfullComponent,
+  ],
   templateUrl: './update-risk.component.html',
-  styleUrl: './update-risk.component.scss'
+  styleUrl: './update-risk.component.scss',
 })
 export class UpdateRiskComponent {
 
@@ -155,36 +161,17 @@ onFormSubmit(event: { payload: any, riskType: number }) {
   // console.log("riskid:",Number(this.riskId));
 
   if (riskType == 1) {
-    console.log("working Quality");
-     this.api.updateQualityRisk(payload, Number(this.riskId)).subscribe({
-      next: (res: any) => {
-        console.log("Updated quality API response quality:", res);
-        this.isSuccess = true;
-      },
-      error: (error: any) => {
-        this.isError = true;
+    this.api.updateQualityRisk(payload,Number(this.riskId)).subscribe((res:any)=>{
+      console.log("updated quality api response:",res)
+      this.isSuccess=true
 
-        // Extract message and details from the error response
-        if (error.error && error.error.message) {
-          this.error = error.error.message;  // Get the error message from the response
-        } else {
-          this.error = 'An unknown error occurred.';
-        }
+    },
 
-        // Check for details and append if available
-        if (error.error && error.error.details) {
-          this.error += ` Details: ${error.error.details}`;
-        }
-
-        console.error("Error updating quality risk:", this.error);
-      },
-      complete: () => {
-        console.log("Update quality risk request completed.");
-      }
-    });
-
-    console.log("Risk ID:", Number(this.riskId));
-
+  (error:any)=>{
+    this.isError=true
+    this.error=error.message
+  })
+  console.log("riskid:",Number(this.riskId));
 
   // this.api.getRevieverDetails(Number(this.riskId)).subscribe({
   //   next: (r: any) => {
@@ -231,54 +218,24 @@ onFormSubmit(event: { payload: any, riskType: number }) {
   //   },
   // });
   }
-  // else if (riskType == 2) {
-  //   this.api.updateSecurityOrPrivacyRisk(payload,Number(this.riskId)).subscribe((res:any)=>{
-  //     console.log("updated security api response:",res)
-  //     this.isSuccess=true
-  //   },
-  // (error:any)=>{
-  //   this.isError=true
-  // })
-  // }
-  // else{
-  //   this.api.updateSecurityOrPrivacyRisk(payload,Number(this.riskId)).subscribe((res:any)=>{
-  //     console.log("updated privacy api response:",res)
-  //     this.isSuccess=true
-  //   },
-  // (error:any)=>{
-  //   this.isError=true
-  // })
-  // }
-  else if (riskType == 2 || riskType==3) {
-    this.api.updateSecurityOrPrivacyRisk(payload, Number(this.riskId)).subscribe({
-      next: (res: any) => {
-        console.log("Updated quality API response quality:", res);
-        this.isSuccess = true;
-      },
-      error: (error: any) => {
-        this.isError = true;
-
-        // Extract message and details from the error response
-        if (error.error && error.error.message) {
-          this.error = error.error.message;  // Get the error message from the response
-        } else {
-          this.error = 'An unknown error occurred.';
-        }
-
-        // Check for details and append if available
-        if (error.error && error.error.details) {
-          this.error += ` Details: ${error.error.details}`;
-        }
-
-        console.error("Error updating quality risk:", this.error);
-      },
-      complete: () => {
-        console.log("Update quality risk request completed.");
-      }
-    });
-
+  else if (riskType == 2) {
+    this.api.updateSecurityOrPrivacyRisk(payload,Number(this.riskId)).subscribe((res:any)=>{
+      console.log("updated security api response:",res)
+      this.isSuccess=true
+    },
+  (error:any)=>{
+    this.isError=true
+  })
   }
-
+  else{
+    this.api.updateSecurityOrPrivacyRisk(payload,Number(this.riskId)).subscribe((res:any)=>{
+      console.log("updated privacy api response:",res)
+      this.isSuccess=true
+    },
+  (error:any)=>{
+    this.isError=true
+  })
+  }
   this.api.getRevieverDetails(Number(this.riskId),'ApprovalPending').subscribe({
     next: (r: any) => {
       console.log('reviewer details fetching');
@@ -334,10 +291,23 @@ onFormSubmit(event: { payload: any, riskType: number }) {
 
 
 
-closeDialog() {
-  this.isSuccess=false
-  this.isError=false
-  // this.router.navigate(['/home']);
-}
+  closeDialog() {
+    this.isSuccess = false;
+    this.isError = false;
+    // this.router.navigate(['/home']);
+  }
+  getReviewerNameandEmail(
+    id: number,
+    status: string,
+    callback: (reviewer: { name: string; email: string }) => void
+  ) {
+    this.api.getRevieverDetails(id, status).subscribe((e: any) => {
+      const reviewer = {
+        name: e[0]?.fullName || "Unknown",
+        email: e[0]?.email || "Unknown",
+      };
+      callback(reviewer);
+    });
+  }
 
 }

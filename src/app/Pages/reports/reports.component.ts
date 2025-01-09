@@ -19,6 +19,7 @@ export class ReportsComponent {
   isAdmin: boolean = false;
   isDepartmentUser: boolean = false;
   isProjectUser : boolean = false;
+  isEmtUser:boolean =false;
   projectList: number[] =[];
   item:any=[];
   @Input() label: string = 'Generate Report';
@@ -74,17 +75,17 @@ export class ReportsComponent {
         this.type = history.state.type;
         console.log("history type:", this.type);
 
-        // setTimeout(() => {
+        setTimeout(() => {
           const role = this.auth.getUserRole();
           const department = this.auth.getDepartmentId();
           const pro = this.auth.getProjects();
 
           // Set roles
           this.isAdmin = Array.isArray(role) ? role.includes('Admin') : role === 'Admin';
-          this.isDepartmentUser = Array.isArray(role) ? role.includes('DepartmentUser') : role === 'DepartmentUser';
+          this.isDepartmentUser = role === 'DepartmentUser';
           this.isProjectUser = Array.isArray(role) ? role.includes('ProjectUsers') : role === 'ProjectUsers';
-
-          console.log("Roles: Admin:", this.isAdmin, "DepartmentUser:", this.isDepartmentUser, "ProjectUser:", this.isProjectUser);
+          this.isEmtUser = Array.isArray(role) ? role.includes('EMTUser') : role ==="EMTUser";
+          console.log("Roles: Admin:", this.isAdmin, "DepartmentUser:", this.isDepartmentUser, "ProjectUser:", this.isProjectUser,"EMTUser:", this.isEmtUser);
 
           // Prepare Project List
           this.projectList = pro ? pro.map((project) => project.Id) : [];
@@ -93,7 +94,7 @@ export class ReportsComponent {
           // Fetch data based on conditions
           this.fetchData(department);
           this.cdr.detectChanges();
-        // }, 50);
+        }, 50);
       }
 
       fetchData(department: any): void {
@@ -105,23 +106,26 @@ export class ReportsComponent {
       }
 
       fetchFilteredData(department: any, type: any): void {
-        if (this.isAdmin) {
+        if (this.isAdmin ||this.isEmtUser) {
           this.api.gettabledata().subscribe((res: any) => {
-            this.items = res.filter((item: { riskType: any }) => item.riskType === type);
+            this.item = res.filter((item: { riskType: any }) => item.riskType === type);
+            this.items =this.item.filter((item: { riskStatus: any }) => item.riskStatus === 'open');
             this.cdr.detectChanges();
             console.log("Admin Filtered Data:", this.items);
           });
         }
         if (this.isDepartmentUser) {
           this.api.getDepartmentTable(department).subscribe((res: any) => {
-            this.items = res.filter((item: { riskType: any }) => item.riskType === type);
+            this.item = res.filter((item: { riskType: any }) => item.riskType === type);
+            this.items =this.item.filter((item: { riskStatus: any }) => item.riskStatus === 'open');
             this.cdr.detectChanges();
             console.log("Department User Filtered Data:", this.items);
           });
         }
         if (this.isProjectUser) {
           this.api.getProjectTable(this.projectList).subscribe((res: any) => {
-            this.items = res.filter((item: { riskType: any }) => item.riskType === type);
+            this.item = res.filter((item: { riskType: any }) => item.riskType === type);
+            this.items =this.item.filter((item: { riskStatus: any }) => item.riskStatus === 'open');
             this.cdr.detectChanges();
             console.log("Project User Filtered Data:", this.items);
           });
@@ -129,7 +133,7 @@ export class ReportsComponent {
       }
 
       fetchAllData(department: any): void {
-        if (this.isAdmin) {
+        if (this.isAdmin||this.isEmtUser) {
           this.api.gettabledata().subscribe((res: any) => {
             this.items = res;
             this.cdr.detectChanges();

@@ -174,6 +174,10 @@ export class ApiService {
     return this.http.get(`${this.baseUrl}/Risk/GetRiskByAssigne?id=${id}`);
   }
 
+  getAllRisksAssigned() {
+    return this.http.get(`${this.baseUrl}/Risk/GetAllRisksAssigned`);
+  }
+
   getRisksByReviewerId() {
     const userId = this.auth.getCurrentUserId();
     return this.http.get(`${this.baseUrl}/Approval/Approval${userId}`);
@@ -210,16 +214,30 @@ export class ApiService {
       .subscribe((e) => console.log(e));
   }
 
-  getRisksWithHeigestOverallRating(id: any = '') {
-    return this.http.get(
-      `${this.baseUrl}/Risk/GetRiskWithHeighestOverallRationg?id=${id}`
-    );
+  getRisksWithHeigestOverallRating(departmentList: number[]) {
+
+    let params = new HttpParams();
+    departmentList.forEach((departmentId) => {
+      params = params.append('departmentIds', departmentId.toString());
+    });
+    console.log("params",params)
+    return this.http.get(`${this.baseUrl}/Risk/GetRiskWithHeighestOverallRationg`, {
+      params,
+    });
+
   }
 
-  getRiskApproachingDeadline(id: any = '') {
-    return this.http.get(
-      `${this.baseUrl}/Risk/GetRiskApproachingDeadline?id=${id}`
-    );
+  getRiskApproachingDeadline(departmentList: number[]) {
+
+    let params = new HttpParams();
+    departmentList.forEach((departmentId) => {
+      params = params.append('departmentIds', departmentId.toString());
+    });
+    console.log("params",params)
+    return this.http.get(`${this.baseUrl}/Risk/GetRiskApproachingDeadline`, {
+      params,
+    });
+
   }
 
 
@@ -241,8 +259,9 @@ export class ApiService {
   getRiskCategoryCountsByDepartment(departmentList: number[]) {
     let params = new HttpParams();
     departmentList.forEach((departmentId) => {
-      params = params.append('departmentList', departmentId.toString());
+      params = params.append('departmentIds', departmentId.toString());
     });
+    console.log("params",params)
     return this.http.get(`${this.baseUrl}/Risk/RiskCategoryCountByDepartment`, {
       params,
     });
@@ -307,6 +326,8 @@ export class ApiService {
   }
 
   getRevieverDetails(riskId: number, reviewStatus: string) {
+    
+    
     return this.http.get(
       `${this.baseUrl}/Reviewer/gettheReviewer/${riskId}?reviewStatus=${reviewStatus}`
     );
@@ -319,8 +340,17 @@ export class ApiService {
   updateSecurityOrPrivacyRisk(updated: any, riskId: number) {
     return this.http.put(`${this.baseUrl}/Risk/update/securityOrPrivacy/${riskId}`, updated);
   }
-  getOpenRiskCountByType(id: any = ''){
-    return this.http.get(`${this.baseUrl}/Risk/CountOfRiskType(Open)?id=${id}`);
+  getOpenRiskCountByType(list:number[]){
+    //https://localhost:7216/api/Risk/CountOfRiskType(Open)?isAdmin=false&departmentIds=4
+    let params = new HttpParams();
+    list.forEach((departmentId) => {
+      params = params.append('departmentIds', departmentId.toString());
+    });
+    console.log("params",params)
+    return this.http.get(`${this.baseUrl}/Risk/CountOfRiskType(Open)`, {
+      params,
+    });
+
    }
 
    getRiskCategoryCounts(id:any = ''){
