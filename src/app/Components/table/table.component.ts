@@ -143,7 +143,7 @@ export class TableComponent {
 
 
   ngOnInit(): void {
-
+    setTimeout(()=>{
     this.initializeItems();
     const currentRoute = this.route.snapshot.url.join('/');
     console.log(currentRoute);
@@ -155,10 +155,11 @@ export class TableComponent {
     }
 
     this.updatePaginatedItems();
+  },800)
   }
   isDepartmentUser:boolean=false;
   private initializeItems(): void {
-    setTimeout(()=>{
+
       const role = this.auth.getUserRole();
       this.isDepartmentUser = role === 'DepartmentUser';
       this.items = [...this.paginated];
@@ -174,7 +175,7 @@ export class TableComponent {
       this.updatePaginatedItems();
 
 
-      },800)
+
   }
 
   updateUniqueDepartments(): void {
