@@ -44,6 +44,8 @@
             <app-bubble-graph class="bubbly" [securityRiskCount]="securityRiskCount ? securityRiskCount : 0"
               [privacyRiskCount]="privacyRiskCount ? privacyRiskCount : 0"
               [qualityRiskCount]="qualityRiskCount ? qualityRiskCount :0"></app-bubble-graph>
+              <!-- <app-chart class="mainchart" [labels]="graph3labels" [chartType]="graph3chartType"
+              [datasets]="graph3datasets"></app-chart> -->
 
           </div>
         </div>
@@ -93,34 +95,3 @@
 
 
 
-<!-- <div class="searchbuttons">
-      <div class="dropdown">
-        <app-department-dropdown></app-department-dropdown>
-      </div>
-      <div class="registerbutton">
-        <app-button class="btn" title="Register Risk" bgColour="#FFFFFF" routerLink="/addrisk" height="47" width="150"></app-button>
-      </div>
-    </div>
-    <div class="graphs">
-        <div class="graphcard">
-          <h4>Risk Metrics Distribution</h4>
-        <div class="graph1">
-          <app-chart [labels]="graph1labels" [chartType]="graph1chartType" [datasets]="graph1datasets"></app-chart>
-        </div>
-        </div>
-        <div class="graphcard">
-          <h4>Types of Open Risks</h4>
-        <div class="graph2">
-          <app-chart [labels]="graph2labels" [chartType]="graph2chartType" [datasets]="graph2datasets"></app-chart>
-        </div>
-        </div>
-        <div class="graphcard">
-          <h4>Department Risks</h4>
-        <div class="graph3">
-          <app-chart [labels]="graph3labels" [chartType]="graph3chartType" [datasets]="graph3datasets"></app-chart>
-        </div>
-        </div>
-    </div>
-    <div class="apptable">
-      <app-table class="table" (onclickrow)="OnClickRow($event)"></app-table>
-    </div> -->
