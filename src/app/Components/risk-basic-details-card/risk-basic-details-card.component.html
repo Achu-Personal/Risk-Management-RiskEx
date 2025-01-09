@@ -12,7 +12,12 @@
         @if(authService.getCurrentUserId()==allData.createdBy.id||authService.getCurrentUserId()==allData.responsibleUser.id)
         {
           <app-edit-button image="fa-solid fa-pen" [ngStyle]="{'display':isEditable?'flex':'none'}"  (onClick)="onEditButtonClicked()"></app-edit-button>
-          <app-edit-button image="fa-solid fa-rotate" [ngStyle]="{'display':isEditable?'flex':'none'}"  (onClick)="onUpdateButtonCLick()"></app-edit-button>
+
+          @if(allData.riskStatus=="open")
+          {
+            <app-edit-button image="fa-solid fa-rotate" [ngStyle]="{'display':isEditable?'flex':'none'}"  (onClick)="onUpdateButtonCLick()"></app-edit-button>
+
+          }
         }
 
 
