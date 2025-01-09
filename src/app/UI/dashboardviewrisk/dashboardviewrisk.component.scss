@@ -1,6 +1,6 @@
 .risk-card1 {
   width: 100%;
-  height: 70px;
+  height: 57px;
   border-radius: 10px;
   background-color: #F4F1EC;
 
@@ -18,7 +18,8 @@
 .risk-text1 {
   font-weight: 600;
   color: black;
-  font-size: 16px;
+  font-size: 15px;
+  margin-top: -8px;
 }
 .riskCard1-right{
   display: flex;
@@ -43,6 +44,7 @@
   color: #666;
   font-size: 13px;
   width: 200px;
+  margin-top: -13px;
 }
 
 .riskCard1-left>div{
@@ -59,10 +61,12 @@
   font-size: 15px;
   padding: 5px;
   border-radius: 10px;
-  width: 50px;
+  width: 45px;
   text-align: center;
   opacity: 0.2;
-
+  height: 25px;
   color: white;
+  margin-top: -5px;
+  margin-left: 20px;
 }
 

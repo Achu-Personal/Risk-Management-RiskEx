@@ -3,7 +3,7 @@
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 20px;
-  border-left: 20px solid var(--bg-color);
+  border-left: 20px solid var(--form-color);
   margin-top: 10px;
 }
 .required{
@@ -69,7 +69,7 @@ input:focus, textarea:focus {
 }
 
 a {
-  color:var(--bg-color);
+  color:var(--form-color);
   text-decoration: none;
 }
 
@@ -103,8 +103,9 @@ a:hover {
 .button-group {
   display: flex;
   justify-content: flex-end;
-  gap: 15px;
+  gap: 30px;
   margin-top: 20px;
+  margin-right: 50px;
 }
 
 .btn {
@@ -226,7 +227,7 @@ input[type="radio"] {
   -webkit-appearance: none;
   width: 20px;
   height: 20px;
-  border: 1px solid var(--bg-color);
+  border: 1px solid var(--form-color);
   border-radius: 50%;
   background-color:white;
   cursor: pointer;
@@ -236,7 +237,7 @@ input[type="radio"] {
 }
 
 input[type="radio"]:checked {
-  background-color:var(--bg-color);
+  background-color:var(--form-color);
 }
 
 input[type="radio"]:checked::before {

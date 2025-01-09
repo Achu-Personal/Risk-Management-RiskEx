@@ -92,53 +92,83 @@ constructor(private api:ApiService,public authService:AuthService,private router
   }
 
 
-  getRiskTypeClass() {
-    if (this.riskType === 'Quality') {
-      this.bgColor="var(--quality-color)"
-      return 'risk-type-1';
-    } else if (this.riskType === 'Security') {
-      this.bgColor="var(--security-color)"
-      return 'risk-type-2';
-    } else if (this.riskType === 'Privacy') {
-      this.bgColor="var(--privacy-color)"
 
-    }
-    return ''; // Default or no class
-  }
 
+  // onFormSubmit(payload: any) {
+
+  //   if (payload.riskType == 1) {
+  //     this.api.editQualityRisk(Number(this.riskId),payload).subscribe((res:any)=>{
+  //       console.log(res);
+  //       this.isSuccess=true
+  //     },
+  //   (error:any)=>{
+  //     this.isError=true
+  //   })
+  //   }
+  //   if(payload.riskType==2){
+  //     this.api.editSecurityOrPrivacyRisk(Number(this.riskId),payload).subscribe((res:any)=>{
+  //       console.log(res);
+  //       this.isSuccess=true
+  //     },
+  //   (error:any)=>{
+  //     this.isError=true
+  //   })
+  //   }
+  //   else{
+  //     this.api.editSecurityOrPrivacyRisk(Number(this.riskId),payload).subscribe((res:any)=>{
+  //       console.log(res);
+  //       this.isSuccess=true
+  //     },
+  //   (error:any)=>{
+  //     this.isError=true
+  //   })
+  //   }
+  // }
 
   onFormSubmit(payload: any) {
-    if(payload=false){
-      this.isError=true
+    if (!payload || !payload.riskType || !this.riskId) {
+      console.error("Invalid payload or missing risk ID.");
+      alert("Error: Missing required data. Please check the form and try again.");
+      return;
     }
-    if (payload.riskType == 1) {
-      this.api.editQualityRisk(Number(this.riskId),payload).subscribe((res:any)=>{
-        console.log(res);
-        this.isSuccess=true
+
+    const riskId = Number(this.riskId);
+    let apiCall;
+
+    if (payload.riskType === 1) {
+      apiCall = this.api.editQualityRisk(riskId, payload);
+    } else if (payload.riskType === 2) {
+      apiCall = this.api.editSecurityOrPrivacyRisk(riskId, payload);
+    } else {
+      console.warn("Unknown risk type. Defaulting to Security or Privacy Risk.");
+      apiCall = this.api.editSecurityOrPrivacyRisk(riskId, payload);
+    }
+
+    apiCall.subscribe({
+      next: (res: any) => {
+        console.log("Success Response:", res);
+        this.isSuccess = true;
       },
-    (error:any)=>{
-      this.isError=true
-    })
-    }
-    if(payload.riskType==2){
-      this.api.editSecurityOrPrivacyRisk(Number(this.riskId),payload).subscribe((res:any)=>{
-        console.log(res);
-        this.isSuccess=true
+      error: (error: any) => {
+        this.isError = true;
+        if (error.status === 404) {
+          console.error("Error 404: Resource not found. Check the risk ID or API endpoint.");
+          alert("Error: The requested resource was not found (404). Please verify the data and try again.");
+        } else if (error.status === 500) {
+          console.error("Error 500: Internal Server Error. Something went wrong on the server.");
+          alert("Error: A server issue occurred (500). Please try again later.");
+        } else {
+          console.error("Unexpected Error:", error);
+          alert("An unexpected error occurred. Please try again.");
+        }
       },
-    (error:any)=>{
-      this.isError=true
-    })
-    }
-    else{
-      this.api.editSecurityOrPrivacyRisk(Number(this.riskId),payload).subscribe((res:any)=>{
-        console.log(res);
-        this.isSuccess=true
-      },
-    (error:any)=>{
-      this.isError=true
-    })
-    }
+      complete: () => {
+        console.log("API request completed successfully.");
+      }
+    });
   }
+
+
   closeDialog() {
     this.isSuccess=false
     this.isError=false
