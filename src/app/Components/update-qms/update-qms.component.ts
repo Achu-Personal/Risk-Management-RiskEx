@@ -326,31 +326,68 @@ onSubmit(){
     return;
   }
 
-  const payload={
+  // const payload={
+  //   closedDate: `${formValue.closeDate}T00:00:00.000Z`,
+  // riskResponseId: this.riskResponseValue,
+  // riskStatus: 2,
+  // overallRiskRatingAfter:this.overallRiskRating,
+  // percentageRedution:this.percentageRedution,
+  // residualRisk: this.residualRisk,
+  // residualValue: this.residualValue,
+  // remarks: formValue.remarks,
+  // riskAssessments: [
+  //   {
+  //     likelihood: this.likelihoodId,
+  //     impact: this.impactId,
+  //     isMitigated: true,
+  //     assessmentBasisId: null,
+  //     riskFactor: this.riskFactor,
+  //     review: {
+  //       userId: this.isInternal && Number(this.internalReviewerIdFromDropdown)!=0? Number(this.internalReviewerIdFromDropdown) : null,
+  //       externalReviewerId:Number(this.externalReviewerIdFromInput) ?  Number(this.externalReviewerIdFromInput):!this.isInternal&&Number(this.externalReviewerIdFromDropdown)!=0?Number(this.externalReviewerIdFromDropdown): null,
+  //       comments: "",
+  //       reviewStatus: 3
+  //     }
+  //   }
+  // ]
+  // }
+
+  const payload = {
     closedDate: `${formValue.closeDate}T00:00:00.000Z`,
-  riskResponseId: this.riskResponseValue,
-  riskStatus: 2,
-  overallRiskRatingAfter:this.overallRiskRating,
-  percentageRedution:this.percentageRedution,
-  residualRisk: this.residualRisk,
-  residualValue: this.residualValue,
-  remarks: formValue.remarks,
-  riskAssessments: [
-    {
-      likelihood: this.likelihoodId,
-      impact: this.impactId,
-      isMitigated: true,
-      assessmentBasisId: null,
-      riskFactor: this.riskFactor,
-      review: {
-        userId: this.isInternal && Number(this.internalReviewerIdFromDropdown)!=0? Number(this.internalReviewerIdFromDropdown) : null,
-        externalReviewerId:Number(this.externalReviewerIdFromInput) ?  Number(this.externalReviewerIdFromInput):!this.isInternal&&Number(this.externalReviewerIdFromDropdown)!=0?Number(this.externalReviewerIdFromDropdown): null,
-        comments: "",
-        reviewStatus: 3
-      }
-    }
-  ]
-  }
+    riskResponseId: Number(this.riskResponseValue) ,
+    riskStatus: 2,
+    overallRiskRatingAfter: Number(this.overallRiskRating) ,
+    percentageRedution: Number(this.percentageRedution),
+    residualRisk: Number(this.residualRisk) ,
+    residualValue: Number(this.residualValue),
+    remarks: formValue.remarks || "",
+    riskAssessments: [
+      {
+        likelihood: Number(this.likelihoodId) ,
+        impact: Number(this.impactId) ,
+        isMitigated: true,
+        assessmentBasisId: null,
+        riskFactor: Number(this.riskFactor) ,
+        review: {
+          userId:
+            this.isInternal && Number(this.internalReviewerIdFromDropdown) !== 0
+              ? Number(this.internalReviewerIdFromDropdown)
+              : null,
+          externalReviewerId:
+            Number(this.externalReviewerIdFromInput) && !isNaN(Number(this.externalReviewerIdFromInput))
+              ? Number(this.externalReviewerIdFromInput)
+              : !this.isInternal &&
+                Number(this.externalReviewerIdFromDropdown) !== 0 &&
+                !isNaN(Number(this.externalReviewerIdFromDropdown))
+                ? Number(this.externalReviewerIdFromDropdown)
+                : null,
+          comments: "",
+          reviewStatus: 3,
+        },
+      },
+    ],
+  };
+
 
   console.log(payload);
   this.submitForm.emit({ payload, riskType: this.riskTypeId });

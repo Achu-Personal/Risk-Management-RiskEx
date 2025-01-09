@@ -2,15 +2,12 @@
   <form [formGroup]="qmsForm" (ngSubmit)="onSubmit()">
     <div class="form-details-sub-container">
       <h2>Risk Details</h2>
+      @if(isAdmin === 'Admin'){
+        <app-form-dropdown label="Department Name" [dropdownData]="dropdownDepartment" dropdownDisplay="departmentName" dropdownValue="id" selectValue="Select department" (change)="onDropdownChangeDepartment($event)"  [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)"></app-form-dropdown>
+       }
       <div class="form-row">
        <app-form-input label="Risk Name" required=" *" formControlName="riskName"></app-form-input>
-       @if(qmsForm.get("riskName")){
 
-        @if (qmsForm.get("riskName")?.hasError('required')&& qmsForm.get("riskName")?.dirty) {
-          <div class="text-danger">Risk name is required</div>
-        }
-
-      }
 
        @if(isAdmin!=='Admin'){
         <app-form-dropdown label="Project Name" [dropdownData]="dropdownProject" dropdownDisplay="name" dropdownValue="id" selectValue="Select project" [selectedValue]="preSelectedProject" (change)="onDropdownChangeProject($event)" [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)" ></app-form-dropdown>
@@ -19,9 +16,14 @@
         <app-form-dropdown label="Project Name" [dropdownData]="dropdownDataProjectForAdmin" dropdownDisplay="name" dropdownValue="id" selectValue="Select project" (change)="onDropdownChangeProject($event)" [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)" ></app-form-dropdown>
        }
      </div>
-     @if(isAdmin === 'Admin'){
-      <app-form-dropdown label="Department Name" [dropdownData]="dropdownDepartment" dropdownDisplay="departmentName" dropdownValue="id" selectValue="Select department" (change)="onDropdownChangeDepartment($event)"  [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)"></app-form-dropdown>
-     }
+     @if(qmsForm.get("riskName")){
+
+      @if (qmsForm.get("riskName")?.hasError('required')&& qmsForm.get("riskName")?.dirty) {
+        <div class="text-danger">Risk name is required</div>
+      }
+
+    }
+
      <app-form-text-area label="Impact Of Risk" required="*" placeHolder="Enter impact of risk"
       message="Impact of a risk refers to the potential consequences or effects that a risk event
       may have on a project, system, or organization if it occurs. It can include financial loss,
@@ -221,6 +223,13 @@ message="Something went wrong! <br> Please ensure all required fields are filled
   <app-form-conform-popup message="Do you want to save the entered risk details as a draft?<br> You can continue editing them the next time you open this page."  (closeDialog)="closeDraft()" (notCloseDialog)="saveAsDraft()"></app-form-conform-popup>
 
 
+}
+@if(isNothingInDraft){
+  <app-form-successfull
+  message="Draft is empty. Please add content before saving"
+  [isSuccessfull] ="false"
+  (closeDialog)="closeDraftWhenNoDraft()" >
+  </app-form-successfull>
 }
 @if(isdraftConform){
   <app-form-successfull
