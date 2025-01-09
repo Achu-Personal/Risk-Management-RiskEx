@@ -238,7 +238,7 @@ export class RegisterRiskComponent {
             }
           }
 
-          this.errorMessage = userFriendlyMessage;
+          this.errorMessage = userFriendlyMessage.replace(/\n/g, '<br>');
           console.error('Error details:', error); // Keep debugging information in the console for developers
         },
       });
@@ -296,7 +296,7 @@ export class RegisterRiskComponent {
             }
           }
 
-          this.errorMessage = userFriendlyMessage;
+          this.errorMessage = userFriendlyMessage.replace(/\n/g, '<br>');
           console.error('Error details:', error); // Keep debugging information in the console for developers
         },
       });
@@ -354,7 +354,7 @@ export class RegisterRiskComponent {
             }
           }
 
-          this.errorMessage = userFriendlyMessage;
+          this.errorMessage = userFriendlyMessage.replace(/\n/g, '<br>');
           console.error('Error details:', error); // Keep debugging information in the console for developers
         },
       });

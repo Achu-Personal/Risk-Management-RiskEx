@@ -15,6 +15,8 @@ import { AuthService } from '../../Services/auth.service';
   styleUrl: './assignment.component.scss'
 })
 export class AssignmentComponent {
+  isLoading = false;
+
   constructor(private router: Router,private api:ApiService,private auth:AuthService) {}
 
   OnClickRow(row:any): void {
@@ -61,11 +63,8 @@ tableBody:any[]=[
 
 ngOnInit()
 {
-
-
-
-
-    if(this.auth.getUserRole()=="Admin"||this.auth.getUserRole()!.includes("EMTUser"))
+    this.isLoading = true;
+    if(this.auth.getUserRole()=="Admin"||this.auth.getUserRole()?.includes("EMTUser"))
     {
       this.headerData=[
         "riskId"," riskName","description","riskType","overallRiskRating",  "departmentName","responsibleUser","plannedActionDate","riskStatus",
@@ -87,7 +86,8 @@ ngOnInit()
       ]
       this.api.getAllRisksAssigned().subscribe((e:any)=>{
         console.log("Risk assigned to a user=",e)
-        this.tableBody=e
+        this.tableBody=e;
+        this.isLoading = false;
 
       })
     }
@@ -112,7 +112,9 @@ ngOnInit()
       ]
       this.api.getRisksAssignedToUser(this.auth.getCurrentUserId()).subscribe((e:any)=>{
         console.log("Risk assigned to a user=",e)
-        this.tableBody=e
+        this.tableBody=e;
+        this.isLoading = false;
+
 
       })
     }

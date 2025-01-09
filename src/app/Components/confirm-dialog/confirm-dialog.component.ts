@@ -5,7 +5,6 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
 import { StyleButtonComponent } from "../../UI/style-button/style-button.component";
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-
 @Component({
   selector: 'app-confirm-dialog',
   standalone: true,
@@ -20,12 +19,12 @@ export class ConfirmDialogComponent {
    isButtonClicked:boolean = true;
     commentForm = new FormGroup({
     approve: new FormControl('')});
-    
+
 constructor(
   public dialogRef: MatDialogRef<ConfirmDialogComponent>,
   @Inject(MAT_DIALOG_DATA) public data:  { message: string; approvalStatus: string }
 ) {
- 
+
 }
 ngOnInit(): void {
   // Set IsCommentRequiered to true if the approval status is 'rejected'
@@ -39,13 +38,13 @@ ngOnInit(): void {
 
   this.commentForm.get('approve')?.updateValueAndValidity(); // Refresh validation
 }
-  
+
   // onConfirm(): void {
   //   this.dialogRef.close(true);
- 
+
 
   //     console.log(this.commentForm.value);
-    
+
   // }
 
   // onCancel(): void {

@@ -1,5 +1,5 @@
 import { Component, ElementRef, EventEmitter, Input, Output } from '@angular/core';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FormButtonComponent } from '../../UI/form-button/form-button.component';
 import { DropdownComponent } from '../../UI/dropdown/dropdown.component';
 import { StyleButtonComponent } from '../../UI/style-button/style-button.component';
@@ -22,9 +22,9 @@ export class FormDataNotInListComponent {
   @Output() openDropdown = new EventEmitter<string>(); // Notify parent
 
   group=new FormGroup({
-    fullName:new FormControl(''),
-    email:new FormControl(''),
-    departmentId:new FormControl('')
+    fullName:new FormControl('', [Validators.required,Validators.minLength(3) ]),
+    email:new FormControl('', [Validators.required,Validators.email ]),
+    departmentId:new FormControl('', Validators.required)
 
   })
   constructor(private el: ElementRef){}

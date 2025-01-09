@@ -117,12 +117,17 @@
         [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)" message="You can select an existing responsible person from the dropdown
         or enter a new one. If you enter a new name, it will take priority over the dropdown selection." backgroundColor=" var(--form-color)" ></app-form-dropdown>
       }
+
        @if(isAdmin !== 'Admin'){
         <app-form-dropdown label="Responsibility of action" required="*" [dropdownData]="dropdownAssignee" dropdownDisplay="fullName" [selectedValue]="preSelectedResponsiblePerson"
         dropdownValue="id" selectValue="Select responsible person" (change)="onDropdownChangeResponsiblePerson($event)" [openDropdownId]="openDropdownId"
         (openDropdown)="handleDropdownOpen($event)"  message="You can select an existing responsible person from the dropdown
         or enter a new one. If you enter a new name, it will take priority over the dropdown selection." backgroundColor=" var(--form-color)" ></app-form-dropdown>
        }
+
+       @if(isnewAssigneenameDisplay){
+        <h6>Responsible Person Name: <span style="font-weight: bolder;">{{newAssigneename}}</span></h6>
+        }
         <div [ngStyle]="{'margin-top':'20px','font-style':'italic','color':'grey'}">
         <p>If responsible person not in the list <span (click)="isAssigneeNotInList()"><a href="javascript:void(0);">click </a></span>here</p>
       </div>
@@ -142,6 +147,10 @@
       selectValue="Select reviewer" (change)="onDropdownChangeReviewer($event)" [openDropdownId]="openDropdownId"
       (openDropdown)="handleDropdownOpen($event)" message="You can select an existing reviewer from the dropdown
       or enter a new one. If you enter a new name, it will take priority over the dropdown selection." ></app-form-dropdown>
+
+      @if(isnewReviewernameDisplay){
+        <h6>Reviewer Name: <span style="font-weight: bolder;">{{newReviewername}}</span></h6>
+      }
 
       <div [ngStyle]="{'margin-top':'20px','font-style':'italic','color':'grey'}">
         <p>If reviewer not in the list <span (click)="isReviewerNotInList()"><a href="javascript:void(0);">click </a></span>here</p>
@@ -174,42 +183,42 @@
   }
   @if(isSuccessReviewer){
     <app-form-successfull
-    message="Add new reviewer successfully!"
+    message="The new Reviewer has been added successfully!"
     [isSuccessfull] ="true"
     (closeDialog)="closeReviewer()" >
     </app-form-successfull>
  }
  @if(isErrorReviewer){
   <app-form-successfull
-  message="Something went Wrong!"
+  message="Something went wrong! <br> Please ensure all required fields are filled in correctly and check your internet connection.<br> If the issue persists, try again later or contact support."
   [isSuccessfull] ="false"
   (closeDialog)="closeReviewer()" >
   </app-form-successfull>
 }
 @if(isSuccessAssignee){
   <app-form-successfull
-  message="Add new Assignee successfully!"
+  message="The new Assignee has been added successfully!"
   [isSuccessfull] ="true"
   (closeDialog)="closeAssignee()" >
   </app-form-successfull>
 }
 @if(isErrorAssignee){
 <app-form-successfull
-message="Something went Wrong!"
+message="Something went wrong! <br> Please ensure all required fields are filled in correctly and check your internet connection.<br> If the issue persists, try again later or contact support."
 [isSuccessfull] ="false"
 (closeDialog)="closeAssignee()" >
 </app-form-successfull>
 }
 @if(isSave){
-  <app-form-conform-popup message="Do you want to save the entered risk details? You can check and edit them later if needed."  (closeDialog)="saveRisk()" (notCloseDialog)="saveConfirmation()"></app-form-conform-popup>
+  <app-form-conform-popup [message]=" conform "  (closeDialog)="saveRisk()" (notCloseDialog)="saveConfirmation()"></app-form-conform-popup>
 }
 
 @if(isCancel){
-  <app-form-conform-popup message="Are you sure you want to cancel? Any unsaved changes will be lost."  (closeDialog)="closeRisk()" (notCloseDialog)="cancelRisk()"></app-form-conform-popup>
+  <app-form-conform-popup message="Are you sure you want to cancel? <br> Any unsaved changes will be lost."  (closeDialog)="closeRisk()" (notCloseDialog)="cancelRisk()"></app-form-conform-popup>
 }
 
 @if(isdraft){
-  <app-form-conform-popup message="Do you want to save the entered risk details as a draft? You can continue editing them the next time you open this page."  (closeDialog)="closeDraft()" (notCloseDialog)="saveAsDraft()"></app-form-conform-popup>
+  <app-form-conform-popup message="Do you want to save the entered risk details as a draft?<br> You can continue editing them the next time you open this page."  (closeDialog)="closeDraft()" (notCloseDialog)="saveAsDraft()"></app-form-conform-popup>
 
 
 }
