@@ -1,4 +1,4 @@
-<ng-container *ngIf="hasValidData(); else noData">
+<!-- <ng-container *ngIf="hasValidData(); else noData"> -->
 <div class="body">
 
     <div class="header1">
@@ -16,11 +16,45 @@
 
    </div>
 
+  <div class="loading-skeleton" *ngIf="isLoading">
+    <div class="tablestyle">
+      <table class="tabledata">
+        <thead>
+          <tr class="bord">
+            <th>
+              <div class="skeleton-cell"></div>
+            </th>
+            <th >
+              <div class="skeleton-cell"></div>
+            </th>
+            <th>
+              <div class="skeleton-cell"></div>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of [1,2,3,4,5]">
+            <td>
+              <div class="skeleton-cell"></div>
+            </td>
+            <td>
+              <div class="skeleton-cell"></div>
+            </td>
+            <td>
+              <div class="skeleton-cell"></div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+<ng-container *ngIf="!isLoading && hasValidData()">
+
   <div class="container1">
     <div class="table-container1 fi">
     <table class="table1">
       <thead>
-        <tr class="bord">
+        <tr>
           <th>SL No</th>
           <!-- <th>Risk ID</th> -->
           <th title="Risk Name">Risk Name</th>
@@ -181,8 +215,9 @@
    }
 
   </div>
-</div>
 </ng-container>
+</div>
+
 <ng-template #noData>
   <div class="no-data-container">
     <h3 class="no-data-message">{{noDataMessage}}</h3>
