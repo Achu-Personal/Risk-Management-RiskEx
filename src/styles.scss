@@ -88,3 +88,56 @@ body {
 .shadowType1 {
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
+
+
+// Styles for the snackbar container
+.centered-snackbar {
+  &.mat-mdc-snack-bar-container {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    min-width: 300px;
+    max-width: 80%;
+    margin-top: 20px;
+  }
+
+  .mat-mdc-snack-bar-action {
+    color: white;
+  }
+
+  // Center the text and button
+  .mdc-snackbar__surface {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+.success-snackbar {
+  background: #43a047 !important;
+  color: white;
+}
+
+.error-snackbar {
+  background: #d32f2f !important;
+  color: white;
+}
+
+.info-snackbar {
+  background: #1976d2 !important;
+  color: white;
+}
+
+// Optional: Add some animation
+.centered-snackbar {
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateX(-50%) translateY(-100%);
+  }
+  to {
+    transform: translateX(-50%) translateY(0);
+  }
+}
