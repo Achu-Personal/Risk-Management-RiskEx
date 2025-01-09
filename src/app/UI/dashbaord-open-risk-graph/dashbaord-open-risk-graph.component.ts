@@ -1,10 +1,11 @@
+import { CommonModule } from '@angular/common';
 import { NgFor } from '@angular/common';
 import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-dashbaord-open-risk-graph',
   standalone: true,
-  imports: [NgFor],
+  imports: [CommonModule,NgFor],
   templateUrl: './dashbaord-open-risk-graph.component.html',
   styleUrl: './dashbaord-open-risk-graph.component.scss'
 })

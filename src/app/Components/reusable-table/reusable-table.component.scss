@@ -19,13 +19,13 @@
 thead{
 
   tr{
-    z-index: 10; 
+    z-index: 10;
     th{
       // text-align: center;
       cursor: pointer;
     }
   }
-  
+
 
 }
 .bord{
@@ -116,9 +116,9 @@ thead{
 
 tbody tr:hover {
   background-color: rgba(208, 198, 182, 0.2);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
-  transform: translateY(-1px);  
-  transition: box-shadow 0.2s ease-in-out, transform 0.2s ease-in-out;  
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
+  transition: box-shadow 0.2s ease-in-out, transform 0.2s ease-in-out;
   cursor: pointer;
 }
 tbody{
@@ -201,7 +201,7 @@ tr{
   }
   path{
     stroke: rgb(245, 42, 42);
-    
+
 
   }
 }
@@ -214,7 +214,7 @@ tr{
 
 .red-background {
   color: #fc3a36;
-  
+
 }
 
 
@@ -233,8 +233,8 @@ tr{
 
 /* Define colors for risk statuses */
 .open {
-  
-  
+
+
   color: red;
   font-weight: bold;
   // padding: 10px;
@@ -246,7 +246,7 @@ tr{
 }
 
 .closed {
-  
+
   color: green;
   font-weight: bold;
   // padding: 10px;
@@ -262,37 +262,37 @@ tr{
 }
 
 .green-risk {
- 
+
   color: green;
   // font-weight: bold;
   // padding: 5px;
   // border-radius: 5px;
   // text-align: center;
-  // height: 35px;   
-  // width: 65px;   
+  // height: 35px;
+  // width: 65px;
 }
 
 .yellow-risk {
-  
+
   color: rgb(189, 189, 7);
   // font-weight: bold;
   // padding: 5px;
   // border-radius: 5px;
   // text-align: center;
-  // height: 35px;   
-  // width: 65px;  
+  // height: 35px;
+  // width: 65px;
 }
 
 .red-risk {
-  
+
   color: red;
   // font-weight: bold;
   // padding: 5px;
   // border-radius: 5px;
   // text-align: center;
-  // height: 35px;   
-  // width: 65px;  
-  
+  // height: 35px;
+  // width: 65px;
+
 }
 
 
@@ -368,4 +368,58 @@ tr{
   border-radius: 5px;
   width: 70px;
   text-align: center;
+}
+/* Add these styles to your existing SCSS file */
+
+.loading-skeleton {
+  width: 100%;
+  margin-left: -10px;
+
+  .skeleton-cell {
+    height: 20px;
+    background: linear-gradient(
+      90deg,
+      rgba(190, 190, 190, 0.2) 25%,
+      rgba(129, 129, 129, 0.24) 37%,
+      rgba(190, 190, 190, 0.2) 63%
+    );
+    background-size: 400% 100%;
+    animation: shimmer 1.4s ease infinite;
+    border-radius: 4px;
+    width: 100%;
+    min-width: 50px;
+  }
+
+  thead th {
+    .skeleton-cell {
+      height: 24px;
+      background-color: rgba(190, 190, 190, 0.3);
+    }
+  }
+
+  tbody td {
+    .skeleton-cell {
+      height: 20px;
+    }
+  }
+
+  // Match your existing table styles
+  .tabledata {
+    width: 100%;
+    border-collapse: collapse;
+
+    th, td {
+      padding: 12px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0 50%;
+  }
 }

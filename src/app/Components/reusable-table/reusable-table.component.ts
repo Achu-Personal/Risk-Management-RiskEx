@@ -1,5 +1,5 @@
 // import { SlicePipe } from '@angular/common';
-import { Component, EventEmitter, Input, Output, output, SimpleChanges } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, Output, output, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common'; // Import CommonModule
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../Services/auth.service';
@@ -23,8 +23,10 @@ export class ReusableTableComponent {
   @Input() IsAssignee:boolean = false;
   @Input() headerDisplayMap:any=this.tableHeaders;
   @Input() noDataMessage:string='No Data Available'
+  @Input() isLoading: boolean = false;
   isEyeOpen = false;
   isAdmin: boolean=false;
+  isDepartmentUser=false;
   newState:boolean=true;
 
   showApproveDialog = false;
@@ -34,7 +36,8 @@ export class ReusableTableComponent {
   @Output() rejectRisk = new EventEmitter<{row: any, comment: string}>();
 
 
-  constructor(public auth:AuthService, public api:ApiService){}
+
+  constructor(public auth:AuthService, public api:ApiService,private cdr: ChangeDetectorRef){}
 
   // SVG paths for eye states
   openEyePath = 'M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z';
@@ -44,6 +47,7 @@ export class ReusableTableComponent {
 
   ngOnInit(): void {
     const role = this.auth.getUserRole(); // Fetch user role
+    this.isDepartmentUser = role === 'DepartmentUser'
     this.isAdmin = role === 'Admin';
     if (this.tableData && this.tableData.length > 0) {
       this.rowKeys = Object.keys(this.tableData[0]);
@@ -56,6 +60,7 @@ onToggleChange(row: any): void {
   this.newState = row.isActive;
   this.api.changeUserStatus(row.id,this.newState)
   console.log(`Row ID: ${row.fullName}, New State: ${this.newState}`);
+  this.cdr.markForCheck();
 }
 
 
@@ -63,34 +68,34 @@ rejectButton(event: Event, row: any) {
   event.stopPropagation();
   this.currentRow = row;
   this.showRejectDialog = true;
+  this.cdr.markForCheck();
 }
 
 RiskClose(event:Event,row:any) {
     event.stopPropagation();
   this.rejectRisk.emit(row.riskId);
+  this.cdr.markForCheck();
   }
 
-// approveRisk = output();
-// approveButton(event:Event,row:any) {
-//     event.stopPropagation();
-//     this.approveRisk.emit(row.riskId);
 
-// }
 
 approveButton(event: Event, row: any) {
   event.stopPropagation();
   this.currentRow = row;
   this.showApproveDialog = true;
+  this.cdr.markForCheck();
 }
 
 onApprove(data: {comment: string}) {
   this.approveRisk.emit({row: this.currentRow,comment: data.comment});
   this.showApproveDialog = false;
+  this.cdr.markForCheck();
 }
 
 onReject(data: {comment: string}) {
   this.rejectRisk.emit({row: this.currentRow,comment: data.comment});
   this.showRejectDialog = false;
+  this.cdr.markForCheck();
 }
 
 
@@ -172,6 +177,7 @@ getRiskRatingStyle(riskRating: number): string {
     hasValidData(): boolean {
       return this.tableData && this.tableData.length > 0 && this.tableData.some(row => row.riskName || row.riskId || row.fullName);
     }
+
 
 
 }

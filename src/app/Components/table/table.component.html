@@ -12,8 +12,9 @@
       <label>entries</label>
     </div>
       <app-searchbar (searchChanged)="onSearch($event)"></app-searchbar>
-   </div>
+      <!-- <app-style-button label="reset" onclick="resetFilters()"></app-style-button> -->
 
+   </div>
 
   <div class="container1">
     <div class="table-container1 fi">
@@ -86,7 +87,9 @@
               </ul>
               }
             </div>
+
           </th>
+          @if(!isButtonVisible){
           <th title="Current risk status">
             <div class="dropdown-container">
               <button class="dropdown-button" (click)="toggleStatusDropdown()">
@@ -106,6 +109,7 @@
               }
             </div>
           </th>
+          }
           @if(isButtonVisible){
             <th title="Current difference between post and pre overall risk rating">
               <div class="dropdown-container">
@@ -141,16 +145,19 @@
           }
           <td>{{ item.riskType }}</td>
           <td>{{ item.plannedActionDate| date: 'd MMM yyyy' }}</td>
-          @if(item.riskAssessments[0].isMitigated){
+          @if(item.overallRiskRatingAfter !== null){
           <td><div [ngClass]="{'green': item.overallRiskRatingAfter >=0 && item.overallRiskRatingAfter <= 30  , 'red': item.overallRiskRatingAfter > 99, 'yellow': item.overallRiskRatingAfter > 30 && item.overallRiskRatingAfter <= 99}">{{ item.overallRiskRatingAfter }}</div></td>
-          }@else{
+          }
+          @else{
           <td><div [ngClass]="{'green': item.overallRiskRatingBefore >=0 && item.overallRiskRatingBefore <= 30  , 'red': item.overallRiskRatingBefore > 99, 'yellow': item.overallRiskRatingBefore > 30 && item.overallRiskRatingBefore <= 99}">{{ item.overallRiskRatingBefore }}</div></td>
           }
           <td>{{ item.responsibleUser }}</td>
           <td> {{item.riskAssessments[0].reviewer}}</td>
-          <td> {{item.riskAssessments[0].reviewStatus }}</td>
+
+          <td> {{reviewStatusMap[item.riskAssessments[0].reviewStatus] }}</td>
+          @if(!isButtonVisible){
           <td><div [ngClass]="{'red-cell': item.riskStatus === 'open', 'green-cell': item.riskStatus === 'close'}">{{ item.riskStatus }}</div></td>
-          
+          }
           @if(isButtonVisible){
             <td><div [ngClass]="{'green-cell': item.residualRisk === 'Low','yellow-cell': item.residualRisk === 'Medium', 'red-cell': item.residualRisk === 'High'}">{{ item.residualRisk }}</div></td>
 
