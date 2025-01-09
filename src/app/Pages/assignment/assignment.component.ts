@@ -1,3 +1,4 @@
+import { department } from './../../Interfaces/deparments.interface';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { BodyContainerComponent } from "../../Components/body-container/body-container.component";
 import { ReusableTableComponent } from "../../Components/reusable-table/reusable-table.component";
@@ -26,7 +27,7 @@ export class AssignmentComponent {
 
 
 headerData:any=[
-  "riskId"," riskName","description","riskType","overallRiskRating","plannedActionDate","riskStatus",
+  "riskId"," riskName","description","riskType","overallRiskRating",  "departmentName","responsibleUser","plannedActionDate","riskStatus",
 ];
 
 
@@ -36,6 +37,9 @@ headerDisplayMap: { [key: string]: string } = {
   description: "Description",
   riskType: "Risk Type",
   overallRiskRating: "CRR",
+  departmentName:'DepartmentName',
+  responsibleUser:'ResponsibleUser',
+
   plannedActionDate:"End Date",
   riskStatus: "RiskStatus"
 };
@@ -47,6 +51,9 @@ tableBody:any[]=[
     description: '',
     riskType: '',
     overallRiskRating: 0,
+    departmentName:"",
+    responsibleUser:"",
+
     plannedActionDate: Date,
     riskStatus: '',
   },
@@ -55,11 +62,61 @@ tableBody:any[]=[
 ngOnInit()
 {
 
-    this.api.getRisksAssignedToUser(this.auth.getCurrentUserId()).subscribe((e:any)=>{
-      console.log("Risk assigned to a user=",e)
-      this.tableBody=e
 
-    })
+
+
+    if(this.auth.getUserRole()=="Admin"||this.auth.getUserRole()!.includes("EMTUser"))
+    {
+      this.headerData=[
+        "riskId"," riskName","description","riskType","overallRiskRating",  "departmentName","responsibleUser","plannedActionDate","riskStatus",
+      ];
+
+      this.tableBody=[
+        {
+          riskId: '',
+          riskName: '',
+          description: '',
+          riskType: '',
+          overallRiskRating: 0,
+          departmentName:"",
+          responsibleUser:"",
+
+          plannedActionDate: Date,
+          riskStatus: '',
+        },
+      ]
+      this.api.getAllRisksAssigned().subscribe((e:any)=>{
+        console.log("Risk assigned to a user=",e)
+        this.tableBody=e
+
+      })
+    }
+    else{
+
+      this.headerData=[
+        "riskId"," riskName","description","riskType","overallRiskRating","plannedActionDate","riskStatus",
+      ];
+
+      this.tableBody=[
+        {
+          riskId: '',
+          riskName: '',
+          description: '',
+          riskType: '',
+          overallRiskRating: 0,
+
+
+          plannedActionDate: Date,
+          riskStatus: '',
+        },
+      ]
+      this.api.getRisksAssignedToUser(this.auth.getCurrentUserId()).subscribe((e:any)=>{
+        console.log("Risk assigned to a user=",e)
+        this.tableBody=e
+
+      })
+    }
+
 }
 
 }
