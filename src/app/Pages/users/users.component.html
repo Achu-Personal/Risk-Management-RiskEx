@@ -328,7 +328,9 @@
 
   <app-reusable-table [tableHeaders]="isAdmin ? headerData : headerDataDpt"
     [tableData]="isAdmin ? tableBodyAdmin : tableBody" [headerDisplayMap]="headerDisplayMap" [IsActionRequiered]="true"
-    [IsUser]="true">
+    [IsUser]="true"
+    [isLoading]="isLoading"
+    [noDataMessage]="'No users found'">
   </app-reusable-table>
 
 </app-body-container>

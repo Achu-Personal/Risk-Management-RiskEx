@@ -40,6 +40,7 @@ export class UsersComponent {
   isDepartmentFieldDisabled = false;
   isAdmin: boolean = false;
   id:any
+  isLoading = true;
 
   headerData: string[] = [];
   headerDataDpt:string[]=['fullName','email','projects'];
@@ -105,14 +106,17 @@ tableBody:any[]=[
 
 
  private refreshUsersData() {
+  this.isLoading = true;
     const userRole = this.authService.getUserRole();
     if (userRole === 'Admin') {
       this.api.getAllUsers().subscribe({
         next: (users: any) => {
           this.tableBodyAdmin = users;
+          this.isLoading = false;
         },
         error: (error) => {
           console.error('Error fetching users:', error);
+          this.isLoading = false;
         }
       });
     } else if (userRole === 'DepartmentUser'||userRole?.includes('EMTUser')) {
@@ -121,9 +125,11 @@ tableBody:any[]=[
         this.api.getUsersByDepartmentId(department).subscribe({
           next: (users: any) => {
             this.tableBody = users;
+            this.isLoading = false;
           },
           error: (error) => {
             console.error('Error fetching department users:', error);
+            this.isLoading = false;
           }
         });
       }
@@ -131,21 +137,26 @@ tableBody:any[]=[
       this.api.getUsersByProjects().subscribe({
         next: (users) => {
           this.tableBody = users;
+          this.isLoading = false;
         },
         error: (error) => {
           console.error('Error fetching project users:', error);
+          this.isLoading = false;
         }
       });
     }
   }
 
    private loadDepartments() {
+    this.isLoading = true;
     this.api.getDepartment().subscribe({
       next: (departments: department[]) => {
         this.departments = departments;
+        this.isLoading = false;
       },
       error: (error) => {
         console.error('Error loading departments:', error);
+        this.isLoading = false;
       }
     });
   }
@@ -347,7 +358,7 @@ tableBody:any[]=[
         newDepartmentName: this.updateDepartmentForm.get('newDepartmentName')?.value,
         newDepartmentCode: this.updateDepartmentForm.get('newDepartmentCode')?.value
       };
-     
+
       this.api.updateDepartment(updateData).subscribe({
         next: (response) => {
           console.log('Department updated successfully:', response);

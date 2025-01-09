@@ -15,6 +15,8 @@ import { AuthService } from '../../Services/auth.service';
   styleUrl: './assignment.component.scss'
 })
 export class AssignmentComponent {
+  isLoading = false;
+
   constructor(private router: Router,private api:ApiService,private auth:AuthService) {}
 
   OnClickRow(row:any): void {
@@ -32,16 +34,17 @@ headerData:any=[
 
 
 headerDisplayMap: { [key: string]: string } = {
-  riskId: "RiskId",
-  riskName: "RiskName",
+
+  riskId: "Risk Id",
+  riskName: "Risk Name",
   description: "Description",
   riskType: "Risk Type",
   overallRiskRating: "CRR",
-  departmentName:'DepartmentName',
-  responsibleUser:'ResponsibleUser',
+  departmentName:'Department ',
+  responsibleUser:'Responsible User',
 
   plannedActionDate:"End Date",
-  riskStatus: "RiskStatus"
+  riskStatus: "Risk Status"
 };
 
 tableBody:any[]=[
@@ -61,11 +64,8 @@ tableBody:any[]=[
 
 ngOnInit()
 {
-
-
-
-
-    if(this.auth.getUserRole()=="Admin"||this.auth.getUserRole()!.includes("EMTUser"))
+    this.isLoading = true;
+    if(this.auth.getUserRole()=="Admin"||this.auth.getUserRole()?.includes("EMTUser"))
     {
       this.headerData=[
         "riskId"," riskName","description","riskType","overallRiskRating",  "departmentName","responsibleUser","plannedActionDate","riskStatus",
@@ -80,14 +80,14 @@ ngOnInit()
           overallRiskRating: 0,
           departmentName:"",
           responsibleUser:"",
-
           plannedActionDate: Date,
           riskStatus: '',
         },
       ]
       this.api.getAllRisksAssigned().subscribe((e:any)=>{
         console.log("Risk assigned to a user=",e)
-        this.tableBody=e
+        this.tableBody=e;
+        this.isLoading = false;
 
       })
     }
@@ -104,15 +104,15 @@ ngOnInit()
           description: '',
           riskType: '',
           overallRiskRating: 0,
-
-
           plannedActionDate: Date,
           riskStatus: '',
         },
       ]
       this.api.getRisksAssignedToUser(this.auth.getCurrentUserId()).subscribe((e:any)=>{
         console.log("Risk assigned to a user=",e)
-        this.tableBody=e
+        this.tableBody=e;
+        this.isLoading = false;
+
 
       })
     }

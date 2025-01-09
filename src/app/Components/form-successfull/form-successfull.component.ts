@@ -1,17 +1,24 @@
 import { CommonModule } from '@angular/common';
 import { Component, ElementRef, EventEmitter, Input, Output } from '@angular/core';
-
+import { StyleButtonComponent } from '../../UI/style-button/style-button.component';
+import { Pipe, PipeTransform } from '@angular/core';
+@Pipe({name: 'newlineToBr'})
+export class NewlineToBrPipe implements PipeTransform {
+  transform(value: string): string {
+    return value.replace(/(?:\r\n|\r|\n)/g, '<br>');  // Replace newlines with <br>
+  }
+}
 @Component({
   selector: 'app-form-successfull',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,StyleButtonComponent],
   templateUrl: './form-successfull.component.html',
   styleUrl: './form-successfull.component.scss'
 })
 export class FormSuccessfullComponent {
   @Input() message: string = 'Operation completed successfully!';
   @Input() isSuccessfull:boolean=true
-  @Input() bgColor:string=''
+
   @Input() HeaderMessage:string=''
 
 
@@ -20,11 +27,7 @@ export class FormSuccessfullComponent {
 
 
 
-ngOnInit(){
 
-  this.el.nativeElement.style.setProperty('--bg-color', this.bgColor);
-
-}
 
   close() {
     this.closeDialog.emit();

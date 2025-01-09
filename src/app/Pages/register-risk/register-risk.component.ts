@@ -9,6 +9,8 @@ import { FormSuccessfullComponent } from '../../Components/form-successfull/form
 import { Router } from '@angular/router';
 import { EmailService } from '../../Services/email.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { catchError } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-register-risk',
@@ -35,7 +37,7 @@ export class RegisterRiskComponent {
     private router: Router
   ) {}
   receivedDepartmentIdForAdmin: number = 0;
-  bgColor: string = '';
+
   selectedRiskType: number = 1;
   departmentName: string = '';
   departmentId: string = '';
@@ -65,38 +67,109 @@ export class RegisterRiskComponent {
     this.departmentName = this.authService.getDepartmentName()!;
 
     this.departmentId = this.authService.getDepartmentId()!;
+    console.log("departttttt",this.departmentId);
+
 
     this.isAdmin = this.authService.getUserRole()!;
-    console.log(this.isAdmin);
+    console.log("roleeeeeeeee",this.isAdmin);
 
 
-  this.api.getLikelyHoodDefinition().subscribe((res:any)=>{
-    this.dropdownDataLikelihood=res;
-  })
 
-  this.api.getImpactDefinition().subscribe((res:any)=>{
-    this.dropdownDataImpact=res
-  })
+  // this.api.getLikelyHoodDefinition().subscribe((res:any)=>{
+  //   this.dropdownDataLikelihood=res;
+  //   this.cdRef.detectChanges();
+  // })
 
-  this.api.getProjects(this.departmentName).subscribe((res:any)=>{
-    this.dropdownDataProject=res
-  })
+  // this.api.getImpactDefinition().subscribe((res:any)=>{
+  //   this.dropdownDataImpact=res
+  //   this.cdRef.detectChanges();
+  // })
 
-  this.api.getDepartment().subscribe((res:any)=>{
-    this.dropdownDataDepartment=res
-  })
+  // this.api.getProjects(this.departmentName).subscribe((res:any)=>{
+  //   this.dropdownDataProject=res
+  //   this.cdRef.detectChanges();
+  // })
 
-  this.api.getAllReviewer().subscribe((res:any)=>{
-    this.dropdownDataReviewer=res.reviewers
-  })
+  // this.api.getDepartment().subscribe((res:any)=>{
+  //   this.dropdownDataDepartment=res
+  //   this.cdRef.detectChanges();
+  // })
+
+  // this.api.getAllReviewer().subscribe((res:any)=>{
+  //   this.dropdownDataReviewer=res.reviewers
+  //   this.cdRef.detectChanges();
+  // })
 
 
-  const departmentId:any = this.authService.getDepartmentId();
-  this.api.getUsersByDepartmentId(departmentId).subscribe((res:any) => {
-    this.dropdownDataAssignee = res
-  })
+  // const departmentId:any = this.authService.getDepartmentId();
+  // this.api.getUsersByDepartmentId(departmentId).subscribe((res:any) => {
+  //   this.dropdownDataAssignee = res
+  //   this.cdRef.detectChanges();
+  // })
 
-  this.cdRef.detectChanges();
+
+  this.api.getLikelyHoodDefinition().pipe(
+    catchError((error) => {
+      console.error('Error fetching Likelihood Definitions:', error);
+      return of([]); // Return an empty array to prevent app crash
+    })
+  ).subscribe((res: any) => {
+    this.dropdownDataLikelihood = res;
+    this.cdRef.detectChanges();
+  });
+
+  this.api.getImpactDefinition().pipe(
+    catchError((error) => {
+      console.error('Error fetching Impact Definitions:', error);
+      return of([]);
+    })
+  ).subscribe((res: any) => {
+    this.dropdownDataImpact = res;
+    this.cdRef.detectChanges();
+  });
+
+  this.api.getProjects(this.departmentName).pipe(
+    catchError((error) => {
+      console.error('Error fetching Projects:', error);
+      return of([]);
+    })
+  ).subscribe((res: any) => {
+    this.dropdownDataProject = res;
+    this.cdRef.detectChanges();
+  });
+
+  this.api.getDepartment().pipe(
+    catchError((error) => {
+      console.error('Error fetching Departments:', error);
+      return of([]);
+    })
+  ).subscribe((res: any) => {
+    this.dropdownDataDepartment = res;
+    this.cdRef.detectChanges();
+  });
+
+  this.api.getAllReviewer().pipe(
+    catchError((error) => {
+      console.error('Error fetching Reviewers:', error);
+      return of({ reviewers: [] });
+    })
+  ).subscribe((res: any) => {
+    this.dropdownDataReviewer = res.reviewers;
+    this.cdRef.detectChanges();
+  });
+
+  const departmentId: any = this.authService.getDepartmentId();
+  this.api.getUsersByDepartmentId(departmentId).pipe(
+    catchError((error) => {
+      console.error('Error fetching Users by Department:', error);
+      return of([]);
+    })
+  ).subscribe((res: any) => {
+    this.dropdownDataAssignee = res;
+    this.cdRef.detectChanges();
+  });
+
+
 
 }
 
@@ -122,7 +195,10 @@ export class RegisterRiskComponent {
           this.riskId = res.id;
           this.riskData = res;
           isSubmited = true;
+          console.log("fgggggggggggggggggggg",res);
+
           this.sendEmailOnRegisterRisk(res.id,res);
+          this.cdRef.detectChanges();
         },
         error: (error: HttpErrorResponse) => {
           this.isError = true;
@@ -164,7 +240,7 @@ export class RegisterRiskComponent {
             }
           }
 
-          this.errorMessage = userFriendlyMessage;
+          this.errorMessage = userFriendlyMessage.replace(/\n/g, '<br>');
           console.error('Error details:', error); // Keep debugging information in the console for developers
         },
       });
@@ -179,6 +255,7 @@ export class RegisterRiskComponent {
             console.log('response id for njnnmbhh security', this.riskId);
             isSubmited = true;
             this.sendEmailOnRegisterRisk(res.id,res);
+            this.cdRef.detectChanges();
           }
         },
         error: (error: HttpErrorResponse) => {
@@ -221,7 +298,7 @@ export class RegisterRiskComponent {
             }
           }
 
-          this.errorMessage = userFriendlyMessage;
+          this.errorMessage = userFriendlyMessage.replace(/\n/g, '<br>');
           console.error('Error details:', error); // Keep debugging information in the console for developers
         },
       });
@@ -235,74 +312,56 @@ export class RegisterRiskComponent {
             this.riskId = res.id;
             this.riskData = res;
             isSubmited = true;
-            this.sendEmailOnRegisterRisk(res.id,res);
+            this.sendEmailOnRegisterRisk(res.id, res);
+            this.cdRef.detectChanges();
           }
         },
         error: (error: HttpErrorResponse) => {
           this.isError = true;
 
-          let userFriendlyMessage =
-            'An unexpected error occurred. Please try again later.';
+          let userFriendlyMessage = 'An unexpected error occurred. Please try again later.';
 
           if (error.status === 400) {
             // Handle validation errors
             if (error.error && error.error.errors) {
-              const errorMessages = Object.values(error.error.errors)
-                .flat()
-                .join('\n'); // Show all validation errors line by line
+              const errorMessages = Object.values(error.error.errors).flat().join('\n');
 
-              // Provide specific messages for certain errors
+              // Custom error messages for specific issues
               if (errorMessages.includes('The riskDto field is required')) {
-                userFriendlyMessage = 'Please fill in all required fields.';
-              } else if (
-                errorMessages.includes(
-                  'The JSON value could not be converted to System.DateTime'
-                )
-              ) {
-                userFriendlyMessage =
-                  'The date format for the Planned Action Date is invalid. Please provide a valid date.';
+                userFriendlyMessage = 'Please fill in all required fields before submitting.';
+              } else if (errorMessages.includes('The JSON value could not be converted to System.DateTime')) {
+                userFriendlyMessage = 'Invalid date format. Please select a valid date.';
+              } else if (errorMessages.includes('The JSON value could not be converted to System.Int32')) {
+                userFriendlyMessage = 'Invalid number input. Ensure all numerical fields contain valid numbers.';
               } else {
-                userFriendlyMessage = errorMessages;
+                userFriendlyMessage = errorMessages; // Show all validation errors
               }
             } else {
               userFriendlyMessage = error.error.message || userFriendlyMessage;
             }
           } else if (error.status === 500) {
-            // Handle database errors
-            userFriendlyMessage =
-              error.error.message ||
-              'A server error occurred. Please contact support.';
+            // Handle database/server errors
+            userFriendlyMessage = error.error.message || 'A server error occurred. Please contact support.';
 
             if (error.error.details) {
               userFriendlyMessage += ` Details: ${error.error.details}`;
             }
           }
 
-          this.errorMessage = userFriendlyMessage;
-          console.error('Error details:', error); // Keep debugging information in the console for developers
+          // Show the error message in a popup
+          this.errorMessage=userFriendlyMessage;
+
+          console.error('Error details:', error); // Log for debugging
         },
       });
 
 
 
-
     }
 
   }
 
-  getRiskTypeClass() {
-    if (this.selectedRiskType === 1) {
-      this.bgColor = 'var(--quality-color)';
-      return 'risk-type-1';
-    } else if (this.selectedRiskType === 2) {
-      this.bgColor = 'var(--security-color)';
-      return 'risk-type-2';
-    } else if (this.selectedRiskType === 3) {
-      this.bgColor = 'var(--privacy-color)';
-      return 'risk-type-3';
-    }
-    return ''; // Default or no class
-  }
+
 
   receiveValue(value: any) {
     this.receivedDepartmentIdForAdmin = value;
@@ -318,22 +377,27 @@ export class RegisterRiskComponent {
     const departmentName = departmentData.departmentName;
     console.log('department name from child', departmentName);
 
-    this.api.getProjects(departmentName).subscribe(
-      (res: any) => {
-        this.dropdownDataProjectForAdmin = res;
-      },
-      (error: any) => {
+    this.api.getProjects(departmentName).pipe(
+      catchError((error) => {
+        console.error('Error fetching projects:', error);
         this.dropdownDataProjectForAdmin = [];
-      }
-    );
-    this.api.getAllUsersByDepartmentName(departmentName).subscribe(
-      (res: any) => {
-        this.dropdownAssigneeForAdmin = res;
-      },
-      (error: any) => {
+        return of([]);  // Return empty array to handle the observable
+      })
+    ).subscribe((res: any) => {
+      this.dropdownDataProjectForAdmin = res;
+      this.cdRef.detectChanges();
+    });
+
+    this.api.getAllUsersByDepartmentName(departmentName).pipe(
+      catchError((error) => {
+        console.error('Error fetching users:', error);
         this.dropdownAssigneeForAdmin = [];
-      }
-    );
+        return of([]);  // Return empty array to handle the observable
+      })
+    ).subscribe((res: any) => {
+      this.dropdownAssigneeForAdmin = res;
+      this.cdRef.detectChanges();
+    });
   }
   closeDialog() {
     this.isSuccess = false;
