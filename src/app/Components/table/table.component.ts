@@ -160,7 +160,7 @@ export class TableComponent {
   private initializeItems(): void {
     setTimeout(()=>{
       const role = this.auth.getUserRole();
-      this.isDepartmentUser = Array.isArray(role) ? role.includes('DepartmentUser') : role === 'DepartmentUser';
+      this.isDepartmentUser = role === 'DepartmentUser';
       this.items = [...this.paginated];
       console.log("items",this.items);
       this.filteredItems = [...this.items];
