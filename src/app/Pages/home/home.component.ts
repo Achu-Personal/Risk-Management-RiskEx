@@ -172,6 +172,7 @@ export class HomeComponent {
                   this.graph2chartType='doughnut'
                   this.graph2labels=this.risk
                   console.log("criticalitylevel",e)
+                  this.cdr.detectChanges()
             })
 
 
