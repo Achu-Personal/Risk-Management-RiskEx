@@ -15,6 +15,7 @@ import { DashbaordOpenRiskGraphComponent } from "../../UI/dashbaord-open-risk-gr
 
 
 
+
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -121,13 +122,14 @@ export class HomeComponent {
           this.api.getRiskCategoryCounts(isAdminOrEMTuser?'' :this.authService.getDepartmentId()).subscribe((e:any)=>{
           this.riskCategoryCounts=e
           this.list=e
+          console.log(this.list);
               const count = this.list.map((element: { count: any; }) => element.count);
               // this.counter = count
               const counter:number[]=count;
-              console.log("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",count);
+              console.log("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",counter);
 
-              const riskCat = this.list.map((element: {riskCategory:any})=>element.riskCategory);
-              this.risk = riskCat;
+              // const riskCat = this.list.map((element: {riskCategory:any})=>element.riskCategory);
+              // this.risk = riskCat;
 
               this.Criticality = this.list.reduce((acc: any, item: any) => {
               acc[item.riskCategory] = item.count;
@@ -146,6 +148,8 @@ export class HomeComponent {
 
               this.graph2chartType='doughnut'
               this.graph2labels=this.risk
+              this.graph2chartType.update();
+
               console.log("criticalitylevel",e)
           })
 
@@ -201,7 +205,7 @@ export class HomeComponent {
 
 
                   this.graph2datasets=[{
-                    data: count,
+                    data: counter,
 
                     backgroundColor: [
 
