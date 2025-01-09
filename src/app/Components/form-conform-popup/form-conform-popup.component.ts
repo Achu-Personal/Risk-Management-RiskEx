@@ -1,5 +1,7 @@
 import { Component, ElementRef, EventEmitter, Input, Output } from '@angular/core';
 import { StyleButtonComponent } from '../../UI/style-button/style-button.component';
+import { Pipe, PipeTransform } from '@angular/core';
+
 
 @Component({
   selector: 'app-form-conform-popup',
