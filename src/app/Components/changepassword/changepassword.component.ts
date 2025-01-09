@@ -3,6 +3,8 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ApiService } from '../../Services/api.service';
+import { NotificationService } from '../../Services/notification.service';
 
 @Component({
   selector: 'app-changepassword',
@@ -14,15 +16,18 @@ import { Router } from '@angular/router';
 export class ChangepasswordComponent {
 
   @Output() close = new EventEmitter<void>();
+  @Input() isVisible = false;
+  @Output() closeModal = new EventEmitter<void>();
+
+
   changePasswordForm: FormGroup;
   passwordChanged = false;
-
-
-  @Input() isVisible=false;
-  @Output() closeModal = new EventEmitter<void>(); // Emit when the modal needs to close
+  errorMessage: string = '';
+  isSubmitting = false;
 
   constructor(
-    private fb: FormBuilder,private router: Router
+    private fb: FormBuilder,private router: Router,
+    public api:ApiService,private notification:NotificationService
     // private emailService: EmailNotificationService
   ) {
     this.changePasswordForm = this.fb.group({
@@ -42,28 +47,49 @@ export class ChangepasswordComponent {
   }
 
 
-  navigateTohome() {
-    this.router.navigate(['/home']);
 
-  }
   onSubmit() {
-    if (this.changePasswordForm.invalid) {
+    if (this.changePasswordForm.invalid || this.isSubmitting) {
       return;
     }
 
-    // Simulate password update and email notification
-    const { currentPassword, newPassword } = this.changePasswordForm.value;
-    console.log(`Password Updated: ${newPassword}`);
+    this.isSubmitting = true;
+    this.errorMessage = '';
 
-    // this.emailService.sendPasswordChangeEmail();
-    alert('Your password has been changed successfully.');
-    this.passwordChanged = true;
+    const { currentPassword, newPassword, confirmPassword } = this.changePasswordForm.value;
 
-    this.close.emit(); // Close popup after success
-  }
+    this.api.changePassword(currentPassword, newPassword, confirmPassword)
+      .subscribe({
+        next: (response) => {
+          this.passwordChanged = true;
+          this.notification.success("Password changed successfully");
+          this.close.emit();
+          this.navigateToHome();
+          this.changePasswordForm.reset();
+        },
+        error: (error) => {
+          this.isSubmitting = false;
+          if (error.error?.message) {
+            this.errorMessage = error.error.message;
+          } else {
+            this.errorMessage = 'An error occurred while changing the password';
+          }
+        },
+        complete: () => {
+          this.isSubmitting = false;
+        }
+      });
+    }
+    navigateToHome() {
+      this.router.navigate(['/home']);
+    }
+
+
 
   onCancel() {
+    this.changePasswordForm.reset();
+    this.errorMessage = '';
     this.close.emit();
   }
- 
+
 }
