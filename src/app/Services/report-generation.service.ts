@@ -26,7 +26,8 @@ interface Risk {
   id: number;
   impact: string;
   mitigation: string;
-  overallRiskRating: number;
+  overallRiskRatingAfter: number;
+  overallRiskRatingBefore:number;
   plannedActionDate: string;
   projectId: number | null;
   remarks: string;
@@ -252,7 +253,7 @@ export class ReportGenerationService {
           risk.mitigation || '',
           risk.contingency || '',
           risk.riskResponse || '',
-          risk.overallRiskRating || '',
+          risk.overallRiskRatingAfter || risk.overallRiskRatingBefore,
           risk.responsibleUser || '',
           risk.createdBy || '',
           formatDate(risk.createdAt),

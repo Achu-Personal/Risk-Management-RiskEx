@@ -4,17 +4,11 @@
   border-radius: 7px;
   width: 100%;
   max-width: 100%;
+
+}
+.content{
+  border-left: 0px solid var(--form-color);
 }
 
 
-.risk-type-1 {
-  border-left: 0px solid var(--quality-color);
-}
 
-.risk-type-2 {
-  border-left: 0px solid var(--security-color);
-}
-
-.risk-type-3 {
-  border-left: 0px solid var(--privacy-color);
-}

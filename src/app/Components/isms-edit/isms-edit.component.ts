@@ -17,11 +17,12 @@ import { FormSuccessfullComponent } from '../form-successfull/form-successfull.c
 import { FormReferenceHeatmapPopupComponent } from '../form-reference-heatmap-popup/form-reference-heatmap-popup.component';
 import { Router } from '@angular/router';
 import { FormConformPopupComponent } from '../form-conform-popup/form-conform-popup.component';
+import { StyleButtonComponent } from '../../UI/style-button/style-button.component';
 
 @Component({
   selector: 'app-isms-edit',
   standalone: true,
-  imports: [ FormsModule, ReactiveFormsModule, ButtonComponent, DropdownComponent, TextareaComponent, OverallRatingCardComponent,CommonModule,FormInputComponent,FormDropdownComponent,FormTextAreaComponent,FormDateFieldComponent,FormButtonComponent,FormDataNotInListComponent,FormSuccessfullComponent,FormReferenceHeatmapPopupComponent,FormConformPopupComponent],
+  imports: [ FormsModule, ReactiveFormsModule, ButtonComponent, DropdownComponent, TextareaComponent, OverallRatingCardComponent,CommonModule,FormInputComponent,FormDropdownComponent,FormTextAreaComponent,FormDateFieldComponent,FormButtonComponent,FormDataNotInListComponent,FormSuccessfullComponent,FormReferenceHeatmapPopupComponent,FormConformPopupComponent,StyleButtonComponent],
   templateUrl: './isms-edit.component.html',
   styleUrl: './isms-edit.component.scss'
 })
@@ -29,7 +30,6 @@ export class IsmsEditComponent {
 
   @Output() submitForm = new EventEmitter<any>();
   @Input() riskData:any={}
-  @Input() bgColor: string = ''
   @Input() riskTypeValue: number=1
   @Input() departmentName: string=''
   @Input() departmentId: string=''
@@ -100,15 +100,13 @@ export class IsmsEditComponent {
 
   isCancel:boolean=false
   isSave:boolean=false
+  isValid:boolean=false
 
 
 constructor(private api:ApiService,public authService:AuthService,private el: ElementRef, private renderer: Renderer2,private router: Router){}
 
 ngOnInit(){
-  this.el.nativeElement.style.setProperty('--bg-color', this.bgColor);
-  console.log("data:", this.riskData)
-    console.log('Received bgColor from parent:', this.bgColor);
-    this.el.nativeElement.style.setProperty('--bg-color', this.bgColor);
+
     const dateObj = new Date(this.riskData.plannedActionDate);
     this.ismsForm.patchValue({
       riskName:this.riskData.riskName,
@@ -438,6 +436,37 @@ onSubmit(){
   console.log(this.ismsForm.value);
   const formValue = this.ismsForm.value;
 
+  if (this.ismsForm.invalid) {
+    console.log("Form is invalid, submission blocked");
+    this.ismsForm.markAllAsTouched(); // Highlights all errors
+    this.isValid=true
+    return; // Stop execution if form is invalid
+  }
+
+  if (
+    Number(this.riskTypeValue) <= 0 ||
+    Number(this.overallRiskRating) <= 0 ||
+    (Number(this.responsiblePersonId) <= 0 && Number(this.preSelectedResponsiblePerson) <= 0 && Number(this.newAssigneeId) <= 0) ||
+    (Number(this.departmentId) <= 0 && Number(this.departmentIdForAdminToAdd) <= 0) ||
+    (Number(this.confidentialityLikelihoodId) <= 0 && Number(this.preSelectedConfidentialityLikelihood) <= 0) ||
+    (Number(this.confidentialityImpactId) <= 0 && Number(this.preSelectedConfidentialityImpact) <= 0) ||
+    (Number(this.integrityLikelihoodId) <= 0 && Number(this.preSelectedIntegrityLikelihood) <= 0) ||
+    (Number(this.integrityImpactId) <= 0 && Number(this.preSelectedIntegrityImpact) <= 0) ||
+    (Number(this.availabilityLikelihoodId) <= 0 && Number(this.preSelectedAvailabilityLikelihood) <= 0) ||
+    (Number(this.availabilityImpactId) <= 0 && Number(this.preSelectedAvailabilityImpact) <= 0) ||
+    (Number(this.privacyLikelihoodId) <= 0 && Number(this.preSelectedPrivacyLikelihood) <= 0) ||
+    (Number(this.privacyImpactId) <= 0 && Number(this.preSelectedPrivacyImpact) <= 0)||
+    (this.isInternal &&
+      Number(this.internalReviewerIdFromDropdown) <= 0 &&
+      Number(this.externalReviewerIdFromInput) <= 0 &&
+      Number(this.externalReviewerIdFromDropdown) <= 0)
+
+  ) {
+    console.error("Form validation failed. Please ensure all required fields are filled correctly.");
+    this.isValid=true
+    return; // Stop form submission if validation fails
+  }
+
     const payload = {
       riskId:this.riskId ,
       riskName: formValue.riskName ,
@@ -530,16 +559,21 @@ saveAssignee(value: any){
     fullName:value.fullName,
     departmentName: departmentName
   }
-  this.api.addResponsiblePerson(payload).subscribe((res:any)=>{
-    this.newAssigneeId=res.id
-    console.log("new assignee id: ",this.newAssigneeId)
-    this.isSuccessAssignee=true
+  this.api.addResponsiblePerson(payload).subscribe({
+    next: (res: any) => {
+      if (res) {
+        this.newAssigneeId=res.id
+        this.isSuccessAssignee=true
 
-  },
-  (error:any)=>{
-    this.isErrorAssignee=true
-  }
-)
+      } else {
+        console.error("External Responsible ID is not available in the response:", res);
+      }
+    },
+    error: (err) => {
+      console.error("Error occurred while fetching Responsible person ID:", err);  // Log the full error to see what went wrong
+      this.isErrorAssignee=true
+    }
+  });
 
 }
 
@@ -552,16 +586,20 @@ saveReviewer(value: any){
     fullName:value.fullName,
     departmentId:value.departmentId
   }
- this.api.addExternalReviewer(payload).subscribe((res:any)=>{
-    this.externalReviewerIdFromInput = res.reviewerId
-    console.log("reviewer response",this.externalReviewerIdFromInput);
-    this.isSuccessReviewer=true
-
-  },
-  (error:any)=>{
-    this.isErrorReviewer=true
-  }
-)
+  this.api.addExternalReviewer(payload).subscribe({
+    next: (res: any) => {
+      if (res) {
+        this.externalReviewerIdFromInput = res.reviewerId
+        this.isSuccessReviewer=true
+      } else {
+        console.error("External Reviewer ID is not available in the response:", res);
+      }
+    },
+    error: (err) => {
+      console.error("Error occurred while fetching Reviewer ID:", err);  // Log the full error to see what went wrong
+      this.isErrorReviewer=true
+    }
+  });
 
 }
 
@@ -602,6 +640,10 @@ saveConfirmation(){
  }
  closeRisk(){
   this.router.navigate(['/home']);
+ }
+
+ closepopupIsValidCheck(){
+  this.isValid=false
  }
 
 

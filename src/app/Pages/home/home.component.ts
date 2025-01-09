@@ -190,8 +190,8 @@ export class HomeComponent {
                   const counter:number[]=count;
                   console.log("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",counter);
 
-                  const riskCat = this.list.map((element: {riskCategory:any})=>element.riskCategory);
-                  this.risk = riskCat;
+                  // const riskCat = this.list.map((element: {riskCategory:any})=>element.riskCategory);
+                  // this.risk = riskCat;
 
                   this.Criticality = this.list.reduce((acc: any, item: any) => {
                   acc[item.riskCategory] = item.count;
@@ -218,7 +218,7 @@ export class HomeComponent {
 
 
                   this.graph2chartType='doughnut'
-                  this.graph2labels=this.risk
+                  // this.graph2labels=this.risk
                   console.log("criticalitylevel",e)
                   this.cdr.detectChanges()
             })

@@ -22,6 +22,7 @@ export class HistoryComponent {
   isAdmin: boolean = false;
   isDepartmentUser: boolean = false;
   isProjectUser : boolean = false;
+  isEmtUser:boolean =false;
   projectList: number[] =[];
   item:any=[];
   @Input() items:any=[];
@@ -45,10 +46,10 @@ export class HistoryComponent {
 
         // Set roles
         this.isAdmin = Array.isArray(role) ? role.includes('Admin') : role === 'Admin';
-        this.isDepartmentUser = Array.isArray(role) ? role.includes('DepartmentUser') : role === 'DepartmentUser';
+        this.isDepartmentUser = role === 'DepartmentUser';
         this.isProjectUser = Array.isArray(role) ? role.includes('ProjectUsers') : role === 'ProjectUsers';
-
-        console.log("Roles: Admin:", this.isAdmin, "DepartmentUser:", this.isDepartmentUser, "ProjectUser:", this.isProjectUser);
+        this.isEmtUser = Array.isArray(role) ? role.includes('EMTUser') : role ==="EMTUser";
+        console.log("Roles: Admin:", this.isAdmin, "DepartmentUser:", this.isDepartmentUser, "ProjectUser:", this.isProjectUser,"EMTUser:", this.isEmtUser);
 
         // Prepare Project List
         this.projectList = pro ? pro.map((project) => project.Id) : [];
@@ -60,7 +61,7 @@ export class HistoryComponent {
     }
 
     fetchAllData(department: any): void {
-      if (this.isAdmin) {
+      if (this.isAdmin || this.isEmtUser) {
         this.api.gethistorytabledata().subscribe((res: any) => {
           this.items = res;
           this.cdr.detectChanges();
