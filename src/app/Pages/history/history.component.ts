@@ -44,7 +44,7 @@ export class HistoryComponent {
         const pro = this.auth.getProjects();
 
         // Set roles
-        this.isAdmin = Array.isArray(role) ? role.includes('Admin') : role === 'Admin';
+        this.isAdmin = Array.isArray(role) ? role.includes('Admin') : role === 'Admin'||role ==="EMTUser";
         this.isDepartmentUser = Array.isArray(role) ? role.includes('DepartmentUser') : role === 'DepartmentUser';
         this.isProjectUser = Array.isArray(role) ? role.includes('ProjectUsers') : role === 'ProjectUsers';
 

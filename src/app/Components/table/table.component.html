@@ -145,8 +145,8 @@
           }
           <td>{{ item.riskType }}</td>
           <td>{{ item.plannedActionDate| date: 'd MMM yyyy' }}</td>
-          @if(item.riskAssessments[0].isMitigated){
-          <td><div [ngClass]="{'green': item.overallRiskRatingAfter >=0 && item.overallRiskRatingAfter <= 30  , 'red': item.overallRiskRatingAfter > 99, 'yellow': item.overallRiskRatingAfter > 30 && item.overallRiskRatingAfter <= 99}">{{ item.overallRiskRatingAfter }}</div></td>
+          @if(item.riskAssessments[0].isMitigated == true){
+          <td><div [ngClass]="{'green': item.overallRiskRatingAfter >=0 && item.overallRiskRatingAfter <= 30  , 'red': item.overallRiskRatingAfter > 99, 'yellow': item.overallRiskRatingAfter > 30 && item.overallRiskRatingAfter <= 99}">{{ item.overallRiskRatingBefore }}</div></td>
           }@else{
           <td><div [ngClass]="{'green': item.overallRiskRatingBefore >=0 && item.overallRiskRatingBefore <= 30  , 'red': item.overallRiskRatingBefore > 99, 'yellow': item.overallRiskRatingBefore > 30 && item.overallRiskRatingBefore <= 99}">{{ item.overallRiskRatingBefore }}</div></td>
           }
