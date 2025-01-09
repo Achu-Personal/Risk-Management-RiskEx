@@ -129,8 +129,8 @@ export class HomeComponent {
               const counter:number[]=count;
               console.log("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",counter);
 
-              // const riskCat = this.list.map((element: {riskCategory:any})=>element.riskCategory);
-              // this.risk = riskCat;
+              const riskCat = this.list.map((element: {riskCategory:any})=>element.riskCategory);
+              this.risk = riskCat;
 
               this.Criticality = this.list.reduce((acc: any, item: any) => {
               acc[item.riskCategory] = item.count;
