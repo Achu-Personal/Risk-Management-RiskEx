@@ -80,11 +80,11 @@ export class ApprovalTableComponent {
 
   ngOnInit(): void {
 
-    // const role = this.auth.getUserRole(); // Fetch user role
-    // this.isAdmin = role === 'Admin';
+    const role = this.auth.getUserRole(); // Fetch user role
+    this.isAdmin = role === 'Admin';
     // // this.isEMT = role?.includes('EMTUser') || false;
     this.isLoading = true;
-    if (this.auth.getUserRole()=="Admin" ) {
+    if (this.isAdmin) {
       this.headerData = [
         'riskId',
         'riskName',
