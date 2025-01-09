@@ -22,16 +22,28 @@ export class OverallRatingCardComponent {
   isHovered: boolean = false;
   criticality=true;
 
-
-  get getCriticality():string{
-    if (this.value <= 45) {
-      return 'Low';
+  get getCriticality(): string {
+    if (this.riskType === 'Quality') {
+      // Calculation specific to Quality risk type
+      if (this.value <= 8) {
+        return 'Low';
+      }
+      if (this.value > 8 && this.value <= 32) {
+        return 'Moderate';
+      }
+      return 'Critical';
+    } else {
+      // Calculation for other risk types
+      if (this.value <= 45) {
+        return 'Low';
+      }
+      if (this.value >= 46 && this.value <= 69) {
+        return 'Moderate';
+      }
+      return 'Critical';
     }
-    if (this.value >= 46 && this.value <= 69) {
-      return 'Medium';
-    }
-    return 'High';
   }
+
 
   get dynamicBackgroundColor(): string {
     if (this.backgroundColor) {
