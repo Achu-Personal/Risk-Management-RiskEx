@@ -14,6 +14,7 @@ import { DashbaordCardContainerComponent } from "../../Components/dashbaord-card
 import { DashbaordOpenRiskGraphComponent } from "../../UI/dashbaord-open-risk-graph/dashbaord-open-risk-graph.component";
 
 
+
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -23,6 +24,8 @@ import { DashbaordOpenRiskGraphComponent } from "../../UI/dashbaord-open-risk-gr
 })
 export class HomeComponent {
         list: any;
+  // riskCount: any;
+  // riskType: any;
         constructor(public api:ApiService,private router: Router,public authService:AuthService,private cdr: ChangeDetectorRef) {}
 
         privacyRiskCount: number = 0; // Default value
@@ -33,7 +36,14 @@ export class HomeComponent {
         // graph2labels:string[]=["Critical","Moderate","Low"];
         graph2chartType:any;
         graph2datasets:any[]=[];
-        counter:number[]=[];
+
+        // graph3labels:string[]=[];
+        // // graph2labels:string[]=["Critical","Moderate","Low"];
+        // graph3chartType:any;
+        // graph3datasets:any[]=[];
+
+
+        // counter:number[]=[];
         risk:string[]=[];
 
         riskApproachingDeadline:any=[]
@@ -63,16 +73,47 @@ export class HomeComponent {
         this.api. getOpenRiskCountByType(isAdminOrEMTuser?[] :[parseInt(this.authService.getDepartmentId()!) ]).subscribe((e:any)=>{
           this.openRiskCountByType=e
           this.list=e
-          const riskcounts = this.list.reduce((acc: any, item: any) => {
-          acc[item.riskType] = item.riskCount;
+          console.log(this.list);
+          const count = this.list.map((element: { riskCount: any; }) => element.riskCount);
+          const counter:number[]=count;
+          // counter = count
+
+          const riskCat = this.list.map((element: {riskType:any})=>element.riskType);
+          this.risk = riskCat;
+
+          this.Criticality = this.list.reduce((acc: any, item: any) => {
+          acc[item.riskCategory] = item.count;
           return acc;
           }, {});
+
+
+          const riskcounts = this.list.reduce((acc: any, item: any) => {
+            acc[item.riskType] = item.riskCount;
+            console.log(item.riskType)
+            return acc;
+            }, {});
+
+
+          // this.graph3datasets=[
+          //   {
+          //      data: this.counter,
+          //       backgroundColor: [
+          //         'rgb(255, 99, 132)',
+          //         'rgb(54, 162, 235)',
+          //         'rgb(255, 205, 86)'
+          //       ],
+          //       hoverOffset: 4
+          //     }]
+
+          // this.graph3chartType='pie'
+          // console.log("criticalitylevel",e);
 
           this.privacyRiskCount = riskcounts['Privacy'] ;
           this.qualityRiskCount = riskcounts['Quality'] ;
           this.securityRiskCount = riskcounts['Security'];
 
           console.log("OpenRiskCount",e)
+
         })
 
 
@@ -81,7 +122,9 @@ export class HomeComponent {
           this.riskCategoryCounts=e
           this.list=e
               const count = this.list.map((element: { count: any; }) => element.count);
-              this.counter = count
+              // this.counter = count
+              const counter:number[]=count;
+              console.log("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",count);
 
               const riskCat = this.list.map((element: {riskCategory:any})=>element.riskCategory);
               this.risk = riskCat;
@@ -92,14 +135,13 @@ export class HomeComponent {
               }, {});
 
               this.graph2datasets=[{
-                data: this.counter,
+                data: counter,
                 backgroundColor: [
-
                 '#962DFF',
                 '#E0C6FD',
                 '#C6D2FD'
-
                 ],
+                hoverOffset: 10
               }]
 
               this.graph2chartType='doughnut'
@@ -144,7 +186,9 @@ export class HomeComponent {
               this.riskCategoryCounts=e
               this.list=e
                   const count = this.list.map((element: { count: any; }) => element.count);
-                  this.counter = count
+                  // this.counter = count
+                  const counter:number[]=count;
+                  console.log("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",counter);
 
                   // const riskCat = this.list.map((element: {riskCategory:any})=>element.riskCategory);
                   // this.risk = riskCat;
@@ -157,14 +201,18 @@ export class HomeComponent {
 
 
                   this.graph2datasets=[{
-                    data: this.counter,
+                    data: count,
+
                     backgroundColor: [
 
                     '#962DFF',
                     '#E0C6FD',
-                    '#C6D2FD'
+                    '#C6D2FD',
+
 
                     ],
+                    hoverOffset: 10
+
                   }]
 
 
@@ -222,49 +270,8 @@ export class HomeComponent {
 
 
 
-// graph3labels:string[]=["Delivery Units","L&D","Sfm", "HR"];
-// graph3chartType:any='bar'
-// graph3datasets:any[]=[
-//   {
-//     data:[40,40,40,40],
-//     label:"Quality",
-//     backgroundColor: '#51AEF2',
-//     yAxisID: 'y1',
-//     borderColor: '#3E68B9',
-//     pointBackgroundColor: '#3E68B9',
-//     pointBorderColor: '#fff',
-//     pointHoverBackgroundColor: '#fff',
-//     pointHoverBorderColor: '#3E68B9',
-//     barPercentage: 0.7, // Reduce individual bar width
-//     categoryPercentage: 0.4 // Increase spacing between categories
-//   },
-//   {
-//     data:[35,35,35,35],
-//     label:"Privacy",
-//     backgroundColor: '#6993E4',
-//     yAxisID: 'y1',
-//     borderColor: '#3E68B9',
-//     pointBackgroundColor: '#3E68B9',
-//     pointBorderColor: '#fff',
-//     pointHoverBackgroundColor: '#fff',
-//     pointHoverBorderColor: '#3E68B9',
-//     barPercentage: 0.7, // Reduce individual bar width
-//     categoryPercentage: 0.4// Increase spacing between categories
-//   },
-//   {
-//     data:[25,25,25,25],
-//     label:"Security",
-//     backgroundColor: '#979797',
-//     yAxisID: 'y1',
-//     borderColor: '#3E68B9',
-//     pointBackgroundColor: '#3E68B9',
-//     pointBorderColor: '#fff',
-//     pointHoverBackgroundColor: '#fff',
-//     pointHoverBorderColor: '#3E68B9',
-//     barPercentage: 0.7, // Reduce individual bar width
-//     categoryPercentage: 0.4 // Increase spacing between categories
-//   },
-// ]
+}
+
 // // Options should be defined separately, not inside the datasets array
 // graph3options: any = {
 //   plugins: {
@@ -410,4 +417,4 @@ export class HomeComponent {
 
 
 
-}
+
