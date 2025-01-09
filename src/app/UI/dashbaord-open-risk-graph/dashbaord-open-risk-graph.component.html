@@ -1,0 +1,35 @@
+<div class="count-container">
+  <!-- Info Boxes -->
+  <div class="info-boxes">
+    <div class="info-box box1" *ngFor="let item of items">
+      <div class="count">{{item.count}}</div>
+      <div class="label">{{item.label}}</div>
+    </div>
+  </div>
+
+  <!-- Bar Representation -->
+  <div class="bar-container">
+    <div class="bar-item" *ngFor="let item of items">
+      <div class="bar-label">
+        <span>{{item.label}}</span>
+        <span>{{item.count}}</span>
+      </div>
+      <div class="bar-outer">
+        <div class="bar-inner" [style.width.%]="(item.count/maxCount)*100"
+             [style.background-color]="item.color">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Block Representation -->
+  <div class="block-container">
+    <div class="block-item" *ngFor="let item of items">
+      <div class="block" [style.height.%]="(item.count/maxCount)*100"
+           [style.background-color]="item.color">
+        <span class="block-count">{{item.count}}</span>
+      </div>
+      <div class="block-label">{{item.label}}</div>
+    </div>
+  </div>
+</div>
