@@ -163,12 +163,25 @@ onFormSubmit(event: { payload: any, riskType: number }) {
   if (riskType == 1) {
     this.api.updateQualityRisk(payload, Number(this.riskId)).subscribe({
       next: (res: any) => {
-        console.log("Updated quality API response:", res);
+        console.log("Updated quality API response quality:", res);
         this.isSuccess = true;
       },
       error: (error: any) => {
         this.isError = true;
-        this.error = error.message.replace(/\n/g, '<br>'); // Replace newlines with <br> for display
+
+        // Extract message and details from the error response
+        if (error.error && error.error.message) {
+          this.error = error.error.message;  // Get the error message from the response
+        } else {
+          this.error = 'An unknown error occurred.';
+        }
+
+        // Check for details and append if available
+        if (error.error && error.error.details) {
+          this.error += `<br>${error.error.details}`;
+        }
+
+        console.error("Error updating quality risk:", this.error);
       },
       complete: () => {
         console.log("Update quality risk request completed.");
@@ -237,7 +250,7 @@ onFormSubmit(event: { payload: any, riskType: number }) {
       }
     });
   }
-  
+
   this.api.getRevieverDetails(Number(this.riskId),'ApprovalPending').subscribe({
     next: (r: any) => {
       console.log('reviewer details fetching');
