@@ -1,7 +1,7 @@
 import { NgIf } from '@angular/common';
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ReviewService } from '../../Services/email.service';
+
 
 @Component({
   selector: 'app-review-confirmation',
@@ -15,7 +15,7 @@ export class ReviewConfirmationComponent {
 
   constructor(
     private route: ActivatedRoute,
-    private reviewService: ReviewService
+    
   ) {}
 
   ngOnInit() {
