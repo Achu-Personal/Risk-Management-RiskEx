@@ -1,0 +1,48 @@
+:host {
+  display: block;
+  width: 50%;
+}
+
+.urgentrisks {
+  background-color: var(--accent-color);
+  height: 90%;
+
+  border-radius: 20px;
+  padding: 20px;
+
+  h5 {
+    color: black;
+    font-weight: 600;
+  }
+}
+
+.maindiv1 {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  height: 34vh;
+}
+
+.placeholderr
+{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: rgb(192, 189, 189);
+
+}
+
+.placeholderr>h5
+{
+
+  color: rgb(154, 154, 154);
+  font-weight: 500;
+  font-size: 16px;
+  font-style: italic;
+  margin-top: -80px;
+  margin-left: -20px;
+
+}
+

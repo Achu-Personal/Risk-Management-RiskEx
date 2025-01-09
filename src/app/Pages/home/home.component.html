@@ -1,117 +1,93 @@
 <app-body-container class="main" backgroundColor="transparent" padding="5" [showShadow]="false">
-<div class="dashboard">
-<div class="topbuttons">
-  <div class="dropdown" >
-<app-department-dropdown *ngIf="authService.getUserRole() === 'Admin'    "  (departmentsSelected)="GetSelectedDepartment($event)"></app-department-dropdown>  </div>
-  <div class="registerrisk">
+  <div class="dashboard">
+    <div class="topbuttons">
+      <div class="dropdown">
+        <app-department-dropdown *ngIf="authService.getUserRole() === 'Admin'|| authService.getUserRole()?.includes('EMTUser')    "
+          (departmentsSelected)="GetSelectedDepartment($event)"></app-department-dropdown>
+      </div>
+      <div class="registerrisk">
 
-    <app-style-button (clicked)="OnRegisterRiskButtonCLicked()" label="Register Risk"></app-style-button>
-  </div>
-</div>
+        <app-style-button *ngIf="!authService.getUserRole()?.includes('EMTUser')" (clicked)="OnRegisterRiskButtonCLicked()" label="Register Risk"></app-style-button>
+      </div>
+    </div>
 
-  <div class="graphs">
-    <div class="graph1" data-aos="zoom-in">
-      <div class="leftside">
-        <div class="heading">
-          <h4>Open Risks</h4>
-        </div>
-        <div class="labels">
-          <div class="risk-indicator">
-            <div class="privacy-risk"></div>
-             <span>Privacy Risk</span>
-             <h6>{{privacyRiskCount ? privacyRiskCount : 0}}</h6>
+    <div class="graphs">
+      <div class="graph1" data-aos="zoom-in">
+
+        <div class="leftside">
+          <div class="heading">
+            <h4>Open Risks</h4>
           </div>
-                        <div class="risk-indicator">
-                         <div class="quality-risk"></div>
-                          <span>Quality Risk</span>
-                          <h6>{{qualityRiskCount ? qualityRiskCount :0}}</h6>
-                            </div>
-                              <div class="risk-indicator">
+          <div class="labels">
+            <div class="risk-indicator">
+              <div class="privacy-risk"></div>
+              <span>Privacy Risk</span>
+              <h6>{{privacyRiskCount ? privacyRiskCount : 0}}</h6>
+            </div>
+            <div class="risk-indicator">
+              <div class="quality-risk"></div>
+              <span>Quality Risk</span>
+              <h6>{{qualityRiskCount ? qualityRiskCount :0}}</h6>
+            </div>
+            <div class="risk-indicator">
               <div class="security-risk"></div>
-            <span>Security Risk</span>
-            <h6>{{securityRiskCount ? securityRiskCount : 0}}</h6>
+              <span>Security Risk</span>
+              <h6>{{securityRiskCount ? securityRiskCount : 0}}</h6>
+            </div>
+          </div>
+        </div>
+        <div class="rightside ">
+
+          <div class="circlegraph">
+
+
+            <app-bubble-graph class="bubbly" [securityRiskCount]="securityRiskCount ? securityRiskCount : 0"
+              [privacyRiskCount]="privacyRiskCount ? privacyRiskCount : 0"
+              [qualityRiskCount]="qualityRiskCount ? qualityRiskCount :0"></app-bubble-graph>
+              <!-- <app-chart class="mainchart" [labels]="graph3labels" [chartType]="graph3chartType"
+              [datasets]="graph3datasets"></app-chart> -->
+
           </div>
         </div>
       </div>
-      <div class="rightside ">
-        <div class="circlegraph">
-
-          <app-bubble-graph class="bubbly" [securityRiskCount]="securityRiskCount ? securityRiskCount : 0" [privacyRiskCount]="privacyRiskCount ? privacyRiskCount : 0"  [qualityRiskCount]="qualityRiskCount ? qualityRiskCount :0" ></app-bubble-graph>
-
+      <div class="graph2">
+        <div class="riskratingcategory">
+          <h4>Risk Rating</h4>
+          <div class="forchart">
+            <div class="graphchart">
+              <app-chart class="mainchart" [labels]="graph2labels" [chartType]="graph2chartType"
+                [datasets]="graph2datasets"></app-chart>
+            </div>
+            <div class="graph2Legend">
+              <div>
+                <div style="background-color:#962DFF;"></div>
+                <h5>Critical</h5>
+                <h6>{{Criticality.Critical ? Criticality.Critical : 0}}</h6>
+              </div>
+              <div>
+                <div style="background-color:#C6D2FD;"></div>
+                <h5>Moderate</h5>
+                <h6>{{Criticality.Moderate ? Criticality.Moderate : 0}}</h6>
+              </div>
+              <div>
+                <div style="background-color:#E0C6FD;"></div>
+                <h5>Low</h5>
+                <h6>{{Criticality.Low ? Criticality.Low: 0}}</h6>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-    <div class="graph2" >
-      <div class="riskratingcategory">
-      <h4>Risk Rating</h4>
-      <div class="forchart" >
-        <div class="graphchart"  >
-        <app-chart class="mainchart" [labels]="graph2labels" [chartType]="graph2chartType" [datasets]="graph2datasets"></app-chart>
-        </div>
-        <div class="graph2Legend">
-          <div>
-            <div style="background-color:#962DFF;" ></div>
-            <h5>Critical</h5>
-            <h6>{{Criticality.Critical ? Criticality.Critical : 0}}</h6>
-          </div>
-          <div>
-            <div  style="background-color:#C6D2FD;"></div>
-            <h5>Moderate</h5>
-            <h6>{{Criticality.Moderate ? Criticality.Moderate : 0}}</h6>
-          </div>
-          <div>
-            <div style="background-color:#E0C6FD;"></div>
-            <h5>Low</h5>
-            <h6>{{Criticality.Low ?  Criticality.Low: 0}}</h6>
-          </div>
-        </div>
-      </div>
-      </div>
-    </div>
-  </div>
 
-      <div class="riskdetails">
+    <div class="riskdetails">
 
+      <app-dashbaord-card-container title="Upcoming risk deadlines"  [list]="riskApproachingDeadline"  > </app-dashbaord-card-container>
 
-        <div class="urgentrisks" data-aos="zoom-in">
-          <h5>Upcoming Risk Deadlines</h5>
-          <div class="maindiv1">
-            <!-- Check if the riskApproachingDeadline array has values -->
-            <ng-container *ngIf="riskApproachingDeadline && riskApproachingDeadline.length > 0; else noRisksTemplate">
+      <app-dashbaord-card-container title="Risks with highest overall rating"  [list]="risksWithHeighesOverallRating"  > </app-dashbaord-card-container>
 
-              @for(item of riskApproachingDeadline ;track $index)
-              {
-                  <app-dashboardviewrisk [data]="item"></app-dashboardviewrisk>
-              }
-
-            </ng-container>
-
-            <!-- Template for no risks -->
-            <ng-template #noRisksTemplate>
-              <div class="no-risks-message">No Risks</div>
-            </ng-template>
-          </div>
-        </div>
-
-
-
-    <div class="imprisk" data-aos="zoom-in">
-      <h5>Risks With Highest Overall Rating</h5>
-      <div class="maindiv">
-        <!-- Check if there are risks, else show 'No Risks' message -->
-        <div class="no-risks-message" *ngIf="risksWithHeighesOverallRating?.length === 0">
-          No Risks
-        </div>
-
-        <!-- Loop through risks if they exist -->
-        @for(item of  risksWithHeighesOverallRating;track $index)
-        {
-              <app-dashboardviewrisk [data]="item"></app-dashboardviewrisk>
-        }
-      </div>
     </div>
   </div>
-</div>
 </app-body-container>
 
 
@@ -119,34 +95,3 @@
 
 
 
-    <!-- <div class="searchbuttons">
-      <div class="dropdown">
-        <app-department-dropdown></app-department-dropdown>
-      </div>
-      <div class="registerbutton">
-        <app-button class="btn" title="Register Risk" bgColour="#FFFFFF" routerLink="/addrisk" height="47" width="150"></app-button>
-      </div>
-    </div>
-    <div class="graphs">
-        <div class="graphcard">
-          <h4>Risk Metrics Distribution</h4>
-        <div class="graph1">
-          <app-chart [labels]="graph1labels" [chartType]="graph1chartType" [datasets]="graph1datasets"></app-chart>
-        </div>
-        </div>
-        <div class="graphcard">
-          <h4>Types of Open Risks</h4>
-        <div class="graph2">
-          <app-chart [labels]="graph2labels" [chartType]="graph2chartType" [datasets]="graph2datasets"></app-chart>
-        </div>
-        </div>
-        <div class="graphcard">
-          <h4>Department Risks</h4>
-        <div class="graph3">
-          <app-chart [labels]="graph3labels" [chartType]="graph3chartType" [datasets]="graph3datasets"></app-chart>
-        </div>
-        </div>
-    </div>
-    <div class="apptable">
-      <app-table class="table" (onclickrow)="OnClickRow($event)"></app-table>
-    </div> -->

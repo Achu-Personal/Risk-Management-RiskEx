@@ -1,5 +1,5 @@
 import { BaseChartDirective} from 'ng2-charts';
-import { Component, Input, SimpleChanges} from '@angular/core';
+import { ChangeDetectorRef, Component, Input, SimpleChanges} from '@angular/core';
 import { Chart, ChartConfiguration, ChartType, registerables } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels'; // Import the plugin
 
@@ -30,6 +30,12 @@ export class ChartComponent {
   labels: this.labels,
   // datalabels:this.datalabels
   };
+
+
+  constructor(private cdr: ChangeDetectorRef)
+  {
+
+  }
 
   public lineChartOptions: ChartConfiguration['options'] = {
     elements: {
@@ -103,6 +109,17 @@ export class ChartComponent {
 
 
   };
+
+  ngOnInit()
+  {
+
+      this.chartData.labels = this.labels;
+
+
+
+      this.chartData.datasets = this.datasets;
+
+  }
 
 
 

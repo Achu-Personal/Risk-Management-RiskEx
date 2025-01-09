@@ -63,32 +63,14 @@ describe('UsersComponent', () => {
     expect(component.projects.length).toBe(2);
   }));
 
-  // it('should submit a valid user form', fakeAsync(() => {
-  //   const validUser = {
-  //     name: 'John Doe',
-  //     email: 'john.doe@example.com',
-  //     department: 'Engineering',
-  //     projectName: ['Project 1']
-  //   };
 
-  //   spyOn(apiService, 'addNewUser').and.callThrough();
-
-  //   component.userForm.patchValue(validUser);
-  //   fixture.detectChanges();
-
-  //   component.onSubmitUser();
-  //   tick();
-
-  //   expect(component.userForm.valid).toBeTrue();
-  //   // expect(apiService.addNewUser).toHaveBeenCalledWith(validUser);
-  // }));
 
   it('should handle API errors gracefully during department form submission', fakeAsync(() => {
     const errorMessage = 'API Error';
     spyOn(apiService, 'addNewDepartment').and.returnValue(throwError(() => ({ error: { message: errorMessage } })));
     spyOn(window, 'alert');
 
-    component.departmentForm.patchValue({ name: 'Test Department' });
+    component.departmentForm.patchValue({ name: 'Test Department' ,departmentCode:'TD'});
     component.onSubmitDepartment();
     tick();
 
@@ -97,7 +79,7 @@ describe('UsersComponent', () => {
   }));
 
   it('should call addNewDepartment API when the form is valid', fakeAsync(() => {
-    const departmentData = { name: 'Marketing' };
+    const departmentData = { name: 'Marketing',departmentCode:'MR' };
     spyOn(apiService, 'addNewDepartment').and.callThrough();
 
     component.departmentForm.patchValue(departmentData);
@@ -109,7 +91,7 @@ describe('UsersComponent', () => {
   }));
 
   it('should close modal when department is successfully added', fakeAsync(() => {
-    const departmentData = { name: 'Marketing' };
+    const departmentData = { name: 'Marketing' ,departmentCode:'MR'};
     const mockElement = { click: jasmine.createSpy() };
 
     spyOn(apiService, 'addNewDepartment').and.callThrough();
@@ -126,7 +108,8 @@ describe('UsersComponent', () => {
   it('should reset the form after project submission', fakeAsync(() => {
     const projectData = {
       projectName: 'New Project',
-      departmentName: 'Engineering'
+      departmentName: 'Engineering',
+      projectCode:'np'
     };
 
     spyOn(apiService, 'addNewProject').and.callThrough();
@@ -137,7 +120,8 @@ describe('UsersComponent', () => {
 
     expect(component.projectForm.value).toEqual({
       projectName: '',
-      departmentName: ''
+      departmentName: '',
+      projectCode:''
     });
     expect(apiService.addNewProject).toHaveBeenCalledWith(projectData);
   }));

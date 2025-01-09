@@ -1,0 +1,19 @@
+
+<div class="urgentrisks" data-aos="zoom-in">
+  <h5>{{title}}</h5>
+  <div class="maindiv1">
+
+      @for(item of list ;track $index)
+      {
+      <app-dashboardviewrisk [data]="item"></app-dashboardviewrisk>
+      }
+      @if(list.length==0)
+      {
+        <div class="placeholderr">
+          <h5>No risks to show</h5>
+        </div>
+
+      }
+
+  </div>
+</div>
