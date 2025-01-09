@@ -1,5 +1,5 @@
 // import { SlicePipe } from '@angular/common';
-import { ChangeDetectorRef, Component, EventEmitter, Input, Output, output, SimpleChanges } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, HostListener, Input, Output, output, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common'; // Import CommonModule
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../Services/auth.service';
@@ -28,10 +28,12 @@ export class ReusableTableComponent {
   isAdmin: boolean=false;
   isDepartmentUser=false;
   newState:boolean=true;
-
   showApproveDialog = false;
   showRejectDialog = false;
   currentRow: any;
+
+
+
   @Output() approveRisk = new EventEmitter<{row: any, comment: string}>();
   @Output() rejectRisk = new EventEmitter<{row: any, comment: string}>();
 
@@ -52,6 +54,8 @@ export class ReusableTableComponent {
     if (this.tableData && this.tableData.length > 0) {
       this.rowKeys = Object.keys(this.tableData[0]);
     }
+
+
   }
 
 
@@ -178,6 +182,6 @@ getRiskRatingStyle(riskRating: number): string {
       return this.tableData && this.tableData.length > 0 && this.tableData.some(row => row.riskName || row.riskId || row.fullName);
     }
 
-
-
+   
+    
 }

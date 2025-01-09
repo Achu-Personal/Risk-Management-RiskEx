@@ -25,21 +25,24 @@
   </app-confirmation-popup>
 
   <!-- Button Group -->
-  <div class="button-group">
-    <app-style-button
-      label="Approve"
-      color="primary"
-      class="btn-success"
-      (clicked)="openPopup(false)"
-    >
-    </app-style-button>
-
-    <app-style-button
-      label="Reject"
-      color="primary"
-      class="btn-danger"
-      (clicked)="openPopup(true)"
-    >
-    </app-style-button>
-  </div>
+   @if(!isAdmin && showButtons){
+    <div class="button-group">
+      <app-style-button
+        label="Approve"
+        color="primary"
+        class="btn-success"
+        (clicked)="openPopup(false)"
+      >
+      </app-style-button>
+  
+      <app-style-button
+        label="Reject"
+        color="primary"
+        class="btn-danger"
+        (clicked)="openPopup(true)"
+      >
+      </app-style-button>
+    </div>
+   }
+  
 </app-body-container>
