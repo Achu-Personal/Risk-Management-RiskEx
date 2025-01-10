@@ -195,8 +195,8 @@ export class RegisterRiskComponent {
           this.riskId = res.id;
           this.riskData = res;
           isSubmited = true;
-          console.log("fgggggggggggggggggggg",res);
-
+          console.log("response:",res);
+          
           this.sendEmailOnRegisterRisk(res.id,res);
           this.cdRef.detectChanges();
         },
