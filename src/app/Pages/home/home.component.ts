@@ -70,8 +70,12 @@ export class HomeComponent {
       ApiInvocations()
       {
 
+        console.log("role",this.authService.getProjects())
+
         let isAdminOrEMTuser=this.authService.getUserRole() === 'Admin'||this.authService.getUserRole()?.includes("EMTUser")
-        this.api. getOpenRiskCountByType(isAdminOrEMTuser?[] :[parseInt(this.authService.getDepartmentId()!) ]).subscribe((e:any)=>{
+        let isProjectUser=this.authService.getUserRole()?.includes("ProjectUsers")
+
+        this.api. getOpenRiskCountByType(isAdminOrEMTuser?[] :[parseInt(this.authService.getDepartmentId()!) ],isProjectUser?this.authService.getProjects().map(item => item.Id):[]).subscribe((e:any)=>{
           this.openRiskCountByType=e
           this.list=e
           console.log(this.list);
@@ -118,6 +122,53 @@ export class HomeComponent {
 
         })
 
+        this.api.getRiskCategoryCountsByDepartment(isAdminOrEMTuser?[] :[parseInt(this.authService.getDepartmentId()!) ],isProjectUser?this.authService.getProjects().map(item => item.Id):[]).subscribe((e:any)=>{
+          console.log("darat",e)
+
+
+
+
+          this.riskCategoryCounts=e
+          this.list=e
+              const count = this.list.map((element: { count: any; }) => element.count);
+              this.counter = count
+              const counter:number[]=count;
+              console.log("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",counter);
+
+              const riskCat = this.list.map((element: {riskCategory:any})=>element.riskCategory);
+              this.risk = riskCat;
+
+              this.Criticality = this.list.reduce((acc: any, item: any) => {
+              acc[item.riskCategory] = item.count;
+
+              return acc;
+              }, {});
+
+
+              this.graph2datasets=[{
+                data: counter,
+
+                backgroundColor: [
+
+                  '#962DFF',
+                  '#C6D2FD',
+                  '#E0C6FD'
+
+
+                ],
+                hoverOffset: 10
+
+              }]
+
+
+
+              this.graph2chartType='doughnut'
+              this.graph2labels=this.risk
+              console.log("criticalitylevel",e)
+              this.cdr.detectChanges()
+        })
+
+
 
           this.api.getRiskCategoryCounts(isAdminOrEMTuser?'' :this.authService.getDepartmentId()).subscribe((e:any)=>{
           this.riskCategoryCounts=e
@@ -153,13 +204,13 @@ export class HomeComponent {
               this.cdr.detectChanges()
           })
 
-            this.api.getRiskApproachingDeadline(isAdminOrEMTuser?[] :[parseInt(this.authService.getDepartmentId()!) ]).subscribe((e:any)=>{
+            this.api.getRiskApproachingDeadline(isAdminOrEMTuser?[] :[parseInt(this.authService.getDepartmentId()!) ],isProjectUser?this.authService.getProjects().map(item => item.Id):[]).subscribe((e:any)=>{
             this.riskApproachingDeadline=e
             console.log("approaching",e)
             this.cdr.detectChanges()
             })
 
-            this.api.getRisksWithHeigestOverallRating(isAdminOrEMTuser?[] :[parseInt(this.authService.getDepartmentId()!) ]).subscribe((e:any)=>{
+            this.api.getRisksWithHeigestOverallRating(isAdminOrEMTuser?[] :[parseInt(this.authService.getDepartmentId()!) ],isProjectUser?this.authService.getProjects().map(item => item.Id):[]).subscribe((e:any)=>{
             this.risksWithHeighesOverallRating=e
             console.log("heigest",e)
             this.cdr.detectChanges()
@@ -186,7 +237,7 @@ export class HomeComponent {
         {
             console.log("Selected Departments=",event)
 
-            this.api.getRiskCategoryCountsByDepartment(event).subscribe((e:any)=>{
+            this.api.getRiskCategoryCountsByDepartment(event,[]).subscribe((e:any)=>{
               console.log("darat",e)
 
 
@@ -249,7 +300,7 @@ export class HomeComponent {
             })
 
 
-              this.api. getOpenRiskCountByType(event).subscribe((e:any)=>{
+              this.api. getOpenRiskCountByType(event,[]).subscribe((e:any)=>{
                 console.log("hai",e)
                 this.openRiskCountByType=e
                 this.list=e
@@ -267,13 +318,13 @@ export class HomeComponent {
                 this.cdr.detectChanges()
               })
 
-              this.api.getRisksWithHeigestOverallRating(event).subscribe((e:any)=>{
+              this.api.getRisksWithHeigestOverallRating(event,[]).subscribe((e:any)=>{
                 this.risksWithHeighesOverallRating=e
                 console.log("heigest",e)
                 this.cdr.detectChanges()
               })
 
-              this.api.getRiskApproachingDeadline(event).subscribe((e:any)=>{
+              this.api.getRiskApproachingDeadline(event,[]).subscribe((e:any)=>{
                 this.riskApproachingDeadline=e
                 console.log("approaching",e)
                 })

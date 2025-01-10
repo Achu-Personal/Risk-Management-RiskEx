@@ -35,10 +35,7 @@
   <h6>
     Risk Factor
     <span
-      [ngStyle]="{
-        'color': assessment.impactMatix?.impact === 'Low' ? 'green' :
-                 assessment.impactMatix?.impact === 'Medium' ? '#FFBF00' : 'red'
-      }"
+      [ngStyle]="{'color':dynamicBackgroundColor}"
     >
       {{ assessment.riskFactor }}
     </span>
