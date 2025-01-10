@@ -48,7 +48,7 @@
       </table>
     </div>
   </div>
-<ng-container *ngIf="!isLoading && hasValidData()">
+<ng-container *ngIf="!isLoading && hasValidData(); else noData">
 
   <div class="container1">
     <div class="table-container1 fi">
