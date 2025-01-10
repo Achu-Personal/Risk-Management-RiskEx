@@ -1,19 +1,17 @@
-import { department } from './../../Interfaces/deparments.interface';
 import { Component, HostListener, Input, Output, output, SimpleChanges, EventEmitter, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { SearchbarComponent } from '../../UI/searchbar/searchbar.component';
 import { PaginationComponent } from '../../UI/pagination/pagination.component';
 import { ApiService } from '../../Services/api.service';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../Services/auth.service';
-import { StyleButtonComponent } from "../../UI/style-button/style-button.component";
 
 @Component({
   selector: 'app-table',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [SearchbarComponent, FormsModule, PaginationComponent, CommonModule, StyleButtonComponent],
+  imports: [SearchbarComponent, FormsModule, PaginationComponent, CommonModule],
   templateUrl: './table.component.html',
   styleUrl: './table.component.scss'
 })
@@ -143,7 +141,7 @@ export class TableComponent {
 
 
   ngOnInit(): void {
-
+    setTimeout(()=>{
     this.initializeItems();
     const currentRoute = this.route.snapshot.url.join('/');
     console.log(currentRoute);
@@ -155,10 +153,11 @@ export class TableComponent {
     }
 
     this.updatePaginatedItems();
+  },800)
   }
   isDepartmentUser:boolean=false;
   private initializeItems(): void {
-    setTimeout(()=>{
+
       const role = this.auth.getUserRole();
       this.isDepartmentUser = role === 'DepartmentUser';
       this.items = [...this.paginated];
@@ -174,7 +173,7 @@ export class TableComponent {
       this.updatePaginatedItems();
 
 
-      },800)
+
   }
 
   updateUniqueDepartments(): void {
@@ -316,10 +315,14 @@ export class TableComponent {
     }
   }
 
+  // hasValidData(): boolean {
+  //   return this.tableData && this.tableData.length > 0 && this.tableData.some(row => row.riskName || row.riskId || row.fullName);
+  // }
+  @Input() isLoading: boolean = false;
 
   @Input() noDataMessage:string='No Data Available'
   hasValidData(): boolean {
-    return this.filteredItems.length > 0 ;
+    return this.paginated && this.paginated.length >0;
   }
 
 

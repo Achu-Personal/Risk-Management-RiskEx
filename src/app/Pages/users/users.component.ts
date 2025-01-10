@@ -81,7 +81,7 @@ tableBody:any[]=[
       fullName: new FormControl('', Validators.required),
       email: new FormControl('', [Validators.required, Validators.email]),
       departmentName: new FormControl('', Validators.required),
-      projectNames: new FormControl([[]]),
+      projectIds: new FormControl([[]]),
     });
     this.projectForm = new FormGroup({
       projectName: new FormControl('', Validators.required),
@@ -108,7 +108,7 @@ tableBody:any[]=[
  private refreshUsersData() {
   this.isLoading = true;
     const userRole = this.authService.getUserRole();
-    if (userRole === 'Admin') {
+    if (userRole === 'Admin'||userRole?.includes('EMTUser')) {
       this.api.getAllUsers().subscribe({
         next: (users: any) => {
           this.tableBodyAdmin = users;
@@ -119,7 +119,7 @@ tableBody:any[]=[
           this.isLoading = false;
         }
       });
-    } else if (userRole === 'DepartmentUser'||userRole?.includes('EMTUser')) {
+    } else if (userRole === 'DepartmentUser') {
       const department:any = this.authService.getDepartmentId();
       if (department) {
         this.api.getUsersByDepartmentId(department).subscribe({
@@ -189,11 +189,11 @@ tableBody:any[]=[
       this.isDepartmentFieldDisabled = true;
     }
 
-    if (userRole === 'Admin') {
+    if (userRole === 'Admin'||userRole?.includes('EMTUser')) {
       this.headerData = ['fullName', 'email', 'department', 'projects'];
       this.isAdmin = true;
       this.refreshUsersData();
-    } else if (userRole === 'DepartmentUser'||userRole?.includes('EMTUser')) {
+    } else if (userRole === 'DepartmentUser') {
       this.isAdmin = false;
       this.refreshUsersData();
     } else if (userRole?.includes('ProjectUsers')) {
@@ -244,7 +244,6 @@ tableBody:any[]=[
     if (this.departmentForm.valid) {
       const departmentData = this.departmentForm.value;
 
-      console.log('Submitting department data:', departmentData);
 
       this.api.addNewDepartment(departmentData).subscribe({
         next: (response) => {
@@ -274,11 +273,10 @@ tableBody:any[]=[
     if (this.userForm.valid) {
       const userData = this.userForm.getRawValue();
 
-      userData.projectNames = userData.projectNames?.length
-        ? userData.projectNames.map((project: any) => project.name)
+      userData.projectIds = userData.projectIds?.length
+        ? userData.projectIds.map((project: any) => project.id)
         : [];
 
-      console.log('User saved:', userData);
 
       this.api.addNewUser(userData).subscribe({
         next: (response) => {
@@ -311,7 +309,6 @@ tableBody:any[]=[
     if (this.projectForm.valid) {
       const projectData = this.projectForm.getRawValue();
 
-      console.log('Submitting project data:', projectData);
 
       this.api.addNewProject(projectData).subscribe({
         next: (response) => {

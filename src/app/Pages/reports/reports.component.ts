@@ -20,6 +20,7 @@ export class ReportsComponent {
   isDepartmentUser: boolean = false;
   isProjectUser : boolean = false;
   isEmtUser:boolean =false;
+  isLoading = false;
   projectList: number[] =[];
   item:any=[];
   @Input() label: string = 'Generate Report';
@@ -79,6 +80,7 @@ export class ReportsComponent {
           const role = this.auth.getUserRole();
           const department = this.auth.getDepartmentId();
           const pro = this.auth.getProjects();
+          this.isLoading = true;
 
           // Set roles
           this.isAdmin = Array.isArray(role) ? role.includes('Admin') : role === 'Admin';
@@ -111,6 +113,7 @@ export class ReportsComponent {
             this.item = res.filter((item: { riskType: any }) => item.riskType === type);
             this.items =this.item.filter((item: { riskStatus: any }) => item.riskStatus === 'open');
             this.cdr.detectChanges();
+            this.isLoading = false;
             console.log("Admin Filtered Data:", this.items);
           });
         }
@@ -119,6 +122,7 @@ export class ReportsComponent {
             this.item = res.filter((item: { riskType: any }) => item.riskType === type);
             this.items =this.item.filter((item: { riskStatus: any }) => item.riskStatus === 'open');
             this.cdr.detectChanges();
+            this.isLoading = false;
             console.log("Department User Filtered Data:", this.items);
           });
         }
@@ -127,6 +131,7 @@ export class ReportsComponent {
             this.item = res.filter((item: { riskType: any }) => item.riskType === type);
             this.items =this.item.filter((item: { riskStatus: any }) => item.riskStatus === 'open');
             this.cdr.detectChanges();
+            this.isLoading = false;
             console.log("Project User Filtered Data:", this.items);
           });
         }
@@ -137,6 +142,7 @@ export class ReportsComponent {
           this.api.gettabledata().subscribe((res: any) => {
             this.items = res;
             this.cdr.detectChanges();
+            this.isLoading = false;
             console.log("Admin All Data:", this.items);
           });
         }
@@ -144,6 +150,7 @@ export class ReportsComponent {
           this.api.getDepartmentTable(department).subscribe((res: any) => {
             this.items = res;
             this.cdr.detectChanges();
+            this.isLoading = false;
             console.log("Department User All Data:", this.items);
           });
         }
@@ -151,6 +158,7 @@ export class ReportsComponent {
           this.api.getProjectTable(this.projectList).subscribe((res: any) => {
             this.items = res;
             this.cdr.detectChanges();
+            this.isLoading = false;
             console.log("Project User All Data:", this.items);
           });
         }

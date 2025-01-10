@@ -1,5 +1,5 @@
 import { BaseChartDirective} from 'ng2-charts';
-import { ChangeDetectorRef, Component, Input, SimpleChanges} from '@angular/core';
+import { ChangeDetectorRef, Component, Input, SimpleChanges, ViewChild} from '@angular/core';
 import { Chart, ChartConfiguration, ChartType, registerables } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels'; // Import the plugin
 
@@ -16,34 +16,26 @@ Chart.register(...registerables, ChartDataLabels);
   styleUrl: './chart.component.scss'
 })
 export class ChartComponent {
+  @Input() labels: string[] = [];
+  @Input() chartType: ChartType = 'bar';
+  @Input() datasets: any[] = [];
+  @Input() chartRouter: any = '';
+  @Input() legend:boolean=true
 
-
-  @Input() labels:string[]=[];
-  @Input() chartType: ChartType = 'line';
-  @Input() datasets: any[]=[];
-  // @Input()  datalabels: any[]=[];
-
-
+  @ViewChild(BaseChartDirective) chart!: BaseChartDirective;
 
   chartData: ChartConfiguration['data'] = {
-  datasets: this.datasets,
-  labels: this.labels,
-  // datalabels:this.datalabels
+    datasets: [],
+    labels: [],
+
+
   };
-
-
-  constructor(private cdr: ChangeDetectorRef)
-  {
-
-  }
 
   public lineChartOptions: ChartConfiguration['options'] = {
     elements: {
-      line: {
-        tension: 0,
-      },
-
+      line: { tension: 0 },
     },
+    maintainAspectRatio: false,
     responsive: true,
     plugins: {
       datalabels: {
@@ -77,74 +69,27 @@ export class ChartComponent {
       },
 
       },
-
-
-    //   layout: {
-    //     padding: {
-    //         right: 50 // Add padding on the right side
-    //     }
-    // }
-
-  //   const options = {
-  //     responsive: true,
-  //     maintainAspectRatio: false,
-  //     plugins: {
-  //         legend: {
-  //             position: 'right' as const,
-  //             align: 'center' as const,
-  //             labels: {
-  //                 boxWidth: 10,
-  //                 padding: 10,
-  //             },
-  //         },
-  //         tooltip: {
-  //             enabled: true,
-  //         },
-  //     },
-  //     cutout: '50%', // Adjust the hole size
-  // };
-
-
-
-
-
   };
 
-  ngOnInit()
-  {
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['labels'] || changes['datasets']) {
+      this.chartData.labels = [...this.labels];
+      this.chartData.datasets = [...this.datasets];
 
-      this.chartData.labels = this.labels;
-
-
-
-      this.chartData.datasets = this.datasets;
-
-  }
-
-
-
-  ngOnChanges(changes: SimpleChanges){
-    if(changes['labels']){
-      this.chartData.labels = this.labels;
+      if (this.chart) {
+        this.chart.update();
+      }
     }
 
-    if(changes['datasets']){
-      this.chartData.datasets = this.datasets;
+    if (changes['legend']) {
+      this.lineChartOptions = this.lineChartOptions || {};
+      this.lineChartOptions.plugins = this.lineChartOptions.plugins || {};
+      this.lineChartOptions.plugins.legend = this.lineChartOptions.plugins.legend || {};
+      this.lineChartOptions.plugins.legend.display = this.legend;
     }
-
-    // if(changes['datalabels']){
-    //   this.chartData.datalabels = this.datalabels;
-    // }
 
 
   }
 
 }
-
-
-
-
-
-
-
 
