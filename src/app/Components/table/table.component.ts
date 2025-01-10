@@ -161,6 +161,7 @@ export class TableComponent {
       const role = this.auth.getUserRole();
       this.isDepartmentUser = role === 'DepartmentUser';
       this.items = [...this.paginated];
+      this.hasValidData();
       console.log("items",this.items);
       this.filteredItems = [...this.items];
       console.log(this.filteredItems);
@@ -174,6 +175,10 @@ export class TableComponent {
 
 
 
+  }
+  @Input() noDataMessage:string='No risks'
+  hasValidData(): boolean {
+    return this.paginated && this.paginated.length >0;
   }
 
   updateUniqueDepartments(): void {
@@ -315,15 +320,9 @@ export class TableComponent {
     }
   }
 
-  // hasValidData(): boolean {
-  //   return this.tableData && this.tableData.length > 0 && this.tableData.some(row => row.riskName || row.riskId || row.fullName);
-  // }
   @Input() isLoading: boolean = false;
 
-  @Input() noDataMessage:string='No Data Available'
-  hasValidData(): boolean {
-    return this.paginated && this.paginated.length >0;
-  }
+
 
 
   shouldDisplayPagination(): boolean {
