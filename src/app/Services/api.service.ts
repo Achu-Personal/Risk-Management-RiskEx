@@ -141,6 +141,7 @@ export class ApiService {
 
 
 
+
   addnewQualityRisk(qualityRisk: any) {
     console.log('quality risk payload', qualityRisk);
     return this.http.post(`${this.baseUrl}/Risk/add/quality`, qualityRisk);
@@ -214,11 +215,15 @@ export class ApiService {
       .subscribe((e) => console.log(e));
   }
 
-  getRisksWithHeigestOverallRating(departmentList: number[]) {
+  getRisksWithHeigestOverallRating(departmentList: number[],projectList: number[]) {
 
     let params = new HttpParams();
     departmentList.forEach((departmentId) => {
       params = params.append('departmentIds', departmentId.toString());
+    });
+
+    projectList.forEach((projectId) => {
+      params = params.append('projectIds', projectId.toString());
     });
     console.log("params",params)
     return this.http.get(`${this.baseUrl}/Risk/GetRiskWithHeighestOverallRationg`, {
@@ -227,11 +232,14 @@ export class ApiService {
 
   }
 
-  getRiskApproachingDeadline(departmentList: number[]) {
+  getRiskApproachingDeadline(departmentList: number[],projectList:number[]) {
 
     let params = new HttpParams();
     departmentList.forEach((departmentId) => {
       params = params.append('departmentIds', departmentId.toString());
+    });
+    projectList.forEach((projectId) => {
+      params = params.append('projectIds', projectId.toString());
     });
     console.log("params",params)
     return this.http.get(`${this.baseUrl}/Risk/GetRiskApproachingDeadline`, {
@@ -256,10 +264,13 @@ export class ApiService {
   }
 
 
-  getRiskCategoryCountsByDepartment(departmentList: number[]) {
+  getRiskCategoryCountsByDepartment(departmentList: number[],projectList:number[]) {
     let params = new HttpParams();
     departmentList.forEach((departmentId) => {
       params = params.append('departmentIds', departmentId.toString());
+    });
+    projectList.forEach((projectId) => {
+      params = params.append('projectIds', projectId.toString());
     });
     console.log("params",params)
     return this.http.get(`${this.baseUrl}/Risk/RiskCategoryCountByDepartment`, {
@@ -341,11 +352,14 @@ export class ApiService {
   updateSecurityOrPrivacyRisk(updated: any, riskId: number) {
     return this.http.put(`${this.baseUrl}/Risk/update/securityOrPrivacy/${riskId}`, updated);
   }
-  getOpenRiskCountByType(list:number[]){
+  getOpenRiskCountByType(list:number[],projectList:number[]){
     //https://localhost:7216/api/Risk/CountOfRiskType(Open)?isAdmin=false&departmentIds=4
     let params = new HttpParams();
     list.forEach((departmentId) => {
       params = params.append('departmentIds', departmentId.toString());
+    });
+    projectList.forEach((projectId) => {
+      params = params.append('projectIds', projectId.toString());
     });
     console.log("params",params)
     return this.http.get(`${this.baseUrl}/Risk/CountOfRiskType(Open)`, {
@@ -382,6 +396,17 @@ getUsersByDepartmentId(departmentId:number){
   return this.http.get(
     `${this.baseUrl}/User/${departmentId}`
   );
+}
+
+changePassword(currentPassword: string, newPassword: string, confirmPassword: string): Observable<any> {
+  const userId = this.auth.getCurrentUserId();
+  const url = `${this.baseUrl}/Account/ChangePassword/${userId}`;
+  const payload = {
+    currentPassword,
+    newPassword,
+    confirmPassword
+  };
+  return this.http.post(url, payload);
 }
 
 }

@@ -37,7 +37,7 @@
                 Name <span class="text-danger">*</span>
               </label>
               <input type="text" class="form-control" id="name" placeholder="Enter Name" formControlName="fullName" />
-              @if (userForm.get('name')?.invalid && userForm.get('name')?.touched)
+              @if (userForm.get('fullName')?.invalid && userForm.get('fullName')?.touched)
               {
               <div class="text-danger"> Name is required. </div>
               }
@@ -85,7 +85,7 @@
             <div class="mb-3">
               <label for="projectName" class="form-label">Project</label>
               <app-project-drop-down [departmentName]="userForm.get('departmentName')?.value"
-                formControlName="projectNames"
+                formControlName="projectIds"
                 (selectedProjectsChange)="onProjectsSelected($event)"></app-project-drop-down>
             </div>
 
@@ -192,7 +192,7 @@
               }
 
               <label for="projectCode" class="form-label p-2">
-                Project Name <span class="text-danger">*</span>
+                Project Code <span class="text-danger">*</span>
               </label>
               <input type="text" class="form-control" id="projectCode" placeholder="Enter Project Code"
                 formControlName="projectCode" />

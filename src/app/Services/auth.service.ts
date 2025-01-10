@@ -71,8 +71,6 @@ export class AuthService {
 
 
   getUserRole() {
-    console.log("role=",this.userRole.value);
-
     return this.userRole.value;
   }
   getUserName(){
