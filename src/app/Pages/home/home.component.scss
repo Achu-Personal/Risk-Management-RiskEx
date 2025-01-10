@@ -24,7 +24,7 @@
   position: sticky;
   top: 0; /* Adjust this based on how far from the top you want it to stick */
   margin-right: 7px;
-  background-color: #F4F1EC; /* Optional: Add a background to prevent overlap artifacts */
+  background-color: transparent; /* Optional: Add a background to prevent overlap artifacts */
   z-index: 1; /* Optional: Ensures it stays above elements with lower z-index */
   // margin-right: 7px;
   // padding-right: 40px;
