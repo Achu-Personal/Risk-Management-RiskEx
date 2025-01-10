@@ -24,6 +24,22 @@ export class LikelihoodImpactCardComponent {
   }
 
 
+  get dynamicBackgroundColor(): string {
+
+
+
+
+      if (this.assessment.riskFactor <= 8) {
+        return 'green';
+      }
+      if (this.assessment.riskFactor > 8 && this.assessment.riskFactor <= 32) {
+        return '#FFBF00'; // Moderate
+      }
+      return 'red'; // Critical
+
+
+    }
+
 
 
 
