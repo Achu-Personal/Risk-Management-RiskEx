@@ -52,7 +52,7 @@ export class RiskDetailsSection2Component {
         title: 'review',
         isCompleted: false,
         actionBy: 'Tony',
-        date: '22 June 2024',
+        date: '...',
         stepNumber: '02'
       },
       {
@@ -60,7 +60,7 @@ export class RiskDetailsSection2Component {
         title: 'Mitigation',
         isCompleted: false,
         actionBy: 'Akshay',
-        date: '23 June 2024',
+        date: '...',
         stepNumber: '03'
       },
       {
@@ -68,7 +68,7 @@ export class RiskDetailsSection2Component {
         title: 'Post Review',
         isCompleted: false,
         actionBy: '...',
-        date: '2025-01-03 05:04:00.059418+00',
+        date: '.....',
         stepNumber: '04'
       },
       {
@@ -76,7 +76,7 @@ export class RiskDetailsSection2Component {
         title: 'Closed',
         isCompleted: false,
         actionBy: '...',
-        date: '2025-01-03 05:04:00.059418+00',
+        date: '.....',
         stepNumber: '05'
       }
     ]
