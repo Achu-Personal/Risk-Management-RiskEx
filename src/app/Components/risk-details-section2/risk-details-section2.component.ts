@@ -83,6 +83,10 @@ export class RiskDetailsSection2Component {
 
   ngOnInit()
   {
+
+    var mitigationCard=document.getElementById("mitigationCard")
+    var contingencyCard=document.getElementById("mitigationCard")
+
     this.route.paramMap.subscribe((params) => {
       let id = params.get('id');
 

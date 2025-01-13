@@ -14,13 +14,16 @@ export class OverallRatingCardComponent {
   @Input() title: string = '';
   @Input() backgroundColor: string = '';
   @Input() textColor: string = '';
-  @Input() height: number = 45; // Default height in vh
-  @Input() width: number = 45; // Default width in vh
+  @Input() height: string = '100%'; // Default height in vh
+  @Input() width: string = '90%'; // Default width in vh
   @Input() assessmentData: any[] = [];
   @Input() riskType="Quality"
 
   isHovered: boolean = false;
   criticality=true;
+
+
+
 
   get getCriticality(): string {
     if (this.riskType === 'Quality') {
@@ -103,8 +106,8 @@ export class OverallRatingCardComponent {
     return {
       'background-color': this.dynamicBackgroundColor,  // Dynamic background color
       'color': this.dynamicTextColor,  // Dynamic text color
-      'height':this.height+"vh",
-      'width':this.width+"vh",
+      'height':this.height,
+      'width':'100%',
       'transition': 'all 0.5s ease',   // Transition for smooth resizing
     };
   }
