@@ -1,5 +1,5 @@
-<div class=" Detailscard ">
-  <div >
+<div  class=" Detailscard ">
+
     <div  >
 
       <div class="risk-number-type-and-edit-button" >
@@ -40,8 +40,10 @@
     </div>
 
 
-    <app-overall-rating-card  [assessmentData]="allData.riskAssessments" [height]="40"  [width]="40" riskType={{riskType}}  [value]="overallRiskRating" title="Overal Risk Rating" textColor="white"></app-overall-rating-card>
 
-  </div>
+
+    <app-overall-rating-card  [assessmentData]="allData.riskAssessments"  riskType={{riskType}}  [value]="overallRiskRating" title="Overal Risk Rating" textColor="white"></app-overall-rating-card>
+
+
 
 </div>
