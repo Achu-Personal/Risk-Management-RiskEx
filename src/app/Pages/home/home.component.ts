@@ -1,7 +1,6 @@
 import { CommonModule, NgIf } from '@angular/common';
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { BodyContainerComponent } from "../../Components/body-container/body-container.component";
-import { ButtonComponent } from "../../UI/button/button.component";
 import { DepartmentDropdownComponent } from "../../Components/department-dropdown-dashboard/department-dropdown.component";
 import { ChartComponent } from "../../UI/chart/chart.component";
 import { Router } from '@angular/router';
@@ -9,9 +8,7 @@ import { AuthService } from '../../Services/auth.service';
 import { ApiService } from '../../Services/api.service';
 import { BubbleGraphComponent } from "../../UI/bubble-graph/bubble-graph.component";
 import { StyleButtonComponent } from "../../UI/style-button/style-button.component";
-import { DashboardviewriskComponent } from "../../UI/dashboardviewrisk/dashboardviewrisk.component";
 import { DashbaordCardContainerComponent } from "../../Components/dashbaord-card-container/dashbaord-card-container.component";
-import { DashbaordOpenRiskGraphComponent } from "../../UI/dashbaord-open-risk-graph/dashbaord-open-risk-graph.component";
 
 
 
@@ -19,7 +16,7 @@ import { DashbaordOpenRiskGraphComponent } from "../../UI/dashbaord-open-risk-gr
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [NgIf, BodyContainerComponent, ButtonComponent, DepartmentDropdownComponent, ChartComponent, BubbleGraphComponent, CommonModule, StyleButtonComponent, DashboardviewriskComponent, DashbaordCardContainerComponent, DashbaordOpenRiskGraphComponent],
+  imports: [NgIf, BodyContainerComponent, DepartmentDropdownComponent, ChartComponent, BubbleGraphComponent, CommonModule, StyleButtonComponent, DashbaordCardContainerComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
@@ -133,7 +130,7 @@ export class HomeComponent {
               const count = this.list.map((element: { count: any; }) => element.count);
               this.counter = count
               const counter:number[]=count;
-              console.log("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",counter);
+              console.log("Output",counter);
 
               const riskCat = this.list.map((element: {riskCategory:any})=>element.riskCategory);
               this.risk = riskCat;
@@ -177,7 +174,6 @@ export class HomeComponent {
               const count = this.list.map((element: { count: any; }) => element.count);
               // this.counter = count
               const counter:number[]=count;
-              console.log("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",counter);
 
               const riskCat = this.list.map((element: {riskCategory:any})=>element.riskCategory);
               this.risk = riskCat;
