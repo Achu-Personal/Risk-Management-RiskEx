@@ -1,7 +1,10 @@
 
-.main{
-
-}
+// .main{
+//  margin-top: -10px;
+// }
+// app-body-container{
+//   margin-top: -10px;
+// }
 .dashboard{
   display: flex;
   flex-direction: column;
@@ -14,27 +17,15 @@
 }
 .topbuttons{
   display: flex;
-  // position: sticky;
   flex-direction: row;
   gap: 0px;
-  // height: 80px;
   justify-content: end;
-  padding: 0;
   padding: 0;
   position: sticky;
   top: 0; /* Adjust this based on how far from the top you want it to stick */
   margin-right: 7px;
-  background-color: transparent; /* Optional: Add a background to prevent overlap artifacts */
+  background-color:#F4F1EC ; /* Optional: Add a background to prevent overlap artifacts */
   z-index: 1; /* Optional: Ensures it stays above elements with lower z-index */
-  // margin-right: 7px;
-  // padding-right: 40px;
-  // padding-top: 70px;
-  // position: fixed; /* Fixes the element in place relative to the viewport */
-  // top: 10px; /* Adjust the position vertically */
-  // right: 7px; /* Adjust the position horizontally */
-  // margin: 0; /* Ensure no extra space is added */
-  // z-index: 1000; /* Ensure it stays on top of other elements */
-
 }
 .dropdown{
   display: flex;
