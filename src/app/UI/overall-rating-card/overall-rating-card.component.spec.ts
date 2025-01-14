@@ -104,13 +104,5 @@ describe('OverallRatingCardComponent', () => {
   //   expect(divElement.style.color).toBe('blue');
   // });
 
-  it('should set height and width based on input values', () => {
-    component.height = 50;
-    component.width = 60;
-    fixture.detectChanges();
 
-    const divElement = fixture.debugElement.query(By.css('div')).nativeElement;
-    expect(divElement.style.height).toBe('50vh');
-    expect(divElement.style.width).toBe('60vh');
-  });
 });

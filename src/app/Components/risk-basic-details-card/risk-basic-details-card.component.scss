@@ -1,24 +1,22 @@
-
+:host {
+  min-height: 200px;
+  height: 100%;
+}
 .Detailscard
 {
   width: 100%;
-  height: 50vh;
+  min-height: 20vh; /* Guarantee minimum size */
+  height: 100%;
   border-radius: 10px;
-  padding: 1px;
+
   background-color: var(--accent-color);
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
   box-sizing: border-box;
-
-
-}
-
-.Detailscard>div
-{
   display: flex;
   flex-direction:row;
   height: 100%;
   width: 100%;
-  align-items: center;
+  align-items: start;
   justify-content: space-between;
   box-sizing: border-box;
   padding: 20px;
@@ -26,7 +24,8 @@
 
 }
 
-.Detailscard>div>div
+
+.Detailscard>div
 {
   gap: 10px;
   display: flex;
@@ -35,6 +34,7 @@
 
   height: 100%;
   width: 80%;
+
   box-sizing: border-box;
 }
 

@@ -4,14 +4,14 @@
   <!-- Left side: To Show Risk Mitigation and  Risk Continjency -->
   <div>
 
-    <div class=" primaryColor shadowType1 details-card "  >
+    <div id="mitigationCard" class=" primaryColor shadowType1 details-card "  >
       <h5 >Risk Mitigation</h5>
       <p title={{riskMitigation}}>{{riskMitigation.slice(0,1020)}}..</p>
     </div>
 
-    @if(riskContengency!=null&&riskContengency!="")
+    @if(riskContengency!=null&&riskContengency!=""&&riskContengency.length>5)
     {
-      <div  class=" primaryColor shadowType1 details-card ">
+      <div id="contingencyCard"  class=" primaryColor shadowType1 details-card ">
         <h5>Risk Contingency</h5>
         <p title={{riskContengency}}>{{riskContengency.slice(0,1020)}}..</p>
 
