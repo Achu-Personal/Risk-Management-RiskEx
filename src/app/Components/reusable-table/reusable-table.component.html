@@ -42,7 +42,27 @@
               <th title="{{header === 'overallRiskRating' ? 'Current Risk Rating' : headerDisplayMap[header] || header}}">
                 <div class="header-with-filter">
                   {{ headerDisplayMap[header] || header }}
-                 
+                  @if(header === 'departmentName' || header === 'riskType' || header ==='riskDepartment'){
+                    <span class="filter-icon" (click)="toggleFilter($event, header)">&#9662;</span>
+                    @if(showFilterDropdown && currentFilterColumn === header){
+                      <div class="filter-dropdown" (click)="$event.stopPropagation()">
+                        <div class="filter-search">
+                          <input
+                            type="text"
+                            [(ngModel)]="filterSearchText"
+                            placeholder="Search..."
+                            (input)="searchFilterOptions()">
+                        </div>
+                        <div class="filter-options">
+                          @for(option of getFilteredOptions(); track option){
+                            <div class="filter-option" (click)="applyFilter(header, option)">
+                              {{ option }}
+                            </div>
+                          }
+                        </div>
+                      </div>
+                    }
+                  }
                 </div>
               </th>
               }
