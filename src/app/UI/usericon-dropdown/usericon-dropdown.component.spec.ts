@@ -20,4 +20,5 @@ describe('UsericonDropdownComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
 });
