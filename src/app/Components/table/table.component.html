@@ -21,26 +21,14 @@
       <table class="tabledata">
         <thead>
           <tr class="bord">
-            <th>
-              <div class="skeleton-cell"></div>
-            </th>
-            <th >
-              <div class="skeleton-cell"></div>
-            </th>
-            <th>
+            <th *ngFor="let item of [1,2,3,4,5,6,7,8,9]">
               <div class="skeleton-cell"></div>
             </th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let item of [1,2,3,4,5,6,7,8,9,10]">
-            <td>
-              <div class="skeleton-cell"></div>
-            </td>
-            <td>
-              <div class="skeleton-cell"></div>
-            </td>
-            <td>
+            <td *ngFor="let item of [1,2,3,4,5,6,7,8,9]">
               <div class="skeleton-cell"></div>
             </td>
           </tr>
@@ -219,7 +207,7 @@
 </div>
 
 <ng-template #noData>
-  <div class="no-data-container">
+  <div class="no-data-container"  *ngIf=" !isLoading" >
     <h3 class="no-data-message">{{noDataMessage}}</h3>
   </div>
 </ng-template>

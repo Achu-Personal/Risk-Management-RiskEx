@@ -1,5 +1,5 @@
 import { department } from './../../Interfaces/deparments.interface';
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -17,6 +17,7 @@ import { StyleButtonComponent } from '../../UI/style-button/style-button.compone
 import { NgIf } from '@angular/common';
 import { AuthService } from '../../Services/auth.service';
 import { SingleProjectDropdownComponent } from '../../Components/single-project-dropdown/single-project-dropdown.component';
+import { UsermanagementpopupComponent } from "../../Components/usermanagementpopup/usermanagementpopup.component";
 
 @Component({
   selector: 'app-users',
@@ -29,18 +30,22 @@ import { SingleProjectDropdownComponent } from '../../Components/single-project-
     DropDownDeparmentComponent,
     StyleButtonComponent,
     NgIf,
-    SingleProjectDropdownComponent
-  ],
+    SingleProjectDropdownComponent,
+    UsermanagementpopupComponent
+],
   templateUrl: './users.component.html',
   styleUrl: './users.component.scss',
 })
 export class UsersComponent {
+  @ViewChild(UsermanagementpopupComponent) confirmationPopup!: UsermanagementpopupComponent;
   departments: department[] = [];
   projects: any[] = [];
   isDepartmentFieldDisabled = false;
   isAdmin: boolean = false;
   id:any
   isLoading = true;
+  confirmationMessage: string = '';
+ confirmationCallback: () => void = () => {};
 
   headerData: string[] = [];
   headerDataDpt:string[]=['fullName','email','projects'];
@@ -102,7 +107,9 @@ tableBody:any[]=[
     });
   }
 
-
+  handleModalComplete() {
+    this.refreshUsersData();
+  }
 
 
  private refreshUsersData() {
@@ -219,7 +226,6 @@ tableBody:any[]=[
   }
 
 
-
   loadProjectsForDepartment(department: string) {
     this.api.getProjects(department).subscribe(
       (res) => {
@@ -239,33 +245,46 @@ tableBody:any[]=[
   }
 
 
-
   onSubmitDepartment() {
     if (this.departmentForm.valid) {
-      const departmentData = this.departmentForm.value;
+      this.confirmationMessage = 'Are you sure you want to add this department?';
+      this.confirmationCallback = () => {
+        const departmentData = this.departmentForm.value;
 
+        this.api.addNewDepartment(departmentData).subscribe({
+          next: (response) => {
+            this.departmentForm.reset();
+            this.loadDepartments();
+            this.confirmationPopup.showResultModal('Department added successfully!', true);
+          },
+          error: (error) => {
+            let errorMessage = '';
 
-      this.api.addNewDepartment(departmentData).subscribe({
-        next: (response) => {
-          console.log('Department added successfully:', response.message);
-          this.departmentForm.reset();
+            if (error.status === 400) {
+              errorMessage = 'Validation error: ' + (error.error?.message || 'Invalid data provided');
+            } else if (error.status === 500) {
+              errorMessage = 'Server error: An internal server error occurred';
+            } else if (error.status === 401) {
+              errorMessage = 'Authentication error: Please log in again';
+            } else if (error.status === 403) {
+              errorMessage = 'Authorization error: You do not have permission to perform this action';
+            } else {
+              errorMessage = error.error?.message || error.message || 'Unknown error occurred';
+            }
 
-          this.loadDepartments();
-
-          const modal = document.getElementById('addDepartmentModal');
-          if (modal) {
-            (modal as HTMLElement).click();
+            this.confirmationPopup.showResultModal(
+              `Failed to add department: ${errorMessage}`,
+              false
+            );
           }
-        },
-        error: (error) => {
-          console.error('Failed to add the department', error);
-          if (error.error && error.error.message) {
-            alert(error.error.message);
-          }
-        }
-      });
-    } else {
-      console.error('Form is invalid:', this.departmentForm.errors);
+        });
+      };
+
+      const modal = document.getElementById('confirmationModal');
+      if (modal) {
+        const bsModal = new (window as any).bootstrap.Modal(modal);
+        bsModal.show();
+      }
     }
   }
 

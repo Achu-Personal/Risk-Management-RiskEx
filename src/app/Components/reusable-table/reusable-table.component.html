@@ -34,7 +34,7 @@
 </div>
 <ng-container *ngIf="!isLoading && hasValidData(); else noData">
   <div class="table-container" [ngStyle]="{ height: height }">
-    <div class="tablestyle">
+    <div class="tablestyle" >
       <table class="tabledata">
         <thead>
           <tr class="bord">
@@ -108,7 +108,7 @@
               @if(key !=='riskStatus'&& key !=='overallRiskRating' && key
               !=='plannedActionDate' && key!=='projects') {
               <ng-container>
-                {{ row[key] | slice : 0 : 40 }}
+                {{ row[key] | slice : 0 : 40 }}{{ row[key].length > 40 ? "..." : "" }}
               </ng-container>
               }
               <!-- {{formatDate(row[key]) | slice : 0 : 30
@@ -210,7 +210,18 @@
         </tbody>
       </table>
     </div>
+    <div class="pagination">
+      @if(shouldDisplayPagination()){
+        <app-pagination  [totalItems]="totalItems"
+        [itemsPerPage]="itemsPerPage"
+        [currentPage]="currentPage"
+        (pageChanged)="onPageChange($event)" class="pagination-controls pagination ">
+
+        </app-pagination>
+      }
+    </div>
   </div>
+
 </ng-container>
 <ng-template #noData>
   <div class="no-data-container" *ngIf=" !isLoading"  >

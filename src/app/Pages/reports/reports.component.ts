@@ -49,6 +49,8 @@ export class ReportsComponent {
 
   onFilteredData(filteredData: any[]): void {
     this.filteredTableData = filteredData;
+    // this.items = [...filteredData];///
+    // this.cdr.detectChanges();///
     console.log('Received filtered data:', this.filteredTableData);
   }
 
@@ -100,6 +102,7 @@ export class ReportsComponent {
       }
 
       fetchData(department: any): void {
+
         if (this.type !== null && this.type !== undefined) {
           this.fetchFilteredData(department, this.type);
         } else {
@@ -112,6 +115,7 @@ export class ReportsComponent {
           this.api.gettabledata().subscribe((res: any) => {
             this.item = res.filter((item: { riskType: any }) => item.riskType === type);
             this.items =this.item.filter((item: { riskStatus: any }) => item.riskStatus === 'open');
+            // this.onFilteredData(this.items);///
             this.cdr.detectChanges();
             this.isLoading = false;
             console.log("Admin Filtered Data:", this.items);

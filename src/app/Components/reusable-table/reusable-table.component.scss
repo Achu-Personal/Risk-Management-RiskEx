@@ -5,6 +5,7 @@
   background: #ffffff;
   // box-shadow: 0px 1px 3px #979797;
   // border: 1px solid #D0C6B6;
+  height: 70%;
   width: 88%;
   font-family: "Arial", sans-serif;
   position: fixed;
@@ -447,4 +448,10 @@ tbody {
     background-color: #976c26;
     color: white;
   }
+}
+.pagination{
+width: 100%;
+position: sticky;
+bottom: 0;
+z-index: 1;
 }
