@@ -18,7 +18,7 @@ import { AuthService } from './auth.service';
   providedIn: 'root',
 })
 export class ApiService {
-  private readonly baseUrl = 'https://localhost:7216/api';
+  private readonly baseUrl = 'https://risk-management-riskex-backend-2.onrender.com/api';
   private departmentUpdateSubject = new Subject<void>();
   departmentUpdate$ = this.departmentUpdateSubject.asObservable();
 
