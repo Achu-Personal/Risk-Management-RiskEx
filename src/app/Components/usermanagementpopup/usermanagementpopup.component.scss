@@ -1,0 +1,15 @@
+.custom-header {
+  background-color: #d0c6b6;
+  color: black;
+}
+.modal-header .btn-close {
+  filter: none; /* Remove the invert filter since we're using dark text */
+}
+button.btn-primary {
+  background-color: #4D4D4D;
+  color: #ffffff;
+}
+button.btn-secondary {
+  background-color: #faeaea;
+  color: rgb(17, 16, 16);
+}
