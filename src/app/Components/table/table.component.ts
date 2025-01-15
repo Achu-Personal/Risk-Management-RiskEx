@@ -32,6 +32,7 @@ export class TableComponent {
   closed = false;
   isButtonVisible = false;
 
+  @Input() isLoading: boolean = false;
   @Input() paginated:any=[];
   filteredItems = [...this.items];
   isDepartmentDropdownOpen: boolean = false;
@@ -320,7 +321,6 @@ export class TableComponent {
     }
   }
 
-  @Input() isLoading: boolean = false;
 
 
 

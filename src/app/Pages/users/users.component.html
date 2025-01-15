@@ -324,7 +324,14 @@
     </div>
   </div>
 </div>
-
+<app-usermanagementpopup
+#confirmationPopup
+[modalId]="'confirmationModal'"
+[resultModalId]="'resultModal'"
+[message]="confirmationMessage"
+(confirmed)="confirmationCallback()"
+(completed)="handleModalComplete()"
+></app-usermanagementpopup>
 
   <app-reusable-table [tableHeaders]="isAdmin ? headerData : headerDataDpt"
     [tableData]="isAdmin ? tableBodyAdmin : tableBody" [headerDisplayMap]="headerDisplayMap" [IsActionRequiered]="true"
