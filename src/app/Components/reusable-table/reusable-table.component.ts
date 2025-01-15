@@ -58,13 +58,7 @@ export class ReusableTableComponent {
     if (this.tableData && this.tableData.length > 0) {
       this.rowKeys = Object.keys(this.tableData[0]);
     }
-    setTimeout(()=>{
-    this.tableData1=[...this.tableData]
-    console.log("tabledata1",this.tableData1)
-    this.totalItems = this.tableData.length;
-    this.updatePaginatedItems();
-  },500)
-  // this.updatePaginatedItems();
+    
   }
 
 
@@ -156,13 +150,18 @@ getRiskRatingStyle(riskRating: number): string {
 
     this.onclickrow.emit(row);
     }
-    // ngOnChanges(changes: SimpleChanges): void {
-    //   console.log('Table Headers:', this.tableHeaders);
-    //   console.log('Table Data:', this.tableData);
-    // }
+    ngOnChanges(changes: SimpleChanges): void {
+      // console.log('Table Headers:', this.tableHeaders);
+      // console.log('Table Data:', this.tableData);
+      if (changes['tableData'] ) {
+        this.tableData1=[...this.tableData]
+        console.log("tabledata1",this.tableData1)
+        this.totalItems = this.tableData1.length;
+        this.updatePaginatedItems();
+        }
+    }
 
     hasValidData(): boolean {
-      // this.updatePaginatedItems();
       return this.tableData && this.tableData.length > 0 && this.tableData.some(row => row.riskName || row.riskId || row.fullName);
     }
 
@@ -172,6 +171,7 @@ getRiskRatingStyle(riskRating: number): string {
     currentPage = 1;
     totalItems: number = 0;
     shouldDisplayPagination(): boolean {
+      console.log("lenght",this.tableData1.length)
       return this.tableData1.length > this.itemsPerPage;
     }
     onPageChange(page: number): void {
