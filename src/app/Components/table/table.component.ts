@@ -119,8 +119,9 @@ export class TableComponent {
   this.currentPage = 1;
   this.totalItems = this.filteredItems.length;
   this.updatePaginatedItems();
-  // this.filteredData.emit(this.filteredItems);
-  }, 300); // 300ms debounce
+
+  this.cdr.detectChanges();
+  }, 500); // 300ms debounce
   }
 
 
@@ -142,8 +143,8 @@ export class TableComponent {
 
 
   ngOnInit(): void {
-    setTimeout(()=>{
-    this.initializeItems();
+    // setTimeout(()=>{
+    // this.initializeItems();
     const currentRoute = this.route.snapshot.url.join('/');
     console.log(currentRoute);
 
@@ -153,19 +154,19 @@ export class TableComponent {
       this.isButtonVisible = false;
     }
 
-    this.updatePaginatedItems();
-  },800)
+    // this.updatePaginatedItems();
+  // },300)
   }
   isDepartmentUser:boolean=false;
   private initializeItems(): void {
-
+    setTimeout(()=>{
       const role = this.auth.getUserRole();
       this.isDepartmentUser = role === 'DepartmentUser';
       this.items = [...this.paginated];
       this.hasValidData();
       console.log("items",this.items);
       this.filteredItems = [...this.items];
-      console.log(this.filteredItems);
+      console.log("==",this.filteredItems);
       this.updateUniqueDepartments();
       this.updateUniqueTypes();
       this.updateUniqueReviewStatus();
@@ -173,7 +174,7 @@ export class TableComponent {
       this.updateResidualRiskStatus();
       this.totalItems = this.filteredItems.length;
       this.updatePaginatedItems();
-
+    },800)
 
 
   }
@@ -205,6 +206,10 @@ export class TableComponent {
   }
 
   updatePaginatedItems(): void {
+
+    if (this.filterTimeout) clearTimeout(this.filterTimeout);
+
+  // this.filterTimeout = setTimeout(() => {
     console.log("insie",this.filteredItems)
     const startIndex = (this.currentPage -1 ) * this.itemsPerPage;
     const endIndex = startIndex + this.itemsPerPage;
@@ -213,6 +218,7 @@ export class TableComponent {
     this.cdr.markForCheck();
     // this.itemsPerPage=this.paginated.length;
     this.filteredData.emit(this.filteredItems);
+  // }, 100);
   }
 
   onPageChange(page: number): void {
@@ -315,6 +321,13 @@ export class TableComponent {
   @Input() filteredDateRange: { startDate: string; endDate: string } | null = null;
 
   ngOnChanges(changes: SimpleChanges): void {
+
+    if (changes['paginated'] ) {
+      this.filteredItems = [...this.items];
+      this.totalItems = this.filteredItems.length;
+      this.initializeItems();
+    }
+
     if (changes['filteredDateRange'] && this.filteredDateRange) {
 
       this.filterTable();
@@ -322,11 +335,8 @@ export class TableComponent {
   }
 
 
-
-
-
   shouldDisplayPagination(): boolean {
-    console.log(this.paginated.length)
+    console.log(this.filteredItems.length)
     return this.filteredItems.length > this.itemsPerPage;
 
   }

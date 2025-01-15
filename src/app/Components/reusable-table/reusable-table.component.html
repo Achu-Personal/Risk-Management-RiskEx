@@ -42,7 +42,7 @@
               <th title="{{header === 'overallRiskRating' ? 'Current Risk Rating' : headerDisplayMap[header] || header}}">
                 <div class="header-with-filter">
                   {{ headerDisplayMap[header] || header }}
-                 
+
                 </div>
               </th>
               }
@@ -190,7 +190,16 @@
         </tbody>
       </table>
     </div>
+      @if(shouldDisplayPagination()){
+        <app-pagination  [totalItems]="totalItems"
+        [itemsPerPage]="itemsPerPage"
+        [currentPage]="currentPage"
+        (pageChanged)="onPageChange($event)" class="pagination-controls pagination ">
+
+        </app-pagination>
+      }
   </div>
+
 </ng-container>
 <ng-template #noData>
   <div class="no-data-container" *ngIf=" !isLoading"  >
