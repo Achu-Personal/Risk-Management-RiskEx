@@ -5,11 +5,12 @@ import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../Services/auth.service';
 import { ConfirmationPopupComponent } from "../confirmation-popup/confirmation-popup.component";
 import { ApiService } from '../../Services/api.service';
+import { PaginationComponent } from "../../UI/pagination/pagination.component";
 
 @Component({
   selector: 'app-reusable-table',
   standalone: true,
-  imports: [ CommonModule, FormsModule, ConfirmationPopupComponent],
+  imports: [CommonModule, FormsModule, ConfirmationPopupComponent, PaginationComponent],
   templateUrl: './reusable-table.component.html',
   styleUrl: './reusable-table.component.scss'
 })
@@ -24,6 +25,7 @@ export class ReusableTableComponent {
   @Input() headerDisplayMap:any=this.tableHeaders;
   @Input() noDataMessage:string='No Data Available'
   @Input() isLoading: boolean = false;
+  tableData1:any[]=[];
   isEyeOpen = false;
   isAdmin: boolean=false;
   isDepartmentUser=false;
@@ -49,14 +51,20 @@ export class ReusableTableComponent {
   rowKeys: string[] = [];
 
   ngOnInit(): void {
+
     const role = this.auth.getUserRole(); // Fetch user role
     this.isDepartmentUser = role === 'DepartmentUser'
     this.isAdmin = role === 'Admin';
     if (this.tableData && this.tableData.length > 0) {
       this.rowKeys = Object.keys(this.tableData[0]);
     }
-
-
+    setTimeout(()=>{
+    this.tableData1=[...this.tableData]
+    console.log("tabledata1",this.tableData1)
+    this.totalItems = this.tableData.length;
+    this.updatePaginatedItems();
+  },500)
+  // this.updatePaginatedItems();
   }
 
 
@@ -154,14 +162,38 @@ getRiskRatingStyle(riskRating: number): string {
     // }
 
     hasValidData(): boolean {
+      // this.updatePaginatedItems();
       return this.tableData && this.tableData.length > 0 && this.tableData.some(row => row.riskName || row.riskId || row.fullName);
     }
 
 
+    table:any[]=[];
+    itemsPerPage = 10;
+    currentPage = 1;
+    totalItems: number = 0;
+    shouldDisplayPagination(): boolean {
+      return this.tableData1.length > this.itemsPerPage;
+    }
+    onPageChange(page: number): void {
+      this.currentPage = page;
+      this.updatePaginatedItems();
+    }
 
-  
+    updatePaginatedItems(): void {
+      // console.log("insie",this.tableData1)
+      const startIndex = (this.currentPage -1 ) * this.itemsPerPage;
+      const endIndex = startIndex + this.itemsPerPage;
+      this.tableData = this.tableData1.slice(startIndex, endIndex);
+      // this.tableData=[...this.table];
+      console.log("insie",this.tableData)
+      this.totalItems = this.tableData1.length;
+      console.log("totalitems:",this.totalItems)
+      this.cdr.markForCheck();
+    }
 
 
 
-    
+
+
+
 }
