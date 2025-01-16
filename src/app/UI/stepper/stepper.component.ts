@@ -43,7 +43,7 @@ export class StepperComponent {
   ngOnChanges(changes: SimpleChanges) {
     if (changes['steps']) {
       // Handle initial changes or significant list modifications
-      console.log('steps changed:', this.steps);
+     // console.log('steps changed:', this.steps);
       this.myListDiffer = this.differs.find(this.steps).create();
     }
   }
