@@ -10,6 +10,7 @@ import { ActivatedRoute } from '@angular/router';
 import { NgIf } from '@angular/common';
 import { EmailService } from '../../Services/email.service';
 import { AuthService } from '../../Services/auth.service';
+import { RiskDetailsSection3MitigationComponent } from "../../Components/risk-details-section3-mitigation/risk-details-section3-mitigation.component";
 
 @Component({
   selector: 'app-approval',
@@ -21,9 +22,9 @@ import { AuthService } from '../../Services/auth.service';
     FormsModule,
     ReactiveFormsModule,
     StyleButtonComponent,
-    ConfirmationPopupComponent,NgIf
-    
-  ],
+    ConfirmationPopupComponent, NgIf,
+    RiskDetailsSection3MitigationComponent
+],
   templateUrl: './approval.component.html',
   styleUrl: './approval.component.scss',
 })
@@ -32,6 +33,7 @@ export class ApprovalComponent {
   isAdmin:boolean=false;
   showButtons:boolean=true;
   constructor(public api: ApiService, public route:ActivatedRoute, private email:EmailService,private auth:AuthService) {}
+  isLoading=true
 
 
   ngOnInit(){
@@ -43,6 +45,7 @@ export class ApprovalComponent {
       console.log("Data=",e)
       this.data=e
       console.log("data description",this.data.description);
+      this.isLoading=false
     });
     
   }
