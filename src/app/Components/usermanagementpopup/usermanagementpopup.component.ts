@@ -21,7 +21,6 @@ export class UsermanagementpopupComponent {
   private sourceModalId: string = '';
 
   onConfirm() {
-    // Store the ID of the source modal (e.g., addUserModal, addDepartmentModal)
     const sourceModal = document.querySelector('.modal.show:not(#' + this.modalId + ')') as HTMLElement;
     if (sourceModal) {
       this.sourceModalId = sourceModal.id;
@@ -57,7 +56,7 @@ export class UsermanagementpopupComponent {
         const bsModal = new (window as any).bootstrap.Modal(sourceModal);
         bsModal.hide();
       }
-      this.sourceModalId = ''; // Reset the source modal ID
+      this.sourceModalId = '';
     }
 
     // Clean up any remaining modals and backdrops
@@ -67,7 +66,6 @@ export class UsermanagementpopupComponent {
       backdrops[0].remove();
     }
 
-    // Emit completion event
     this.completed.emit();
   }
 }

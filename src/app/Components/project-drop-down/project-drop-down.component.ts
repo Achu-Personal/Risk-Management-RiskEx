@@ -69,7 +69,7 @@ export class ProjectDropDownComponent implements OnChanges, ControlValueAccessor
           this.updateSelectedProject();
           this.emitChanges();
           this.loading = false;
-          console.log('Projects fetched successfully for Department:', this.filteredProjects);
+          // console.log('Projects fetched successfully for Department:', this.filteredProjects);
         },
         (error) => {
           console.error('Failed to fetch projects for Department', error);

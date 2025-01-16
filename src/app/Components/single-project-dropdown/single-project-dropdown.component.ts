@@ -62,7 +62,7 @@ export class SingleProjectDropdownComponent implements OnChanges, ControlValueAc
       next: (response: project[]) => {
         this.projects = response;
         this.loading = false;
-        console.log('Projects fetched successfully:', this.projects);
+        // console.log('Projects fetched successfully:', this.projects);
       },
       error: (error) => {
         console.error('Failed to fetch projects', error);

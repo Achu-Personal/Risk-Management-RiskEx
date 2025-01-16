@@ -54,7 +54,7 @@ export class DepartmentDropdownComponent {
   extractDepartmentIdsAndFetchData() {
     this.selectedItems = this.sortDepartments(this.selectedItems);
     this.selectedDepartmentIds = this.selectedItems.map(item => item.id);
-    console.log('Extracted Department IDs:', this.selectedDepartmentIds);
+    // console.log('Extracted Department IDs:', this.selectedDepartmentIds);
 
     if (this.selectedDepartmentIds.length > 0) {
       this.departmentsSelected.emit(this.selectedDepartmentIds);
@@ -65,7 +65,7 @@ export class DepartmentDropdownComponent {
 
   toggleDropdown() {
     this.dropdownOpen = !this.dropdownOpen;
-    console.log('Dropdown Open State:', this.dropdownOpen);
+    // console.log('Dropdown Open State:', this.dropdownOpen);
   }
 
   toggleSelection(item: department) {
@@ -111,10 +111,10 @@ export class DepartmentDropdownComponent {
     } else {
       this.selectedDepartment = 'Select Department';
     }
-    console.log(
-      'Selected Departments:',
-      this.selectedItems.map((d) => d.departmentName)
-    );
+    // console.log(
+    //   'Selected Departments:',
+    //   this.selectedItems.map((d) => d.departmentName)
+    // );
   }
 
   passToOtherComponent() {
@@ -133,5 +133,5 @@ export class DepartmentDropdownComponent {
     }
   }
 
-  
+
 }

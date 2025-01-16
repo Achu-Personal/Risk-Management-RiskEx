@@ -78,6 +78,11 @@ export class ApiService {
     );
   }
 
+  //get projects by id
+  getProtectsByDepartmentId(id:number){
+    return this .http.get<project[]>(`${this.baseUrl}/Project/projects/${id}`);
+  }
+
   gettabledata() {
     return this.http.get(`${this.baseUrl}/Report`);
   }
