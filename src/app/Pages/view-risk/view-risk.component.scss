@@ -14,3 +14,27 @@ main{
 // .hide-scrollbar::-webkit-scrollbar {
 //   display: none; /* Hide scrollbar */
 // }
+
+.shimmer-container
+{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.shimmer {
+  background-color: #eee; /* Base color */
+  background-image: linear-gradient(to right, #ededed 0%, #fff 20%, #ecebeb 40%);
+  background-size: 800px 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 20px;
+
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -400px 0;
+  }
+  100% {
+    background-position: 400px 0;
+  }
+}

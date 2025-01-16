@@ -1,69 +1,67 @@
-
-
 /* Table */
 .table-container {
-
   padding: 0;
-  border-radius: 8px;
-  background: #ffffff;
-  box-shadow: 0px 1px 3px #979797;
-  border: 1px solid #D0C6B6;
+  border-radius: 5px;
+  background:transparent;
+  // border: 1px solid #D0C6B6;
   width: 88%;
-  font-family: 'Arial', sans-serif;
+  font-family: "Arial", sans-serif;
   position: fixed;
   overflow-y: auto;
-  margin-left: -20px;
-
+  // margin-left: -20px;
 }
-
-thead{
-
-  tr{
+.tablestyle {
+  height: auto;
+  box-shadow: 0px .5px 4px #979797;
+}
+thead {
+  tr {
     z-index: 10;
-    th{
-      // text-align: center;
-      cursor: pointer;
-    }
+    
   }
-
-
 }
-.bord{
+.bord {
   position: sticky;
   top: 0;
-  z-index: 20;//1000
-
-  tr{
-    border: 2px solid #c1bdbd;
-  }
+  z-index: 20; //1000
 }
+
 .tabledata {
   width: 100%;
   border-collapse: collapse;
+  border-spacing: 0 8px;
+ 
+
   background: #ffffff;
   margin: 0;
-
-
 }
-.table-container::-webkit-scrollbar{
+.table-container::-webkit-scrollbar {
   width: 0;
   height: 0;
 }
-.tabledata th,
-.tabledata td {
-  padding: 15px 15px;
-  text-align: left;
-  border-bottom: 1px solid #eee;
-}
+// .tabledata th {
+//   padding: 10px 15px;
+//   text-align: left;
+//   // border-bottom: 1px solid #eee;
+// }
 
+.tabledata td {
+  padding: 15px 10px;
+  text-align: left;
+  // border-bottom: 1px solid #eee;
+}
 .tabledata th {
-  background-color: #e6e1d7;
-  color: #0f0f0f;
+  background-color: var(--secondary-color);
+  color: var(--accent-text-color);
   font-weight: bold;
   font-size: 13px;
+  padding: 10px 15px;
+  text-align: left;
 }
-
-
+.tabledata tbody tr{
+  border-bottom: 1px solid #f1e7e7;
+  border-spacing: 0 8px;
+}
 
 .tabledata tbody tr:hover {
   background: #f1eadd;
@@ -73,10 +71,9 @@ thead{
   font-size: 14px;
   color: #555;
   vertical-align: middle;
+
   // text-align: center;
-
 }
-
 
 .no-data-container {
   display: flex;
@@ -90,7 +87,7 @@ thead{
   border: 1px solid #e2e6ea;
   padding: 20px;
   text-align: center;
-  position:fixed;
+  position: fixed;
   width: 88%;
   top: 125px;
   left: 130px;
@@ -110,10 +107,6 @@ thead{
   font-size: 20px;
 }
 
-
-
-
-
 tbody tr:hover {
   background-color: rgba(208, 198, 182, 0.2);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -121,56 +114,57 @@ tbody tr:hover {
   transition: box-shadow 0.2s ease-in-out, transform 0.2s ease-in-out;
   cursor: pointer;
 }
-tbody{
-tr{
-  z-index: -1;
-  overflow-y: auto;
-
+tbody {
+  tr  {
+    z-index: -1;
+    overflow-y: auto;
+    // border-bottom: 1px solid #f1e7e7;
+    
+  
+  }
 }
-}
-
 
 .tablestyle {
   .tooltip {
-      position: relative;
-      display: inline-block;
-      cursor: pointer;
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
 
-      // Truncated text
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+    // Truncated text
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 
-      // Tooltip text styling
-      .tooltip-text {
-          visibility: hidden;
-          background-color: #4d4747;
-          color: #cee9f5;
-          text-align: center;
-          padding: 8px;
-          border-radius: 4px;
+    // Tooltip text styling
+    .tooltip-text {
+      visibility: hidden;
+      background-color: #4d4747;
+      color: #cee9f5;
+      text-align: center;
+      padding: 8px;
+      border-radius: 4px;
 
-          // Position the tooltip
-          position: absolute;
-          z-index: 1;
-          top: -100%; // Adjust to position above the cell
-          left: 50%;
-          transform: translateX(-50%);
+      // Position the tooltip
+      position: absolute;
+      z-index: 1;
+      top: -100%; // Adjust to position above the cell
+      left: 50%;
+      transform: translateX(-50%);
 
-          // Zoom effect
-          transform-origin: top center;
-          scale: 0;
-          transition: all 0.3s ease-in-out;
-          box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-      }
+      // Zoom effect
+      transform-origin: top center;
+      scale: 0;
+      transition: all 0.3s ease-in-out;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    }
 
-      &:hover .tooltip-text {
-          visibility: visible;
-          scale: 1;
-      }
+    &:hover .tooltip-text {
+      visibility: visible;
+      scale: 1;
+    }
   }
 }
-.icon-display{
+.icon-display {
   display: flex;
   margin-left: 30px;
 }
@@ -181,32 +175,25 @@ tr{
   display: inline-block;
 }
 
-.approve:hover{
+.approve:hover {
   cursor: pointer;
-  circle{
+  circle {
     stroke: rgb(23, 231, 23);
   }
-  path{
+  path {
     stroke: rgb(23, 231, 23);
   }
 }
 
-.reject:hover{
+.reject:hover {
   cursor: pointer;
-  circle{
+  circle {
     stroke: rgb(245, 42, 42);
-
-
-
   }
-  path{
+  path {
     stroke: rgb(245, 42, 42);
-
-
   }
 }
-
-
 
 .green-background {
   color: #188a18;
@@ -214,10 +201,7 @@ tr{
 
 .red-background {
   color: #fc3a36;
-
 }
-
-
 
 .eye-button {
   background: none;
@@ -230,11 +214,8 @@ tr{
   transition: stroke 0.3s ease-in-out;
 }
 
-
 /* Define colors for risk statuses */
 .open {
-
-
   color: red;
   font-weight: bold;
   // padding: 10px;
@@ -246,7 +227,6 @@ tr{
 }
 
 .closed {
-
   color: green;
   font-weight: bold;
   // padding: 10px;
@@ -262,7 +242,6 @@ tr{
 }
 
 .green-risk {
-
   color: green;
   // font-weight: bold;
   // padding: 5px;
@@ -273,7 +252,6 @@ tr{
 }
 
 .yellow-risk {
-
   color: rgb(189, 189, 7);
   // font-weight: bold;
   // padding: 5px;
@@ -284,7 +262,6 @@ tr{
 }
 
 .red-risk {
-
   color: red;
   // font-weight: bold;
   // padding: 5px;
@@ -292,11 +269,7 @@ tr{
   // text-align: center;
   // height: 35px;
   // width: 65px;
-
 }
-
-
-
 
 /* Toggle Switch */
 .toggle-container {
@@ -329,7 +302,7 @@ tr{
 
       &:before {
         position: absolute;
-        content: '';
+        content: "";
         height: 14px;
         width: 14px;
         left: 3px;
@@ -350,7 +323,6 @@ tr{
   }
 }
 
-
 .active-status {
   color: green;
   background-color: rgb(207, 235, 207); /* Green for Active */
@@ -358,7 +330,6 @@ tr{
   border-radius: 5px;
   width: 70px;
   text-align: center;
-
 }
 
 .inactive-status {
@@ -393,7 +364,7 @@ tr{
   thead th {
     .skeleton-cell {
       height: 24px;
-      background-color: rgba(190, 190, 190, 0.3);
+      background-color: var(--secondary-color);
     }
   }
 
@@ -408,7 +379,8 @@ tr{
     width: 100%;
     border-collapse: collapse;
 
-    th, td {
+    th,
+    td {
       padding: 12px;
       border-bottom: 1px solid #e5e7eb;
     }
@@ -423,26 +395,6 @@ tr{
     background-position: 0 50%;
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 .header-with-filter {
   display: flex;
@@ -509,5 +461,11 @@ tr{
     color: white;
   }
 }
-
-
+.pagination {
+  width: 100%;
+  position: sticky;
+  // bottom: 0;
+  top: 100%;
+  left: 0;
+  z-index: 1;
+}

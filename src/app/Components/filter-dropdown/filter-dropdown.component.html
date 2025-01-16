@@ -1,0 +1,43 @@
+<div class="filter-container">
+    <div class="header-content">
+      {{ headerName }}
+      <button class="filter-button" (click)="toggleDropdown($event)">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path d="M6 9l6 6 6-6"/>
+        </svg>
+      </button>
+    </div>
+    
+    <div class="dropdown-menu" *ngIf="isOpen">
+      <div class="search-box">
+        <input 
+          type="text" 
+          [(ngModel)]="searchText" 
+          (input)="filterOptions()"
+          placeholder="Search..."
+        >
+      </div>
+      <div class="options-list">
+        <label class="option">
+          <input 
+            type="checkbox" 
+            [checked]="selectAll" 
+            (change)="toggleSelectAll()"
+          > Select All
+        </label>
+        @for(option of filteredOptions; track option) {
+          <label class="option">
+            <input 
+              type="checkbox" 
+              [checked]="selectedOptions.includes(option)"
+              (change)="toggleOption(option)"
+            > {{ option }}
+          </label>
+        }
+      </div>
+      <div class="filter-actions">
+        <button (click)="applyFilter()">Apply</button>
+        <button (click)="clearFilter()">Clear</button>
+      </div>
+    </div>
+  </div>
