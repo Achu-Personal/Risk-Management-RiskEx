@@ -2,31 +2,36 @@
 .table-container {
   padding: 0;
   border-radius: 5px;
-  background: #ffffff;
-  // box-shadow: 0px 1px 3px #979797;
+  background:transparent;
   // border: 1px solid #D0C6B6;
-  height: 70%;
   width: 88%;
   font-family: "Arial", sans-serif;
   position: fixed;
   overflow-y: auto;
-  margin-left: -20px;
+  // margin-left: -20px;
+}
+.tablestyle {
+  height: auto;
+  box-shadow: 0px .5px 4px #979797;
 }
 thead {
   tr {
     z-index: 10;
+    
   }
 }
 .bord {
   position: sticky;
   top: 0;
   z-index: 20; //1000
-
 }
 
 .tabledata {
   width: 100%;
   border-collapse: collapse;
+  border-spacing: 0 8px;
+ 
+
   background: #ffffff;
   margin: 0;
 }
@@ -52,6 +57,10 @@ thead {
   font-size: 13px;
   padding: 10px 15px;
   text-align: left;
+}
+.tabledata tbody tr{
+  border-bottom: 1px solid #f1e7e7;
+  border-spacing: 0 8px;
 }
 
 .tabledata tbody tr:hover {
@@ -106,9 +115,12 @@ tbody tr:hover {
   cursor: pointer;
 }
 tbody {
-  tr {
+  tr  {
     z-index: -1;
     overflow-y: auto;
+    // border-bottom: 1px solid #f1e7e7;
+    
+  
   }
 }
 
@@ -449,9 +461,11 @@ tbody {
     color: white;
   }
 }
-.pagination{
-width: 100%;
-position: sticky;
-bottom: 0;
-z-index: 1;
+.pagination {
+  width: 100%;
+  position: sticky;
+  // bottom: 0;
+  top: 100%;
+  left: 0;
+  z-index: 1;
 }

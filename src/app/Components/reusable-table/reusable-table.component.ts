@@ -27,7 +27,7 @@ export class ReusableTableComponent {
   @Input() tableData: any[] = [];
   @Input() IsActionRequiered: boolean = false;
   @Input() IsUser: boolean = false;
-  @Input() height: any = '70%';
+  @Input() height: any = '65%';
   @Input() IsAssignee: boolean = false;
   @Input() headerDisplayMap: any = this.tableHeaders;
   @Input() noDataMessage: string = 'No Data Available';
