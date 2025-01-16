@@ -55,7 +55,7 @@ export class EmailService {
       map((response: any) => {
         console.log('Email sent successfully', response);
         // alert('Email sent to the reviewer successfully');
-        this.notificationService.success('Email sent to the reviewer successfully');
+        this.notificationService.success('The risk has been submitted to the reviewer for approval.');
         return true; // Return success
       }),
       catchError((error) => {
@@ -145,7 +145,7 @@ export class EmailService {
     return this.api.sendMail(email, subject, body).pipe(
       map((response:any) => {
         console.log('Email sent successfully', response);
-        this.notificationService.success('Email sent to the risk owner successfully');
+        this.notificationService.success('Notify the risk owner that the risk has been rejected.');
         return true; // Return success
       }),
       catchError((error) => {

@@ -185,6 +185,7 @@ export class ApprovalTableComponent {
       approvalStatus: "Approved",
       comments: event.comment
     };
+    this.notification.success("The risk has Approved successfully")
     let id = event.row.id;
     this.api.updateReviewStatusAndComments(id,updates);
     this.cdr.detectChanges();
@@ -240,6 +241,7 @@ export class ApprovalTableComponent {
       approvalStatus: "Rejected",
       comments: event.comment
     };
+    this.notification.success("The risk has Approved successfully")
     let id = event.row.id;
     this.api.updateReviewStatusAndComments(id,updates);
 

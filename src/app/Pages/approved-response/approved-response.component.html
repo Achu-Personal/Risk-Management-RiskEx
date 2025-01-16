@@ -1,13 +1,26 @@
 <div class="body">
-    <!-- <div class="thank-you-container">
-        <div class="thank-you-card">
-            <h1>Thank You!</h1>
-            <p>We appreciate your response. Your response will us be updated and will do the nexessary actions</p>
-            <a href="/" class="home-button">Go Back to Home</a>
+    <!-- Reason Input Section -->
+    <div *ngIf="!isReasonSubmitted" class="response-container">
+      <h2 style="color: rgba(14, 14, 14, 0.774);">Please Enter Your Comments</h2>
+      <form [formGroup]="ApprovalForm" (ngSubmit)="submitReason()">
+        <div class="input-container">
+          <textarea
+            formControlName="reason"
+            placeholder="Please enter your comments..."
+            class="reason-input"
+          ></textarea>
+          <div *ngIf="reasonControl?.invalid && reasonControl?.touched" class="error-message">
+            Please enter your comments
+          </div>
+          
+          <button type="submit" [disabled]="ApprovalForm.invalid">Submit</button>
         </div>
-    </div> -->
-    <div class="response-container">
-        <div class="response-card">
+      </form>
+    </div>
+  
+    <!-- Confirmation Message Section -->
+    <div *ngIf="isReasonSubmitted" class="response-card">
+        <!-- <div class="response-card"> -->
             <div class="response-icon">
                 <!-- Display a checkmark for approval or cross for rejection -->
                 <span id="responseIcon">✔️</span>
@@ -18,4 +31,21 @@
             <!-- <a href="/" class="home-button">Back to Dashboard</a> -->
         </div>
     </div>
-</div>
+  <!-- </div> -->
+  
+
+<!-- <div class="body">
+
+    <div class="response-container">
+        <div class="response-card">
+            <div class="response-icon">
+                Display a checkmark for approval or cross for rejection -->
+                <!-- <span id="responseIcon">✔️</span>
+            </div>
+            <h1 id="responseTitle">Risk Approved</h1>
+            <p id="responseMessage">Your response for the Risk has been <span id="responseStatus">recorded, </span>
+            Thank you for taking prompt action to review and approve this risk.</p> -->
+            <!-- <a href="/" class="home-button">Back to Dashboard</a> -->
+        <!-- </div> -->
+    <!-- </div> -->
+<!-- </div> --> 
