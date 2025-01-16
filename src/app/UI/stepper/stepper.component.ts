@@ -1,17 +1,29 @@
-import { Component, Input, SimpleChanges, OnChanges, EventEmitter, Output, OnInit } from '@angular/core';
+import {
+  Component,
+  Input,
+  SimpleChanges,
+  OnChanges,
+  EventEmitter,
+  Output,
+  OnInit,
+  KeyValueDiffers,
+  KeyValueDiffer,
+  ChangeDetectorRef,
+} from '@angular/core';
 import { Step } from '../../Interfaces/Stepper.interface';
-import { DatePipe,SlicePipe } from '@angular/common';
+import { DatePipe, SlicePipe } from '@angular/common';
 
 @Component({
   selector: 'app-stepper',
   standalone: true,
-  imports: [DatePipe,SlicePipe],
+  imports: [DatePipe, SlicePipe],
   templateUrl: './stepper.component.html',
   styleUrls: ['./stepper.component.scss'], // Corrected "styleUrl" to "styleUrls"
 })
-export class StepperComponent{
+export class StepperComponent {
   @Output() stepCompleted = new EventEmitter<number>();
   @Input() steps: Step[] = [];
+  myListDiffer?: KeyValueDiffer<string, any>;
   currentStep = 1;
 
   // ngOnChanges(changes: SimpleChanges) {
@@ -23,21 +35,52 @@ export class StepperComponent{
   //     });
   //   }
   // }
+  constructor(
+    private differs: KeyValueDiffers,
+    private cdRef: ChangeDetectorRef
+  ) {}
 
-  ngOnInit(){
-    console.log("steps=",this.steps)
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['steps']) {
+      // Handle initial changes or significant list modifications
+     // console.log('steps changed:', this.steps);
+      this.myListDiffer = this.differs.find(this.steps).create();
+    }
+  }
 
-    setTimeout(()=>{
+  ngDoCheck() {
+    if (this.myListDiffer) {
+      const changes = this.myListDiffer.diff(this.steps);
+      if (changes) {
+        changes.forEachChangedItem((change) => {
+          console.log(`Object with id ${change.key} changed:`);
+          console.log('Previous Value:', change.previousValue);
+          console.log('Current Value:', change.currentValue);
 
-      this.steps.forEach((e:any)=>{
+          // Handle specific property changes within the object
+        });
+      }
 
-        if(e.isCompleted)
-        {
-          this.completeStep(e.id)
+      console.log('stepsafter=', this.steps);
+
+      this.steps.forEach((e: any) => {
+        if (e.isCompleted) {
+          this.completeStep(e.id);
         }
-    })
-    },1000)
+      });
+    }
+  }
 
+  ngOnInit() {
+    console.log('steps=', this.steps);
+
+    setTimeout(() => {
+      this.steps.forEach((e: any) => {
+        if (e.isCompleted) {
+          this.completeStep(e.id);
+        }
+      });
+    }, 1000);
   }
 
   completeStep(stepId: number) {

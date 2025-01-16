@@ -44,7 +44,7 @@ export class RiskDetailsSection2Component {
         title: 'Open',
         isCompleted: false,
         actionBy: '...',
-        date: '2025-01-03 05:04:00.059418+00',
+        date: '...',
         stepNumber: '01'
       },
       {
@@ -68,7 +68,7 @@ export class RiskDetailsSection2Component {
         title: 'Post Review',
         isCompleted: false,
         actionBy: '...',
-        date: '.....',
+        date: '...',
         stepNumber: '04'
       },
       {
@@ -76,7 +76,7 @@ export class RiskDetailsSection2Component {
         title: 'Closed',
         isCompleted: false,
         actionBy: '...',
-        date: '.....',
+        date: '...',
         stepNumber: '05'
       }
     ]
@@ -100,13 +100,14 @@ export class RiskDetailsSection2Component {
 
         this.stepperData[1].actionBy = e.actionBy;
         this.stepperData[1].isCompleted = e.isReviewed >= 2 ? true : false;
-        this.stepperData[1].date = e.isReviewed == 4 ? e.date : "....";
+        this.stepperData[1].date = e.isReviewed >= 2 ? e.date : "...";
+
       });
       this.api.getReviewSatus(id!, false).subscribe((e: any) => {
         console.log('ReviewSatusafter', e);
-        this.stepperData[3].actionBy = e.isReviewed == 4 ?this.UpdatedBy: '....' ;
+        this.stepperData[3].actionBy = e.isReviewed == 4 ?this.UpdatedBy: '...' ;
         this.stepperData[3].isCompleted = e.isReviewed == 4 ? true : false;
-        this.stepperData[3].date = e.date;
+        this.stepperData[3].date = e.isReviewed == 4? e.date : "...";
 
 
       if (this.RiskStatus == 'close') {
