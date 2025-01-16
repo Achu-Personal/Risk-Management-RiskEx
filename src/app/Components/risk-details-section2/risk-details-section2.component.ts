@@ -100,13 +100,14 @@ export class RiskDetailsSection2Component {
 
         this.stepperData[1].actionBy = e.actionBy;
         this.stepperData[1].isCompleted = e.isReviewed >= 2 ? true : false;
-        this.stepperData[1].date = e.isReviewed == 4 ? e.date : "....";
+        this.stepperData[1].date = e.isReviewed >= 2 ? e.date : "....";
+
       });
       this.api.getReviewSatus(id!, false).subscribe((e: any) => {
         console.log('ReviewSatusafter', e);
         this.stepperData[3].actionBy = e.isReviewed == 4 ?this.UpdatedBy: '....' ;
         this.stepperData[3].isCompleted = e.isReviewed == 4 ? true : false;
-        this.stepperData[3].date = e.date;
+        this.stepperData[3].date = e.isReviewed == 4? e.date : "....";
 
 
       if (this.RiskStatus == 'close') {
