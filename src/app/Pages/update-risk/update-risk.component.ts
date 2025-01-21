@@ -52,9 +52,9 @@ ngOnInit(){
     this.overallRiskRatingBefore = params['overallRiskRatingBefore'];
 
   });
-  if( this.riskType='Quality'){
+  if( this.riskType==='Quality'){
     this.riskTypeId=1
-  }else if(this.riskType='Security'){
+  }else if(this.riskType==='Security'){
     this.riskTypeId=2
   }else{
     this.riskTypeId=3
