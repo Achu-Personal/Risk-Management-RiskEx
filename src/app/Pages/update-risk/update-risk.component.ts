@@ -206,7 +206,7 @@ ngOnInit(){
   sendReviewerMailOnClose(){
     this.api.getRevieverDetails(Number(this.riskId),'ApprovalPending').subscribe((r:any)=>{
 
-      console.log("response:",r);
+      console.log("response on update to get reviewer details:",r);
 
       console.log('reviewer details fetching');
 
@@ -239,7 +239,7 @@ ngOnInit(){
         // Send email to reviewer
         this.email.sendReviewerEmail(r[0].email, this.context).subscribe({
           next: () => {
-            console.log('Reviewer Email:', r.email);
+            console.log('Reviewer Email:', r[0].email);
             console.log('Email Sent Successfully.');
           },
           error: (emailError) => {
