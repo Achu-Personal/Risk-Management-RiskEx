@@ -136,7 +136,7 @@ ngOnInit(){
         next: (res: any) => {
           console.log("Updated quality API response:", res);
           this.isSuccess = true;
-          this.sendReviewerMailOnClose();
+          // this.sendReviewerMailOnClose();
         },
         error: (error: HttpErrorResponse) => {
           this.isError = true;
@@ -153,6 +153,7 @@ ngOnInit(){
         },
         complete: () => {
           console.log("Update quality risk request completed.");
+          this.sendReviewerMailOnClose();
         }
       });
     console.log("riskid:",Number(this.riskId));
@@ -163,7 +164,7 @@ ngOnInit(){
         next: (res: any) => {
           console.log("Updated security API response:", res);
           this.isSuccess = true;
-          this.sendReviewerMailOnClose();
+          // this.sendReviewerMailOnClose();
         },
         error: (error: HttpErrorResponse) => {
           this.isError = true;
@@ -180,6 +181,7 @@ ngOnInit(){
         },
         complete: () => {
           console.log("Update security risk request completed.");
+          this.sendReviewerMailOnClose();
         }
       });
     }
