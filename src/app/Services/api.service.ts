@@ -20,7 +20,9 @@ import { AuthService } from './auth.service';
 export class ApiService {
   private readonly baseUrl = 'https://risk-management-riskex-backend-2.onrender.com/api';
   private departmentUpdateSubject = new Subject<void>();
+  private projectUpdateSubject = new Subject<void>();
   departmentUpdate$ = this.departmentUpdateSubject.asObservable();
+  projectUpdate$ = this.projectUpdateSubject.asObservable();
 
   constructor(private http: HttpClient, public auth: AuthService) {}
 
@@ -118,7 +120,11 @@ export class ApiService {
   }
 
   addNewProject(project: any) {
-    return this.http.post(`${this.baseUrl}/Project/Project`, project);
+    return this.http.post(`${this.baseUrl}/Project/Project`, project)
+    .pipe(tap(() => this.projectUpdateSubject.next()));
+  }
+  notifyProjectUpdate(){
+    this.projectUpdateSubject.next();
   }
 
   addNewUser(user: any) {
@@ -394,7 +400,7 @@ updateDepartment(updateData: any) {
 }
 
 updateProject(updateData: any, id: number) {
-  return this.http.put<{ message: string }>(`${this.baseUrl}/Project/${id}`, updateData);
+  return this.http.put<{ message: string }>(`${this.baseUrl}/Project/${id}`, updateData).pipe(tap(() => this.projectUpdateSubject.next()));;
 }
 
 getUsersByDepartmentId(departmentId:number){
