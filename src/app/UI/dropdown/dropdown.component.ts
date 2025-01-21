@@ -220,6 +220,7 @@ export class DropdownComponent implements ControlValueAccessor {
 
   @Input() options: any[] = [];
   @Input() displayField: string = '';
+  @Input() codeField: string = '';
   @Input() valueField: string = '';
   @Input() selectValue: string = 'Select an option';
   @Input() width: string = '100%';

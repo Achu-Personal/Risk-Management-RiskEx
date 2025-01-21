@@ -120,19 +120,19 @@ export class ISMSFormComponent {
 constructor(private api:ApiService,public authService:AuthService,private el: ElementRef,private router: Router){}
 
 ngOnInit(){
-  this.api.getNewRiskId(Number(this.departmentId)).subscribe({
-    next: (res: any) => {
-      if (res && res.riskId) {
-        this.riskId = res.riskId;
-        console.log("Risk ID received:", this.riskId);  // Log the riskId to see if it's what you expect
-      } else {
-        console.error("Risk ID is not available in the response:", res);
-      }
-    },
-    error: (err) => {
-      console.error("Error occurred while fetching Risk ID:", err);  // Log the full error to see what went wrong
-    }
-  });
+  // this.api.getNewRiskId(Number(this.departmentId)).subscribe({
+  //   next: (res: any) => {
+  //     if (res && res.riskId) {
+  //       this.riskId = res.riskId;
+  //       console.log("Risk ID received:", this.riskId);  // Log the riskId to see if it's what you expect
+  //     } else {
+  //       console.error("Risk ID is not available in the response:", res);
+  //     }
+  //   },
+  //   error: (err) => {
+  //     console.error("Error occurred while fetching Risk ID:", err);  // Log the full error to see what went wrong
+  //   }
+  // });
     this.loadDraft();
 
 
@@ -354,7 +354,29 @@ ismsForm=new FormGroup({
   plannedActionDate:new FormControl('',Validators.required),
 })
 
-onSubmit(){
+async onSubmit(){
+  if (this.isAdmin === 'Admin') {
+    if (this.projectId != 0) {
+      await this.getRiskId(Number(this.departmentIdForAdminToAdd), this.projectId);
+    } else {
+      await this.getRiskId(Number(this.departmentIdForAdminToAdd));
+    }
+  } else {
+    if (this.projectId != 0) {
+      await this.getRiskId(Number(this.departmentId), this.projectId);
+    } else {
+      await this.getRiskId(Number(this.departmentId));
+    }
+  }
+
+  if (!this.riskId) {
+    console.error("Failed to fetch Risk ID. Submission aborted.");
+    return;
+  }
+
+
+
+
   console.log(this.ismsForm.value);
   const formValue = this.ismsForm.value;
 
@@ -633,6 +655,30 @@ const payload = {
 
 
 }
+
+private getRiskId(departmentId: number, projectId: number | null = null): Promise<void> {
+  return new Promise((resolve, reject) => {
+    this.api.getNewRiskId(departmentId, projectId).subscribe({
+      next: (res: any) => {
+        if (res && res.riskId) {
+          this.riskId = res.riskId;
+          console.log("Risk ID received:", this.riskId);
+          resolve();
+        } else {
+          console.error("Risk ID is not available in the response:", res);
+          this.riskId = ''; // Reset riskId if invalid
+          reject("Invalid Risk ID");
+        }
+      },
+      error: (err) => {
+        console.error("Error occurred while fetching Risk ID:", err);
+        this.riskId = ''; // Reset riskId if an error occurs
+        reject(err);
+      },
+    });
+  });
+}
+
 
 
 

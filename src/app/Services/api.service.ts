@@ -378,11 +378,17 @@ export class ApiService {
     );
   }
 
-  getNewRiskId(id:number){
-    return this.http.get(`${this.baseUrl}/Risk/riskid/new/${id}`)
+  getNewRiskId(departmentId: any,projectId: any | null = null){
+    const params: any = { departmentId: departmentId };
+
+    // Add projectId to the parameters only if it's not null
+    if (projectId !== null) {
+      params.projectId = projectId;
+    }
+    return this.http.get(`https://localhost:7216/api/Risk/riskid/new/Id`,{ params })
   }
 
-
+  // https://localhost:7216/api/Risk/riskid/new/Id/6?projectId=26
 
 updateDepartment(updateData: any) {
   return this.http.put(`${this.baseUrl}/Department`, updateData).pipe(tap(() => this.departmentUpdateSubject.next()));;
