@@ -45,7 +45,7 @@ export class UsersComponent {
   id:any
   isLoading = true;
   confirmationMessage: string = '';
- confirmationCallback: () => void = () => {};
+
 
   headerData: string[] = [];
   headerDataDpt:string[]=['fullName','email','projects'];
@@ -107,8 +107,13 @@ tableBody:any[]=[
     });
   }
 
+  confirmationCallback: () => void = () => {};
+
   handleModalComplete() {
     this.refreshUsersData();
+  }
+  private normalizeWhitespace(value: string): string {
+    return value?.trim() || '';
   }
 
 
@@ -227,11 +232,11 @@ tableBody:any[]=[
 
 
   loadProjectsForDepartment(department: string) {
-    this.api.getProjects(department).subscribe(
+    const normalizedDepartment = this.normalizeWhitespace(department);
+    this.api.getProjects(normalizedDepartment).subscribe(
       (res) => {
         if (res && res.length > 0) {
           this.projects = res;
-          console.log('Projects loaded for department:', this.projects);
         } else {
           console.log('No projects found for the selected department');
           this.projects = [];
@@ -249,8 +254,10 @@ tableBody:any[]=[
     if (this.departmentForm.valid) {
       this.confirmationMessage = 'Are you sure you want to add this department?';
       this.confirmationCallback = () => {
-        const departmentData = this.departmentForm.value;
-
+        const departmentData = {
+          name: this.normalizeWhitespace(this.departmentForm.get('name')?.value),
+          departmentCode: this.normalizeWhitespace(this.departmentForm.get('departmentCode')?.value)
+        };
         this.api.addNewDepartment(departmentData).subscribe({
           next: (response) => {
             this.departmentForm.reset();
@@ -304,9 +311,9 @@ tableBody:any[]=[
       this.confirmationMessage = 'Are you sure you want to add this user?';
       this.confirmationCallback = () => {
         const userData = {
-          email: formData.email?.trim(),
-          fullName: formData.fullName?.trim(),
-          departmentName: formData.departmentName?.trim(),
+          email: this.normalizeWhitespace(formData.email),
+          fullName: this.normalizeWhitespace(formData.fullName),
+          departmentName: this.normalizeWhitespace(formData.departmentName),
           projectIds: Array.isArray(formData.projectIds)
             ? formData.projectIds.map((project: any) =>
                 typeof project === 'object' ? project.id : project
@@ -316,7 +323,6 @@ tableBody:any[]=[
 
         this.api.addNewUser(userData).subscribe({
           next: (response) => {
-            console.log('User creation response:', response);
             this.resetUserForm();
             this.refreshUsersData();
 
@@ -457,9 +463,12 @@ tableBody:any[]=[
 
    onDepartmentSelect(dept: department) {
     if (dept) {
-      this.updateDepartmentForm.patchValue({
-        newDepartmentName: dept.departmentName,
-        newDepartmentCode: dept.departmentCode
+      const normalizedDeptName = this.normalizeWhitespace(dept.departmentName);
+      const normalizedDeptCode = this.normalizeWhitespace(dept.departmentCode);
+
+     this.updateDepartmentForm.patchValue({
+        newDepartmentName: normalizedDeptName,
+        newDepartmentCode: normalizedDeptCode
       });
     }
   }
@@ -471,9 +480,9 @@ tableBody:any[]=[
       this.confirmationMessage = 'Are you sure you want to update this department?';
       this.confirmationCallback = () => {
         const updateData = {
-          departmentName: this.updateDepartmentForm.get('departmentName')?.value,
-          newDepartmentName: this.updateDepartmentForm.get('newDepartmentName')?.value,
-          newDepartmentCode: this.updateDepartmentForm.get('newDepartmentCode')?.value
+          departmentName: this.normalizeWhitespace(this.updateDepartmentForm.get('departmentName')?.value),
+          newDepartmentName: this.normalizeWhitespace(this.updateDepartmentForm.get('newDepartmentName')?.value),
+          newDepartmentCode: this.normalizeWhitespace(this.updateDepartmentForm.get('newDepartmentCode')?.value)
         };
 
         this.api.updateDepartment(updateData).subscribe({
@@ -523,7 +532,7 @@ tableBody:any[]=[
 
   onProjectSelect(project: project) {
     if (project) {
-      this.id = project.id; // Save the project ID
+      this.id = project.id;
       this.updateProjectForm.patchValue({
         newProjectName: project.name,
         newProjectCode: project.projectCode
@@ -598,6 +607,6 @@ tableBody:any[]=[
   }
 
   onProjectsSelected(projects: project[]) {
-    console.log('Selected projects:', projects);
+    // console.log('Selected projects:', projects);
   }
 }

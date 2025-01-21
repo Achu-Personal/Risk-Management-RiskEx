@@ -4,6 +4,7 @@ import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/f
 import { ApiService } from '../../Services/api.service';
 import { project } from '../../Interfaces/projects.interface';
 import { AuthService } from '../../Services/auth.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-single-project-dropdown',
@@ -29,6 +30,8 @@ export class SingleProjectDropdownComponent implements OnChanges, ControlValueAc
   projects: project[] = [];
   disabled = false;
   loading = false;
+  private subscription: Subscription = new Subscription();
+
 
   private onChange: any = () => {};
   private onTouched: any = () => {};
@@ -53,6 +56,17 @@ export class SingleProjectDropdownComponent implements OnChanges, ControlValueAc
     this.loading = false;
     this.emitChanges();
   }
+  ngOnInit(){
+    this.loadProjectsForDepartment();
+
+    this.subscription.add(this.api.projectUpdate$.subscribe(() => {
+      this.loadProjectsForDepartment();
+    })
+  );
+  }
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
 
   loadProjectsForDepartment() {
     this.loading = true;
@@ -62,7 +76,7 @@ export class SingleProjectDropdownComponent implements OnChanges, ControlValueAc
       next: (response: project[]) => {
         this.projects = response;
         this.loading = false;
-        console.log('Projects fetched successfully:', this.projects);
+        // console.log('Projects fetched successfully:', this.projects);
       },
       error: (error) => {
         console.error('Failed to fetch projects', error);

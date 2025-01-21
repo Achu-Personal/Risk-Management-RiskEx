@@ -117,9 +117,10 @@ export class RiskDetailsSection2Component {
       }
       });
       this.api.getMitigationSatus(id!).subscribe((e: any) => {
+        console.log('MitigationSatus', e);
         this.stepperData[2].actionBy = e.actionBy;
         this.stepperData[2].isCompleted = e.isMitigated;
-        this.stepperData[2].date = e.date;
+        this.stepperData[2].date = e.isMitigated? e.date:'...';
       });
 
     });

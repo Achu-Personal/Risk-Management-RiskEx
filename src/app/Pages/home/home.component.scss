@@ -7,12 +7,16 @@
   flex-direction: column;
   height: 100%;
   width: 100%;
+
+  position: relative;
+
   // overflow: hidden;
   // box-sizing: border-box;
   // max-width: 100vw; /* Prevent horizontal overflow */
   // max-height: 100vh; /* Prevent vertical overflow */
 }
 .topbuttons{
+  justify-self: start;
   display: flex;
   // position: sticky;
   flex-direction: row;
@@ -22,9 +26,10 @@
   padding: 0;
   padding: 0;
   position: sticky;
+  right: 0;
   top: 0; /* Adjust this based on how far from the top you want it to stick */
-  margin-right: 7px;
-  background-color: transparent; /* Optional: Add a background to prevent overlap artifacts */
+
+  background-color:var(--primary-color); /* Optional: Add a background to prevent overlap artifacts */
   z-index: 1; /* Optional: Ensures it stays above elements with lower z-index */
   // margin-right: 7px;
   // padding-right: 40px;
@@ -407,4 +412,29 @@ color: grey;
   color: gray;
   text-align: center;
   margin-top: 70px;
+}
+
+
+.shimmer-container
+{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.shimmer {
+  background-color: #eee; /* Base color */
+  background-image: linear-gradient(to right, #ededed 0%, #fff 20%, #ecebeb 40%);
+  background-size: 800px 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 20px;
+
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -400px 0;
+  }
+  100% {
+    background-position: 400px 0;
+  }
 }

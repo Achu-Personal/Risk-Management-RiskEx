@@ -50,7 +50,7 @@ export class ReusableTableComponent {
     public api: ApiService,
     private cdr: ChangeDetectorRef
   ) {
-    
+
   }
 
   rowKeys: string[] = [];
@@ -61,21 +61,21 @@ export class ReusableTableComponent {
     this.isDepartmentUser = role === 'DepartmentUser';
     this.isAdmin = role === 'Admin';
     if (this.tableData && this.tableData.length > 0) {
-      
+
       this.rowKeys = Object.keys(this.tableData[0]);
     }
-  
+
   }
   ngOnChanges(changes: SimpleChanges) {
     // Check if tableData input has changed
     if (changes['tableData'] && changes['tableData'].currentValue) {
       // Store the original data whenever tableData changes
       this.originalTableData = [...changes['tableData'].currentValue];
-      console.log('Original Table Data updated:', this.originalTableData);
+      // console.log('Original Table Data updated:', this.originalTableData);
     }
     if (changes['tableData'] ) {
       this.tableData1=[...this.tableData]
-      console.log("tabledata1",this.tableData1)
+      // console.log("tabledata1",this.tableData1)
       this.totalItems = this.tableData1.length;
       this.updatePaginatedItems();
       }
@@ -170,7 +170,7 @@ export class ReusableTableComponent {
   currentPage = 1;
   totalItems: number = 0;
   shouldDisplayPagination(): boolean {
-    console.log("lenght",this.tableData1.length)
+    // console.log("length",this.tableData1.length)
     return this.tableData1.length > this.itemsPerPage;
   }
   onPageChange(page: number): void {
@@ -184,9 +184,9 @@ export class ReusableTableComponent {
     const endIndex = startIndex + this.itemsPerPage;
     this.tableData = this.tableData1.slice(startIndex, endIndex);
     // this.tableData=[...this.table];
-    console.log("insie",this.tableData)
+    // console.log("insie",this.tableData)
     this.totalItems = this.tableData1.length;
-    console.log("totalitems:",this.totalItems)
+    // console.log("totalitems:",this.totalItems)
     this.cdr.markForCheck();
   }
   //-----------------filter ----------------------//
@@ -235,10 +235,10 @@ export class ReusableTableComponent {
   applyFilter(column: string, value: string) {
     if (value === 'Select All') {
       delete this.activeFilters[column]; // Clear the filter for this column
-  
+
     } else {
       this.activeFilters[column] = value; // Apply the specific filter
-      
+
 
     }
     this.filterData();
@@ -265,7 +265,7 @@ export class ReusableTableComponent {
 
     this.tableData = filteredData;
   }
- 
+
   // Close dropdown when clicking outside
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: Event): void {

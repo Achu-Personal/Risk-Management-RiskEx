@@ -185,11 +185,14 @@ export class ApprovalTableComponent {
       approvalStatus: "Approved",
       comments: event.comment
     };
+    this.notification.success("The risk has Approved successfully")
     let id = event.row.id;
     this.api.updateReviewStatusAndComments(id,updates);
     this.cdr.detectChanges();
     this.cdr.markForCheck();
     console.log("risk status:",event.row.riskStatus);
+    this.refershTableData();
+
 
     if(event.row.riskStatus==='open'){
       this.api.getAssigneeByRiskId(id).subscribe((res:any)=>{
@@ -240,8 +243,11 @@ export class ApprovalTableComponent {
       approvalStatus: "Rejected",
       comments: event.comment
     };
+    this.notification.success("The risk has rejected successfully")
     let id = event.row.id;
     this.api.updateReviewStatusAndComments(id,updates);
+    this.refershTableData();
+
 
     if(event.row.riskStatus==='open' || event.row.riskStatus==='close'){
       this.api.getriskOwnerEmailandName(id).subscribe((res:any)=>{
