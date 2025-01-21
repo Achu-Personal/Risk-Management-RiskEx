@@ -54,7 +54,6 @@ export class EmailService {
     return this.api.sendMail(email, subject, body).pipe(
       map((response: any) => {
         console.log('Email sent successfully', response);
-        // alert('Email sent to the reviewer successfully');
         this.notificationService.success('The risk has been submitted to the reviewer for approval.');
         return true; // Return success
       }),
