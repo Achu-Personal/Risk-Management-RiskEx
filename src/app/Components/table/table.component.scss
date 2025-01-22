@@ -407,12 +407,15 @@ tbody {
 .dropdown-options {
   position: absolute;
   margin-top: 6px;
+  right: 0; /* Align to the left side of the container */
+  // top: 100%;
   list-style: none;
   background-color: #fff;
   border: 1px solid #ddd;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 0;
-  width: 180px;
+  // width: auto;
+  min-width: 180px;
   max-height: 240px;
   overflow-y: auto;
   border-radius: 6px; /* Softer corners for an elegant look */
