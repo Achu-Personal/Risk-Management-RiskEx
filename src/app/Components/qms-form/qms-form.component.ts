@@ -87,19 +87,6 @@ export class QMSFormComponent {
 
   constructor(private el: ElementRef, private renderer: Renderer2, private api:ApiService,private router: Router){}
   ngOnInit(){
-    this.api.getNewRiskId(Number(this.departmentId)).subscribe({
-      next: (res: any) => {
-        if (res && res.riskId) {
-          this.riskId = res.riskId;
-          console.log("Risk ID received:", this.riskId);  // Log the riskId to see if it's what you expect
-        } else {
-          console.error("Risk ID is not available in the response:", res);
-        }
-      },
-      error: (err) => {
-        console.error("Error occurred while fetching Risk ID:", err);  // Log the full error to see what went wrong
-      }
-    });
 
     this.loadDraft();
 
@@ -237,7 +224,25 @@ export class QMSFormComponent {
   }
 
 
-  onSubmit(){
+  async onSubmit(){
+        if (this.isAdmin === 'Admin') {
+          if (this.projectId != 0) {
+            await this.getRiskId(Number(this.departmentIdForAdminToAdd), this.projectId);
+          } else {
+            await this.getRiskId(Number(this.departmentIdForAdminToAdd));
+          }
+        } else {
+          if (this.projectId != 0) {
+            await this.getRiskId(Number(this.departmentId), this.projectId);
+          } else {
+            await this.getRiskId(Number(this.departmentId));
+          }
+        }
+
+        if (!this.riskId) {
+          console.error("Failed to fetch Risk ID. Submission aborted.");
+          return;
+        }
 
     console.log(this.qmsForm.value);
 
@@ -269,31 +274,8 @@ export class QMSFormComponent {
 
     const formValue = this.qmsForm.value;
     const payload = {
-      // riskId:this.riskId ,
-      // riskName: formValue.riskName ,
-      // description: formValue.description,
-      // riskType:Number(this.riskTypeValue) ,
-      // impact: formValue.impact ,
-      // mitigation: formValue.mitigation,
-      // contingency: formValue.contingency || " ",
-      // OverallRiskRatingBefore:Number(this.overallRiskRating) ,
-      // responsibleUserId:Number(this.responsiblePersonId)!=0 ?Number(this.responsiblePersonId):Number(this.preSelectedResponsiblePerson!=0) ? Number(this.preSelectedResponsiblePerson): Number(this.newAssigneeId),
-      // plannedActionDate: `${formValue.plannedActionDate}T00:00:00.000Z` ,
-      // departmentId:Number(this.departmentId)!=0 ?  Number(this.departmentId) : Number(this.departmentIdForAdminToAdd),
-      // projectId:Number(this.projectId)!=0 ? Number(this.projectId):Number(this.preSelectedProject!=0)? Number(this.preSelectedProject): null,
-      // riskAssessments: [
-      //   {
-      //     likelihood:this.likelihoodId? Number(this.likelihoodId):Number(this.preSelectedLikelihood) ,
-      //     impact:this.impactValue? Number(this.impactId):Number(this.preSelectedImpact) ,
-      //     isMitigated: false,
-      //     assessmentBasisId:null,
-      //     riskFactor:Number(this.riskFactor) ,
-      //     review: {
-      //       userId: this.isInternal && Number(this.internalReviewerIdFromDropdown)!=0? Number(this.internalReviewerIdFromDropdown) : null,
-      //       externalReviewerId:Number(this.externalReviewerIdFromInput) ?  Number(this.externalReviewerIdFromInput):!this.isInternal&&Number(this.externalReviewerIdFromDropdown)!=0?Number(this.externalReviewerIdFromDropdown): null,
-      //       comments:" ",
-      //       reviewStatus:1,
-      riskId: this.riskId,
+
+  riskId: this.riskId,
   riskName: formValue.riskName,
   description: formValue.description,
   riskType: Number(this.riskTypeValue),
@@ -309,11 +291,11 @@ export class QMSFormComponent {
             ? Number(this.newAssigneeId)
             : null,
   plannedActionDate: `${formValue.plannedActionDate}T00:00:00.000Z`,
-  departmentId: (Number(this.departmentId) !== 0 && !isNaN(Number(this.departmentId)))
+  departmentId:(Number(this.departmentIdForAdminToAdd) && !isNaN(Number(this.departmentIdForAdminToAdd)))
+  ? Number(this.departmentIdForAdminToAdd):
+  (Number(this.departmentId) !== 0 && !isNaN(Number(this.departmentId)))
     ? Number(this.departmentId)
-    : (Number(this.departmentIdForAdminToAdd) && !isNaN(Number(this.departmentIdForAdminToAdd)))
-      ? Number(this.departmentIdForAdminToAdd)
-      : null,
+     : null,
   projectId: (Number(this.projectId) !== 0 && !isNaN(Number(this.projectId)))
     ? Number(this.projectId)
     : (this.preSelectedProject !== 0 && !isNaN(Number(this.preSelectedProject)))
@@ -346,6 +328,29 @@ export class QMSFormComponent {
 
     localStorage.removeItem('draftQuality'); // Delete draft after saving
   console.log('Draft Removed!');
+  }
+
+  private getRiskId(departmentId: number, projectId: number | null = null): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.api.getNewRiskId(departmentId, projectId).subscribe({
+        next: (res: any) => {
+          if (res && res.riskId) {
+            this.riskId = res.riskId;
+            console.log("Risk ID received:", this.riskId);
+            resolve();
+          } else {
+            console.error("Risk ID is not available in the response:", res);
+            this.riskId = ''; // Reset riskId if invalid
+            reject("Invalid Risk ID");
+          }
+        },
+        error: (err) => {
+          console.error("Error occurred while fetching Risk ID:", err);
+          this.riskId = ''; // Reset riskId if an error occurs
+          reject(err);
+        },
+      });
+    });
   }
 
 

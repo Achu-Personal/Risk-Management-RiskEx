@@ -49,6 +49,8 @@ export class HomeComponent {
         Criticality:any=[]
         graph2options:any
 
+         isAllDataFetched=0;
+
 
 
 
@@ -61,6 +63,9 @@ export class HomeComponent {
 
       ApiInvocations()
       {
+
+
+
 
         console.log("role",this.authService.getProjects())
 
@@ -112,6 +117,8 @@ export class HomeComponent {
           console.log("OpenRiskCount",e)
           this.cdr.detectChanges()
 
+          this.isAllDataFetched++;
+
         })
 
         this.api.getRiskCategoryCountsByDepartment(isAdminOrEMTuser?[] :[parseInt(this.authService.getDepartmentId()!) ],isProjectUser?this.authService.getProjects().map(item => item.Id):[]).subscribe((e:any)=>{
@@ -151,6 +158,7 @@ export class HomeComponent {
               this.graph2labels=this.risk
               console.log("criticalitylevel",e)
               this.cdr.detectChanges()
+              this.isAllDataFetched++;
         })
 
 
@@ -186,18 +194,21 @@ export class HomeComponent {
               this.graph2labels=riskCat
               console.log("criticalitylevel",e)
               this.cdr.detectChanges()
+              this.isAllDataFetched++;
           })
 
             this.api.getRiskApproachingDeadline(isAdminOrEMTuser?[] :[parseInt(this.authService.getDepartmentId()!) ],isProjectUser?this.authService.getProjects().map(item => item.Id):[]).subscribe((e:any)=>{
             this.riskApproachingDeadline=e
             console.log("approaching",e)
             this.cdr.detectChanges()
+            this.isAllDataFetched++;
             })
 
             this.api.getRisksWithHeigestOverallRating(isAdminOrEMTuser?[] :[parseInt(this.authService.getDepartmentId()!) ],isProjectUser?this.authService.getProjects().map(item => item.Id):[]).subscribe((e:any)=>{
             this.risksWithHeighesOverallRating=e
             console.log("heigest",e)
             this.cdr.detectChanges()
+            this.isAllDataFetched++;
           })
       }
 
@@ -219,6 +230,8 @@ export class HomeComponent {
 
         GetSelectedDepartment(event:any)
         {
+
+          this.isAllDataFetched=0;
             console.log("Selected Departments=",event)
 
             this.api.getRiskCategoryCountsByDepartment(event,[]).subscribe((e:any)=>{
@@ -279,6 +292,7 @@ export class HomeComponent {
                   this.graph2labels=this.risk
                   console.log("criticalitylevel",e)
                   this.cdr.detectChanges()
+                  this.isAllDataFetched++;
             })
 
 
@@ -298,17 +312,20 @@ export class HomeComponent {
 
                 console.log("OpenRiskCount",e)
                 this.cdr.detectChanges()
+                this.isAllDataFetched++;
               })
 
               this.api.getRisksWithHeigestOverallRating(event,[]).subscribe((e:any)=>{
                 this.risksWithHeighesOverallRating=e
                 console.log("heigest",e)
                 this.cdr.detectChanges()
+                this.isAllDataFetched++;
               })
 
               this.api.getRiskApproachingDeadline(event,[]).subscribe((e:any)=>{
                 this.riskApproachingDeadline=e
                 console.log("approaching",e)
+                this.isAllDataFetched++;
                 })
 
         }

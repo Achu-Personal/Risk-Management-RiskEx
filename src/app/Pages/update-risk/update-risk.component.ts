@@ -52,9 +52,9 @@ ngOnInit(){
     this.overallRiskRatingBefore = params['overallRiskRatingBefore'];
 
   });
-  if( this.riskType='Quality'){
+  if( this.riskType==='Quality'){
     this.riskTypeId=1
-  }else if(this.riskType='Security'){
+  }else if(this.riskType==='Security'){
     this.riskTypeId=2
   }else{
     this.riskTypeId=3
@@ -136,7 +136,7 @@ ngOnInit(){
         next: (res: any) => {
           console.log("Updated quality API response:", res);
           this.isSuccess = true;
-          this.sendReviewerMailOnClose();
+          // this.sendReviewerMailOnClose();
         },
         error: (error: HttpErrorResponse) => {
           this.isError = true;
@@ -153,6 +153,7 @@ ngOnInit(){
         },
         complete: () => {
           console.log("Update quality risk request completed.");
+          this.sendReviewerMailOnClose();
         }
       });
     console.log("riskid:",Number(this.riskId));
@@ -163,7 +164,7 @@ ngOnInit(){
         next: (res: any) => {
           console.log("Updated security API response:", res);
           this.isSuccess = true;
-          this.sendReviewerMailOnClose();
+          // this.sendReviewerMailOnClose();
         },
         error: (error: HttpErrorResponse) => {
           this.isError = true;
@@ -180,6 +181,7 @@ ngOnInit(){
         },
         complete: () => {
           console.log("Update security risk request completed.");
+          this.sendReviewerMailOnClose();
         }
       });
     }
@@ -190,6 +192,11 @@ ngOnInit(){
     this.isError = false;
     // this.router.navigate(['/home']);
   }
+
+  closeDialogSuccess(){
+    this.router.navigate(['/home']);
+  }
+
   getReviewerNameandEmail(
     id: number,
     status: string,
@@ -206,7 +213,7 @@ ngOnInit(){
   sendReviewerMailOnClose(){
     this.api.getRevieverDetails(Number(this.riskId),'ApprovalPending').subscribe((r:any)=>{
 
-      console.log("response:",r);
+      console.log("response on update to get reviewer details:",r);
 
       console.log('reviewer details fetching');
 
@@ -239,7 +246,7 @@ ngOnInit(){
         // Send email to reviewer
         this.email.sendReviewerEmail(r[0].email, this.context).subscribe({
           next: () => {
-            console.log('Reviewer Email:', r.email);
+            console.log('Reviewer Email:', r[0].email);
             console.log('Email Sent Successfully.');
           },
           error: (emailError) => {

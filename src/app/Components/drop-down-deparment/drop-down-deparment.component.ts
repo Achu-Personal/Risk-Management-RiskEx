@@ -51,7 +51,6 @@ export class DropDownDeparmentComponent implements OnInit, ControlValueAccessor 
 
     this.subscription.add(
       this.api.departmentUpdate$.subscribe(() => {
-        console.log('Department update detected, refreshing list...');
         this.loadDepartments();
       })
     );
@@ -67,7 +66,6 @@ export class DropDownDeparmentComponent implements OnInit, ControlValueAccessor 
           a.departmentName.localeCompare(b.departmentName)
         );
         this.filteredDepartments = [...this.departments];
-        console.log('Departments fetched and sorted:', this.departments);
       },
       error: (error) => {
         console.error('Failed to fetch departments', error);
@@ -92,7 +90,6 @@ export class DropDownDeparmentComponent implements OnInit, ControlValueAccessor 
       this.onTouched();
       this.dropdownOpen = false;
 
-      // Emit the full department object
       this.departmentSelected.emit(dept);
     }
   }
