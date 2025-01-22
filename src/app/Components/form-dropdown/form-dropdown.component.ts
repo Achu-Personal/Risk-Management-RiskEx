@@ -15,6 +15,7 @@ export class FormDropdownComponent {
   @Input() dropdownDisplay:string=''
   @Input() dropdownValue:string=''
    @Input() dropdownCode:string=''
+    @Input() showInfoButton:boolean=false
   @Input() label:string=''
   @Input() required:string=''
   @Input() selectValue:string=''
