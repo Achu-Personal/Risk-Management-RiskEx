@@ -1,4 +1,4 @@
-import { Component, Input, input } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, input } from '@angular/core';
 import { OverallRatingCardComponent } from "../../UI/overall-rating-card/overall-rating-card.component";
 import { RiskStatusCardComponent } from "../../UI/risk-status-card/risk-status-card.component";
 import { EditButtonComponent } from "../../UI/edit-button/edit-button.component";
@@ -6,6 +6,7 @@ import {  Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { UpdateButtonComponent } from "../../UI/update-button/update-button.component";
 import { AuthService } from '../../Services/auth.service';
+import { ApiService } from '../../Services/api.service';
 
 @Component({
   selector: 'app-risk-basic-details-card',
@@ -16,11 +17,20 @@ import { AuthService } from '../../Services/auth.service';
 })
 export class RiskBasicDetailsCardComponent {
 
-  constructor(public router :Router,public authService:AuthService)
+  constructor(public router :Router,public authService:AuthService,public api:ApiService,private cdr: ChangeDetectorRef)
   {
 
   }
 
+  ngOnInit()
+  {
+    this.api.getReviewSatus(this.allData.id,true).subscribe((e)=>{
+
+      this.Reviewstatus=e
+      console.log("review status",e);
+      this.cdr.detectChanges()
+    })
+  }
 
   @Input() riskNumber=""
   @Input()riskType=""
@@ -31,6 +41,8 @@ export class RiskBasicDetailsCardComponent {
   @Input() riskStatus=""
   @Input() isEditable=true;
   @Input() allData:any={}
+
+  @Input() Reviewstatus:any={}
 
 
 

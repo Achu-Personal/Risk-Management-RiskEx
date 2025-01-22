@@ -1,12 +1,16 @@
 
-.main{
-
-}
+// .main{
+//  margin-top: -10px;
+// }
+// app-body-container{
+//   margin-top: -10px;
+// }
 .dashboard{
   display: flex;
   flex-direction: column;
   height: 100%;
   width: 100%;
+  gap: 20px;
 
   position: relative;
 
@@ -18,28 +22,16 @@
 .topbuttons{
   justify-self: start;
   display: flex;
-  // position: sticky;
   flex-direction: row;
   gap: 0px;
-  // height: 80px;
   justify-content: end;
-  padding: 0;
   padding: 0;
   position: sticky;
   right: 0;
   top: 0; /* Adjust this based on how far from the top you want it to stick */
 
-  background-color:transparent; /* Optional: Add a background to prevent overlap artifacts */
+  background-color:var(--primary-color); /* Optional: Add a background to prevent overlap artifacts */
   z-index: 1; /* Optional: Ensures it stays above elements with lower z-index */
-  // margin-right: 7px;
-  // padding-right: 40px;
-  // padding-top: 70px;
-  // position: fixed; /* Fixes the element in place relative to the viewport */
-  // top: 10px; /* Adjust the position vertically */
-  // right: 7px; /* Adjust the position horizontally */
-  // margin: 0; /* Ensure no extra space is added */
-  // z-index: 1000; /* Ensure it stays on top of other elements */
-
 }
 .dropdown{
   display: flex;
@@ -74,7 +66,7 @@ app-department-dropdown{
   justify-content: space-around;
   gap: 15px;
   // gap: 10px;
-  height: 90%;
+  height: 50%;
   width: 100%;
   margin-top: 15px;
   // padding-top: 40px;
@@ -82,7 +74,7 @@ app-department-dropdown{
 
 .graph1{
   background-color:var(--accent-color) ;
-  height: 88%;
+  height: 40vh;
   width: 55%;
   border-radius: 20px;
   display: flex;
@@ -94,8 +86,8 @@ app-department-dropdown{
 .leftside{
   display: flex;
   flex-direction: column;
-  gap: 115px;
-  justify-content: space-around;
+
+  justify-content: space-between;
   padding: 30px;
   // background-color: #4D4D4D;
 }
@@ -104,6 +96,7 @@ app-department-dropdown{
   // padding: 15px;
   h4{
     font-weight: 600;
+    font-size: 2.5vh;
   }
 }
 
@@ -115,6 +108,7 @@ app-department-dropdown{
   span{
     font-weight: bold;
     width: 120px;
+    font-size: 2.3vh;
   }
   h6{
     font-weight: bold;
@@ -133,7 +127,7 @@ app-department-dropdown{
 }
 .labels{
   // background-color: red;
-  margin-top: -25px;
+
 }
 .privacy-risk {
   background-color:#6742c1;
@@ -158,16 +152,26 @@ app-department-dropdown{
 }
 .graph2{
   background-color: #FFFFFF;
-  height: 88%;
+  height: 40vh;
   width: 45%;
   border-radius: 20px;
   overflow: hidden;
 }
 .riskratingcategory{
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+
+  height: 100%;
+  padding: 20px;
   h4{
     color: #000000;
     font-weight: 600;
-    padding: 30px;
+
+    font-size: 2.5vh;
+    margin: 0px;
+
   }
 }
 .forchart{
@@ -176,13 +180,15 @@ app-department-dropdown{
   align-items: center;
   // overflow: hidden;
   width: 350px;
-  height: 200px;
-  margin-top: -25px;
+
+
   margin-left: 60px;
+
   // background-color: red;
 }
 .graphchart{
   overflow: hidden;
+
 
 }
 .riskdetails{
@@ -191,8 +197,8 @@ app-department-dropdown{
   justify-content: space-around;
   gap: 15px;
   // gap: 10px;
-  margin-top: -20px;
-  height: 45%;
+
+  height: 50%;
   width: 100%;
 
 }

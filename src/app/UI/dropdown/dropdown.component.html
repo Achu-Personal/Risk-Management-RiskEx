@@ -33,6 +33,7 @@
         class="dropdown-item"
         (click)="$event.stopPropagation()">
         {{ item[displayField] }}
+        <span *ngIf="item[codeField]"> ({{ item[codeField] }})</span>
       </div>
     </div>
   </div>

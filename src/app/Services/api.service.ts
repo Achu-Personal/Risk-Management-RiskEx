@@ -213,11 +213,9 @@ export class ApiService {
     );
   }
 
-  updateReviewStatusAndComments(id: number, updates: any) {
+  updateReviewStatusAndComments(id: number, updates: any): Observable<any> {
     console.log('updates', updates);
-    this.http
-      .put(`${this.baseUrl}/Approval/update-review/${id}`, updates)
-      .subscribe((e) => console.log(e));
+    return this.http.put(`${this.baseUrl}/Approval/update-review/${id}`, updates);
   }
 
   sendEmailToAssignee(id: number) {
@@ -389,10 +387,15 @@ export class ApiService {
     );
   }
 
-  getNewRiskId(id:number){
-    return this.http.get(`${this.baseUrl}/Risk/riskid/new/${id}`)
-  }
+  getNewRiskId(departmentId: any,projectId: any | null = null){
+    const params: any = { departmentId: departmentId };
 
+    // Add projectId to the parameters only if it's not null
+    if (projectId !== null) {
+      params.projectId = projectId;
+    }
+    return this.http.get(`${this.baseUrl}/Risk/riskid/new/Id`,{ params })
+  }
 
 
 updateDepartment(updateData: any) {

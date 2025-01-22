@@ -192,6 +192,11 @@ ngOnInit(){
     this.isError = false;
     // this.router.navigate(['/home']);
   }
+
+  closeDialogSuccess(){
+    this.router.navigate(['/home']);
+  }
+
   getReviewerNameandEmail(
     id: number,
     status: string,

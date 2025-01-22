@@ -13,8 +13,9 @@
         {
           <app-edit-button image="fa-solid fa-pen" [ngStyle]="{'display':isEditable?'flex':'none'}"  (onClick)="onEditButtonClicked()"></app-edit-button>
 
-          @if(allData.riskStatus=="open")
+          @if(allData.riskStatus=="open"&&Reviewstatus.isReviewed>=2)
           {
+
             <app-edit-button image="fa-solid fa-rotate" [ngStyle]="{'display':isEditable?'flex':'none'}"  (onClick)="onUpdateButtonCLick()"></app-edit-button>
 
           }

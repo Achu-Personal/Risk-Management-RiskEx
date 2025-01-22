@@ -1,12 +1,11 @@
-<app-body-container class="main" backgroundColor="transparent" padding="5" [showShadow]="false">
+<app-body-container class="main" backgroundColor="transparent" padding="0" [showShadow]="false">
   <div class="dashboard">
     <div class="topbuttons">
       <div class="dropdown">
-        <app-department-dropdown *ngIf="authService.getUserRole() === 'Admin'|| authService.getUserRole()?.includes('EMTUser')    "
+        <app-department-dropdown *ngIf="authService.getUserRole() === 'Admin'|| authService.getUserRole()?.includes('EMTUser')"
           (departmentsSelected)="GetSelectedDepartment($event)"></app-department-dropdown>
       </div>
       <div class="registerrisk">
-
         <app-style-button *ngIf="!authService.getUserRole()?.includes('EMTUser')" (clicked)="OnRegisterRiskButtonCLicked()" label="Register Risk"></app-style-button>
       </div>
     </div>
@@ -97,10 +96,10 @@
     @else {
       <div class="shimmer-container">
         <div style="display: flex;flex-direction: row; gap: 10px;">
-          <div  class="shimmer" style="height: 40vh;width: 50%;">
+          <div  class="shimmer" style="height: 40vh;width: 60%;">
 
           </div>
-          <div  class="shimmer" style="height: 40vh;width: 50%;">
+          <div  class="shimmer" style="height: 40vh;width: 40%;">
 
           </div>
         </div>
@@ -124,6 +123,8 @@
 
   </div>
 </app-body-container>
+
+
 
 
 

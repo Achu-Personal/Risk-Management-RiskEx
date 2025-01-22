@@ -36,6 +36,7 @@
       </table>
     </div>
   </div>
+
 <ng-container *ngIf="!isLoading && hasValidData(); else noData">
 
   <div class="container1">
@@ -102,7 +103,7 @@
                 @for(type of uniqueReviewStatus;track type){
                 <li
                   (click)="onReviewStatusSelect(type)">
-                  {{ type }}
+                  {{ type  }}
                 </li>
               }
                 <li (click)="onReviewStatusSelect('')">All  Review Status</li>
@@ -155,41 +156,40 @@
           }
         </tr>
       </thead>
+        <tbody>
+          @for(item of paginated ;track item.id){
 
-      <tbody>
+          <tr (click)="rowClick(item.id)" style="height:10px;">
+            <td>{{ ((currentPage-1)*10)+($index+1) }}</td>
+            <td title={{item.riskName}}>{{ item.riskName | slice:0:25 }}</td>
+            @if(!isDepartmentUser){
+            <td>{{ item.departmentName }}</td>
+            }
+            <td>{{ item.riskType }}</td>
+            <td>{{ item.plannedActionDate| date: 'd MMM yyyy' }}</td>
+            @if(item.overallRiskRatingAfter !== null){
+            <td><div [ngClass]="{'green': item.overallRiskRatingAfter >=0 && item.overallRiskRatingAfter <= 30  , 'red': item.overallRiskRatingAfter > 99, 'yellow': item.overallRiskRatingAfter > 30 && item.overallRiskRatingAfter <= 99}">{{ item.overallRiskRatingAfter }}</div></td>
+            }
+            @else{
+            <td><div [ngClass]="{'green': item.overallRiskRatingBefore >=0 && item.overallRiskRatingBefore <= 30  , 'red': item.overallRiskRatingBefore > 99, 'yellow': item.overallRiskRatingBefore > 30 && item.overallRiskRatingBefore <= 99}">{{ item.overallRiskRatingBefore }}</div></td>
+            }
+            <td>{{ item.responsibleUser }}</td>
+            <td> {{item.riskAssessments[0].reviewer}}</td>
 
-        @for(item of paginated ;track item.id){
-        <tr (click)="rowClick(item.id)" style="height:10px;">
-          <td>{{ ((currentPage-1)*10)+($index+1) }}</td>
-          <td title={{item.riskName}}>{{ item.riskName | slice:0:25 }}</td>
-          @if(!isDepartmentUser){
-          <td>{{ item.departmentName }}</td>
-          }
-          <td>{{ item.riskType }}</td>
-          <td>{{ item.plannedActionDate| date: 'd MMM yyyy' }}</td>
-          @if(item.overallRiskRatingAfter !== null){
-          <td><div [ngClass]="{'green': item.overallRiskRatingAfter >=0 && item.overallRiskRatingAfter <= 30  , 'red': item.overallRiskRatingAfter > 99, 'yellow': item.overallRiskRatingAfter > 30 && item.overallRiskRatingAfter <= 99}">{{ item.overallRiskRatingAfter }}</div></td>
-          }
-          @else{
-          <td><div [ngClass]="{'green': item.overallRiskRatingBefore >=0 && item.overallRiskRatingBefore <= 30  , 'red': item.overallRiskRatingBefore > 99, 'yellow': item.overallRiskRatingBefore > 30 && item.overallRiskRatingBefore <= 99}">{{ item.overallRiskRatingBefore }}</div></td>
-          }
-          <td>{{ item.responsibleUser }}</td>
-          <td> {{item.riskAssessments[0].reviewer}}</td>
+            <td> {{reviewStatusMap[item.riskAssessments[0].reviewStatus] }}</td>
+            @if(!isButtonVisible){
+            <td><div [ngClass]="{'red-cell': item.riskStatus === 'open', 'green-cell': item.riskStatus === 'close'}">{{ item.riskStatus }}</div></td>
+            }
+            @if(isButtonVisible){
+              <td><div [ngClass]="{'green-cell': item.residualRisk === 'Low','yellow-cell': item.residualRisk === 'Medium', 'red-cell': item.residualRisk === 'High'}">{{ item.residualRisk }}</div></td>
 
-          <td> {{reviewStatusMap[item.riskAssessments[0].reviewStatus] }}</td>
-          @if(!isButtonVisible){
-          <td><div [ngClass]="{'red-cell': item.riskStatus === 'open', 'green-cell': item.riskStatus === 'close'}">{{ item.riskStatus }}</div></td>
-          }
-          @if(isButtonVisible){
-            <td><div [ngClass]="{'green-cell': item.residualRisk === 'Low','yellow-cell': item.residualRisk === 'Medium', 'red-cell': item.residualRisk === 'High'}">{{ item.residualRisk }}</div></td>
+              <!-- <td>{{ item.responsibleUser }}</td>
+              <td>{{ item.percentageRedution }}</td> -->
+            }
 
-            <!-- <td>{{ item.responsibleUser }}</td>
-            <td>{{ item.percentageRedution }}</td> -->
-          }
-
-        </tr>
-      }
-      </tbody>
+          </tr>
+        }
+        </tbody>
     </table>
     </div>
 
