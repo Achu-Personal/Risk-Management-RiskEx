@@ -1,4 +1,4 @@
-import { Component, Input, input } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, input } from '@angular/core';
 import { OverallRatingCardComponent } from "../../UI/overall-rating-card/overall-rating-card.component";
 import { RiskStatusCardComponent } from "../../UI/risk-status-card/risk-status-card.component";
 import { EditButtonComponent } from "../../UI/edit-button/edit-button.component";
@@ -17,15 +17,20 @@ import { ApiService } from '../../Services/api.service';
 })
 export class RiskBasicDetailsCardComponent {
 
-  constructor(public router :Router,public authService:AuthService,private api:ApiService)
+  constructor(public router :Router,public authService:AuthService,public api:ApiService,private cdr: ChangeDetectorRef)
   {
-      api.getReviewSatus(this.allData.id,true).subscribe((e)=>{
 
-        this.Reviewstatus=e
-        console.log("review status",e);
-      })
   }
 
+  ngOnInit()
+  {
+    this.api.getReviewSatus(this.allData.id,true).subscribe((e)=>{
+
+      this.Reviewstatus=e
+      console.log("review status",e);
+      this.cdr.detectChanges()
+    })
+  }
 
   @Input() riskNumber=""
   @Input()riskType=""
