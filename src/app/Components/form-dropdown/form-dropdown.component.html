@@ -1,7 +1,11 @@
 <div class="form-detail" >
   <label for="">{{label}} <span class="required">{{required}}</span>
-    <span class="info-icon" [ngStyle]="{'backgroundColor': backgroundColor}" >ℹ<span class="tooltip-text">{{message}}</span></span>
-
+    <span
+      *ngIf="showInfoButton"
+      class="info-icon"
+      [ngStyle]="{'backgroundColor': backgroundColor}">
+      ℹ<span class="tooltip-text">{{message}}</span>
+    </span>
   </label>
 
   <app-dropdown  [options]="dropdownData"

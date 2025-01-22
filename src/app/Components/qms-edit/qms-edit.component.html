@@ -106,7 +106,7 @@
       <app-form-dropdown label="Responsibility of action" required="*" [dropdownData]="dropdownAssignee" dropdownDisplay="fullName"
       dropdownValue="id" selectValue="Select responsible person" (change)="onDropdownChangeResponsiblePerson($event)" [selectedValue]="preSelectedResponsiblePerson"
       [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)" message="You can select an existing responsible person from the dropdown
-      or enter a new one. If you enter a new name, it will take priority over the dropdown selection." ></app-form-dropdown>
+      or enter a new one. If you enter a new name, it will take priority over the dropdown selection." [showInfoButton]="true" ></app-form-dropdown>
 
 
       @if(isnewAssigneenameDisplay){
@@ -132,7 +132,7 @@
       <app-form-dropdown label="Reviewer" required="*" [dropdownData]="dropdownReviewer" dropdownDisplay="fullName" dropdownValue="fullName"
       selectValue="Select reviewer" (change)="onDropdownChangeReviewer($event)" [selectedValue]="preSelectedReviewer" [openDropdownId]="openDropdownId"
       (openDropdown)="handleDropdownOpen($event)" message="You can select an existing reviewer from the dropdown
-      or enter a new one. If you enter a new name, it will take priority over the dropdown selection." ></app-form-dropdown>
+      or enter a new one. If you enter a new name, it will take priority over the dropdown selection." [showInfoButton]="true" ></app-form-dropdown>
 
       @if(isnewReviewernameDisplay){
         <h6>Reviewer Name: <span style="font-weight: bolder;">{{newReviewername}}</span></h6>
