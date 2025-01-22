@@ -10,6 +10,7 @@
   flex-direction: column;
   height: 100%;
   width: 100%;
+  gap: 20px;
 
   position: relative;
 
@@ -65,7 +66,7 @@ app-department-dropdown{
   justify-content: space-around;
   gap: 15px;
   // gap: 10px;
-  height: 90%;
+  height: 50%;
   width: 100%;
   margin-top: 15px;
   // padding-top: 40px;
@@ -73,7 +74,7 @@ app-department-dropdown{
 
 .graph1{
   background-color:var(--accent-color) ;
-  height: 88%;
+  height: 40vh;
   width: 55%;
   border-radius: 20px;
   display: flex;
@@ -85,8 +86,8 @@ app-department-dropdown{
 .leftside{
   display: flex;
   flex-direction: column;
-  gap: 115px;
-  justify-content: space-around;
+
+  justify-content: space-between;
   padding: 30px;
   // background-color: #4D4D4D;
 }
@@ -95,6 +96,7 @@ app-department-dropdown{
   // padding: 15px;
   h4{
     font-weight: 600;
+    font-size: 2.5vh;
   }
 }
 
@@ -106,6 +108,7 @@ app-department-dropdown{
   span{
     font-weight: bold;
     width: 120px;
+    font-size: 2.3vh;
   }
   h6{
     font-weight: bold;
@@ -124,7 +127,7 @@ app-department-dropdown{
 }
 .labels{
   // background-color: red;
-  margin-top: -25px;
+
 }
 .privacy-risk {
   background-color:#6742c1;
@@ -149,16 +152,26 @@ app-department-dropdown{
 }
 .graph2{
   background-color: #FFFFFF;
-  height: 88%;
+  height: 40vh;
   width: 45%;
   border-radius: 20px;
   overflow: hidden;
 }
 .riskratingcategory{
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+
+  height: 100%;
+  padding: 20px;
   h4{
     color: #000000;
     font-weight: 600;
-    padding: 30px;
+
+    font-size: 2.5vh;
+    margin: 0px;
+
   }
 }
 .forchart{
@@ -167,13 +180,15 @@ app-department-dropdown{
   align-items: center;
   // overflow: hidden;
   width: 350px;
-  height: 200px;
-  margin-top: -25px;
+
+
   margin-left: 60px;
+
   // background-color: red;
 }
 .graphchart{
   overflow: hidden;
+
 
 }
 .riskdetails{
@@ -182,8 +197,8 @@ app-department-dropdown{
   justify-content: space-around;
   gap: 15px;
   // gap: 10px;
-  margin-top: -20px;
-  height: 45%;
+
+  height: 50%;
   width: 100%;
 
 }
