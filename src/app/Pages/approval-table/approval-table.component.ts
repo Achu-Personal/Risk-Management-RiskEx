@@ -185,145 +185,149 @@ export class ApprovalTableComponent {
       approvalStatus: "Approved",
       comments: event.comment
     };
-    this.notification.success("The risk has Approved successfully")
     let id = event.row.id;
-    this.api.updateReviewStatusAndComments(id,updates);
-    this.cdr.detectChanges();
-    this.cdr.markForCheck();
-    console.log("risk status:",event.row.riskStatus);
+
+    this.api.updateReviewStatusAndComments(id, updates).subscribe({
+      next: (response) => {
+        if (event.row.riskStatus === 'open') {
+          this.api.getAssigneeByRiskId(id).subscribe((res: any) => {
+            this.assignee = res;
+            const context = {
+              responsibleUser: this.assignee.fullName,
+              riskId: event.row.riskId,
+              riskName: event.row.riskName,
+              description: event.row.description,
+              riskType: event.row.riskType,
+              plannedActionDate: event.row.plannedActionDate,
+              overallRiskRating: event.row.overallRiskRating,
+              riskStatus: event.row.riskStatus
+            };
+            this.refershTableData();
+
+            this.email.sendAssigneeEmail(this.assignee.email, context).subscribe({
+              next: () => {
+                this.notification.success("The risk has been approved successfully and Email sent to assignee");
+                // this.refershTableData();
+              },
+              error: (emailError) => {
+                console.error('Failed to send email to assignee:', emailError);
+                // this.refershTableData();
+              },
+              complete: () => {
+                this.cdr.markForCheck();
+              }
+            });
+          });
+        } else if (event.row.riskStatus === 'close') {
+          this.notification.success("The risk has been approved and closed successfully");
+          this.refershTableData();
+          this.cdr.markForCheck();
+        }
+      },
+      error: (error) => {
+        console.error('Error updating review status:', error);
+        this.notification.error("Failed to approve risk");
+      }
+    });
+}
 
 
-
-    if(event.row.riskStatus==='open'){
-      this.api.getAssigneeByRiskId(id).subscribe((res:any)=>{
-        this.assignee=res;
-        // console.log(this.assignee);
-        const context = {
-          responsibleUser: this.assignee.fullName,
-          riskId: event.row.riskId,
-          riskName: event.row.riskName,
-          description: event.row.description,
-          riskType:event.row.riskType,
-          plannedActionDate:event.row.plannedActionDate,
-          overallRiskRating:event.row.overallRiskRating,
-          riskStatus:event.row.riskStatus
-        };
-        this.refershTableData();
-
-        console.log("context:",context);
-        this.email.sendAssigneeEmail(this.assignee.email,context).subscribe({
-          next: () => {
-            console.log('Assignee email sent successfully');
-            // this.refershTableData();
-
-          },
-          error: (emailError) => {
-            console.error('Failed to send email to assignee:', emailError);
-            // this.refershTableData();
-
-          }
-        })
-
-      });
-
-      this.cdr.markForCheck();
-
-    }
-    if(event.row.riskStatus==='close'){
-      this.notification.success("The risk has closed successfully");
-      this.refershTableData();
-    }
-
-    // this.api.sendEmailToAssignee(id);
-    console.log('Approved:', event.row);
-    console.log('Comment:', event.comment);
-  }
 
   rejectRisk(event: {row: any, comment: string}) {
     const updates = {
       approvalStatus: "Rejected",
       comments: event.comment
     };
-    this.notification.success("The risk has been rejected")
     let id = event.row.id;
-    this.api.updateReviewStatusAndComments(id,updates);
 
+    this.api.updateReviewStatusAndComments(id, updates).subscribe({
+      next: () => {
+        if (event.row.riskStatus === 'open' || event.row.riskStatus === 'close') {
+          this.api.getriskOwnerEmailandName(id).subscribe({
+            next: (res: any) => {
+              this.assignee = res;
+              const context = {
+                responsibleUser: res[0].name,
+                riskId: event.row.riskId,
+                riskName: event.row.riskName,
+                description: event.row.description,
+                riskType: event.row.riskType,
+                plannedActionDate: event.row.plannedActionDate,
+                overallRiskRating: event.row.overallRiskRating,
+                riskStatus: event.row.riskStatus,
+                reason: event.comment
+              };
+              this.refershTableData();
 
+              this.email.sendOwnerEmail(res[0].email, context).subscribe({
+                next: () => {
+                  if (event.row.riskStatus === 'close') {
+                    this.api.getAssigneeByRiskId(id).subscribe({
+                      next: (assigneeRes: any) => {
+                        const assigneeContext = {
+                          responsibleUser: assigneeRes.fullName,
+                          riskId: event.row.riskId,
+                          riskName: event.row.riskName,
+                          description: event.row.description,
+                          riskType: event.row.riskType,
+                          plannedActionDate: event.row.plannedActionDate,
+                          overallRiskRating: event.row.overallRiskRating,
+                          riskStatus: event.row.riskStatus,
+                          reason: event.comment
+                        };
+                        this.refershTableData();
 
+                        this.email.sendOwnerEmail(assigneeRes.email, assigneeContext).subscribe({
+                          next: () => {
 
-    if(event.row.riskStatus==='open' || event.row.riskStatus==='close'){
-      this.api.getriskOwnerEmailandName(id).subscribe((res:any)=>{
-        this.assignee=res;
-
-        // console.log(this.assignee);
-        const context = {
-          responsibleUser: res[0].name,
-          riskId: event.row.riskId,
-          riskName: event.row.riskName,
-          description: event.row.description,
-          riskType:event.row.riskType,
-          plannedActionDate:event.row.plannedActionDate,
-          overallRiskRating:event.row.overallRiskRating,
-          riskStatus:event.row.riskStatus,
-          reason:event.comment
-        };
-        this.refershTableData();
-        console.log("context:",context);
-        this.email.sendOwnerEmail(res[0].email,context).subscribe({
-          next: () => {
-            console.log('owner email sent successfully');
-            // this.refershTableData();
-            // this.router.navigate(['/thankyou']);
-          },
-          error: (emailError) => {
-            console.error('Failed to send email to risk owner:', emailError);
-            // Navigate to thank you page even if email fails
-            // this.router.navigate(['/thankyou']);
-            // this.refershTableData();
-
-          }
-        })
-
-      });
-    }
-    if(event.row.riskStatus==='close'){
-      this.api.getAssigneeByRiskId(id).subscribe((res:any)=>{
-        this.assignee=res;
-
-        // console.log(this.assignee);
-        const context = {
-          responsibleUser: res.fullName,
-          riskId: event.row.riskId,
-          riskName: event.row.riskName,
-          description: event.row.description,
-          riskType:event.row.riskType,
-          plannedActionDate:event.row.plannedActionDate,
-          overallRiskRating:event.row.overallRiskRating,
-          riskStatus:event.row.riskStatus,
-          reason:event.comment
-        };
-        this.refershTableData();
-        console.log("context:",context);
-        this.email.sendOwnerEmail(res.email,context).subscribe({
-          next: () => {
-            console.log('owner email sent successfully');
-            // this.refershTableData();
-            // this.router.navigate(['/thankyou']);
-          },
-          error: (emailError) => {
-            console.error('Failed to send email to risk owner:', emailError);
-            // this.refershTableData();
-            // Navigate to thank you page even if email fails
-            // this.router.navigate(['/thankyou']);
-          }
-        })
-
-      });
-    }
-
+                            this.notification.success("The risk has been rejected successfully ");
+                            this.cdr.markForCheck();
+                          },
+                          error: (emailError) => {
+                            console.error('Failed to send email to assignee:', emailError);
+                            this.notification.success("The risk has been rejected successfully");
+                            this.refershTableData();
+                            this.cdr.markForCheck();
+                          }
+                        });
+                      },
+                      error: (error) => {
+                        console.error('Failed to get assignee details:', error);
+                        this.notification.success("The risk has been rejected successfully");
+                        this.refershTableData();
+                        this.cdr.markForCheck();
+                      }
+                    });
+                  } else {
+                    this.notification.success("The risk has been rejected successfully");
+                    // this.refershTableData();
+                    this.cdr.markForCheck();
+                  }
+                },
+                error: (emailError) => {
+                  console.error('Failed to send email to risk owner:', emailError);
+                  this.notification.success("The risk has been rejected successfully");
+                  this.refershTableData();
+                  this.cdr.markForCheck();
+                }
+              });
+            },
+            error: (error) => {
+              console.error('Failed to get risk owner details:', error);
+              this.notification.success("The risk has been rejected successfully");
+              this.refershTableData();
+              this.cdr.markForCheck();
+            }
+          });
+        }
+      },
+      error: (error) => {
+        console.error('Error updating review status:', error);
+        this.notification.error("Failed to reject risk");
+      }
+    });
 
     console.log('Rejected:', event.row);
     console.log('Comment:', event.comment);
-    this.cdr.markForCheck();
-  }
+ }
 }
