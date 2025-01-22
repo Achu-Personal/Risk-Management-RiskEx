@@ -54,18 +54,23 @@ export class ThankyouComponent {
     const idParam = this.route.snapshot.paramMap.get('id');
     this.riskId = idParam ? +idParam : 0;
     this.approvalStatus = 'Approved';
-    const updates = {
-      riskId: this.riskId,
-      approvalStatus: 'Approved',
-    };
+    // const updates = {
+    //   riskId: this.riskId,
+    //   approvalStatus: 'Approved',
+    // };
 
-    this.api
-      .updateExternalReivewStatus(updates)
-      .subscribe((e) => console.log(e));
+    // this.api
+    //   .updateExternalReivewStatus(updates)
+    //   .subscribe((e) => console.log(e));
+    const approvalUpdates = {
+      approvalStatus: 'Approved',
+      comments : this.ApprovalComments
+    }  
+    this.api.updateReviewStatusAndComments(this.riskId, approvalUpdates)
     console.log('Risk ID:', this.riskId);
     console.log('Approval Status', this.approvalStatus);
 
-    console.log('Rejection Reason:', this.ApprovalComments);
+    console.log('approval Comment:', this.ApprovalComments);
 
     this.isReasonSubmitted = true;
 
