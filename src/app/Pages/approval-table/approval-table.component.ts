@@ -191,7 +191,7 @@ export class ApprovalTableComponent {
     this.cdr.detectChanges();
     this.cdr.markForCheck();
     console.log("risk status:",event.row.riskStatus);
-    this.refershTableData();
+
 
 
     if(event.row.riskStatus==='open'){
@@ -208,15 +208,18 @@ export class ApprovalTableComponent {
           overallRiskRating:event.row.overallRiskRating,
           riskStatus:event.row.riskStatus
         };
+        this.refershTableData();
 
         console.log("context:",context);
         this.email.sendAssigneeEmail(this.assignee.email,context).subscribe({
           next: () => {
             console.log('Assignee email sent successfully');
+            // this.refershTableData();
 
           },
           error: (emailError) => {
             console.error('Failed to send email to assignee:', emailError);
+            // this.refershTableData();
 
           }
         })
@@ -227,15 +230,13 @@ export class ApprovalTableComponent {
 
     }
     if(event.row.riskStatus==='close'){
-      this.notification.success("The risk has closed successfully")
+      this.notification.success("The risk has closed successfully");
+      this.refershTableData();
     }
-
-
 
     // this.api.sendEmailToAssignee(id);
     console.log('Approved:', event.row);
     console.log('Comment:', event.comment);
-    this.refershTableData();
   }
 
   rejectRisk(event: {row: any, comment: string}) {
@@ -246,7 +247,8 @@ export class ApprovalTableComponent {
     this.notification.success("The risk has rejected successfully")
     let id = event.row.id;
     this.api.updateReviewStatusAndComments(id,updates);
-    this.refershTableData();
+
+
 
 
     if(event.row.riskStatus==='open' || event.row.riskStatus==='close'){
@@ -265,16 +267,20 @@ export class ApprovalTableComponent {
           riskStatus:event.row.riskStatus,
           reason:event.comment
         };
+        this.refershTableData();
         console.log("context:",context);
         this.email.sendOwnerEmail(res[0].email,context).subscribe({
           next: () => {
             console.log('owner email sent successfully');
+            // this.refershTableData();
             // this.router.navigate(['/thankyou']);
           },
           error: (emailError) => {
             console.error('Failed to send email to risk owner:', emailError);
             // Navigate to thank you page even if email fails
             // this.router.navigate(['/thankyou']);
+            // this.refershTableData();
+
           }
         })
 
@@ -296,14 +302,17 @@ export class ApprovalTableComponent {
           riskStatus:event.row.riskStatus,
           reason:event.comment
         };
+        this.refershTableData();
         console.log("context:",context);
         this.email.sendOwnerEmail(res.email,context).subscribe({
           next: () => {
             console.log('owner email sent successfully');
+            // this.refershTableData();
             // this.router.navigate(['/thankyou']);
           },
           error: (emailError) => {
             console.error('Failed to send email to risk owner:', emailError);
+            // this.refershTableData();
             // Navigate to thank you page even if email fails
             // this.router.navigate(['/thankyou']);
           }
@@ -316,6 +325,5 @@ export class ApprovalTableComponent {
     console.log('Rejected:', event.row);
     console.log('Comment:', event.comment);
     this.cdr.markForCheck();
-    this.refershTableData();
   }
 }
