@@ -40,6 +40,7 @@ export class TableComponent {
   isStatusDropdownOpen:boolean =false;
   isReviewStatusDropdownOpen:boolean =false;
   isResidualRiskDropdownOpen:boolean =false;
+  isData:boolean = false;
 
   itemsPerPage = 10;
   currentPage = 1;
@@ -120,7 +121,7 @@ export class TableComponent {
   this.totalItems = this.filteredItems.length;
   this.updatePaginatedItems();
 
-  this.cdr.detectChanges();
+  // this.cdr.detectChanges();
   }, 500); // 300ms debounce
   }
 
@@ -190,27 +191,34 @@ export class TableComponent {
 
   updateUniqueTypes(): void {
 
-    this.uniqueRiskTypes = ["Quality","Privacy","Security"];
+    this.uniqueRiskTypes= [...new Set(this.items.map((item: any) => item.riskType))];
+
   }
   updateUniqueStatus(): void {
 
-    this.uniqueStatus = ["close","open"];
+    this.uniqueStatus = [...new Set(this.items.map((item: any) => item.riskStatus))];
+
   }
   updateUniqueReviewStatus(): void {
 
-    this.uniqueReviewStatus = ["Review Pending","Review Completed","Approval Pending","Approval Completed","Rejected"];
+    this.uniqueReviewStatus = [...new Set(this.items.map((item: any) => this.reviewStatusMap[item.riskAssessments[0].reviewStatus]))];
+
   }
   updateResidualRiskStatus(): void {
 
-    this.uniqueResidual = ["Low","Medium","High"];
+    this.uniqueResidual = [...new Set(this.items.map((item: any) => item.residualRisk))];
+    
   }
 
   updatePaginatedItems(): void {
 
-    if (this.filterTimeout) clearTimeout(this.filterTimeout);
+    // if (this.filterTimeout) clearTimeout(this.filterTimeout);
 
   // this.filterTimeout = setTimeout(() => {
     console.log("insie",this.filteredItems)
+    if(this.filteredItems){
+      this.isData =true;
+    }
     const startIndex = (this.currentPage -1 ) * this.itemsPerPage;
     const endIndex = startIndex + this.itemsPerPage;
     this.paginated = this.filteredItems.slice(startIndex, endIndex);
