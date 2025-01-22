@@ -20,4 +20,15 @@ describe('LoginComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should clear error message and set showError to false', () => {
+
+    component.showError = true;
+    component.errorMessage = "An error occurred";
+
+    component.clearError();
+    
+    expect(component.showError).toBeFalse(); // Verify showError is false
+    expect(component.errorMessage).toBe(""); // Verify errorMessage is cleared
+  });
 });
