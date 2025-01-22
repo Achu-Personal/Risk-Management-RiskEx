@@ -244,7 +244,7 @@ export class ApprovalTableComponent {
       approvalStatus: "Rejected",
       comments: event.comment
     };
-    this.notification.success("The risk has rejected successfully")
+    this.notification.success("The risk has been rejected")
     let id = event.row.id;
     this.api.updateReviewStatusAndComments(id,updates);
 
