@@ -88,7 +88,7 @@ export class ApprovalComponent {
         approvalStatus: "Rejected",
         comments: event.comment 
       };
-      this.notification.success("The risk has Rejected successfully")
+      this.notification.success("The risk has been Rejected ")
       let id = parseInt(this.route.snapshot.paramMap.get('id')!);
       this.api.updateReviewStatusAndComments(id,updates);
       this.showButtons = false;
