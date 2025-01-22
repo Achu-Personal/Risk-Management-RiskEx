@@ -214,7 +214,9 @@ export class ApiService {
   }
 
   updateReviewStatusAndComments(id: number, updates: any): Observable<any> {
-    console.log('updates', updates);
+    console.log('updatesssss', updates);
+    console.log("Id:",id);
+    
     return this.http.put(`${this.baseUrl}/Approval/update-review/${id}`, updates);
   }
 
