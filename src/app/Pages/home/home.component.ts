@@ -10,9 +10,6 @@ import { BubbleGraphComponent } from "../../UI/bubble-graph/bubble-graph.compone
 import { StyleButtonComponent } from "../../UI/style-button/style-button.component";
 import { DashbaordCardContainerComponent } from "../../Components/dashbaord-card-container/dashbaord-card-container.component";
 
-
-
-
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -61,8 +58,6 @@ export class HomeComponent {
 
 
         }
-
-
 
       ApiInvocations()
       {
@@ -121,10 +116,6 @@ export class HomeComponent {
 
         this.api.getRiskCategoryCountsByDepartment(isAdminOrEMTuser?[] :[parseInt(this.authService.getDepartmentId()!) ],isProjectUser?this.authService.getProjects().map(item => item.Id):[]).subscribe((e:any)=>{
           console.log("darat",e)
-
-
-
-
           this.riskCategoryCounts=e
           this.list=e
               const count = this.list.map((element: { count: any; }) => element.count);
@@ -141,7 +132,6 @@ export class HomeComponent {
               return acc;
               }, {});
 
-
               this.graph2datasets=[{
                 data: counter,
 
@@ -150,8 +140,6 @@ export class HomeComponent {
                   '#962DFF',
                   '#C6D2FD',
                   '#E0C6FD'
-
-
                 ],
                 hoverOffset: 10
 
@@ -280,8 +268,6 @@ export class HomeComponent {
                       '#962DFF',
                       '#C6D2FD',
                       '#E0C6FD'
-
-
                     ],
                     hoverOffset: 10
 
@@ -325,22 +311,7 @@ export class HomeComponent {
                 console.log("approaching",e)
                 })
 
-
-
-
         }
-
-
-
-
-
-
-
-
-
-
-
-
 
 }
 

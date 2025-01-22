@@ -1,7 +1,8 @@
 import { BaseChartDirective} from 'ng2-charts';
 import { ChangeDetectorRef, Component, Input, SimpleChanges, ViewChild} from '@angular/core';
-import { Chart, ChartConfiguration, ChartType, registerables } from 'chart.js';
+import { Chart, ChartConfiguration, ChartType, registerables,CategoryScale ,} from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels'; // Import the plugin
+
 
 // Register the components
 Chart.register(...registerables, ChartDataLabels);
@@ -22,9 +23,10 @@ export class ChartComponent {
   @Input() chartRouter: any = '';
   @Input() legend:boolean=true
 
+
   @ViewChild(BaseChartDirective) chart!: BaseChartDirective;
 
-  chartData: ChartConfiguration['data'] = {
+  chartData: ChartConfiguration['data'] & { type?: ChartType } = {
     datasets: [],
     labels: [],
 
@@ -72,9 +74,12 @@ export class ChartComponent {
   };
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['labels'] || changes['datasets']) {
+
+
+    if (changes['labels'] || changes['datasets'] || changes['chartType']) {
       this.chartData.labels = [...this.labels];
       this.chartData.datasets = [...this.datasets];
+      this.chartData.type = this.chartType; // Set the chart type
 
       if (this.chart) {
         this.chart.update();
@@ -87,8 +92,6 @@ export class ChartComponent {
       this.lineChartOptions.plugins.legend = this.lineChartOptions.plugins.legend || {};
       this.lineChartOptions.plugins.legend.display = this.legend;
     }
-
-
   }
 
 }
