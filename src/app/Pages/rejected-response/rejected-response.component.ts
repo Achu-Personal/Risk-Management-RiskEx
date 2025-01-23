@@ -58,14 +58,19 @@ export class RejectedResponseComponent {
     const idParam = this.route.snapshot.paramMap.get('id');
     this.riskId = idParam ? +idParam : 0;
     this.approvalStatus = 'Rejected';
-    const updates = {
-      riskId: this.riskId,
-      approvalStatus: 'Rejected',
-    };
+    // const updates = {
+    //   riskId: this.riskId,
+    //   approvalStatus: 'Rejected',
+    // };
 
-    this.api
-      .updateExternalReivewStatus(updates)
-      .subscribe((e) => console.log(e));
+    // this.api
+    //   .updateExternalReivewStatus(updates)
+    //   .subscribe((e) => console.log(e));
+      const rejectionUpdates = {
+        approvalStatus: 'Rejected',
+        comments : this.rejectionReason
+      }  
+      this.api.updateReviewStatusAndComments(this.riskId, rejectionUpdates)
     console.log('Risk ID:', this.riskId);
     console.log('Approval Status', this.approvalStatus);
     this.api.getRiskById(this.riskId).subscribe((res: any) => {

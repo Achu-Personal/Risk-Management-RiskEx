@@ -213,11 +213,11 @@ export class ApiService {
     );
   }
 
-  updateReviewStatusAndComments(id: number, updates: any) {
-    console.log('updates', updates);
-    this.http
-      .put(`${this.baseUrl}/Approval/update-review/${id}`, updates)
-      .subscribe((e) => console.log(e));
+  updateReviewStatusAndComments(id: number, updates: any): Observable<any> {
+    console.log('updatesssss', updates);
+    console.log("Id:",id);
+    
+    return this.http.put(`${this.baseUrl}/Approval/update-review/${id}`, updates);
   }
 
   sendEmailToAssignee(id: number) {
