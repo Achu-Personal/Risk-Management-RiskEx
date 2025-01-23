@@ -36,7 +36,6 @@ describe('HistoryComponent', () => {
     fixture = TestBed.createComponent(HistoryComponent);
     component = fixture.componentInstance;
 
-    // Setup mock returns
     mockAuthService.getUserRole.and.returnValue('Admin');
     mockAuthService.getDepartmentId.and.returnValue('1');
     mockAuthService.getProjects.and.returnValue([{ Id: 1 }, { Id: 2 }]);
@@ -55,7 +54,7 @@ describe('HistoryComponent', () => {
     });
 
     it('should set roles correctly based on AuthService', () => {
-      // Using assertions without deprecated toBeTrue/toBeFalse
+
       expect(component.isAdmin).toBe(true);
       expect(component.isDepartmentUser).toBe(false);
       expect(component.isProjectUser).toBe(false);
@@ -110,7 +109,6 @@ describe('HistoryComponent', () => {
       expect(component.selectedDateRange).toEqual(dateRange);
     });
 
-    // Testing async data loading state
     it('should show loading state while fetching data', (done) => {
       mockApiService.gethistorytabledata.and.returnValue(of([]).pipe(delay(100)));
       component.isAdmin = true;
@@ -125,7 +123,6 @@ describe('HistoryComponent', () => {
     });
   });
 
-  // Testing template bindings
   describe('template bindings', () => {
     it('should update view when data changes', async () => {
       const mockData = [{ id: 1, name: 'Test Risk' }];
