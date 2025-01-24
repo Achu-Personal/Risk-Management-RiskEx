@@ -12,12 +12,16 @@
           <div *ngIf="reasonControl?.invalid && reasonControl?.touched" class="error-message">
             Please enter your comments
           </div>
-          
-          <button type="submit" [disabled]="ApprovalForm.invalid">Submit</button>
+
+          <button type="submit" [disabled]="ApprovalForm.invalid || isSubmitting">
+            <span *ngIf="!isSubmitting">Submit</span>
+            <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            <span *ngIf="isSubmitting">Loading...</span>
+          </button>
         </div>
       </form>
     </div>
-  
+
     <!-- Confirmation Message Section -->
     <div *ngIf="isReasonSubmitted" class="response-card">
         <!-- <div class="response-card"> -->
@@ -32,7 +36,7 @@
         </div>
     </div>
   <!-- </div> -->
-  
+
 
 <!-- <div class="body">
 
@@ -48,4 +52,4 @@
             <!-- <a href="/" class="home-button">Back to Dashboard</a> -->
         <!-- </div> -->
     <!-- </div> -->
-<!-- </div> --> 
+<!-- </div> -->
