@@ -11,11 +11,55 @@ export class EmailService {
   reviewerEmailTemplate: string = '';
   assigneeEmailTemplate: string = '';
   ownerEmailTemplate: string = '';
+  userRegisterTemplate:string='';
 
   constructor(private api: ApiService,private notificationService: NotificationService) {
     this.loadReviewTemplate();
     this.loadAssigneeTemplate();
     this.loadOwnerTemplate();
+    this.loadUserRegisterTemplate();
+  }
+
+  private async loadUserRegisterTemplate(){
+    try{
+      this.userRegisterTemplate = await fetch(
+        'Templates/RegisterUserTemplate.html'
+      ).then((response) => response.text());
+    }catch (error){
+      console.error('Failed to load email template:', error);
+    }
+  }
+  sendUserRegistrationEmail(email: string, context: any): Observable<boolean> {
+    // console.log('Sending registration email:', {
+    //   email,
+    //   context,
+    //   templateLoaded: !!this.userRegisterTemplate
+    // });
+
+    const subject = 'Your Risk Management System Account Credentials';
+    const body = this.prepareUserRegistrationEmailBody(
+      this.userRegisterTemplate,
+      context
+    );
+
+    return this.api.sendMail(email, subject, body).pipe(
+      map((response: any) => {
+        // console.log('Registration email sent successfully', response);
+        return true;
+      }),
+      catchError((error) => {
+        console.error('Detailed error sending registration email:', {
+          error,
+        });
+        return of(false);
+      })
+    );
+  }
+  private prepareUserRegistrationEmailBody(template: string, context: any): string {
+    return template
+      .replace('{{userEmail}}', context.email)
+      .replace('{{defaultPassword}}', context.defaultPassword)
+      .replace('{{fullName}}', context.fullName);
   }
 
   private async loadReviewTemplate() {
@@ -49,7 +93,7 @@ export class EmailService {
       context
     );
     // console.log("body:",body);
-    
+
 
     return this.api.sendMail(email, subject, body).pipe(
       map((response: any) => {
@@ -133,7 +177,7 @@ export class EmailService {
       .replace('{{plannedActionDate}}', context.plannedActionDate)
       .replace('{{overallRiskRating}}', context.overallRiskRating)
       .replace('{{reason}}', context.reason)
-     
+
 
 
   }

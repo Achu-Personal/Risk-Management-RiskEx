@@ -216,7 +216,7 @@ export class ApiService {
   updateReviewStatusAndComments(id: number, updates: any): Observable<any> {
     console.log('updatesssss', updates);
     console.log("Id:",id);
-    
+
     return this.http.put(`${this.baseUrl}/Approval/update-review/${id}`, updates);
   }
 
@@ -340,6 +340,8 @@ export class ApiService {
     console.log('Sending payload:', payload);
     return this.http.post(`${this.baseUrl}/emails`, payload);
   }
+
+
 
   getAssigneeByRiskId(riskId: number) {
     return this.http.get(
