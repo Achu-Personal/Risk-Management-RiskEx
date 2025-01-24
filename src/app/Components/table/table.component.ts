@@ -6,12 +6,13 @@ import { PaginationComponent } from '../../UI/pagination/pagination.component';
 import { ApiService } from '../../Services/api.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../Services/auth.service';
+import { ResidualRiskStatusStylePipe } from "../../Pipes/residual-risk-status-style.pipe";
 
 @Component({
   selector: 'app-table',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [SearchbarComponent, FormsModule, PaginationComponent, CommonModule],
+  imports: [SearchbarComponent, FormsModule, PaginationComponent, CommonModule, ResidualRiskStatusStylePipe],
   templateUrl: './table.component.html',
   styleUrl: './table.component.scss'
 })
@@ -207,7 +208,7 @@ export class TableComponent {
   updateResidualRiskStatus(): void {
 
     this.uniqueResidual = [...new Set(this.items.map((item: any) => item.residualRisk))];
-    
+
   }
 
   updatePaginatedItems(): void {

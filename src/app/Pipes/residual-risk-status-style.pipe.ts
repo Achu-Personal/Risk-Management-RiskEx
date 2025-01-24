@@ -6,8 +6,13 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class ResidualRiskStatusStylePipe implements PipeTransform {
 
-  transform(value: unknown, ...args: unknown[]): unknown {
-    return null;
+  transform(residualrisk: string): string {
+    switch(residualrisk) {
+      case 'Low': return 'green-cell';
+      case 'Medium': return 'yellow-cell';
+      case 'High': return 'red-cell';
+      default: return '';
+    }
   }
 
 }
