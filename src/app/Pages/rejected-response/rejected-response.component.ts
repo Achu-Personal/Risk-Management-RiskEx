@@ -54,23 +54,12 @@ export class RejectedResponseComponent {
 
 
     this.rejectionReason = this.rejectionForm.value.reason;
-
     console.log('Rejection Reason:', this.rejectionReason);
-
-    this.isReasonSubmitted = true;
-
-
+    // this.isReasonSubmitted = true;
     const idParam = this.route.snapshot.paramMap.get('id');
     this.riskId = idParam ? +idParam : 0;
     this.approvalStatus = 'Rejected';
-    // const updates = {
-    //   riskId: this.riskId,
-    //   approvalStatus: 'Rejected',
-    // };
 
-    // this.api
-    //   .updateExternalReivewStatus(updates)
-    //   .subscribe((e) => console.log(e));
       const rejectionUpdates = {
         approvalStatus: 'Rejected',
         comments : this.rejectionReason
@@ -101,7 +90,6 @@ export class RejectedResponseComponent {
                 overallRiskRating: res.overallRiskRating,
                 reason: this.rejectionReason,
               };
-              // Send email to reviewer
               this.email.sendOwnerEmail(res.createdBy.email, this.context).subscribe({
                 next: () => {
                   console.log('Reviewer Email:', res.createdBy.email);
@@ -133,7 +121,6 @@ export class RejectedResponseComponent {
                 overallRiskRating: res.overallRiskRating,
                 reason: this.rejectionReason,
               };
-              // Send email to reviewer
               this.email.sendOwnerEmail(res.responsibleUser.email, this.context).subscribe({
                 next: () => {
                   console.log('Reviewer Email:', res.responsibleUser.email);
@@ -146,7 +133,7 @@ export class RejectedResponseComponent {
 
             }
           });
-
+          this.isReasonSubmitted = true;
         },error: (error) => {
           console.error('Error updating review status:', error);
           this.notification.error('Failed to Reject risk');

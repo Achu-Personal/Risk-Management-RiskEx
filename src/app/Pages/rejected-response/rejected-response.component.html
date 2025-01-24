@@ -16,8 +16,8 @@
           <button type="submit" [disabled]="rejectionForm.invalid || isSubmitting">
             <span *ngIf="!isSubmitting">Submit Reason</span>
             <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-            <!-- <span *ngIf="isSubmitting">Loading...</span> -->
-             </button>
+            <span *ngIf="isSubmitting">Loading...</span>
+          </button>
         </div>
       </form>
     </div>

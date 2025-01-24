@@ -50,20 +50,12 @@ export class ThankyouComponent {
       this.ApprovalForm.markAllAsTouched();
       return;
     }
-    this.isSubmitting = true; // Set loading state to true
+    this.isSubmitting = true; 
 
     this.ApprovalComments = this.ApprovalForm.value.reason;
     const idParam = this.route.snapshot.paramMap.get('id');
     this.riskId = idParam ? +idParam : 0;
     this.approvalStatus = 'Approved';
-    // const updates = {
-    //   riskId: this.riskId,
-    //   approvalStatus: 'Approved',
-    // };
-
-    // this.api
-    //   .updateExternalReivewStatus(updates)
-    //   .subscribe((e) => console.log(e));
     const approvalUpdates = {
       approvalStatus: 'Approved',
       comments: this.ApprovalComments,
@@ -116,7 +108,7 @@ export class ThankyouComponent {
           this.notification.error('Failed to approve risk');
         },
         complete: () => {
-          this.isSubmitting = false; // Set loading state to false when done
+          this.isSubmitting = false;
         }
       });
     console.log('Risk ID:', this.riskId);
@@ -125,20 +117,4 @@ export class ThankyouComponent {
     console.log('approval Comment:', this.ApprovalComments);
   }
 }
-// ngOnInit(){
-//   // this.api.updateRiskReviewStatus(riskId: number, approvalStatus: string)
-//   const idParam = this.route.snapshot.paramMap.get('id');
-//     this.riskId = idParam ? +idParam : 0;
-//     this.approvalStatus="Approved"
-//     const updates=
-//       {
-//         "riskId": this.riskId,
-//         "approvalStatus": "Approved"
-//       }
 
-//     this.api.updateExternalReivewStatus(updates).subscribe((e)=>console.log(e)
-//     );
-//     console.log('Risk ID:', this.riskId);
-//     console.log('Approval Status', this.approvalStatus);
-
-// }
