@@ -12,12 +12,16 @@
           <div *ngIf="reasonControl?.invalid && reasonControl?.touched" class="error-message">
             Reason is required.
           </div>
-          
-          <button type="submit" [disabled]="rejectionForm.invalid">Submit Reason</button>
+
+          <button type="submit" [disabled]="rejectionForm.invalid || isSubmitting">
+            <span *ngIf="!isSubmitting">Submit Reason</span>
+            <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            <!-- <span *ngIf="isSubmitting">Loading...</span> -->
+             </button>
         </div>
       </form>
     </div>
-  
+
     <!-- Confirmation Message Section -->
     <div *ngIf="isReasonSubmitted" class="response-container">
       <div class="icon-container">
@@ -30,4 +34,3 @@
       </p>
     </div>
   </div>
-  
