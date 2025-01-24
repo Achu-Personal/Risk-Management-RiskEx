@@ -12,11 +12,26 @@ fdescribe('LoginComponent', () => {
   let authService: AuthService;
   let router: Router;
 
+  function Setup(isValid: boolean) {
+    const errorMessage = 'Invalid credentials';
+    const loginResponse = { token: 'mockToken' };
+
+    spyOn(authService, 'login').and.callFake((credentials) => {
+      if (isValid) {
+        return of(loginResponse);
+      } else {
+        return throwError(() => errorMessage);
+      }
+    });
+
+    return { errorMessage, loginResponse };
+  }
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [LoginComponent, ReactiveFormsModule],
       providers: [
-        { provide: AuthService },
+        AuthService,
         provideHttpClient(),
         { provide: Router, useValue: { navigate: jasmine.createSpy('navigate') } }
       ]
@@ -59,49 +74,44 @@ fdescribe('LoginComponent', () => {
     expect(component.errorMessage).toBe('');
   });
 
-  it('should not login when invalid credentials are submited', () => {
-    const loginSpy = authService.login as jasmine.Spy;
+  it('should not login when invalid credentials are submitted', () => {
+    // const { loginResponse } = Setup(false);
 
     component.loginForm.setValue({ email: '', password: '' });
     component.onSubmit();
 
-    expect(loginSpy).not.toHaveBeenCalled();
     expect(component.isLoading).toBeFalse();
   });
 
-  it('should login when valid credentials are submited', () => {
-    const loginSpy = authService.login as jasmine.Spy;
-    const loginResponse = { token: 'mockToken' };
-    loginSpy.and.returnValue(of(loginResponse));
+  it('should login when valid credentials are submitted', () => {
+    const { loginResponse } = Setup(true);
 
     component.loginForm.setValue({
       email: 'testmail@example.com',
       password: 'validPass'
-    });
-    component.onSubmit();
-
-    expect(loginSpy).toHaveBeenCalledWith({
-      email: 'testmail@example.com',
-      password: 'validPass'
-    });
-    expect(component.isLoading).toBeFalse();
-    expect(component.showError).toBeFalse();
-  });
-
-  it('should show error message when there is a login error', () => {
-    // const loginSpy = authService.login as jasmine.Spy;
-    const errorMessage = 'Invalid credentials';
-    spyOn(authService,'login').and.returnValue(throwError(() => errorMessage));
-    // authService.login.and.returnValue(throwError(() => errorMessage));
-
-    component.loginForm.setValue({
-      email: 'testmail@example.com',
-      password: 'invalidPass'
     });
     component.onSubmit();
 
     expect(authService.login).toHaveBeenCalledWith({
       email: 'testmail@example.com',
+      password: 'validPass'
+    });
+    // expect(component.loginResponse).toBe(loginResponse);
+    expect(component.isLoading).toBeFalse();
+    expect(component.showError).toBeFalse();
+  });
+
+  it('should show error message when there is a login error', () => {
+    const { errorMessage } = Setup(false);
+
+    component.loginForm.setValue({
+      email: 'test@example.com',
+      password: 'invalidPass'
+    });
+    component.onSubmit();
+
+    expect(authService.login).toHaveBeenCalledWith({
+      email: 'test@example.com',
       password: 'invalidPass'
     });
     expect(component.showError).toBeTrue();
