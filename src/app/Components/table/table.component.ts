@@ -383,7 +383,7 @@ export class TableComponent {
       return (valueA - valueB) * (this.sortDirection === 'asc' ? 1 : -1);
     }
 
-    return 0; // Default return for other columns
+    return 0; 
   });
 
 
