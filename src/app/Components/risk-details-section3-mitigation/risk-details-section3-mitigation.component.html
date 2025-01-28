@@ -41,10 +41,28 @@
 
       </div>
       <div class="reviewer-section">
-        <h5 style="font-weight: bold;margin-top: 50px">Reviewed By: <span> {{ riskAssessmentBefore.length>0?riskAssessmentBefore[0].review.reviewerName:'' }}</span></h5>
-        <div style="height: 100px;width: 100%;background-color: var(--primary-color); margin-top: 10px;border-radius: 10px;padding: 20px;">
-          {{ riskAssessmentBefore.length>0?riskAssessmentBefore[0].review.comments:'' }}
-        </div>
+
+        @if(riskAssessmentBefore.length>0)
+        {
+          @if(riskAssessmentBefore[0].review.reviewStatus=="ReviewCompleted")
+          {
+            <h5 style="font-weight: bold;margin-top: 50px">Reviewed By: <span> {{ riskAssessmentBefore.length>0?riskAssessmentBefore[0].review.reviewerName:'' }}</span></h5>
+
+            @if(!((riskAssessmentBefore.length>0?riskAssessmentBefore[0].review.comments:'').trim().isEmpty()))
+            {
+              <div style="height: 100px;width: 100%;background-color: var(--primary-color); margin-top: 10px;border-radius: 10px;padding: 20px;">
+                {{ riskAssessmentBefore.length>0?riskAssessmentBefore[0].review.comments:'' }}
+              </div>
+            }
+
+          }
+          @else {
+            <h5 style="font-weight: bold;margin-top: 50px">Review By: <span> {{ riskAssessmentBefore.length>0?riskAssessmentBefore[0].review.reviewerName:'' }}</span></h5>
+
+          }
+        }
+
+
       </div>
 
     </div>
@@ -73,10 +91,26 @@
       </div>
 
       <div class="reviewer-section">
-        <h5 style="font-weight: bold;margin-top: 50px">Reviewed By: <span> {{ riskAssessmentAfter.length>0? riskAssessmentAfter[0].review.reviewerName:'' }}</span></h5>
-        <div style="height: 100px;width: 100%;background-color: var(--primary-color); margin-top: 10px;border-radius: 10px;padding: 20px;">
-          {{riskAssessmentAfter.length>0? riskAssessmentAfter[0].review.comments:'' }}
-        </div>
+
+        @if(riskAssessmentAfter.length>0)
+        {
+          @if(riskAssessmentAfter[0].review.reviewStatus=="ApprovalCompleted")
+          {
+            <h5 style="font-weight: bold;margin-top: 50px"> Reviewed By: <span> {{ riskAssessmentAfter.length>0? riskAssessmentAfter[0].review.reviewerName:'' }}</span></h5>
+            @if(!((riskAssessmentAfter.length>0?riskAssessmentAfter[0].review.comments:'').trim().isEmpty()))
+            {
+            <div style="height: 100px;width: 100%;background-color: var(--primary-color); margin-top: 10px;border-radius: 10px;padding: 20px;">
+              {{riskAssessmentAfter.length>0? riskAssessmentAfter[0].review.comments:'' }}
+            </div>
+            }
+          }
+          @else
+          {
+            <h5 style="font-weight: bold;margin-top: 50px"> Review By: <span> {{ riskAssessmentAfter.length>0? riskAssessmentAfter[0].review.reviewerName:'' }}</span></h5>
+          }
+        }
+
+
       </div>
 
 
