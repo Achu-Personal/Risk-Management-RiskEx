@@ -14,13 +14,13 @@
   box-sizing: border-box;
 }
 .header{
-  width: 100%;
+  width: 8vh;
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: var(--foreground-color);
   border-radius: 50%;
-  height: 60px;
+  height: 8vh;
   cursor: pointer;
 
   align-items: center;
@@ -69,7 +69,7 @@
   height: 50px;
   width: 50px;
   border-radius: 50%;
-  background-color: red;
+
 }
 .sidebar a {
   color: #746e6e;
@@ -80,9 +80,13 @@
   width: 100%;
 
   border-radius: 50%;
-  height: 50px;
+  height: 6.5vh;
 
   transition: background-color 0.3s, color 0.3s;
+}
+
+i{
+  font-size: 2vh;
 }
 
 .sidebar a.active {
@@ -97,6 +101,7 @@
 .logout-icon
 {
   color:var(--foreground-color);
+
 
 }
 
@@ -122,9 +127,10 @@ gap: 0px;
 display: flex;
 flex-direction: column;
 align-items: center;
-width: 100%;
+width: 8vh;
 padding: 5px;
 border-radius: 30px;
+
 }
 
 
@@ -196,6 +202,7 @@ border-radius: 30px;
 
 /* Ensure sidebar has a higher z-index */
 .sidebar {
+
   position: relative;
   z-index: 1000;
 }

@@ -18,6 +18,7 @@ import { NgIf } from '@angular/common';
 import { AuthService } from '../../Services/auth.service';
 import { SingleProjectDropdownComponent } from '../../Components/single-project-dropdown/single-project-dropdown.component';
 import { UsermanagementpopupComponent } from "../../Components/usermanagementpopup/usermanagementpopup.component";
+import { EmailService } from '../../Services/email.service';
 
 @Component({
   selector: 'app-users',
@@ -77,7 +78,7 @@ tableBody:any[]=[
   updateProjectForm: FormGroup;
   departmentProjects: any[] = [];
 
-  constructor(public api: ApiService, public authService: AuthService) {
+  constructor(public api: ApiService, public authService: AuthService,  public emailService: EmailService,) {
     this.departmentForm = new FormGroup({
       name: new FormControl('', Validators.required),
       departmentCode:new FormControl('', Validators.required),
@@ -296,9 +297,77 @@ tableBody:any[]=[
   }
 
 
+  // onSubmitUser() {
+  //   if (this.userForm.valid) {
+
+      // const addUserModal = document.getElementById('addUserModal');
+      // if (addUserModal) {
+      //   const bootstrapModal = (window as any).bootstrap.Modal.getInstance(addUserModal);
+      //   if (bootstrapModal) {
+      //     bootstrapModal.hide();
+      //   }
+      // }
+  //     const formData = this.userForm.getRawValue();
+
+  //     this.confirmationMessage = 'Are you sure you want to add this user?';
+  //     this.confirmationCallback = () => {
+  //       const userData = {
+  //         email: this.normalizeWhitespace(formData.email),
+  //         fullName: this.normalizeWhitespace(formData.fullName),
+  //         departmentName: this.normalizeWhitespace(formData.departmentName),
+  //         projectIds: Array.isArray(formData.projectIds)
+  //           ? formData.projectIds.map((project: any) =>
+  //               typeof project === 'object' ? project.id : project
+  //             ).filter(Boolean)
+  //           : []
+  //       };
+
+  //       this.api.addNewUser(userData).subscribe({
+  //         next: (response) => {
+  //           this.resetUserForm();
+  //           this.refreshUsersData();
+
+  //           this.confirmationPopup.showResultModal('User added successfully!', true);
+
+  //           const addUserModal = document.getElementById('addUserModal');
+  //           if (addUserModal) {
+  //             const bootstrapModal = (window as any).bootstrap.Modal.getInstance(addUserModal);
+  //             if (bootstrapModal) {
+  //               bootstrapModal.hide();
+  //             }
+  //           }
+  //         },
+  //         error: (error) => {
+  //           let errorMessage = this.getErrorMessage(error);
+  //           this.confirmationPopup.showResultModal(
+  //             `Failed to add user: ${errorMessage}`,
+  //             false
+  //           );
+  //         }
+  //       });
+  //     };
+
+  //     const modal = document.getElementById('confirmationModal');
+  //     if (modal) {
+  //       const bsModal = new (window as any).bootstrap.Modal(modal);
+  //       bsModal.show();
+  //     }
+  //   } else {
+  //     Object.keys(this.userForm.controls).forEach(key => {
+  //       const control = this.userForm.get(key);
+  //       control?.markAsTouched();
+  //       control?.updateValueAndValidity();
+  //     });
+
+  //     this.confirmationPopup.showResultModal(
+  //       'Please fill in all required fields correctly.',
+  //       false
+  //     );
+  //   }
+  // }
+
   onSubmitUser() {
     if (this.userForm.valid) {
-
       const addUserModal = document.getElementById('addUserModal');
       if (addUserModal) {
         const bootstrapModal = (window as any).bootstrap.Modal.getInstance(addUserModal);
@@ -323,18 +392,39 @@ tableBody:any[]=[
 
         this.api.addNewUser(userData).subscribe({
           next: (response) => {
+            const emailContext = {
+              email: userData.email,
+              fullName: userData.fullName,
+              defaultPassword: 'experion@123'
+            };
+
+            this.emailService.sendUserRegistrationEmail(
+             formData.email,
+              emailContext
+            ).subscribe({
+              next: (emailSent) => {
+                if (emailSent) {
+                  this.confirmationPopup.showResultModal(
+                    'User added successfully and welcome email sent!',
+                    true
+                  );
+                } else {
+                  this.confirmationPopup.showResultModal(
+                    'User added, but failed to send welcome email',
+                    false
+                  );
+                }
+              },
+              error: (emailError) => {
+                this.confirmationPopup.showResultModal(
+                  'User added, but email sending failed',
+                  false
+                );
+              }
+            });
+
             this.resetUserForm();
             this.refreshUsersData();
-
-            this.confirmationPopup.showResultModal('User added successfully!', true);
-
-            const addUserModal = document.getElementById('addUserModal');
-            if (addUserModal) {
-              const bootstrapModal = (window as any).bootstrap.Modal.getInstance(addUserModal);
-              if (bootstrapModal) {
-                bootstrapModal.hide();
-              }
-            }
           },
           error: (error) => {
             let errorMessage = this.getErrorMessage(error);

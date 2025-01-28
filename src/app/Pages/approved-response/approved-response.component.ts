@@ -24,7 +24,7 @@ export class ThankyouComponent {
     private route: ActivatedRoute,
     private fb: FormBuilder,
     private email: EmailService,
-    private notification:NotificationService
+    private notification: NotificationService
   ) {
     this.ApprovalForm = this.fb.group({
       reason: ['', Validators.required],
@@ -43,88 +43,78 @@ export class ThankyouComponent {
   get reasonControl() {
     return this.ApprovalForm.get('reason');
   }
+  isSubmitting = false;
 
   submitReason(): void {
     if (this.ApprovalForm.invalid) {
       this.ApprovalForm.markAllAsTouched();
       return;
     }
+    this.isSubmitting = true; 
 
     this.ApprovalComments = this.ApprovalForm.value.reason;
     const idParam = this.route.snapshot.paramMap.get('id');
     this.riskId = idParam ? +idParam : 0;
     this.approvalStatus = 'Approved';
-    const updates = {
-      riskId: this.riskId,
+    const approvalUpdates = {
       approvalStatus: 'Approved',
+      comments: this.ApprovalComments,
     };
-
     this.api
-      .updateExternalReivewStatus(updates)
-      .subscribe((e) => console.log(e));
+      .updateReviewStatusAndComments(this.riskId, approvalUpdates)
+      .subscribe({
+        next: () => {
+          this.isReasonSubmitted = true;
+
+          this.api.getRiskById(this.riskId).subscribe((res: any) => {
+            console.log('risk status:', res.riskStatus);
+
+            if (res.riskStatus === 'open') {
+              // this.assignee=res;
+              // console.log(this.assignee);
+              const context = {
+                responsibleUser: res.responsibleUser.fullName,
+                riskId: this.riskId,
+                riskName: res.riskName,
+                description: res.description,
+                riskType: res.riskType,
+                plannedActionDate: res.plannedActionDate,
+                overallRiskRating: res.overallRiskRating,
+                riskStatus: res.riskStatus,
+              };
+
+              console.log('context:', context);
+              this.email
+                .sendAssigneeEmail(res.responsibleUser.email, context)
+                .subscribe({
+                  next: () => {
+                    console.log('Assignee email sent successfully');
+                  },
+                  error: (emailError) => {
+                    console.error(
+                      'Failed to send email to assignee:',
+                      emailError
+                    );
+                  },
+                });
+            }
+            if (res.riskStatus === 'close') {
+              this.notification.success('The risk has closed successfully');
+            }
+          });
+        },
+        error: (error) => {
+          console.error('Error updating review status:', error);
+          this.notification.error('Failed to approve risk');
+        },
+        complete: () => {
+          this.isSubmitting = false;
+        }
+      });
     console.log('Risk ID:', this.riskId);
     console.log('Approval Status', this.approvalStatus);
 
-    console.log('Rejection Reason:', this.ApprovalComments);
-
-    this.isReasonSubmitted = true;
-
-    
-      this.api.getAssigneeByRiskId(this.riskId).subscribe((res:any)=>{
-        if(res.riskStatus==='open'){
-        // this.assignee=res;
-        // console.log(this.assignee);
-        const context = {
-          responsibleUser: res.responsibleUser.fullName,
-          riskId: this.riskId,
-          riskName: res.riskName,
-          description: res.description,
-          riskType:res.riskType,
-          plannedActionDate:res.plannedActionDate,
-          overallRiskRating:res.overallRiskRating,
-          riskStatus:res.riskStatus
-        };
-
-        console.log("context:",context);
-        this.email.sendAssigneeEmail(res.responsibleUser.email,context).subscribe({
-          next: () => {
-            console.log('Assignee email sent successfully');
-
-          },
-          error: (emailError) => {
-            console.error('Failed to send email to assignee:', emailError);
-
-          }
-        })
-
-      }
-      if(res.riskStatus==='close'){
-      this.notification.success("The risk has closed successfully")
-    }
-    });
-
-      // this.cdr.markForCheck();
-
-    }
-
-
-
+    console.log('approval Comment:', this.ApprovalComments);
   }
-  // ngOnInit(){
-  //   // this.api.updateRiskReviewStatus(riskId: number, approvalStatus: string)
-  //   const idParam = this.route.snapshot.paramMap.get('id');
-  //     this.riskId = idParam ? +idParam : 0;
-  //     this.approvalStatus="Approved"
-  //     const updates=
-  //       {
-  //         "riskId": this.riskId,
-  //         "approvalStatus": "Approved"
-  //       }
-
-  //     this.api.updateExternalReivewStatus(updates).subscribe((e)=>console.log(e)
-  //     );
-  //     console.log('Risk ID:', this.riskId);
-  //     console.log('Approval Status', this.approvalStatus);
-
-  // }
+}
 

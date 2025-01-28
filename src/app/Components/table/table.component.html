@@ -182,10 +182,12 @@
             <td><div [ngClass]="{'red-cell': item.riskStatus === 'open', 'green-cell': item.riskStatus === 'close'}">{{ item.riskStatus }}</div></td>
             }
             @if(isButtonVisible){
-              <td><div [ngClass]="{'green-cell': item.residualRisk === 'Low','yellow-cell': item.residualRisk === 'Medium', 'red-cell': item.residualRisk === 'High'}">{{ item.residualRisk }}</div></td>
-
-              <!-- <td>{{ item.responsibleUser }}</td>
-              <td>{{ item.percentageRedution }}</td> -->
+              <!-- <td><div [ngClass]="{'green-cell': item.residualRisk === 'Low','yellow-cell': item.residualRisk === 'Medium', 'red-cell': item.residualRisk === 'High'}">{{ item.residualRisk }}</div></td> -->
+              <td>
+                <div [class]="item.residualRisk | residualRiskStatusStyle">
+                  {{ item.residualRisk }}
+                </div>
+              </td>             
             }
 
           </tr>

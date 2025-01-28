@@ -12,12 +12,16 @@
           <div *ngIf="reasonControl?.invalid && reasonControl?.touched" class="error-message">
             Reason is required.
           </div>
-          
-          <button type="submit" [disabled]="rejectionForm.invalid">Submit Reason</button>
+
+          <button type="submit" [disabled]="rejectionForm.invalid || isSubmitting">
+            <span *ngIf="!isSubmitting">Submit Reason</span>
+            <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            <span *ngIf="isSubmitting">Loading...</span>
+          </button>
         </div>
       </form>
     </div>
-  
+
     <!-- Confirmation Message Section -->
     <div *ngIf="isReasonSubmitted" class="response-container">
       <div class="icon-container">
@@ -25,9 +29,8 @@
       </div>
       <h2 style="color: rgba(14, 14, 14, 0.774);">Risk Rejected</h2>
       <p>
-        The risk has been successfully rejected. If this action was a mistake or
-        if you have further concerns, please contact the risk management team.
+        The risk has been rejected. If this action was a mistake or
+        if you have further concerns, please contact either the Risk Management team or the Risk Owner for assistance.
       </p>
     </div>
   </div>
-  

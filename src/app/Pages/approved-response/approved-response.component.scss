@@ -1,52 +1,4 @@
-// /* styles.css */
-// .body {
-//     font-family: Arial, sans-serif;
-//     margin: 0;
-//     padding: 0;
-//     display: flex;
-//     justify-content: center;
-//     align-items: center;
-//     height: 100vh;
-//     background-color: #f9f9f9;
-// }
 
-// .thank-you-container {
-//     text-align: center;
-//     background-color: #ffffff;
-//     padding: 40px 30px;
-//     border-radius: 10px;
-//     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-//     max-width: 400px;
-//     margin: auto;
-// }
-
-// .thank-you-card h1 {
-//     color: #4CAF50;
-//     font-size: 36px;
-//     margin-bottom: 20px;
-// }
-
-// .thank-you-card p {
-//     color: #555;
-//     font-size: 16px;
-//     line-height: 1.5;
-//     margin-bottom: 30px;
-// }
-
-// .home-button {
-//     text-decoration: none;
-//     display: inline-block;
-//     padding: 12px 24px;
-//     color: #fff;
-//     background-color: #4CAF50;
-//     border-radius: 5px;
-//     font-size: 16px;
-//     transition: background-color 0.3s;
-// }
-
-// .home-button:hover {
-//     background-color: #45a049;
-// }
 .body {
     margin: 0;
     padding: 0;
@@ -73,15 +25,15 @@
     background-color: #ffffff;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
-  
+
   .reject-icon {
     font-size: 50px;
   }
-  
+
   .input-container {
     margin: 20px 0;
   }
-  
+
   textarea.reason-input {
     width: 100%;
     height: 100px;
@@ -91,7 +43,7 @@
     border-radius: 4px;
     resize: none;
   }
-  
+
   button {
     background-color: #dc3545;
     color: white;
@@ -100,22 +52,22 @@
     border-radius: 5px;
     cursor: pointer;
   }
-  
+
   button:disabled {
     background-color: #f5a4a4;
     cursor: not-allowed;
   }
-  
+
   button:hover:enabled {
     background-color: #c82333;
   }
-  
+
   .error-message {
     color: red;
     font-size: 12px;
     margin-bottom: 10px;
   }
-  
+
 
 .response-card {
     background-color: white;
@@ -130,7 +82,7 @@
 .response-icon {
     font-size: 60px;
     margin-bottom: 20px;
-    
+
 }
 
 .response-card h1 {
@@ -169,4 +121,19 @@
         opacity: 1;
         transform: scale(1);
     }
+}
+.spinner-border {
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  vertical-align: text-bottom;
+  border: 0.25em solid currentcolor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: spinner-border .75s linear infinite;
+  margin-right: 5px;
+}
+
+@keyframes spinner-border {
+  to { transform: rotate(360deg); }
 }

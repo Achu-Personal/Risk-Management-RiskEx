@@ -6,12 +6,13 @@ import { PaginationComponent } from '../../UI/pagination/pagination.component';
 import { ApiService } from '../../Services/api.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../Services/auth.service';
+import { ResidualRiskStatusStylePipe } from "../../Pipes/residual-risk-status-style.pipe";
 
 @Component({
   selector: 'app-table',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [SearchbarComponent, FormsModule, PaginationComponent, CommonModule],
+  imports: [SearchbarComponent, FormsModule, PaginationComponent, CommonModule, ResidualRiskStatusStylePipe],
   templateUrl: './table.component.html',
   styleUrl: './table.component.scss'
 })
@@ -94,9 +95,9 @@ export class TableComponent {
 
         if (startDate && endDate) {
           const itemDate = new Date(item.plannedActionDate);
-          console.log("Database date parsed:",itemDate);
+          // console.log("Database date parsed:",itemDate);
           const start = new Date(startDate);
-          console.log("start", start);
+          // console.log("start", start);
           const end = new Date(endDate);
 
           matchesDateRange = itemDate >= start && itemDate <= end ;
@@ -116,7 +117,7 @@ export class TableComponent {
 
 
 
-  console.log("filtered",this.filteredItems)
+  // console.log("filtered",this.filteredItems)
   this.currentPage = 1;
   this.totalItems = this.filteredItems.length;
   this.updatePaginatedItems();
@@ -128,7 +129,7 @@ export class TableComponent {
 
   onSearch(searchText: string): void {
     const lowercasedSearchText = searchText.toLowerCase();
-    console.log(lowercasedSearchText);
+    // console.log(lowercasedSearchText);
 
     this.filteredItems = this.items.filter((item: any) =>
       Object.values(item).some((value: any) =>
@@ -147,7 +148,7 @@ export class TableComponent {
     // setTimeout(()=>{
     // this.initializeItems();
     const currentRoute = this.route.snapshot.url.join('/');
-    console.log(currentRoute);
+    // console.log(currentRoute);
 
     if (currentRoute === 'history') {
       this.isButtonVisible = true;
@@ -165,9 +166,9 @@ export class TableComponent {
       this.isDepartmentUser = role === 'DepartmentUser';
       this.items = [...this.paginated];
       this.hasValidData();
-      console.log("items",this.items);
+      // console.log("items",this.items);
       this.filteredItems = [...this.items];
-      console.log("==",this.filteredItems);
+      // console.log("==",this.filteredItems);
       this.updateUniqueDepartments();
       this.updateUniqueTypes();
       this.updateUniqueReviewStatus();
