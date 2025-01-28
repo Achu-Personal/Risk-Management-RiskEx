@@ -207,7 +207,7 @@ export class TableComponent {
   updateResidualRiskStatus(): void {
 
     this.uniqueResidual = [...new Set(this.items.map((item: any) => item.residualRisk))];
-    
+
   }
 
   updatePaginatedItems(): void {
@@ -224,9 +224,14 @@ export class TableComponent {
     this.paginated = this.filteredItems.slice(startIndex, endIndex);
     this.totalItems = this.filteredItems.length;
     this.cdr.markForCheck();
-    // this.itemsPerPage=this.paginated.length;
     this.filteredData.emit(this.filteredItems);
   // }, 100);
+  }
+
+  onItemsPerPageChange(newItemsPerPage: number) {
+    this.itemsPerPage = newItemsPerPage;
+    this.currentpage();
+    this.updatePaginatedItems();
   }
 
   onPageChange(page: number): void {
@@ -340,8 +345,13 @@ export class TableComponent {
 
       this.filterTable();
     }
+    if(changes['itemsPerPage']){
+      this.currentpage();
+    }
   }
-
+  currentpage(){
+    this.currentPage = 1;
+  }
 
   shouldDisplayPagination(): boolean {
     console.log(this.filteredItems.length)
