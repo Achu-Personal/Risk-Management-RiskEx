@@ -7,6 +7,7 @@ import { IsmsEditComponent } from '../../Components/isms-edit/isms-edit.componen
 import { CommonModule } from '@angular/common';
 import { FormSuccessfullComponent } from '../../Components/form-successfull/form-successfull.component';
 import { Router } from '@angular/router';
+import { EmailService } from '../../Services/email.service';
 
 
 @Component({
@@ -37,7 +38,7 @@ isSuccess:boolean=false
 isError:boolean=false
 error:string=''
 
-constructor(private api:ApiService,public authService:AuthService,private router: Router){}
+constructor(private api:ApiService,public authService:AuthService,private router: Router, private email: EmailService){}
 
   ngOnInit(){
 
@@ -149,7 +150,11 @@ constructor(private api:ApiService,public authService:AuthService,private router
     apiCall.subscribe({
       next: (res: any) => {
         console.log("Success Response:", res);
+        
+        console.log("SENDING EMAIL");
+        
         this.isSuccess = true;
+        this.sendEmailOnRegisterRisk(res.id, res);
       },
       error: (error: any) => {
         this.isError = true;
@@ -169,6 +174,8 @@ constructor(private api:ApiService,public authService:AuthService,private router
       },
       complete: () => {
         console.log("API request completed successfully.");
+        
+
       }
     });
   }
@@ -179,4 +186,61 @@ constructor(private api:ApiService,public authService:AuthService,private router
     this.isError=false
     this.router.navigate(['/home']);
   }
+
+  sendEmailOnRegisterRisk(riskId:number,riskData:any){
+    console.log('before is submit:', this.isSuccess);
+    if (this.isSuccess) {
+      console.log('after is submit');
+      // Fetch reviewer details
+      this.api.getRevieverDetails(riskId, 'ReviewPending').subscribe({
+        next: (r: any) => {
+          const reviewer = r[0].fullName;
+          console.log('Reviewer Details:', reviewer);
+
+         const context = {
+            responsibleUser: reviewer,
+            riskId: riskData.riskId,
+            riskName: riskData.riskName,
+            description:riskData.description,
+            riskType:
+              riskData.riskType === 1
+                ? 'Quality'
+                : this.riskData.riskType === 2
+                ? 'Security'
+                : 'Privacy',
+            impact:riskData.impact,
+            mitigation:riskData.mitigation,
+            plannedActionDate: new Date(
+              riskData.plannedActionDate
+            ).toLocaleDateString('en-US', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+            }),
+            overallRiskRating: riskData.overallRiskRatingBefore,
+            // reason:riskData.riskAssessments[0].review.comments,
+            id: riskData.id,
+            rid: riskData.id,
+          };
+          console.log('Email Context:', context);
+          console.log('Reviewer Email:', r[0].email);
+
+          // Send email to reviewer
+          this.email.sendReviewerEmail(r[0].email, context).subscribe({
+            next: () => {
+              console.log('Reviewer Email:', r[0].email);
+              console.log('Email Sent Successfully.');
+            },
+            error: (emailError) => {
+              console.error('Failed to send email to reviewer:', emailError);
+            },
+          });
+        },
+        error: (reviewerError) => {
+          console.error('Failed to fetch reviewer details:', reviewerError);
+        },
+      });
+    }
+
+}
 }

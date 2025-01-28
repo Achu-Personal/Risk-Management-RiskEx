@@ -4,7 +4,7 @@
     <div class="header1">
       <div class="entries">
       <label for="entries">Show</label>
-      <select id="entries" [(ngModel)]="itemsPerPage" (ngModelChange)="updatePaginatedItems()">
+      <select id="entries" [(ngModel)]="itemsPerPage" (ngModelChange)="onItemsPerPageChange($event)">
         <option value="10">10</option>
         <option value="25">25</option>
         <option value="50">50</option>
@@ -161,6 +161,7 @@
 
           <tr (click)="rowClick(item.id)" style="height:10px;">
             <td>{{ ((currentPage-1)*10)+($index+1) }}</td>
+            <!-- <td>{{ ($index+1) }}</td> -->
             <td title={{item.riskName}}>{{ item.riskName | slice:0:25 }}</td>
             @if(!isDepartmentUser){
             <td>{{ item.departmentName }}</td>
