@@ -14,7 +14,9 @@
       <hr>
 
       <div class="changebutton">
-        <app-style-button (clicked)="onChangePassword()" label="Change Password"></app-style-button>
+        <app-style-button
+        *ngIf="auth.getUserRole() !== 'Admin'"
+        (clicked)="onChangePassword()" label="Change Password"></app-style-button>
       </div>
     </div>
   </div>
