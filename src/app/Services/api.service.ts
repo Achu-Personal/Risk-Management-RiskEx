@@ -291,8 +291,11 @@ export class ApiService {
 
   changeUserStatus(userId: any, status: any) {
     return this.http
-      .patch(`${this.baseUrl}/User/IsActive/${userId}/${status}`, {})
-      .subscribe((e) => console.log('UserId and status:', userId, status));
+      .patch(`${this.baseUrl}/User/IsActive/${userId}/${status}`, {}, { responseType: 'text' }) 
+      .subscribe(response => {
+        console.log('UserId and status:', userId, status);
+        console.log('API Response:', response);
+      });
   }
 
   getUsersByProjects(): Observable<any> {
