@@ -1,4 +1,4 @@
-import { Component, HostListener, Input, Output, output, SimpleChanges, EventEmitter, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Component, HostListener, Input, Output, output, SimpleChanges, EventEmitter, ChangeDetectionStrategy, ChangeDetectorRef, computed, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { SearchbarComponent } from '../../UI/searchbar/searchbar.component';
@@ -225,9 +225,14 @@ export class TableComponent {
     this.paginated = this.filteredItems.slice(startIndex, endIndex);
     this.totalItems = this.filteredItems.length;
     this.cdr.markForCheck();
-    // this.itemsPerPage=this.paginated.length;
     this.filteredData.emit(this.filteredItems);
   // }, 100);
+  }
+
+  onItemsPerPageChange(newItemsPerPage: number) {
+    this.itemsPerPage = newItemsPerPage;
+    this.currentpage();
+    this.updatePaginatedItems();
   }
 
   onPageChange(page: number): void {
@@ -341,12 +346,56 @@ export class TableComponent {
 
       this.filterTable();
     }
+    if(changes['itemsPerPage']){
+      this.currentpage();
+    }
   }
-
+  currentpage(){
+    this.currentPage = 1;
+  }
 
   shouldDisplayPagination(): boolean {
     console.log(this.filteredItems.length)
     return this.filteredItems.length > this.itemsPerPage;
 
   }
+  //sorting
+
+  sortDirection: 'asc' | 'desc' = 'asc';
+  sortColumn: string = '';
+
+  sortTable(column: string) {
+    this.sortDirection = this.sortColumn === column
+      ? (this.sortDirection === 'asc' ? 'desc' : 'asc')
+      : 'asc';
+    this.sortColumn = column;
+
+  this.filteredItems = [...this.filteredItems].sort((a, b) => {
+    if (column === 'crr') {
+      const valueA = this.getCRRValue(a);
+      const valueB = this.getCRRValue(b);
+      return (valueA - valueB) * (this.sortDirection === 'asc' ? 1 : -1);
+    }
+
+    if (column === 'plannedActionDate') {
+      const valueA = new Date(a.plannedActionDate).getTime();
+      const valueB = new Date(b.plannedActionDate).getTime();
+      return (valueA - valueB) * (this.sortDirection === 'asc' ? 1 : -1);
+    }
+
+    return 0; // Default return for other columns
+  });
+
+
+    this.currentPage = 1;
+    this.updatePaginatedItems();
+    this.cdr.markForCheck();
+  }
+
+  private getCRRValue(item: any): number {
+    return item.overallRiskRatingAfter !== null
+      ? item.overallRiskRatingAfter
+      : item.overallRiskRatingBefore;
+  }
+
 }

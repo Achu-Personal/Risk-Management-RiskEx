@@ -4,7 +4,7 @@
     <div class="header1">
       <div class="entries">
       <label for="entries">Show</label>
-      <select id="entries" [(ngModel)]="itemsPerPage" (ngModelChange)="updatePaginatedItems()">
+      <select id="entries" [(ngModel)]="itemsPerPage" (ngModelChange)="onItemsPerPageChange($event)">
         <option value="10">10</option>
         <option value="25">25</option>
         <option value="50">50</option>
@@ -87,9 +87,18 @@
             }
           </div>
           </th>
-          <th title="Expected closing date">End Date</th>
-          <th  title="Current overall risk rating">CRR</th>
-
+          <th (click)="sortTable('plannedActionDate')" title="Expected closing date">
+            End Date
+            <span>
+              {{ sortDirection === 'asc' ? '↑' : '↓' }}
+            </span>
+          </th>
+          <th (click)="sortTable('crr')" title="Current overall risk rating">
+            CRR
+            <span>
+              {{ sortDirection === 'asc' ? '↑' : '↓' }}
+            </span>
+          </th>
           <th title="Responsibility">Assignee</th>
           <th>Reviewer</th>
           <th title="Current status of review">
@@ -161,7 +170,8 @@
 
           <tr (click)="rowClick(item.id)" style="height:10px;">
             <td>{{ ((currentPage-1)*10)+($index+1) }}</td>
-            <td title={{item.riskName}}>{{ item.riskName | slice:0:25 }}</td>
+            <!-- <td>{{ ($index+1) }}</td> -->
+            <td title={{item.riskName}}>{{ item.riskName | slice:0:25 }} </td>
             @if(!isDepartmentUser){
             <td>{{ item.departmentName }}</td>
             }
@@ -186,7 +196,7 @@
                 <div [class]="item.residualRisk | residualRiskStatusStyle">
                   {{ item.residualRisk }}
                 </div>
-              </td>             
+              </td>
             }
 
           </tr>
