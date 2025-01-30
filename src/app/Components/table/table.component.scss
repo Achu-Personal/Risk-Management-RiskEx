@@ -384,7 +384,7 @@ tbody {
 // }
 // th:nth-child(6),
 // td:nth-child(6) {
-//   width: 50px;
+//   width: 70px;
 // }
 // th:nth-child(9),
 // td:nth-child(9) {
@@ -543,3 +543,15 @@ tbody {
     background-position: 0 50%;
   }
 }
+
+
+// sorting
+th {
+  cursor: pointer;
+}
+
+th span {
+  margin-left: 5px;
+  font-size: 12px;
+}
+

@@ -80,7 +80,7 @@ export const routes: Routes = [
       //       }
       //     ]
       //   },
-       
+
       // ]},
       {
         path:'approvaltable',component:ApprovalTableComponent, data: { title: 'Approvals' ,breadcrumb: 'Approvals'}
@@ -120,18 +120,14 @@ export const routes: Routes = [
   {
     path:"sso",component:SsoComponent
   },
- 
-  {path:'thankyou/:id',component:ThankyouComponent},          //AprovalResponse component
+
+  {path:'thankyou/:id',component:ThankyouComponent},
   {path:'sorry/:id',component:RejectedResponseComponent},
-
-
 
   {
 
     path:'**',component:WildComponentComponent
 
   },
-  
-
 
 ];
