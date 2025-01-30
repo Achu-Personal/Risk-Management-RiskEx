@@ -131,7 +131,7 @@
         <h6>Responsible Person Name: <span style="font-weight: bolder;">{{newAssigneename}}</span></h6>
         }
         <div [ngStyle]="{'margin-top':'20px','font-style':'italic','color':'grey'}">
-        <p>If responsible person not in the list <span (click)="isAssigneeNotInList()"><a href="javascript:void(0);">click </a></span>here</p>
+        <p>If responsible person not in the list <span (click)="isAssigneeNotInList()"><a href="javascript:void(0);" >click </a></span>here</p>
       </div>
 
       <app-form-date-field label="Planned Action Date" required="*" formControlName="plannedActionDate"></app-form-date-field>
@@ -161,8 +161,8 @@
     </div>
     <div class="form-details-sub-container">
       <div class="button-group">
-        <app-style-button (clicked)="saveConfirmation()" label="Save" type="button"></app-style-button>
-        <app-style-button (clicked)="saveAsDraft()" label="Save Draft" type="button"></app-style-button>
+        <app-style-button (clicked)="saveConfirmation()" label="Submit" type="button"></app-style-button>
+        <app-style-button (clicked)="saveAsDraft()" label="Save As Draft" type="button"></app-style-button>
         <app-style-button (clicked)="cancelRisk()" label="Cancel" type="button"></app-style-button>
 
 
