@@ -183,10 +183,10 @@
             @if(isButtonVisible){
               <!-- <td><div [ngClass]="{'green-cell': item.residualRisk === 'Low','yellow-cell': item.residualRisk === 'Medium', 'red-cell': item.residualRisk === 'High'}">{{ item.residualRisk }}</div></td> -->
               <td>
-                <div [class]="item.residualRisk | residualRiskStatusStyle">
+                <div [ngClass]="item.residualRisk | residualRiskStatusStyle ">
                   {{ item.residualRisk }}
                 </div>
-              </td>             
+              </td>
             }
 
           </tr>
