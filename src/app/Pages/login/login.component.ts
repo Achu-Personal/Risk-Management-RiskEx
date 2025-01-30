@@ -17,6 +17,7 @@ export class LoginComponent {
   showError = false;
   errorMessage: string = "";
   isLoading = false;
+  showPassword = false;
 
   constructor(
     private authServices: AuthService,
@@ -28,6 +29,9 @@ export class LoginComponent {
       password: ['', Validators.required]
     });
   }
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
+  }
 
   clearError() {
     this.showError = false;
@@ -38,16 +42,17 @@ export class LoginComponent {
     if (this.loginForm.valid) {
       this.isLoading = true;
       this.clearError();
-      this.authServices.login(this.loginForm.value).subscribe(
-        (response) => {
+      this.authServices.login(this.loginForm.value).subscribe({
+        next: (response) => {
           this.isLoading = false;
+          // Handle successful login
         },
-        (error) => {
+        error: (error) => {
           this.isLoading = false;
           this.showError = true;
-          this.errorMessage = error; // Use the error message from the backend
+          this.errorMessage = error;
         }
-      );
+      });
     }
   }
 }
