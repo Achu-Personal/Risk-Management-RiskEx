@@ -15,15 +15,16 @@ fdescribe('OneDirective', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [TestComponent],
-      imports: [OneDirective], // Include the standalone directive
+      imports: [OneDirective],
     });
 
     fixture = TestBed.createComponent(TestComponent);
+    // all elements with an attached HighlightDirective
     debugElement = fixture.debugElement.query(By.directive(OneDirective));
     fixture.detectChanges();
   });
 
-  it('should create an instance of OneDirective', () => {
+  it('should OneDirective', () => {
     expect(debugElement).toBeTruthy();
   });
 

@@ -22,17 +22,13 @@ export class FocusDirective implements AfterViewInit {
     }
   }
 
-  private setFocus() {
-    if (this.isVisible(this.el.nativeElement)) {
-      this.el.nativeElement.focus();
-      console.log('Focused on:', this.el.nativeElement);
-    } else {
-      console.warn('Element is not visible, focus skipped.');
-    }
-  }
 
-  private isVisible(element: HTMLElement): boolean {
-    return !!(element.offsetWidth || element.offsetHeight || element.getClientRects().length);
+  setFocus() {
+      setTimeout(() => {
+        this.el.nativeElement.focus();
+        console.log('Focused on:', this.el.nativeElement);
+      }, 0);
+
   }
 
   private findModal(element: HTMLElement): HTMLElement | null {
