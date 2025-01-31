@@ -146,16 +146,7 @@ export class ReusableTableComponent {
   rowClick(row: any) {
     this.onclickrow.emit(row);
     }
-    // ngOnChanges(changes: SimpleChanges): void {
-    //   // console.log('Table Headers:', this.tableHeaders);
-    //   // console.log('Table Data:', this.tableData);
-    //   if (changes['tableData'] ) {
-    //     this.tableData1=[...this.tableData]
-    //     console.log("tabledata1",this.tableData1)
-    //     this.totalItems = this.tableData1.length;
-    //     this.updatePaginatedItems();
-    //     }
-    // }
+    
 
   hasValidData(): boolean {
     return (
@@ -170,7 +161,6 @@ export class ReusableTableComponent {
   currentPage = 1;
   totalItems: number = 0;
   shouldDisplayPagination(): boolean {
-    // console.log("length",this.tableData1.length)
     return this.tableData1.length > this.itemsPerPage;
   }
   onPageChange(page: number): void {
@@ -179,14 +169,10 @@ export class ReusableTableComponent {
   }
 
   updatePaginatedItems(): void {
-    // console.log("insie",this.tableData1)
     const startIndex = (this.currentPage -1 ) * this.itemsPerPage;
     const endIndex = startIndex + this.itemsPerPage;
     this.tableData = this.tableData1.slice(startIndex, endIndex);
-    // this.tableData=[...this.table];
-    // console.log("insie",this.tableData)
     this.totalItems = this.tableData1.length;
-    // console.log("totalitems:",this.totalItems)
     this.cdr.markForCheck();
   }
   //-----------------filter ----------------------//
