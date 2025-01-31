@@ -19,6 +19,7 @@ import { AuthService } from '../../Services/auth.service';
 import { SingleProjectDropdownComponent } from '../../Components/single-project-dropdown/single-project-dropdown.component';
 import { UsermanagementpopupComponent } from "../../Components/usermanagementpopup/usermanagementpopup.component";
 import { EmailService } from '../../Services/email.service';
+import { FocusDirective } from '../../Directives/focus.directive';
 
 @Component({
   selector: 'app-users',
@@ -32,7 +33,8 @@ import { EmailService } from '../../Services/email.service';
     StyleButtonComponent,
     NgIf,
     SingleProjectDropdownComponent,
-    UsermanagementpopupComponent
+    UsermanagementpopupComponent,
+    FocusDirective
 ],
   templateUrl: './users.component.html',
   styleUrl: './users.component.scss',

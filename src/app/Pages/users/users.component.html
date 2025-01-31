@@ -36,7 +36,7 @@
               <label for="name" class="form-label">
                 Name <span class="text-danger">*</span>
               </label>
-              <input type="text" class="form-control" id="name" placeholder="Enter Name" formControlName="fullName" />
+              <input appFocus type="text" class="form-control" id="name" placeholder="Enter Name" formControlName="fullName" />
               @if (userForm.get('fullName')?.invalid && userForm.get('fullName')?.touched)
               {
               <div class="text-danger"> Name is required. </div>
@@ -116,10 +116,10 @@
           <form [formGroup]="departmentForm" (ngSubmit)="onSubmitDepartment()">
 
             <div class="mb-3">
-              <label for="departmentName" class="form-label">
+              <label appFocus for="departmentName" class="form-label">
                 Department Name <span class="text-danger">*</span>
               </label>
-              <input type="text" class="form-control" id="departmentName" placeholder="Enter Department Name"
+              <input appFocus type="text" class="form-control" id="departmentName" placeholder="Enter Department Name"
                 formControlName="name" />
               @if (departmentForm.get('departmentName')?.invalid && departmentForm.get('departmentName')?.touched)
               {
@@ -171,7 +171,7 @@
               <app-drop-down-deparment *ngIf="authService.getUserRole() === 'Admin'"
                 formControlName="departmentName"></app-drop-down-deparment>
               <div>
-                <input *ngIf="authService.getUserRole() === 'DepartmentUser'" class="form-control"
+                <input  *ngIf="authService.getUserRole() === 'DepartmentUser'" class="form-control"
                   id="departmentForProject" type="text" formControlName="departmentName" [attr.readonly]="true" />
               </div>
               @if (userForm.get('department')?.invalid && userForm.get('department')?.touched) {
@@ -183,7 +183,7 @@
               <label for="projectName" class="form-label p-2">
                 Project Name <span class="text-danger">*</span>
               </label>
-              <input type="text" class="form-control" id="projectName" placeholder="Enter Project Name"
+              <input appFocus type="text" class="form-control" id="projectName" placeholder="Enter Project Name"
                 formControlName="projectName" />
 
               @if (projectForm.get('projectName')?.invalid && projectForm.get('projectName')?.touched)
@@ -241,7 +241,8 @@
             <label for="updateDepartmentName" class="form-label mt-3">
               Department Name <span class="text-danger">*</span>
             </label>
-            <input type="text"
+            <input appFocus
+                   type="text"
                    class="form-control"
                    id="updateDepartmentName"
                    formControlName="newDepartmentName" />
@@ -301,7 +302,8 @@
             <label for="updateProjectName" class="form-label mt-3">
               Project Name <span class="text-danger">*</span>
             </label>
-            <input type="text"
+            <input appFocus
+                   type="text"
                    class="form-control"
                    id="updateProjectName"
                    formControlName="newProjectName" />
