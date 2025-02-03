@@ -7,7 +7,7 @@
   }
 </select> -->
 
-<div class="dropdown-container" [ngStyle]="{'width': width+'%'}" >
+<div appFocus  tabindex="0" class="dropdown-container" [ngStyle]="{'width': width+'%'}" >
   <!-- Dropdown Box -->
   <div  class="dropdown-header" (click)="toggleDropdown($event)" [class.open]="isDropdownOpen" >
     {{ getSelectedText() }}

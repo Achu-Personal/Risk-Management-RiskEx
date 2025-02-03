@@ -17,7 +17,8 @@ export class FocusDirective implements AfterViewInit {
       this.renderer.listen(this.modalElement, 'shown.bs.modal', () => {
         setTimeout(() => this.setFocus(), 100);
       });
-    } else {
+    }
+    else {
       this.setFocus();
     }
   }

@@ -183,7 +183,7 @@
               <label for="projectName" class="form-label p-2">
                 Project Name <span class="text-danger">*</span>
               </label>
-              <input appFocus type="text" class="form-control" id="projectName" placeholder="Enter Project Name"
+              <input type="text" class="form-control" id="projectName" placeholder="Enter Project Name"
                 formControlName="projectName" />
 
               @if (projectForm.get('projectName')?.invalid && projectForm.get('projectName')?.touched)
@@ -241,7 +241,7 @@
             <label for="updateDepartmentName" class="form-label mt-3">
               Department Name <span class="text-danger">*</span>
             </label>
-            <input appFocus
+            <input
                    type="text"
                    class="form-control"
                    id="updateDepartmentName"
@@ -281,7 +281,7 @@
             <label for="selectDepartmentForProject" class="form-label">
               Select Department <span class="text-danger">*</span>
             </label>
-            <app-drop-down-deparment *ngIf="authService.getUserRole() === 'Admin'"
+            <app-drop-down-deparment appFocus *ngIf="authService.getUserRole() === 'Admin'"
               formControlName="selectedDepartment"
               (departmentSelected)="onProjectDepartmentSelect($event)">
             </app-drop-down-deparment>
@@ -302,7 +302,7 @@
             <label for="updateProjectName" class="form-label mt-3">
               Project Name <span class="text-danger">*</span>
             </label>
-            <input appFocus
+            <input
                    type="text"
                    class="form-control"
                    id="updateProjectName"
