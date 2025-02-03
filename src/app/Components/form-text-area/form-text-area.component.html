@@ -2,5 +2,5 @@
   <label for="">{{label}} <span class="required">{{required}}</span>
   <span class="info-icon" [ngStyle]="{'backgroundColor': backgroundColor}" >ℹ<span class="tooltip-text">{{message}}</span></span>
   </label>
-  <textarea  rows="2" placeholder="{{placeHolder}}" (input)="autoResize($event)" (ngModelChange)="onSelectionChanges($event)" [(ngModel)]="value"></textarea>
+  <textarea rows="2" placeholder="{{placeHolder}}" (input)="autoResize($event)" (ngModelChange)="onSelectionChanges($event)" [(ngModel)]="value"></textarea>
 </div>

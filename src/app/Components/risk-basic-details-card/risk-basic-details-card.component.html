@@ -32,7 +32,7 @@
           <app-risk-status-card [isOpen]="riskStatus === 'open'"></app-risk-status-card>
         </div>
         <div>
-          <p title={{riskDesc}}>{{riskDesc.slice(0,1000)}}...</p>
+          <p title={{riskDesc}}>{{riskDesc.slice(0,1000)}}{{ riskDesc.length > 1000 ? "..." : "" }}</p>
 
         </div>
 
