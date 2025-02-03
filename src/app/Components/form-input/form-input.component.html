@@ -1,4 +1,4 @@
 <div class="form-detail">
   <label for="riskName">{{label}}<span class="required">{{required}}</span></label>
-  <input appFocus type="text" id="riskName" placeholder="{{placeholder}}" (ngModelChange)="onSelectionChanges($event)" [(ngModel)]="value">
+  <input [appFocus]=true type="text" id="riskName" placeholder="{{placeholder}}" (ngModelChange)="onSelectionChanges($event)" [(ngModel)]="value">
 </div>

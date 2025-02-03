@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, Output, Renderer2, SimpleChanges} from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, Output, QueryList, Renderer2, SimpleChanges, ViewChildren} from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DropdownComponent } from "../../UI/dropdown/dropdown.component";
 import { CommonModule } from '@angular/common';
@@ -84,7 +84,15 @@ export class QMSFormComponent {
   isnewAssigneenameDisplay:boolean=false
   isnewReviewernameDisplay:boolean=false
 
+  // @ViewChildren('dropdown') dropdowns!: QueryList<ElementRef>;
 
+  // ngAfterViewInit() {
+  //   // Focus the first dropdown after view initialization
+  //   const firstDropdown = this.dropdowns.toArray()[0];
+  //   if (firstDropdown) {
+  //     firstDropdown.nativeElement.focus();
+  //   }
+  // }
 
   constructor(private el: ElementRef, private renderer: Renderer2, private api:ApiService,private router: Router){}
   ngOnInit(){
