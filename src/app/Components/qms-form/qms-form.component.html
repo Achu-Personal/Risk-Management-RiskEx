@@ -3,7 +3,7 @@
     <div class="form-details-sub-container">
       <h2>Risk Details</h2>
       @if(isAdmin === 'Admin'){
-        <app-form-dropdown  label="Department Name" required=" *"  [dropdownData]="dropdownDepartment" dropdownDisplay="departmentName" dropdownValue="id" selectValue="Select department" (change)="onDropdownChangeDepartment($event)"  [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)"></app-form-dropdown>
+        <app-form-dropdown label="Department Name" class="dropdown" required=" *"  [dropdownData]="dropdownDepartment" dropdownDisplay="departmentName" dropdownValue="id" selectValue="Select department" (change)="onDropdownChangeDepartment($event)"  [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)"></app-form-dropdown>
        }
       <div class="form-row">
        <app-form-input  label="Risk Name" required=" *" formControlName="riskName"></app-form-input>
@@ -145,7 +145,7 @@
     </div>
     <div class="form-details-sub-container">
       <h2>Reviewer</h2>
-      <app-form-dropdown label="Reviewer" required="*" [dropdownData]="dropdownReviewer" dropdownDisplay="fullName" dropdownValue="fullName" [selectedValue]="preSelectedReviewer" backgroundColor=" var(--form-color)"
+      <app-form-dropdown class="dropdown" label="Reviewer" required="*" [dropdownData]="dropdownReviewer" dropdownDisplay="fullName" dropdownValue="fullName" [selectedValue]="preSelectedReviewer" backgroundColor=" var(--form-color)"
       selectValue="Select reviewer" (change)="onDropdownChangeReviewer($event)" [openDropdownId]="openDropdownId"
       (openDropdown)="handleDropdownOpen($event)" message="You can select an existing reviewer from the dropdown
       or enter a new one. If you enter a new name, it will take priority over the dropdown selection." [showInfoButton]="true" ></app-form-dropdown>

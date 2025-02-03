@@ -1,14 +1,15 @@
-import { Component, forwardRef, OnInit, ElementRef, HostListener, Output, EventEmitter } from '@angular/core';
+import { Component, forwardRef, OnInit, ElementRef, HostListener, Output, EventEmitter, ViewChild } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { department } from '../../Interfaces/deparments.interface';
 import { ApiService } from '../../Services/api.service';
 import { NgFor, NgIf } from '@angular/common';
 import { Subscription } from 'rxjs';
+import { FocusDirective } from '../../Directives/focus.directive';
 
 @Component({
   selector: 'app-drop-down-deparment',
   standalone: true,
-  imports: [NgIf, NgFor],
+  imports: [NgIf, NgFor,FocusDirective],
   templateUrl: './drop-down-deparment.component.html',
   styleUrl: './drop-down-deparment.component.scss',
   providers: [
@@ -29,7 +30,6 @@ export class DropDownDeparmentComponent implements OnInit, ControlValueAccessor 
   private subscription: Subscription = new Subscription();
 
   @Output() departmentSelected = new EventEmitter<department>();
-
 
   private onChange: (value: string) => void = () => {};
   private onTouched: () => void = () => {};
@@ -98,6 +98,8 @@ export class DropDownDeparmentComponent implements OnInit, ControlValueAccessor 
       this.dropdownOpen = !this.dropdownOpen;
     }
   }
+
+  // @ViewChild('dropdownInput') dropdownInput!: ElementRef;
 
   writeValue(value: string): void {
     this.selectedDepartment = value || '';
