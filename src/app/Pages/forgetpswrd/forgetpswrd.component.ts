@@ -19,10 +19,7 @@ import { CommonModule } from '@angular/common';
 })
 export class ForgetpswrdComponent {
   forgotPasswordForm: FormGroup;
-
-  navigateToReset() {
-    this.router.navigate(['/resetpassword']);
-  }
+  isLoading = false;
 
   constructor(
     private api: ApiService,
@@ -35,14 +32,37 @@ export class ForgetpswrdComponent {
     });
   }
 
+  isFieldInvalid(fieldName: string): boolean {
+    const field = this.forgotPasswordForm.get(fieldName);
+    return field ? field.invalid && field.touched : false;
+  }
+
   onSubmit(): void {
     if (this.forgotPasswordForm.valid) {
+      this.isLoading = true;
       const email = this.forgotPasswordForm.get('email')?.value;
 
-      this.emailService.sendResetPasswordEmail(email).subscribe((success) => {
-        if (success) {
-          // Navigate to a confirmation page or show success message
-          this.router.navigate(['/reset-confirmation']);
+      this.emailService.sendResetPasswordEmail(email).subscribe({
+        next: (success) => {
+          if (success) {
+            localStorage.setItem('resetEmail', email);
+            this.router.navigate(['/verification-success'], {
+              state: { email: email },
+            });
+          }
+        },
+        error: (error) => {
+          console.error('Error sending reset email:', error);
+        },
+        complete: () => {
+          this.isLoading = false;
+        },
+      });
+    } else {
+      Object.keys(this.forgotPasswordForm.controls).forEach((key) => {
+        const control = this.forgotPasswordForm.get(key);
+        if (control) {
+          control.markAsTouched();
         }
       });
     }

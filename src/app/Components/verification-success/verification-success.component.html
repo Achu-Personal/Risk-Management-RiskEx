@@ -1,0 +1,30 @@
+<div class="verification-container">
+  <div class="verification-card">
+    <div class="icon-container">
+      <i class="fas fa-envelope-open-text"></i>
+    </div>
+    <h2>Check Your Email</h2>
+    <p class="message">
+      We've sent a password reset link to your email address.
+      Please check your inbox and follow the instructions to reset your password.
+    </p>
+    <div class="info-box">
+      <i class="fas fa-info-circle"></i>
+      <p>
+        Haven't received the email? Check your spam folder or request a new link.
+      </p>
+    </div>
+    <div class="actions">
+      <button class="resend-btn" (click)="resendEmail()" [disabled]="isResending">
+        <span class="button-content" *ngIf="!isResending">Resend Email</span>
+        <span class="button-content" *ngIf="isResending">
+          <span class="spinner"></span>
+          Resending...
+        </span>
+      </button>
+      <button class="login-btn" (click)="backToLogin()">
+        Back to Login
+      </button>
+    </div>
+  </div>
+</div>

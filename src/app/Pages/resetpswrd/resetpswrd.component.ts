@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -17,14 +17,13 @@ import { CommonModule } from '@angular/common';
   templateUrl: './resetpswrd.component.html',
   styleUrl: './resetpswrd.component.scss',
 })
-export class ResetpswrdComponent {
+export class ResetpswrdComponent implements OnInit {
   resetForm: FormGroup;
   token: string = '';
   email: string = '';
-
-  navigateTologin() {
-    this.router.navigate(['/auth']);
-  }
+  isLoading = false;
+  showPassword = false;
+  showConfirmPassword = false;
 
   constructor(
     private fb: FormBuilder,
@@ -41,6 +40,7 @@ export class ResetpswrdComponent {
       { validator: this.passwordMatchValidator }
     );
   }
+
   ngOnInit() {
     this.route.queryParams.subscribe((params) => {
       this.token = params['token'];
@@ -52,6 +52,20 @@ export class ResetpswrdComponent {
       }
     });
   }
+
+  togglePasswordVisibility(field: 'password' | 'confirm') {
+    if (field === 'password') {
+      this.showPassword = !this.showPassword;
+    } else {
+      this.showConfirmPassword = !this.showConfirmPassword;
+    }
+  }
+
+  isFieldInvalid(fieldName: string): boolean {
+    const field = this.resetForm.get(fieldName);
+    return field ? field.invalid && field.touched : false;
+  }
+
   passwordMatchValidator(g: FormGroup) {
     return g.get('password')?.value === g.get('confirmPassword')?.value
       ? null
@@ -60,12 +74,12 @@ export class ResetpswrdComponent {
 
   onSubmit() {
     if (this.resetForm.valid) {
+      this.isLoading = true;
       const payload = {
         email: this.email,
         token: this.token,
         newPassword: this.resetForm.get('password')?.value,
       };
-      console.log(payload);
 
       this.api.resetPassword(payload).subscribe({
         next: (response) => {
@@ -77,7 +91,21 @@ export class ResetpswrdComponent {
             error.message || 'Password reset failed'
           );
         },
+        complete: () => {
+          this.isLoading = false;
+        },
+      });
+    } else {
+      Object.keys(this.resetForm.controls).forEach((key) => {
+        const control = this.resetForm.get(key);
+        if (control) {
+          control.markAsTouched();
+        }
       });
     }
+  }
+
+  navigateTologin() {
+    this.router.navigate(['/auth']);
   }
 }

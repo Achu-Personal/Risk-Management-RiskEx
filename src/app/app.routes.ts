@@ -32,6 +32,7 @@ import { UpdateRiskComponent } from './Pages/update-risk/update-risk.component';
 import { ApprovalLayoutComponent } from './Layout/approval-layout/approval-layout.component';
 import { ThankyouComponent } from './Pages/approved-response/approved-response.component';
 import { RejectedResponseComponent } from './Pages/rejected-response/rejected-response.component';
+import { VerificationSuccessComponent } from './Components/verification-success/verification-success.component';
 
 
 export const routes: Routes = [
@@ -113,6 +114,9 @@ export const routes: Routes = [
   },
   {
     path:"resetpassword",component:ResetpswrdComponent
+  },
+  {
+    path:"verification-success",component:VerificationSuccessComponent
   },
   {
     path:"changepassword",component:ChangepasswordComponent

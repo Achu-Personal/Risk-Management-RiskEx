@@ -9,18 +9,19 @@
     <form [formGroup]="forgotPasswordForm" (ngSubmit)="onSubmit()">
       <label for="email">Email:</label>
       <br>
-      <input
-        type="email"
-        id="email"
-        formControlName="email"
-        placeholder="Enter your email"
-        required>
+      <input type="email" id="email" formControlName="email" placeholder="Enter your email" [class.invalid-input]="isFieldInvalid('email')">
       <br>
-      <div *ngIf="forgotPasswordForm.get('email')?.touched && forgotPasswordForm.get('email')?.invalid" class="error-message">
+      <div class="error-message" *ngIf="isFieldInvalid('email')">
         <span *ngIf="forgotPasswordForm.get('email')?.errors?.['required']">Email is required</span>
         <span *ngIf="forgotPasswordForm.get('email')?.errors?.['email']">Please enter a valid email</span>
       </div>
-      <button type="submit" [disabled]="!forgotPasswordForm.valid">Submit</button>
+      <button type="submit" [disabled]="forgotPasswordForm.invalid || isLoading" [class.loading]="isLoading">
+        <span class="button-content" *ngIf="!isLoading">Submit</span>
+        <span class="button-content" *ngIf="isLoading">
+          <span class="spinner"></span>
+          Sending Email...
+        </span>
+      </button>
     </form>
   </div>
   <div class="side-box">
