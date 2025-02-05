@@ -1,23 +1,30 @@
-
 <div class="main-container">
-<h2>RiskEx</h2>
-<div class="box-container">
-  <a href="" class="back-to-login"><i class="fa-solid fa-arrow-left"></i> Back to login</a>
+  <h2>RiskEx</h2>
+  <div class="box-container">
+    <a href="" class="back-to-login"><i class="fa-solid fa-arrow-left"></i> Back to login</a>
 
-  <h1>Forget Your Password ?</h1>
-  <p>Don't worry, happens to all of us. Enter your email below to recover your password.</p>
+    <h1>Forget Your Password?</h1>
+    <p>Don't worry, happens to all of us. Enter your email below to recover your password.</p>
 
-  <form>
-    <label for="email">Email:</label>
-    <br>
-    <input type="email" id="email" name="email" placeholder="Enter your email" required>
-    <br>
-    <button type="submit" (click)="navigateToReset()">Submit</button>
-  </form>
+    <form [formGroup]="forgotPasswordForm" (ngSubmit)="onSubmit()">
+      <label for="email">Email:</label>
+      <br>
+      <input
+        type="email"
+        id="email"
+        formControlName="email"
+        placeholder="Enter your email"
+        required>
+      <br>
+      <div *ngIf="forgotPasswordForm.get('email')?.touched && forgotPasswordForm.get('email')?.invalid" class="error-message">
+        <span *ngIf="forgotPasswordForm.get('email')?.errors?.['required']">Email is required</span>
+        <span *ngIf="forgotPasswordForm.get('email')?.errors?.['email']">Please enter a valid email</span>
+      </div>
+      <button type="submit" [disabled]="!forgotPasswordForm.valid">Submit</button>
+    </form>
+  </div>
+  <div class="side-box">
+    <img src="/Images/Rectangle 20.png" alt="">
+  </div>
+  <img src="/Images/experion logo.png" alt="">
 </div>
-<div class="side-box">
-<img src="/Images/Rectangle 20.png" alt="">
-</div>
-<img src="/Images/experion logo.png" alt="">
-</div>
-
