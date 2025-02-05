@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { catchError, map, Observable, of } from 'rxjs';
+import { catchError, map, Observable, of, switchMap } from 'rxjs';
 import { ApiService } from './api.service';
 import { NotificationService } from './notification.service';
 
@@ -12,12 +12,63 @@ export class EmailService {
   assigneeEmailTemplate: string = '';
   ownerEmailTemplate: string = '';
   userRegisterTemplate:string='';
+  resetPasswordTemplate: string = '';
+
 
   constructor(private api: ApiService,private notificationService: NotificationService) {
     this.loadReviewTemplate();
     this.loadAssigneeTemplate();
     this.loadOwnerTemplate();
     this.loadUserRegisterTemplate();
+    this.loadResetPasswordTemplate();
+
+  }
+
+    private async loadResetPasswordTemplate() {
+      try {
+        this.resetPasswordTemplate = await fetch(
+          'Templates/ResetPasswordTemplate.html'
+        ).then((response) => response.text());
+      } catch (error) {
+        console.error('Failed to load reset password template:', error);
+      }
+    }
+
+      private prepareResetPasswordEmailBody(template: string, context: any): string {
+        const resetLink = `https://risk-management-system-risk-ex.vercel.app/resetpassword?token=${context.resetToken}&email=${context.email}`;
+        return template
+          .replace('{{fullName}}', context.fullName)
+          .replace('{{resetPasswordLink}}', resetLink)
+          .replace('{{ResetPage}}',resetLink);
+      }
+
+  sendResetPasswordEmail(email: string): Observable<boolean> {
+    const resetToken = Math.random().toString(36).substring(2) + Date.now().toString(36);
+
+    const context = {
+      fullName: 'User',
+      email: email,
+      resetToken: resetToken
+    };
+
+    const subject = 'Reset Your Risk Management System Password';
+    const body = this.prepareResetPasswordEmailBody(
+      this.resetPasswordTemplate,
+      context
+    );
+
+    return this.api.saveResetToken(email, resetToken).pipe(
+      switchMap(() => this.api.sendMail(email, subject, body)),
+      map((response: any) => {
+        this.notificationService.success('Password reset link has been sent to your email.');
+        return true;
+      }),
+      catchError((error) => {
+        console.error('Error sending reset password email:', error);
+        this.notificationService.error('Failed to send reset password email');
+        return of(false);
+      })
+    );
   }
 
   private async loadUserRegisterTemplate(){
@@ -30,11 +81,7 @@ export class EmailService {
     }
   }
   sendUserRegistrationEmail(email: string, context: any): Observable<boolean> {
-    // console.log('Sending registration email:', {
-    //   email,
-    //   context,
-    //   templateLoaded: !!this.userRegisterTemplate
-    // });
+
 
     const subject = 'Your Risk Management System Account Credentials';
     const body = this.prepareUserRegistrationEmailBody(

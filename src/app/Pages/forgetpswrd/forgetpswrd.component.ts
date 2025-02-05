@@ -1,36 +1,50 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { ApiService } from '../../Services/api.service';
-import { ChangepasswordComponent } from "../../Components/changepassword/changepassword.component";
+import { EmailService } from '../../Services/email.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-forgetpswrd',
   standalone: true,
-  imports: [ChangepasswordComponent],
+  imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './forgetpswrd.component.html',
-  styleUrl: './forgetpswrd.component.scss'
+  styleUrl: './forgetpswrd.component.scss',
 })
 export class ForgetpswrdComponent {
+  forgotPasswordForm: FormGroup;
 
-  email: string = '';
-forgotPasswordForm: any;
-
-navigateToReset() {
-  this.router.navigate(['/resetpassword']);
-
-}
-
-constructor( public api:ApiService, private fb: FormBuilder, private router: Router) {
-
-}
-
-  onSubmit(): void {
-    if (this.email) {
-      console.log('Password recovery email sent to:', this.email);
-      // Implement password recovery logic here
-    }
+  navigateToReset() {
+    this.router.navigate(['/resetpassword']);
   }
 
+  constructor(
+    private api: ApiService,
+    private emailService: EmailService,
+    private fb: FormBuilder,
+    private router: Router
+  ) {
+    this.forgotPasswordForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+    });
+  }
 
+  onSubmit(): void {
+    if (this.forgotPasswordForm.valid) {
+      const email = this.forgotPasswordForm.get('email')?.value;
+
+      this.emailService.sendResetPasswordEmail(email).subscribe((success) => {
+        if (success) {
+          // Navigate to a confirmation page or show success message
+          this.router.navigate(['/reset-confirmation']);
+        }
+      });
+    }
+  }
 }
