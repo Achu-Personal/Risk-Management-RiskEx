@@ -7,7 +7,7 @@
   }
 </select> -->
 
-<div   [appFocus]="isfirst" tabindex="0" class="dropdown-container" [ngStyle]="{'width': width+'%'}" >
+<div tabindex="0" class="dropdown-container" [ngStyle]="{'width': width+'%'}" >
   <!-- Dropdown Box -->
   <div  class="dropdown-header" (click)="toggleDropdown($event)" [class.open]="isDropdownOpen" >
     {{ getSelectedText() }}
@@ -18,7 +18,6 @@
   <div class="dropdown-list" *ngIf="isDropdownOpen && isGlobalDropdownOpen" >
     <!-- Search Bar -->
     <input
-      [appFocus]=true
       type="text"
       [(ngModel)]="searchQuery"
       placeholder="Search..."

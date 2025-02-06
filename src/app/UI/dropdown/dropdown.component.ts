@@ -3,12 +3,11 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, EventEmitter, forwardRef, HostListener, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormsModule} from '@angular/forms';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { FocusDirective } from '../../Directives/focus.directive';
 
 @Component({
   selector: 'app-dropdown',
   standalone: true,
-  imports: [CommonModule,FormsModule,FocusDirective],
+  imports: [CommonModule,FormsModule],
   templateUrl: './dropdown.component.html',
   styleUrl: './dropdown.component.scss',
   providers: [

@@ -1,12 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, forwardRef, Input } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { FocusDirective } from '../../Directives/focus.directive';
 
 @Component({
   selector: 'app-form-input',
   standalone: true,
-  imports: [CommonModule,FormsModule,FocusDirective],
+  imports: [CommonModule,FormsModule],
   templateUrl: './form-input.component.html',
   styleUrl: './form-input.component.scss',
   providers: [
