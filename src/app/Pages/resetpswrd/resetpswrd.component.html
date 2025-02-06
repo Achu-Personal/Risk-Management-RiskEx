@@ -1,26 +1,100 @@
-
 <div class="top-container">
   <h2>RiskEx</h2>
   <div class="first-container">
+    <h1>Set a Password</h1>
+    <p>Your previous password has been reset. Please set a new password for your account.</p>
 
-    <h1>Set a Password </h1>
-    <p>Your previous password has been reseted. Please set a new password for your account.</p>
+    <form [formGroup]="resetForm" (ngSubmit)="onSubmit()">
+      <label for="password">Create Password:</label>
+      <br>
+      <div class="password-input-container">
+        <input
+          [type]="showPassword ? 'text' : 'password'"
+          id="password"
+          formControlName="password"
+          placeholder="Enter your Password"
+          [class.invalid-input]="isFieldInvalid('password')"
+          required>
+        <button
+          type="button"
+          class="password-toggle"
+          (click)="togglePasswordVisibility('password')">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            [class]="showPassword ? 'eye-open' : 'eye-closed'"
+            viewBox="0 0 24 24"
+            width="15"
+            height="15"
+            stroke="currentColor"
+            fill="none"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round">
+            @if (showPassword) {
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+              <circle cx="12" cy="12" r="3"></circle>
+            } @else {
+              <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+              <line x1="1" y1="1" x2="23" y2="23"></line>
+            }
+          </svg>
+        </button>
+      </div>
+      <div class="error-message" *ngIf="isFieldInvalid('password')">
+        <span *ngIf="resetForm.get('password')?.errors?.['required']">Password is required</span>
+        <span *ngIf="resetForm.get('password')?.errors?.['minlength']">Password must be at least 8 characters</span>
+      </div>
 
-    <form>
-      <label for="create password">Create Password:</label>
+      <label for="confirmPassword">Re-Enter password</label>
       <br>
-      <input type="password" id="pass" name="password" placeholder="Enter your Password" required>
-      <br>
-      <label for="passw">Re-Enter password</label>
-      <br>
-      <input type="password" id="pass2" name="password" placeholder="Re-Enter the Password" required>
-      <br>
-      <button type="submit"  (click)="navigateTologin()" >Set Password</button>
+      <div class="password-input-container">
+        <input
+          [type]="showConfirmPassword ? 'text' : 'password'"
+          id="confirmPassword"
+          formControlName="confirmPassword"
+          placeholder="Re-Enter the Password"
+          [class.invalid-input]="isFieldInvalid('confirmPassword')"
+          required>
+        <button
+          type="button"
+          class="password-toggle"
+          (click)="togglePasswordVisibility('confirm')">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            [class]="showConfirmPassword ? 'eye-open' : 'eye-closed'"
+            viewBox="0 0 24 24"
+            width="15"
+            height="15"
+            stroke="currentColor"
+            fill="none"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round">
+            @if (showConfirmPassword) {
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+              <circle cx="12" cy="12" r="3"></circle>
+            } @else {
+              <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+              <line x1="1" y1="1" x2="23" y2="23"></line>
+            }
+          </svg>
+        </button>
+      </div>
+      <div class="error-message" *ngIf="resetForm.errors?.['mismatch'] && resetForm.get('confirmPassword')?.touched">
+        <span>Passwords do not match</span>
+      </div>
+
+      <button type="submit" [disabled]="resetForm.invalid || isLoading" [class.loading]="isLoading">
+        <span class="button-content" *ngIf="!isLoading">Set Password</span>
+        <span class="button-content" *ngIf="isLoading">
+          <span class="spinner"></span>
+          Resetting Password...
+        </span>
+      </button>
     </form>
   </div>
   <div class="right-box">
-  <img src="/Images/Rectangle 20.png" alt="">
+    <img src="/Images/Rectangle 20.png" alt="">
   </div>
   <img src="/Images/experion logo.png" alt="">
-  </div>
-
+</div>

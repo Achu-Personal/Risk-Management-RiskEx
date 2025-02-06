@@ -6,7 +6,7 @@ import { AuthService } from '../../Services/auth.service';
 import { LoginComponent } from './login.component';
 import { provideHttpClient } from '@angular/common/http';
 
-fdescribe('LoginComponent', () => {
+describe('LoginComponent', () => {
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
   let authService: AuthService;

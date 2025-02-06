@@ -1,13 +1,14 @@
 
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, forwardRef, HostListener, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, forwardRef, HostListener, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormsModule} from '@angular/forms';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { FocusDirective } from '../../Directives/focus.directive';
 
 @Component({
   selector: 'app-dropdown',
   standalone: true,
-  imports: [CommonModule,FormsModule],
+  imports: [CommonModule,FormsModule,FocusDirective],
   templateUrl: './dropdown.component.html',
   styleUrl: './dropdown.component.scss',
   providers: [
@@ -217,7 +218,6 @@ export class DropdownComponent implements ControlValueAccessor {
 
 
 
-
   @Input() options: any[] = [];
   @Input() displayField: string = '';
   @Input() codeField: string = '';
@@ -239,7 +239,10 @@ export class DropdownComponent implements ControlValueAccessor {
   // toggleDropdownOpen() {
   //   this.openDropdown.emit(this.dropdownId); // Notify wrapper
   // }
-
+  constructor(private cdr: ChangeDetectorRef){}
+  instance=0;
+  isfirst=false;
+  static instance = 0;
   value: any = '';
   isDropdownOpen = false;
   searchQuery: string = '';
@@ -251,6 +254,16 @@ export class DropdownComponent implements ControlValueAccessor {
       console.log("get value of this.value is ",this.value);
 
     }
+    setTimeout(()=>{
+    if (DropdownComponent.instance === 0 || DropdownComponent.instance === 6 || DropdownComponent.instance === 18) {
+      console.log('First time component loaded',DropdownComponent.instance );
+      this.isfirst=true;
+      this.cdr.detectChanges();
+    } else {
+      console.log('Component has been loaded before',DropdownComponent.instance );
+    }
+    DropdownComponent.instance++ ;
+  },100)
   }
 
 

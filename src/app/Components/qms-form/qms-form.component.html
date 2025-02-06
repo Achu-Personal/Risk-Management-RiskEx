@@ -3,10 +3,10 @@
     <div class="form-details-sub-container">
       <h2>Risk Details</h2>
       @if(isAdmin === 'Admin'){
-        <app-form-dropdown label="Department Name" required=" *"  [dropdownData]="dropdownDepartment" dropdownDisplay="departmentName" dropdownValue="id" selectValue="Select department" (change)="onDropdownChangeDepartment($event)"  [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)"></app-form-dropdown>
+        <app-form-dropdown label="Department Name" class="dropdown" required=" *"  [dropdownData]="dropdownDepartment" dropdownDisplay="departmentName" dropdownValue="id" selectValue="Select department" (change)="onDropdownChangeDepartment($event)"  [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)"></app-form-dropdown>
        }
       <div class="form-row">
-       <app-form-input label="Risk Name" required=" *" formControlName="riskName"></app-form-input>
+       <app-form-input  label="Risk Name" required=" *" formControlName="riskName"></app-form-input>
 
 
        @if(isAdmin!=='Admin'){
@@ -131,7 +131,7 @@
         <h6>Responsible Person Name: <span style="font-weight: bolder;">{{newAssigneename}}</span></h6>
         }
         <div [ngStyle]="{'margin-top':'20px','font-style':'italic','color':'grey'}">
-        <p>If responsible person not in the list <span (click)="isAssigneeNotInList()"><a href="javascript:void(0);">click </a></span>here</p>
+        <p>If responsible person not in the list <span (click)="isAssigneeNotInList()"><a href="javascript:void(0);" >click </a></span>here</p>
       </div>
 
       <app-form-date-field label="Planned Action Date" required="*" formControlName="plannedActionDate"></app-form-date-field>
@@ -145,7 +145,7 @@
     </div>
     <div class="form-details-sub-container">
       <h2>Reviewer</h2>
-      <app-form-dropdown label="Reviewer" required="*" [dropdownData]="dropdownReviewer" dropdownDisplay="fullName" dropdownValue="fullName" [selectedValue]="preSelectedReviewer" backgroundColor=" var(--form-color)"
+      <app-form-dropdown class="dropdown" label="Reviewer" required="*" [dropdownData]="dropdownReviewer" dropdownDisplay="fullName" dropdownValue="fullName" [selectedValue]="preSelectedReviewer" backgroundColor=" var(--form-color)"
       selectValue="Select reviewer" (change)="onDropdownChangeReviewer($event)" [openDropdownId]="openDropdownId"
       (openDropdown)="handleDropdownOpen($event)" message="You can select an existing reviewer from the dropdown
       or enter a new one. If you enter a new name, it will take priority over the dropdown selection." [showInfoButton]="true" ></app-form-dropdown>
@@ -161,8 +161,8 @@
     </div>
     <div class="form-details-sub-container">
       <div class="button-group">
-        <app-style-button (clicked)="saveConfirmation()" label="Save" type="button"></app-style-button>
-        <app-style-button (clicked)="saveAsDraft()" label="Save Draft" type="button"></app-style-button>
+        <app-style-button (clicked)="saveConfirmation()" label="Submit" type="button"></app-style-button>
+        <app-style-button (clicked)="saveAsDraft()" label="Save As Draft" type="button"></app-style-button>
         <app-style-button (clicked)="cancelRisk()" label="Cancel" type="button"></app-style-button>
 
 

@@ -291,8 +291,11 @@ export class ApiService {
 
   changeUserStatus(userId: any, status: any) {
     return this.http
-      .patch(`${this.baseUrl}/User/IsActive/${userId}/${status}`, {})
-      .subscribe((e) => console.log('UserId and status:', userId, status));
+      .patch(`${this.baseUrl}/User/IsActive/${userId}/${status}`, {}, { responseType: 'text' })
+      .subscribe(response => {
+        console.log('UserId and status:', userId, status);
+        console.log('API Response:', response);
+      });
   }
 
   getUsersByProjects(): Observable<any> {
@@ -426,5 +429,13 @@ changePassword(currentPassword: string, newPassword: string, confirmPassword: st
   };
   return this.http.post(url, payload);
 }
+
+  saveResetToken(email: string, token: string): Observable<any> {
+    return this.http.post(`${this.baseUrl}/ResetPass/save-reset-token`, { token,email });
+  }
+
+  resetPassword(payload: { email: string, token: string, newPassword: string }): Observable<any> {
+    return this.http.post(`${this.baseUrl}/ResetPass/reset-password`, payload);
+  }
 
 }

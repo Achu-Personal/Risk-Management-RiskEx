@@ -1,5 +1,6 @@
-<div class="position-relative custom-dropdown-container">
+<div  [appFocus]=true  tabindex="0" class="position-relative dropdown custom-dropdown-container">
   <div
+  data-bs-toggle="dropdown"
     class="custom-dropdown-placeholder d-flex align-items-center justify-content-between"
     (click)="toggleDropdown()"
     [class.disabled]="disabled"
@@ -14,6 +15,7 @@
   >
     <div class="search-container">
       <input
+        [appFocus]=true
         type="text"
         class="search-input"
         placeholder="Search departments..."

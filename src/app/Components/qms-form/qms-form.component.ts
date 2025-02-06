@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, Output, Renderer2, SimpleChanges} from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, Output, QueryList, Renderer2, SimpleChanges, ViewChildren} from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DropdownComponent } from "../../UI/dropdown/dropdown.component";
 import { CommonModule } from '@angular/common';
@@ -16,13 +16,14 @@ import { FormReferenceHeatmapPopupComponent } from '../form-reference-heatmap-po
 import { FormConformPopupComponent } from '../form-conform-popup/form-conform-popup.component';
 import { Router } from '@angular/router';
 import { StyleButtonComponent } from '../../UI/style-button/style-button.component';
+import { FocusDirective } from '../../Directives/focus.directive';
 
 
 
 @Component({
   selector: 'app-qms-form',
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule, DropdownComponent, CommonModule, BodyContainerComponent,HeatmapComponent,FormInputComponent,FormDropdownComponent,FormTextAreaComponent,FormDateFieldComponent ,FormButtonComponent,FormDataNotInListComponent,FormSuccessfullComponent,FormReferenceHeatmapPopupComponent,FormConformPopupComponent,StyleButtonComponent],
+  imports: [FormsModule, FocusDirective, ReactiveFormsModule, DropdownComponent, CommonModule, BodyContainerComponent,HeatmapComponent,FormInputComponent,FormDropdownComponent,FormTextAreaComponent,FormDateFieldComponent ,FormButtonComponent,FormDataNotInListComponent,FormSuccessfullComponent,FormReferenceHeatmapPopupComponent,FormConformPopupComponent,StyleButtonComponent],
   templateUrl: './qms-form.component.html',
   styleUrl: './qms-form.component.scss'
 })
@@ -83,7 +84,15 @@ export class QMSFormComponent {
   isnewAssigneenameDisplay:boolean=false
   isnewReviewernameDisplay:boolean=false
 
+  // @ViewChildren('dropdown') dropdowns!: QueryList<ElementRef>;
 
+  // ngAfterViewInit() {
+  //   // Focus the first dropdown after view initialization
+  //   const firstDropdown = this.dropdowns.toArray()[0];
+  //   if (firstDropdown) {
+  //     firstDropdown.nativeElement.focus();
+  //   }
+  // }
 
   constructor(private el: ElementRef, private renderer: Renderer2, private api:ApiService,private router: Router){}
   ngOnInit(){

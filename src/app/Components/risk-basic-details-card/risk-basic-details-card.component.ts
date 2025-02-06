@@ -7,11 +7,12 @@ import { CommonModule } from '@angular/common';
 import { UpdateButtonComponent } from "../../UI/update-button/update-button.component";
 import { AuthService } from '../../Services/auth.service';
 import { ApiService } from '../../Services/api.service';
+import { OneDirective } from '../../Directives/one.directive';
 
 @Component({
   selector: 'app-risk-basic-details-card',
   standalone: true,
-  imports: [OverallRatingCardComponent, RiskStatusCardComponent, EditButtonComponent, CommonModule, UpdateButtonComponent],
+  imports: [OverallRatingCardComponent, RiskStatusCardComponent, EditButtonComponent, CommonModule, UpdateButtonComponent, OneDirective],
   templateUrl: './risk-basic-details-card.component.html',
   styleUrl: './risk-basic-details-card.component.scss'
 })
@@ -21,6 +22,8 @@ export class RiskBasicDetailsCardComponent {
   {
 
   }
+
+  color='red';
 
   ngOnInit()
   {
