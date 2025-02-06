@@ -1,12 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, forwardRef, Input } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { FocusDirective } from '../../Directives/focus.directive';
 
 @Component({
   selector: 'app-form-text-area',
   standalone: true,
-  imports: [CommonModule,FormsModule,FocusDirective],
+  imports: [CommonModule,FormsModule],
   templateUrl: './form-text-area.component.html',
   styleUrl: './form-text-area.component.scss',
   providers: [

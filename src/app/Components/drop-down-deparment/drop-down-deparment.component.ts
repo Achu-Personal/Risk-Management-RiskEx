@@ -4,12 +4,11 @@ import { department } from '../../Interfaces/deparments.interface';
 import { ApiService } from '../../Services/api.service';
 import { NgFor, NgIf } from '@angular/common';
 import { Subscription } from 'rxjs';
-import { FocusDirective } from '../../Directives/focus.directive';
 
 @Component({
   selector: 'app-drop-down-deparment',
   standalone: true,
-  imports: [NgIf, NgFor,FocusDirective],
+  imports: [NgIf, NgFor],
   templateUrl: './drop-down-deparment.component.html',
   styleUrl: './drop-down-deparment.component.scss',
   providers: [

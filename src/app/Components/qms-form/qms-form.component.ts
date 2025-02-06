@@ -16,14 +16,13 @@ import { FormReferenceHeatmapPopupComponent } from '../form-reference-heatmap-po
 import { FormConformPopupComponent } from '../form-conform-popup/form-conform-popup.component';
 import { Router } from '@angular/router';
 import { StyleButtonComponent } from '../../UI/style-button/style-button.component';
-import { FocusDirective } from '../../Directives/focus.directive';
 
 
 
 @Component({
   selector: 'app-qms-form',
   standalone: true,
-  imports: [FormsModule, FocusDirective, ReactiveFormsModule, DropdownComponent, CommonModule, BodyContainerComponent,HeatmapComponent,FormInputComponent,FormDropdownComponent,FormTextAreaComponent,FormDateFieldComponent ,FormButtonComponent,FormDataNotInListComponent,FormSuccessfullComponent,FormReferenceHeatmapPopupComponent,FormConformPopupComponent,StyleButtonComponent],
+  imports: [FormsModule, ReactiveFormsModule, DropdownComponent, CommonModule, BodyContainerComponent,HeatmapComponent,FormInputComponent,FormDropdownComponent,FormTextAreaComponent,FormDateFieldComponent ,FormButtonComponent,FormDataNotInListComponent,FormSuccessfullComponent,FormReferenceHeatmapPopupComponent,FormConformPopupComponent,StyleButtonComponent],
   templateUrl: './qms-form.component.html',
   styleUrl: './qms-form.component.scss'
 })
