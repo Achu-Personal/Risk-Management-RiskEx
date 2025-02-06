@@ -23,7 +23,7 @@ export class EmailService {
     this.loadResetPasswordTemplate();
 
   }
-
+//Reset passsword
     private async loadResetPasswordTemplate() {
       try {
         this.resetPasswordTemplate = await fetch(
@@ -71,6 +71,8 @@ export class EmailService {
     );
   }
 
+
+// user Registration Email
   private async loadUserRegisterTemplate(){
     try{
       this.userRegisterTemplate = await fetch(
@@ -109,6 +111,7 @@ export class EmailService {
       .replace('{{fullName}}', context.fullName);
   }
 
+  //Review mail
   private async loadReviewTemplate() {
     try {
       this.reviewerEmailTemplate = await fetch(
@@ -156,6 +159,7 @@ export class EmailService {
     );
   }
 
+  //Assignee Mail
   private async loadAssigneeTemplate() {
     try {
       this.assigneeEmailTemplate = await fetch(
@@ -202,7 +206,7 @@ export class EmailService {
       })
     );
   }
-
+//Risk Owner mail
   private async loadOwnerTemplate() {
     try {
 
