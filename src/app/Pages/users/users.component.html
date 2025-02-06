@@ -36,7 +36,7 @@
               <label for="name" class="form-label">
                 Name <span class="text-danger">*</span>
               </label>
-              <input [appFocus]=true type="text" class="form-control" id="name" placeholder="Enter Name" formControlName="fullName" />
+              <input type="text" class="form-control" id="name" placeholder="Enter Name" formControlName="fullName" />
               @if (userForm.get('fullName')?.invalid && userForm.get('fullName')?.touched)
               {
               <div class="text-danger"> Name is required. </div>
@@ -116,10 +116,10 @@
           <form [formGroup]="departmentForm" (ngSubmit)="onSubmitDepartment()">
 
             <div class="mb-3">
-              <label [appFocus]=true for="departmentName" class="form-label">
+              <label for="departmentName" class="form-label">
                 Department Name <span class="text-danger">*</span>
               </label>
-              <input [appFocus]=true type="text" class="form-control" id="departmentName" placeholder="Enter Department Name"
+              <input type="text" class="form-control" id="departmentName" placeholder="Enter Department Name"
                 formControlName="name" />
               @if (departmentForm.get('departmentName')?.invalid && departmentForm.get('departmentName')?.touched)
               {
@@ -282,7 +282,7 @@
             <label for="selectDepartmentForProject" class="form-label">
               Select Department <span class="text-danger">*</span>
             </label>
-            <app-drop-down-deparment [appFocus]=true *ngIf="authService.getUserRole() === 'Admin'"
+            <app-drop-down-deparment *ngIf="authService.getUserRole() === 'Admin'"
               formControlName="selectedDepartment"
               (departmentSelected)="onProjectDepartmentSelect($event)">
             </app-drop-down-deparment>
