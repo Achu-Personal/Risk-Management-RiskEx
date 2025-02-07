@@ -1,43 +1,60 @@
 <app-body-container backgroundColor=" var(--form-color)" padding="10">
   <div class="container">
-    <div class="content" >
+    <div class="content">
       @if (riskType ==="Quality"){
-        <app-update-qms [dropdownLikelihood]="dropdownDataLikelihood"
-        [dropdownImpact]="dropdownDataImpact" [dropdownReviewer]="dropdownDataReviewer"
-        [riskResponses]="riskResponses" [overallRiskRatingBefore]="overallRiskRatingBefore"
-        (submitForm)="onFormSubmit($event)" [dropdownDepartment]="dropdownDataDepartment" [riskTypeId]="riskTypeId"></app-update-qms>
+      <app-update-qms
+        [dropdownLikelihood]="dropdownDataLikelihood"
+        [dropdownImpact]="dropdownDataImpact"
+        [dropdownReviewer]="dropdownDataReviewer"
+        [riskResponses]="riskResponses"
+        [overallRiskRatingBefore]="overallRiskRatingBefore"
+        (submitForm)="onFormSubmit($event)"
+        [dropdownDepartment]="dropdownDataDepartment"
+        [riskTypeId]="riskTypeId"
+      ></app-update-qms>
 
-      }
-      @if (riskType==="Security"){
-        <app-update-isms [dropdownLikelihood]="dropdownDataLikelihood"
-        [dropdownImpact]="dropdownDataImpact" [dropdownReviewer]="dropdownDataReviewer"
-         [riskResponses]="riskResponses" [overallRiskRatingBefore]="overallRiskRatingBefore"
-        (submitForm)="onFormSubmit($event)"  [dropdownDepartment]="dropdownDataDepartment" [riskTypeId]="riskTypeId"></app-update-isms>
+      } @if (riskType==="Security"){
+      <app-update-isms
+        [dropdownLikelihood]="dropdownDataLikelihood"
+        [dropdownImpact]="dropdownDataImpact"
+        [dropdownReviewer]="dropdownDataReviewer"
+        [riskResponses]="riskResponses"
+        [overallRiskRatingBefore]="overallRiskRatingBefore"
+        (submitForm)="onFormSubmit($event)"
+        [dropdownDepartment]="dropdownDataDepartment"
+        [riskTypeId]="riskTypeId"
+      ></app-update-isms>
 
-      }
-      @if (riskType==="Privacy"){
-        <app-update-isms [dropdownLikelihood]="dropdownDataLikelihood"
-        [dropdownImpact]="dropdownDataImpact" [dropdownReviewer]="dropdownDataReviewer"
-         [riskResponses]="riskResponses" [overallRiskRatingBefore]="overallRiskRatingBefore"
-        (submitForm)="onFormSubmit($event)"  [dropdownDepartment]="dropdownDataDepartment" [riskTypeId]="riskTypeId"></app-update-isms>
+      } @if (riskType==="Privacy"){
+      <app-update-isms
+        [dropdownLikelihood]="dropdownDataLikelihood"
+        [dropdownImpact]="dropdownDataImpact"
+        [dropdownReviewer]="dropdownDataReviewer"
+        [riskResponses]="riskResponses"
+        [overallRiskRatingBefore]="overallRiskRatingBefore"
+        (submitForm)="onFormSubmit($event)"
+        [dropdownDepartment]="dropdownDataDepartment"
+        [riskTypeId]="riskTypeId"
+      ></app-update-isms>
 
       }
     </div>
     @if(isSuccess){
-      <app-form-successfull
+    <app-form-successfull
       message="Risk has been updated successfully! <br> You can now check it in the risk management dashboard."
-      [isSuccessfull] ="true"
-      (closeDialog)="closeDialogSuccess()" >
-      </app-form-successfull>
-   }
-   @if(isError){
+      [isSuccessfull]="true"
+      (closeDialog)="closeDialogSuccess()"
+    >
+    </app-form-successfull>
+    } @if(isError){
     <app-form-successfull
       [message]="error"
+      [isSuccessfull]="false"
+      (closeDialog)="closeDialog()"
+    >
+    </app-form-successfull>
 
-      [isSuccessfull]= "false"
-      (closeDialog)="closeDialog()" >
-      </app-form-successfull>
-
-   }
+    } @if(isLoading) {
+    <app-form-loader></app-form-loader>> }
   </div>
 </app-body-container>

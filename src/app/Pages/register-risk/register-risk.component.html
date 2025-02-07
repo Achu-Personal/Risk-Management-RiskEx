@@ -1,71 +1,98 @@
 <app-body-container backgroundColor=" var(--form-color)" padding="10">
   <div class="container">
-      <div id="riskType" class="form-Container">
-        <div class="riskType-radioButton-container">
-          <div class="risk-type-label">
-            <label for="riskType">Risk Type <span class="required">*</span> :</label>
-          </div>
-          @for (risk of riskTypes; track $index) {
-            <div class="riskType-radioButton">
-              <label>
-                <input
-                type="radio"
-                name="riskType"
-                [value]="risk.value"
-                [checked]="selectedRiskType === risk.value"
-                [attr.data-risk-type]="risk.value.toString()"
-        (change)="setRiskType(risk.value)"
-        [ngClass]="{'selected-risk': selectedRiskType === risk.value}" >
-                {{ risk.type }}
-              </label>
-            </div>
-          }
-
+    <div id="riskType" class="form-Container">
+      <div class="riskType-radioButton-container">
+        <div class="risk-type-label">
+          <label for="riskType"
+            >Risk Type <span class="required">*</span> :</label
+          >
         </div>
+        @for (risk of riskTypes; track $index) {
+        <div class="riskType-radioButton">
+          <label>
+            <input
+              type="radio"
+              name="riskType"
+              [value]="risk.value"
+              [checked]="selectedRiskType === risk.value"
+              [attr.data-risk-type]="risk.value.toString()"
+              (change)="setRiskType(risk.value)"
+              [ngClass]="{ 'selected-risk': selectedRiskType === risk.value }"
+            />
+            {{ risk.type }}
+          </label>
+        </div>
+        }
       </div>
-       @if (selectedRiskType === 1) {
-        <app-qms-form  [riskTypeValue]="selectedRiskType" [dropdownLikelihood]="dropdownDataLikelihood"
-        [dropdownImpact]="dropdownDataImpact" [dropdownProject]="dropdownDataProject"
-        [dropdownDepartment]="dropdownDataDepartment" [dropdownAssignee]="dropdownDataAssignee"
-        [dropdownReviewer]="dropdownDataReviewer" [departmentName]="departmentName"
-        [departmentId]="departmentId" [isAdmin]="isAdmin" (submitForm)="onFormSubmit($event)"
-        (departmentSelectedByAdmin)="receiveValue($event)" [dropdownDataProjectForAdmin]="dropdownDataProjectForAdmin"
-        [dropdownAssigneeForAdmin]="dropdownAssigneeForAdmin"></app-qms-form>
-       }
-       @if (selectedRiskType === 2) {
-        <app-isms-form  [riskTypeValue]="selectedRiskType" [dropdownLikelihood]="dropdownDataLikelihood"
-        [dropdownImpact]="dropdownDataImpact" [dropdownProject]="dropdownDataProject"
-        [dropdownDepartment]="dropdownDataDepartment" [dropdownAssignee]="dropdownDataAssignee"
-        [dropdownReviewer]="dropdownDataReviewer" [departmentName]="departmentName"
-        [departmentId]="departmentId" [isAdmin]="isAdmin" (submitForm)="onFormSubmit($event)"
-        (departmentSelectedByAdmin)="receiveValue($event)" [dropdownDataProjectForAdmin]="dropdownDataProjectForAdmin"
-        [dropdownAssigneeForAdmin]="dropdownAssigneeForAdmin"></app-isms-form>
-       }
-       @if (selectedRiskType === 3) {
-        <app-isms-form  [riskTypeValue]="selectedRiskType" [dropdownLikelihood]="dropdownDataLikelihood"
-        [dropdownImpact]="dropdownDataImpact" [dropdownProject]="dropdownDataProject"
-        [dropdownDepartment]="dropdownDataDepartment" [dropdownAssignee]="dropdownDataAssignee"
-        [dropdownReviewer]="dropdownDataReviewer" [departmentName]="departmentName"
-        [departmentId]="departmentId" [isAdmin]="isAdmin" (submitForm)="onFormSubmit($event)"
-        (departmentSelectedByAdmin)="receiveValue($event)" [dropdownDataProjectForAdmin]="dropdownDataProjectForAdmin"
-        [dropdownAssigneeForAdmin]="dropdownAssigneeForAdmin"></app-isms-form>
-       }
-     @if(isSuccess){
-        <app-form-successfull
-        message="Risk has been added successfully!<br>You can now check it in the risk management dashboard.<br>If you need to make changes, you can edit it anytime."
-        [isSuccessfull] ="true"
-        (closeDialog)="closeDialogSuccess()" >
-        </app-form-successfull>
-     }
-     @if(isError){
-      <app-form-successfull
+    </div>
+    @if (selectedRiskType === 1) {
+    <app-qms-form
+      [riskTypeValue]="selectedRiskType"
+      [dropdownLikelihood]="dropdownDataLikelihood"
+      [dropdownImpact]="dropdownDataImpact"
+      [dropdownProject]="dropdownDataProject"
+      [dropdownDepartment]="dropdownDataDepartment"
+      [dropdownAssignee]="dropdownDataAssignee"
+      [dropdownReviewer]="dropdownDataReviewer"
+      [departmentName]="departmentName"
+      [departmentId]="departmentId"
+      [isAdmin]="isAdmin"
+      (submitForm)="onFormSubmit($event)"
+      (departmentSelectedByAdmin)="receiveValue($event)"
+      [dropdownDataProjectForAdmin]="dropdownDataProjectForAdmin"
+      [dropdownAssigneeForAdmin]="dropdownAssigneeForAdmin"
+    ></app-qms-form>
+    } @if (selectedRiskType === 2) {
+    <app-isms-form
+      [riskTypeValue]="selectedRiskType"
+      [dropdownLikelihood]="dropdownDataLikelihood"
+      [dropdownImpact]="dropdownDataImpact"
+      [dropdownProject]="dropdownDataProject"
+      [dropdownDepartment]="dropdownDataDepartment"
+      [dropdownAssignee]="dropdownDataAssignee"
+      [dropdownReviewer]="dropdownDataReviewer"
+      [departmentName]="departmentName"
+      [departmentId]="departmentId"
+      [isAdmin]="isAdmin"
+      (submitForm)="onFormSubmit($event)"
+      (departmentSelectedByAdmin)="receiveValue($event)"
+      [dropdownDataProjectForAdmin]="dropdownDataProjectForAdmin"
+      [dropdownAssigneeForAdmin]="dropdownAssigneeForAdmin"
+    ></app-isms-form>
+    } @if (selectedRiskType === 3) {
+    <app-isms-form
+      [riskTypeValue]="selectedRiskType"
+      [dropdownLikelihood]="dropdownDataLikelihood"
+      [dropdownImpact]="dropdownDataImpact"
+      [dropdownProject]="dropdownDataProject"
+      [dropdownDepartment]="dropdownDataDepartment"
+      [dropdownAssignee]="dropdownDataAssignee"
+      [dropdownReviewer]="dropdownDataReviewer"
+      [departmentName]="departmentName"
+      [departmentId]="departmentId"
+      [isAdmin]="isAdmin"
+      (submitForm)="onFormSubmit($event)"
+      (departmentSelectedByAdmin)="receiveValue($event)"
+      [dropdownDataProjectForAdmin]="dropdownDataProjectForAdmin"
+      [dropdownAssigneeForAdmin]="dropdownAssigneeForAdmin"
+    ></app-isms-form>
+    } @if(isSuccess){
+    <app-form-successfull
+      message="Risk has been added successfully!<br>You can now check it in the risk management dashboard.<br>If you need to make changes, you can edit it anytime."
+      [isSuccessfull]="true"
+      (closeDialog)="closeDialogSuccess()"
+    >
+    </app-form-successfull>
+    } @if(isError){
+    <app-form-successfull
       [message]="errorDetails"
       [HeaderMessage]="errorMessage"
-        [isSuccessfull]= "false"
-        (closeDialog)="closeDialog()" >
-        </app-form-successfull>
+      [isSuccessfull]="false"
+      (closeDialog)="closeDialog()"
+    >
+    </app-form-successfull>
 
-     }
+    } @if(isLoading) {
+    <app-form-loader></app-form-loader>> }
   </div>
 </app-body-container>
-

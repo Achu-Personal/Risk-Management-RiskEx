@@ -1,13 +1,12 @@
 import { Component, ElementRef, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { FormButtonComponent } from '../../UI/form-button/form-button.component';
 import { DropdownComponent } from '../../UI/dropdown/dropdown.component';
 import { StyleButtonComponent } from '../../UI/style-button/style-button.component';
 
 @Component({
   selector: 'app-form-data-not-in-list',
   standalone: true,
-  imports: [FormButtonComponent,FormsModule,DropdownComponent,ReactiveFormsModule,StyleButtonComponent],
+  imports: [FormsModule,DropdownComponent,ReactiveFormsModule,StyleButtonComponent],
   templateUrl: './form-data-not-in-list.component.html',
   styleUrl: './form-data-not-in-list.component.scss'
 })
@@ -20,6 +19,7 @@ export class FormDataNotInListComponent {
   @Input() placeholder:string=''
   @Input() openDropdownId: string | undefined = undefined; // Get from parent
   @Output() openDropdown = new EventEmitter<string>(); // Notify parent
+
 
   group=new FormGroup({
     fullName:new FormControl('', [Validators.required,Validators.minLength(3) ]),

@@ -1,45 +1,70 @@
-
-<app-body-container backgroundColor=" var(--form-color)"  padding="10">
+<app-body-container backgroundColor=" var(--form-color)" padding="10">
   <div class="container">
-    <div class="content" >
+    <div class="content">
       @if (riskType==="Quality"){
-        <app-qms-edit [riskTypeValue]="selectedRiskType" [dropdownLikelihood]="dropdownDataLikelihood"
-        [dropdownImpact]="dropdownDataImpact" [dropdownProject]="dropdownDataProject"
-        [dropdownDepartment]="dropdownDataDepartment" [dropdownAssignee]="dropdownDataAssignee"
-        [dropdownReviewer]="dropdownDataReviewer" [departmentName]="departmentName"
-        [departmentId]="departmentId" [isAdmin]="isAdmin" (submitForm)="onFormSubmit($event)" [riskData]="riskData"></app-qms-edit>
+      <app-qms-edit
+        [riskTypeValue]="selectedRiskType"
+        [dropdownLikelihood]="dropdownDataLikelihood"
+        [dropdownImpact]="dropdownDataImpact"
+        [dropdownProject]="dropdownDataProject"
+        [dropdownDepartment]="dropdownDataDepartment"
+        [dropdownAssignee]="dropdownDataAssignee"
+        [dropdownReviewer]="dropdownDataReviewer"
+        [departmentName]="departmentName"
+        [departmentId]="departmentId"
+        [isAdmin]="isAdmin"
+        (submitForm)="onFormSubmit($event)"
+        [riskData]="riskData"
+      ></app-qms-edit>
 
+      } @if (riskType==="Security"){
+      <app-isms-edit
+        [riskTypeValue]="selectedRiskType"
+        [dropdownLikelihood]="dropdownDataLikelihood"
+        [dropdownImpact]="dropdownDataImpact"
+        [dropdownProject]="dropdownDataProject"
+        [dropdownDepartment]="dropdownDataDepartment"
+        [dropdownAssignee]="dropdownDataAssignee"
+        [dropdownReviewer]="dropdownDataReviewer"
+        [departmentName]="departmentName"
+        [departmentId]="departmentId"
+        [isAdmin]="isAdmin"
+        (submitForm)="onFormSubmit($event)"
+        [riskData]="riskData"
+      ></app-isms-edit>
+      } @if (riskType==="Privacy"){
+      <app-isms-edit
+        [riskTypeValue]="selectedRiskType"
+        [dropdownLikelihood]="dropdownDataLikelihood"
+        [dropdownImpact]="dropdownDataImpact"
+        [dropdownProject]="dropdownDataProject"
+        [dropdownDepartment]="dropdownDataDepartment"
+        [dropdownAssignee]="dropdownDataAssignee"
+        [dropdownReviewer]="dropdownDataReviewer"
+        [departmentName]="departmentName"
+        [departmentId]="departmentId"
+        [isAdmin]="isAdmin"
+        (submitForm)="onFormSubmit($event)"
+        [riskData]="riskData"
+      ></app-isms-edit>
       }
-      @if (riskType==="Security"){
-       <app-isms-edit [riskTypeValue]="selectedRiskType" [dropdownLikelihood]="dropdownDataLikelihood"
-       [dropdownImpact]="dropdownDataImpact" [dropdownProject]="dropdownDataProject"
-       [dropdownDepartment]="dropdownDataDepartment" [dropdownAssignee]="dropdownDataAssignee"
-       [dropdownReviewer]="dropdownDataReviewer" [departmentName]="departmentName"
-       [departmentId]="departmentId" [isAdmin]="isAdmin" (submitForm)="onFormSubmit($event)"  [riskData]="riskData"></app-isms-edit>
-      }
-      @if (riskType==="Privacy"){
-        <app-isms-edit [riskTypeValue]="selectedRiskType" [dropdownLikelihood]="dropdownDataLikelihood"
-        [dropdownImpact]="dropdownDataImpact" [dropdownProject]="dropdownDataProject"
-        [dropdownDepartment]="dropdownDataDepartment" [dropdownAssignee]="dropdownDataAssignee"
-        [dropdownReviewer]="dropdownDataReviewer" [departmentName]="departmentName"
-        [departmentId]="departmentId" [isAdmin]="isAdmin" (submitForm)="onFormSubmit($event)"  [riskData]="riskData"></app-isms-edit>
-       }
     </div>
     @if(isSuccess){
-      <app-form-successfull
+    <app-form-successfull
       message="Risk has been edited successfully!<br> You can now check it in the risk management dashboard."
-      [isSuccessfull] ="true"
-      (closeDialog)="closeDialog()" >
-      </app-form-successfull>
-   }
-   @if(isError){
+      [isSuccessfull]="true"
+      (closeDialog)="closeDialog()"
+    >
+    </app-form-successfull>
+    } @if(isError){
     <app-form-successfull
       [message]="error"
-      [isSuccessfull]= "false"
-      (closeDialog)="closeDialog()" >
-      </app-form-successfull>
+      [isSuccessfull]="false"
+      (closeDialog)="closeDialog()"
+    >
+    </app-form-successfull>
 
-   }
+    } @if(isLoading) {
+    <app-form-loader></app-form-loader>> }
   </div>
 </app-body-container>
-
