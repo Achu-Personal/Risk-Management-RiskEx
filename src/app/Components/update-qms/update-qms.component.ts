@@ -1,6 +1,17 @@
-import { Component, ElementRef, EventEmitter, Input, Output, Renderer2 } from '@angular/core';
-import { DropdownComponent } from "../../UI/dropdown/dropdown.component";
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  Output,
+} from '@angular/core';
+import {
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { FormDropdownComponent } from '../form-dropdown/form-dropdown.component';
 import { FormDateFieldComponent } from '../form-date-field/form-date-field.component';
@@ -8,460 +19,355 @@ import { FormRiskResponseComponent } from '../form-risk-response/form-risk-respo
 import { FormTextAreaComponent } from '../form-text-area/form-text-area.component';
 import { FormDataNotInListComponent } from '../form-data-not-in-list/form-data-not-in-list.component';
 import { ApiService } from '../../Services/api.service';
-import { FormButtonComponent } from '../../UI/form-button/form-button.component';
 import { FormSuccessfullComponent } from '../form-successfull/form-successfull.component';
 import { FormReferenceHeatmapPopupComponent } from '../form-reference-heatmap-popup/form-reference-heatmap-popup.component';
 import { FormConformPopupComponent } from '../form-conform-popup/form-conform-popup.component';
 import { Router } from '@angular/router';
 import { StyleButtonComponent } from '../../UI/style-button/style-button.component';
-
+import { FormLoaderComponent } from '../form-loader/form-loader.component';
 
 @Component({
   selector: 'app-update-qms',
   standalone: true,
-  imports: [DropdownComponent,FormsModule,CommonModule,FormDropdownComponent,FormDateFieldComponent,FormRiskResponseComponent,ReactiveFormsModule,FormTextAreaComponent,FormDataNotInListComponent,FormButtonComponent,FormSuccessfullComponent,FormReferenceHeatmapPopupComponent,FormConformPopupComponent,StyleButtonComponent],
+  imports: [
+    FormsModule,
+    CommonModule,
+    FormDropdownComponent,
+    FormDateFieldComponent,
+    FormRiskResponseComponent,
+    ReactiveFormsModule,
+    FormTextAreaComponent,
+    FormDataNotInListComponent,
+    FormSuccessfullComponent,
+    FormReferenceHeatmapPopupComponent,
+    FormConformPopupComponent,
+    StyleButtonComponent,
+    FormLoaderComponent,
+  ],
   templateUrl: './update-qms.component.html',
-  styleUrl: './update-qms.component.scss'
+  styleUrl: './update-qms.component.scss',
 })
 export class UpdateQmsComponent {
-// @Input() riskTypeValue: string=''
-// result: number = 0;
-// reviewerNotInList:boolean=false
-// assigneeNotInList:boolean=false
-// isAdmin:string='admin'
-// likelihoodValue:number=0
-// impactValue:number=0
-// riskFactor:number=0
-// selectedResponse: string = '';
-// departmentName:string=''
-// departmentId:string='';
-// dropdownDataLikelihood: any[] = []
-// dropdownDataImpact:any[]=[]
-// dropdownDataProject:any[]=[]
-// dropdownDataDepartment:any[]=[]
-// dropdownDataassignee:any[]=[]
-// dropdownDataReviewer: Array<{ id: number; fullName: string; email: string; type: string }> = [];
-// // riskResponses:Array<{ id: number; name: string; description: string; example: string; risks:string }> = [];
-// riskResponses:any[]=[]
+  @Output() submitForm = new EventEmitter<any>();
+  @Input() overallRiskRatingBefore: number = 0;
+  @Input() dropdownLikelihood: any[] = [];
+  @Input() dropdownImpact: any[] = [];
+  @Input() dropdownDepartment: any[] = [];
+  @Input() dropdownReviewer: Array<{
+    id: number;
+    fullName: string;
+    email: string;
+    type: string;
+  }> = [];
+  @Input() riskResponses: Array<{
+    id: number;
+    name: string;
+    description: string;
+    example: string;
+    risks: string;
+  }> = [];
 
+  @Input() riskTypeId: number = 0;
+  overallRiskRating: number = 0;
+  likelihoodValue: number = 0;
+  impactValue: number = 0;
+  riskFactor: number = 0;
+  likelihoodId: number = 0;
+  impactId: number = 0;
+  riskResponseValue: number = 0;
+  reviewerNotInList: boolean = false;
+  internalReviewerIdFromDropdown: number = 0;
+  externalReviewerIdFromDropdown: number = 0;
+  isInternal: boolean = true;
+  externalReviewerIdFromInput: number = 0;
+  residualValue: number = 0;
+  percentageRedution: number = 0;
+  residualRisk: number = 0;
 
+  isSuccessReviewer: boolean = false;
+  isErrorReviewer: boolean = false;
+  HeatMapRefernce: boolean = false;
+  error: string = '';
+  openDropdownId: string | undefined = undefined;
 
-// autoResize(event: Event): void {
-//   const textarea = event.target as HTMLTextAreaElement;
-//   const minHeight = 40;
-//   textarea.style.height = 'auto';
-//   textarea.style.height = `${Math.max(minHeight, textarea.scrollHeight)}px`;
-// }
+  isCancel: boolean = false;
+  isSave: boolean = false;
+  isValid: boolean = false;
+  newReviewername: string = '';
+  isnewReviewernameDisplay: boolean = false;
+  isLoading = false; // Initially false
 
-// isReviewerNotInList(){
-//   this.reviewerNotInList=!this.reviewerNotInList
-// }
+  constructor(
+    private el: ElementRef,
 
-// isAssigneeNotInList(){
-//   this.assigneeNotInList=!this.assigneeNotInList
-// }
+    private api: ApiService,
+    private router: Router
+  ) {}
+  ngOnInit() {}
 
-// onDropdownChangelikelihood(event: any): void {
-//   const selectedFactorId = Number(event.target.value);
-//   const selectedFactor = this.dropdownDataLikelihood.find(factor => Number(factor.id) === selectedFactorId);
-//   if (selectedFactor) {
-//     this.likelihoodValue = selectedFactor.likelihood;
-//     console.log('Selected Likelihood:', this.likelihoodValue);
-//   } else {
-//     console.log('Selected factor not found.');
-//   }
-//  this.calculateOverallRiskRating();
-// }
-
-// onDropdownChangeImpact(event: any): void {
-//  const selectedFactorId = Number(event.target.value);
-//  const selectedFactor = this.dropdownDataImpact.find(factor => Number(factor.id) === selectedFactorId);
-//  if (selectedFactor) {
-//   this.impactValue = selectedFactor.impact;
-//   console.log('Selected Impact:',this.impactValue);
-//  }else {
-//   console.log('Selected factor not found.');
-//  }
-//   this.calculateOverallRiskRating();
-// }
-
-// calculateOverallRiskRating(){
-//   if(this.likelihoodValue !=0 && this.impactValue !=0){
-//     this.result=this.likelihoodValue * this.impactValue
-//   }
-//   this.riskFactor=this.result
-// }
-
-// changeColorOverallRiskRating(){
-//   if(this.result<30){
-//     return '#6DA34D';
-//   }
-//   if(this.result>31 && this.result<99){
-//     return '#FFC107'
-//   }
-//   else{
-//     return '#D9534F'
-//   }
-// }
-
-// constructor(private api:ApiService,public authService:AuthService){}
-
-// ngOnInit(){
-
-//   console.log('selecetd risk type value',this.riskTypeValue);
-//   this.departmentName =this.authService.getDepartmentName()!;
-//   console.log('department Name',this.departmentName);
-//   this.departmentId=this.authService.getDepartmentId()!;
-//   console.log('department id',this.departmentId)
-//   this.api.getLikelyHoodDefinition().subscribe((res:any)=>{
-//     this.dropdownDataLikelihood=res;
-//   })
-//   this.api.getImpactDefinition().subscribe((res:any)=>{
-//     this.dropdownDataImpact=res
-//   })
-//   this.api.getProjects(this.departmentName).subscribe((res:any)=>{
-//     this.dropdownDataProject=res
-//   })
-//   this.api.getDepartment().subscribe((res:any)=>{
-//     this.dropdownDataDepartment=res
-//   })
-//   this.api.getAllReviewer().subscribe((res:any)=>{
-//     this.dropdownDataReviewer=res.reviewers
-//   })
-//   this.api.getAllUsersByDepartmentName(this.departmentName).subscribe((res:any)=>{
-//     this.dropdownDataassignee=res
-//   })
-//   this.api.getRiskResponses().subscribe((res:any)=>{
-//     this.riskResponses=res
-//     console.log(this.riskResponses)
-
-//   })
-
-
-// }
-@Output() submitForm = new EventEmitter<any>();
-@Input() overallRiskRatingBefore:number=0
-@Input() dropdownLikelihood: any[] = []
-@Input() dropdownImpact:any[]=[]
-@Input() dropdownDepartment:any[]=[]
-@Input() dropdownReviewer: Array<{ id: number; fullName: string; email: string; type: string }> = [];
-@Input() riskResponses:Array<{ id: number; name: string; description: string; example: string; risks:string }> = [];
-
-@Input() riskTypeId:number=0
-overallRiskRating: number = 0;
-likelihoodValue:number=0
-impactValue:number=0
-riskFactor:number=0
-likelihoodId:number=0
-impactId:number=0
-riskResponseValue:number=0
-reviewerNotInList:boolean=false
-internalReviewerIdFromDropdown:number=0
-externalReviewerIdFromDropdown:number=0
-isInternal:boolean=true
-externalReviewerIdFromInput:number=0
-residualValue:number=0
-percentageRedution:number=0
-residualRisk:number=0
-
-isSuccessReviewer:boolean=false
-isErrorReviewer:boolean=false
-HeatMapRefernce:boolean=false
-error:string=''
-openDropdownId: string | undefined = undefined;
-
-
-  isCancel:boolean=false
-  isSave:boolean=false
-  isValid:boolean=false
-  newReviewername:string=''
-  isnewReviewernameDisplay:boolean=false
-
-
-constructor(private el: ElementRef, private renderer: Renderer2,private api:ApiService,private router: Router){}
-ngOnInit(){
-
-}
-
-handleDropdownOpen(dropdownId: string) {
-  this.openDropdownId = this.openDropdownId === dropdownId ? undefined : dropdownId;
-}
-isReviewerNotInList(){
-  this.reviewerNotInList=!this.reviewerNotInList
-}
-isHeatMapReference(){
-  this.HeatMapRefernce=!this.HeatMapRefernce
-}
-
-
-onDropdownChangelikelihood(event: any): void {
-  const selectedFactorId = Number(event);
-  console.log(selectedFactorId);
-  this.likelihoodId=selectedFactorId
-
-  const selectedFactor = this.dropdownLikelihood.find(factor => Number(factor.id) === selectedFactorId);
-  if (selectedFactor) {
-    this.likelihoodValue = selectedFactor.likelihood;
-    console.log('Selected Likelihood:', this.likelihoodValue);
-  } else {
-    console.log('Selected factor not found.');
+  handleDropdownOpen(dropdownId: string) {
+    this.openDropdownId =
+      this.openDropdownId === dropdownId ? undefined : dropdownId;
   }
-this.calculateOverallRiskRating();
-}
+  isReviewerNotInList() {
+    this.reviewerNotInList = !this.reviewerNotInList;
+  }
+  isHeatMapReference() {
+    this.HeatMapRefernce = !this.HeatMapRefernce;
+  }
 
-onDropdownChangeImpact(event: any): void {
-const selectedFactorId = Number(event);
-this.impactId=selectedFactorId
-const selectedFactor = this.dropdownImpact.find(factor => Number(factor.id) === selectedFactorId);
-if (selectedFactor) {
-  this.impactValue = selectedFactor.impact;
-  console.log('Selected Impact:',this.impactValue);
-}else {
-  console.log('Selected factor not found.');
-}
-  this.calculateOverallRiskRating();
-}
+  onDropdownChangelikelihood(event: any): void {
+    const selectedFactorId = Number(event);
+    console.log(selectedFactorId);
+    this.likelihoodId = selectedFactorId;
 
-calculateOverallRiskRating(){
-  if(this.likelihoodValue !=0 && this.impactValue !=0){
-    this.overallRiskRating=this.likelihoodValue * this.impactValue
-    this.residualValue=this.overallRiskRatingBefore-this.overallRiskRating
-    this.percentageRedution=parseFloat(((this.residualValue / this.overallRiskRatingBefore) * 100).toFixed(2));
-    if(this.percentageRedution>60){
-      this.residualRisk=1;
-
-    }else if(this.percentageRedution>=40){
-      this.residualRisk=2;
+    const selectedFactor = this.dropdownLikelihood.find(
+      (factor) => Number(factor.id) === selectedFactorId
+    );
+    if (selectedFactor) {
+      this.likelihoodValue = selectedFactor.likelihood;
+      console.log('Selected Likelihood:', this.likelihoodValue);
+    } else {
+      console.log('Selected factor not found.');
     }
-    else{
-      this.residualRisk=3;
+    this.calculateOverallRiskRating();
+  }
+
+  onDropdownChangeImpact(event: any): void {
+    const selectedFactorId = Number(event);
+    this.impactId = selectedFactorId;
+    const selectedFactor = this.dropdownImpact.find(
+      (factor) => Number(factor.id) === selectedFactorId
+    );
+    if (selectedFactor) {
+      this.impactValue = selectedFactor.impact;
+      console.log('Selected Impact:', this.impactValue);
+    } else {
+      console.log('Selected factor not found.');
     }
-
-
-  }
-  this.riskFactor=this.overallRiskRating
-
-
-
-}
-
-changeColorOverallRiskRating(){
-  if(this.overallRiskRating<8){
-    return '#6DA34D';
-  }
-  if(this.overallRiskRating>10 && this.overallRiskRating<32){
-    return '#FFC107'
-  }
-  else{
-    return '#D9534F'
-  }
-}
-
-
-onRadioSelectionChange(value: any) {
-  this.riskResponseValue = value;
-  console.log('Selected value from child:', value);
-}
-
-onDropdownChangeReviewer(selectedReviewer: any) {
-  const selectedreviewer = selectedReviewer;
-  console.log("selected factor id is ",selectedreviewer);
-
-  const selectedFactor = this.dropdownReviewer.find(factor => factor.fullName === selectedreviewer);
-  console.log("selected factor is ",selectedFactor)
-  if(selectedFactor){
-
-    if (selectedFactor.type ==="Internal") {
-      this.isInternal=true
-      this.internalReviewerIdFromDropdown = selectedFactor.id;
-      console.log("Selected internal reviewer ID:", this.internalReviewerIdFromDropdown);
-
-      console.log("this is a internal reviewer",this.isInternal);
-
-    } else if (selectedFactor.type ==="External") {
-    this.isInternal=false
-    this.externalReviewerIdFromDropdown = selectedFactor.id;
-    console.log("Selected external reviewer ID:", this.externalReviewerIdFromDropdown);
-    console.log("this is a internal reviewer",this.isInternal);
-    }
+    this.calculateOverallRiskRating();
   }
 
-  else {
-    console.error("No matching reviewer found for the selected ID.");
-  }
-}
-
-updateQmsForm=new FormGroup({
-  closeDate:new FormControl('',Validators.required),
-  remarks:new FormControl('')
-})
-
-onSubmit(){
-  const formValue = this.updateQmsForm.value;
-  console.log(formValue);
-  if (
-    Number(this.riskResponseValue) <= 0 ||
-    Number(this.overallRiskRating) <= 0 ||
-    (Number(this.likelihoodId) <= 0 && Number(this.impactId) <= 0) ||
-    (this.isInternal &&
-      Number(this.internalReviewerIdFromDropdown) <= 0 &&
-      Number(this.externalReviewerIdFromInput) <= 0 &&
-      Number(this.externalReviewerIdFromDropdown) <= 0)
-  ) {
-
-    console.log("Risk Response Value: ", this.riskResponseValue);
-    console.log("Overall Risk Rating: ", this.overallRiskRating);
-    console.log("Percentage Reduction: ", this.percentageRedution);
-    console.log("Residual Risk: ", this.residualRisk);
-    console.log("Residual Value: ", this.residualValue);
-    console.log("Likelihood ID: ", this.likelihoodId);
-    console.log("Impact ID: ", this.impactId);
-    console.log("Internal Reviewer ID: ", this.internalReviewerIdFromDropdown);
-    console.log("External Reviewer ID from input: ", this.externalReviewerIdFromInput);
-    console.log("External Reviewer ID from dropdown: ", this.externalReviewerIdFromDropdown);
-    console.log("External Reviewer ID from dropdown: ", this.overallRiskRatingBefore);
-
-    console.log("Invalid numeric fields: Values must be greater than 0.");
-    this.isValid = true;
-    return;
-  }
-
-  // const payload={
-  //   closedDate: `${formValue.closeDate}T00:00:00.000Z`,
-  // riskResponseId: this.riskResponseValue,
-  // riskStatus: 2,
-  // overallRiskRatingAfter:this.overallRiskRating,
-  // percentageRedution:this.percentageRedution,
-  // residualRisk: this.residualRisk,
-  // residualValue: this.residualValue,
-  // remarks: formValue.remarks,
-  // riskAssessments: [
-  //   {
-  //     likelihood: this.likelihoodId,
-  //     impact: this.impactId,
-  //     isMitigated: true,
-  //     assessmentBasisId: null,
-  //     riskFactor: this.riskFactor,
-  //     review: {
-  //       userId: this.isInternal && Number(this.internalReviewerIdFromDropdown)!=0? Number(this.internalReviewerIdFromDropdown) : null,
-  //       externalReviewerId:Number(this.externalReviewerIdFromInput) ?  Number(this.externalReviewerIdFromInput):!this.isInternal&&Number(this.externalReviewerIdFromDropdown)!=0?Number(this.externalReviewerIdFromDropdown): null,
-  //       comments: "",
-  //       reviewStatus: 3
-  //     }
-  //   }
-  // ]
-  // }
-
-  const payload = {
-    closedDate: `${formValue.closeDate}T00:00:00.000Z`,
-    riskResponseId: Number(this.riskResponseValue) ,
-    riskStatus: 2,
-    overallRiskRatingAfter: Number(this.overallRiskRating) ,
-    percentageRedution: Number(this.percentageRedution),
-    residualRisk: Number(this.residualRisk) ,
-    residualValue: Number(this.residualValue),
-    remarks: formValue.remarks || "",
-    riskAssessments: [
-      {
-        likelihood: Number(this.likelihoodId) ,
-        impact: Number(this.impactId) ,
-        isMitigated: true,
-        assessmentBasisId: null,
-        riskFactor: Number(this.riskFactor) ,
-        review: {
-          userId:
-            this.isInternal && Number(this.internalReviewerIdFromDropdown) !== 0
-              ? Number(this.internalReviewerIdFromDropdown)
-              : null,
-          externalReviewerId:
-            Number(this.externalReviewerIdFromInput) && !isNaN(Number(this.externalReviewerIdFromInput))
-              ? Number(this.externalReviewerIdFromInput)
-              : !this.isInternal &&
-                Number(this.externalReviewerIdFromDropdown) !== 0 &&
-                !isNaN(Number(this.externalReviewerIdFromDropdown))
-                ? Number(this.externalReviewerIdFromDropdown)
-                : null,
-          comments: "",
-          reviewStatus: 3,
-        },
-      },
-    ],
-  };
-
-
-  console.log(payload);
-  this.submitForm.emit({ payload, riskType: this.riskTypeId });
-
-
-}
-receiveCancel(value: any) {
-  if(value==false){
-    this.isReviewerNotInList();
-  }
-}
-
-saveReviewer(value: any){
-
-  const departmentNameDetails=this.dropdownDepartment.find(factor => factor.id === value.departmentId)
-  const departmentName= departmentNameDetails.departmentName
-
-  const payload = {
-    email:value.email,
-    fullName:value.fullName,
-    departmentId:value.departmentId
-  }
-  this.api.addExternalReviewer(payload).subscribe({
-    next: (res: any) => {
-      if (res) {
-        this.externalReviewerIdFromInput = res.reviewerId
-        this.isSuccessReviewer=true
-        this.newReviewername=payload.fullName
-        this.isnewReviewernameDisplay=true
+  calculateOverallRiskRating() {
+    if (this.likelihoodValue != 0 && this.impactValue != 0) {
+      this.overallRiskRating = this.likelihoodValue * this.impactValue;
+      this.residualValue =
+        this.overallRiskRatingBefore - this.overallRiskRating;
+      this.percentageRedution = parseFloat(
+        ((this.residualValue / this.overallRiskRatingBefore) * 100).toFixed(2)
+      );
+      if (this.percentageRedution > 60) {
+        this.residualRisk = 1;
+      } else if (this.percentageRedution >= 40) {
+        this.residualRisk = 2;
       } else {
-        console.error("External Reviewer ID is not available in the response:", res);
+        this.residualRisk = 3;
       }
-    },
-    error: (err) => {
-      console.error("Error occurred while fetching Reviewer ID:", err);  // Log the full error to see what went wrong
-      this.isErrorReviewer=true
     }
+    this.riskFactor = this.overallRiskRating;
+  }
+
+  changeColorOverallRiskRating() {
+    if (this.overallRiskRating < 8) {
+      return '#6DA34D';
+    }
+    if (this.overallRiskRating > 10 && this.overallRiskRating < 32) {
+      return '#FFC107';
+    } else {
+      return '#D9534F';
+    }
+  }
+
+  onRadioSelectionChange(value: any) {
+    this.riskResponseValue = value;
+    console.log('Selected value from child:', value);
+  }
+
+  onDropdownChangeReviewer(selectedReviewer: any) {
+    const selectedreviewer = selectedReviewer;
+    console.log('selected factor id is ', selectedreviewer);
+
+    const selectedFactor = this.dropdownReviewer.find(
+      (factor) => factor.fullName === selectedreviewer
+    );
+    console.log('selected factor is ', selectedFactor);
+    if (selectedFactor) {
+      if (selectedFactor.type === 'Internal') {
+        this.isInternal = true;
+        this.internalReviewerIdFromDropdown = selectedFactor.id;
+        console.log(
+          'Selected internal reviewer ID:',
+          this.internalReviewerIdFromDropdown
+        );
+
+        console.log('this is a internal reviewer', this.isInternal);
+      } else if (selectedFactor.type === 'External') {
+        this.isInternal = false;
+        this.externalReviewerIdFromDropdown = selectedFactor.id;
+        console.log(
+          'Selected external reviewer ID:',
+          this.externalReviewerIdFromDropdown
+        );
+        console.log('this is a internal reviewer', this.isInternal);
+      }
+    } else {
+      console.error('No matching reviewer found for the selected ID.');
+    }
+  }
+
+  updateQmsForm = new FormGroup({
+    closeDate: new FormControl('', Validators.required),
+    remarks: new FormControl(''),
   });
 
-}
+  onSubmit() {
+    const formValue = this.updateQmsForm.value;
+    console.log(formValue);
+    if (
+      Number(this.riskResponseValue) <= 0 ||
+      Number(this.overallRiskRating) <= 0 ||
+      (Number(this.likelihoodId) <= 0 && Number(this.impactId) <= 0) ||
+      (this.isInternal &&
+        Number(this.internalReviewerIdFromDropdown) <= 0 &&
+        Number(this.externalReviewerIdFromInput) <= 0 &&
+        Number(this.externalReviewerIdFromDropdown) <= 0)
+    ) {
+      console.log('Risk Response Value: ', this.riskResponseValue);
+      console.log('Overall Risk Rating: ', this.overallRiskRating);
+      console.log('Percentage Reduction: ', this.percentageRedution);
+      console.log('Residual Risk: ', this.residualRisk);
+      console.log('Residual Value: ', this.residualValue);
+      console.log('Likelihood ID: ', this.likelihoodId);
+      console.log('Impact ID: ', this.impactId);
+      console.log(
+        'Internal Reviewer ID: ',
+        this.internalReviewerIdFromDropdown
+      );
+      console.log(
+        'External Reviewer ID from input: ',
+        this.externalReviewerIdFromInput
+      );
+      console.log(
+        'External Reviewer ID from dropdown: ',
+        this.externalReviewerIdFromDropdown
+      );
+      console.log(
+        'External Reviewer ID from dropdown: ',
+        this.overallRiskRatingBefore
+      );
 
+      console.log('Invalid numeric fields: Values must be greater than 0.');
+      this.isValid = true;
+      return;
+    }
 
+    const payload = {
+      closedDate: `${formValue.closeDate}T00:00:00.000Z`,
+      riskResponseId: Number(this.riskResponseValue),
+      riskStatus: 2,
+      overallRiskRatingAfter: Number(this.overallRiskRating),
+      percentageRedution: Number(this.percentageRedution),
+      residualRisk: Number(this.residualRisk),
+      residualValue: Number(this.residualValue),
+      remarks: formValue.remarks || '',
+      riskAssessments: [
+        {
+          likelihood: Number(this.likelihoodId),
+          impact: Number(this.impactId),
+          isMitigated: true,
+          assessmentBasisId: null,
+          riskFactor: Number(this.riskFactor),
+          review: {
+            userId:
+              this.isInternal &&
+              Number(this.internalReviewerIdFromDropdown) !== 0
+                ? Number(this.internalReviewerIdFromDropdown)
+                : null,
+            externalReviewerId:
+              Number(this.externalReviewerIdFromInput) &&
+              !isNaN(Number(this.externalReviewerIdFromInput))
+                ? Number(this.externalReviewerIdFromInput)
+                : !this.isInternal &&
+                  Number(this.externalReviewerIdFromDropdown) !== 0 &&
+                  !isNaN(Number(this.externalReviewerIdFromDropdown))
+                ? Number(this.externalReviewerIdFromDropdown)
+                : null,
+            comments: '',
+            reviewStatus: 3,
+          },
+        },
+      ],
+    };
 
-closeReviewer() {
-  this.isSuccessReviewer=false
-  this.isErrorReviewer=false
+    console.log(payload);
+    this.submitForm.emit({ payload, riskType: this.riskTypeId });
+  }
+  receiveCancel(value: any) {
+    if (value == false) {
+      this.isReviewerNotInList();
+    }
+  }
 
-}
-closeHeatMap(){
-  this.HeatMapRefernce=false
-}
-saveConfirmation(){
-  this.isSave=!this.isSave
- }
- saveRisk(){
-  this.onSubmit();
-  this.isSave=false
+  saveReviewer(value: any) {
+    this.isLoading = true; // Show loader when function starts
 
- }
+    const payload = {
+      email: value.email,
+      fullName: value.fullName,
+      departmentId: value.departmentId,
+    };
 
- closeDialogSuccess(){
-  this.router.navigate(['/home']);
+    this.api.addExternalReviewer(payload).subscribe({
+      next: (res: any) => {
+        this.isLoading = false; // Hide loader after success
 
- }
+        if (res) {
+          this.externalReviewerIdFromInput = res.reviewerId;
+          this.isSuccessReviewer = true;
+          this.newReviewername = payload.fullName;
+          this.isnewReviewernameDisplay = true;
+        } else {
+          console.error(
+            'External Reviewer ID is not available in the response:',
+            res
+          );
+        }
+      },
+      error: (err) => {
+        this.isLoading = false; // Hide loader on error
+        console.error('Error occurred while fetching Reviewer ID:', err);
+        this.isErrorReviewer = true;
+      },
+    });
+  }
 
- cancelRisk(){
-  this.isCancel=!this.isCancel
+  closeReviewer() {
+    this.isSuccessReviewer = false;
+    this.isErrorReviewer = false;
+  }
+  closeHeatMap() {
+    this.HeatMapRefernce = false;
+  }
+  saveConfirmation() {
+    this.isSave = !this.isSave;
+  }
+  saveRisk() {
+    this.onSubmit();
+    this.isSave = false;
+  }
 
- }
- closeRisk(){
-  this.router.navigate(['/home']);
- }
+  closeDialogSuccess() {
+    this.router.navigate(['/home']);
+  }
 
- closepopupIsValidCheck(){
-  this.isValid=false
- }
+  cancelRisk() {
+    this.isCancel = !this.isCancel;
+  }
+  closeRisk() {
+    this.router.navigate(['/home']);
+  }
+
+  closepopupIsValidCheck() {
+    this.isValid = false;
+  }
 }

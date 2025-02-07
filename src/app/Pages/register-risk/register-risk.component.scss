@@ -1,12 +1,12 @@
-.container{
-  background-color: var( --primary-color) ;
+.container {
+  background-color: var(--primary-color);
   padding: 10px;
   border-radius: 7px;
   width: 100%;
   max-width: 100%;
 }
 
-.form-Container{
+.form-Container {
   background-color: white;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -15,13 +15,11 @@
   border-left: 20px solid var(--form-color);
 }
 
-
-
-.required{
+.required {
   color: red;
 }
 
-.risk-type-label label{
+.risk-type-label label {
   font-weight: 600;
   display: block;
   margin-bottom: 5px;
@@ -52,7 +50,7 @@ input[type="radio"] {
   height: 20px;
   appearance: none;
   -webkit-appearance: none;
-  border: 2px solid ;
+  border: 2px solid;
   border-radius: 50%;
   cursor: pointer;
   position: relative;
@@ -60,7 +58,7 @@ input[type="radio"] {
 }
 
 input[type="radio"]:checked::after {
-  content: '';
+  content: "";
   position: absolute;
   top: 50%;
   left: 50%;
@@ -78,18 +76,10 @@ input[type="radio"]:checked::after {
   background-color: var(--form-color);
 }
 
-
-
-input[type="radio"]{
-  border-color:var(--form-color);
+input[type="radio"] {
+  border-color: var(--form-color);
   background-color: white;
 }
-
-
-
-
-
-
 
 /* For devices with a maximum width of 768px (tablets and smaller) */
 @media (max-width: 768px) {
@@ -156,14 +146,3 @@ input[type="radio"]{
     height: 10px;
   }
 }
-
-
-
-
-
-
-
-
-
-
-
