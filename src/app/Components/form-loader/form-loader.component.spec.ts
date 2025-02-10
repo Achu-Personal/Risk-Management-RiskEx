@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { FormButtonComponent } from './form-button.component';
+import { FormLoaderComponent } from './form-loader.component';
 
-describe('FormButtonComponent', () => {
-  let component: FormButtonComponent;
-  let fixture: ComponentFixture<FormButtonComponent>;
+describe('FormLoaderComponent', () => {
+  let component: FormLoaderComponent;
+  let fixture: ComponentFixture<FormLoaderComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FormButtonComponent]
+      imports: [FormLoaderComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(FormButtonComponent);
+    fixture = TestBed.createComponent(FormLoaderComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
