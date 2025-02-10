@@ -354,6 +354,11 @@ ismsForm=new FormGroup({
   plannedActionDate:new FormControl('',Validators.required),
 })
 
+isDisabled(): boolean {
+  return this.ismsForm.invalid || !this.ismsForm.dirty;
+}
+
+
 async onSubmit(){
   if (this.isAdmin === 'Admin') {
     if (this.projectId != 0) {

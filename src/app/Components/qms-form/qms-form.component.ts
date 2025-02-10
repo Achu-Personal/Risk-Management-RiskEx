@@ -109,7 +109,9 @@ export class QMSFormComponent {
     plannedActionDate:new FormControl('',Validators.required),
   })
 
-
+  isDisabled(): boolean {
+    return this.qmsForm.invalid || !this.qmsForm.dirty;
+  }
 
 
 
