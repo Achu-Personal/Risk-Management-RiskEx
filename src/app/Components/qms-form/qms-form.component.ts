@@ -144,6 +144,10 @@ export class QMSFormComponent {
     plannedActionDate: new FormControl('', Validators.required),
   });
 
+  isDisabled(): boolean {
+    return this.qmsForm.invalid || !this.qmsForm.dirty;
+  }
+  
   autoResize(event: Event): void {
     const textarea = event.target as HTMLTextAreaElement;
     const minHeight = 40;
