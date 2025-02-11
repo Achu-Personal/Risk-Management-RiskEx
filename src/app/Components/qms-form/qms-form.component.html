@@ -221,6 +221,7 @@
     <div class="form-details-sub-container">
       <h2>Action Plan</h2>
       @if(isAdmin === 'Admin'){
+        @if(!isnewAssigneenameDisplay){
       <app-form-dropdown
         label="Responsibility of action"
         required="*"
@@ -236,8 +237,10 @@
         backgroundColor=" var(--form-color)"
         [showInfoButton]="true"
       ></app-form-dropdown>
-      } @if(isAdmin !== 'Admin'){
-      <app-form-dropdown
+      }
+     } @if(isAdmin !== 'Admin'){
+        @if(!isnewAssigneenameDisplay){
+          <app-form-dropdown
         label="Responsibility of action"
         required="*"
         [dropdownData]="dropdownAssignee"
@@ -253,6 +256,9 @@
         backgroundColor=" var(--form-color)"
         [showInfoButton]="true"
       ></app-form-dropdown>
+
+        }
+
       } @if(isnewAssigneenameDisplay){
       <h6>
         Responsible Person Name:
@@ -287,7 +293,8 @@
     </div>
     <div class="form-details-sub-container">
       <h2>Reviewer</h2>
-      <app-form-dropdown
+      @if(!isnewReviewernameDisplay){
+        <app-form-dropdown
         class="dropdown"
         label="Reviewer"
         required="*"
@@ -304,6 +311,9 @@
       or enter a new one. If you enter a new name, it will take priority over the dropdown selection."
         [showInfoButton]="true"
       ></app-form-dropdown>
+
+      }
+
 
       @if(isnewReviewernameDisplay){
       <h6>
@@ -353,7 +363,8 @@
     (closeHeatMap)="closeHeatMap()"
   ></app-form-reference-heatmap-popup>
   } @if(isLoading) {
-  <app-form-loader></app-form-loader>> } @if(assigneeNotInList){
+  <app-form-loader></app-form-loader>> }
+   @if(assigneeNotInList){
   <app-form-data-not-in-list
     placeholder="Enter responsible person name"
     [isAssignee]="true"

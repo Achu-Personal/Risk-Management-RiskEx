@@ -379,6 +379,7 @@
     <div class="form-details-sub-container">
       <h2>Action Plan</h2>
       @if(isAdmin === 'Admin'){
+        @if(!isnewAssigneenameDisplay){
       <app-form-dropdown
         label="Responsibility of action"
         required="*"
@@ -395,7 +396,9 @@
         backgroundColor=" var(--form-color)"
         [showInfoButton]="true"
       ></app-form-dropdown>
-      } @if(isAdmin !== 'Admin'){
+      }
+     } @if(isAdmin !== 'Admin'){
+        @if(!isnewAssigneenameDisplay){
       <app-form-dropdown
         label="Responsibility of action"
         required="*"
@@ -412,7 +415,8 @@
         backgroundColor=" var(--form-color)"
         [showInfoButton]="true"
       ></app-form-dropdown>
-      } @if(isnewAssigneenameDisplay){
+      }
+     } @if(isnewAssigneenameDisplay){
       <h6>
         Responsible Person Name:
         <span style="font-weight: bolder">{{ newAssigneename }}</span>
@@ -447,6 +451,7 @@
     </div>
     <div class="form-details-sub-container">
       <h2>Reviewer</h2>
+      @if(!isnewReviewernameDisplay){
       <app-form-dropdown
         label="Reviewer"
         required="*"
@@ -463,6 +468,7 @@
         backgroundColor=" var(--form-color)"
         [showInfoButton]="true"
       ></app-form-dropdown>
+      }
 
       @if(isnewReviewernameDisplay){
       <h6>

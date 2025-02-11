@@ -438,11 +438,12 @@ export class QmsEditComponent {
     }
   }
   saveAssignee(value: any) {
+    this.isLoading = true; // Show loader when function starts
     const departmentNameDetails = this.dropdownDepartment.find(
       (factor) => factor.id === value.departmentId
     );
     const departmentName = departmentNameDetails.departmentName;
-    this.isLoading = true; // Show loader when function starts
+
 
     const payload = {
       email: value.email,
