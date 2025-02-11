@@ -1,8 +1,7 @@
 
 <app-body-container backgroundColor="transparent" [showShadow]=false >
   <div class="btnn">
-    <!-- <button>Add Columns</button> -->
-    <!-- <button>Filter by Date</button> -->
+    <app-style-button label="Reset Filters" (click)="reset()"></app-style-button>
     <app-datepicker (dateRangeSelected)="onDateRangeSelected($event)"></app-datepicker>
   </div>
 
@@ -12,9 +11,9 @@
     [isLoading]="isLoading"
     (onclickrow)="OnClickRow($event)"
     [paginated]="items"
+    [reset]="isreset"
     [filteredDateRange]="selectedDateRange">
   </app-table>
-
 
 </app-body-container>
 

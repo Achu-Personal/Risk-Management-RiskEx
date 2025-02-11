@@ -273,15 +273,7 @@ export class ReportGenerationService {
         if (risk.riskType === 'Quality') {
           const preAssessment = getAssessmentDetails(risk.riskAssessments || [], null, false);
           const postAssessment = getAssessmentDetails(risk.riskAssessments || [], null, true);
-          // const assessments = [];
-          // assessments.push(
-          //   preAssessment.impact,
-          //   preAssessment.likelihood
-          // );
-          // assessments.push(
-          //   postAssessment.impact,
-          //   postAssessment.likelihood
-          // );
+         
           const row = qualitySheet.addRow([
             ...baseRiskInfo,
             preAssessment.impact,

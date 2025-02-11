@@ -1,13 +1,15 @@
 
 <div class="btnn">
-<button
+  <button
 
-  [type]="type"
-  [disabled]="disabled"
-  [ngClass]="color"
-  (click)="onClick()"
-  class="custom-button"
->
-  {{ label }}
-</button>
-</div>
+    [type]="type"
+    [disabled]="disabled"
+    [style.color]="disabled ? '#888888' : 'white'"
+    [style.background-color]="disabled ? '#d0c6b6' :'#4D4D4D '"
+    [style.cursor]="disabled ? 'not-allowed' : 'pointer'"
+    (click)="onClick()"
+    class="custom-button"
+  >
+    {{ label }}
+  </button>
+  </div>

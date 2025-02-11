@@ -1,22 +1,15 @@
-//
 
 .body {
   flex:1;
   width: 100%;
   height: 100%;
-  // align-content: center;
-  // background-color: #2ae355;
 }
 
 .container1 {
-
-  // max-width: 1200px;
   width: 100%;
-  // margin: 20px auto;
   background: transparent;
   display: flex;
   flex-direction: column;
-  // gap: 8px;
   font-size: small;
 
 }
@@ -25,49 +18,30 @@ label{
 }
 /* Header Section */
 .header1 {
-  // margin-top: 70px;
-  // padding: 10px 20px;
-  // background-color: #d0c6b683;
-  // border-radius: 4px;
-  // box-shadow: 0px 1px 3px #979797;
   margin-bottom: 20px;
   display: flex;
   align-items: left;
   justify-items: left;
   max-width: 80%;
   gap: 20px;
-  // .report{
-  //   margin-left: 600px;
-  //   width: auto;
-  // }
 }
 .date{
   float: right;
-  // background-color: #2ae355;
 }
-
-// .bord{
-//   background-color: #d0c6b683;
-// }
 
 /* Table Section */
 .table-container1 {
-  // height: auto;
   max-height: 495px;
   overflow-y: auto;
-  // overflow-x: auto;
-  // background-color: #FFFFFF;
   border-radius: 4px;
-  // width: 182vh;
-  // box-shadow: 0px 1px 3px #979797;
 
   .table1 {
     height: auto;
     max-height: 490px;
     width: 100%;
     box-shadow: 0px .5px 4px #979797;
-    border-collapse: collapse; /* Allows spacing */
-    border-spacing: 0 8px; /* Vertical spacing between rows */
+    border-collapse: collapse;
+    border-spacing: 0 8px;
   }
 
   thead {
@@ -76,7 +50,6 @@ label{
     z-index: 1;
     tr{
       width: 100%;
-      // background-color: #e6e1d7;
       background-color: var(--secondary-color);
     }
 
@@ -96,7 +69,6 @@ label{
 
 
   tbody tr {
-    // background-color: #fff;
     background-color: var(--accent-color);
     border-radius: 8px;
     position: relative;
@@ -111,9 +83,9 @@ label{
 
     &:hover {
       background-color: rgba(208, 198, 182, 0.2);
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  /* Increased shadow for more lift effect */
-      transform: translateY(-1px);  /* Lifts the row upwards */
-      transition: box-shadow 0.2s ease-in-out, transform 0.2s ease-in-out;  /* Add transition for transform */
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      transform: translateY(-1px);
+      transition: box-shadow 0.2s ease-in-out, transform 0.2s ease-in-out;
     }
   }
 }
@@ -128,7 +100,7 @@ tbody {
     td {
       padding: 5px;
       vertical-align: middle;
-      border-bottom: none; /* Remove borders directly */
+      border-bottom: none;
       button{
         border: none;
         background: none;
@@ -151,16 +123,9 @@ tbody {
 
 }
 
-
-// table tbody tr:nth-child(even) {
-//   background: rgba(208, 198, 182, 0.3);
-// }
-
-
 .table-container1::-webkit-scrollbar {
     display: none;
   }
-
 
 .table-container1
   {
@@ -179,7 +144,6 @@ tbody {
     padding: 6px 12px;
     border: none;
     border-radius: 4px;
-    // box-shadow: 0px 1px 1px #4D4D4D;
     background: #D0C6B6;
     font-size: 14px;
     color: #000000;
@@ -187,7 +151,6 @@ tbody {
 
     &:focus {
       outline: none;
-      // border-color: #5a67d8;
       box-shadow: 0 0 5px #4D4D4D;
     }
   }
@@ -200,7 +163,6 @@ tbody {
     padding: 6px 12px;
     border: none;
     border-radius: 4px;
-    // box-shadow: 0px 1px 1px #4D4D4D;
     font-size: 14px;
     color: #000000;
     background: #D0C6B6;
@@ -208,7 +170,6 @@ tbody {
 
     &:focus {
       outline: none;
-      // border-color: #5a67d8;
       box-shadow: 0 0 5px rgba(90, 103, 216, 0.5);
     }
   }
@@ -232,7 +193,6 @@ tbody {
   background-color: #4D4D4D;
   color: #fff;
   font-size: 14px;
-  // font-weight: 600;
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -280,33 +240,24 @@ tbody {
   color: #5c2f10;
 }
 
-
-
-
 .green-cell {
   background-color: #d4edda;
   color: green;
-  // font-weight: bold;
   padding: 5px;
-  // border: 1px solid #0c4219 ;
   border-radius: 10px;
   text-align: center;
 }
 .red-cell {
   background-color: #edd4d5;
   color: #e82222;
-  // font-weight: bold;
   padding: 5px;
-  // border: 1px solid #420c0c ;
   border-radius: 10px;
   text-align: center;
 }
 .yellow-cell {
   background-color: rgba(189, 189, 7, 0.268);
   color: rgb(189, 189, 7);
-  // font-weight: bold;
   padding: 5px;
-  // border: 1px solid #420c0c ;
   border-radius: 10px;
   text-align: center;
 }
@@ -329,12 +280,8 @@ tbody {
   justify-content: center;
   align-items: center;
   height: 71%;
-  // background-color: #ffffff;
-  // border-radius: 8px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
   margin-top: 30px;
-  // border: 1px solid #e2e6ea;
-  // padding: 20px;
   text-align: center;
   position:fixed;
   width: 88%;
@@ -351,50 +298,10 @@ tbody {
 }
 
 .no-data-message span {
-  color: #dc3545; /* Accent color for emphasis */
+  color: #dc3545;
   font-weight: 600;
   font-size: 20px;
 }
-
-// fixed width for columns
-
-
-// th:nth-child(1),
-// td:nth-child(1) {
-//   width: 60px;
-// }
-
-// th:nth-child(2),
-// td:nth-child(2) {
-//   width: 300px;
-// }
-
-// th:nth-child(3),
-// td:nth-child(3) {
-//   width: 150px;
-// }
-
-// th:nth-child(4),
-// td:nth-child(4) {
-//   width: 150px;
-// }
-// th:nth-child(5),
-// td:nth-child(5) {
-//   width: 150px;
-// }
-// th:nth-child(6),
-// td:nth-child(6) {
-//   width: 70px;
-// }
-// th:nth-child(9),
-// td:nth-child(9) {
-//   width: 150px;
-// }
-
-
-
-
-
 
 /* Dropdown container */
 .dropdown-container {
@@ -413,11 +320,10 @@ tbody {
   border: 1px solid #ddd;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 0;
-  // width: auto;
   min-width: 180px;
   max-height: 240px;
   overflow-y: auto;
-  border-radius: 6px; /* Softer corners for an elegant look */
+  border-radius: 6px;
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.3s ease, visibility 0.3s ease;
@@ -474,15 +380,12 @@ tbody {
   }
 }
 
-
-
 /* Add these styles to your existing SCSS file */
 
 .loading-skeleton {
   width: 100%;
   margin-left: -10px;
   background-color: var(--secondary-color);
-  // z-index: 300;
 
   .skeleton-cell {
     height: 20px;
@@ -502,8 +405,6 @@ tbody {
     position: sticky;
     top: 0;
     z-index: 1000;//1000
-
-
     tr{
       border: 2px solid #c1bdbd;
     }
@@ -523,7 +424,6 @@ tbody {
     }
   }
 
-  // Match your existing table styles
   .tabledata {
     width: 100%;
     border-collapse: collapse;
@@ -543,7 +443,6 @@ tbody {
     background-position: 0 50%;
   }
 }
-
 
 // sorting
 th {

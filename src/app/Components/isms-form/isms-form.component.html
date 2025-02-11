@@ -498,6 +498,7 @@
           (clicked)="saveConfirmation()"
           label="Submit"
           type="button"
+          [disabled]="isDisabled()"
         ></app-style-button>
         <app-style-button
           (clicked)="saveAsDraft()"

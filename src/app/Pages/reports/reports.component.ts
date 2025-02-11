@@ -23,8 +23,8 @@ export class ReportsComponent {
   isLoading = false;
   projectList: number[] =[];
   item:any=[];
+  isreset:boolean=false;
   @Input() label: string = 'Generate Report';
-  // @Input() data?: any[]; // Optional input for custom data
   data:any;
   items:any=[];
   type: any;
@@ -34,31 +34,23 @@ export class ReportsComponent {
 
   }
   onGenerateReport(): void {
-    console.log(this.filteredTableData);
     if (Array.isArray(this.filteredTableData) && this.filteredTableData.length > 0) {
       this.excelService.generateReport(this.filteredTableData, 'RiskReport');
     } else {
       console.error('Invalid data:', this.filteredTableData);
     }
-
-    console.log('Data passed to generateReport:', this.filteredTableData);
-
   }
 
   filteredTableData: any[] = [];
 
   onFilteredData(filteredData: any[]): void {
     this.filteredTableData = filteredData;
-    // this.items = [...filteredData];///
-    // this.cdr.detectChanges();///
-    console.log('Received filtered data:', this.filteredTableData);
   }
 
   isDropdownOpen: boolean = false;
 
   toggleDropdown(): void {
     this.isDropdownOpen = !this.isDropdownOpen;
-
   }
 
   @HostListener('document:click', ['$event'])
@@ -71,12 +63,14 @@ export class ReportsComponent {
 
       OnClickRow(rowid:any): void {
         this.router.navigate([`/ViewRisk/${rowid}`]);
-        console.log("rowdata",rowid);
+      }
+
+      reset():void{
+        this.isreset=true;
       }
 
       ngOnInit(): void {
         this.type = history.state.type;
-        console.log("history type:", this.type);
 
         setTimeout(() => {
           const role = this.auth.getUserRole();
@@ -89,11 +83,9 @@ export class ReportsComponent {
           this.isDepartmentUser = role === 'DepartmentUser';
           this.isProjectUser = Array.isArray(role) ? role.includes('ProjectUsers') : role === 'ProjectUsers';
           this.isEmtUser = Array.isArray(role) ? role.includes('EMTUser') : role ==="EMTUser";
-          console.log("Roles: Admin:", this.isAdmin, "DepartmentUser:", this.isDepartmentUser, "ProjectUser:", this.isProjectUser,"EMTUser:", this.isEmtUser);
 
           // Prepare Project List
           this.projectList = pro ? pro.map((project) => project.Id) : [];
-          console.log("Project List:", this.projectList);
 
           // Fetch data based on conditions
           this.fetchData(department);
@@ -115,10 +107,8 @@ export class ReportsComponent {
           this.api.gettabledata().subscribe((res: any) => {
             this.item = res.filter((item: { riskType: any }) => item.riskType === type);
             this.items =this.item.filter((item: { riskStatus: any }) => item.riskStatus === 'open');
-            // this.onFilteredData(this.items);///
             this.cdr.detectChanges();
             this.isLoading = false;
-            console.log("Admin Filtered Data:", this.items);
           });
         }
         if (this.isDepartmentUser) {
@@ -127,7 +117,6 @@ export class ReportsComponent {
             this.items =this.item.filter((item: { riskStatus: any }) => item.riskStatus === 'open');
             this.cdr.detectChanges();
             this.isLoading = false;
-            console.log("Department User Filtered Data:", this.items);
           });
         }
         if (this.isProjectUser) {
@@ -136,7 +125,6 @@ export class ReportsComponent {
             this.items =this.item.filter((item: { riskStatus: any }) => item.riskStatus === 'open');
             this.cdr.detectChanges();
             this.isLoading = false;
-            console.log("Project User Filtered Data:", this.items);
           });
         }
       }
@@ -147,7 +135,6 @@ export class ReportsComponent {
             this.items = res;
             this.cdr.detectChanges();
             this.isLoading = false;
-            console.log("Admin All Data:", this.items);
           });
         }
         if (this.isDepartmentUser) {
@@ -155,7 +142,6 @@ export class ReportsComponent {
             this.items = res;
             this.cdr.detectChanges();
             this.isLoading = false;
-            console.log("Department User All Data:", this.items);
           });
         }
         if (this.isProjectUser) {
@@ -163,7 +149,6 @@ export class ReportsComponent {
             this.items = res;
             this.cdr.detectChanges();
             this.isLoading = false;
-            console.log("Project User All Data:", this.items);
           });
         }
       }
