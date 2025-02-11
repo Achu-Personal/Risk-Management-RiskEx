@@ -282,7 +282,7 @@ export class TableComponent {
     this.selectedDepartment = '';
     this.selectedStatus = '';
     this.selectedReviewStatus = '';
-    this.selectedResidual ='';
+    this.selectedResidual = '';
     this.filteredDateRange = null;
     this.filteredItems = [...this.items];
     this.currentPage = 1;
