@@ -23,6 +23,7 @@ export class ReportsComponent {
   isLoading = false;
   projectList: number[] =[];
   item:any=[];
+  isreset:boolean=false;
   @Input() label: string = 'Generate Report';
   data:any;
   items:any=[];
@@ -62,6 +63,10 @@ export class ReportsComponent {
 
       OnClickRow(rowid:any): void {
         this.router.navigate([`/ViewRisk/${rowid}`]);
+      }
+
+      reset():void{
+        this.isreset=true;
       }
 
       ngOnInit(): void {

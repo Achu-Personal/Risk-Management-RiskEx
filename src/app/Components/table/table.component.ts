@@ -26,6 +26,7 @@ export class TableComponent {
   isButtonVisible = false;
   @Input() isLoading: boolean = false;
   @Input() paginated:any=[];
+  @Input() reset:boolean=false;
   filteredItems = [...this.items];
   isDepartmentDropdownOpen: boolean = false;
   isTypeDropdownOpen: boolean = false;
@@ -276,6 +277,13 @@ export class TableComponent {
   }
 
   resetFilters(): void {
+    this.selectedRiskId = '';
+    this.selectedRiskType = '';
+    this.selectedDepartment = '';
+    this.selectedStatus = '';
+    this.selectedReviewStatus = '';
+    this.selectedResidual ='';
+    this.filteredDateRange = null;
     this.filteredItems = [...this.items];
     this.currentPage = 1;
     this.totalItems = this.filteredItems.length;
@@ -299,6 +307,9 @@ export class TableComponent {
     }
     if(changes['itemsPerPage']){
       this.currentpage();
+    }
+    if(changes['reset']){
+      this.resetFilters();
     }
   }
   currentpage(){
