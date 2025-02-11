@@ -1,9 +1,10 @@
 
 <app-body-container backgroundColor="transparent" [showShadow]=false >
   <div class="contains">
-    <div class="contains1">
+    <app-style-button label="Reset Filters" (click)="reset()"></app-style-button>
+    <!-- <div class="contains1"> -->
       <app-datepicker (click)="toggleDropdown()" (dateRangeSelected)="onDateRangeSelected($event)"></app-datepicker>
-    </div>
+    <!-- </div> -->
     <app-style-button
     label="Generate Report"
     (click)="onGenerateReport()">
@@ -14,6 +15,7 @@
   <app-table [isLoading]="isLoading"
     (onclickrow)="OnClickRow($event)"
     [paginated]="items"
+    [reset]="isreset"
     [filteredDateRange]="selectedDateRange"
     (filteredData)="onFilteredData($event)">
   </app-table>

@@ -6,11 +6,12 @@ import { Router } from '@angular/router';
 import { DatepickerComponent } from "../../UI/datepicker/datepicker.component";
 import { ApiService } from '../../Services/api.service';
 import { AuthService } from '../../Services/auth.service';
+import { StyleButtonComponent } from "../../UI/style-button/style-button.component";
 
 @Component({
   selector: 'app-history',
   standalone: true,
-  imports: [TableComponent, BodyContainerComponent, DatepickerComponent, CommonModule],
+  imports: [TableComponent, BodyContainerComponent, DatepickerComponent, CommonModule, StyleButtonComponent],
   templateUrl: './history.component.html',
   styleUrl: './history.component.scss'
 })
@@ -22,12 +23,17 @@ export class HistoryComponent {
   isLoading = false;
   projectList: number[] =[];
   item:any=[];
+  isreset:boolean=false;
   @Input() items:any=[];
 
   constructor(private router: Router,public api: ApiService,public auth: AuthService, private cdr: ChangeDetectorRef) {}
 
     OnClickRow(rowid:any): void {
       this.router.navigate([`/ViewRisk/${rowid}`]);
+    }
+
+    reset():void{
+      this.isreset=true;
     }
 
     ngOnInit(): void {
