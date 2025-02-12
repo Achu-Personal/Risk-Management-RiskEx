@@ -147,7 +147,7 @@ export class QMSFormComponent {
   isDisabled(): boolean {
     return this.qmsForm.invalid || !this.qmsForm.dirty;
   }
-  
+
   autoResize(event: Event): void {
     const textarea = event.target as HTMLTextAreaElement;
     const minHeight = 40;
@@ -570,7 +570,12 @@ export class QMSFormComponent {
   ngOnChanges(changes: SimpleChanges): void {
     if (this.draft && this.draft?.length > 0) {
       if (changes['dropdownLikelihood']) {
-        this.preSelectedLikelihood = this.draft.riskAssessments[0].likelihood;
+        const preSelectedLikelihood = this.draft.riskAssessments[0]. likelihood
+        ;
+        const selectedFactor = this.dropdownLikelihood.find(
+          (factor) => factor.assessmentFactor === preSelectedLikelihood
+        );
+        this.preSelectedLikelihood = selectedFactor.id;
       }
 
       if (changes['dropdownImpact']) {
