@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { AuthService } from '../../Services/auth.service';
+import { AuthService } from '../../../Services/auth.service';
 import { MsalService } from '@azure/msal-angular';
 import { AuthenticationResult } from '@azure/msal-browser';
-import { ApiService } from '../../Services/api.service';
+import { ApiService } from '../../../Services/api.service';
 import { firstValueFrom } from 'rxjs';
 
 @Component({

@@ -19,15 +19,15 @@ export class SsoComponent implements OnInit, OnDestroy {
 
   constructor(
     @Inject(MSAL_GUARD_CONFIG) private msalGuardConfig: MsalGuardConfiguration,
-    private authService: MsalService,
+    private msalService: MsalService,
     private router: Router,
     private msalBroadcastService: MsalBroadcastService,
 
   ) {}
 
   // async ngOnInit() {
-  //  await  this.authService.instance.initialize();
-  //  this.authService.handleRedirectObservable().subscribe((response: AuthenticationResult) => {
+  //  await  this.msalService.instance.initialize();
+  //  this.msalService.handleRedirectObservable().subscribe((response: AuthenticationResult) => {
   //   if (response && response.accessToken) {
   //     console.log('Login successful', response);
   //     localStorage.setItem('loginToken', response.accessToken);
@@ -38,7 +38,7 @@ export class SsoComponent implements OnInit, OnDestroy {
   // this.isIframe = window !== window.parent && !window.opener;
 
   // this.setLoginDisplay();
-  // this.authService.instance.enableAccountStorageEvents();
+  // this.msalService.instance.enableAccountStorageEvents();
 
   // this.msalBroadcastService.inProgress$
   //   .pipe(
@@ -55,16 +55,16 @@ export class SsoComponent implements OnInit, OnDestroy {
   // }
 
   // setLoginDisplay() {
-  //   this.loginDisplay = this.authService.instance.getAllAccounts().length > 0;
+  //   this.loginDisplay = this.msalService.instance.getAllAccounts().length > 0;
   // }
   // checkAndSetActiveAccount() {
-  //   const activeAccount = this.authService.instance.getActiveAccount();
-  //   if (!activeAccount && this.authService.instance.getAllAccounts().length > 0) {
-  //     const account = this.authService.instance.getAllAccounts()[0];
-  //     this.authService.instance.setActiveAccount(account);
+  //   const activeAccount = this.msalService.instance.getActiveAccount();
+  //   if (!activeAccount && this.msalService.instance.getAllAccounts().length > 0) {
+  //     const account = this.msalService.instance.getAllAccounts()[0];
+  //     this.msalService.instance.setActiveAccount(account);
 
   //     // Acquire token silently
-  //     this.authService.acquireTokenSilent({
+  //     this.msalService.acquireTokenSilent({
   //       scopes: ["user.read"],
   //       account: account
   //     }).subscribe({
@@ -81,13 +81,13 @@ export class SsoComponent implements OnInit, OnDestroy {
   // }
 
   // loginRedirect() {
-  //   this.authService.loginRedirect(this.msalGuardConfig.authRequest as any);
+  //   this.msalService.loginRedirect(this.msalGuardConfig.authRequest as any);
   //   console.log('Login successful');
   //   // localStorage.setItem('loginToken', response.accessToken);
   // }
 
   // logout() {
-  //   this.authService.logoutRedirect();
+  //   this.msalService.logoutRedirect();
   // }
 
   // ngOnDestroy(): void {
@@ -96,8 +96,8 @@ export class SsoComponent implements OnInit, OnDestroy {
   // }
 
   async ngOnInit() {
-    await this.authService.instance.initialize();
-    this.authService.handleRedirectObservable().subscribe((response: AuthenticationResult) => {
+    await this.msalService.instance.initialize();
+    this.msalService.handleRedirectObservable().subscribe((response: AuthenticationResult) => {
       if (response && response.accessToken) {
         console.log('Login successful', response);
         localStorage.setItem('loginToken', response.accessToken);
@@ -114,7 +114,7 @@ export class SsoComponent implements OnInit, OnDestroy {
     this.isIframe = window !== window.parent && !window.opener;
 
     this.setLoginDisplay();
-    this.authService.instance.enableAccountStorageEvents();
+    this.msalService.instance.enableAccountStorageEvents();
 
     this.msalBroadcastService.inProgress$
       .pipe(
@@ -139,16 +139,16 @@ export class SsoComponent implements OnInit, OnDestroy {
   }
 
   checkAndSetActiveAccount() {
-    const activeAccount = this.authService.instance.getActiveAccount();
-    if (!activeAccount && this.authService.instance.getAllAccounts().length > 0) {
-      const account = this.authService.instance.getAllAccounts()[0];
-      this.authService.instance.setActiveAccount(account);
+    const activeAccount = this.msalService.instance.getActiveAccount();
+    if (!activeAccount && this.msalService.instance.getAllAccounts().length > 0) {
+      const account = this.msalService.instance.getAllAccounts()[0];
+      this.msalService.instance.setActiveAccount(account);
 
       // Get email from active account
       this.userEmail = this.getEmailFromAccount(account);
       console.log('Active account email:', this.userEmail);
 
-      this.authService.acquireTokenSilent({
+      this.msalService.acquireTokenSilent({
         scopes: ["user.read"],
         account: account
       }).subscribe({
@@ -171,15 +171,15 @@ export class SsoComponent implements OnInit, OnDestroy {
   }
 
   setLoginDisplay() {
-    this.loginDisplay = this.authService.instance.getAllAccounts().length > 0;
+    this.loginDisplay = this.msalService.instance.getAllAccounts().length > 0;
   }
 
   loginRedirect() {
-    this.authService.loginRedirect(this.msalGuardConfig.authRequest as any);
+    this.msalService.loginRedirect(this.msalGuardConfig.authRequest as any);
   }
 
   logout() {
-    this.authService.logoutRedirect();
+    this.msalService.logoutRedirect();
   }
 
   ngOnDestroy(): void {
