@@ -31,8 +31,8 @@ import { ApprovalLayoutComponent } from './Layout/approval-layout/approval-layou
 import { ThankyouComponent } from './Pages/approved-response/approved-response.component';
 import { RejectedResponseComponent } from './Pages/rejected-response/rejected-response.component';
 import { VerificationSuccessComponent } from './Components/verification-success/verification-success.component';
-import { AuthGuard } from './core/interceptors/auth/auth.guard';
-import { AuthComponent } from './core/interceptors/auth/auth.component';
+import { AuthGuard } from './Gaurd/auth/auth.guard';
+import { AuthComponent } from './Gaurd/auth/auth.component';
 
 
 export const routes: Routes = [
