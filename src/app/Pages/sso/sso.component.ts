@@ -94,40 +94,39 @@ export class SsoComponent implements OnInit, OnDestroy {
   //   this._destroying$.next(undefined);
   //   this._destroying$.complete();
   // }
-
   async ngOnInit() {
-    await this.msalService.instance.initialize();
-    this.msalService.handleRedirectObservable().subscribe((response: AuthenticationResult) => {
-      if (response && response.accessToken) {
-        console.log('Login successful', response);
-        localStorage.setItem('loginToken', response.accessToken);
+    try {
+      // Wait for MSAL to initialize
+      await this.msalService.instance.initialize();
 
-        // Extract email from account
-        if (response.account) {
+      this.msalService.handleRedirectObservable().subscribe((response: AuthenticationResult) => {
+        if (response && response.accessToken) {
+          console.log('Login successful', response);
+          localStorage.setItem('loginToken', response.accessToken);
           this.userEmail = this.getEmailFromAccount(response.account);
-          console.log('User email:', this.userEmail);
-          // You can now use this email for your application
         }
-      }
-    });
-
-    this.isIframe = window !== window.parent && !window.opener;
-
-    this.setLoginDisplay();
-    this.msalService.instance.enableAccountStorageEvents();
-
-    this.msalBroadcastService.inProgress$
-      .pipe(
-        filter((status: InteractionStatus) => status === InteractionStatus.None),
-        takeUntil(this._destroying$)
-      )
-      .subscribe(() => {
-        this.setLoginDisplay();
-        this.checkAndSetActiveAccount();
       });
 
-    this.checkAndSetActiveAccount();
+      this.isIframe = window !== window.parent && !window.opener;
+      this.setLoginDisplay();
+      this.msalService.instance.enableAccountStorageEvents();
+
+      this.msalBroadcastService.inProgress$
+        .pipe(
+          filter((status: InteractionStatus) => status === InteractionStatus.None),
+          takeUntil(this._destroying$)
+        )
+        .subscribe(() => {
+          this.setLoginDisplay();
+          this.checkAndSetActiveAccount();
+        });
+
+      this.checkAndSetActiveAccount();
+    } catch (error) {
+      console.error('MSAL Initialization Error:', error);
+    }
   }
+
 
   private getEmailFromAccount(account: any): string {
     // Try different possible locations for the email
