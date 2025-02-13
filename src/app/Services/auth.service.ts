@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { BehaviorSubject, catchError, map, Observable, of, tap, throwError } from 'rxjs';
-import { Router } from '@angular/router';
 
 
 
@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 })
 export class AuthService {
   private jwtHelper = new JwtHelperService();
-  private apiUrl = 'https://localhost:7216/api/AuthControllers/SSOlogin';
+  private apiUrl = 'https://risk-management-riskex-backend-2.onrender.com/api/AuthControllers/Login';
   private userRole = new BehaviorSubject<string | null>(null);
   private departmentName = new BehaviorSubject<string | null>(null);
   private departmentId = new BehaviorSubject<string | null>(null);
@@ -32,21 +32,6 @@ export class AuthService {
       this.setUserDetails(token);
     }
   }
-
-  login(credentials: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}`, credentials).pipe(
-      tap((response: any) => {
-        localStorage.setItem('token', response.token);
-        this.setUserDetails(response.token);
-        console.log("userrole", this.userRole.value);
-        this.navigateToDashboard();
-      }),
-      catchError((error) => {
-        return throwError(() => error.error.message || "An unexpected error occurred.");
-      })
-    );
-  }
-
    /**
    * ✅ New SSO Login Method
    */
@@ -56,6 +41,20 @@ export class AuthService {
         localStorage.setItem('token', response.token);
         this.setUserDetails(response.token);
         console.log("User Role:", this.userRole.value);
+        this.navigateToDashboard();
+      }),
+      catchError((error) => {
+        return throwError(() => error.error.message || "An unexpected error occurred.");
+      })
+    );
+  }
+
+  login(credentials: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}`, credentials).pipe(
+      tap((response: any) => {
+        localStorage.setItem('token', response.token);
+        this.setUserDetails(response.token);
+        console.log("userrole", this.userRole.value);
         this.navigateToDashboard();
       }),
       catchError((error) => {
@@ -159,7 +158,7 @@ export class AuthService {
     this.departmentId.next(null);
     this.projects.next([]);
     this.currentUserId.next(null);
-    this.router.navigate(['/sso']);
+    this.router.navigate(['/auth']);
   }
 
   private navigateToDashboard() {

@@ -32,14 +32,15 @@ import { ThankyouComponent } from './Pages/approved-response/approved-response.c
 import { RejectedResponseComponent } from './Pages/rejected-response/rejected-response.component';
 import { VerificationSuccessComponent } from './Components/verification-success/verification-success.component';
 import { AuthGuard } from './Gaurd/auth/auth.guard';
-import { AuthComponent } from './Gaurd/auth/auth.component';
+import { AuthComponents } from './Layout/auth/auth.component';
+// import { AuthComponent } from './Gaurd/auth/auth.component';
 
 
 export const routes: Routes = [
 
   {
     path: 'auth',
-    component: AuthComponent,
+    component: AuthComponents,
     children: [
       // { path: 'login', component: LoginComponent },
       { path: '', redirectTo: 'auth', pathMatch: 'full' }
