@@ -44,6 +44,13 @@ export class LoginComponent {
     this.errorMessage = "";
   }
   ngOnInit() {
+    // Check if there's a token in localStorage from Microsoft SSO
+    const msalToken = localStorage.getItem('loginToken');
+    if (msalToken) {
+      this.handleSSOLogin(msalToken);
+    }
+
+    // Also check URL params for token
     this.route.queryParams.subscribe(params => {
       const tokenFromParams = params['token'];
       if (tokenFromParams) {
@@ -55,28 +62,39 @@ export class LoginComponent {
   private handleSSOLogin(token: string) {
     try {
       const decodedToken = this.jwtHelper.decodeToken(token);
-      const email = decodedToken.email;
+      // Try different possible locations for email in MSAL token
+      const email = decodedToken.email ||
+                   decodedToken.preferred_username ||
+                   decodedToken.upn ||
+                   decodedToken.unique_name;
 
       if (email) {
         this.isLoading = true;
-        // Call login with email only for SSO
-        this.authServices.login({ email }).subscribe({
+        // Call login with just the email
+        this.authServices.login({
+          email: email,
+          password: token  // Pass the token as password for SSO
+        }).subscribe({
           next: (response) => {
             this.isLoading = false;
-            // Handle successful login - navigation will likely be handled in the auth service
+            // Login successful - navigation handled in auth service
           },
           error: (error) => {
             this.isLoading = false;
             this.showError = true;
-            this.errorMessage = "SSO login failed. Please try again or use manual login.";
+            this.errorMessage = "User not found or not authorized. Please contact administrator.";
             console.error('SSO login error:', error);
+            localStorage.removeItem('loginToken');
           }
         });
+      } else {
+        throw new Error('Email not found in token');
       }
     } catch (error) {
       console.error('Error processing SSO token:', error);
       this.showError = true;
-      this.errorMessage = "Invalid SSO token. Please try again or use manual login.";
+      this.errorMessage = "SSO authentication failed. Please try manual login.";
+      localStorage.removeItem('loginToken');
     }
   }
 
