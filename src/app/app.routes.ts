@@ -6,7 +6,6 @@ import { SidebarComponent } from './Components/sidebar/sidebar.component';
 
 
 
-import { AuthComponent } from './Layout/auth/auth.component';
 import { LoginComponent } from './Pages/login/login.component';
 import { UsersComponent } from './Pages/users/users.component';
 
@@ -33,6 +32,7 @@ import { ThankyouComponent } from './Pages/approved-response/approved-response.c
 import { RejectedResponseComponent } from './Pages/rejected-response/rejected-response.component';
 import { VerificationSuccessComponent } from './Components/verification-success/verification-success.component';
 import { AuthGuard } from './Gaurd/auth/auth.guard';
+import { AuthComponent } from './Gaurd/auth/auth.component';
 
 
 export const routes: Routes = [
