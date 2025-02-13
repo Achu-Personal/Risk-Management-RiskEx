@@ -231,3 +231,30 @@ $focus-shadow: #cdcaca;
     margin-top: 4px;
   }
 }
+.status-container {
+  margin: 2rem 0;
+  text-align: center;
+}
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+.error-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+.error-message {
+  color: #dc3545;
+  font-weight: 500;
+}
+.retry-button {
+  padding: 0.5rem 1rem;
+  background-color: #007bff;
+  color: white;
+  border-radius: 4px;
+  text-decoration: none;
+}
