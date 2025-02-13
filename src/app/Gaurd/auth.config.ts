@@ -13,6 +13,7 @@ export const msalConfig: Configuration = {
   },
   cache: {
       cacheLocation: BrowserCacheLocation.LocalStorage,
+      storeAuthStateInCookie: true,
   },
   system: {
       loggerOptions: {
@@ -26,7 +27,7 @@ export const msalConfig: Configuration = {
 };
 
 export const loginRequest = {
-  scopes: [],
+  scopes: ['openid', 'profile', 'email', 'user.read'],
 };
 
 export const apiConfig = {

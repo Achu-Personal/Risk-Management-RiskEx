@@ -8,30 +8,27 @@ import * as AOS from 'aos';
   standalone: true,
   imports: [RouterOutlet],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
 
   title = 'RiskManagement';
   constructor(private authService: MsalService) {}
-  ngOnInit()
-  {
+  ngOnInit() {
     AOS.init();
+
     this.authService.instance.handleRedirectPromise().then((result: AuthenticationResult | null) => {
       if (result) {
         this.authService.instance.setActiveAccount(result.account);
+      } else {
+        // ✅ Check if user is already logged in
+        const accounts = this.authService.instance.getAllAccounts();
+        if (accounts.length > 0) {
+          this.authService.instance.setActiveAccount(accounts[0]);
+        }
       }
     });
   }
-
-
-  // ngOnInit() {
-  //   this.authService.instance.handleRedirectPromise().then((result: AuthenticationResult | null) => {
-  //     if (result) {
-  //       this.authService.instance.setActiveAccount(result.account);
-  //     }
-  //   });
-  // }
 
 
 }

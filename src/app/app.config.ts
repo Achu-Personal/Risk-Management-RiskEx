@@ -44,8 +44,10 @@ export function MSALInstanceFactory(): IPublicClientApplication {
 }
 
 export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
-  const protectedResourceMap = new Map<string, Array<string>>();
-  protectedResourceMap.set(apiConfig.uri, apiConfig.scopes);
+  const protectedResourceMap = new Map<string, Array<string>>([
+    ['https://graph.microsoft.com/v1.0/me', ['user.read']],
+    [apiConfig.uri, apiConfig.scopes]
+  ]);
   return {
     interactionType: InteractionType.Redirect,
     protectedResourceMap,
