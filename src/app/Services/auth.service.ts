@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 })
 export class AuthService {
   private jwtHelper = new JwtHelperService();
-  private apiUrl = 'https://localhost:7216/api/AuthControllers/Login';
+  private apiUrl = 'https://localhost:7216/api/AuthControllers/SSOlogin';
   private userRole = new BehaviorSubject<string | null>(null);
   private departmentName = new BehaviorSubject<string | null>(null);
   private departmentId = new BehaviorSubject<string | null>(null);
@@ -39,6 +39,23 @@ export class AuthService {
         localStorage.setItem('token', response.token);
         this.setUserDetails(response.token);
         console.log("userrole", this.userRole.value);
+        this.navigateToDashboard();
+      }),
+      catchError((error) => {
+        return throwError(() => error.error.message || "An unexpected error occurred.");
+      })
+    );
+  }
+
+   /**
+   * ✅ New SSO Login Method
+   */
+   ssoLogin(token: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}`, { token }).pipe(
+      tap((response: any) => {
+        localStorage.setItem('token', response.token);
+        this.setUserDetails(response.token);
+        console.log("User Role:", this.userRole.value);
         this.navigateToDashboard();
       }),
       catchError((error) => {
@@ -142,7 +159,7 @@ export class AuthService {
     this.departmentId.next(null);
     this.projects.next([]);
     this.currentUserId.next(null);
-    this.router.navigate(['/auth']);
+    this.router.navigate(['/sso']);
   }
 
   private navigateToDashboard() {

@@ -4,6 +4,8 @@ import { CommonModule } from '@angular/common';
 import { AuthService } from '../../Services/auth.service';
 import { MsalService } from '@azure/msal-angular';
 import { AuthenticationResult } from '@azure/msal-browser';
+import { ApiService } from '../../Services/api.service';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-auth',
@@ -46,7 +48,8 @@ export class AuthComponent {
   constructor(
     private authService: AuthService,
     private router: Router,
-    private msalService: MsalService // MSAL for handling authentication
+    private msalService: MsalService, // MSAL for handling authentication
+    private api:ApiService
   ) {}
 
   async ngOnInit(): Promise<void> {
@@ -62,7 +65,6 @@ export class AuthComponent {
         return;
       }
 
-      // ✅ Use `.toPromise()` and check for `undefined`
       const response = await this.msalService.acquireTokenSilent({
         scopes: ['user.read'],
         account
@@ -77,26 +79,34 @@ export class AuthComponent {
       localStorage.setItem('loginToken', response.accessToken);
 
       // ✅ Send token to backend for authentication
-      await this.initializeUserRoleAndRoute(response.accessToken);
+      await this.ssoLoginToBackend(response.accessToken);
     } catch (error) {
       console.error('SSO Login Error:', error);
       this.msalService.loginRedirect();
     }
   }
 
-  async initializeUserRoleAndRoute(token: string): Promise<void> {
+  async ssoLoginToBackend(token: string): Promise<void> {
     try {
-      this.userRoleData = await this.authService.getUserRole(); // Pass token to backend
-      localStorage.setItem('userDetails', JSON.stringify(this.userRoleData.result));
-      localStorage.setItem('apiToken', this.userRoleData.result.Token);
+      // ✅ Convert Observable to Promise using firstValueFrom
+      const response = await firstValueFrom(this.authService.ssoLogin(token));
 
-      setTimeout(() => {
-        if (this.userRoleData.result.role === 'DepartmentUser') {
-          this.router.navigate(['/home']);
-        }
-      }, 1000);
+      if (response && response.token) {  // Ensure backend sends a valid token
+        this.userRoleData = response;
+
+        localStorage.setItem('userDetails', JSON.stringify(this.userRoleData));
+        localStorage.setItem('apiToken', this.userRoleData.token);
+
+        setTimeout(() => {
+          
+            this.router.navigate(['/home']);
+
+        }, 1000);
+      } else {
+        console.error('Invalid response from backend:', response);
+      }
     } catch (error) {
-      console.error('Error fetching user role data:', error);
+      console.error('Error sending SSO token to backend:', error);
     }
   }
 }
