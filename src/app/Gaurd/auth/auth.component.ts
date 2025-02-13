@@ -14,7 +14,7 @@ export class AuthComponent {
   userRoleData: any;
   isLoading = true;
 
-  constructor(private authService: AuthService) {
+  constructor(private authService: AuthService, private route: Router) {
     this.initializeUserRoleAndRoute();
   }
 
@@ -24,6 +24,12 @@ export class AuthComponent {
       localStorage.setItem("userDetails", JSON.stringify(this.userRoleData.result));
       localStorage.setItem("apiToken", this.userRoleData.result.Token);
 
+      setTimeout(() => {
+
+        if (this.userRoleData==="DepartmentUser") {
+          this.route.navigate(['/home']);
+        }
+      }, 1000);
     } catch (error) {
       console.error('Error fetching user role data:', error);
     }
