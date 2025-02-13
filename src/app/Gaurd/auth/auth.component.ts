@@ -28,7 +28,7 @@ export class AuthComponent {
   async ngOnInit(): Promise<void> {
     try {
       await this.msalService.instance.initialize();
- 
+
       // ✅ Handle MSAL redirect response (this resolves login redirect state)
       const result = await this.msalService.instance.handleRedirectPromise();
 
@@ -48,10 +48,9 @@ export class AuthComponent {
         console.log('Session active:', account);
 
         // Try to silently acquire token
-        const tokenResponse = await this.msalService.acquireTokenSilent({
-          scopes: ['user.read'],
-          account
-        }).toPromise();
+        const tokenResponse = await firstValueFrom(
+          this.msalService.acquireTokenSilent({ scopes: ['user.read'], account })
+        );
 
         if (tokenResponse?.accessToken) {
           localStorage.setItem('loginToken', tokenResponse.accessToken);
@@ -60,7 +59,7 @@ export class AuthComponent {
       } else {
         // ✅ Only call loginRedirect() if no active session exists
         console.log('No active session. Redirecting to login...');
-        this.msalService.loginRedirect();
+        // this.msalService.loginRedirect();
       }
     } catch (error) {
       console.error('SSO Login Error:', error);
