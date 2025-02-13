@@ -27,6 +27,8 @@ export class AuthComponent {
 
   async ngOnInit(): Promise<void> {
     try {
+      await this.msalService.instance.initialize();
+ 
       // ✅ Handle MSAL redirect response (this resolves login redirect state)
       const result = await this.msalService.instance.handleRedirectPromise();
 
