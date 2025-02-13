@@ -1,0 +1,17 @@
+.spinner-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  text-align: center;
+}
+
+.spinner-container mat-spinner {
+  margin-bottom: 20px;
+}
+
+.spinner-container p {
+  font-size: 1.5rem;
+  margin: 0;
+}
