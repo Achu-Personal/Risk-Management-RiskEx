@@ -29,7 +29,6 @@ import { FormConformPopupComponent } from '../form-conform-popup/form-conform-po
 import { Router } from '@angular/router';
 import { StyleButtonComponent } from '../../UI/style-button/style-button.component';
 import { FormLoaderComponent } from '../form-loader/form-loader.component';
-
 @Component({
   selector: 'app-qms-form',
   standalone: true,

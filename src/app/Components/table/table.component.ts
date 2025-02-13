@@ -282,7 +282,7 @@ export class TableComponent {
     this.selectedDepartment = '';
     this.selectedStatus = '';
     this.selectedReviewStatus = '';
-    this.selectedResidual ='';
+    this.selectedResidual = '';
     this.filteredDateRange = null;
     this.filteredItems = [...this.items];
     this.currentPage = 1;
@@ -309,6 +309,7 @@ export class TableComponent {
       this.currentpage();
     }
     if(changes['reset']){
+      console.log("clicked")
       this.resetFilters();
     }
   }
