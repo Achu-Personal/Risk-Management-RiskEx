@@ -438,4 +438,9 @@ changePassword(currentPassword: string, newPassword: string, confirmPassword: st
     return this.http.post(`${this.baseUrl}/ResetPass/reset-password`, payload);
   }
 
+  ssoLogin(token: string): Observable<any> {
+    const body = { token }; // Send token received from MSAL login
+    return this.http.post<any>(`${this.baseUrl}/ssologin`, body);
+  }
+
 }
