@@ -58,6 +58,9 @@ export class AuthComponent {
 
   async ssoLogin(): Promise<void> {
     try {
+
+       // Ensure MSAL instance is initialized
+    await this.msalService.instance.initialize();
       const account = this.msalService.instance.getActiveAccount();
       if (!account) {
         console.log('No active session. Redirecting to login...');
@@ -98,7 +101,7 @@ export class AuthComponent {
         localStorage.setItem('apiToken', this.userRoleData.token);
 
         setTimeout(() => {
-          
+
             this.router.navigate(['/home']);
 
         }, 1000);
