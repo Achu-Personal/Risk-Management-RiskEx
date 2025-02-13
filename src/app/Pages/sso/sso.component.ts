@@ -1,8 +1,17 @@
-
 import { Component, Inject, OnInit, OnDestroy } from '@angular/core';
-import { AuthenticationResult, InteractionStatus,  } from '@azure/msal-browser';
+import {
+  AuthenticationResult,
+  InteractionStatus,
+  BrowserAuthError,
+  RedirectRequest
+} from '@azure/msal-browser';
 import { filter, Subject, takeUntil } from 'rxjs';
-import { MSAL_GUARD_CONFIG, MsalBroadcastService, MsalGuardConfiguration, MsalService } from '@azure/msal-angular';
+import {
+  MSAL_GUARD_CONFIG,
+  MsalBroadcastService,
+  MsalGuardConfiguration,
+  MsalService
+} from '@azure/msal-angular';
 import { Router } from '@angular/router';
 
 @Component({
@@ -12,100 +21,45 @@ import { Router } from '@angular/router';
 })
 export class SsoComponent implements OnInit, OnDestroy {
   private readonly _destroying$ = new Subject<void>();
+  private readonly defaultScopes = ['user.read']; // Define default scopes
   loginDisplay = false;
   isIframe = false;
   userEmail: string = '';
-
+  isInitialized = false;
 
   constructor(
     @Inject(MSAL_GUARD_CONFIG) private msalGuardConfig: MsalGuardConfiguration,
     private msalService: MsalService,
     private router: Router,
     private msalBroadcastService: MsalBroadcastService,
-
   ) {}
 
-  // async ngOnInit() {
-  //  await  this.msalService.instance.initialize();
-  //  this.msalService.handleRedirectObservable().subscribe((response: AuthenticationResult) => {
-  //   if (response && response.accessToken) {
-  //     console.log('Login successful', response);
-  //     localStorage.setItem('loginToken', response.accessToken);
-  //     // this.router.navigate(['/auth']);
-  //   }
-  // });
-
-  // this.isIframe = window !== window.parent && !window.opener;
-
-  // this.setLoginDisplay();
-  // this.msalService.instance.enableAccountStorageEvents();
-
-  // this.msalBroadcastService.inProgress$
-  //   .pipe(
-  //     filter((status: InteractionStatus) => status === InteractionStatus.None),
-  //     takeUntil(this._destroying$)
-  //   )
-  //   .subscribe(() => {
-  //     this.setLoginDisplay();
-  //     this.checkAndSetActiveAccount();
-  //   });
-
-  // // Check for active account and store token
-  // this.checkAndSetActiveAccount();
-  // }
-
-  // setLoginDisplay() {
-  //   this.loginDisplay = this.msalService.instance.getAllAccounts().length > 0;
-  // }
-  // checkAndSetActiveAccount() {
-  //   const activeAccount = this.msalService.instance.getActiveAccount();
-  //   if (!activeAccount && this.msalService.instance.getAllAccounts().length > 0) {
-  //     const account = this.msalService.instance.getAllAccounts()[0];
-  //     this.msalService.instance.setActiveAccount(account);
-
-  //     // Acquire token silently
-  //     this.msalService.acquireTokenSilent({
-  //       scopes: ["user.read"],
-  //       account: account
-  //     }).subscribe({
-  //       next: (response: AuthenticationResult) => {
-  //         if (response && response.accessToken) {
-  //           localStorage.setItem('loginToken', response.accessToken);
-  //         }
-  //       },
-  //       error: (error) => {
-  //         console.error('Silent token acquisition failed', error);
-  //       }
-  //     });
-  //   }
-  // }
-
-  // loginRedirect() {
-  //   this.msalService.loginRedirect(this.msalGuardConfig.authRequest as any);
-  //   console.log('Login successful');
-  //   // localStorage.setItem('loginToken', response.accessToken);
-  // }
-
-  // logout() {
-  //   this.msalService.logoutRedirect();
-  // }
-
-  // ngOnDestroy(): void {
-  //   this._destroying$.next(undefined);
-  //   this._destroying$.complete();
-  // }
   async ngOnInit() {
     try {
-      // Wait for MSAL to initialize
-      await this.msalService.instance.initialize();
+      await this.msalService.initialize();
+      this.isInitialized = true;
+      await this.initializeAuth();
+    } catch (error) {
+      if (error instanceof BrowserAuthError) {
+        console.error('MSAL Initialization Error:', error.errorMessage);
+      } else {
+        console.error('Unexpected error during initialization:', error);
+      }
+    }
+  }
 
-      this.msalService.handleRedirectObservable().subscribe((response: AuthenticationResult) => {
-        if (response && response.accessToken) {
-          console.log('Login successful', response);
-          localStorage.setItem('loginToken', response.accessToken);
-          this.userEmail = this.getEmailFromAccount(response.account);
-        }
-      });
+  private async initializeAuth() {
+    if (!this.isInitialized) {
+      console.error('MSAL not initialized');
+      return;
+    }
+
+    try {
+      const redirectResult = await this.msalService.handleRedirectObservable().toPromise();
+      if (redirectResult) {
+        console.log('Login successful');
+        this.handleAuthenticationSuccess(redirectResult);
+      }
 
       this.isIframe = window !== window.parent && !window.opener;
       this.setLoginDisplay();
@@ -121,64 +75,88 @@ export class SsoComponent implements OnInit, OnDestroy {
           this.checkAndSetActiveAccount();
         });
 
-      this.checkAndSetActiveAccount();
+      await this.checkAndSetActiveAccount();
     } catch (error) {
-      console.error('MSAL Initialization Error:', error);
+      console.error('Auth initialization error:', error);
     }
   }
 
-
-  private getEmailFromAccount(account: any): string {
-    // Try different possible locations for the email
-    return account.username || // Primary email/UPN
-           account.idTokenClaims?.email || // Email from ID token claims
-           account.idTokenClaims?.preferred_username || // Preferred username
-           account.userName || // Fallback to username
-           ''; // Empty string if no email found
+  private handleAuthenticationSuccess(response: AuthenticationResult) {
+    if (response.accessToken) {
+      localStorage.setItem('loginToken', response.accessToken);
+      this.userEmail = this.getEmailFromAccount(response.account);
+    }
   }
 
-  checkAndSetActiveAccount() {
+  private getEmailFromAccount(account: any): string {
+    return account?.username ||
+           account?.idTokenClaims?.email ||
+           account?.idTokenClaims?.preferred_username ||
+           account?.userName ||
+           '';
+  }
+
+  private async checkAndSetActiveAccount() {
+    if (!this.isInitialized) {
+      console.error('Cannot check account - MSAL not initialized');
+      return;
+    }
+
     const activeAccount = this.msalService.instance.getActiveAccount();
     if (!activeAccount && this.msalService.instance.getAllAccounts().length > 0) {
       const account = this.msalService.instance.getAllAccounts()[0];
       this.msalService.instance.setActiveAccount(account);
-
-      // Get email from active account
       this.userEmail = this.getEmailFromAccount(account);
-      console.log('Active account email:', this.userEmail);
 
-      this.msalService.acquireTokenSilent({
-        scopes: ["user.read"],
-        account: account
-      }).subscribe({
-        next: (response: AuthenticationResult) => {
-          if (response && response.accessToken) {
-            localStorage.setItem('loginToken', response.accessToken);
+      try {
+        const response = await this.msalService.acquireTokenSilent({
+          scopes: this.defaultScopes,
+          account: account
+        }).toPromise();
 
-            // Update email if not already set
-            if (!this.userEmail && response.account) {
-              this.userEmail = this.getEmailFromAccount(response.account);
-              console.log('Updated user email:', this.userEmail);
-            }
-          }
-        },
-        error: (error) => {
-          console.error('Silent token acquisition failed', error);
+        if (response) {
+          this.handleAuthenticationSuccess(response);
         }
-      });
+      } catch (error) {
+        console.error('Silent token acquisition failed:', error);
+      }
     }
   }
 
   setLoginDisplay() {
-    this.loginDisplay = this.msalService.instance.getAllAccounts().length > 0;
+    if (this.isInitialized) {
+      this.loginDisplay = this.msalService.instance.getAllAccounts().length > 0;
+    }
   }
 
-  loginRedirect() {
-    this.msalService.loginRedirect(this.msalGuardConfig.authRequest as any);
+  async loginRedirect() {
+    if (!this.isInitialized) {
+      console.error('Cannot login - MSAL not initialized');
+      return;
+    }
+
+    try {
+      const request: RedirectRequest = {
+        scopes: this.defaultScopes,
+        ...(this.msalGuardConfig.authRequest || {})
+      };
+      await this.msalService.loginRedirect(request);
+    } catch (error) {
+      console.error('Login redirect failed:', error);
+    }
   }
 
-  logout() {
-    this.msalService.logoutRedirect();
+  async logout() {
+    if (!this.isInitialized) {
+      console.error('Cannot logout - MSAL not initialized');
+      return;
+    }
+
+    try {
+      await this.msalService.logoutRedirect();
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
   }
 
   ngOnDestroy(): void {
@@ -186,5 +164,3 @@ export class SsoComponent implements OnInit, OnDestroy {
     this._destroying$.complete();
   }
 }
-
-
