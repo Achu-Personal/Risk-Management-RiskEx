@@ -220,8 +220,7 @@
     </div>
     <div class="form-details-sub-container">
       <h2>Action Plan</h2>
-      @if(isAdmin === 'Admin'){
-        @if(!isnewAssigneenameDisplay){
+      @if(isAdmin === 'Admin'){ @if(!isnewAssigneenameDisplay){
       <app-form-dropdown
         label="Responsibility of action"
         required="*"
@@ -237,10 +236,8 @@
         backgroundColor=" var(--form-color)"
         [showInfoButton]="true"
       ></app-form-dropdown>
-      }
-     } @if(isAdmin !== 'Admin'){
-        @if(!isnewAssigneenameDisplay){
-          <app-form-dropdown
+      } } @if(isAdmin !== 'Admin'){ @if(!isnewAssigneenameDisplay){
+      <app-form-dropdown
         label="Responsibility of action"
         required="*"
         [dropdownData]="dropdownAssignee"
@@ -257,14 +254,30 @@
         [showInfoButton]="true"
       ></app-form-dropdown>
 
-        }
-
-      } @if(isnewAssigneenameDisplay){
-      <h6>
-        Responsible Person Name:
-        <span style="font-weight: bolder">{{ newAssigneename }}</span>
+      } } @if(isnewAssigneenameDisplay){
+      <h6
+        style="
+          margin-bottom: 5px;
+          font-weight: 600;
+          color: var(--foreground-color);
+        "
+      >
+        Responsibility of action <span style="color: red">*</span>
       </h6>
+      <div
+        style="
+          border: 1px solid #ccc;
+          border-radius: 8px;
+          padding: 10px;
+          background-color: #f9f9f9;
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+          width: 100%;
+        "
+      >
+        <span>{{ newAssigneename }}</span>
+      </div>
       }
+
       <div
         [ngStyle]="{
           'margin-top': '20px',
@@ -294,7 +307,7 @@
     <div class="form-details-sub-container">
       <h2>Reviewer</h2>
       @if(!isnewReviewernameDisplay){
-        <app-form-dropdown
+      <app-form-dropdown
         class="dropdown"
         label="Reviewer"
         required="*"
@@ -312,14 +325,28 @@
         [showInfoButton]="true"
       ></app-form-dropdown>
 
-      }
-
-
-      @if(isnewReviewernameDisplay){
-      <h6>
-        Reviewer Name:
-        <span style="font-weight: bolder">{{ newReviewername }}</span>
+      } @if(isnewReviewernameDisplay){
+      <h6
+        style="
+          margin-bottom: 5px;
+          font-weight: 600;
+          color: var(--foreground-color);
+        "
+      >
+        Reviewer <span style="color: red">*</span>
       </h6>
+      <div
+        style="
+          border: 1px solid #ccc;
+          border-radius: 8px;
+          padding: 10px;
+          background-color: #f9f9f9;
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+          width: 100%;
+        "
+      >
+        <span>{{ newReviewername }}</span>
+      </div>
       }
 
       <div
@@ -345,11 +372,15 @@
           type="button"
           [disabled]="isDisabled()"
         ></app-style-button>
-        <app-style-button
+
+          <app-style-button
           (clicked)="saveAsDraft()"
           label="Save As Draft"
           type="button"
+
         ></app-style-button>
+
+
         <app-style-button
           (clicked)="cancelRisk()"
           label="Cancel"
@@ -364,8 +395,7 @@
     (closeHeatMap)="closeHeatMap()"
   ></app-form-reference-heatmap-popup>
   } @if(isLoading) {
-  <app-form-loader></app-form-loader>> }
-   @if(assigneeNotInList){
+  <app-form-loader></app-form-loader>> } @if(assigneeNotInList){
   <app-form-data-not-in-list
     placeholder="Enter responsible person name"
     [isAssignee]="true"

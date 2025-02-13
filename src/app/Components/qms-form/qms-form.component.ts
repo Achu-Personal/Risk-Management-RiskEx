@@ -570,12 +570,7 @@ export class QMSFormComponent {
   ngOnChanges(changes: SimpleChanges): void {
     if (this.draft && this.draft?.length > 0) {
       if (changes['dropdownLikelihood']) {
-        const preSelectedLikelihood = this.draft.riskAssessments[0]. likelihood
-        ;
-        const selectedFactor = this.dropdownLikelihood.find(
-          (factor) => factor.assessmentFactor === preSelectedLikelihood
-        );
-        this.preSelectedLikelihood = selectedFactor.id;
+        this.preSelectedLikelihood = this.draft.riskAssessments[0].likelihood;
       }
 
       if (changes['dropdownImpact']) {

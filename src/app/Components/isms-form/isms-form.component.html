@@ -416,11 +416,28 @@
         [showInfoButton]="true"
       ></app-form-dropdown>
       }
-     } @if(isnewAssigneenameDisplay){
-      <h6>
-        Responsible Person Name:
-        <span style="font-weight: bolder">{{ newAssigneename }}</span>
+     }@if(isnewAssigneenameDisplay){
+      <h6
+        style="
+          margin-bottom: 5px;
+          font-weight: 600;
+          color: var(--foreground-color);
+        "
+      >
+        Responsibility of action <span style="color: red">*</span>
       </h6>
+      <div
+        style="
+          border: 1px solid #ccc;
+          border-radius: 8px;
+          padding: 10px;
+          background-color: #f9f9f9;
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+          width: 100%;
+        "
+      >
+        <span>{{ newAssigneename }}</span>
+      </div>
       }
 
       <div
@@ -471,11 +488,28 @@
       }
 
       @if(isnewReviewernameDisplay){
-      <h6>
-        Reviewer Name:
-        <span style="font-weight: bolder">{{ newReviewername }}</span>
-      </h6>
-      }
+        <h6
+          style="
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: var(--foreground-color);
+          "
+        >
+          Reviewer <span style="color: red">*</span>
+        </h6>
+        <div
+          style="
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 100%;
+          "
+        >
+          <span>{{ newReviewername }}</span>
+        </div>
+        }
 
       <div
         [ngStyle]="{
