@@ -12,6 +12,7 @@ import { BehaviorSubject, catchError, map, Observable, of, tap, throwError } fro
 export class AuthService {
   private jwtHelper = new JwtHelperService();
   private apiUrl = 'https://risk-management-riskex-backend-2.onrender.com/api/AuthControllers/Login';
+  private ssoUrl = 'https://localhost:7216/api/AuthControllers/SSOlogin';
   private userRole = new BehaviorSubject<string | null>(null);
   private departmentName = new BehaviorSubject<string | null>(null);
   private departmentId = new BehaviorSubject<string | null>(null);
@@ -36,7 +37,7 @@ export class AuthService {
    * ✅ New SSO Login Method
    */
    ssoLogin(token: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}`, { token }).pipe(
+    return this.http.post(`${this.ssoUrl}`, { token }).pipe(
       tap((response: any) => {
         localStorage.setItem('token', response.token);
         this.setUserDetails(response.token);
