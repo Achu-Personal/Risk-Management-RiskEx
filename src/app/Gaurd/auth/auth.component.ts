@@ -10,7 +10,7 @@ import { firstValueFrom } from 'rxjs';
 @Component({
   selector: 'app-auth',
   standalone: true,
-  imports: [ CommonModule],
+  imports: [CommonModule],
   templateUrl: './auth.component.html',
   styleUrls: ['./auth.component.scss']
 })
@@ -18,71 +18,48 @@ export class AuthComponent {
   userRoleData: any;
   isLoading = true;
 
-  // constructor(private authService: AuthService, private route: Router) {
-  //   this.initializeUserRoleAndRoute();
-  // }
-
-  // async initializeUserRoleAndRoute(): Promise<void> {
-  //   try {
-  //     this.userRoleData = await this.getUserRole();
-  //     localStorage.setItem("userDetails", JSON.stringify(this.userRoleData.result));
-  //     localStorage.setItem("apiToken", this.userRoleData.result.Token);
-
-  //     setTimeout(() => {
-
-  //       if (this.userRoleData==="DepartmentUser") {
-  //         this.route.navigate(['/home']);
-  //       }
-  //     }, 1000);
-  //   } catch (error) {
-  //     console.error('Error fetching user role data:', error);
-  //   }
-  // }
-
-  // getUserRole(): Promise<any> {
-  //   return new Promise((resolve, reject) => {
-  //     this.authService.getUserRole();
-  //   });
-  // }
-
   constructor(
     private authService: AuthService,
     private router: Router,
     private msalService: MsalService, // MSAL for handling authentication
-    private api:ApiService
+    private api: ApiService
   ) {}
 
   async ngOnInit(): Promise<void> {
-    await this.ssoLogin(); // Perform SSO login when the component loads
-  }
-
-  async ssoLogin(): Promise<void> {
     try {
+      // ✅ Handle MSAL redirect response (this resolves login redirect state)
+      const result = await this.msalService.instance.handleRedirectPromise();
 
-       // Ensure MSAL instance is initialized
-    await this.msalService.instance.initialize();
+      if (result) {
+        console.log('Login successful via redirect:', result);
+        this.msalService.instance.setActiveAccount(result.account);
+        localStorage.setItem('loginToken', result.accessToken);
+
+        // ✅ Send token to backend
+        await this.ssoLoginToBackend(result.accessToken);
+        return;
+      }
+
+      // ✅ Check if user is already logged in
       const account = this.msalService.instance.getActiveAccount();
-      if (!account) {
+      if (account) {
+        console.log('Session active:', account);
+
+        // Try to silently acquire token
+        const tokenResponse = await this.msalService.acquireTokenSilent({
+          scopes: ['user.read'],
+          account
+        }).toPromise();
+
+        if (tokenResponse?.accessToken) {
+          localStorage.setItem('loginToken', tokenResponse.accessToken);
+          await this.ssoLoginToBackend(tokenResponse.accessToken);
+        }
+      } else {
+        // ✅ Only call loginRedirect() if no active session exists
         console.log('No active session. Redirecting to login...');
         this.msalService.loginRedirect();
-        return;
       }
-
-      const response = await this.msalService.acquireTokenSilent({
-        scopes: ['user.read'],
-        account
-      }).toPromise();
-
-      if (!response || !response.accessToken) {
-        console.error('SSO Login Failed: No token received');
-        return;
-      }
-
-      console.log('SSO Login Successful!', response);
-      localStorage.setItem('loginToken', response.accessToken);
-
-      // ✅ Send token to backend for authentication
-      await this.ssoLoginToBackend(response.accessToken);
     } catch (error) {
       console.error('SSO Login Error:', error);
       this.msalService.loginRedirect();
@@ -91,19 +68,15 @@ export class AuthComponent {
 
   async ssoLoginToBackend(token: string): Promise<void> {
     try {
-      // ✅ Convert Observable to Promise using firstValueFrom
       const response = await firstValueFrom(this.authService.ssoLogin(token));
 
-      if (response && response.token) {  // Ensure backend sends a valid token
+      if (response?.token) {
         this.userRoleData = response;
-
         localStorage.setItem('userDetails', JSON.stringify(this.userRoleData));
         localStorage.setItem('apiToken', this.userRoleData.token);
 
         setTimeout(() => {
-
-            this.router.navigate(['/home']);
-
+          this.router.navigate(['/home']);
         }, 1000);
       } else {
         console.error('Invalid response from backend:', response);
