@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 })
 export class AuthService {
   private jwtHelper = new JwtHelperService();
-  private apiUrl = 'https://risk-management-riskex-backend-2.onrender.com/api/AuthControllers/Login';
+  private apiUrl = 'https://localhost:7216/api/AuthControllers/Login';
   private userRole = new BehaviorSubject<string | null>(null);
   private departmentName = new BehaviorSubject<string | null>(null);
   private departmentId = new BehaviorSubject<string | null>(null);

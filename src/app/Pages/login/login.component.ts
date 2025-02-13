@@ -2,7 +2,9 @@ import { Component } from '@angular/core';
 import { AuthService } from '../../Services/auth.service';
 import { NgIf } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { JwtHelperService } from '@auth0/angular-jwt';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+
 
 @Component({
   selector: 'app-login',
@@ -12,6 +14,9 @@ import { Router, RouterLink } from '@angular/router';
   styleUrl: './login.component.scss'
 })
 export class LoginComponent {
+  private jwtHelper = new JwtHelperService();
+
+
 
   loginForm: FormGroup;
   showError = false;
@@ -22,7 +27,8 @@ export class LoginComponent {
   constructor(
     private authServices: AuthService,
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -36,6 +42,42 @@ export class LoginComponent {
   clearError() {
     this.showError = false;
     this.errorMessage = "";
+  }
+  ngOnInit() {
+    this.route.queryParams.subscribe(params => {
+      const tokenFromParams = params['token'];
+      if (tokenFromParams) {
+        this.handleSSOLogin(tokenFromParams);
+      }
+    });
+  }
+
+  private handleSSOLogin(token: string) {
+    try {
+      const decodedToken = this.jwtHelper.decodeToken(token);
+      const email = decodedToken.email;
+
+      if (email) {
+        this.isLoading = true;
+        // Call login with email only for SSO
+        this.authServices.login({ email }).subscribe({
+          next: (response) => {
+            this.isLoading = false;
+            // Handle successful login - navigation will likely be handled in the auth service
+          },
+          error: (error) => {
+            this.isLoading = false;
+            this.showError = true;
+            this.errorMessage = "SSO login failed. Please try again or use manual login.";
+            console.error('SSO login error:', error);
+          }
+        });
+      }
+    } catch (error) {
+      console.error('Error processing SSO token:', error);
+      this.showError = true;
+      this.errorMessage = "Invalid SSO token. Please try again or use manual login.";
+    }
   }
 
   onSubmit() {
