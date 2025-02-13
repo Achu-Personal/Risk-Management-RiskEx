@@ -99,7 +99,7 @@ export class LoginComponent {
       }
     } catch (error) {
       console.error('SSO Login Error:', error);
-      this.msalService.loginRedirect();
+      // this.msalService.loginRedirect();
     }
   }
 
