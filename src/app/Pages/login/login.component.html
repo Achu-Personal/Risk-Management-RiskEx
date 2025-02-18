@@ -9,13 +9,7 @@
         <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
           <div class="form-group">
             <label for="login-email">User Mail</label>
-            <input
-              type="text"
-              id="email"
-              placeholder="User name"
-              formControlName="email"
-              (focus)="clearError()"
-            />
+            <input type="text" id="email" placeholder="User name" formControlName="email" (focus)="clearError()" />
             @if (loginForm.get('email')?.invalid && loginForm.get('email')?.touched)
             {
             <div class="text-danger">
@@ -34,44 +28,28 @@
           <div class="form-group">
             <label for="login-password">Enter your Password</label>
             <div class="password-input">
-              <input
-              [type]="showPassword ? 'text' : 'password'"
-                id="login-password"
-                placeholder="Type your password here"
-                formControlName="password"
-                (focus)="clearError()"
-              />
-              <button
-              type="button"
-              class="password-toggle"
-              (click)="togglePasswordVisibility()"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                [class]="showPassword ? 'eye-open' : 'eye-closed'"
-                viewBox="0 0 24 24"
-                width="15"
-                height="15"
-                stroke="currentColor"
-                fill="none"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                @if (showPassword) {
+              <input [type]="showPassword ? 'text' : 'password'" id="login-password"
+                placeholder="Type your password here" formControlName="password" (focus)="clearError()" />
+              <button type="button" class="password-toggle" (click)="togglePasswordVisibility()">
+                <svg xmlns="http://www.w3.org/2000/svg" [class]="showPassword ? 'eye-open' : 'eye-closed'"
+                  viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" fill="none" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  @if (showPassword) {
                   <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
                   <circle cx="12" cy="12" r="3"></circle>
-                } @else {
-                  <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                  } @else {
+                  <path
+                    d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24">
+                  </path>
                   <line x1="1" y1="1" x2="23" y2="23"></line>
-                }
-              </svg>
-            </button>
+                  }
+                </svg>
+              </button>
             </div>
             @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
-              <div class="text-danger">
-                <span>Password is required.</span>
-              </div>
+            <div class="text-danger">
+              <span>Password is required.</span>
+            </div>
             }
           </div>
 
@@ -88,9 +66,9 @@
 
           <button type="submit" class="login-button" [disabled]="isLoading || loginForm.invalid">
             @if (isLoading) {
-              <div class="spinner"></div>
+            <div class="spinner"></div>
             } @else {
-              Log In
+            Log In
             }
           </button>
         </form>
@@ -107,51 +85,3 @@
     </div>
   </div>
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- <div class="login-container">
-  <div class="login-card">
-    <div class="left">
-      <div class="left-section">
-        <h1>RiskEx</h1>
-        <h2>Logging into RiskEx</h2>
-        <p class="tagline">If There Is Risk, We are There</p>
-
-        <div class="status-container">
-          @if (isLoading) {
-            <div class="loading-state">
-              <div class="spinner"></div>
-              <p>Authenticating your credentials...</p>
-            </div>
-          }
-
-          @if (showError) {
-            <div class="error-state">
-              <p class="error-message">{{ errorMessage }}</p>
-              <a href="/sso" class="retry-button">Try Again</a>
-            </div>
-          }
-        </div>
-      </div>
-    </div>
-
-    <div class="right">
-      <div class="right-section">
-        <img src="/Images/log newwww.png" alt="Login illustration">
-      </div>
-      <div class="bottom">
-        <img src="/Images/experion org logo white.png" alt="Company logo">
-      </div>
-    </div>
-  </div>
-</div> -->

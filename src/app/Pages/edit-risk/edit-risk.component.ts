@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { BodyContainerComponent } from '../../Components/body-container/body-container.component';
 import { QmsEditComponent } from '../../Components/qms-edit/qms-edit.component';
 import { ApiService } from '../../Services/api.service';
-import { AuthService } from '../../Services/auth.service';
+import { AuthService } from '../../Services/auth/auth.service';
 import { IsmsEditComponent } from '../../Components/isms-edit/isms-edit.component';
 import { CommonModule } from '@angular/common';
 import { FormSuccessfullComponent } from '../../Components/form-successfull/form-successfull.component';

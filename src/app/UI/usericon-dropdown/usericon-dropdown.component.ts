@@ -1,8 +1,7 @@
 import { CommonModule, NgIf } from '@angular/common';
 import { Component, EventEmitter, HostListener, Output } from '@angular/core';
-import { AuthService } from '../../Services/auth.service';
+import { AuthService } from '../../Services/auth/auth.service';
 import { Router } from '@angular/router';
-import { ChangepasswordComponent } from "../../Components/changepassword/changepassword.component";
 import { StyleButtonComponent } from "../style-button/style-button.component";
 
 @Component({

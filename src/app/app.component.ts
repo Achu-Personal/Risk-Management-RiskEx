@@ -14,14 +14,13 @@ export class AppComponent {
 
   title = 'RiskManagement';
   constructor(private authService: MsalService) {}
-  ngOnInit() {
+   ngOnInit() {
     AOS.init();
-
+  this.authService.initialize()
     this.authService.instance.handleRedirectPromise().then((result: AuthenticationResult | null) => {
       if (result) {
         this.authService.instance.setActiveAccount(result.account);
       } else {
-        // ✅ Check if user is already logged in
         const accounts = this.authService.instance.getAllAccounts();
         if (accounts.length > 0) {
           this.authService.instance.setActiveAccount(accounts[0]);
@@ -29,6 +28,5 @@ export class AppComponent {
       }
     });
   }
-
 
 }

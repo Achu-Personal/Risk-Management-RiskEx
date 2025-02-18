@@ -3,7 +3,7 @@ import { Component, EventEmitter, forwardRef, HostListener, Input, OnChanges, Ou
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { ApiService } from '../../Services/api.service';
 import { project } from '../../Interfaces/projects.interface';
-import { AuthService } from '../../Services/auth.service';
+import { AuthService } from '../../Services/auth/auth.service';
 import { Subscription } from 'rxjs';
 
 @Component({

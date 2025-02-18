@@ -5,7 +5,7 @@ import { BodyContainerComponent } from "../../Components/body-container/body-con
 import { Router } from '@angular/router';
 import { DatepickerComponent } from "../../UI/datepicker/datepicker.component";
 import { ApiService } from '../../Services/api.service';
-import { AuthService } from '../../Services/auth.service';
+import { AuthService } from '../../Services/auth/auth.service';
 import { StyleButtonComponent } from "../../UI/style-button/style-button.component";
 
 @Component({

@@ -3,8 +3,8 @@ import { provideRouter } from '@angular/router';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { routes } from './app.routes';
 import { BrowserModule } from '@angular/platform-browser';
-import { msalConfig } from './Gaurd/auth.config';
-import { apiConfig } from './Gaurd/auth.config';
+import { msalConfig } from './Gaurd/auth/auth.config';
+import { apiConfig } from './Gaurd/auth/auth.config';
 import {
   provideHttpClient,
   withInterceptorsFromDi,
@@ -16,9 +16,7 @@ import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import {
   IPublicClientApplication,
   PublicClientApplication,
-  InteractionType,
-  BrowserCacheLocation,
-  LogLevel,
+  InteractionType
 } from '@azure/msal-browser';
 import {
   MsalInterceptor,
@@ -36,8 +34,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatListModule } from '@angular/material/list';
 import { ErrorInterceptor } from './core/interceptors/error.interceptor';
-import { AuthInterceptor } from './core/interceptors/auth.interceptor';
-import { tokenInterceptorInterceptor } from './Services/token-interceptor.interceptor';
+import { tokenInterceptorInterceptor } from './core/interceptors/token-interceptor.interceptor';
 
 export function MSALInstanceFactory(): IPublicClientApplication {
   return new PublicClientApplication(msalConfig);
@@ -106,11 +103,7 @@ export const appConfig: ApplicationConfig = {
       provide: HTTP_INTERCEPTORS,
       useClass: ErrorInterceptor,
       multi: true
-    },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: AuthInterceptor,
-      multi: true
     }
+
   ],
 };
