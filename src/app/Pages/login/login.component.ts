@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
 import { FormBuilder,  FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { AuthService } from '../../Services/auth/auth.service';
+import { AuthService } from '../../Services/auth.service';
 import { NgIf } from '@angular/common';
-
 
 @Component({
   selector: 'app-login',
@@ -20,13 +19,10 @@ export class LoginComponent {
   isLoading = false;
   showPassword = false;
 
-  userRoleData: any;
-
-
   constructor(
     private authServices: AuthService,
     private fb: FormBuilder,
-    private router: Router,
+    private router: Router
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -58,5 +54,4 @@ export class LoginComponent {
       });
     }
   }
-
 }
