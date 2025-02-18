@@ -62,6 +62,7 @@ export class RiskDetailsSection3MitigationComponent {
       this.riskAssessmentBefore=this.riskAssessments.filter((e:any)=>!e.isMitigated)
 
       this.riskAssessmentBefore.forEach((e:any)=>{
+        console.log(e.impactMatix.value)
       this.overallRiskRatingBefore += (e.impactMatix.value*e.likelihoodMatrix.value)
       })
 
