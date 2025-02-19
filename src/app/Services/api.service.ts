@@ -128,7 +128,7 @@ export class ApiService {
   }
 
   addNewUser(user: any) {
-    return this.http.post<UserResponse>(`https://localhost:7216/api/User/register`, user, {
+    return this.http.post<UserResponse>(`${this.baseUrl}/User/register`, user, {
       responseType: 'text' as 'json',
     });
   }
