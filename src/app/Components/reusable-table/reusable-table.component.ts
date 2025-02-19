@@ -14,11 +14,13 @@ import { AuthService } from '../../Services/auth/auth.service';
 import { ConfirmationPopupComponent } from '../confirmation-popup/confirmation-popup.component';
 import { ApiService } from '../../Services/api.service';
 import { PaginationComponent } from "../../UI/pagination/pagination.component";
+import { SearchbarComponent } from "../../UI/searchbar/searchbar.component";
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-reusable-table',
   standalone: true,
-  imports: [CommonModule, FormsModule, ConfirmationPopupComponent, PaginationComponent],
+  imports: [CommonModule, FormsModule, ConfirmationPopupComponent, PaginationComponent, SearchbarComponent],
   templateUrl: './reusable-table.component.html',
   styleUrl: './reusable-table.component.scss',
 })
@@ -48,14 +50,23 @@ export class ReusableTableComponent {
   constructor(
     public auth: AuthService,
     public api: ApiService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private route:ActivatedRoute
   ) {
 
   }
 
   rowKeys: string[] = [];
-
+  isButtonVisible = false;
+  // items:any;
   ngOnInit(): void {
+
+    const currentRoute = this.route.snapshot.url.join('/');
+    if (currentRoute === 'users') {
+      this.isButtonVisible = true;
+    } else {
+      this.isButtonVisible = false;
+    }
 
     const role = this.auth.getUserRole(); // Fetch user role
     this.isDepartmentUser = role === 'DepartmentUser';
@@ -175,6 +186,21 @@ export class ReusableTableComponent {
     this.totalItems = this.tableData1.length;
     this.cdr.markForCheck();
   }
+
+  onSearch(searchText: string): void {
+    const lowercasedSearchText = searchText.toLowerCase();
+    console.log(this.filterData)
+    this.tableData1 = this.originalTableData.filter((item: any) =>
+      Object.values(item).some((value: any) =>
+        value != null && value.toString().toLowerCase().includes(lowercasedSearchText)
+      )
+    );
+
+    this.currentPage = 1;
+    this.totalItems = this.filterData.length;
+    this.updatePaginatedItems();
+  }
+
   //-----------------filter ----------------------//
 
   showFilterDropdown = false;

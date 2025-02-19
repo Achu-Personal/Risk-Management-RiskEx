@@ -17,8 +17,16 @@
 thead {
   tr {
     z-index: 10;
-    
+
   }
+}
+.header1 {
+  margin-bottom: 20px;
+  display: flex;
+  align-items: left;
+  justify-items: left;
+  // max-width: 80%;
+  gap: 20px;
 }
 .bord {
   position: sticky;
@@ -30,7 +38,7 @@ thead {
   width: 100%;
   border-collapse: collapse;
   border-spacing: 0 8px;
- 
+
 
   background: #ffffff;
   margin: 0;
@@ -119,8 +127,8 @@ tbody {
     z-index: -1;
     overflow-y: auto;
     // border-bottom: 1px solid #f1e7e7;
-    
-  
+
+
   }
 }
 
