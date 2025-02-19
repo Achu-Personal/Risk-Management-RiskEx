@@ -1,5 +1,5 @@
 import { department } from './../../Interfaces/deparments.interface';
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component,  ViewChild } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -19,7 +19,6 @@ import { AuthService } from '../../Services/auth/auth.service';
 import { SingleProjectDropdownComponent } from '../../Components/single-project-dropdown/single-project-dropdown.component';
 import { UsermanagementpopupComponent } from "../../Components/usermanagementpopup/usermanagementpopup.component";
 import { EmailService } from '../../Services/email.service';
-import { SearchbarComponent } from "../../UI/searchbar/searchbar.component";
 
 @Component({
   selector: 'app-users',
@@ -33,8 +32,7 @@ import { SearchbarComponent } from "../../UI/searchbar/searchbar.component";
     StyleButtonComponent,
     NgIf,
     SingleProjectDropdownComponent,
-    UsermanagementpopupComponent,
-    SearchbarComponent
+    UsermanagementpopupComponent
 ],
   templateUrl: './users.component.html',
   styleUrl: './users.component.scss',
