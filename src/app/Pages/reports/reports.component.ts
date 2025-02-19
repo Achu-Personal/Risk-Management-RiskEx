@@ -6,7 +6,7 @@ import { StyleButtonComponent } from "../../UI/style-button/style-button.compone
 import { DatepickerComponent } from "../../UI/datepicker/datepicker.component";
 import { ReportGenerationService } from '../../Services/report-generation.service';
 import { ApiService } from '../../Services/api.service';
-import { AuthService } from '../../Services/auth.service';
+import { AuthService } from '../../Services/auth/auth.service';
 
 @Component({
   selector: 'app-reports',
@@ -68,7 +68,7 @@ export class ReportsComponent {
       reset(): void {
         this.isreset = false;
         setTimeout(() => {
-          this.isreset = true; 
+          this.isreset = true;
         });
       }
 

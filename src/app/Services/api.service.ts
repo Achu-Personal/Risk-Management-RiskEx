@@ -12,7 +12,7 @@ import {
   throwError,
 } from 'rxjs';
 import { UserResponse } from '../Interfaces/Userdata.interface.';
-import { AuthService } from './auth.service';
+import { AuthService } from './auth/auth.service';
 
 @Injectable({
   providedIn: 'root',

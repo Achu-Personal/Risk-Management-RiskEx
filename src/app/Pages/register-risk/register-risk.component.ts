@@ -3,7 +3,7 @@ import { BodyContainerComponent } from '../../Components/body-container/body-con
 import { QMSFormComponent } from '../../Components/qms-form/qms-form.component';
 import { ISMSFormComponent } from '../../Components/isms-form/isms-form.component';
 import { ApiService } from '../../Services/api.service';
-import { AuthService } from '../../Services/auth.service';
+import { AuthService } from '../../Services/auth/auth.service';
 import { CommonModule } from '@angular/common';
 import { FormSuccessfullComponent } from '../../Components/form-successfull/form-successfull.component';
 import { Router } from '@angular/router';

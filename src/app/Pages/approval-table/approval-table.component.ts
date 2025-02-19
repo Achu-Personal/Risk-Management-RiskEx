@@ -3,7 +3,7 @@ import { BodyContainerComponent } from '../../Components/body-container/body-con
 import { ReusableTableComponent } from '../../Components/reusable-table/reusable-table.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from '../../Services/api.service';
-import { AuthService } from '../../Services/auth.service';
+import { AuthService } from '../../Services/auth/auth.service';
 import { EmailService } from '../../Services/email.service';
 import { NotificationService } from '../../Services/notification.service';
 

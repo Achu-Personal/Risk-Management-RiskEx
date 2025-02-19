@@ -5,7 +5,7 @@ import { SearchbarComponent } from '../../UI/searchbar/searchbar.component';
 import { PaginationComponent } from '../../UI/pagination/pagination.component';
 import { ApiService } from '../../Services/api.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AuthService } from '../../Services/auth.service';
+import { AuthService } from '../../Services/auth/auth.service';
 import { ResidualRiskStatusStylePipe } from "../../Pipes/residual-risk-status-style.pipe";
 
 @Component({
