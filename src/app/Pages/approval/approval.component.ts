@@ -9,7 +9,7 @@ import { ConfirmationPopupComponent } from '../../Components/confirmation-popup/
 import { ActivatedRoute } from '@angular/router';
 import { NgIf } from '@angular/common';
 import { EmailService } from '../../Services/email.service';
-import { AuthService } from '../../Services/auth.service';
+import { AuthService } from '../../Services/auth/auth.service';
 import { RiskDetailsSection3MitigationComponent } from "../../Components/risk-details-section3-mitigation/risk-details-section3-mitigation.component";
 import { NotificationService } from '../../Services/notification.service';
 
@@ -48,9 +48,9 @@ export class ApprovalComponent {
       // console.log("data description",this.data.description);
       this.isLoading=false
     });
-    
+
   }
-  
+
 
 
   isPopupOpen = false;
@@ -86,7 +86,7 @@ export class ApprovalComponent {
       // Perform rejection logic here
       const updates = {
         approvalStatus: "Rejected",
-        comments: event.comment 
+        comments: event.comment
       };
       this.notification.success("The risk has been Rejected ")
       let id = parseInt(this.route.snapshot.paramMap.get('id')!);
@@ -94,7 +94,7 @@ export class ApprovalComponent {
       this.showButtons = false;
       this.api.getRiskById(id).subscribe((res:any)=>{
         if(res.riskStatus==='open' || res.riskStatus==='close'){
-          
+
             const context = {
               responsibleUser: res.createdBy.fullName,
               riskId: res.riskId,
@@ -104,7 +104,7 @@ export class ApprovalComponent {
               plannedActionDate:res.plannedActionDate,
               overallRiskRating:res.overallRiskRating,
               riskStatus:res.riskStatus,
-              reason:event.comment 
+              reason:event.comment
             };
             // console.log("context:",context);
             this.email.sendOwnerEmail(res.createdBy.email,context).subscribe({
@@ -114,11 +114,11 @@ export class ApprovalComponent {
               },
               error: (emailError) => {
                 console.error('Failed to send email to risk owner:', emailError);
-                
+
               }
             })
-            
-        
+
+
         }
         if(res.riskStatus === 'close'){
 
@@ -151,7 +151,7 @@ export class ApprovalComponent {
               console.error('Failed to send email to reviewer:', emailError);
             },
           });
-  
+
         }
       })
 
@@ -159,7 +159,7 @@ export class ApprovalComponent {
       // console.log('Risk approved with comment:', event.comment);
       const updates = {
         approvalStatus: "Approved",
-        comments: event.comment 
+        comments: event.comment
       };
       this.notification.success("The risk has Approved successfully")
       let id = parseInt(this.route.snapshot.paramMap.get('id')!);
@@ -197,11 +197,11 @@ export class ApprovalComponent {
             }
           })
         }
-       
+
       })
 
-      
-      
+
+
     }
   }
 

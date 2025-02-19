@@ -4,7 +4,7 @@ import { delay, of } from 'rxjs';
 import { ChangeDetectorRef } from '@angular/core';
 import { HistoryComponent } from './history.component';
 import { ApiService } from '../../Services/api.service';
-import { AuthService } from '../../Services/auth.service';
+import { AuthService } from '../../Services/auth/auth.service';
 import { By } from '@angular/platform-browser';
 
 describe('HistoryComponent', () => {

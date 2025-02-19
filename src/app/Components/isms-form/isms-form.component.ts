@@ -16,7 +16,7 @@ import {
 
 import { CommonModule } from '@angular/common';
 import { ApiService } from '../../Services/api.service';
-import { AuthService } from '../../Services/auth.service';
+import { AuthService } from '../../Services/auth/auth.service';
 import { FormInputComponent } from '../form-input/form-input.component';
 import { FormDropdownComponent } from '../form-dropdown/form-dropdown.component';
 import { FormTextAreaComponent } from '../form-text-area/form-text-area.component';

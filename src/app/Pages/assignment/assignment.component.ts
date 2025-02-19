@@ -5,7 +5,7 @@ import { ReusableTableComponent } from "../../Components/reusable-table/reusable
 import { Router } from '@angular/router';
 import { ApiService } from '../../Services/api.service';
 import { AssignmentTable } from '../../Interfaces/assignment.interface';
-import { AuthService } from '../../Services/auth.service';
+import { AuthService } from '../../Services/auth/auth.service';
 
 @Component({
   selector: 'app-assignment',

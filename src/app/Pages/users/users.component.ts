@@ -15,7 +15,7 @@ import { project } from '../../Interfaces/projects.interface';
 import { DropDownDeparmentComponent } from '../../Components/drop-down-deparment/drop-down-deparment.component';
 import { StyleButtonComponent } from '../../UI/style-button/style-button.component';
 import { NgIf } from '@angular/common';
-import { AuthService } from '../../Services/auth.service';
+import { AuthService } from '../../Services/auth/auth.service';
 import { SingleProjectDropdownComponent } from '../../Components/single-project-dropdown/single-project-dropdown.component';
 import { UsermanagementpopupComponent } from "../../Components/usermanagementpopup/usermanagementpopup.component";
 import { EmailService } from '../../Services/email.service';

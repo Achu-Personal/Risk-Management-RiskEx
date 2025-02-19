@@ -9,7 +9,8 @@ export const msalConfig: Configuration = {
   auth: {
       clientId: ' 4fdd2973-09a8-4c28-a786-16f63cf33207',
       authority: 'https://login.microsoftonline.com/5b751804-232f-410d-bb2f-714e3bb466eb',
-      redirectUri:"https://risk-management-system-risk-ex.vercel.app/auth",
+      redirectUri:"http://localhost:4200/auth",
+      postLogoutRedirectUri: 'https://localhost:4200/sso',
   },
   cache: {
       cacheLocation: BrowserCacheLocation.LocalStorage,
@@ -18,7 +19,7 @@ export const msalConfig: Configuration = {
   system: {
       loggerOptions: {
           loggerCallback(logLevel: LogLevel, message: string) {
-              console.log(message);
+              // console.log(message);
           },
           logLevel: LogLevel.Verbose,
           piiLoggingEnabled: false,
