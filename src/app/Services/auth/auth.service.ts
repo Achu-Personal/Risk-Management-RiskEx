@@ -12,8 +12,9 @@ import { MsalService } from '@azure/msal-angular';
 })
 export class AuthService {
   private jwtHelper = new JwtHelperService();
-  private apiUrl = 'https://risk-management-riskex-backend-2.onrender.com/api/AuthControllers/Login';
-  private ssoUrl = 'https://localhost:7216/api/AuthControllers/ssologin';
+  private baseUrl = 'https://risk-management-riskex-backend-2.onrender.com/api/AuthControllers';
+  private apiUrl = `${this.baseUrl}/Login`;
+  private ssoUrl = `${this.baseUrl}/ssologin`;
   private userRole = new BehaviorSubject<string | null>(null);
   private departmentName = new BehaviorSubject<string | null>(null);
   private departmentId = new BehaviorSubject<string | null>(null);
@@ -209,7 +210,7 @@ export class AuthService {
     this.router.navigate(['/auth']);
   }
 
-  
+
   private navigateToDashboard() {
      this.router.navigate(['/home']);
   }
