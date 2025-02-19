@@ -50,18 +50,15 @@ export class AuthService {
       catchError((error: any) => {
         let errorMessage = 'An unexpected error occurred';
 
-        // Check if the error is an HTTP response with a status code
         if (error.status === 400) {
           errorMessage = 'You do not have access to the system. Please contact the administrator.';
         } else if (error.status === 401) {
           errorMessage = 'Your account has been deactivated. Please contact the admin.';
         } else if (error.error && typeof error.error === 'object' && 'message' in error.error) {
-          // Extract the error message from the response body if available
           errorMessage = error.error.message || errorMessage;
         }
 
-        console.error(errorMessage); // Log only the message without "Error: "
-        return throwError(() => errorMessage); // Return only the message
+        return throwError(() => errorMessage);
       })
     );
   }
@@ -70,12 +67,24 @@ export class AuthService {
   login(credentials: any): Observable<any> {
     return this.http.post(`${this.apiUrl}`, credentials).pipe(
       tap((response: any) => {
-        localStorage.setItem('token', response.token);
-        this.setUserDetails(response.token);
-        this.navigateToDashboard();
+        if (response.token) {
+          localStorage.setItem('token', response.token);
+          this.setUserDetails(response.token);
+          this.navigateToDashboard();
+        }
       }),
-      catchError((error) => {
-        return throwError(() => error.error.message || "An unexpected error occurred.");
+      catchError((error: any) => {
+        let errorMessage = 'An unexpected error occurred';
+
+        if (error.status === 400) {
+          errorMessage = 'Invalid Usermail or Password';
+        } else if (error.status === 401) {
+          errorMessage = 'Your account has been deactivated. Please contact the admin.';
+        } else if (error.error && typeof error.error === 'object' && 'message' in error.error) {
+          errorMessage = error.error.message || errorMessage;
+        }
+
+        return throwError(() => errorMessage); 
       })
     );
   }
