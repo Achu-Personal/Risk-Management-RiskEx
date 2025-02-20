@@ -395,7 +395,8 @@
     (closeHeatMap)="closeHeatMap()"
   ></app-form-reference-heatmap-popup>
   } @if(isLoading) {
-  <app-form-loader></app-form-loader>> } @if(assigneeNotInList){
+  <app-form-loader></app-form-loader>> }
+   @if(assigneeNotInList){
   <app-form-data-not-in-list
     placeholder="Enter responsible person name"
     [isAssignee]="true"

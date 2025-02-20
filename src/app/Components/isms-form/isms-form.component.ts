@@ -404,6 +404,7 @@ export class ISMSFormComponent {
   }
 
   async onSubmit() {
+    this.isLoading=true;
     if (this.isAdmin === 'Admin') {
       if (this.projectId != 0) {
         await this.getRiskId(
@@ -433,6 +434,7 @@ export class ISMSFormComponent {
       console.log('Form is invalid, submission blocked');
       this.ismsForm.markAllAsTouched(); // Highlights all errors
       this.isValid = true;
+      this.isLoading=false;
       return; // Stop execution if form is invalid
     }
 
@@ -469,6 +471,7 @@ export class ISMSFormComponent {
         'Form validation failed. Please ensure all required fields are filled correctly.'
       );
       this.isValid = true;
+      this.isLoading=false;
       return; // Stop form submission if validation fails
     }
 
@@ -678,6 +681,7 @@ export class ISMSFormComponent {
       localStorage.removeItem('draftPrivacy'); // Delete draft after saving
       console.log('Draft Removed!');
     }
+    this.isLoading=false;
   }
 
   private getRiskId(

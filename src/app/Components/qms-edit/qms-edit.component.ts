@@ -325,6 +325,7 @@ export class QmsEditComponent {
   }
 
   onSubmit() {
+    this.isLoading=true;
     console.log(this.qmsForm.value);
 
     const formValue = this.qmsForm.value;
@@ -333,6 +334,7 @@ export class QmsEditComponent {
       console.log('Form is invalid, submission blocked');
       this.qmsForm.markAllAsTouched(); // Highlights all errors
       this.isValid = true;
+      this.isLoading=false;
       return; // Stop execution if form is invalid
     }
 
@@ -354,6 +356,7 @@ export class QmsEditComponent {
     ) {
       console.log('Invalid numeric fields: Numbers must be greater than 0');
       this.isValid = true;
+      this.isLoading=false;
       return;
     }
     const payload = {
@@ -427,6 +430,7 @@ export class QmsEditComponent {
     console.log(payload);
 
     this.submitForm.emit(payload);
+    this.isLoading=false;
   }
 
   receiveCancel(value: any) {
