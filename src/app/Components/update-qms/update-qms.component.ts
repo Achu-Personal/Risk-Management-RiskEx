@@ -221,6 +221,7 @@ export class UpdateQmsComponent {
   });
 
   onSubmit() {
+    this.isLoading=true;
     const formValue = this.updateQmsForm.value;
     console.log(formValue);
     if (
@@ -258,6 +259,7 @@ export class UpdateQmsComponent {
 
       console.log('Invalid numeric fields: Values must be greater than 0.');
       this.isValid = true;
+      this.isLoading=false;
       return;
     }
 
@@ -301,6 +303,7 @@ export class UpdateQmsComponent {
 
     console.log(payload);
     this.submitForm.emit({ payload, riskType: this.riskTypeId });
+    this.isLoading=false;
   }
   receiveCancel(value: any) {
     if (value == false) {

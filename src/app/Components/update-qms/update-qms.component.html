@@ -31,14 +31,35 @@
     </div>
     <div class="form-details-sub-container">
       <h2>Reviewer</h2>
+      @if(!isnewReviewernameDisplay){
       <app-form-dropdown label="Reviewer" required="*" [dropdownData]="dropdownReviewer" dropdownDisplay="fullName"
       dropdownValue="fullName" selectValue="Select reviewer" (change)="onDropdownChangeReviewer($event)"
       [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)" message="You can select an existing reviewer from the dropdown
       or enter a new one. If you enter a new name, it will take priority over the dropdown selection."   ></app-form-dropdown>
-
-      @if(isnewReviewernameDisplay){
-        <h6>Reviewer Name: <span style="font-weight: bolder;">{{newReviewername}}</span></h6>
       }
+      @if(isnewReviewernameDisplay){
+        <h6
+          style="
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: var(--foreground-color);
+          "
+        >
+          Reviewer <span style="color: red">*</span>
+        </h6>
+        <div
+          style="
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 100%;
+          "
+        >
+          <span>{{ newReviewername }}</span>
+        </div>
+        }
 
       <div [ngStyle]="{'margin-top':'20px','font-style':'italic','color':'grey'}">
         <p>If reviewer not in the list <span (click)="isReviewerNotInList()" ><a href="javascript:void(0);">click </a></span>here</p>

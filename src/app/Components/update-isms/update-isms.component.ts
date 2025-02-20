@@ -350,6 +350,7 @@ export class UpdateIsmsComponent {
   });
 
   onSubmit() {
+    this.isLoading=true;
     const formValue = this.updateQmsForm.value;
     console.log(formValue);
 
@@ -377,6 +378,7 @@ export class UpdateIsmsComponent {
         'Invalid Input: Please ensure all required fields have valid values.'
       );
       this.isValid = false;
+      this.isLoading=false;
       return;
     }
 
@@ -495,6 +497,7 @@ export class UpdateIsmsComponent {
 
     console.log(payload);
     this.submitForm.emit({ payload, riskType: this.riskTypeId });
+    this.isLoading=false;
   }
 
   receiveCancel(value: any) {

@@ -520,6 +520,7 @@ export class IsmsEditComponent {
   });
 
   onSubmit() {
+    this.isLoading=true;
     console.log(this.ismsForm.value);
     const formValue = this.ismsForm.value;
 
@@ -527,6 +528,7 @@ export class IsmsEditComponent {
       console.log('Form is invalid, submission blocked');
       this.ismsForm.markAllAsTouched(); // Highlights all errors
       this.isValid = true;
+      this.isLoading=false;
       return; // Stop execution if form is invalid
     }
 
@@ -563,6 +565,7 @@ export class IsmsEditComponent {
         'Form validation failed. Please ensure all required fields are filled correctly.'
       );
       this.isValid = true;
+      this.isLoading=false;
       return; // Stop form submission if validation fails
     }
 
@@ -764,6 +767,7 @@ export class IsmsEditComponent {
     };
 
     this.submitForm.emit(payload);
+    this.isLoading=false;
   }
 
   receiveCancel(value: any) {

@@ -93,7 +93,7 @@ export class QMSFormComponent {
   isSuccessAssignee: boolean = false;
   isErrorAssignee: boolean = false;
   openDropdownId: string | undefined = undefined;
-  isLoading = false; // Initially false
+  isLoading = false;
 
   draft: any = {};
   preSelectedLikelihood: any;
@@ -269,6 +269,7 @@ export class QMSFormComponent {
   }
 
   async onSubmit() {
+    this.isLoading=true;
     if (this.isAdmin === 'Admin') {
       if (this.projectId != 0) {
         await this.getRiskId(
@@ -297,6 +298,7 @@ export class QMSFormComponent {
       console.log('Form is invalid, submission blocked');
       this.qmsForm.markAllAsTouched(); // Highlights all errors
       this.isValid = true;
+      this.isLoading=false;
       return; // Stop execution if form is invalid
     }
 
@@ -318,6 +320,7 @@ export class QMSFormComponent {
     ) {
       console.log('Invalid numeric fields: Numbers must be greater than 0');
       this.isValid = true;
+      this.isLoading=false;
       return;
     }
 
@@ -395,6 +398,7 @@ export class QMSFormComponent {
 
     localStorage.removeItem('draftQuality'); // Delete draft after saving
     console.log('Draft Removed!');
+    this.isLoading=false;
   }
 
   private getRiskId(
