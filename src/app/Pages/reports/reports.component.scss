@@ -48,6 +48,8 @@ app-datepicker{
 
 .contains{
   display: flex;
+  margin: 0;
+  padding: 0;
   gap: 20px;
   height: 10%;
   display: flex;
@@ -58,4 +60,8 @@ app-datepicker{
   width: 50%;
   float: right;
   z-index: 11;
+}
+.tab
+{
+  height: 3%;
 }
