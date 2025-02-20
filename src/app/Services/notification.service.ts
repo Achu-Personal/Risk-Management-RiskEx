@@ -11,7 +11,7 @@ export class NotificationService {
 
   success(message: string) {
     this.snackBar.open(message, 'Close', {
-      duration: 5000,
+      duration: 3000,
       horizontalPosition: 'center',
       verticalPosition: 'top',
       panelClass: ['success-snackbar']
@@ -20,7 +20,7 @@ export class NotificationService {
 
   error(message: string) {
     this.snackBar.open(message, 'Close', {
-      duration: 5000,
+      duration: 3000,
       horizontalPosition: 'center',
       verticalPosition: 'top',
       panelClass: ['error-snackbar']
@@ -29,7 +29,7 @@ export class NotificationService {
 
   info(message: string) {
     this.snackBar.open(message, 'Close', {
-      duration: 5000,
+      duration: 3000,
       horizontalPosition: 'center',
       verticalPosition: 'top',
       panelClass: ['info-snackbar']
