@@ -217,12 +217,20 @@
       </table>
 
     </div>
-
+    
   </div>
+  <div class="paginations">
+    @if(shouldDisplayPagination()){
+      <app-pagination  [totalItems]="totalItems"
+      [itemsPerPage]="itemsPerPage"
+      [currentPage]="currentPage"
+      (pageChanged)="onPageChange($event)">
 
-
+      </app-pagination>
+    }
+  </div>
 </ng-container>
-<div class="paginations">
+<!-- <div class="paginations">
   @if(shouldDisplayPagination()){
     <app-pagination  [totalItems]="totalItems"
     [itemsPerPage]="itemsPerPage"
@@ -231,7 +239,7 @@
 
     </app-pagination>
   }
-</div>
+</div> -->
 <ng-template #noData>
   <div class="no-data-container" *ngIf=" !isLoading"  >
     <h3 class="no-data-message">{{noDataMessage}}</h3>

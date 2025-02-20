@@ -1,5 +1,6 @@
 
 <app-body-container backgroundColor="transparent" [showShadow]=false >
+  <div class="tab"></div>
   <div class="contains">
     <app-style-button label="Reset Filters" (click)="reset()"></app-style-button>
     <!-- <div class="contains1"> -->
@@ -11,7 +12,7 @@
    </app-style-button>
 
   </div>
-  <div class="tab"></div>
+
   <app-table [isLoading]="isLoading"
     (onclickrow)="OnClickRow($event)"
     [paginated]="items"
