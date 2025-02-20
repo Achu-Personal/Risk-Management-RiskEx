@@ -6,11 +6,12 @@ import { ApiService } from '../../Services/api.service';
 import { AuthService } from '../../Services/auth/auth.service';
 import { EmailService } from '../../Services/email.service';
 import { NotificationService } from '../../Services/notification.service';
+import { FormLoaderComponent } from "../../Components/form-loader/form-loader.component";
 
 @Component({
   selector: 'app-approval-table',
   standalone: true,
-  imports: [BodyContainerComponent, ReusableTableComponent],
+  imports: [BodyContainerComponent, ReusableTableComponent, FormLoaderComponent],
   templateUrl: './approval-table.component.html',
   styleUrl: './approval-table.component.scss',
 })
@@ -18,6 +19,7 @@ export class ApprovalTableComponent {
   headerData: string[] = [];
   assignee:any;
   isLoading = false;
+  isLoader = false;
 
   // updates:any={};
   //"SI NO",
@@ -181,6 +183,7 @@ export class ApprovalTableComponent {
 
 
   approveRisk(event: {row: any, comment: string}) {
+    this.isLoader =true;
     const updates = {
       approvalStatus: "Approved",
       comments: event.comment
@@ -207,10 +210,12 @@ export class ApprovalTableComponent {
             this.email.sendAssigneeEmail(this.assignee.email, context).subscribe({
               next: () => {
                 this.notification.success("The risk has been approved successfully and Email sent to assignee");
+                this.isLoader = false;
                 this.refershTableData();
               },
               error: (emailError) => {
                 console.error('Failed to send email to assignee:', emailError);
+                this.isLoader = false;
                 // this.refershTableData();
               },
               complete: () => {
@@ -220,6 +225,7 @@ export class ApprovalTableComponent {
           });
         } else if (event.row.riskStatus === 'close') {
           this.notification.success("The risk has been approved and closed successfully");
+          this.isLoader = false;
           this.refershTableData();
           this.cdr.markForCheck();
         }
@@ -227,6 +233,7 @@ export class ApprovalTableComponent {
       error: (error) => {
         console.error('Error updating review status:', error);
         this.notification.error("Failed to approve risk");
+        this.isLoader = false;
       }
     });
 }
@@ -234,6 +241,7 @@ export class ApprovalTableComponent {
 
 
   rejectRisk(event: {row: any, comment: string}) {
+    this.isLoader = true;
     const updates = {
       approvalStatus: "Rejected",
       comments: event.comment
@@ -281,12 +289,14 @@ export class ApprovalTableComponent {
                           next: () => {
 
                             this.notification.success("The risk has been rejected successfully ");
+                            this.isLoader = false;
                             this.refershTableData();
                             this.cdr.markForCheck();
                           },
                           error: (emailError) => {
                             console.error('Failed to send email to assignee:', emailError);
                             this.notification.success("The risk has been rejected successfully");
+                            this.isLoader = false;
                             this.refershTableData();
                             this.cdr.markForCheck();
                           }
@@ -295,12 +305,14 @@ export class ApprovalTableComponent {
                       error: (error) => {
                         console.error('Failed to get assignee details:', error);
                         this.notification.success("The risk has been rejected successfully");
+                        this.isLoader = false;
                         this.refershTableData();
                         this.cdr.markForCheck();
                       }
                     });
                   } else {
                     this.notification.success("The risk has been rejected successfully");
+                    this.isLoader = false;
                     this.refershTableData();
                     this.cdr.markForCheck();
                   }
@@ -308,6 +320,7 @@ export class ApprovalTableComponent {
                 error: (emailError) => {
                   console.error('Failed to send email to risk owner:', emailError);
                   this.notification.success("The risk has been rejected successfully");
+                  this.isLoader = false;
                   this.refershTableData();
                   this.cdr.markForCheck();
                 }
@@ -316,6 +329,7 @@ export class ApprovalTableComponent {
             error: (error) => {
               console.error('Failed to get risk owner details:', error);
               this.notification.success("The risk has been rejected successfully");
+              this.isLoader = false;
               this.refershTableData();
               this.cdr.markForCheck();
             }
@@ -325,6 +339,7 @@ export class ApprovalTableComponent {
       error: (error) => {
         console.error('Error updating review status:', error);
         this.notification.error("Failed to reject risk");
+        this.isLoader = false;
       }
     });
 
