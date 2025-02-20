@@ -12,7 +12,7 @@ import {
   throwError,
 } from 'rxjs';
 import { UserResponse } from '../Interfaces/Userdata.interface.';
-import { AuthService } from './auth.service';
+import { AuthService } from './auth/auth.service';
 
 @Injectable({
   providedIn: 'root',
@@ -437,5 +437,6 @@ changePassword(currentPassword: string, newPassword: string, confirmPassword: st
   resetPassword(payload: { email: string, token: string, newPassword: string }): Observable<any> {
     return this.http.post(`${this.baseUrl}/ResetPass/reset-password`, payload);
   }
+
 
 }

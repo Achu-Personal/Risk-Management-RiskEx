@@ -1,6 +1,7 @@
 <app-body-container backgroundColor="transparent" [showShadow]="false">
   <!------- buttons ------->
 
+  <div class="tab"></div>
   <div class="button-container">
     <app-style-button label="Add User" color="primary" data-bs-toggle="modal" data-bs-target="#addUserModal"
       *ngIf="authService.getUserRole() === 'Admin'|| authService.getUserRole() === 'DepartmentUser'"></app-style-button>
@@ -335,7 +336,6 @@
 (confirmed)="confirmationCallback()"
 (completed)="handleModalComplete()"
 ></app-usermanagementpopup>
-
   <app-reusable-table [tableHeaders]="isAdmin ? headerData : headerDataDpt"
     [tableData]="isAdmin ? tableBodyAdmin : tableBody" [headerDisplayMap]="headerDisplayMap" [IsActionRequiered]="true"
     [IsUser]="true"

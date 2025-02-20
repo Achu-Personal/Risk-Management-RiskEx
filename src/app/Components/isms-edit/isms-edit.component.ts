@@ -20,7 +20,7 @@ import { FormDropdownComponent } from '../form-dropdown/form-dropdown.component'
 import { FormTextAreaComponent } from '../form-text-area/form-text-area.component';
 import { FormDateFieldComponent } from '../form-date-field/form-date-field.component';
 import { ApiService } from '../../Services/api.service';
-import { AuthService } from '../../Services/auth.service';
+import { AuthService } from '../../Services/auth/auth.service';
 import { FormDataNotInListComponent } from '../form-data-not-in-list/form-data-not-in-list.component';
 import { FormSuccessfullComponent } from '../form-successfull/form-successfull.component';
 import { FormReferenceHeatmapPopupComponent } from '../form-reference-heatmap-popup/form-reference-heatmap-popup.component';

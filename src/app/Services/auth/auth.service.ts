@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { BehaviorSubject, catchError, map, Observable, of, tap, throwError } from 'rxjs';
+import { MsalService } from '@azure/msal-angular';
 
 
 
@@ -11,7 +12,9 @@ import { BehaviorSubject, catchError, map, Observable, of, tap, throwError } fro
 })
 export class AuthService {
   private jwtHelper = new JwtHelperService();
-  private apiUrl = 'https://risk-management-riskex-backend-2.onrender.com/api/AuthControllers/Login';
+  private baseUrl = 'https://risk-management-riskex-backend-2.onrender.com/api/AuthControllers';
+  private apiUrl = `${this.baseUrl}/Login`;
+  private ssoUrl = `${this.baseUrl}/ssologin`;
   private userRole = new BehaviorSubject<string | null>(null);
   private departmentName = new BehaviorSubject<string | null>(null);
   private departmentId = new BehaviorSubject<string | null>(null);
@@ -22,7 +25,7 @@ export class AuthService {
 
 
 
-  constructor(private http: HttpClient, private router: Router) {
+  constructor(private http: HttpClient, private router: Router,   private msalService: MsalService ) {
     this.loadUserDataFromToken();
   }
 
@@ -33,16 +36,56 @@ export class AuthService {
     }
   }
 
+
+  ssoLogin(usermail: string): Observable<any> {
+    const payload = { email: usermail };
+
+    return this.http.post(this.ssoUrl, payload).pipe(
+      tap((response: any) => {
+        if (response.token) {
+          localStorage.setItem('token', response.token);
+          this.setUserDetails(response.token);
+          this.navigateToDashboard();
+        }
+      }),
+      catchError((error: any) => {
+        let errorMessage = 'An unexpected error occurred';
+
+        if (error.status === 400) {
+          errorMessage = 'You do not have access to the system. Please contact the administrator.';
+        } else if (error.status === 401) {
+          errorMessage = 'Your account has been deactivated. Please contact the admin.';
+        } else if (error.error && typeof error.error === 'object' && 'message' in error.error) {
+          errorMessage = error.error.message || errorMessage;
+        }
+
+        return throwError(() => errorMessage);
+      })
+    );
+  }
+
+
   login(credentials: any): Observable<any> {
     return this.http.post(`${this.apiUrl}`, credentials).pipe(
       tap((response: any) => {
-        localStorage.setItem('token', response.token);
-        this.setUserDetails(response.token);
-        console.log("userrole", this.userRole.value);
-        this.navigateToDashboard();
+        if (response.token) {
+          localStorage.setItem('token', response.token);
+          this.setUserDetails(response.token);
+          this.navigateToDashboard();
+        }
       }),
-      catchError((error) => {
-        return throwError(() => error.error.message || "An unexpected error occurred.");
+      catchError((error: any) => {
+        let errorMessage = 'An unexpected error occurred';
+
+        if (error.status === 400) {
+          errorMessage = 'Invalid Usermail or Password';
+        } else if (error.status === 401) {
+          errorMessage = 'Your account has been deactivated. Please contact the admin.';
+        } else if (error.error && typeof error.error === 'object' && 'message' in error.error) {
+          errorMessage = error.error.message || errorMessage;
+        }
+
+        return throwError(() => errorMessage);
       })
     );
   }
@@ -135,6 +178,28 @@ export class AuthService {
     return token && !this.jwtHelper.isTokenExpired(token);
   }
 
+
+  // async logout() {
+  //   try {
+  //     localStorage.clear();
+
+  //     this.userRole.next(null);
+  //     this.departmentName.next(null);
+  //     this.departmentId.next(null);
+  //     this.projects.next([]);
+  //     this.currentUserId.next(null);
+
+
+  //     await this.msalService.logoutRedirect({
+  //       postLogoutRedirectUri: window.location.origin + '/sso'
+  //     });
+
+  //   } catch (error) {
+  //     console.error('Logout error:', error);
+  //     this.router.navigate(['/sso']);
+  //   }
+  // }
+
   logout() {
     localStorage.removeItem('token');
     this.userRole.next(null);
@@ -144,6 +209,7 @@ export class AuthService {
     this.currentUserId.next(null);
     this.router.navigate(['/auth']);
   }
+
 
   private navigateToDashboard() {
      this.router.navigate(['/home']);

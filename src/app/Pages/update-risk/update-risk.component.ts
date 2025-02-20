@@ -9,7 +9,7 @@ import { FormSuccessfullComponent } from '../../Components/form-successfull/form
 import { EmailService } from '../../Services/email.service';
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
-import { AuthService } from '../../Services/auth.service';
+import { AuthService } from '../../Services/auth/auth.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FormLoaderComponent } from '../../Components/form-loader/form-loader.component';
 

@@ -11,13 +11,13 @@
       <p class="role">{{ formatRoleName(getPrimaryRole()) }}</p>
       <p class="department">{{ auth.getDepartmentName() }}</p>
       <p class="email">{{ auth.getUserMail() }}</p>
-      <hr>
+      <!-- <hr>
 
       <div class="changebutton">
         <app-style-button
         *ngIf="auth.getUserRole() !== 'Admin'"
         (clicked)="onChangePassword()" label="Change Password"></app-style-button>
-      </div>
+      </div> -->
     </div>
   </div>
 </div>

@@ -35,7 +35,7 @@
 
 
           </div>
-          <app-overall-rating-card riskType={{type}}  [assessmentData]="riskAssessmentBefore" title="Overall Rating" [value]="overallRiskRatingBefore" backgroundColor="var(--primary-color)"  ></app-overall-rating-card>
+          <app-overall-rating-card riskType={{type}}  [assessmentData]="riskAssessmentBefore" title="Over All Risk Rating" [value]="overallRiskRatingBefore" backgroundColor="var(--primary-color)"  ></app-overall-rating-card>
         </div>
 
 
@@ -48,7 +48,7 @@
           {
             <h5 style="font-weight: bold;margin-top: 50px">Reviewed By: <span> {{ riskAssessmentBefore.length>0?riskAssessmentBefore[0].review.reviewerName:'' }}</span></h5>
 
-            @if(!((riskAssessmentBefore.length>0?riskAssessmentBefore[0].review.comments:'').trim().isEmpty()))
+            @if(!((riskAssessmentBefore.length>0?riskAssessmentBefore[0].review.comments:' ').trim().length==0))
             {
               <div style="height: 100px;width: 100%;background-color: var(--primary-color); margin-top: 10px;border-radius: 10px;padding: 20px;">
                 {{ riskAssessmentBefore.length>0?riskAssessmentBefore[0].review.comments:'' }}
@@ -79,7 +79,7 @@
 
 
       </div>
-        <app-overall-rating-card riskType={{type}}  [assessmentData]="riskAssessmentAfter" title="Overall Rating" [value]="overallRiskratingAfter"  backgroundColor="var(--primary-color)"  ></app-overall-rating-card>
+        <app-overall-rating-card riskType={{type}}  [assessmentData]="riskAssessmentAfter" title="Over All Risk Rating" [value]="overallRiskratingAfter"  backgroundColor="var(--primary-color)"  ></app-overall-rating-card>
       </div>
 
       </div>
@@ -97,7 +97,7 @@
           @if(riskAssessmentAfter[0].review.reviewStatus=="ApprovalCompleted")
           {
             <h5 style="font-weight: bold;margin-top: 50px"> Reviewed By: <span> {{ riskAssessmentAfter.length>0? riskAssessmentAfter[0].review.reviewerName:'' }}</span></h5>
-            @if(!((riskAssessmentAfter.length>0?riskAssessmentAfter[0].review.comments:'').trim().isEmpty()))
+            @if(!((riskAssessmentAfter.length>0?riskAssessmentAfter[0].review.comments:' ').trim().length==0))
             {
             <div style="height: 100px;width: 100%;background-color: var(--primary-color); margin-top: 10px;border-radius: 10px;padding: 20px;">
               {{riskAssessmentAfter.length>0? riskAssessmentAfter[0].review.comments:'' }}

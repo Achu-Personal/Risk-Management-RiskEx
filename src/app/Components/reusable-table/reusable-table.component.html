@@ -1,5 +1,11 @@
 
 <!-- Add the loading state before the main ng-container -->
+<div class="header1">
+  @if(isButtonVisible){
+  <app-searchbar (searchChanged)="onSearch($event)"></app-searchbar>
+  }
+</div>
+
 <div class="loading-skeleton" *ngIf="isLoading">
   <div class="tablestyle">
     <table class="tabledata">
@@ -33,7 +39,7 @@
   </div>
 </div>
 <ng-container *ngIf="!isLoading && hasValidData(); else noData">
-  <div class="table-container"  [ngStyle]="{ height: height }">    
+  <div class="table-container"  [ngStyle]="{ height: height }">
     <div class="tablestyle">
       <table class="tabledata">
         <thead>
@@ -209,23 +215,31 @@
           }
         </tbody>
       </table>
-  
-    </div>
-   
-  </div>
- 
 
+    </div>
+    
+  </div>
+  <div class="paginations">
+    @if(shouldDisplayPagination()){
+      <app-pagination  [totalItems]="totalItems"
+      [itemsPerPage]="itemsPerPage"
+      [currentPage]="currentPage"
+      (pageChanged)="onPageChange($event)">
+
+      </app-pagination>
+    }
+  </div>
 </ng-container>
-<div class="paginations">
+<!-- <div class="paginations">
   @if(shouldDisplayPagination()){
     <app-pagination  [totalItems]="totalItems"
     [itemsPerPage]="itemsPerPage"
     [currentPage]="currentPage"
-    (pageChanged)="onPageChange($event)" class="pagination-controls pagination ">
+    (pageChanged)="onPageChange($event)">
 
     </app-pagination>
   }
-</div>
+</div> -->
 <ng-template #noData>
   <div class="no-data-container" *ngIf=" !isLoading"  >
     <h3 class="no-data-message">{{noDataMessage}}</h3>

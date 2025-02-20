@@ -5,7 +5,7 @@ import { EditButtonComponent } from "../../UI/edit-button/edit-button.component"
 import {  Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { UpdateButtonComponent } from "../../UI/update-button/update-button.component";
-import { AuthService } from '../../Services/auth.service';
+import { AuthService } from '../../Services/auth/auth.service';
 import { ApiService } from '../../Services/api.service';
 
 @Component({
