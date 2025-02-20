@@ -1,5 +1,5 @@
 import { department } from './../../Interfaces/deparments.interface';
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component,  ViewChild } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -19,7 +19,6 @@ import { AuthService } from '../../Services/auth/auth.service';
 import { SingleProjectDropdownComponent } from '../../Components/single-project-dropdown/single-project-dropdown.component';
 import { UsermanagementpopupComponent } from "../../Components/usermanagementpopup/usermanagementpopup.component";
 import { EmailService } from '../../Services/email.service';
-import { SearchbarComponent } from "../../UI/searchbar/searchbar.component";
 
 @Component({
   selector: 'app-users',
@@ -33,8 +32,7 @@ import { SearchbarComponent } from "../../UI/searchbar/searchbar.component";
     StyleButtonComponent,
     NgIf,
     SingleProjectDropdownComponent,
-    UsermanagementpopupComponent,
-    SearchbarComponent
+    UsermanagementpopupComponent
 ],
   templateUrl: './users.component.html',
   styleUrl: './users.component.scss',
@@ -390,36 +388,21 @@ tableBody:any[]=[
   }
 
   private getErrorMessage(error: any): string {
-    if (error.status === 400) {
-      try {
-        const errorBody = typeof error.error === 'string'
-          ? JSON.parse(error.error)
-          : error.error;
-
-        if (errorBody.errors) {
-          return Object.entries(errorBody.errors)
-            .map(([field, messages]: [string, any]) => {
-              const messageStr = Array.isArray(messages) ? messages.join(', ') : messages;
-              return `${field}: ${messageStr}`;
-            })
-            .join('; ');
-        }
-        return errorBody.message || 'Invalid data provided';
-      } catch (e) {
-        return 'Invalid data provided';
-      }
-    } else if (error.status === 500) {
-      return 'Server error: An internal server error occurred';
-    } else if (error.status === 401) {
-      return 'Authentication error: Please log in again';
-    } else if (error.status === 403) {
-      return 'Authorization error: You do not have permission to perform this action';
-    } else if (error.status === 409) {
-      return 'Conflict: ' + (error.error?.message || 'User already exists');
+    switch (error.status) {
+      case 400:
+        return ' Please check your input data.User with the email already exists';
+      case 401:
+        return 'Authentication error: Please log in again.';
+      case 403:
+        return 'Authorization error: You do not have permission to perform this action.';
+      case 409:
+        return 'Conflict: User already exists.';
+      case 500:
+        return 'Server error: An internal server error occurred.';
+      default:
+        return error.error?.message || error.message || 'Unknown error occurred.';
     }
-    return error.error?.message || error.message || 'Unknown error occurred';
   }
-
 
 
 
