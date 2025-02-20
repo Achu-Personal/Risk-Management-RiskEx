@@ -202,12 +202,12 @@ export class ApprovalTableComponent {
               overallRiskRating: event.row.overallRiskRating,
               riskStatus: event.row.riskStatus
             };
-            this.refershTableData();
+            // this.refershTableData();
 
             this.email.sendAssigneeEmail(this.assignee.email, context).subscribe({
               next: () => {
                 this.notification.success("The risk has been approved successfully and Email sent to assignee");
-                // this.refershTableData();
+                this.refershTableData();
               },
               error: (emailError) => {
                 console.error('Failed to send email to assignee:', emailError);
@@ -257,7 +257,7 @@ export class ApprovalTableComponent {
                 riskStatus: event.row.riskStatus,
                 reason: event.comment
               };
-              this.refershTableData();
+              // this.refershTableData();
 
               this.email.sendOwnerEmail(res[0].email, context).subscribe({
                 next: () => {
@@ -275,12 +275,13 @@ export class ApprovalTableComponent {
                           riskStatus: event.row.riskStatus,
                           reason: event.comment
                         };
-                        this.refershTableData();
+                        // this.refershTableData();
 
                         this.email.sendOwnerEmail(assigneeRes.email, assigneeContext).subscribe({
                           next: () => {
 
                             this.notification.success("The risk has been rejected successfully ");
+                            this.refershTableData();
                             this.cdr.markForCheck();
                           },
                           error: (emailError) => {
@@ -300,7 +301,7 @@ export class ApprovalTableComponent {
                     });
                   } else {
                     this.notification.success("The risk has been rejected successfully");
-                    // this.refershTableData();
+                    this.refershTableData();
                     this.cdr.markForCheck();
                   }
                 },

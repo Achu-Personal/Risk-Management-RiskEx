@@ -49,7 +49,7 @@ export class UsersComponent {
 
 
   headerData: string[] = [];
-  headerDataDpt:string[]=['fullName','email','projects'];
+  headerDataDpt:string[]=['fullName','email','department','projects'];
   headerDisplayMap: { [key: string]: string } = {
     fullName:'Name',
     email: 'Email Id',
@@ -67,8 +67,9 @@ tableBodyAdmin:any[]=[
 tableBody:any[]=[
   {
     fullName:'',
-  email:'',
-  projects:[]
+    email:'',
+    department:'',
+    projects:[]
   }
 ]
   userForm: FormGroup;
