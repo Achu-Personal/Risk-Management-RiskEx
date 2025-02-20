@@ -6,7 +6,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ApiService } from '../../Services/api.service';
 import { StyleButtonComponent } from '../../UI/style-button/style-button.component';
 import { ConfirmationPopupComponent } from '../../Components/confirmation-popup/confirmation-popup.component';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NgIf } from '@angular/common';
 import { EmailService } from '../../Services/email.service';
 import { AuthService } from '../../Services/auth/auth.service';
@@ -33,7 +33,7 @@ export class ApprovalComponent {
   data:any=[];
   isAdmin:boolean=false;
   showButtons:boolean=true;
-  constructor(public api: ApiService, public route:ActivatedRoute, private email:EmailService,private auth:AuthService, private notification:NotificationService) {}
+  constructor(public api: ApiService, public route:ActivatedRoute, private email:EmailService,private auth:AuthService, private notification:NotificationService,private router:Router) {}
   isLoading=true
 
 
@@ -110,7 +110,7 @@ export class ApprovalComponent {
             this.email.sendOwnerEmail(res.createdBy.email,context).subscribe({
               next: () => {
                 // console.log('owner email sent successfully');
-                // this.router.navigate(['/thankyou']);
+                // this.router.navigate(['/approvaltable']);
               },
               error: (emailError) => {
                 console.error('Failed to send email to risk owner:', emailError);
@@ -163,7 +163,10 @@ export class ApprovalComponent {
       };
       this.notification.success("The risk has Approved successfully")
       let id = parseInt(this.route.snapshot.paramMap.get('id')!);
-      this.api.updateReviewStatusAndComments(id,updates);
+      this.api.updateReviewStatusAndComments(id,updates).subscribe((res:any)=>{
+        console.log("approval response:",res);
+        
+      });
       this.showButtons = false;
       this.api.getRiskById(id).subscribe((res:any)=>{
         if(res.riskStatus==='open'){
@@ -189,6 +192,7 @@ export class ApprovalComponent {
             next: () => {
               // console.log('Assignee email sent successfully');
               // this.router.navigate(['/thankyou']);
+
             },
             error: (emailError) => {
               console.error('Failed to send email to assignee:', emailError);
@@ -203,10 +207,16 @@ export class ApprovalComponent {
 
 
     }
+    setTimeout(() => {
+      this.router.navigate(['/approvaltable']);
+    }, 1000);
+  
+
   }
 
   handlePopupCancel() {
     this.isPopupOpen = false;
     // console.log('Popup canceled');
   }
+
 }
