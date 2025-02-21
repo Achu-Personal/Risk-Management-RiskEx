@@ -179,36 +179,36 @@ export class AuthService {
   }
 
 
-  // async logout() {
-  //   try {
-  //     localStorage.clear();
+  async logout() {
+    try {
+      localStorage.clear();
 
-  //     this.userRole.next(null);
-  //     this.departmentName.next(null);
-  //     this.departmentId.next(null);
-  //     this.projects.next([]);
-  //     this.currentUserId.next(null);
+      this.userRole.next(null);
+      this.departmentName.next(null);
+      this.departmentId.next(null);
+      this.projects.next([]);
+      this.currentUserId.next(null);
 
 
-  //     await this.msalService.logoutRedirect({
-  //       postLogoutRedirectUri: window.location.origin + '/sso'
-  //     });
+      await this.msalService.logoutRedirect({
+        postLogoutRedirectUri: window.location.origin + '/sso'
+      });
 
-  //   } catch (error) {
-  //     console.error('Logout error:', error);
-  //     this.router.navigate(['/sso']);
-  //   }
-  // }
-
-  logout() {
-    localStorage.removeItem('token');
-    this.userRole.next(null);
-    this.departmentName.next(null);
-    this.departmentId.next(null);
-    this.projects.next([]);
-    this.currentUserId.next(null);
-    this.router.navigate(['/auth']);
+    } catch (error) {
+      console.error('Logout error:', error);
+      this.router.navigate(['/sso']);
+    }
   }
+
+  // logout() {
+  //   localStorage.removeItem('token');
+  //   this.userRole.next(null);
+  //   this.departmentName.next(null);
+  //   this.departmentId.next(null);
+  //   this.projects.next([]);
+  //   this.currentUserId.next(null);
+  //   this.router.navigate(['/auth']);
+  // }
 
 
   private navigateToDashboard() {
