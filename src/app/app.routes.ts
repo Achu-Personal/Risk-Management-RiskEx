@@ -31,14 +31,14 @@ import { AuthComponentSSO } from './Gaurd/auth/auth.component';
 
 export const routes: Routes = [
   {
-    path: 'login',
+    path: 'auth',
     component: AuthComponent,
     children: [{ path: '', redirectTo: 'auth', pathMatch: 'full' }],
   },
-  {
-    path: 'auth',
-    component: AuthComponentSSO,
-  },
+  // {
+  //   path: 'auth',
+  //   component: AuthComponentSSO,
+  // },
   {
     path: 'sso',
     component: SsoComponent,
