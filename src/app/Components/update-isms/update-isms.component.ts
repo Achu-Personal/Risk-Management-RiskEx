@@ -120,9 +120,14 @@ export class UpdateIsmsComponent {
     private router: Router
   ) {}
 
-  handleDropdownOpen(dropdownId: string) {
-    this.openDropdownId =
-      this.openDropdownId === dropdownId ? undefined : dropdownId;
+  // handleDropdownOpen(dropdownId: string) {
+
+  //     this.openDropdownId === dropdownId ? undefined : dropdownId;
+  // }
+
+  handleDropdownOpen(dropdownId: string | undefined): void {
+
+    this.openDropdownId = dropdownId;
   }
   isReviewerNotInList() {
     this.reviewerNotInList = !this.reviewerNotInList;
@@ -377,7 +382,7 @@ export class UpdateIsmsComponent {
       console.log(
         'Invalid Input: Please ensure all required fields have valid values.'
       );
-      this.isValid = false;
+      this.isValid = true;
       this.isLoading=false;
       return;
     }
@@ -564,5 +569,8 @@ export class UpdateIsmsComponent {
   }
   closeRisk() {
     this.router.navigate(['/home']);
+  }
+  closepopupIsValidCheck() {
+    this.isValid = false;
   }
 }
