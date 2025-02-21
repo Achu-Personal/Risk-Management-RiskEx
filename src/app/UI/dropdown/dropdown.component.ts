@@ -49,8 +49,9 @@ export class DropdownComponent implements ControlValueAccessor {
   value: any = '';
   isDropdownOpen = false;
   searchQuery: string = '';
+
   ngOnInit() {
-    console.log('get value of likelihhod is ', this.selectedValue);
+    console.log('get value of likelihood is ', this.selectedValue);
 
     if (this.selectedValue !== null) {
       this.value = this.selectedValue;
@@ -98,9 +99,17 @@ export class DropdownComponent implements ControlValueAccessor {
 
   // Toggle dropdown visibility
   toggleDropdown(event: MouseEvent): void {
-    this.isDropdownOpen = !this.isDropdownOpen;
-    event.stopPropagation(); // Prevent click propagation
-    this.openDropdown.emit(this.isDropdownOpen ? this.dropdownId : undefined); // Notify parent
+    event.stopPropagation();
+
+    if (this.openDropdownId !== this.dropdownId) {
+      // If another dropdown is open, close it and open this one
+      this.isDropdownOpen = true;
+      this.openDropdown.emit(this.dropdownId);
+    } else {
+      // Toggle the current dropdown
+      this.isDropdownOpen = !this.isDropdownOpen;
+      this.openDropdown.emit(this.isDropdownOpen ? this.dropdownId : undefined);
+    }
   }
 
   // Getter for filtered options
@@ -123,6 +132,7 @@ export class DropdownComponent implements ControlValueAccessor {
     this.searchQuery = ''; // Optionally clear the search input
 
     this.valueChange.emit(this.value);
+    this.openDropdown.emit(undefined); // Notify parent to close all dropdowns
   }
 
   // Get selected option's display text
@@ -140,11 +150,13 @@ export class DropdownComponent implements ControlValueAccessor {
       : this.selectValue;
   }
 
+  // Close dropdown when clicking outside
   @HostListener('document:click', ['$event'])
   onClickOutside(event: MouseEvent): void {
     const dropdown = document.querySelector('.dropdown-container');
     if (dropdown && !dropdown.contains(event.target as Node)) {
       this.isDropdownOpen = false;
+      this.openDropdown.emit(undefined); // Notify parent to close all dropdowns
     }
   }
 }
