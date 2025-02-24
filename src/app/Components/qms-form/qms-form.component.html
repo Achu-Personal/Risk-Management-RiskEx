@@ -14,6 +14,7 @@
         (change)="onDropdownChangeDepartment($event)"
         [openDropdownId]="openDropdownId"
         (openDropdown)="handleDropdownOpen($event)"
+        dropdownId="departmentDropdown"
       ></app-form-dropdown>
       }
       <div class="form-row">
@@ -35,6 +36,7 @@
           (change)="onDropdownChangeProject($event)"
           [openDropdownId]="openDropdownId"
           (openDropdown)="handleDropdownOpen($event)"
+          dropdownId="projectDropdown"
         ></app-form-dropdown>
         } @if(isAdmin==='Admin'){
         <app-form-dropdown
@@ -44,9 +46,11 @@
           dropdownDisplay="name"
           dropdownValue="id"
           selectValue="Select project"
+          [selectedValue]="preSelectedProject"
           (change)="onDropdownChangeProject($event)"
           [openDropdownId]="openDropdownId"
           (openDropdown)="handleDropdownOpen($event)"
+          dropdownId="projectDropdown"
         ></app-form-dropdown>
         }
       </div>
@@ -114,6 +118,7 @@
           (change)="onDropdownChangelikelihood($event)"
           [openDropdownId]="openDropdownId"
           (openDropdown)="handleDropdownOpen($event)"
+          dropdownId="LikelihoodDropdown"
         ></app-form-dropdown>
         <app-form-dropdown
           label="Impact"
@@ -126,6 +131,7 @@
           (change)="onDropdownChangeImpact($event)"
           [openDropdownId]="openDropdownId"
           (openDropdown)="handleDropdownOpen($event)"
+          dropdownId="impactDropdown"
         ></app-form-dropdown>
       </div>
       <div class="form-row" [ngStyle]="{ gap: '32vw', 'margin-top': '30px' }">
@@ -228,6 +234,7 @@
         dropdownDisplay="fullName"
         dropdownValue="id"
         selectValue="Select responsible person"
+        [selectedValue]="preSelectedResponsiblePerson"
         (change)="onDropdownChangeResponsiblePerson($event)"
         [openDropdownId]="openDropdownId"
         (openDropdown)="handleDropdownOpen($event)"
@@ -235,6 +242,7 @@
         or enter a new one. If you enter a new name, it will take priority over the dropdown selection."
         backgroundColor=" var(--form-color)"
         [showInfoButton]="true"
+        dropdownId="assigneeDropdown"
       ></app-form-dropdown>
       } } @if(isAdmin !== 'Admin'){ @if(!isnewAssigneenameDisplay){
       <app-form-dropdown
@@ -252,6 +260,8 @@
         or enter a new one. If you enter a new name, it will take priority over the dropdown selection."
         backgroundColor=" var(--form-color)"
         [showInfoButton]="true"
+        dropdownId="assigneeDropdown"
+
       ></app-form-dropdown>
 
       } } @if(isnewAssigneenameDisplay){
@@ -323,6 +333,8 @@
         message="You can select an existing reviewer from the dropdown
         or enter a new one. If you enter a new name, it will take priority over the dropdown selection."
         [showInfoButton]="true"
+        dropdownId="reviewerDropdown"
+
       ></app-form-dropdown>
 
       } @if(isnewReviewernameDisplay){

@@ -211,9 +211,14 @@ export class QmsEditComponent {
     textarea.style.height = `${Math.max(minHeight, textarea.scrollHeight)}px`;
   }
 
-  handleDropdownOpen(dropdownId: string) {
-    this.openDropdownId =
-      this.openDropdownId === dropdownId ? undefined : dropdownId;
+  // handleDropdownOpen(dropdownId: string) {
+  //   this.openDropdownId =
+  //     this.openDropdownId === dropdownId ? undefined : dropdownId;
+  // }
+
+  handleDropdownOpen(dropdownId: string | undefined): void {
+
+    this.openDropdownId = dropdownId;
   }
 
   isReviewerNotInList() {
@@ -443,10 +448,13 @@ export class QmsEditComponent {
   }
   saveAssignee(value: any) {
     this.isLoading = true; // Show loader when function starts
-    const departmentNameDetails = this.dropdownDepartment.find(
-      (factor) => factor.id === value.departmentId
-    );
-    const departmentName = departmentNameDetails.departmentName;
+    let departmentName;
+    if(value.departmentId){
+      const departmentNameDetails = this.dropdownDepartment.find(
+        (factor) => factor.id === value.departmentId
+      );
+     departmentName = departmentNameDetails.departmentName;
+    }
 
 
     const payload = {
