@@ -1,4 +1,19 @@
 <div class="form-detail">
-  <label >{{label}}<span class="required"> {{required}}</span></label>
-  <input type="date" placeholder="DD-MM-YYYY"  (ngModelChange)="onSelectionChanges($event)" [(ngModel)]="value">
+  <label>{{label}}<span class="required"> {{required}}</span></label>
+  <div class="input-group">
+    <!-- Visible text input -->
+    <input type="text" placeholder="DD/MM/YYYY"
+           (input)="onUserInput($event)"
+           (blur)="formatDate()"
+           [value]="displayValue">
+
+    <!-- Calendar button with hidden date picker -->
+    <button type="button" class="calendar-btn">
+      <i class="fas fa-calendar-alt"></i>
+      <input #hiddenDateInput type="date"
+             (change)="onDateSelection($event)"
+             [value]="value"
+             class="hidden-date-picker">
+    </button>
+  </div>
 </div>
