@@ -95,24 +95,29 @@ margin-top: 30px;
 {
 
 
-font-size: 2.1vh !important;
-margin: 0px !important;
-display: flex;
-justify-content: center;
-align-items: center;
-color: var(--secondary-text-color);
+  font-size: 2.1vh !important;
+  margin: 0px !important;
+  // display: flex;
+  // justify-content: center;
+  // align-items: center;
+  color: var(--secondary-text-color);
+  white-space: nowrap;
 
 }
 
 .responsibility-of-action-planned-Action-div>div> div>h6
 {
 
-
-font-size: 1.8vh !important;
-margin: 0px !important;
-display: flex;
-justify-content: center;
-align-items: center;
+  font-size: 1.8vh !important;
+  margin: 0px !important;
+  padding: 1px;
+  padding-top: 3.5px;
+  font-size: large;
+  // display: flex;
+  text-align: center;
+  // justify-content: center;
+  // align-items: center;
+  white-space: nowrap;
 
 }
 
@@ -124,9 +129,6 @@ align-items: center;
   border-radius: 10px;
   box-sizing: border-box;
   background-color: var(--accent-color);
-
-
-
 }
 
 .details-card>div

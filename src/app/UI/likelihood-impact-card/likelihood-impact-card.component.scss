@@ -1,5 +1,4 @@
 
-
 .likelihood-impact-card
 {
   height: 26vh;
@@ -13,19 +12,20 @@
 
 }
 
-
 h6{
   font-size: 2.2vh;
   font-weight: 400;
   display: flex;
   justify-content: space-between;
+
   color: var(--secondary-text-color);
 }
 
 span{
-  width: 50px;
-  text-align: center;
+  width: 40%;
+  text-align: start;
   font-weight: 500;
+
 }
 
 .heading
@@ -33,5 +33,4 @@ span{
   font-weight: bold;
   font-size: 2.3vh;
   color: var(--secondary-text-color);
-
 }
