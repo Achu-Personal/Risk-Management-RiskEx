@@ -798,6 +798,8 @@ export class UsersComponent {
       );
     }
   }
+
+
   onSubmitEditUser(): void {
     if (this.editUserForm.valid) {
       this.confirmationMessage = 'Are you sure you want to update this user?';
@@ -831,12 +833,51 @@ export class UsersComponent {
         }
         this.api.updateUser(userId, userData).subscribe({
           next: (response) => {
-            this.confirmationPopup.showResultModal(
-              'User updated successfully!',
-              true
-            );
+            
+            const emailContext = {
+              email: userData.email,
+              fullName: userData.fullName,
+              departmentName: userData.departmentName || 'Not specified',
+              userEmail: userData.email,
+              projects:  Array.isArray(formData.projectIds)
+              ? formData.projectIds
+                  .map((project: any) =>
+                    typeof project === 'object' ? project.name : project
+                  )
+                  .filter(Boolean)
+              : [],
+            };
+
+            console.log('Email context being sent:', emailContext);
+
+            this.emailService
+              .sendUserUpdateEmail(formData.email, emailContext)
+              .subscribe({
+                next: (emailSent) => {
+                  if (emailSent) {
+                    this.confirmationPopup.showResultModal(
+                      'User updated successfully and notification email sent!',
+                      true
+                    );
+                    this.isLoader = false;
+                  } else {
+                    this.confirmationPopup.showResultModal(
+                      'User updated, but failed to send notification email',
+                      false
+                    );
+                    this.isLoader = false;
+                  }
+                },
+                error: (emailError) => {
+                  this.confirmationPopup.showResultModal(
+                    'User updated, but email sending failed',
+                    false
+                  );
+                  this.isLoader = false;
+                },
+              });
+
             this.refreshUsersData();
-            this.isLoader = false;
           },
           error: (error) => {
             let errorMessage = this.getErrorMessage(error);

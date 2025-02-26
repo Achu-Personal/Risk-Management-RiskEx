@@ -46,7 +46,7 @@ export class ReusableTableComponent {
 
   @Output() approveRisk = new EventEmitter<{ row: any; comment: string }>();
   @Output() rejectRisk = new EventEmitter<{ row: any; comment: string }>();
-  @Output() editUserClicked = new EventEmitter<any>(); 
+  @Output() editUserClicked = new EventEmitter<any>();
 
 
   constructor(
@@ -188,7 +188,6 @@ export class ReusableTableComponent {
 
   onSearch(searchText: string): void {
     const lowercasedSearchText = searchText.toLowerCase();
-    console.log(this.filterData)
     this.tableData1 = this.originalTableData.filter((item: any) =>
       Object.values(item).some((value: any) =>
         value != null && value.toString().toLowerCase().includes(lowercasedSearchText)

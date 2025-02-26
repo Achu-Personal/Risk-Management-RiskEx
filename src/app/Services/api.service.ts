@@ -439,7 +439,7 @@ changePassword(currentPassword: string, newPassword: string, confirmPassword: st
   }
 
   updateUser(id: number, userData: any): Observable<any> {
-    return this.http.put<any>(`${this.baseUrl}/${id}`, userData)
+    return this.http.put<any>(`${this.baseUrl}/User/${id}`, userData)
       .pipe(
         catchError((error) => {
           console.error('Error updating user:', error);
