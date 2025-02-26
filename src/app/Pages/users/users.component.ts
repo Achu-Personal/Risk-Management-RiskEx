@@ -1,6 +1,7 @@
 import { department } from './../../Interfaces/deparments.interface';
-import { Component,  ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import {
+  FormBuilder,
   FormControl,
   FormGroup,
   ReactiveFormsModule,
@@ -17,9 +18,9 @@ import { StyleButtonComponent } from '../../UI/style-button/style-button.compone
 import { NgIf } from '@angular/common';
 import { AuthService } from '../../Services/auth/auth.service';
 import { SingleProjectDropdownComponent } from '../../Components/single-project-dropdown/single-project-dropdown.component';
-import { UsermanagementpopupComponent } from "../../Components/usermanagementpopup/usermanagementpopup.component";
+import { UsermanagementpopupComponent } from '../../Components/usermanagementpopup/usermanagementpopup.component';
 import { EmailService } from '../../Services/email.service';
-import { FormLoaderComponent } from "../../Components/form-loader/form-loader.component";
+import { FormLoaderComponent } from '../../Components/form-loader/form-loader.component';
 
 @Component({
   selector: 'app-users',
@@ -34,47 +35,47 @@ import { FormLoaderComponent } from "../../Components/form-loader/form-loader.co
     NgIf,
     SingleProjectDropdownComponent,
     UsermanagementpopupComponent,
-    FormLoaderComponent
-],
+    FormLoaderComponent,
+  ],
   templateUrl: './users.component.html',
   styleUrl: './users.component.scss',
 })
 export class UsersComponent {
-  @ViewChild(UsermanagementpopupComponent) confirmationPopup!: UsermanagementpopupComponent;
+  @ViewChild(UsermanagementpopupComponent)
+  confirmationPopup!: UsermanagementpopupComponent;
   departments: department[] = [];
   projects: any[] = [];
   isDepartmentFieldDisabled = false;
   isAdmin: boolean = false;
-  id:any
+  id: any;
   isLoading = true;
   confirmationMessage: string = '';
   isLoader = false;
 
-
   headerData: string[] = [];
-  headerDataDpt:string[]=['fullName','email','department','projects'];
+  headerDataDpt: string[] = ['fullName', 'email', 'department', 'projects'];
   headerDisplayMap: { [key: string]: string } = {
-    fullName:'Name',
+    fullName: 'Name',
     email: 'Email Id',
     department: 'Department',
-    projects:'Projects'
+    projects: 'Projects',
   };
-tableBodyAdmin:any[]=[
-  {
-  fullName:'',
-  email:'',
-  department:'',
-  projects:''
-  }
-]
-tableBody:any[]=[
-  {
-    fullName:'',
-    email:'',
-    department:'',
-    projects:[]
-  }
-]
+  tableBodyAdmin: any[] = [
+    {
+      fullName: '',
+      email: '',
+      department: '',
+      projects: '',
+    },
+  ];
+  tableBody: any[] = [
+    {
+      fullName: '',
+      email: '',
+      department: '',
+      projects: [],
+    },
+  ];
   userForm: FormGroup;
   departmentForm: FormGroup;
   projectForm: FormGroup;
@@ -82,10 +83,17 @@ tableBody:any[]=[
   updateProjectForm: FormGroup;
   departmentProjects: any[] = [];
 
-  constructor(public api: ApiService, public authService: AuthService,  public emailService: EmailService,) {
+  editUserForm: FormGroup;
+
+  constructor(
+    public api: ApiService,
+    public authService: AuthService,
+    public emailService: EmailService,
+    private fb: FormBuilder
+  ) {
     this.departmentForm = new FormGroup({
       name: new FormControl('', Validators.required),
-      departmentCode:new FormControl('', Validators.required),
+      departmentCode: new FormControl('', Validators.required),
     });
     this.userForm = new FormGroup({
       fullName: new FormControl('', Validators.required),
@@ -101,14 +109,22 @@ tableBody:any[]=[
     this.updateDepartmentForm = new FormGroup({
       departmentName: new FormControl('', Validators.required),
       newDepartmentName: new FormControl('', Validators.required),
-      newDepartmentCode: new FormControl('', Validators.required)
+      newDepartmentCode: new FormControl('', Validators.required),
     });
 
     this.updateProjectForm = new FormGroup({
       selectedDepartment: new FormControl('', Validators.required),
       projectName: new FormControl('', Validators.required),
       newProjectName: new FormControl('', Validators.required),
-      newProjectCode: new FormControl('', Validators.required)
+      newProjectCode: new FormControl('', Validators.required),
+    });
+
+    this.editUserForm = this.fb.group({
+      id: [''],
+      fullName: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      departmentName: ['', Validators.required],
+      projectIds: [[]],
     });
   }
 
@@ -121,11 +137,10 @@ tableBody:any[]=[
     return value?.trim() || '';
   }
 
-
- private refreshUsersData() {
-  this.isLoading = true;
+  private refreshUsersData() {
+    this.isLoading = true;
     const userRole = this.authService.getUserRole();
-    if (userRole === 'Admin'||userRole?.includes('EMTUser')) {
+    if (userRole === 'Admin' || userRole?.includes('EMTUser')) {
       this.api.getAllUsers().subscribe({
         next: (users: any) => {
           this.tableBodyAdmin = users;
@@ -134,10 +149,10 @@ tableBody:any[]=[
         error: (error) => {
           console.error('Error fetching users:', error);
           this.isLoading = false;
-        }
+        },
       });
     } else if (userRole === 'DepartmentUser') {
-      const department:any = this.authService.getDepartmentId();
+      const department: any = this.authService.getDepartmentId();
       if (department) {
         this.api.getUsersByDepartmentId(department).subscribe({
           next: (users: any) => {
@@ -147,7 +162,7 @@ tableBody:any[]=[
           error: (error) => {
             console.error('Error fetching department users:', error);
             this.isLoading = false;
-          }
+          },
         });
       }
     } else if (userRole?.includes('ProjectUsers')) {
@@ -159,12 +174,12 @@ tableBody:any[]=[
         error: (error) => {
           console.error('Error fetching project users:', error);
           this.isLoading = false;
-        }
+        },
       });
     }
   }
 
-   private loadDepartments() {
+  private loadDepartments() {
     this.isLoading = true;
     this.api.getDepartment().subscribe({
       next: (departments: department[]) => {
@@ -174,7 +189,7 @@ tableBody:any[]=[
       error: (error) => {
         console.error('Error loading departments:', error);
         this.isLoading = false;
-      }
+      },
     });
   }
   resetUserForm() {
@@ -185,7 +200,7 @@ tableBody:any[]=[
 
     if (userRole === 'DepartmentUser' || userRole?.includes('ProjectUsers')) {
       this.userForm.patchValue({
-        departmentName: userDepartment
+        departmentName: userDepartment,
       });
       this.userForm.get('departmentName')?.disable();
     }
@@ -198,15 +213,16 @@ tableBody:any[]=[
     if (userRole === 'DepartmentUser' || userRole?.includes('ProjectUsers')) {
       this.userForm.patchValue({ departmentName: userDepartment });
       this.projectForm.patchValue({ departmentName: userDepartment });
-      this.updateProjectForm.patchValue({selectedDepartment:userDepartment});
+      this.updateProjectForm.patchValue({ selectedDepartment: userDepartment });
 
       this.userForm.get('departmentName')?.disable();
       this.projectForm.get('departmentName')?.disable();
       this.updateProjectForm.get('selectedDepartment')?.disable();
+      this.editUserForm.get('departmentName')?.disable();
       this.isDepartmentFieldDisabled = true;
     }
 
-    if (userRole === 'Admin'||userRole?.includes('EMTUser')) {
+    if (userRole === 'Admin' || userRole?.includes('EMTUser')) {
       this.headerData = ['fullName', 'email', 'department', 'projects'];
       this.isAdmin = true;
       this.refreshUsersData();
@@ -233,8 +249,16 @@ tableBody:any[]=[
         this.resetUserForm();
       });
     }
-  }
 
+    const departmentControl = this.editUserForm.get('departmentName');
+    if (departmentControl) {
+      departmentControl.valueChanges.subscribe((value) => {
+        if (value) {
+          this.onDepartmentChange();
+        }
+      });
+    }
+  }
 
   loadProjectsForDepartment(department: string) {
     const normalizedDepartment = this.normalizeWhitespace(department);
@@ -242,6 +266,23 @@ tableBody:any[]=[
       (res) => {
         if (res && res.length > 0) {
           this.projects = res;
+
+          if (this.editUserForm) {
+            const selectedProjectIds =
+              this.editUserForm.get('projectIds')?.value || [];
+
+            const ids = selectedProjectIds.map((p: any) =>
+              typeof p === 'object' && p.id ? p.id : p
+            );
+
+            const selectedProjects = this.projects.filter((p: any) =>
+              ids.includes(p.id)
+            );
+
+            if (selectedProjects.length > 0) {
+              this.editUserForm.get('projectIds')?.setValue(selectedProjects);
+            }
+          }
         } else {
           console.log('No projects found for the selected department');
           this.projects = [];
@@ -254,36 +295,49 @@ tableBody:any[]=[
     );
   }
 
-
   onSubmitDepartment() {
     if (this.departmentForm.valid) {
-      this.confirmationMessage = 'Are you sure you want to add this department?';
+      this.confirmationMessage =
+        'Are you sure you want to add this department?';
       this.confirmationCallback = () => {
         const departmentData = {
-          name: this.normalizeWhitespace(this.departmentForm.get('name')?.value),
-          departmentCode: this.normalizeWhitespace(this.departmentForm.get('departmentCode')?.value)
+          name: this.normalizeWhitespace(
+            this.departmentForm.get('name')?.value
+          ),
+          departmentCode: this.normalizeWhitespace(
+            this.departmentForm.get('departmentCode')?.value
+          ),
         };
         this.isLoader = true;
         this.api.addNewDepartment(departmentData).subscribe({
           next: (response) => {
             this.departmentForm.reset();
             this.loadDepartments();
-            this.confirmationPopup.showResultModal('Department added successfully!', true);
+            this.confirmationPopup.showResultModal(
+              'Department added successfully!',
+              true
+            );
             this.isLoader = false;
           },
           error: (error) => {
             let errorMessage = '';
 
             if (error.status === 400) {
-              errorMessage = 'Validation error: ' + (error.error?.message || 'Invalid data provided');
+              errorMessage =
+                'Validation error: ' +
+                (error.error?.message || 'Invalid data provided');
             } else if (error.status === 500) {
               errorMessage = 'Server error: An internal server error occurred';
             } else if (error.status === 401) {
               errorMessage = 'Authentication error: Please log in again';
             } else if (error.status === 403) {
-              errorMessage = 'Authorization error: You do not have permission to perform this action';
+              errorMessage =
+                'Authorization error: You do not have permission to perform this action';
             } else {
-              errorMessage = error.error?.message || error.message || 'Unknown error occurred';
+              errorMessage =
+                error.error?.message ||
+                error.message ||
+                'Unknown error occurred';
             }
 
             this.confirmationPopup.showResultModal(
@@ -291,7 +345,7 @@ tableBody:any[]=[
               false
             );
             this.isLoader = false;
-          }
+          },
         });
       };
 
@@ -303,13 +357,13 @@ tableBody:any[]=[
     }
   }
 
-
-
   onSubmitUser() {
     if (this.userForm.valid) {
       const addUserModal = document.getElementById('addUserModal');
       if (addUserModal) {
-        const bootstrapModal = (window as any).bootstrap.Modal.getInstance(addUserModal);
+        const bootstrapModal = (window as any).bootstrap.Modal.getInstance(
+          addUserModal
+        );
         if (bootstrapModal) {
           bootstrapModal.hide();
         }
@@ -323,10 +377,12 @@ tableBody:any[]=[
           fullName: this.normalizeWhitespace(formData.fullName),
           departmentName: this.normalizeWhitespace(formData.departmentName),
           projectIds: Array.isArray(formData.projectIds)
-            ? formData.projectIds.map((project: any) =>
-                typeof project === 'object' ? project.id : project
-              ).filter(Boolean)
-            : []
+            ? formData.projectIds
+                .map((project: any) =>
+                  typeof project === 'object' ? project.id : project
+                )
+                .filter(Boolean)
+            : [],
         };
         this.isLoader = true;
         this.api.addNewUser(userData).subscribe({
@@ -334,36 +390,35 @@ tableBody:any[]=[
             const emailContext = {
               email: userData.email,
               fullName: userData.fullName,
-              defaultPassword: 'experion@123'
+              defaultPassword: 'experion@123',
             };
 
-            this.emailService.sendUserRegistrationEmail(
-             formData.email,
-              emailContext
-            ).subscribe({
-              next: (emailSent) => {
-                if (emailSent) {
+            this.emailService
+              .sendUserRegistrationEmail(formData.email, emailContext)
+              .subscribe({
+                next: (emailSent) => {
+                  if (emailSent) {
+                    this.confirmationPopup.showResultModal(
+                      'User added successfully and welcome email sent!',
+                      true
+                    );
+                    this.isLoader = false;
+                  } else {
+                    this.confirmationPopup.showResultModal(
+                      'User added, but failed to send welcome email',
+                      false
+                    );
+                    this.isLoader = false;
+                  }
+                },
+                error: (emailError) => {
                   this.confirmationPopup.showResultModal(
-                    'User added successfully and welcome email sent!',
-                    true
-                  );
-                  this.isLoader = false;
-                } else {
-                  this.confirmationPopup.showResultModal(
-                    'User added, but failed to send welcome email',
+                    'User added, but email sending failed',
                     false
                   );
                   this.isLoader = false;
-                }
-              },
-              error: (emailError) => {
-                this.confirmationPopup.showResultModal(
-                  'User added, but email sending failed',
-                  false
-                );
-                this.isLoader = false;
-              }
-            });
+                },
+              });
 
             this.resetUserForm();
             this.refreshUsersData();
@@ -375,7 +430,7 @@ tableBody:any[]=[
               false
             );
             this.isLoader = false;
-          }
+          },
         });
       };
 
@@ -385,7 +440,7 @@ tableBody:any[]=[
         bsModal.show();
       }
     } else {
-      Object.keys(this.userForm.controls).forEach(key => {
+      Object.keys(this.userForm.controls).forEach((key) => {
         const control = this.userForm.get(key);
         control?.markAsTouched();
         control?.updateValueAndValidity();
@@ -412,11 +467,11 @@ tableBody:any[]=[
       case 500:
         return 'Server error: An internal server error occurred.';
       default:
-        return error.error?.message || error.message || 'Unknown error occurred.';
+        return (
+          error.error?.message || error.message || 'Unknown error occurred.'
+        );
     }
   }
-
-
 
   onSubmitProject() {
     if (this.projectForm.valid) {
@@ -437,7 +492,10 @@ tableBody:any[]=[
               this.loadProjectsForDepartment(projectData.departmentName);
             }
 
-            this.confirmationPopup.showResultModal('Project added successfully!', true);
+            this.confirmationPopup.showResultModal(
+              'Project added successfully!',
+              true
+            );
             this.isLoader = false;
 
             const modal = document.getElementById('addProjectModal');
@@ -449,15 +507,21 @@ tableBody:any[]=[
             let errorMessage = '';
 
             if (error.status === 400) {
-              errorMessage = 'Validation error: ' + (error.error?.message || 'Invalid data provided');
+              errorMessage =
+                'Validation error: ' +
+                (error.error?.message || 'Invalid data provided');
             } else if (error.status === 500) {
               errorMessage = 'Server error: An internal server error occurred';
             } else if (error.status === 401) {
               errorMessage = 'Authentication error: Please log in again';
             } else if (error.status === 403) {
-              errorMessage = 'Authorization error: You do not have permission to perform this action';
+              errorMessage =
+                'Authorization error: You do not have permission to perform this action';
             } else {
-              errorMessage = error.error?.message || error.message || 'Unknown error occurred';
+              errorMessage =
+                error.error?.message ||
+                error.message ||
+                'Unknown error occurred';
             }
 
             this.confirmationPopup.showResultModal(
@@ -465,7 +529,7 @@ tableBody:any[]=[
               false
             );
             this.isLoader = false;
-          }
+          },
         });
       };
 
@@ -482,35 +546,43 @@ tableBody:any[]=[
     }
   }
 
-   onDepartmentSelect(dept: department) {
+  onDepartmentSelect(dept: department) {
     if (dept) {
       const normalizedDeptName = this.normalizeWhitespace(dept.departmentName);
       const normalizedDeptCode = this.normalizeWhitespace(dept.departmentCode);
 
-     this.updateDepartmentForm.patchValue({
+      this.updateDepartmentForm.patchValue({
         newDepartmentName: normalizedDeptName,
-        newDepartmentCode: normalizedDeptCode
+        newDepartmentCode: normalizedDeptCode,
       });
     }
   }
 
-
-
   onUpdateDepartment() {
     if (this.updateDepartmentForm.valid) {
-      this.confirmationMessage = 'Are you sure you want to update this department?';
+      this.confirmationMessage =
+        'Are you sure you want to update this department?';
       this.confirmationCallback = () => {
         const updateData = {
-          departmentName: this.normalizeWhitespace(this.updateDepartmentForm.get('departmentName')?.value),
-          newDepartmentName: this.normalizeWhitespace(this.updateDepartmentForm.get('newDepartmentName')?.value),
-          newDepartmentCode: this.normalizeWhitespace(this.updateDepartmentForm.get('newDepartmentCode')?.value)
+          departmentName: this.normalizeWhitespace(
+            this.updateDepartmentForm.get('departmentName')?.value
+          ),
+          newDepartmentName: this.normalizeWhitespace(
+            this.updateDepartmentForm.get('newDepartmentName')?.value
+          ),
+          newDepartmentCode: this.normalizeWhitespace(
+            this.updateDepartmentForm.get('newDepartmentCode')?.value
+          ),
         };
         this.isLoader = true;
         this.api.updateDepartment(updateData).subscribe({
           next: (response) => {
             this.updateDepartmentForm.reset();
             this.loadDepartments();
-            this.confirmationPopup.showResultModal('Department updated successfully!', true);
+            this.confirmationPopup.showResultModal(
+              'Department updated successfully!',
+              true
+            );
             this.isLoader = false;
 
             const modal = document.getElementById('updateDepartmentModal');
@@ -522,15 +594,21 @@ tableBody:any[]=[
             let errorMessage = '';
 
             if (error.status === 400) {
-              errorMessage = 'Validation error: ' + (error.error?.message || 'Invalid data provided');
+              errorMessage =
+                'Validation error: ' +
+                (error.error?.message || 'Invalid data provided');
             } else if (error.status === 500) {
               errorMessage = 'Server error: An internal server error occurred';
             } else if (error.status === 401) {
               errorMessage = 'Authentication error: Please log in again';
             } else if (error.status === 403) {
-              errorMessage = 'Authorization error: You do not have permission to perform this action';
+              errorMessage =
+                'Authorization error: You do not have permission to perform this action';
             } else {
-              errorMessage = error.error?.message || error.message || 'Unknown error occurred';
+              errorMessage =
+                error.error?.message ||
+                error.message ||
+                'Unknown error occurred';
             }
 
             this.confirmationPopup.showResultModal(
@@ -538,7 +616,7 @@ tableBody:any[]=[
               false
             );
             this.isLoader = false;
-          }
+          },
         });
       };
 
@@ -550,15 +628,12 @@ tableBody:any[]=[
     }
   }
 
-
-
-
   onProjectSelect(project: project) {
     if (project) {
       this.id = project.id;
       this.updateProjectForm.patchValue({
         newProjectName: project.name,
-        newProjectCode: project.projectCode
+        newProjectCode: project.projectCode,
       });
     }
   }
@@ -566,21 +641,21 @@ tableBody:any[]=[
   onProjectDepartmentSelect(dept: department) {
     if (dept) {
       this.updateProjectForm.patchValue({
-        selectedDepartment: dept.departmentName
+        selectedDepartment: dept.departmentName,
       });
     }
   }
 
-
   onUpdateProject() {
     if (this.updateProjectForm.valid) {
-      this.confirmationMessage = 'Are you sure you want to update this project?';
+      this.confirmationMessage =
+        'Are you sure you want to update this project?';
       this.confirmationCallback = () => {
         const projectId = this.id;
         const updateData: any = {
           projectName: this.updateProjectForm.get('projectName')?.value,
           newProjectName: this.updateProjectForm.get('newProjectName')?.value,
-          newProjectCode: this.updateProjectForm.get('newProjectCode')?.value
+          newProjectCode: this.updateProjectForm.get('newProjectCode')?.value,
         };
         this.isLoader = true;
         this.api.updateProject(updateData, projectId).subscribe({
@@ -588,10 +663,15 @@ tableBody:any[]=[
             this.updateProjectForm.reset();
 
             if (this.updateProjectForm.get('selectedDepartment')?.value) {
-              this.loadProjectsForDepartment(this.updateProjectForm.get('selectedDepartment')?.value);
+              this.loadProjectsForDepartment(
+                this.updateProjectForm.get('selectedDepartment')?.value
+              );
             }
 
-            this.confirmationPopup.showResultModal('Project updated successfully!', true);
+            this.confirmationPopup.showResultModal(
+              'Project updated successfully!',
+              true
+            );
             this.isLoader = false;
             const modal = document.getElementById('updateProjectModal');
             if (modal) {
@@ -602,15 +682,21 @@ tableBody:any[]=[
             let errorMessage = '';
 
             if (error.status === 400) {
-              errorMessage = 'Validation error: ' + (error.error?.message || 'Invalid data provided');
+              errorMessage =
+                'Validation error: ' +
+                (error.error?.message || 'Invalid data provided');
             } else if (error.status === 500) {
               errorMessage = 'Server error: An internal server error occurred';
             } else if (error.status === 401) {
               errorMessage = 'Authentication error: Please log in again';
             } else if (error.status === 403) {
-              errorMessage = 'Authorization error: You do not have permission to perform this action';
+              errorMessage =
+                'Authorization error: You do not have permission to perform this action';
             } else {
-              errorMessage = error.error?.message || error.message || 'Unknown error occurred';
+              errorMessage =
+                error.error?.message ||
+                error.message ||
+                'Unknown error occurred';
             }
 
             this.confirmationPopup.showResultModal(
@@ -618,7 +704,7 @@ tableBody:any[]=[
               false
             );
             this.isLoader = false;
-          }
+          },
         });
       };
 
@@ -632,5 +718,162 @@ tableBody:any[]=[
 
   onProjectsSelected(projects: project[]) {
     // console.log('Selected projects:', projects);
+  }
+
+  onEditUser(user: any): void {
+    this.isLoader = true;
+
+    const userProjects = user.projects || [];
+
+    this.editUserForm.reset();
+
+    this.editUserForm.patchValue({
+      id: user.id,
+      fullName: user.fullName,
+      email: user.email,
+      departmentName: user.department || user.departmentName,
+    });
+
+    if (user.department || user.departmentName) {
+      const editModalElement = document.getElementById('editUserModal');
+
+      this.api.getProjects(user.department || user.departmentName).subscribe(
+        (projects) => {
+          this.editUserForm.patchValue({ projectIds: userProjects });
+
+          this.isLoader = false;
+
+          if (editModalElement) {
+            const editModal = new (window as any).bootstrap.Modal(
+              editModalElement
+            );
+            editModal.show();
+          }
+        },
+        (error) => {
+          console.error('Failed to load projects for department', error);
+
+          this.isLoader = false;
+
+          if (editModalElement) {
+            const editModal = new (window as any).bootstrap.Modal(
+              editModalElement
+            );
+            editModal.show();
+          }
+        }
+      );
+    } else {
+      this.isLoader = false;
+
+      const editModalElement = document.getElementById('editUserModal');
+      if (editModalElement) {
+        const editModal = new (window as any).bootstrap.Modal(editModalElement);
+        editModal.show();
+      }
+    }
+  }
+
+  onDepartmentChange() {
+    const departmentControl = this.editUserForm?.get('departmentName');
+    const department = departmentControl?.value;
+
+    if (department) {
+      const projectsControl = this.editUserForm?.get('projectIds');
+      const currentProjects = projectsControl?.value || [];
+
+      this.api.getProjects(department).subscribe(
+        (projects: any[]) => {
+          const validProjects = currentProjects.filter((project: any) => {
+            const projectId =
+              typeof project === 'object' && project ? project.id : project;
+            return projects.some((p: any) => p.id === projectId);
+          });
+
+          this.editUserForm?.patchValue({ projectIds: validProjects });
+        },
+        (error) => {
+          console.error('Failed to load projects for department', error);
+        }
+      );
+    }
+  }
+  onSubmitEditUser(): void {
+    if (this.editUserForm.valid) {
+      this.confirmationMessage = 'Are you sure you want to update this user?';
+      this.confirmationCallback = () => {
+        const formData = this.editUserForm.getRawValue();
+
+        const userData = {
+          email: this.normalizeWhitespace(formData.email),
+          fullName: this.normalizeWhitespace(formData.fullName),
+          departmentName: this.normalizeWhitespace(formData.departmentName),
+          projectIds: Array.isArray(formData.projectIds)
+            ? formData.projectIds
+                .map((project: any) =>
+                  typeof project === 'object' ? project.id : project
+                )
+                .filter(Boolean)
+            : [],
+        };
+        const userId = formData.id;
+
+        this.isLoader = true;
+
+        const editModalElement = document.getElementById('editUserModal');
+        if (editModalElement) {
+          const editModal = (window as any).bootstrap.Modal.getInstance(
+            editModalElement
+          );
+          if (editModal) {
+            editModal.hide();
+          }
+        }
+        this.api.updateUser(userId, userData).subscribe({
+          next: (response) => {
+            this.confirmationPopup.showResultModal(
+              'User updated successfully!',
+              true
+            );
+            this.refreshUsersData();
+            this.isLoader = false;
+          },
+          error: (error) => {
+            let errorMessage = this.getErrorMessage(error);
+            this.confirmationPopup.showResultModal(
+              `Failed to update user: ${errorMessage}`,
+              false
+            );
+            this.isLoader = false;
+          },
+        });
+      };
+
+      const confirmationModalElement =
+        document.getElementById('confirmationModal');
+      if (confirmationModalElement) {
+        const confirmationModal = new (window as any).bootstrap.Modal(
+          confirmationModalElement
+        );
+        confirmationModal.show();
+      } else {
+        console.error('Confirmation modal element not found');
+      }
+    } else {
+      Object.keys(this.editUserForm.controls).forEach((key) => {
+        const control = this.editUserForm.get(key);
+        control?.markAsTouched();
+        control?.updateValueAndValidity();
+      });
+
+      this.confirmationPopup.showResultModal(
+        'Please fill in all required fields correctly.',
+        false
+      );
+    }
+  }
+
+  onEditProjectsSelected(projects: any[]): void {
+    this.editUserForm.get('projectIds')?.setValue(projects);
   }
 }
