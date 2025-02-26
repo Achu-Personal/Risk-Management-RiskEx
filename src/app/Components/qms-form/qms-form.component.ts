@@ -79,7 +79,7 @@ export class QMSFormComponent {
   riskId: string = '';
   likelihoodId: number = 0;
   impactId: number = 0;
-  projectId: number = 0;
+  projectId: number=0;
   departmentIdForAdminToAdd: number = 0;
   responsiblePersonId: number = 0;
   internalReviewerIdFromDropdown: number = 0;
@@ -112,6 +112,8 @@ export class QMSFormComponent {
   isnewAssigneenameDisplay: boolean = false;
   isnewReviewernameDisplay: boolean = false;
   isDraftLoaded = false;
+  departmentIdForAdminToAddToString:string=''
+  departmentIdForAdminToAddToNumber:number=0
 
   constructor(
     private el: ElementRef,
@@ -120,6 +122,7 @@ export class QMSFormComponent {
     private router: Router
   ) {}
   ngOnInit() {
+    console.log('the project id isssssssssssssssssssssss',this.projectId)
     if(this.isAdmin!=='Admin'){
       this.loadDraft();
 
@@ -308,17 +311,22 @@ export class QMSFormComponent {
     this.departmentIdForAdminToAdd = selectedFactorId;
     this.departmentSelectedByAdmin.emit(this.departmentIdForAdminToAdd);
     console.log("dfghjkldfghjkdcfvghj",this.departmentIdForAdminToAdd)
+    this.departmentIdForAdminToAddToNumber=this.departmentIdForAdminToAdd
+    this.departmentIdForAdminToAddToString= this.departmentIdForAdminToAddToNumber.toString();
+    console.log('the project id isssssssssssssssssssssss',this.projectId)
     this.loadDraftForAdmin();
+
 
 
 
   }
 
   loadDraftForAdmin(){
+    console.log('the project id isssssssssssssssssssssss',this.projectId)
     this.qmsForm.reset();
     this.overallRiskRating=0;
     this.riskFactor=0;
-       this.preSelectedProject=null;
+    this.preSelectedProject=null;
       this.preSelectedLikelihood=0;
       this.preSelectedImpact=0;
       this.preSelectedResponsiblePerson=null;
@@ -371,8 +379,9 @@ export class QMSFormComponent {
       };
 
       this.ngOnChanges(changes);
-
+      console.log('the project id isssssssssssssssssssssss',this.projectId)
     }
+    console.log('the project id isssssssssssssssssssssss after draft',this.projectId)
 
   }
 
@@ -464,15 +473,16 @@ export class QMSFormComponent {
   }
 
   async onSubmit() {
+    console.log('the project id isssssssssssssssssssssss',this.projectId)
     this.isLoading=true;
-    if (this.isAdmin === 'Admin') {
-      if (this.projectId != 0) {
+    if (this.isAdmin =='Admin') {
+      if (this.projectId && this.projectId != 0) {
         await this.getRiskId(
           Number(this.departmentIdForAdminToAdd),
           this.projectId
         );
       }
-      if(this.preSelectedProject != 0){
+      if(this.preSelectedProject && this.preSelectedProject != 0){
         await this.getRiskId(
           Number(this.departmentIdForAdminToAdd),
           this.preSelectedProject
@@ -482,11 +492,14 @@ export class QMSFormComponent {
       else {
         await this.getRiskId(Number(this.departmentIdForAdminToAdd));
       }
-    } else {
-      if (this.projectId != 0) {
+    }
+    else
+     {
+      if (this.isAdmin =='Admin'){
+      if (this.projectId && this.projectId != 0) {
         await this.getRiskId(Number(this.departmentId), this.projectId);
       }
-      if(this.preSelectedProject != 0){
+      if(this.preSelectedProject && this.preSelectedProject != 0){
         await this.getRiskId(
           Number(this.departmentId),
           this.preSelectedProject
@@ -496,6 +509,7 @@ export class QMSFormComponent {
         await this.getRiskId(Number(this.departmentId));
       }
     }
+  }
 
     if (!this.riskId) {
       console.error('Failed to fetch Risk ID. Submission aborted.');
@@ -533,7 +547,7 @@ export class QMSFormComponent {
       this.isLoading=false;
       return;
     }
-
+    console.log('the project id isssssssssssssssssssssss before payload',this.projectId)
     const formValue = this.qmsForm.value;
     const payload = {
       riskId: this.riskId,
@@ -544,16 +558,10 @@ export class QMSFormComponent {
       mitigation: formValue.mitigation,
       contingency: formValue.contingency || ' ',
       OverallRiskRatingBefore: Number(this.overallRiskRating),
-      responsibleUserId:
-        Number(this.responsiblePersonId) !== 0 &&
-        !isNaN(Number(this.responsiblePersonId))
-          ? Number(this.responsiblePersonId)
-          : this.preSelectedResponsiblePerson !== 0 &&
-            !isNaN(Number(this.preSelectedResponsiblePerson))
-          ? Number(this.preSelectedResponsiblePerson)
-          : this.newAssigneeId && !isNaN(Number(this.newAssigneeId))
-          ? Number(this.newAssigneeId)
-          : null,
+      responsibleUserId: Number(this.newAssigneeId)!== 0 && !isNaN(Number(this.newAssigneeId)) ? Number(this.newAssigneeId) :
+                             Number(this.responsiblePersonId) !== 0 && !isNaN(Number(this.responsiblePersonId)) ? Number(this.responsiblePersonId):
+                             this.preSelectedResponsiblePerson !== 0 && !isNaN(Number(this.preSelectedResponsiblePerson)) ? Number(this.preSelectedResponsiblePerson):
+                             null,
       plannedActionDate: `${formValue.plannedActionDate}T00:00:00.000Z`,
       departmentId:
         Number(this.departmentIdForAdminToAdd) &&
@@ -562,13 +570,13 @@ export class QMSFormComponent {
           : Number(this.departmentId) !== 0 && !isNaN(Number(this.departmentId))
           ? Number(this.departmentId)
           : null,
-      projectId:
-        Number(this.projectId) !== 0 && !isNaN(Number(this.projectId))
-          ? Number(this.projectId)
-          : this.preSelectedProject !== 0 &&
-            !isNaN(Number(this.preSelectedProject))
-          ? Number(this.preSelectedProject)
-          : null,
+          projectId:
+          this.projectId && !isNaN(Number(this.projectId)) && Number(this.projectId) !== 0
+            ? Number(this.projectId)
+            : this.preSelectedProject && !isNaN(Number(this.preSelectedProject)) && Number(this.preSelectedProject) !== 0
+            ? Number(this.preSelectedProject)
+            : null,
+
       riskAssessments: [
         {
           likelihood: this.likelihoodId
@@ -605,6 +613,7 @@ export class QMSFormComponent {
     };
 
     this.submitForm.emit(payload);
+    console.log('the project id isssssssssssssssssssssss after submit payload',this.projectId)
     if(this.isAdmin !=='Admin'){
       localStorage.removeItem('draftQuality');
     }
@@ -617,6 +626,10 @@ export class QMSFormComponent {
     console.log('Draft Removed!');
     this.isLoading=false;
   }
+
+
+
+
 
   private getRiskId(
     departmentId: number,
@@ -653,6 +666,7 @@ export class QMSFormComponent {
     }
   }
   saveAssignee(value: any) {
+    console.log('the project id isssssssssssssssssssssss before assignee add api',this.projectId)
     this.isLoading = true; // Show loader when function starts
     let departmentName;
     if(value.departmentId){
@@ -693,10 +707,13 @@ export class QMSFormComponent {
         this.isErrorAssignee = true;
       },
     });
+
+    console.log('the project id isssssssssssssssssssssss after assignee add api',this.projectId)
   }
 
   saveReviewer(value: any) {
     this.isLoading = true; // Show loader when function starts
+    console.log('the project id isssssssssssssssssssssss before reviewer add api',this.projectId)
 
     const payload = {
       email: value.email,
@@ -726,6 +743,8 @@ export class QMSFormComponent {
         this.isErrorReviewer = true;
       },
     });
+
+    console.log('the project id isssssssssssssssssssssss after reviewer add api',this.projectId)
   }
 
   closeHeatMap() {
@@ -762,7 +781,7 @@ export class QMSFormComponent {
             Number(this.departmentId) != 0
               ? +Number(this.departmentId)
               : Number(this.departmentIdForAdminToAdd),
-              projectId:
+       projectId:
         Number(this.projectId) !== 0 && !isNaN(Number(this.projectId))
           ? Number(this.projectId)
           : this.preSelectedProject !== 0 &&
@@ -840,14 +859,14 @@ export class QMSFormComponent {
               ? Number(this.departmentIdForAdminToAdd)
               : Number(this.departmentId) !== 0 && !isNaN(Number(this.departmentId))
               ? Number(this.departmentId)
-              : null,
+              :null,
               projectId:
               Number(this.projectId) !== 0 && !isNaN(Number(this.projectId))
                 ? Number(this.projectId)
-                : this.preSelectedProject !== 0 &&
+                :this.preSelectedProject !== 0 &&
                   !isNaN(Number(this.preSelectedProject))
                 ? Number(this.preSelectedProject)
-                : null,
+                :null,
           riskAssessments: [
             {
               likelihood: this.likelihoodId

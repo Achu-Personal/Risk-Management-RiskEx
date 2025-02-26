@@ -397,6 +397,8 @@
       }
 
 
+
+
       <div
         [ngStyle]="{
           'margin-top': '20px',
@@ -467,6 +469,8 @@
           <span>{{ newReviewername }}</span>
         </div>
         }
+
+
       <div
         [ngStyle]="{
           'margin-top': '20px',
@@ -503,18 +507,39 @@
     (closeHeatMap)="closeHeatMap()"
   ></app-form-reference-heatmap-popup>
   } @if(isLoading) {
-  <app-form-loader></app-form-loader>> } @if(assigneeNotInList){
-  <app-form-data-not-in-list
-    placeholder="Enter responsible person name"
-    [isAssignee]="true"
-    textLabel="Responsible person name"
-    [dropdownDepartment]="dropdownDepartment"
-    (cancelForm)="receiveCancel($event)"
-    (sendData)="saveAssignee($event)"
-    [openDropdownId]="openDropdownId"
-    (openDropdown)="handleDropdownOpen($event)"
-  ></app-form-data-not-in-list>
-  } @if(reviewerNotInList){
+  <app-form-loader></app-form-loader>> }
+  @if(assigneeNotInList){
+
+    @if(isAdmin=="Admin"){
+      <app-form-data-not-in-list
+        placeholder="Enter responsible person name"
+        [isAssignee]="true"
+        [assigneeDepartment]="departmentIdForAdminToAddToString"
+        textLabel="Responsible person name"
+        [dropdownDepartment]="dropdownDepartment"
+        (cancelForm)="receiveCancel($event)"
+        (sendData)="saveAssignee($event)"
+        [openDropdownId]="openDropdownId"
+        (openDropdown)="handleDropdownOpen($event)"
+      ></app-form-data-not-in-list>
+      }
+
+      @if(isAdmin!=="Admin"){
+        <app-form-data-not-in-list
+        placeholder="Enter responsible person name"
+        [isAssignee]="true"
+        [assigneeDepartment]="departmentId"
+        textLabel="Responsible person name"
+        [dropdownDepartment]="dropdownDepartment"
+        (cancelForm)="receiveCancel($event)"
+        (sendData)="saveAssignee($event)"
+        [openDropdownId]="openDropdownId"
+        (openDropdown)="handleDropdownOpen($event)"
+      ></app-form-data-not-in-list>
+      }
+
+  }
+  @if(reviewerNotInList){
   <app-form-data-not-in-list
     placeholder="Enter reviewer name"
     [isAssignee]="false"
