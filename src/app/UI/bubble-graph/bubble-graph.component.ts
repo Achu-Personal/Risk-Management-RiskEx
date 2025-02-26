@@ -30,7 +30,7 @@ export class BubbleGraphComponent {
   getDimension(value:number)
   {
     let sum=this.privacyRiskCount+this.qualityRiskCount+this.securityRiskCount
-      return (((value/sum)*100)*1.7)
+      return (((value/sum)*100)/3.5)
   }
 
   onBubbleClicked(type:string)
