@@ -141,6 +141,8 @@ export class ISMSFormComponent {
   isnewReviewernameDisplay: boolean = false;
   isLoading = false; // Initially false
   isDraftLoaded = false;
+  departmentIdForAdminToAddToString:string=''
+
 
   constructor(
     private api: ApiService,
@@ -185,6 +187,8 @@ export class ISMSFormComponent {
     const selectedFactorId = Number(event);
     this.departmentIdForAdminToAdd = selectedFactorId;
     this.departmentSelectedByAdmin.emit(this.departmentIdForAdminToAdd);
+    this.departmentIdForAdminToAddToString= this.departmentIdForAdminToAdd.toString();
+
      this.loadDraftForAdmin();
 
   }
@@ -643,16 +647,10 @@ export class ISMSFormComponent {
       mitigation: formValue.mitigation,
       contingency: formValue.contingency || ' ',
       OverallRiskRatingBefore: Number(this.overallRiskRating),
-      responsibleUserId:
-        Number(this.responsiblePersonId) !== 0 &&
-        !isNaN(Number(this.responsiblePersonId))
-          ? Number(this.responsiblePersonId)
-          : this.preSelectedResponsiblePerson !== 0 &&
-            !isNaN(Number(this.preSelectedResponsiblePerson))
-          ? Number(this.preSelectedResponsiblePerson)
-          : this.newAssigneeId && !isNaN(Number(this.newAssigneeId))
-          ? Number(this.newAssigneeId)
-          : null,
+      responsibleUserId: Number(this.newAssigneeId)!== 0 && !isNaN(Number(this.newAssigneeId)) ? Number(this.newAssigneeId) :
+                             Number(this.responsiblePersonId) !== 0 && !isNaN(Number(this.responsiblePersonId)) ? Number(this.responsiblePersonId):
+                             this.preSelectedResponsiblePerson !== 0 && !isNaN(Number(this.preSelectedResponsiblePerson)) ? Number(this.preSelectedResponsiblePerson):
+                             null,
       plannedActionDate: `${formValue.plannedActionDate}T00:00:00.000Z`,
       departmentId:
         Number(this.departmentId) !== 0 && !isNaN(Number(this.departmentId))
@@ -662,10 +660,9 @@ export class ISMSFormComponent {
           ? Number(this.departmentIdForAdminToAdd)
           : null,
           projectId:
-          Number(this.projectId) !== 0 && !isNaN(Number(this.projectId))
+          this.projectId && !isNaN(Number(this.projectId)) && Number(this.projectId) !== 0
             ? Number(this.projectId)
-            : this.preSelectedProject !== 0 &&
-              !isNaN(Number(this.preSelectedProject))
+            : this.preSelectedProject && !isNaN(Number(this.preSelectedProject)) && Number(this.preSelectedProject) !== 0
             ? Number(this.preSelectedProject)
             : null,
       riskAssessments: [
