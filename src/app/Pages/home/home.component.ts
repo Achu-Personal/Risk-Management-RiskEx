@@ -93,10 +93,13 @@ export class HomeComponent {
         );
         this.risk = riskCat;
 
-        this.Criticality = this.list.reduce((acc: any, item: any) => {
-          acc[item.riskCategory] = item.count;
-          return acc;
-        }, {});
+        setTimeout(() => {
+          this.Criticality = this.list.reduce((acc: any, item: any) => {
+            acc[item.riskCategory] = item.count;
+            return acc;
+          }, {});
+
+        },1000);
 
         const riskcounts = this.list.reduce((acc: any, item: any) => {
           acc[item.riskType] = item.riskCount;
