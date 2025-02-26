@@ -19,6 +19,7 @@ export class FormDataNotInListComponent {
   @Input() placeholder:string=''
   @Input() openDropdownId: string | undefined = undefined; // Get from parent
   @Output() openDropdown = new EventEmitter<string>(); // Notify parent
+  @Input() assigneeDepartment: string | undefined = undefined;
 
 
   group=new FormGroup({
@@ -41,9 +42,23 @@ export class FormDataNotInListComponent {
 
   }
   onSubmit(){
-    console.log(this.group.value);
+    if(this.isAssignee==false){
+      console.log(this.group.value);
     this.sendData.emit(this.group.value)
     this.cancel()
+    }
+    if(this.isAssignee==true){
+      console.log(this.group.value);
+      const payload={
+        fullName:this.group.value.fullName,
+        email:this.group.value.email,
+        departmentId:Number(this.assigneeDepartment)
+        }
+        console.log("loghyhyhyhyhyhyhyh",payload)
+      this.sendData.emit(payload)
+      this.cancel()
+    }
+
 
   }
 

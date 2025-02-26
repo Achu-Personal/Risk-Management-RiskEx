@@ -297,3 +297,20 @@ a:hover {
   color: #721c24;
   border: 1px solid #f5c6cb;
 }
+
+
+
+
+.info-banner {
+  background-color: #f8f9fa; /* Light gray background */
+  border: 1px solid #d1d5db; /* Subtle border */
+  border-radius: 4px;
+  padding: 10px;
+  margin-bottom: 15px;
+  font-size: 0.875rem;
+  color: #333; /* Dark text for readability */
+}
+
+.info-banner strong {
+  color: black; /* Highlight "Note" in blue */
+}

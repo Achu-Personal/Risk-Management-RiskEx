@@ -17,12 +17,15 @@ label {
 
 
 
-
+input{
+  background-color: #f9f9f9;
+}
 
 input:focus {
   outline: none;
   border-color: var(--secondary-color);
   box-shadow: 0 0 5px rgba(62, 104, 185, 0.5);
+  background-color: #fff;
   // background-color: #fff;
 }
 
@@ -57,7 +60,7 @@ input[type="text"] {
 
 /* Calendar Button */
 .calendar-btn {
-  background: white;
+  background: #f9f9f9;
   border: 1px solid #ddd;
   border-left: none; /* Align with text input */
   // cursor: pointer;
