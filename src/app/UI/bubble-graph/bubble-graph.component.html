@@ -1,19 +1,19 @@
      <div class="circlegraph">
 
-          <div style="margin-top: 50px;" (click)="onBubbleClicked('Security')" [ngStyle]="{'width':getDimension(securityRiskCount)+'px','height':getDimension(securityRiskCount)+'px'}">
+          <div style="margin-top: 50px;" (click)="onBubbleClicked('Security')" [ngStyle]="{'width':getDimension(securityRiskCount)+'vh','height':getDimension(securityRiskCount)+'vh'}">
 
 
             <div class="circle circle-1 "></div>
             <div class="glass">{{securityRiskCount ? securityRiskCount : 0}}</div>
           </div>
 
-          <div (click)="onBubbleClicked('Quality')" [ngStyle]="{'width':getDimension(qualityRiskCount)+'px','height':getDimension(qualityRiskCount)+'px'}" >
+          <div (click)="onBubbleClicked('Quality')" [ngStyle]="{'width':getDimension(qualityRiskCount)+'vh','height':getDimension(qualityRiskCount)+'vh'}" >
 
 
             <div class="circle circle-2 "></div>
             <div class="glass">{{qualityRiskCount ? qualityRiskCount : 0}}</div>
           </div>
-          <div (click)="onBubbleClicked('Privacy')" [ngStyle]="{'width':getDimension(privacyRiskCount)+'px','height':getDimension(privacyRiskCount)+'px'}"   style="margin-top: 0px;margin-left: 100px;">
+          <div (click)="onBubbleClicked('Privacy')" [ngStyle]="{'width':getDimension(privacyRiskCount)+'vh','height':getDimension(privacyRiskCount)+'vh'}"   style="margin-top: 0px;margin-left: 100px;">
 
 
             <div class="circle circle-3 "></div>
