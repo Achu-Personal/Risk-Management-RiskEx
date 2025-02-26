@@ -440,7 +440,7 @@ changePassword(currentPassword: string, newPassword: string, confirmPassword: st
 
   updateUser(id: number, userData: any): Observable<any> {
     // Use the baseUrl from your existing API service configuration
-    return this.http.put<any>(`https://localhost:7216/api/User/${id}`, userData)
+    return this.http.put<any>(`${this.baseUrl}/${id}`, userData)
       .pipe(
         catchError((error) => {
           console.error('Error updating user:', error);
