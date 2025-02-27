@@ -322,3 +322,28 @@ button:hover {
 .info-banner strong {
   color: black; /* Highlight "Note" in blue */
 }
+
+
+
+.readonly-dropdown {
+  pointer-events: none; /* Disables clicks and interactions */
+  opacity: 0.9; /* Optional: Makes it look visually disabled */
+}
+
+.dropdown-header {
+  width: 100%;
+  // padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+  background-color: #f9f9f9;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.3s ease;
+  height: 47px;
+  margin-top: 28.3px;
+  align-content: center;
+
+}

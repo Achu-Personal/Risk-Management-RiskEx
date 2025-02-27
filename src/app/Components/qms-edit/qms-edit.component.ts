@@ -90,7 +90,7 @@ export class QmsEditComponent {
   preSelectedImpact: any;
   preSelectedReviewer: any;
   preSelectedResponsiblePerson: any;
-  preSelectedProject: any;
+  preSelectedProject: any=null;
 
   HeatMapRefernce: boolean = false;
   isSuccessReviewer: boolean = false;
@@ -131,28 +131,34 @@ export class QmsEditComponent {
     this.riskId = this.riskData.riskId;
     this.overallRiskRating = this.riskData.overallRiskRating;
     this.riskFactor = this.riskData.riskAssessments[0].riskFactor;
+    // this.departmentId=this.riskData.department.id
+
+
   }
+
+
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['dropdownLikelihood']) {
-      const preSelectedLikelihood =
-        this.riskData.riskAssessments[0].likelihoodMatrix.likeliHood;
-      const selectedFactor = this.dropdownLikelihood.find(
+    if (changes['dropdownLikelihood'] && this.riskData?.riskAssessments?.length) {
+      const preSelectedLikelihood = this.riskData.riskAssessments[0]?.likelihoodMatrix?.likeliHood;
+      const selectedFactor = this.dropdownLikelihood?.find(
         (factor) => factor.assessmentFactor === preSelectedLikelihood
       );
-      this.preSelectedLikelihood = selectedFactor.id;
+      this.preSelectedLikelihood = selectedFactor?.id || null;
     }
-    if (changes['dropdownImpact']) {
-      const preSelectedImpact =
-        this.riskData.riskAssessments[0].impactMatix.impact;
-      const selectedFactor = this.dropdownImpact.find(
+
+    if (changes['dropdownImpact'] && this.riskData?.riskAssessments?.length) {
+      const preSelectedImpact = this.riskData.riskAssessments[0]?.impactMatix?.impact;
+      const selectedFactor = this.dropdownImpact?.find(
         (factor) => factor.assessmentFactor === preSelectedImpact
       );
-      this.preSelectedImpact = selectedFactor.id;
+      this.preSelectedImpact = selectedFactor?.id || null;
     }
     if (changes['dropdownProject']) {
-      this.preSelectedProject = this.riskData.project.id;
+
+        this.preSelectedProject = this.riskData.project.id;
+
     }
-    if (changes['dropdownAssignee']) {
+    if (changes['dropdownAssignee'] && this.riskData?.responsibleUser?.id) {
       this.preSelectedResponsiblePerson = this.riskData.responsibleUser.id;
     }
     if (changes['dropdownReviewer']) {
@@ -239,12 +245,12 @@ export class QmsEditComponent {
     this.projectId = selectedFactorId;
   }
 
-  onDropdownChangeDepartment(event: any): void {
-    const selectedFactorId = Number(event);
-    this.departmentIdForAdminToAdd = selectedFactorId;
-    this.departmentIdForAdminToAddToString= this.departmentIdForAdminToAdd.toString();
+  // onDropdownChangeDepartment(event: any): void {
+  //   const selectedFactorId = Number(event);
+  //   this.departmentIdForAdminToAdd = selectedFactorId;
+  //   this.departmentIdForAdminToAddToString= this.departmentIdForAdminToAdd.toString();
 
-  }
+  // }
 
   onDropdownChangelikelihood(event: any): void {
     const selectedFactorId = Number(event);
@@ -335,6 +341,14 @@ export class QmsEditComponent {
 
   onSubmit() {
     this.isLoading=true;
+    console.log("projectidddddddddd",this.projectId)
+    console.log("prselecyted projectidddddddddd",this.preSelectedProject)
+    console.log("preSelectedResponsiblePerson responsible person",this.preSelectedResponsiblePerson)
+    console.log(" responsible person",this.responsiblePersonId)
+    console.log("newassignee responsible person",this.newAssigneeId)
+
+
+
     console.log(this.qmsForm.value);
 
     const formValue = this.qmsForm.value;

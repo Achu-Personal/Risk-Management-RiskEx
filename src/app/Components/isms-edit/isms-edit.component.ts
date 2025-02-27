@@ -116,7 +116,7 @@ export class IsmsEditComponent {
   preSelectedPrivacyImpact: any;
   preSelectedReviewer: any;
   preSelectedResponsiblePerson: any;
-  preSelectedProject: any;
+  preSelectedProject: any=null;
 
   isSuccessReviewer: boolean = false;
   isErrorReviewer: boolean = false;

@@ -14,20 +14,41 @@
         ismsForm.get("riskName")?.dirty) {
         <div class="text-danger">Risk name is required</div>
         } }
-        <app-form-dropdown
-          label="Project Name"
-          dropdownCode="projectCode"
-          [dropdownData]="dropdownProject"
-          dropdownDisplay="name"
-          dropdownValue="id"
-          selectValue="Select project"
-          (change)="onDropdownChangeProject($event)"
-          [selectedValue]="preSelectedProject"
-          [openDropdownId]="openDropdownId"
-          (openDropdown)="handleDropdownOpen($event)"
-        ></app-form-dropdown>
+
+
+        @if(preSelectedProject==null){
+          <div class="dropdown-header">
+            <p [ngStyle]="{
+              'margin-top': '18px',
+              'margin-left': '18px',
+              'font-style': 'italic',
+              color: 'grey'
+            }">No project for this risk</p>
+          </div>
+
+       }
+
+        @if(preSelectedProject!==null){
+          <div class="readonly-dropdown">
+            <app-form-dropdown
+            label="Project Name"
+            dropdownCode="projectCode"
+            [dropdownData]="dropdownProject"
+            dropdownDisplay="name"
+            dropdownValue="id"
+            selectValue="Select project"
+            [selectedValue]="preSelectedProject"
+            (change)="onDropdownChangeProject($event)"
+            [openDropdownId]="openDropdownId"
+            (openDropdown)="handleDropdownOpen($event)"
+            dropdownId="projectDropdown"
+          ></app-form-dropdown>
+        </div>
+
+        }
+
       </div>
-      @if(isAdmin === 'Admin'){
+      <!-- @if(isAdmin === 'Admin'){
       <app-form-dropdown
         label="Department Name"
         [dropdownData]="dropdownDepartment"
@@ -38,7 +59,7 @@
         [openDropdownId]="openDropdownId"
         (openDropdown)="handleDropdownOpen($event)"
       ></app-form-dropdown>
-      }
+      } -->
       <app-form-text-area
         label="Impact Of Risk"
         required="*"
