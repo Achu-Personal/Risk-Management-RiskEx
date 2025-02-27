@@ -90,7 +90,7 @@ export class QmsEditComponent {
   preSelectedImpact: any;
   preSelectedReviewer: any;
   preSelectedResponsiblePerson: any;
-  preSelectedProject: any;
+  preSelectedProject: any=null;
 
   HeatMapRefernce: boolean = false;
   isSuccessReviewer: boolean = false;
@@ -131,45 +131,9 @@ export class QmsEditComponent {
     this.riskId = this.riskData.riskId;
     this.overallRiskRating = this.riskData.overallRiskRating;
     this.riskFactor = this.riskData.riskAssessments[0].riskFactor;
+    // this.departmentId=this.riskData.department.id
 
 
-    // const changes: SimpleChanges = {
-    //       dropdownLikelihood: {
-    //         currentValue: this.riskData.riskAssessments?.[0]?.likelihood ?? null,
-    //         previousValue: undefined,
-    //         firstChange: true,
-    //         isFirstChange: () => true,
-    //       },
-    //       dropdownImpact: {
-    //         currentValue: this.riskData.riskAssessments?.[0]?.impact ?? null,
-    //         previousValue: undefined,
-    //         firstChange: true,
-    //         isFirstChange: () => true,
-    //       },
-    //       dropdownProject: {
-    //         currentValue:
-    //           this.riskData.projectId !== null && this.riskData.projectId !== undefined
-    //             ? this.riskData.projectId
-    //             : this.preSelectedProject, // Keeps the previous value if null
-    //         previousValue: null,
-    //         firstChange: true,
-    //         isFirstChange: () => true,
-    //       },
-    //       dropdownAssignee: {
-    //         currentValue: this.riskData.responsibleUserId ?? null,
-    //         previousValue: undefined,
-    //         firstChange: true,
-    //         isFirstChange: () => true,
-    //       },
-    //       dropdownReviewer: {
-    //         currentValue: this.riskData.riskAssessments?.[0]?.review?.userId ?? null,
-    //         previousValue: undefined,
-    //         firstChange: true,
-    //         isFirstChange: () => true,
-    //       },
-    //     };
-
-    //     this.ngOnChanges(changes);
   }
 
 
@@ -190,12 +154,9 @@ export class QmsEditComponent {
       this.preSelectedImpact = selectedFactor?.id || null;
     }
     if (changes['dropdownProject']) {
-      if (
-        this.riskData.project.id !== null &&
-        this.riskData.project.id !== undefined
-      ) {
+
         this.preSelectedProject = this.riskData.project.id;
-      }
+
     }
     if (changes['dropdownAssignee'] && this.riskData?.responsibleUser?.id) {
       this.preSelectedResponsiblePerson = this.riskData.responsibleUser.id;
@@ -284,12 +245,12 @@ export class QmsEditComponent {
     this.projectId = selectedFactorId;
   }
 
-  onDropdownChangeDepartment(event: any): void {
-    const selectedFactorId = Number(event);
-    this.departmentIdForAdminToAdd = selectedFactorId;
-    this.departmentIdForAdminToAddToString= this.departmentIdForAdminToAdd.toString();
+  // onDropdownChangeDepartment(event: any): void {
+  //   const selectedFactorId = Number(event);
+  //   this.departmentIdForAdminToAdd = selectedFactorId;
+  //   this.departmentIdForAdminToAddToString= this.departmentIdForAdminToAdd.toString();
 
-  }
+  // }
 
   onDropdownChangelikelihood(event: any): void {
     const selectedFactorId = Number(event);
@@ -380,6 +341,14 @@ export class QmsEditComponent {
 
   onSubmit() {
     this.isLoading=true;
+    console.log("projectidddddddddd",this.projectId)
+    console.log("prselecyted projectidddddddddd",this.preSelectedProject)
+    console.log("preSelectedResponsiblePerson responsible person",this.preSelectedResponsiblePerson)
+    console.log(" responsible person",this.responsiblePersonId)
+    console.log("newassignee responsible person",this.newAssigneeId)
+
+
+
     console.log(this.qmsForm.value);
 
     const formValue = this.qmsForm.value;
