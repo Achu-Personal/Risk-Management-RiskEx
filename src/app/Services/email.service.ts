@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { catchError, map, Observable, of, switchMap } from 'rxjs';
 import { ApiService } from './api.service';
 import { NotificationService } from './notification.service';
+import { environment } from '../../enviroments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -14,6 +15,10 @@ export class EmailService {
   userRegisterTemplate:string='';
   resetPasswordTemplate: string = '';
   userUpdateTemplate: string = '';
+
+  private readonly baseUrl = environment.apiUrl;
+
+  private readonly frontendUrl = environment.frontendUrl;
 
 
   constructor(private api: ApiService,private notificationService: NotificationService) {
@@ -37,11 +42,13 @@ export class EmailService {
     }
 
       private prepareResetPasswordEmailBody(template: string, context: any): string {
-        const resetLink = `https://risk-management-system-risk-ex.vercel.app/resetpassword?token=${context.resetToken}&email=${context.email}`;
+        const resetLink = `${this.frontendUrl}/resetpassword?token=${context.resetToken}&email=${context.email}`;
         return template
           .replace('{{fullName}}', context.fullName)
           .replace('{{resetPasswordLink}}', resetLink)
-          .replace('{{ResetPage}}',resetLink);
+          .replace('{{ResetPage}}',resetLink)
+          .replace(/{{baseUrl}}/g,this.frontendUrl);
+
       }
 
   sendResetPasswordEmail(email: string): Observable<boolean> {
@@ -110,7 +117,8 @@ export class EmailService {
     return template
       .replace('{{userEmail}}', context.email)
       .replace('{{defaultPassword}}', context.defaultPassword)
-      .replace('{{fullName}}', context.fullName);
+      .replace(/{{fullName}}/g, context.fullName)
+      .replace(/{{baseUrl}}/g,this.frontendUrl);;
   }
 
   //Review mail
@@ -136,7 +144,8 @@ export class EmailService {
       .replace('{{overallRiskRating}}', context.overallRiskRating)
       // .replace('{{reason}}', context.reason)
       .replace('{{id}}', context.id)
-      .replace('{{rid}}', context.rid);
+      .replace('{{rid}}', context.rid)
+      .replace(/{{baseUrl}}/g,this.frontendUrl);
   }
   sendReviewerEmail(email: string, context: any): Observable<boolean> {
     const subject = `Review Risk - ${context.riskName}`;
@@ -151,15 +160,17 @@ export class EmailService {
       map((response: any) => {
         console.log('Email sent successfully', response);
         this.notificationService.success('The risk has been submitted to the reviewer for approval.');
-        return true; // Return success
+        return true;
       }),
       catchError((error) => {
         console.error('Error sending email:', error);
         this.notificationService.error('Failed to send email to reviewer');
-        return of(false); // Return failure
+        return of(false);
       })
     );
   }
+
+  
 
   //Assignee Mail
   private async loadAssigneeTemplate() {
@@ -182,7 +193,8 @@ export class EmailService {
       .replace('{{riskType}}', context.riskType)
       .replace('{{plannedActionDate}}', context.plannedActionDate)
       .replace('{{overallRiskRating}}', context.overallRiskRating)
-      .replace('{{riskStatus}}', context.riskStatus);
+      .replace('{{riskStatus}}', context.riskStatus)
+      .replace(/{{baseUrl}}/g,this.frontendUrl);
   }
 
   sendAssigneeEmail(email: string, context: any): Observable<boolean> {
@@ -192,8 +204,8 @@ export class EmailService {
       context
     );
 
-    console.log('Email Subject:', subject); // Debug log
-    // console.log('Email Body:', body); // Debug log
+    // console.log('Email Subject:', subject);
+    // console.log('Email Body:', body);
 
     return this.api.sendMail(email, subject, body).pipe(
       map((response: any) => {
@@ -208,6 +220,8 @@ export class EmailService {
       })
     );
   }
+
+
 //Risk Owner mail
   private async loadOwnerTemplate() {
     try {
@@ -252,6 +266,8 @@ export class EmailService {
     );
   }
 
+
+  //User Upadte Email
   private async loadUserUpdateTemplate() {
     try {
       this.userUpdateTemplate = await fetch(
@@ -288,7 +304,8 @@ export class EmailService {
     let updatedTemplate = template
       .replace(/{{userEmail}}/g, context.email)
       .replace(/{{fullName}}/g, context.fullName || 'User')
-      .replace(/{{departmentName}}/g, context.departmentName || 'Not specified');
+      .replace(/{{departmentName}}/g, context.departmentName || 'Not specified')
+      .replace(/{{baseUrl}}/g,this.frontendUrl);
 
     if (context.projects && Array.isArray(context.projects) && context.projects.length > 0) {
       let projectsList = '';

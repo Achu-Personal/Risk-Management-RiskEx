@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { BehaviorSubject, catchError, map, Observable, of, tap, throwError } from 'rxjs';
 import { MsalService } from '@azure/msal-angular';
+import { environment } from '../../../enviroments/environment';
 
 
 
@@ -12,7 +13,8 @@ import { MsalService } from '@azure/msal-angular';
 })
 export class AuthService {
   private jwtHelper = new JwtHelperService();
-  private baseUrl = 'https://risk-management-riskex-backend-2.onrender.com/api/AuthControllers';
+  // private baseUrl = 'https://risk-management-riskex-backend-2.onrender.com/api/AuthControllers';
+  private baseUrl = `${environment.apiUrl}/AuthControllers`;
   private apiUrl = `${this.baseUrl}/Login`;
   private ssoUrl = `${this.baseUrl}/ssologin`;
   private userRole = new BehaviorSubject<string | null>(null);

@@ -4,13 +4,14 @@ import {
   Configuration,
   BrowserCacheLocation,
 } from '@azure/msal-browser';
+import { environment } from '../../../enviroments/environment';
 
 export const msalConfig: Configuration = {
   auth: {
-      clientId: ' 4fdd2973-09a8-4c28-a786-16f63cf33207',
-      authority: 'https://login.microsoftonline.com/5b751804-232f-410d-bb2f-714e3bb466eb',
-      redirectUri:"http://localhost:4200/auth",
-      postLogoutRedirectUri: 'https://localhost:4200/sso',
+    clientId: environment.ssoConfig.clientId,
+    authority: environment.ssoConfig.authority,
+    redirectUri: environment.ssoConfig.redirectUri,
+    postLogoutRedirectUri: environment.ssoConfig.postLogoutRedirectUri,
   },
   cache: {
       cacheLocation: BrowserCacheLocation.LocalStorage,
