@@ -74,9 +74,8 @@ export class TableComponent {
 
   onclickrow = output()
     rowClick(row:any) {
-
       this.onclickrow.emit(row);
-      }
+}
 
   filterTable(): void {
     const reviewStatus = this.getReviewStatus(this.selectedReviewStatus);
@@ -102,7 +101,6 @@ export class TableComponent {
         (this.selectedDepartment ? item.departmentName === this.selectedDepartment : true)
       );
     });
-
   this.currentPage = 1;
   this.totalItems = this.filteredItems.length;
   this.updatePaginatedItems();
@@ -116,12 +114,10 @@ export class TableComponent {
         value != null && value.toString().toLowerCase().includes(lowercasedSearchText)
       )
     );
-
     this.currentPage = 1;
     this.totalItems = this.filteredItems.length;
     this.updatePaginatedItems();
   }
-
   ngOnInit(): void {
     const currentRoute = this.route.snapshot.url.join('/');
     if (currentRoute === 'history') {
@@ -325,34 +321,28 @@ export class TableComponent {
   //sorting
   sortDirection: 'asc' | 'desc' = 'asc';
   sortColumn: string = '';
-
   sortTable(column: string) {
     this.sortDirection = this.sortColumn === column
       ? (this.sortDirection === 'asc' ? 'desc' : 'asc')
       : 'asc';
     this.sortColumn = column;
-
   this.filteredItems = [...this.filteredItems].sort((a, b) => {
     if (column === 'crr') {
       const valueA = this.getCRRValue(a);
       const valueB = this.getCRRValue(b);
       return (valueA - valueB) * (this.sortDirection === 'asc' ? 1 : -1);
     }
-
     if (column === 'plannedActionDate') {
       const valueA = new Date(a.plannedActionDate).getTime();
       const valueB = new Date(b.plannedActionDate).getTime();
       return (valueA - valueB) * (this.sortDirection === 'asc' ? 1 : -1);
     }
-
     return 0;
   });
-
     this.currentPage = 1;
     this.updatePaginatedItems();
     this.cdr.markForCheck();
   }
-
   private getCRRValue(item: any): number {
     return item.overallRiskRatingAfter !== null
       ? item.overallRiskRatingAfter

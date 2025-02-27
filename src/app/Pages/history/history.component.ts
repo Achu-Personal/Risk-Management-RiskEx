@@ -32,9 +32,13 @@ export class HistoryComponent {
       this.router.navigate([`/ViewRisk/${rowid}`]);
     }
 
-    reset():void{
-      this.isreset=true;
+    reset(): void {
+      this.isreset = false;
+      setTimeout(() => {
+        this.isreset = true;
+      });
     }
+
 
     ngOnInit(): void {
 
