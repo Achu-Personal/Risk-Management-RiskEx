@@ -322,3 +322,10 @@ button:hover {
 .info-banner strong {
   color: black; /* Highlight "Note" in blue */
 }
+
+
+
+.readonly-dropdown {
+  pointer-events: none; /* Disables clicks and interactions */
+  opacity: 0.6; /* Optional: Makes it look visually disabled */
+}

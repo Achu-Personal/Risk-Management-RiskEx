@@ -554,36 +554,40 @@ export class ISMSFormComponent {
 
   async onSubmit() {
     this.isLoading=true;
-    if (this.isAdmin === 'Admin') {
-      if (this.projectId != 0) {
+    if (this.isAdmin == 'Admin') {
+      if (this.projectId && this.projectId != 0) {
         await this.getRiskId(
           Number(this.departmentIdForAdminToAdd),
           this.projectId
         );
       }
-      if(this.preSelectedProject != 0){
+      else {
+        if (this.preSelectedProject && this.preSelectedProject != 0) {
         await this.getRiskId(
           Number(this.departmentIdForAdminToAdd),
           this.preSelectedProject
         );
-      }
-       else {
+      } else {
         await this.getRiskId(Number(this.departmentIdForAdminToAdd));
       }
-    } else {
-      if (this.projectId != 0) {
+    }
+    }
+
+    if (this.isAdmin !== 'Admin') {
+      if (this.projectId && this.projectId != 0) {
         await this.getRiskId(Number(this.departmentId), this.projectId);
       }
-      if(this.preSelectedProject != 0){
+      else{
+      if (this.preSelectedProject && this.preSelectedProject != 0) {
         await this.getRiskId(
           Number(this.departmentId),
           this.preSelectedProject
         );
-      }
-       else {
+      } else {
         await this.getRiskId(Number(this.departmentId));
       }
     }
+  }
 
     if (!this.riskId) {
       console.error('Failed to fetch Risk ID. Submission aborted.');
@@ -653,11 +657,11 @@ export class ISMSFormComponent {
                              null,
       plannedActionDate: `${formValue.plannedActionDate}T00:00:00.000Z`,
       departmentId:
-        Number(this.departmentId) !== 0 && !isNaN(Number(this.departmentId))
-          ? Number(this.departmentId)
-          : this.departmentIdForAdminToAdd &&
-            !isNaN(Number(this.departmentIdForAdminToAdd))
+        Number(this.departmentIdForAdminToAdd) &&
+        !isNaN(Number(this.departmentIdForAdminToAdd))
           ? Number(this.departmentIdForAdminToAdd)
+          : Number(this.departmentId) !== 0 && !isNaN(Number(this.departmentId))
+          ? Number(this.departmentId)
           : null,
           projectId:
           this.projectId && !isNaN(Number(this.projectId)) && Number(this.projectId) !== 0
@@ -688,6 +692,10 @@ export class ISMSFormComponent {
           riskFactor: this.confidentialityRiskFactor,
           review: {
             userId:
+            Number(this.externalReviewerIdFromInput) &&
+            !isNaN(Number(this.externalReviewerIdFromInput))
+            ? null // If externalReviewerId is present, userId should be null
+            :
               this.isInternal &&
               Number(this.internalReviewerIdFromDropdown) !== 0 &&
               !isNaN(Number(this.internalReviewerIdFromDropdown))
@@ -728,6 +736,10 @@ export class ISMSFormComponent {
           riskFactor: this.integrityRiskFactor,
           review: {
             userId:
+            Number(this.externalReviewerIdFromInput) &&
+            !isNaN(Number(this.externalReviewerIdFromInput))
+            ? null // If externalReviewerId is present, userId should be null
+            :
               this.isInternal &&
               Number(this.internalReviewerIdFromDropdown) !== 0 &&
               !isNaN(Number(this.internalReviewerIdFromDropdown))
@@ -768,6 +780,10 @@ export class ISMSFormComponent {
           riskFactor: this.availabilityRiskFactor,
           review: {
             userId:
+            Number(this.externalReviewerIdFromInput) &&
+            !isNaN(Number(this.externalReviewerIdFromInput))
+            ? null // If externalReviewerId is present, userId should be null
+            :
               this.isInternal &&
               Number(this.internalReviewerIdFromDropdown) !== 0 &&
               !isNaN(Number(this.internalReviewerIdFromDropdown))
@@ -807,6 +823,10 @@ export class ISMSFormComponent {
           riskFactor: this.privacyRiskFactor,
           review: {
             userId:
+            Number(this.externalReviewerIdFromInput) &&
+            !isNaN(Number(this.externalReviewerIdFromInput))
+            ? null // If externalReviewerId is present, userId should be null
+            :
               this.isInternal &&
               Number(this.internalReviewerIdFromDropdown) !== 0 &&
               !isNaN(Number(this.internalReviewerIdFromDropdown))
