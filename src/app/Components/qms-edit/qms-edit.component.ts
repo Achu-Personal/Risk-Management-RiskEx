@@ -131,28 +131,73 @@ export class QmsEditComponent {
     this.riskId = this.riskData.riskId;
     this.overallRiskRating = this.riskData.overallRiskRating;
     this.riskFactor = this.riskData.riskAssessments[0].riskFactor;
+
+
+    // const changes: SimpleChanges = {
+    //       dropdownLikelihood: {
+    //         currentValue: this.riskData.riskAssessments?.[0]?.likelihood ?? null,
+    //         previousValue: undefined,
+    //         firstChange: true,
+    //         isFirstChange: () => true,
+    //       },
+    //       dropdownImpact: {
+    //         currentValue: this.riskData.riskAssessments?.[0]?.impact ?? null,
+    //         previousValue: undefined,
+    //         firstChange: true,
+    //         isFirstChange: () => true,
+    //       },
+    //       dropdownProject: {
+    //         currentValue:
+    //           this.riskData.projectId !== null && this.riskData.projectId !== undefined
+    //             ? this.riskData.projectId
+    //             : this.preSelectedProject, // Keeps the previous value if null
+    //         previousValue: null,
+    //         firstChange: true,
+    //         isFirstChange: () => true,
+    //       },
+    //       dropdownAssignee: {
+    //         currentValue: this.riskData.responsibleUserId ?? null,
+    //         previousValue: undefined,
+    //         firstChange: true,
+    //         isFirstChange: () => true,
+    //       },
+    //       dropdownReviewer: {
+    //         currentValue: this.riskData.riskAssessments?.[0]?.review?.userId ?? null,
+    //         previousValue: undefined,
+    //         firstChange: true,
+    //         isFirstChange: () => true,
+    //       },
+    //     };
+
+    //     this.ngOnChanges(changes);
   }
+
+
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['dropdownLikelihood']) {
-      const preSelectedLikelihood =
-        this.riskData.riskAssessments[0].likelihoodMatrix.likeliHood;
-      const selectedFactor = this.dropdownLikelihood.find(
+    if (changes['dropdownLikelihood'] && this.riskData?.riskAssessments?.length) {
+      const preSelectedLikelihood = this.riskData.riskAssessments[0]?.likelihoodMatrix?.likeliHood;
+      const selectedFactor = this.dropdownLikelihood?.find(
         (factor) => factor.assessmentFactor === preSelectedLikelihood
       );
-      this.preSelectedLikelihood = selectedFactor.id;
+      this.preSelectedLikelihood = selectedFactor?.id || null;
     }
-    if (changes['dropdownImpact']) {
-      const preSelectedImpact =
-        this.riskData.riskAssessments[0].impactMatix.impact;
-      const selectedFactor = this.dropdownImpact.find(
+
+    if (changes['dropdownImpact'] && this.riskData?.riskAssessments?.length) {
+      const preSelectedImpact = this.riskData.riskAssessments[0]?.impactMatix?.impact;
+      const selectedFactor = this.dropdownImpact?.find(
         (factor) => factor.assessmentFactor === preSelectedImpact
       );
-      this.preSelectedImpact = selectedFactor.id;
+      this.preSelectedImpact = selectedFactor?.id || null;
     }
     if (changes['dropdownProject']) {
-      this.preSelectedProject = this.riskData.project.id;
+      if (
+        this.riskData.project.id !== null &&
+        this.riskData.project.id !== undefined
+      ) {
+        this.preSelectedProject = this.riskData.project.id;
+      }
     }
-    if (changes['dropdownAssignee']) {
+    if (changes['dropdownAssignee'] && this.riskData?.responsibleUser?.id) {
       this.preSelectedResponsiblePerson = this.riskData.responsibleUser.id;
     }
     if (changes['dropdownReviewer']) {
