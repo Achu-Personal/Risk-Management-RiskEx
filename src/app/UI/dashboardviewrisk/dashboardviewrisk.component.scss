@@ -31,8 +31,8 @@
 }
 
 .view-risk-button1 {
-  background-color: var( --foreground-color);
-  // background-color: rgb(77, 77, 77, 50%);
+  // background-color: var( --foreground-color);
+  background-color: rgb(77, 77, 77, 80%);
   color: white;
   border: none;
   border-radius: 5px;
@@ -62,11 +62,12 @@
   background-color: var(--foreground-color);
 
   font-size: 15px;
+  font-weight: 700;
   padding: 5px;
   border-radius: 10px;
   width: 45px;
   text-align: center;
-  opacity: 0.2;
+  opacity: 0.4;
   height: 25px;
   color: white;
   margin-top: -5px;

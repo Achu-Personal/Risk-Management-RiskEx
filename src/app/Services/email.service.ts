@@ -13,6 +13,7 @@ export class EmailService {
   ownerEmailTemplate: string = '';
   userRegisterTemplate:string='';
   resetPasswordTemplate: string = '';
+  userUpdateTemplate: string = '';
 
 
   constructor(private api: ApiService,private notificationService: NotificationService) {
@@ -21,6 +22,7 @@ export class EmailService {
     this.loadOwnerTemplate();
     this.loadUserRegisterTemplate();
     this.loadResetPasswordTemplate();
+    this .loadUserUpdateTemplate();
 
   }
 //Reset passsword
@@ -240,14 +242,76 @@ export class EmailService {
       map((response:any) => {
         console.log('Email sent successfully', response);
         this.notificationService.success('Notify the risk owner that the risk has been rejected.');
-        return true; // Return success
+        return true;
       }),
       catchError((error) => {
         console.error('Error sending email:', error);
         this.notificationService.error('Failed to send email to risk owner');
-        return of(false); // Return failure
+        return of(false);
       })
     );
   }
+
+  private async loadUserUpdateTemplate() {
+    try {
+      this.userUpdateTemplate = await fetch(
+        'Templates/UpdateUserEmailTemplate.html'
+      ).then((response) => response.text());
+    } catch (error) {
+      console.error('Failed to load user update email template:', error);
+    }
+  }
+
+  sendUserUpdateEmail(email: string, context: any): Observable<boolean> {
+    const subject = ' Risk Management System Account Update';
+    const body = this.prepareUserUpdateEmailBody(
+      this.userUpdateTemplate,
+      context
+    );
+
+    return this.api.sendMail(email, subject, body).pipe(
+      map((response: any) => {
+        // console.log('Update email sent successfully', response);
+        return true;
+      }),
+      catchError((error) => {
+        console.error('Detailed error sending update email:', {
+          error,
+        });
+        return of(false);
+      })
+    );
+  }
+
+  private prepareUserUpdateEmailBody(template: string, context: any): string {
+    console.log('Email context:', context);
+    let updatedTemplate = template
+      .replace(/{{userEmail}}/g, context.email)
+      .replace(/{{fullName}}/g, context.fullName || 'User')
+      .replace(/{{departmentName}}/g, context.departmentName || 'Not specified');
+
+    if (context.projects && Array.isArray(context.projects) && context.projects.length > 0) {
+      let projectsList = '';
+      context.projects.forEach((project: any) => {
+        const projectName = typeof project === 'object' ? (project.name || 'Unnamed project') : project;
+        projectsList += `<li>${projectName}</li>`;
+      });
+      updatedTemplate = updatedTemplate.replace('<!-- PROJECT_LIST_PLACEHOLDER -->', projectsList);
+      updatedTemplate = updatedTemplate
+        .replace('{{#if projects.length}}', '')
+        .replace('{{else}}', '<!--')
+        .replace('{{/if}}', '-->');
+    } else {
+      updatedTemplate = updatedTemplate
+        .replace('{{#if projects.length}}', '<!--')
+        .replace('<!-- PROJECT_LIST_PLACEHOLDER -->','')
+        .replace('{{else}}', '-->')
+        .replace('{{/if}}', '');
+    }
+
+    return updatedTemplate;
+  }
+
+
 
 }
