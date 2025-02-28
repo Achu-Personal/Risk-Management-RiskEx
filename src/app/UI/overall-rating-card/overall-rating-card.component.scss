@@ -48,10 +48,12 @@
   h6
   {
     margin: 0px;
+    font-size: 2.2vh;
   }
   h1
   {
     margin: 0px;
+    font-size: 7vh;
   }
   h5
   {
@@ -70,6 +72,7 @@
 
 
   transform: rotateY(180deg); /* Initially rotate the back face by 180 degrees */
+  padding: 20px;
 }
 
 /* Flip the card when hovered */
