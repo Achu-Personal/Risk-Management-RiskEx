@@ -1,23 +1,31 @@
 <div class="box" style="padding: 5px;" (click)="$event.stopPropagation()">
-  <div style="height: 5px;"></div>
-  <img style="margin-left: 5px; " src="/Images/image 7.png" alt="" (click)="logout()">
-  <div style="height: 20px;"></div>
-
-  <i (click)="toggleDropdown()" class="fa-solid fa-circle-user"></i>
+  <div style="height: 6px;"></div>
+  <div class="themes-circle"
+       *ngFor="let theme of themes"
+       [ngClass]="{'active': activeTheme === theme}"
+       (click)="setActiveTheme(theme)">
+    <i (click)="setActiveIcon('logout'); logout(); $event.stopPropagation()"
+       class="fa-solid fa-right-from-bracket"
+       [ngClass]="{'icon-active': activeIcon === 'logout'}">
+    </i>
+  </div>
+   <div class="themes-circle"
+   *ngFor="let theme of themes"
+   [ngClass]="{'active': activeTheme === theme}"
+   (click)="setActiveTheme(theme)">
+<i (click)="setActiveIcon('user'); toggleDropdown(); $event.stopPropagation()"
+   class="fa-regular fa-circle-user"
+   [ngClass]="{'icon-active': activeIcon === 'user'}">
+</i>
+</div>
   <div *ngIf="dropdownVisible" class="dropdown-card">
     <div class="profile-card">
       <img src="/Images/usericon.png" alt="Profile Picture" class="profile-image" />
-      <h3>{{ auth.getUserName() }}</h3>
+      <h3 class="truncate" [title]="auth.getUserName()">{{ auth.getUserName() }}</h3>
       <p class="role">{{ formatRoleName(getPrimaryRole()) }}</p>
-      <p class="department">{{ auth.getDepartmentName() }}</p>
-      <p class="email">{{ auth.getUserMail() }}</p>
-      <!-- <hr>
+      <p class="department truncate"  [title]="auth.getDepartmentName()">{{ auth.getDepartmentName() }}</p>
+      <p class="email truncate" [title]="auth.getUserMail()">{{ auth.getUserMail() }}</p>
 
-      <div class="changebutton">
-        <app-style-button
-        *ngIf="auth.getUserRole() !== 'Admin'"
-        (clicked)="onChangePassword()" label="Change Password"></app-style-button>
-      </div> -->
     </div>
   </div>
 </div>
