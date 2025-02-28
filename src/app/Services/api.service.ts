@@ -13,31 +13,22 @@ import {
 } from 'rxjs';
 import { UserResponse } from '../Interfaces/Userdata.interface.';
 import { AuthService } from './auth/auth.service';
+import { environment } from '../../enviroments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ApiService {
-  private readonly baseUrl = 'https://risk-management-riskex-backend-2.onrender.com/api';
+  private readonly baseUrl = environment.apiUrl;
+
+  // private readonly baseUrl2 = 'https://risk-management-riskex-backend-2.onrender.com/api';
+
   private departmentUpdateSubject = new Subject<void>();
   private projectUpdateSubject = new Subject<void>();
   departmentUpdate$ = this.departmentUpdateSubject.asObservable();
   projectUpdate$ = this.projectUpdateSubject.asObservable();
 
   constructor(private http: HttpClient, public auth: AuthService) {}
-
-  //Just for now to test can be removed later
-  getAllRisk() {
-    return this.http.get('/data/getAllRisk.json');
-  }
-
-  getRiskType() {
-    return this.http.get(`data/type-dropdown.json`);
-  }
-
-  getRiskCurrentAssessment() {
-    return this.http.get(`data/assessment-dropdown.json`);
-  }
 
   getRiskById(id: number) {
     return this.http.get(`${this.baseUrl}/Risk/id?id=${id}`);
@@ -81,8 +72,8 @@ export class ApiService {
   }
 
   //get projects by id
-  getProtectsByDepartmentId(id:number){
-    return this .http.get<project[]>(`${this.baseUrl}/Project/projects/${id}`);
+  getProtectsByDepartmentId(id: number) {
+    return this.http.get<project[]>(`${this.baseUrl}/Project/projects/${id}`);
   }
 
   gettabledata() {
@@ -120,10 +111,11 @@ export class ApiService {
   }
 
   addNewProject(project: any) {
-    return this.http.post(`${this.baseUrl}/Project/Project`, project)
-    .pipe(tap(() => this.projectUpdateSubject.next()));
+    return this.http
+      .post(`${this.baseUrl}/Project/Project`, project)
+      .pipe(tap(() => this.projectUpdateSubject.next()));
   }
-  notifyProjectUpdate(){
+  notifyProjectUpdate() {
     this.projectUpdateSubject.next();
   }
 
@@ -150,16 +142,16 @@ export class ApiService {
     return this.http.get(`${this.baseUrl}/AssessmentMatrixImpact`);
   }
 
-
-
-
   addnewQualityRisk(qualityRisk: any) {
     console.log('quality risk payload', qualityRisk);
     return this.http.post(`${this.baseUrl}/Risk/add/quality`, qualityRisk);
   }
 
   addnewSecurityOrPrivacyRisk(SecurityOrPrivacyRisk: any) {
-    return this.http.post(`${this.baseUrl}/Risk/add/securityOrPrivacy`, SecurityOrPrivacyRisk);
+    return this.http.post(
+      `${this.baseUrl}/Risk/add/securityOrPrivacy`,
+      SecurityOrPrivacyRisk
+    );
   }
 
   addExternalReviewer(reviewer: any) {
@@ -179,7 +171,10 @@ export class ApiService {
   }
 
   editSecurityOrPrivacyRisk(id: number, risk: any) {
-    return this.http.put(`${this.baseUrl}/Risk/edit/SecurityOrPrivacy/${id}`, risk);
+    return this.http.put(
+      `${this.baseUrl}/Risk/edit/SecurityOrPrivacy/${id}`,
+      risk
+    );
   }
 
   getRisksAssignedToUser(id: any = '') {
@@ -190,7 +185,7 @@ export class ApiService {
     return this.http.get(`${this.baseUrl}/Risk/GetAllRisksAssigned`);
   }
 
-  getRisksByReviewerId(id:any='') {
+  getRisksByReviewerId(id: any = '') {
     // const userId = this.auth.getCurrentUserId();
     return this.http.get(`${this.baseUrl}/Approval/Approval${id}`);
   }
@@ -215,9 +210,12 @@ export class ApiService {
 
   updateReviewStatusAndComments(id: number, updates: any): Observable<any> {
     console.log('updatesssss', updates);
-    console.log("Id:",id);
+    console.log('Id:', id);
 
-    return this.http.put(`${this.baseUrl}/Approval/update-review/${id}`, updates);
+    return this.http.put(
+      `${this.baseUrl}/Approval/update-review/${id}`,
+      updates
+    );
   }
 
   sendEmailToAssignee(id: number) {
@@ -226,8 +224,10 @@ export class ApiService {
       .subscribe((e) => console.log(e));
   }
 
-  getRisksWithHeigestOverallRating(departmentList: number[],projectList: number[]) {
-
+  getRisksWithHeigestOverallRating(
+    departmentList: number[],
+    projectList: number[]
+  ) {
     let params = new HttpParams();
     departmentList.forEach((departmentId) => {
       params = params.append('departmentIds', departmentId.toString());
@@ -236,15 +236,16 @@ export class ApiService {
     projectList.forEach((projectId) => {
       params = params.append('projectIds', projectId.toString());
     });
-    console.log("params",params)
-    return this.http.get(`${this.baseUrl}/Risk/GetRiskWithHeighestOverallRationg`, {
-      params,
-    });
-
+    console.log('params', params);
+    return this.http.get(
+      `${this.baseUrl}/Risk/GetRiskWithHeighestOverallRationg`,
+      {
+        params,
+      }
+    );
   }
 
-  getRiskApproachingDeadline(departmentList: number[],projectList:number[]) {
-
+  getRiskApproachingDeadline(departmentList: number[], projectList: number[]) {
     let params = new HttpParams();
     departmentList.forEach((departmentId) => {
       params = params.append('departmentIds', departmentId.toString());
@@ -252,18 +253,16 @@ export class ApiService {
     projectList.forEach((projectId) => {
       params = params.append('projectIds', projectId.toString());
     });
-    console.log("params",params)
+    console.log('params', params);
     return this.http.get(`${this.baseUrl}/Risk/GetRiskApproachingDeadline`, {
       params,
     });
-
   }
-
 
   getAllUsers() {
     return this.http.get(`${this.baseUrl}/User/GetAllUsers`);
   }
-//needed some cases
+  //needed some cases
   getAllUsersByDepartmentName(department: string) {
     return this.http.get(
       `${this.baseUrl}/User/GetUsersByDepartment/${department}`
@@ -274,8 +273,10 @@ export class ApiService {
     return this.http.get(`${this.baseUrl}/Users`);
   }
 
-
-  getRiskCategoryCountsByDepartment(departmentList: number[],projectList:number[]) {
+  getRiskCategoryCountsByDepartment(
+    departmentList: number[],
+    projectList: number[]
+  ) {
     let params = new HttpParams();
     departmentList.forEach((departmentId) => {
       params = params.append('departmentIds', departmentId.toString());
@@ -283,7 +284,7 @@ export class ApiService {
     projectList.forEach((projectId) => {
       params = params.append('projectIds', projectId.toString());
     });
-    console.log("params",params)
+    console.log('params', params);
     return this.http.get(`${this.baseUrl}/Risk/RiskCategoryCountByDepartment`, {
       params,
     });
@@ -291,8 +292,12 @@ export class ApiService {
 
   changeUserStatus(userId: any, status: any) {
     return this.http
-      .patch(`${this.baseUrl}/User/IsActive/${userId}/${status}`, {}, { responseType: 'text' })
-      .subscribe(response => {
+      .patch(
+        `${this.baseUrl}/User/IsActive/${userId}/${status}`,
+        {},
+        { responseType: 'text' }
+      )
+      .subscribe((response) => {
         console.log('UserId and status:', userId, status);
         console.log('API Response:', response);
       });
@@ -333,18 +338,20 @@ export class ApiService {
     return this.http.post(`${this.baseUrl}/emails`, null, { params });
   }
 
-  sendReviewMail(email: string, subject: string, body: string): Observable<any> {
+  sendReviewMail(
+    email: string,
+    subject: string,
+    body: string
+  ): Observable<any> {
     const payload = {
       receptor: email,
       subject: subject,
       body: body,
-      isBodyHtml: true
+      isBodyHtml: true,
     };
     console.log('Sending payload:', payload);
     return this.http.post(`${this.baseUrl}/emails`, payload);
   }
-
-
 
   getAssigneeByRiskId(riskId: number) {
     return this.http.get(
@@ -353,8 +360,10 @@ export class ApiService {
   }
 
   getRevieverDetails(riskId: number, reviewStatus: string) {
-
-    console.log("api url:",`${this.baseUrl}/Reviewer/gettheReviewer/${riskId}?reviewStatus=${reviewStatus}`);
+    console.log(
+      'api url:',
+      `${this.baseUrl}/Reviewer/gettheReviewer/${riskId}?reviewStatus=${reviewStatus}`
+    );
 
     return this.http.get(
       `${this.baseUrl}/Reviewer/gettheReviewer/${riskId}?reviewStatus=${reviewStatus}`
@@ -362,14 +371,19 @@ export class ApiService {
   }
 
   updateQualityRisk(updated: any, riskId: number) {
-    return this.http.put(`${this.baseUrl}/Risk/update/quality/${riskId}`, updated);
+    return this.http.put(
+      `${this.baseUrl}/Risk/update/quality/${riskId}`,
+      updated
+    );
   }
 
   updateSecurityOrPrivacyRisk(updated: any, riskId: number) {
-    return this.http.put(`${this.baseUrl}/Risk/update/securityOrPrivacy/${riskId}`, updated);
+    return this.http.put(
+      `${this.baseUrl}/Risk/update/securityOrPrivacy/${riskId}`,
+      updated
+    );
   }
-  getOpenRiskCountByType(list:number[],projectList:number[]){
-    //https://localhost:7216/api/Risk/CountOfRiskType(Open)?isAdmin=false&departmentIds=4
+  getOpenRiskCountByType(list: number[], projectList: number[]) {
     let params = new HttpParams();
     list.forEach((departmentId) => {
       params = params.append('departmentIds', departmentId.toString());
@@ -377,66 +391,83 @@ export class ApiService {
     projectList.forEach((projectId) => {
       params = params.append('projectIds', projectId.toString());
     });
-    console.log("params",params)
+    console.log('params', params);
     return this.http.get(`${this.baseUrl}/Risk/CountOfRiskType(Open)`, {
       params,
     });
+  }
 
-   }
-
-   getRiskCategoryCounts(id:any = ''){
+  getRiskCategoryCounts(id: any = '') {
     return this.http.get(`${this.baseUrl}/Risk/RiskCategory-Counts?id=${id}`);
-   }
+  }
 
-  getriskOwnerEmailandName(id:any) {
+  getriskOwnerEmailandName(id: any) {
     return this.http.get(
       `${this.baseUrl}/User/GetEmailAndNameOfAUserbyRiskId/${id}`
     );
   }
 
-  getNewRiskId(departmentId: any,projectId: any | null = null){
+  getNewRiskId(departmentId: any, projectId: any | null = null) {
     const params: any = { departmentId: departmentId };
 
-    // Add projectId to the parameters only if it's not null
     if (projectId !== null) {
       params.projectId = projectId;
     }
-    return this.http.get(`${this.baseUrl}/Risk/riskid/new/Id`,{ params })
+    return this.http.get(`${this.baseUrl}/Risk/riskid/new/Id`, { params });
   }
 
+  updateDepartment(updateData: any) {
+    return this.http
+      .put(`${this.baseUrl}/Department`, updateData)
+      .pipe(tap(() => this.departmentUpdateSubject.next()));
+  }
 
-updateDepartment(updateData: any) {
-  return this.http.put(`${this.baseUrl}/Department`, updateData).pipe(tap(() => this.departmentUpdateSubject.next()));;
-}
+  updateProject(updateData: any, id: number) {
+    return this.http
+      .put<{ message: string }>(`${this.baseUrl}/Project/${id}`, updateData)
+      .pipe(tap(() => this.projectUpdateSubject.next()));
+  }
 
-updateProject(updateData: any, id: number) {
-  return this.http.put<{ message: string }>(`${this.baseUrl}/Project/${id}`, updateData).pipe(tap(() => this.projectUpdateSubject.next()));;
-}
+  getUsersByDepartmentId(departmentId: number) {
+    return this.http.get(`${this.baseUrl}/User/${departmentId}`);
+  }
 
-getUsersByDepartmentId(departmentId:number){
-  return this.http.get(
-    `${this.baseUrl}/User/${departmentId}`
-  );
-}
-
-changePassword(currentPassword: string, newPassword: string, confirmPassword: string): Observable<any> {
-  const userId = this.auth.getCurrentUserId();
-  const url = `${this.baseUrl}/Account/ChangePassword/${userId}`;
-  const payload = {
-    currentPassword,
-    newPassword,
-    confirmPassword
-  };
-  return this.http.post(url, payload);
-}
+  changePassword(
+    currentPassword: string,
+    newPassword: string,
+    confirmPassword: string
+  ): Observable<any> {
+    const userId = this.auth.getCurrentUserId();
+    const url = `${this.baseUrl}/Account/ChangePassword/${userId}`;
+    const payload = {
+      currentPassword,
+      newPassword,
+      confirmPassword,
+    };
+    return this.http.post(url, payload);
+  }
 
   saveResetToken(email: string, token: string): Observable<any> {
-    return this.http.post(`${this.baseUrl}/ResetPass/save-reset-token`, { token,email });
+    return this.http.post(`${this.baseUrl}/ResetPass/save-reset-token`, {
+      token,
+      email,
+    });
   }
 
-  resetPassword(payload: { email: string, token: string, newPassword: string }): Observable<any> {
+  resetPassword(payload: {
+    email: string;
+    token: string;
+    newPassword: string;
+  }): Observable<any> {
     return this.http.post(`${this.baseUrl}/ResetPass/reset-password`, payload);
   }
 
-
+  updateUser(id: number, userData: any): Observable<any> {
+    return this.http.put<any>(`${this.baseUrl}/User/${id}`, userData).pipe(
+      catchError((error) => {
+        console.error('Error updating user:', error);
+        return throwError(() => error);
+      })
+    );
+  }
 }

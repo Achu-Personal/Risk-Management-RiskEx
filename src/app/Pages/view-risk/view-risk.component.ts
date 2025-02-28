@@ -4,7 +4,7 @@ import { BodyContainerComponent } from '../../Components/body-container/body-con
 import { RiskDetailsSection2Component } from '../../Components/risk-details-section2/risk-details-section2.component';
 import { RiskDetailsSection3MitigationComponent } from '../../Components/risk-details-section3-mitigation/risk-details-section3-mitigation.component';
 import { ApiService } from '../../Services/api.service';
-import { ActivatedRoute, RouterOutlet } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -15,9 +15,8 @@ import { CommonModule } from '@angular/common';
     BodyContainerComponent,
     RiskDetailsSection2Component,
     RiskDetailsSection3MitigationComponent,
-    RouterOutlet,
-    CommonModule,
-  ],
+    CommonModule
+],
   templateUrl: './view-risk.component.html',
   styleUrl: './view-risk.component.scss',
 })

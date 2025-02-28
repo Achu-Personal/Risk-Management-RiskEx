@@ -14,6 +14,7 @@
         (change)="onDropdownChangeDepartment($event)"
         [openDropdownId]="openDropdownId"
         (openDropdown)="handleDropdownOpen($event)"
+        dropdownId="departmentDropdown"
       ></app-form-dropdown>
       }
       <div class="form-row">
@@ -35,6 +36,7 @@
           (change)="onDropdownChangeProject($event)"
           [openDropdownId]="openDropdownId"
           (openDropdown)="handleDropdownOpen($event)"
+          dropdownId="projectDropdown"
         ></app-form-dropdown>
         } @if(isAdmin==='Admin'){
         <app-form-dropdown
@@ -44,9 +46,11 @@
           dropdownDisplay="name"
           dropdownValue="id"
           selectValue="Select project"
+          [selectedValue]="preSelectedProject"
           (change)="onDropdownChangeProject($event)"
           [openDropdownId]="openDropdownId"
           (openDropdown)="handleDropdownOpen($event)"
+          dropdownId="projectDropdown"
         ></app-form-dropdown>
         }
       </div>
@@ -114,6 +118,7 @@
           (change)="onDropdownChangelikelihood($event)"
           [openDropdownId]="openDropdownId"
           (openDropdown)="handleDropdownOpen($event)"
+          dropdownId="LikelihoodDropdown"
         ></app-form-dropdown>
         <app-form-dropdown
           label="Impact"
@@ -126,6 +131,7 @@
           (change)="onDropdownChangeImpact($event)"
           [openDropdownId]="openDropdownId"
           (openDropdown)="handleDropdownOpen($event)"
+          dropdownId="impactDropdown"
         ></app-form-dropdown>
       </div>
       <div class="form-row" [ngStyle]="{ gap: '32vw', 'margin-top': '30px' }">
@@ -228,6 +234,7 @@
         dropdownDisplay="fullName"
         dropdownValue="id"
         selectValue="Select responsible person"
+        [selectedValue]="preSelectedResponsiblePerson"
         (change)="onDropdownChangeResponsiblePerson($event)"
         [openDropdownId]="openDropdownId"
         (openDropdown)="handleDropdownOpen($event)"
@@ -235,6 +242,7 @@
         or enter a new one. If you enter a new name, it will take priority over the dropdown selection."
         backgroundColor=" var(--form-color)"
         [showInfoButton]="true"
+        dropdownId="assigneeDropdown"
       ></app-form-dropdown>
       } } @if(isAdmin !== 'Admin'){ @if(!isnewAssigneenameDisplay){
       <app-form-dropdown
@@ -252,9 +260,15 @@
         or enter a new one. If you enter a new name, it will take priority over the dropdown selection."
         backgroundColor=" var(--form-color)"
         [showInfoButton]="true"
+        dropdownId="assigneeDropdown"
+
       ></app-form-dropdown>
 
-      } } @if(isnewAssigneenameDisplay){
+      } }
+
+
+
+      @if(isnewAssigneenameDisplay){
       <h6
         style="
           margin-bottom: 5px;
@@ -277,6 +291,8 @@
         <span>{{ newAssigneename }}</span>
       </div>
       }
+
+
 
       <div
         [ngStyle]="{
@@ -323,6 +339,8 @@
         message="You can select an existing reviewer from the dropdown
         or enter a new one. If you enter a new name, it will take priority over the dropdown selection."
         [showInfoButton]="true"
+        dropdownId="reviewerDropdown"
+
       ></app-form-dropdown>
 
       } @if(isnewReviewernameDisplay){
@@ -348,6 +366,8 @@
         <span>{{ newReviewername }}</span>
       </div>
       }
+
+
 
       <div
         [ngStyle]="{
@@ -396,10 +416,11 @@
   ></app-form-reference-heatmap-popup>
   } @if(isLoading) {
   <app-form-loader></app-form-loader>> }
-   @if(assigneeNotInList){
+   <!-- @if(assigneeNotInList){
   <app-form-data-not-in-list
     placeholder="Enter responsible person name"
     [isAssignee]="true"
+    [assigneeDepartment]=" departmentId"
     textLabel="Responsible person name"
     [dropdownDepartment]="dropdownDepartment"
     (cancelForm)="receiveCancel($event)"
@@ -407,7 +428,45 @@
     [openDropdownId]="openDropdownId"
     (openDropdown)="handleDropdownOpen($event)"
   ></app-form-data-not-in-list>
-  } @if(reviewerNotInList){
+  } -->
+
+  @if(assigneeNotInList){
+
+    @if(isAdmin=="Admin"){
+      <app-form-data-not-in-list
+        placeholder="Enter responsible person name"
+        [isAssignee]="true"
+        [assigneeDepartment]="departmentIdForAdminToAddToString"
+        textLabel="Responsible person name"
+        [dropdownDepartment]="dropdownDepartment"
+        (cancelForm)="receiveCancel($event)"
+        (sendData)="saveAssignee($event)"
+        [openDropdownId]="openDropdownId"
+        (openDropdown)="handleDropdownOpen($event)"
+      ></app-form-data-not-in-list>
+      }
+
+      @if(isAdmin!=="Admin"){
+        <app-form-data-not-in-list
+        placeholder="Enter responsible person name"
+        [isAssignee]="true"
+        [assigneeDepartment]="departmentId"
+        textLabel="Responsible person name"
+        [dropdownDepartment]="dropdownDepartment"
+        (cancelForm)="receiveCancel($event)"
+        (sendData)="saveAssignee($event)"
+        [openDropdownId]="openDropdownId"
+        (openDropdown)="handleDropdownOpen($event)"
+      ></app-form-data-not-in-list>
+      }
+
+  }
+
+
+
+
+
+  @if(reviewerNotInList){
   <app-form-data-not-in-list
     placeholder="Enter reviewer name"
     [isAssignee]="false"

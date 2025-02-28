@@ -46,6 +46,8 @@ export class ReusableTableComponent {
 
   @Output() approveRisk = new EventEmitter<{ row: any; comment: string }>();
   @Output() rejectRisk = new EventEmitter<{ row: any; comment: string }>();
+  @Output() editUserClicked = new EventEmitter<any>();
+
 
   constructor(
     public auth: AuthService,
@@ -58,7 +60,6 @@ export class ReusableTableComponent {
 
   rowKeys: string[] = [];
   isButtonVisible = false;
-  // items:any;
   ngOnInit(): void {
 
     const currentRoute = this.route.snapshot.url.join('/');
@@ -68,7 +69,7 @@ export class ReusableTableComponent {
       this.isButtonVisible = false;
     }
 
-    const role = this.auth.getUserRole(); // Fetch user role
+    const role = this.auth.getUserRole();
     this.isDepartmentUser = role === 'DepartmentUser';
     this.isAdmin = role === 'Admin';
     if (this.tableData && this.tableData.length > 0) {
@@ -78,9 +79,7 @@ export class ReusableTableComponent {
 
   }
   ngOnChanges(changes: SimpleChanges) {
-    // Check if tableData input has changed
     if (changes['tableData'] && changes['tableData'].currentValue) {
-      // Store the original data whenever tableData changes
       this.originalTableData = [...changes['tableData'].currentValue];
       // console.log('Original Table Data updated:', this.originalTableData);
     }
@@ -189,7 +188,6 @@ export class ReusableTableComponent {
 
   onSearch(searchText: string): void {
     const lowercasedSearchText = searchText.toLowerCase();
-    console.log(this.filterData)
     this.tableData1 = this.originalTableData.filter((item: any) =>
       Object.values(item).some((value: any) =>
         value != null && value.toString().toLowerCase().includes(lowercasedSearchText)
@@ -201,7 +199,6 @@ export class ReusableTableComponent {
     this.updatePaginatedItems();
   }
 
-  //-----------------filter ----------------------//
 
   showFilterDropdown = false;
   currentFilterColumn: string | null = null;
@@ -222,13 +219,11 @@ export class ReusableTableComponent {
     }
   }
 
-  // Get unique values for the current column
   getColumnValues(column: string): string[] {
     const uniqueValues = [...new Set(this.originalTableData.map((row) => row[column]))];
     return ['Select All', ...uniqueValues].filter(Boolean);
   }
 
-  // Get filtered options based on search text
   getFilteredOptions(): string[] {
     if (!this.currentFilterColumn) return [];
 
@@ -241,15 +236,14 @@ export class ReusableTableComponent {
   }
 
   searchFilterOptions() {
-    // This will trigger a re-render of the filtered options
   }
 
   applyFilter(column: string, value: string) {
     if (value === 'Select All') {
-      delete this.activeFilters[column]; // Clear the filter for this column
+      delete this.activeFilters[column];
 
     } else {
-      this.activeFilters[column] = value; // Apply the specific filter
+      this.activeFilters[column] = value;
 
 
     }
@@ -264,10 +258,8 @@ export class ReusableTableComponent {
   }
 
   private filterData() {
-    // Start with original data
     let filteredData = [...this.originalTableData];
 
-     // Apply all active filters
      if (Object.keys(this.activeFilters).length > 0) {
       Object.entries(this.activeFilters).forEach(([column, value]) => {
         filteredData = filteredData.filter((row) => row[column] === value);
@@ -278,12 +270,10 @@ export class ReusableTableComponent {
     this.tableData = filteredData;
   }
 
-  // Close dropdown when clicking outside
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: Event): void {
     const targetElement = event.target as HTMLElement;
 
-    // Check if the click was inside the filter dropdown or toggle button
     if (
       this.showFilterDropdown &&
       !targetElement.closest('.filter-dropdown') &&
@@ -292,5 +282,10 @@ export class ReusableTableComponent {
       this.showFilterDropdown = false;
       this.currentFilterColumn = null;
     }
+  }
+  editUser(event: Event, row: any) {
+    event.stopPropagation();
+    this.editUserClicked.emit(row);
+    this.cdr.markForCheck();
   }
 }

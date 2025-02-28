@@ -36,27 +36,32 @@
 
       }
       <!-- <app-form-input label="Email" required=" *" placeholder="Enter email" formControlName="email"></app-form-input> -->
+        @if(!isAssignee){
+          <div class="form-detail">
+            <label for="department">Department Name <span class="required"> *</span></label>
+            <app-dropdown  [options]="dropdownDepartment"
+              [displayField]="'departmentName'"
+              [valueField]="'id'"
+              selectValue="Select Department"
+              [openDropdownId]="openDropdownId"
+              [dropdownId]="dropdownId"
+              (openDropdown)="openDropdown.emit($event)"
+              width="100" id="reviewer-department" formControlName="departmentId"  >
+             </app-dropdown>
+          </div>
 
-        <div class="form-detail">
-          <label for="department">Department Name <span class="required"> *</span></label>
-          <app-dropdown  [options]="dropdownDepartment"
-            [displayField]="'departmentName'"
-            [valueField]="'id'"
-            selectValue="Select Department"
-            [openDropdownId]="openDropdownId"
-            [dropdownId]="dropdownId"
-            (openDropdown)="openDropdown.emit($event)"
-            width="100" id="reviewer-department" formControlName="departmentId"  >
-           </app-dropdown>
-        </div>
+          @if(group.get("departmentId")){
 
-        @if(group.get("departmentId")){
+            @if (group.get("departmentId")?.hasError('required')) {
+              <div class="text-danger">Department is required</div>
+            }
 
-          @if (group.get("departmentId")?.hasError('required')) {
-            <div class="text-danger">Department is required</div>
           }
 
         }
+
+
+
 
 
 

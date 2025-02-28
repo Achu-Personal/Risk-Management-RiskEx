@@ -297,3 +297,44 @@ a:hover {
   color: #721c24;
   border: 1px solid #f5c6cb;
 }
+
+
+
+
+.info-banner {
+  background-color: #f8f9fa; /* Light gray background */
+  border: 1px solid #d1d5db; /* Subtle border */
+  border-radius: 4px;
+  padding: 10px;
+  margin-bottom: 15px;
+  font-size: 0.875rem;
+  color: #333; /* Dark text for readability */
+}
+
+.info-banner strong {
+  color: black; /* Highlight "Note" in blue */
+}
+
+.readonly-dropdown {
+  pointer-events: none; /* Disables clicks and interactions */
+  opacity: 0.9; /* Optional: Makes it look visually disabled */
+}
+
+
+.dropdown-header {
+  width: 100%;
+  // padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+  background-color: #f9f9f9;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.3s ease;
+  height: 47px;
+  margin-top: 28.3px;
+  align-content: center;
+
+}

@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Reset Your Risk Management System Password</title>
+  <title>Your Risk Management System Account Update</title>
   <style>
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
@@ -35,7 +36,7 @@
       margin-top: 20px;
     }
 
-    .reset-info {
+    .update-info {
       background-color: #f9f9f9;
       border: 1px solid #e0e0e0;
       border-radius: 5px;
@@ -43,9 +44,16 @@
       margin: 20px 0;
     }
 
-    .warning {
-      color: #d9534f;
-      font-weight: bold;
+    .update-info p {
+      margin: 10px 0;
+      color: #555;
+    }
+
+    .note {
+      background-color: #fff8e1;
+      border-left: 4px solid #ffc107;
+      padding: 10px 15px;
+      margin: 20px 0;
     }
 
     .footer {
@@ -72,6 +80,16 @@
       background-color: #2FFEE0;
       color: #1A544B;
     }
+
+    .projects-list {
+      padding-left: 20px;
+      margin: 5px 0;
+    }
+
+    .no-projects {
+      font-style: italic;
+      color: #777;
+    }
   </style>
 </head>
 
@@ -84,25 +102,35 @@
     <div class="content">
       <p>Hello {{fullName}},</p>
 
-      <p>We received a request to reset your password for the Risk Management System. If you didn't make this request, please ignore this email or contact support if you have concerns.</p>
+      <p>Your account information in the Risk Management System has been updated. Here's a summary of your current account details:</p>
 
-      <div class="reset-info">
-        <p>To reset your password, click the button below. This link will expire in 24 hours for security reasons.</p>
+      <div class="update-info">
+        <p><strong>User Email:</strong> {{userEmail}}</p>
+        <p><strong>Full Name:</strong> {{fullName}}</p>
+        <p><strong>Department:</strong> {{departmentName}}</p>
+        <p><strong>Assigned Projects:</strong></p>
+        {{#if projects.length}}
+        <ul class="projects-list">
+          <!-- PROJECT_LIST_PLACEHOLDER -->
+        </ul>
+        {{else}}
+        <p class="no-projects">No projects assigned</p>
+        {{/if}}
       </div>
 
-      <p class="warning">⚠️ For security reasons, please reset your password immediately!</p>
+      <div class="note">
+        <p>If you notice any discrepancies in the information above or did not request these changes, please contact your system administrator immediately.</p>
+      </div>
 
-      <a href="{{resetPasswordLink}}" class="cta-button">Reset Password</a>
-
-      <p>If you're having trouble with the button, click <a href="{{ResetPage}}">here</a> to reset your password.</p>
-
+      <a href="{{baseUrl}}/auth/" class="cta-button">Access Risk Management System</a>
     </div>
 
     <div class="footer">
-      <p>If you did not request this password reset, please contact our support team immediately.</p>
+      <p>This is an automated notification from the Risk Management System.</p>
       <p>&copy; 2024 Risk Management System. All rights reserved.</p>
       <p>Secure login at: {{baseUrl}}/</p>
     </div>
   </div>
 </body>
+
 </html>

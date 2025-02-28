@@ -71,9 +71,12 @@ export class EditRiskComponent {
       this.selectedRiskType = 3;
     }
 
-    this.departmentName = this.authService.getDepartmentName()!;
 
-    this.departmentId = this.authService.getDepartmentId()!;
+    this.departmentName=this.riskData.department.name
+
+
+    this.departmentId=this.riskData.department.id
+
 
     this.isAdmin = this.authService.getUserRole()!;
     console.log(this.isAdmin);
@@ -98,8 +101,8 @@ export class EditRiskComponent {
       this.dropdownDataReviewer = res.reviewers;
     });
 
-    const departmentId: any = this.authService.getDepartmentId();
-    this.api.getUsersByDepartmentId(departmentId).subscribe((res: any) => {
+    // const departmentId: any = this.authService.getDepartmentId();
+    this.api.getUsersByDepartmentId(Number(this.departmentId)).subscribe((res: any) => {
       this.dropdownDataAssignee = res;
     });
   }

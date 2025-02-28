@@ -116,7 +116,7 @@ export class IsmsEditComponent {
   preSelectedPrivacyImpact: any;
   preSelectedReviewer: any;
   preSelectedResponsiblePerson: any;
-  preSelectedProject: any;
+  preSelectedProject: any=null;
 
   isSuccessReviewer: boolean = false;
   isErrorReviewer: boolean = false;
@@ -134,6 +134,8 @@ export class IsmsEditComponent {
   isnewAssigneenameDisplay: boolean = false;
   isnewReviewernameDisplay: boolean = false;
   isLoading = false; // Initially false
+  departmentIdForAdminToAddToString:string=''
+
 
   constructor(
     private api: ApiService,
@@ -164,9 +166,14 @@ export class IsmsEditComponent {
     console.log(this.confidentialityRiskFactor);
   }
 
-  handleDropdownOpen(dropdownId: string) {
-    this.openDropdownId =
-      this.openDropdownId === dropdownId ? undefined : dropdownId;
+  // handleDropdownOpen(dropdownId: string) {
+
+  //     this.openDropdownId === dropdownId ? undefined : dropdownId;
+  // }
+
+  handleDropdownOpen(dropdownId: string | undefined): void {
+
+    this.openDropdownId = dropdownId;
   }
 
   isReviewerNotInList() {
@@ -188,6 +195,8 @@ export class IsmsEditComponent {
   onDropdownChangeDepartment(event: any): void {
     const selectedFactorId = Number(event);
     this.departmentIdForAdminToAdd = selectedFactorId;
+    this.departmentIdForAdminToAddToString= this.departmentIdForAdminToAdd.toString();
+
   }
 
   onDropdownChange(event: any, type: string, category: string): void {
@@ -578,16 +587,10 @@ export class IsmsEditComponent {
       mitigation: formValue.mitigation,
       contingency: formValue.contingency || ' ',
       OverallRiskRatingBefore: Number(this.overallRiskRating),
-      responsibleUserId:
-        Number(this.responsiblePersonId) !== 0 &&
-        !isNaN(Number(this.responsiblePersonId))
-          ? Number(this.responsiblePersonId)
-          : this.preSelectedResponsiblePerson !== 0 &&
-            !isNaN(Number(this.preSelectedResponsiblePerson))
-          ? Number(this.preSelectedResponsiblePerson)
-          : this.newAssigneeId && !isNaN(Number(this.newAssigneeId))
-          ? Number(this.newAssigneeId)
-          : null,
+      responsibleUserId: Number(this.newAssigneeId)!== 0 && !isNaN(Number(this.newAssigneeId)) ? Number(this.newAssigneeId) :
+                             Number(this.responsiblePersonId) !== 0 && !isNaN(Number(this.responsiblePersonId)) ? Number(this.responsiblePersonId):
+                             this.preSelectedResponsiblePerson !== 0 && !isNaN(Number(this.preSelectedResponsiblePerson)) ? Number(this.preSelectedResponsiblePerson):
+                             null,
       plannedActionDate: `${formValue.plannedActionDate}T00:00:00.000Z`,
       departmentId:
         Number(this.departmentId) !== 0 && !isNaN(Number(this.departmentId))
@@ -596,13 +599,12 @@ export class IsmsEditComponent {
             !isNaN(Number(this.departmentIdForAdminToAdd))
           ? Number(this.departmentIdForAdminToAdd)
           : null,
-      projectId:
-        Number(this.projectId) !== 0 && !isNaN(Number(this.projectId))
-          ? Number(this.projectId)
-          : this.preSelectedProject !== 0 &&
-            !isNaN(Number(this.preSelectedProject))
-          ? Number(this.preSelectedProject)
-          : null,
+          projectId:
+          this.projectId && !isNaN(Number(this.projectId)) && Number(this.projectId) !== 0
+            ? Number(this.projectId)
+            : this.preSelectedProject && !isNaN(Number(this.preSelectedProject)) && Number(this.preSelectedProject) !== 0
+            ? Number(this.preSelectedProject)
+            : null,
       riskAssessments: [
         {
           likelihood:
@@ -780,10 +782,13 @@ export class IsmsEditComponent {
   }
   saveAssignee(value: any) {
     this.isLoading = true; // Show loader when function starts
-    const departmentNameDetails = this.dropdownDepartment.find(
-      (factor) => factor.id === value.departmentId
-    );
-    const departmentName = departmentNameDetails.departmentName;
+    let departmentName;
+    if(value.departmentId){
+      const departmentNameDetails = this.dropdownDepartment.find(
+        (factor) => factor.id === value.departmentId
+      );
+     departmentName = departmentNameDetails.departmentName;
+    }
 
 
     const payload = {

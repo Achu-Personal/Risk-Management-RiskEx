@@ -1,13 +1,14 @@
-[{
-  "type":"Quality",
-  "value":"quality"
-},
-{
-  "type":"Security",
-  "value":"security"
-},
-{
-  "type":"Privacy",
-  "value":"privacy"
-}
+[
+  {
+    "type": "Quality",
+    "value": "quality"
+  },
+  {
+    "type": "Security",
+    "value": "security"
+  },
+  {
+    "type": "Privacy",
+    "value": "privacy"
+  }
 ]

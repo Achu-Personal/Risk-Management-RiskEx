@@ -104,10 +104,9 @@ export class UpdateQmsComponent {
     private router: Router
   ) {}
   ngOnInit() {}
+  handleDropdownOpen(dropdownId: string | undefined): void {
 
-  handleDropdownOpen(dropdownId: string) {
-    this.openDropdownId =
-      this.openDropdownId === dropdownId ? undefined : dropdownId;
+    this.openDropdownId = dropdownId;
   }
   isReviewerNotInList() {
     this.reviewerNotInList = !this.reviewerNotInList;

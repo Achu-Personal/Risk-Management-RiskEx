@@ -13,20 +13,38 @@
         qmsForm.get("riskName")?.dirty) {
         <div class="text-danger">Risk name is required</div>
         } }
-        <app-form-dropdown
-          label="Project Name"
-          dropdownCode="projectCode"
-          [dropdownData]="dropdownProject"
-          dropdownDisplay="name"
-          dropdownValue="id"
-          selectValue="Select project"
-          (change)="onDropdownChangeProject($event)"
-          [selectedValue]="preSelectedProject"
-          [openDropdownId]="openDropdownId"
-          (openDropdown)="handleDropdownOpen($event)"
-        ></app-form-dropdown>
+        @if(preSelectedProject ==null){
+          <div class="dropdown-header">
+            <p [ngStyle]="{
+              'margin-top': '18px',
+              'margin-left': '18px',
+              'font-style': 'italic',
+              color: 'grey'
+            }">No project for this risk</p>
+          </div>
+
+       }
+
+        @if(preSelectedProject !==null){
+          <div class="readonly-dropdown">
+            <app-form-dropdown
+            label="Project Name"
+            dropdownCode="projectCode"
+            [dropdownData]="dropdownProject"
+            dropdownDisplay="name"
+            dropdownValue="id"
+            selectValue="Select project"
+            [selectedValue]="preSelectedProject"
+            (change)="onDropdownChangeProject($event)"
+            [openDropdownId]="openDropdownId"
+            (openDropdown)="handleDropdownOpen($event)"
+            dropdownId="projectDropdown"
+          ></app-form-dropdown>
+        </div>
+
+        }
       </div>
-      @if(isAdmin === 'Admin'){
+      <!-- @if(isAdmin === 'Admin'){
       <app-form-dropdown
         label="Department Name"
         [dropdownData]="dropdownDepartment"
@@ -37,7 +55,7 @@
         [openDropdownId]="openDropdownId"
         (openDropdown)="handleDropdownOpen($event)"
       ></app-form-dropdown>
-      }
+      } -->
       <app-form-text-area
         label="Impact Of Risk"
         required="*"
@@ -241,6 +259,8 @@
         }
 
 
+
+
       <div
         [ngStyle]="{
           'margin-top': '20px',
@@ -312,6 +332,8 @@
         </div>
         }
 
+
+
       <div
         [ngStyle]="{
           'margin-top': '20px',
@@ -348,18 +370,39 @@
     (closeHeatMap)="closeHeatMap()"
   ></app-form-reference-heatmap-popup>
   } @if(isLoading) {
-  <app-form-loader></app-form-loader>> } @if(assigneeNotInList){
-  <app-form-data-not-in-list
-    placeholder="Enter responsible person name"
-    [isAssignee]="true"
-    textLabel="Responsible person name"
-    [dropdownDepartment]="dropdownDepartment"
-    (cancelForm)="receiveCancel($event)"
-    (sendData)="saveAssignee($event)"
-    [openDropdownId]="openDropdownId"
-    (openDropdown)="handleDropdownOpen($event)"
-  ></app-form-data-not-in-list>
-  } @if(reviewerNotInList){
+  <app-form-loader></app-form-loader>> }
+  @if(assigneeNotInList){
+
+    @if(isAdmin=="Admin"){
+      <app-form-data-not-in-list
+        placeholder="Enter responsible person name"
+        [isAssignee]="true"
+        [assigneeDepartment]="departmentIdForAdminToAddToString"
+        textLabel="Responsible person name"
+        [dropdownDepartment]="dropdownDepartment"
+        (cancelForm)="receiveCancel($event)"
+        (sendData)="saveAssignee($event)"
+        [openDropdownId]="openDropdownId"
+        (openDropdown)="handleDropdownOpen($event)"
+      ></app-form-data-not-in-list>
+      }
+
+      @if(isAdmin!=="Admin"){
+        <app-form-data-not-in-list
+        placeholder="Enter responsible person name"
+        [isAssignee]="true"
+        [assigneeDepartment]="departmentId"
+        textLabel="Responsible person name"
+        [dropdownDepartment]="dropdownDepartment"
+        (cancelForm)="receiveCancel($event)"
+        (sendData)="saveAssignee($event)"
+        [openDropdownId]="openDropdownId"
+        (openDropdown)="handleDropdownOpen($event)"
+      ></app-form-data-not-in-list>
+      }
+
+  }
+  @if(reviewerNotInList){
   <app-form-data-not-in-list
     placeholder="Enter reviewer name"
     [isAssignee]="false"

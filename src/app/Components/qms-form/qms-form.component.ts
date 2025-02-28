@@ -45,7 +45,7 @@ import { FormLoaderComponent } from '../form-loader/form-loader.component';
     FormReferenceHeatmapPopupComponent,
     FormConformPopupComponent,
     StyleButtonComponent,
-    FormLoaderComponent
+    FormLoaderComponent,
   ],
   templateUrl: './qms-form.component.html',
   styleUrl: './qms-form.component.scss',
@@ -92,7 +92,7 @@ export class QMSFormComponent {
   isErrorReviewer: boolean = false;
   isSuccessAssignee: boolean = false;
   isErrorAssignee: boolean = false;
-  openDropdownId: string | undefined = undefined;
+  openDropdownId: string | undefined;
   isLoading = false;
 
   draft: any = {};
@@ -111,6 +111,9 @@ export class QMSFormComponent {
   newAssigneename: string = '';
   isnewAssigneenameDisplay: boolean = false;
   isnewReviewernameDisplay: boolean = false;
+  isDraftLoaded = false;
+  departmentIdForAdminToAddToString: string = '';
+  departmentIdForAdminToAddToNumber: number = 0;
 
   constructor(
     private el: ElementRef,
@@ -119,7 +122,128 @@ export class QMSFormComponent {
     private router: Router
   ) {}
   ngOnInit() {
-    this.loadDraft();
+    console.log('the project id isssssssssssssssssssssss', this.projectId);
+    if (this.isAdmin !== 'Admin') {
+      this.loadDraft();
+    }
+  }
+  ngOnChanges(changes: SimpleChanges): void {
+    if (this.isAdmin !== 'Admin') {
+      if (!this.isDraftLoaded || !this.draft) {
+        console.warn(
+          'Draft data is not yet loaded. Skipping ngOnChanges logic.'
+        );
+        const draft = localStorage.getItem('draftQuality');
+        if (draft) {
+          this.draft = JSON.parse(draft);
+        }
+      }
+
+      if (this.draft) {
+        console.log('drafffffffffffft', this.draft);
+        if (changes['dropdownLikelihood']) {
+          this.preSelectedLikelihood = this.draft.riskAssessments[0].likelihood;
+        }
+
+        if (changes['dropdownImpact']) {
+          this.preSelectedImpact = this.draft.riskAssessments[0].impact;
+        }
+
+        if (changes['dropdownProject']) {
+          if (
+            this.draft.projectId !== null &&
+            this.draft.projectId !== undefined
+          ) {
+            this.preSelectedProject = this.draft.projectId;
+          }
+        }
+
+        if (changes['dropdownAssignee']) {
+          this.preSelectedResponsiblePerson = this.draft.responsibleUserId;
+        }
+
+        if (changes['dropdownReviewer']) {
+          const selectedFactor = this.dropdownReviewer.find(
+            (factor) =>
+              factor.id === this.draft.riskAssessments[0].review.userId
+          );
+
+          if (selectedFactor) {
+            if (selectedFactor.type === 'Internal') {
+              this.isInternal = true;
+              this.internalReviewerIdFromDropdown = selectedFactor.id;
+              this.preSelectedReviewer = selectedFactor?.fullName;
+            } else if (selectedFactor.type === 'External') {
+              this.isInternal = false;
+              this.externalReviewerIdFromDropdown = selectedFactor.id;
+              this.preSelectedReviewer = selectedFactor?.fullName;
+            }
+          }
+        }
+      }
+    }
+
+    if (this.isAdmin == 'Admin') {
+      if (!this.isDraftLoaded || !this.draft) {
+        console.warn(
+          'Draft data is not yet loaded. Skipping ngOnChanges logic.'
+        );
+        // const draftKey = `draft_${this.departmentIdForAdminToAdd}`;
+        const draft = localStorage.getItem(
+          `draft_${this.departmentIdForAdminToAdd}`
+        );
+        if (draft) {
+          this.draft = JSON.parse(draft);
+          console.log(
+            'Draft Loadeddddddddddddddddddddddddddddddd:',
+            this.draft
+          );
+        }
+      }
+
+      if (this.draft) {
+        console.log('drafffffffffffft', this.draft);
+        if (changes['dropdownLikelihood']) {
+          this.preSelectedLikelihood = this.draft.riskAssessments[0].likelihood;
+        }
+
+        if (changes['dropdownImpact']) {
+          this.preSelectedImpact = this.draft.riskAssessments[0].impact;
+        }
+
+        if (changes['dropdownProject']) {
+          if (
+            this.draft.projectId !== null &&
+            this.draft.projectId !== undefined
+          ) {
+            this.preSelectedProject = this.draft.projectId;
+          }
+        }
+
+        if (changes['dropdownAssignee']) {
+          this.preSelectedResponsiblePerson = this.draft.responsibleUserId;
+        }
+
+        if (changes['dropdownReviewer']) {
+          const selectedFactor = this.dropdownReviewer.find(
+            (factor) =>
+              factor.id === this.draft.riskAssessments[0].review.userId
+          );
+
+          if (selectedFactor) {
+            if (selectedFactor.type === 'Internal') {
+              this.isInternal = true;
+              this.internalReviewerIdFromDropdown = selectedFactor.id;
+              this.preSelectedReviewer = selectedFactor?.fullName;
+            } else if (selectedFactor.type === 'External') {
+              this.isInternal = false;
+              this.externalReviewerIdFromDropdown = selectedFactor.id;
+              this.preSelectedReviewer = selectedFactor?.fullName;
+            }
+          }
+        }
+      }
+    }
   }
 
   qmsForm = new FormGroup({
@@ -144,7 +268,7 @@ export class QMSFormComponent {
   });
 
   isDisabled(): boolean {
-    return this.qmsForm.invalid || !this.qmsForm.dirty;
+    return this.qmsForm.invalid;
   }
 
   autoResize(event: Event): void {
@@ -154,9 +278,8 @@ export class QMSFormComponent {
     textarea.style.height = `${Math.max(minHeight, textarea.scrollHeight)}px`;
   }
 
-  handleDropdownOpen(dropdownId: string) {
-    this.openDropdownId =
-      this.openDropdownId === dropdownId ? undefined : dropdownId;
+  handleDropdownOpen(dropdownId: string | undefined): void {
+    this.openDropdownId = dropdownId;
   }
 
   isReviewerNotInList() {
@@ -179,6 +302,82 @@ export class QMSFormComponent {
     const selectedFactorId = Number(event);
     this.departmentIdForAdminToAdd = selectedFactorId;
     this.departmentSelectedByAdmin.emit(this.departmentIdForAdminToAdd);
+    console.log('dfghjkldfghjkdcfvghj', this.departmentIdForAdminToAdd);
+    this.departmentIdForAdminToAddToNumber = this.departmentIdForAdminToAdd;
+    this.departmentIdForAdminToAddToString =
+      this.departmentIdForAdminToAddToNumber.toString();
+    console.log('the project id isssssssssssssssssssssss', this.projectId);
+    this.loadDraftForAdmin();
+  }
+
+  loadDraftForAdmin() {
+    console.log('the project id isssssssssssssssssssssss', this.projectId);
+    this.qmsForm.reset();
+    this.overallRiskRating = 0;
+    this.riskFactor = 0;
+    this.preSelectedProject = null;
+    this.preSelectedLikelihood = 0;
+    this.preSelectedImpact = 0;
+    this.preSelectedResponsiblePerson = null;
+    this.preSelectedReviewer = null;
+
+    const draftKey = `draft_${this.departmentIdForAdminToAdd}`;
+    const draft = localStorage.getItem(draftKey);
+    if (draft) {
+      this.draft = JSON.parse(draft);
+      console.log('Draft Loaded:', this.draft);
+      this.qmsForm.patchValue(this.draft.formValues);
+      this.overallRiskRating = this.draft.OverallRiskRatingBefore;
+      this.riskFactor = this.draft.riskAssessments[0].riskFactor;
+      console.log(
+        'likelihooooooooooooooood',
+        this.draft.riskAssessments[0].likelihood
+      );
+      this.isDraftLoaded = true;
+
+      const changes: SimpleChanges = {
+        dropdownLikelihood: {
+          currentValue: this.draft.riskAssessments?.[0]?.likelihood ?? null,
+          previousValue: undefined,
+          firstChange: true,
+          isFirstChange: () => true,
+        },
+        dropdownImpact: {
+          currentValue: this.draft.riskAssessments?.[0]?.impact ?? null,
+          previousValue: undefined,
+          firstChange: true,
+          isFirstChange: () => true,
+        },
+        dropdownProject: {
+          currentValue:
+            this.draft.projectId !== null && this.draft.projectId !== undefined
+              ? this.draft.projectId
+              : this.preSelectedProject, // Keeps the previous value if null
+          previousValue: null,
+          firstChange: true,
+          isFirstChange: () => true,
+        },
+        dropdownAssignee: {
+          currentValue: this.draft.responsibleUserId ?? null,
+          previousValue: undefined,
+          firstChange: true,
+          isFirstChange: () => true,
+        },
+        dropdownReviewer: {
+          currentValue: this.draft.riskAssessments?.[0]?.review?.userId ?? null,
+          previousValue: undefined,
+          firstChange: true,
+          isFirstChange: () => true,
+        },
+      };
+
+      this.ngOnChanges(changes);
+      console.log('the project id isssssssssssssssssssssss', this.projectId);
+    }
+    console.log(
+      'the project id isssssssssssssssssssssss after draft',
+      this.projectId
+    );
   }
 
   onDropdownChangelikelihood(event: any): void {
@@ -269,23 +468,42 @@ export class QMSFormComponent {
   }
 
   async onSubmit() {
-    this.isLoading=true;
-    if (this.isAdmin === 'Admin') {
-      if (this.projectId != 0) {
+    console.log('the project id isssssssssssssssssssssss', this.projectId);
+    this.isLoading = true;
+    if (this.isAdmin == 'Admin') {
+      if (this.projectId && this.projectId != 0) {
         await this.getRiskId(
           Number(this.departmentIdForAdminToAdd),
           this.projectId
         );
+      }
+      else {
+        if (this.preSelectedProject && this.preSelectedProject != 0) {
+        await this.getRiskId(
+          Number(this.departmentIdForAdminToAdd),
+          this.preSelectedProject
+        );
       } else {
         await this.getRiskId(Number(this.departmentIdForAdminToAdd));
       }
-    } else {
-      if (this.projectId != 0) {
+    }
+    }
+
+    if (this.isAdmin !== 'Admin') {
+      if (this.projectId && this.projectId != 0) {
         await this.getRiskId(Number(this.departmentId), this.projectId);
+      }
+      else{
+      if (this.preSelectedProject && this.preSelectedProject != 0) {
+        await this.getRiskId(
+          Number(this.departmentId),
+          this.preSelectedProject
+        );
       } else {
         await this.getRiskId(Number(this.departmentId));
       }
     }
+  }
 
     if (!this.riskId) {
       console.error('Failed to fetch Risk ID. Submission aborted.');
@@ -298,7 +516,7 @@ export class QMSFormComponent {
       console.log('Form is invalid, submission blocked');
       this.qmsForm.markAllAsTouched(); // Highlights all errors
       this.isValid = true;
-      this.isLoading=false;
+      this.isLoading = false;
       return; // Stop execution if form is invalid
     }
 
@@ -320,10 +538,13 @@ export class QMSFormComponent {
     ) {
       console.log('Invalid numeric fields: Numbers must be greater than 0');
       this.isValid = true;
-      this.isLoading=false;
+      this.isLoading = false;
       return;
     }
-
+    console.log(
+      'the project id isssssssssssssssssssssss before payload',
+      this.projectId
+    );
     const formValue = this.qmsForm.value;
     const payload = {
       riskId: this.riskId,
@@ -335,14 +556,14 @@ export class QMSFormComponent {
       contingency: formValue.contingency || ' ',
       OverallRiskRatingBefore: Number(this.overallRiskRating),
       responsibleUserId:
-        Number(this.responsiblePersonId) !== 0 &&
-        !isNaN(Number(this.responsiblePersonId))
+        Number(this.newAssigneeId) !== 0 && !isNaN(Number(this.newAssigneeId))
+          ? Number(this.newAssigneeId)
+          : Number(this.responsiblePersonId) !== 0 &&
+            !isNaN(Number(this.responsiblePersonId))
           ? Number(this.responsiblePersonId)
           : this.preSelectedResponsiblePerson !== 0 &&
             !isNaN(Number(this.preSelectedResponsiblePerson))
           ? Number(this.preSelectedResponsiblePerson)
-          : this.newAssigneeId && !isNaN(Number(this.newAssigneeId))
-          ? Number(this.newAssigneeId)
           : null,
       plannedActionDate: `${formValue.plannedActionDate}T00:00:00.000Z`,
       departmentId:
@@ -353,12 +574,16 @@ export class QMSFormComponent {
           ? Number(this.departmentId)
           : null,
       projectId:
-        Number(this.projectId) !== 0 && !isNaN(Number(this.projectId))
+        this.projectId &&
+        !isNaN(Number(this.projectId)) &&
+        Number(this.projectId) !== 0
           ? Number(this.projectId)
-          : this.preSelectedProject !== 0 &&
-            !isNaN(Number(this.preSelectedProject))
+          : this.preSelectedProject &&
+            !isNaN(Number(this.preSelectedProject)) &&
+            Number(this.preSelectedProject) !== 0
           ? Number(this.preSelectedProject)
           : null,
+
       riskAssessments: [
         {
           likelihood: this.likelihoodId
@@ -377,6 +602,10 @@ export class QMSFormComponent {
           riskFactor: Number(this.riskFactor),
           review: {
             userId:
+            Number(this.externalReviewerIdFromInput) &&
+                      !isNaN(Number(this.externalReviewerIdFromInput))
+                      ? null // If externalReviewerId is present, userId should be null
+                      :
               this.isInternal &&
               Number(this.internalReviewerIdFromDropdown) !== 0
                 ? Number(this.internalReviewerIdFromDropdown)
@@ -395,10 +624,23 @@ export class QMSFormComponent {
     };
 
     this.submitForm.emit(payload);
+    console.log(
+      'the project id isssssssssssssssssssssss after submit payload',
+      this.projectId
+    );
+    if (this.isAdmin !== 'Admin') {
+      localStorage.removeItem('draftQuality');
+    }
 
-    localStorage.removeItem('draftQuality'); // Delete draft after saving
+    if (this.isAdmin == 'Admin') {
+      localStorage.removeItem(`draft_${this.departmentIdForAdminToAdd}`);
+      console.log(
+        'Admins draft saved for this department deleted successfully'
+      );
+    }
+
     console.log('Draft Removed!');
-    this.isLoading=false;
+    this.isLoading = false;
   }
 
   private getRiskId(
@@ -410,7 +652,7 @@ export class QMSFormComponent {
         next: (res: any) => {
           if (res && res.riskId) {
             this.riskId = res.riskId;
-            console.log('Risk ID received:', this.riskId);
+            console.log('Risk ID received in function:', this.riskId);
             resolve();
           } else {
             console.error('Risk ID is not available in the response:', res);
@@ -436,12 +678,18 @@ export class QMSFormComponent {
     }
   }
   saveAssignee(value: any) {
-    this.isLoading = true; // Show loader when function starts
-
-    const departmentNameDetails = this.dropdownDepartment.find(
-      (factor) => factor.id === value.departmentId
+    console.log(
+      'the project id isssssssssssssssssssssss before assignee add api',
+      this.projectId
     );
-    const departmentName = departmentNameDetails.departmentName;
+    this.isLoading = true; // Show loader when function starts
+    let departmentName;
+    if (value.departmentId) {
+      const departmentNameDetails = this.dropdownDepartment.find(
+        (factor) => factor.id === value.departmentId
+      );
+      departmentName = departmentNameDetails.departmentName;
+    }
 
     const payload = {
       email: value.email,
@@ -472,10 +720,19 @@ export class QMSFormComponent {
         this.isErrorAssignee = true;
       },
     });
+
+    console.log(
+      'the project id isssssssssssssssssssssss after assignee add api',
+      this.projectId
+    );
   }
 
   saveReviewer(value: any) {
     this.isLoading = true; // Show loader when function starts
+    console.log(
+      'the project id isssssssssssssssssssssss before reviewer add api',
+      this.projectId
+    );
 
     const payload = {
       email: value.email,
@@ -505,6 +762,11 @@ export class QMSFormComponent {
         this.isErrorReviewer = true;
       },
     });
+
+    console.log(
+      'the project id isssssssssssssssssssssss after reviewer add api',
+      this.projectId
+    );
   }
 
   closeHeatMap() {
@@ -521,89 +783,154 @@ export class QMSFormComponent {
   }
 
   closeDraft() {
-    if (this.qmsForm && this.qmsForm.dirty) {
-      const draft = {
-        formValues: this.qmsForm.value,
-        riskType: Number(this.riskTypeValue),
-        OverallRiskRatingBefore: Number(this.overallRiskRating),
-        responsibleUserId:
-          Number(this.responsiblePersonId) != 0
-            ? +Number(this.responsiblePersonId)
-            : Number(this.newAssigneeId),
-        departmentId:
-          Number(this.departmentId) != 0
-            ? +Number(this.departmentId)
-            : Number(this.departmentIdForAdminToAdd),
-        projectId: Number(this.projectId) != 0 ? +Number(this.projectId) : null,
-        riskAssessments: [
-          {
-            likelihood: Number(this.likelihoodId),
-            impact: Number(this.impactId),
-            isMitigated: false,
-            assessmentBasisId: null,
-            riskFactor: Number(this.riskFactor),
-            review: {
-              userId:
-                this.isInternal &&
-                Number(this.internalReviewerIdFromDropdown) != 0
-                  ? Number(this.internalReviewerIdFromDropdown)
-                  : null,
-              externalReviewerId: Number(this.externalReviewerIdFromInput)
-                ? Number(this.externalReviewerIdFromInput)
-                : !this.isInternal &&
-                  Number(this.externalReviewerIdFromDropdown) != 0
-                ? Number(this.externalReviewerIdFromDropdown)
+    if (this.isAdmin !== 'Admin') {
+      if (this.qmsForm.value.riskName) {
+        const draft = {
+          formValues: this.qmsForm.value,
+          riskType: Number(this.riskTypeValue),
+          OverallRiskRatingBefore: Number(this.overallRiskRating),
+          responsibleUserId:
+            Number(this.responsiblePersonId) !== 0 &&
+            !isNaN(Number(this.responsiblePersonId))
+              ? Number(this.responsiblePersonId)
+              : this.preSelectedResponsiblePerson !== 0 &&
+                !isNaN(Number(this.preSelectedResponsiblePerson))
+              ? Number(this.preSelectedResponsiblePerson)
+              : this.newAssigneeId && !isNaN(Number(this.newAssigneeId))
+              ? Number(this.newAssigneeId)
+              : null,
+          departmentId:
+            Number(this.departmentId) != 0
+              ? +Number(this.departmentId)
+              : Number(this.departmentIdForAdminToAdd),
+          projectId:
+            Number(this.projectId) !== 0 && !isNaN(Number(this.projectId))
+              ? Number(this.projectId)
+              : this.preSelectedProject !== 0 &&
+                !isNaN(Number(this.preSelectedProject))
+              ? Number(this.preSelectedProject)
+              : null,
+          riskAssessments: [
+            {
+              likelihood: this.likelihoodId
+                ? Number(this.likelihoodId)
+                : this.preSelectedLikelihood &&
+                  !isNaN(Number(this.preSelectedLikelihood))
+                ? Number(this.preSelectedLikelihood)
                 : null,
-              comments: ' ',
-              reviewStatus: 1,
+              impact: this.impactValue
+                ? Number(this.impactId)
+                : this.preSelectedImpact &&
+                  !isNaN(Number(this.preSelectedImpact))
+                ? Number(this.preSelectedImpact)
+                : null,
+              isMitigated: false,
+              assessmentBasisId: null,
+              riskFactor: Number(this.riskFactor),
+              review: {
+                userId:
+                  this.isInternal &&
+                  Number(this.internalReviewerIdFromDropdown) != 0
+                    ? Number(this.internalReviewerIdFromDropdown)
+                    : null,
+                externalReviewerId: Number(this.externalReviewerIdFromInput)
+                  ? Number(this.externalReviewerIdFromInput)
+                  : !this.isInternal &&
+                    Number(this.externalReviewerIdFromDropdown) != 0
+                  ? Number(this.externalReviewerIdFromDropdown)
+                  : null,
+                comments: ' ',
+                reviewStatus: 1,
+              },
             },
-          },
-        ],
-      };
-      localStorage.setItem('draftQuality', JSON.stringify(draft));
-      console.log('Draft Saved as JSON:', JSON.stringify(draft));
-      this.saveAsDraft();
-      this.isdraftConform = true;
-    } else {
-      this.isNothingInDraft = true;
-      this.saveAsDraft();
+          ],
+        };
+        localStorage.setItem('draftQuality', JSON.stringify(draft));
+        console.log('Draft Saved as JSON:', JSON.stringify(draft));
+        this.saveAsDraft();
+        this.isdraftConform = true;
+      } else {
+        this.isNothingInDraft = true;
+        this.saveAsDraft();
+      }
     }
-  }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (this.draft && this.draft?.length > 0) {
-      if (changes['dropdownLikelihood']) {
-        this.preSelectedLikelihood = this.draft.riskAssessments[0].likelihood;
-      }
+    if (this.isAdmin == 'Admin') {
+      if (this.qmsForm.value.riskName) {
+        const draft = {
+          formValues: this.qmsForm.value,
+          riskType: Number(this.riskTypeValue),
+          OverallRiskRatingBefore: Number(this.overallRiskRating),
+          responsibleUserId:
+            Number(this.responsiblePersonId) !== 0 &&
+            !isNaN(Number(this.responsiblePersonId))
+              ? Number(this.responsiblePersonId)
+              : this.preSelectedResponsiblePerson !== 0 &&
+                !isNaN(Number(this.preSelectedResponsiblePerson))
+              ? Number(this.preSelectedResponsiblePerson)
+              : this.newAssigneeId && !isNaN(Number(this.newAssigneeId))
+              ? Number(this.newAssigneeId)
+              : null,
+          departmentId:
+            Number(this.departmentIdForAdminToAdd) &&
+            !isNaN(Number(this.departmentIdForAdminToAdd))
+              ? Number(this.departmentIdForAdminToAdd)
+              : Number(this.departmentId) !== 0 &&
+                !isNaN(Number(this.departmentId))
+              ? Number(this.departmentId)
+              : null,
+          projectId:
+            Number(this.projectId) !== 0 && !isNaN(Number(this.projectId))
+              ? Number(this.projectId)
+              : this.preSelectedProject !== 0 &&
+                !isNaN(Number(this.preSelectedProject))
+              ? Number(this.preSelectedProject)
+              : null,
+          riskAssessments: [
+            {
+              likelihood: this.likelihoodId
+                ? Number(this.likelihoodId)
+                : this.preSelectedLikelihood &&
+                  !isNaN(Number(this.preSelectedLikelihood))
+                ? Number(this.preSelectedLikelihood)
+                : null,
+              impact: this.impactValue
+                ? Number(this.impactId)
+                : this.preSelectedImpact &&
+                  !isNaN(Number(this.preSelectedImpact))
+                ? Number(this.preSelectedImpact)
+                : null,
+              isMitigated: false,
+              assessmentBasisId: null,
+              riskFactor: Number(this.riskFactor),
+              review: {
+                userId:
+                  this.isInternal &&
+                  Number(this.internalReviewerIdFromDropdown) != 0
+                    ? Number(this.internalReviewerIdFromDropdown)
+                    : null,
+                externalReviewerId: Number(this.externalReviewerIdFromInput)
+                  ? Number(this.externalReviewerIdFromInput)
+                  : !this.isInternal &&
+                    Number(this.externalReviewerIdFromDropdown) != 0
+                  ? Number(this.externalReviewerIdFromDropdown)
+                  : null,
+                comments: ' ',
+                reviewStatus: 1,
+              },
+            },
+          ],
+        };
+        const draftKey = `draft_${this.departmentIdForAdminToAdd}`;
+        localStorage.setItem(draftKey, JSON.stringify(draft));
+        console.log('draft for Admin draft Name', draftKey);
 
-      if (changes['dropdownImpact']) {
-        this.preSelectedImpact = this.draft.riskAssessments[0].impact;
-      }
-
-      if (changes['dropdownProject']) {
-        this.preSelectedProject = this.draft.projectId;
-      }
-
-      if (changes['dropdownAssignee']) {
-        this.preSelectedResponsiblePerson = this.draft.responsibleUserId;
-      }
-
-      if (changes['dropdownReviewer']) {
-        const selectedFactor = this.dropdownReviewer.find(
-          (factor) => factor.id === this.draft.riskAssessments[0].review.userId
-        );
-
-        if (selectedFactor) {
-          if (selectedFactor.type === 'Internal') {
-            this.isInternal = true;
-            this.internalReviewerIdFromDropdown = selectedFactor.id;
-            this.preSelectedReviewer = selectedFactor?.fullName;
-          } else if (selectedFactor.type === 'External') {
-            this.isInternal = false;
-            this.externalReviewerIdFromDropdown = selectedFactor.id;
-            this.preSelectedReviewer = selectedFactor?.fullName;
-          }
-        }
+        console.log('draft for Admin', JSON.stringify(draft));
+        this.saveAsDraft();
+        this.isdraftConform = true;
+      } else {
+        this.isNothingInDraft = true;
+        this.saveAsDraft();
       }
     }
   }
@@ -616,7 +943,50 @@ export class QMSFormComponent {
       this.qmsForm.patchValue(this.draft.formValues);
       this.overallRiskRating = this.draft.OverallRiskRatingBefore;
       this.riskFactor = this.draft.riskAssessments[0].riskFactor;
+      console.log(
+        'likelihooooooooooooooood',
+        this.draft.riskAssessments[0].likelihood
+      );
+      this.isDraftLoaded = true;
     }
+
+    const changes: SimpleChanges = {
+      dropdownLikelihood: {
+        currentValue: this.draft.riskAssessments?.[0]?.likelihood ?? null,
+        previousValue: undefined,
+        firstChange: true,
+        isFirstChange: () => true,
+      },
+      dropdownImpact: {
+        currentValue: this.draft.riskAssessments?.[0]?.impact ?? null,
+        previousValue: undefined,
+        firstChange: true,
+        isFirstChange: () => true,
+      },
+      dropdownProject: {
+        currentValue:
+          this.draft.projectId !== null && this.draft.projectId !== undefined
+            ? this.draft.projectId
+            : this.preSelectedProject, // Keeps the previous value if null
+        previousValue: null,
+        firstChange: true,
+        isFirstChange: () => true,
+      },
+      dropdownAssignee: {
+        currentValue: this.draft.responsibleUserId ?? null,
+        previousValue: undefined,
+        firstChange: true,
+        isFirstChange: () => true,
+      },
+      dropdownReviewer: {
+        currentValue: this.draft.riskAssessments?.[0]?.review?.userId ?? null,
+        previousValue: undefined,
+        firstChange: true,
+        isFirstChange: () => true,
+      },
+    };
+
+    this.ngOnChanges(changes);
   }
 
   closeDraftWhenNoDraft() {
