@@ -39,8 +39,9 @@ thead {
   width: 100%;
   border-collapse: collapse;
   border-spacing: 0 8px;
+  // background: #ffffff;
+  background:var(--accent-color);
 
-  background: #ffffff;
   margin: 0;
 }
 .table-container::-webkit-scrollbar {
@@ -67,17 +68,24 @@ thead {
   text-align: left;
 }
 .tabledata tbody tr{
-  border-bottom: 1px solid #f1e7e7;
+  // border-bottom: 1px solid #f1e7e7;
   border-spacing: 0 8px;
+  border-bottom: 0.5px solid var( --primary-color);
+
 }
 
 .tabledata tbody tr:hover {
-  background: #f1eadd;
+  // background: #f1eadd;
+  background-color: rgba(208, 198, 182, 0.2);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
+  transition: box-shadow 0.2s ease-in-out, transform 0.2s ease-in-out;
 }
 
 .tabledata tbody td {
   font-size: 14px;
-  color: #555;
+  // color: #555;
+  color:var(--primary-text-color);
   vertical-align: middle;
 
   // text-align: center;
@@ -145,417 +153,416 @@ tbody {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+  // Tooltip text styling
+  .tooltip-text {
+    visibility: hidden;
+    background-color: #4d4747;
+    color: #cee9f5;
+    text-align: center;
+    padding: 8px;
+    border-radius: 4px;
 
-    // Tooltip text styling
-    .tooltip-text {
-      visibility: hidden;
-      background-color: #4d4747;
-      color: #cee9f5;
-      text-align: center;
-      padding: 8px;
-      border-radius: 4px;
+    // Position the tooltip
+    position: absolute;
+    z-index: 1;
+    top: -100%; // Adjust to position above the cell
+    left: 50%;
+    transform: translateX(-50%);
 
-      // Position the tooltip
-      position: absolute;
-      z-index: 1;
-      top: -100%; // Adjust to position above the cell
-      left: 50%;
-      transform: translateX(-50%);
+    // Zoom effect
+    transform-origin: top center;
+    scale: 0;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  }
 
-      // Zoom effect
-      transform-origin: top center;
-      scale: 0;
-      transition: all 0.3s ease-in-out;
-      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    }
-
-    &:hover .tooltip-text {
-      visibility: visible;
-      scale: 1;
-    }
+  &:hover .tooltip-text {
+    visibility: visible;
+    scale: 1;
   }
 }
+}
 .icon-display {
-  display: flex;
-  margin-left: 30px;
+display: flex;
+margin-left: 30px;
 }
 .icon {
-  width: 30px;
-  height: 30px;
-  margin: 10px;
-  display: inline-block;
+width: 30px;
+height: 30px;
+margin: 10px;
+display: inline-block;
 }
 
 .approve:hover {
-  cursor: pointer;
-  circle {
-    stroke: rgb(23, 231, 23);
-  }
-  path {
-    stroke: rgb(23, 231, 23);
-  }
+cursor: pointer;
+circle {
+  stroke: rgb(23, 231, 23);
+}
+path {
+  stroke: rgb(23, 231, 23);
+}
 }
 
 .reject:hover {
-  cursor: pointer;
-  circle {
-    stroke: rgb(245, 42, 42);
-  }
-  path {
-    stroke: rgb(245, 42, 42);
-  }
+cursor: pointer;
+circle {
+  stroke: rgb(245, 42, 42);
+}
+path {
+  stroke: rgb(245, 42, 42);
+}
 }
 
 .green-background {
-  color: #188a18;
+color: #188a18;
 }
 
 .red-background {
-  color: #fc3a36;
+color: #fc3a36;
 }
 
 .eye-button {
-  background: none;
-  border: none;
-  cursor: pointer;
+background: none;
+border: none;
+cursor: pointer;
 }
 
 .eye-icon:hover {
-  stroke: #3e68b9;
-  transition: stroke 0.3s ease-in-out;
+stroke: #3e68b9;
+transition: stroke 0.3s ease-in-out;
 }
 
 /* Define colors for risk statuses */
 .open {
-  color: red;
-  font-weight: bold;
-  // padding: 10px;
-  background-color: #edd4d5;
-  padding: 5px 15px;
-  // border: 1px solid #420c0c ;
-  border-radius: 5px;
-  text-align: center;
+color: red;
+font-weight: bold;
+// padding: 10px;
+background-color: #edd4d5;
+padding: 5px 15px;
+// border: 1px solid #420c0c ;
+border-radius: 5px;
+text-align: center;
 }
 
 .closed {
-  color: green;
-  font-weight: bold;
-  // padding: 10px;
-  padding: 5px 10px;
-  // border: 1px solid #0c4219 ;
-  background-color: #d4edda;
-  border-radius: 5px;
-  text-align: center;
+color: green;
+font-weight: bold;
+// padding: 10px;
+padding: 5px 10px;
+// border: 1px solid #0c4219 ;
+background-color: #d4edda;
+border-radius: 5px;
+text-align: center;
 }
 
 .unknown {
-  color: gray;
+color: gray;
 }
 
 .green-risk {
-  color: green;
-  // font-weight: bold;
-  // padding: 5px;
-  // border-radius: 5px;
-  // text-align: center;
-  // height: 35px;
-  // width: 65px;
+color: green;
+// font-weight: bold;
+// padding: 5px;
+// border-radius: 5px;
+// text-align: center;
+// height: 35px;
+// width: 65px;
 }
 
 .yellow-risk {
-  color: rgb(189, 189, 7);
-  // font-weight: bold;
-  // padding: 5px;
-  // border-radius: 5px;
-  // text-align: center;
-  // height: 35px;
-  // width: 65px;
+color: rgb(189, 189, 7);
+// font-weight: bold;
+// padding: 5px;
+// border-radius: 5px;
+// text-align: center;
+// height: 35px;
+// width: 65px;
 }
 
 .red-risk {
-  color: red;
-  // font-weight: bold;
-  // padding: 5px;
-  // border-radius: 5px;
-  // text-align: center;
-  // height: 35px;
-  // width: 65px;
+color: red;
+// font-weight: bold;
+// padding: 5px;
+// border-radius: 5px;
+// text-align: center;
+// height: 35px;
+// width: 65px;
 }
 
 /* Toggle Switch */
 .toggle-container {
-  // display: flex;
-  // justify-content: center;
-  // align-items: center;
-
-  .switch {
-    position: relative;
-    display: inline-block;
-    width: 40px;
-    height: 20px;
-
-    input {
-      opacity: 0;
-      width: 0;
-      height: 0;
-    }
-
-    .slider {
-      position: absolute;
-      cursor: pointer;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: red; /* Red for inactive */
-      transition: 0.4s;
-      border-radius: 20px;
-
-      &:before {
-        position: absolute;
-        content: "";
-        height: 14px;
-        width: 14px;
-        left: 3px;
-        bottom: 3px;
-        background-color: white;
-        transition: 0.4s;
-        border-radius: 50%;
-      }
-    }
-
-    input:checked + .slider {
-      background-color: green; /* Green for active */
-    }
-
-    input:checked + .slider:before {
-      transform: translateX(20px);
-    }
-  }
-}
-
-.active-status {
-  color: green;
-  background-color: rgb(207, 235, 207); /* Green for Active */
-  padding: 5px 10px;
-  border-radius: 5px;
-  width: 70px;
-  text-align: center;
-}
-
-.inactive-status {
-  color: red;
-  background-color: rgb(240, 191, 191); /* Red for Inactive */
-  padding: 5px 10px;
-  border-radius: 5px;
-  width: 70px;
-  text-align: center;
-}
-/* Add these styles to your existing SCSS file */
-
-.loading-skeleton {
-  width: 100%;
-  margin-left: -10px;
-  // background-color: #188a18;
-
-  .skeleton-cell {
-    height: 20px;
-    background: linear-gradient(
-      90deg,
-      rgba(190, 190, 190, 0.2) 25%,
-      rgba(129, 129, 129, 0.24) 37%,
-      rgba(190, 190, 190, 0.2) 63%
-    );
-    background-size: 400% 100%;
-    animation: shimmer 1.4s ease infinite;
-    border-radius: 4px;
-    width: 100%;
-    min-width: 50px;
-  }
-
-  thead th {
-    .skeleton-cell {
-      height: 24px;
-      background-color: var(--secondary-color);
-    }
-  }
-
-  tbody td {
-    .skeleton-cell {
-      height: 20px;
-    }
-  }
-
-  // Match your existing table styles
-  .tabledata {
-    width: 100%;
-    border-collapse: collapse;
-
-    th,
-    td {
-      padding: 12px;
-      border-bottom: 1px solid #e5e7eb;
-    }
-  }
-}
-
-@keyframes shimmer {
-  0% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0 50%;
-  }
-}
-
-.header-with-filter {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  position: relative;
-}
-
-.filter-icon {
-  cursor: pointer;
-  padding: 2px 4px;
-
-  &:hover {
-    background-color: rgba(0, 0, 0, 0.05);
-    border-radius: 2px;
-  }
-}
-
-.filter-dropdown {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  background: white;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
-  min-width: 200px;
-  margin-top: 4px;
-}
-
-.filter-search {
-  padding: 8px;
-  border-bottom: 1px solid #eee;
-
-  input {
-    width: 100%;
-    padding: 6px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-
-    &:focus {
-      outline: none;
-      border-color: #976c26;
-    }
-  }
-}
-
-.filter-options {
-  max-height: 200px;
-  overflow-y: auto;
-  font-weight: 100;
-}
-
-.filter-option {
-  padding: 8px 12px;
-  cursor: pointer;
-
-  &:hover {
-    background-color: #f5f5f5;
-  }
-
-  &.selected {
-    background-color: #976c26;
-    color: white;
-  }
-}
-.paginations {
-  width: 100%;
-  position: sticky;
-  // bottom: 0;
-  top: 100%;
-  left: 0;
-  z-index: 1;
-}
-
-
-.action-buttons-container {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 10px;
-}
-
-.icon {
-  cursor: pointer;
-  width: 24px;
-  height: 24px;
-  transition: transform 0.2s ease;
-
-  &:hover {
-    transform: scale(1.2);
-  }
-
-  &.edit {
-    color: #976c26;
-  }
-}
-
-.toggle-container {
-  display: inline-block;
-  margin-right: 10px;
-}
+// display: flex;
+// justify-content: center;
+// align-items: center;
 
 .switch {
   position: relative;
   display: inline-block;
   width: 40px;
   height: 20px;
+
+  input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: red; /* Red for inactive */
+    transition: 0.4s;
+    border-radius: 20px;
+
+    &:before {
+      position: absolute;
+      content: "";
+      height: 14px;
+      width: 14px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: 0.4s;
+      border-radius: 50%;
+    }
+  }
+
+  input:checked + .slider {
+    background-color: green; /* Green for active */
+  }
+
+  input:checked + .slider:before {
+    transform: translateX(20px);
+  }
+}
+}
+
+.active-status {
+color: green;
+background-color: rgb(207, 235, 207); /* Green for Active */
+padding: 5px 10px;
+border-radius: 5px;
+width: 70px;
+text-align: center;
+}
+
+.inactive-status {
+color: red;
+background-color: rgb(240, 191, 191); /* Red for Inactive */
+padding: 5px 10px;
+border-radius: 5px;
+width: 70px;
+text-align: center;
+}
+/* Add these styles to your existing SCSS file */
+
+.loading-skeleton {
+width: 100%;
+margin-left: -10px;
+// background-color: #188a18;
+
+.skeleton-cell {
+  height: 20px;
+  background: linear-gradient(
+    90deg,
+    rgba(190, 190, 190, 0.2) 25%,
+    rgba(129, 129, 129, 0.24) 37%,
+    rgba(190, 190, 190, 0.2) 63%
+  );
+  background-size: 400% 100%;
+  animation: shimmer 1.4s ease infinite;
+  border-radius: 4px;
+  width: 100%;
+  min-width: 50px;
+}
+
+thead th {
+  .skeleton-cell {
+    height: 24px;
+    background-color: var(--secondary-color);
+  }
+}
+
+tbody td {
+  .skeleton-cell {
+    height: 20px;
+  }
+}
+
+// Match your existing table styles
+.tabledata {
+  width: 100%;
+  border-collapse: collapse;
+
+  th,
+  td {
+    padding: 12px;
+    border-bottom: 1px solid #e5e7eb;
+  }
+}
+}
+
+@keyframes shimmer {
+0% {
+  background-position: 100% 50%;
+}
+100% {
+  background-position: 0 50%;
+}
+}
+
+.header-with-filter {
+display: flex;
+align-items: center;
+gap: 8px;
+position: relative;
+}
+
+.filter-icon {
+cursor: pointer;
+padding: 2px 4px;
+
+&:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: 2px;
+}
+}
+
+.filter-dropdown {
+position: absolute;
+top: 100%;
+left: 0;
+background: white;
+border: 1px solid #ddd;
+border-radius: 4px;
+box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+z-index: 1000;
+min-width: 200px;
+margin-top: 4px;
+}
+
+.filter-search {
+padding: 8px;
+border-bottom: 1px solid #eee;
+
+input {
+  width: 100%;
+  padding: 6px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+
+  &:focus {
+    outline: none;
+    border-color: #976c26;
+  }
+}
+}
+
+.filter-options {
+max-height: 200px;
+overflow-y: auto;
+font-weight: 100;
+}
+
+.filter-option {
+padding: 8px 12px;
+cursor: pointer;
+
+&:hover {
+  background-color: #f5f5f5;
+}
+
+&.selected {
+  background-color: #976c26;
+  color: white;
+}
+}
+.paginations {
+width: 100%;
+position: sticky;
+// bottom: 0;
+top: 100%;
+left: 0;
+z-index: 1;
+}
+
+
+.action-buttons-container {
+display: flex;
+align-items: center;
+justify-content: flex-start;
+gap: 10px;
+}
+
+.icon {
+cursor: pointer;
+width: 24px;
+height: 24px;
+transition: transform 0.2s ease;
+
+&:hover {
+  transform: scale(1.2);
+}
+
+&.edit {
+  color: #976c26;
+}
+}
+
+.toggle-container {
+display: inline-block;
+margin-right: 10px;
+}
+
+.switch {
+position: relative;
+display: inline-block;
+width: 40px;
+height: 20px;
 }
 
 .switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
+opacity: 0;
+width: 0;
+height: 0;
 }
 
 .slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #ccc;
-  transition: .4s;
-  border-radius: 34px;
+position: absolute;
+cursor: pointer;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+background-color: #ccc;
+transition: .4s;
+border-radius: 34px;
 }
 
 .slider:before {
-  position: absolute;
-  content: "";
-  height: 16px;
-  width: 16px;
-  left: 2px;
-  bottom: 2px;
-  background-color: white;
-  transition: .4s;
-  border-radius: 50%;
+position: absolute;
+content: "";
+height: 16px;
+width: 16px;
+left: 2px;
+bottom: 2px;
+background-color: white;
+transition: .4s;
+border-radius: 50%;
 }
 
 input:checked + .slider {
-  background-color: #976c26;
+background-color: #976c26;
 }
 
 input:focus + .slider {
-  box-shadow: 0 0 1px #976c26;
+box-shadow: 0 0 1px #976c26;
 }
 
 input:checked + .slider:before {
-  transform: translateX(20px);
+transform: translateX(20px);
 }
