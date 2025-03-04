@@ -15,6 +15,7 @@
               placeholder="User name"
               formControlName="email"
               (focus)="clearError()"
+              autocomplete="off"
             />
             @if (loginForm.get('email')?.invalid && loginForm.get('email')?.touched)
             {
@@ -43,6 +44,7 @@
               (copy)="onPreventDefault($event)"
               (cut)="onPreventDefault($event)"
               (paste)="onPreventDefault($event)"
+              autocomplete="off"
             />
               <button
               type="button"
