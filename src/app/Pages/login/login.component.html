@@ -36,11 +36,14 @@
             <div class="password-input">
               <input
               [type]="showPassword ? 'text' : 'password'"
-                id="login-password"
-                placeholder="Type your password here"
-                formControlName="password"
-                (focus)="clearError()"
-              />
+              id="login-password"
+              placeholder="Type your password here"
+              formControlName="password"
+              (focus)="clearError()"
+              (copy)="onPreventDefault($event)"
+              (cut)="onPreventDefault($event)"
+              (paste)="onPreventDefault($event)"
+            />
               <button
               type="button"
               class="password-toggle"
