@@ -566,3 +566,14 @@ box-shadow: 0 0 1px #976c26;
 input:checked + .slider:before {
 transform: translateX(20px);
 }
+.admin-toggle {
+  cursor: not-allowed;
+
+}
+
+
+.admin-toggle .slider {
+  opacity: 0.4;
+}
+
+
