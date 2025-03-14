@@ -21,6 +21,8 @@ export class EmailService {
 
   private readonly frontendUrl = environment.frontendUrl;
 
+  createdByUserName: string = '';
+
 
 
 
@@ -34,6 +36,17 @@ export class EmailService {
     this.loadResetPasswordTemplate();
     this .loadUserUpdateTemplate();
 
+  }
+
+  getCreatedByUserName(riskId: string): void {
+    this.api.getCreatedByUserName(riskId).subscribe({
+      next: (response) => {
+        this.createdByUserName = response.createdByUserName;
+      },
+      error: (error) => {
+        console.error('Error fetching user name:', error);
+      }
+    });
   }
 //Reset passsword
     private async loadResetPasswordTemplate() {
@@ -191,8 +204,12 @@ export class EmailService {
   }
 
   private AddRiskDetailstoAssignee(template: string, context: any): string {
+    this.getCreatedByUserName(context.riskId);
+    console.log("current user is ::::",this.createdByUserName)
+
     return template
-      .replace('{{createdBy}}',this.authService.getUserName()|| 'user')
+
+      .replace('{{createdBy}}',this.createdByUserName)
       .replace('{{assigneeName}}', context.responsibleUser)
       .replace('{{riskId}}', context.riskId)
       .replace('{{riskName}}', context.riskName)
@@ -240,8 +257,10 @@ export class EmailService {
     }
   }
   private AddRiskDetailsForOwner(template:string,context:any):string{
+    this.getCreatedByUserName(context.riskId);
+    console.log("current user is ::::",this.createdByUserName)
     return template
-    .replace('{{createdBy}}',this.authService.getUserName()|| 'user')
+      .replace('{{createdBy}}',this.createdByUserName)
       .replace('{{responsibleUser}}', context.responsibleUser)
       .replace('{{riskId}}', context.riskId)
       .replace('{{riskName}}', context.riskName)
