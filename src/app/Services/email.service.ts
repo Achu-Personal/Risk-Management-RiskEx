@@ -38,17 +38,21 @@ export class EmailService {
 
   }
 
-  getCreatedByUserName(riskId: string): void {
-    this.api.getCreatedByUserName(riskId).subscribe({
-      next: (response) => {
-        this.createdByUserName = response.createdByUserName;
-        console.log("creted user ::" , this.createdByUserName)
-      },
-      error: (error) => {
-        console.error('Error fetching user name:', error);
-      }
+  getCreatedByUserName(riskId: string): Promise<string> {
+    return new Promise((resolve, reject) => {
+      this.api.getCreatedByUserName(riskId).subscribe({
+        next: (response) => {
+          console.log("Created user:", response.createdByUserName);
+          resolve(response.createdByUserName);
+        },
+        error: (error) => {
+          console.error("Error fetching user name:", error);
+          reject(error);
+        }
+      });
     });
   }
+
 //Reset passsword
     private async loadResetPasswordTemplate() {
       try {
@@ -205,8 +209,9 @@ export class EmailService {
   }
 
   private AddRiskDetailstoAssignee(template: string, context: any): string {
-    this.getCreatedByUserName(context.riskId);
-    console.log("current user is ::::",this.createdByUserName)
+    this.getCreatedByUserName(context.riskId)
+    .then((createdByUserName) => {
+      console.log("Created user:", createdByUserName);
 
     return template
 
@@ -220,6 +225,13 @@ export class EmailService {
       .replace('{{overallRiskRating}}', context.overallRiskRating)
       .replace('{{riskStatus}}', context.riskStatus)
       .replace(/{{baseUrl}}/g,this.frontendUrl);
+    })
+    .catch((error) => {
+      console.error("Error fetching user name:", error);
+      return template;
+    });
+
+  return template; // This might execute before the async call completes
   }
 
   sendAssigneeEmail(email: string, context: any): Observable<boolean> {
