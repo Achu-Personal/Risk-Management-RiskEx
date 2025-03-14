@@ -3,6 +3,7 @@ import { catchError, map, Observable, of, switchMap } from 'rxjs';
 import { ApiService } from './api.service';
 import { NotificationService } from './notification.service';
 import { environment } from '../../enviroments/environment';
+import { AuthService } from './auth/auth.service';
 
 @Injectable({
   providedIn: 'root',
@@ -15,13 +16,19 @@ export class EmailService {
   userRegisterTemplate:string='';
   resetPasswordTemplate: string = '';
   userUpdateTemplate: string = '';
+  username: string | null;
 
   private readonly baseUrl = environment.apiUrl;
 
   private readonly frontendUrl = environment.frontendUrl;
 
 
-  constructor(private api: ApiService,private notificationService: NotificationService) {
+
+
+  constructor(private api: ApiService,private notificationService: NotificationService, private authService: AuthService) {
+
+    this.username = this.authService.getUserName();
+
     this.loadReviewTemplate();
     this.loadAssigneeTemplate();
     this.loadOwnerTemplate();
@@ -133,6 +140,7 @@ export class EmailService {
   }
   private AddRiskDetailsForReview(template: string, context: any): string {
     return template
+      .replace('{{createdBy}}', this.username || 'user')
       .replace('{{responsibleUser}}', context.responsibleUser)
       .replace('{{riskId}}', context.riskId)
       .replace('{{riskName}}', context.riskName)
@@ -170,7 +178,7 @@ export class EmailService {
     );
   }
 
-  
+
 
   //Assignee Mail
   private async loadAssigneeTemplate() {
