@@ -472,8 +472,8 @@ export class ApiService {
   }
 
 
-  getCreatedByUserName(riskId: string): Observable<{ createdByUserName: string }> {
-    return this.http.get<{ createdByUserName: string }>(`https://localhost:7216/api//${riskId}/createdBy`);
+  getCreatedByUserName(riskId: string){
+    return this.http.get(`https://localhost:7216/api/User/${riskId}/createdBy`);
   }
 
 }

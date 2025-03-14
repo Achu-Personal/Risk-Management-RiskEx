@@ -13,7 +13,7 @@ export class EmailService {
   reviewerEmailTemplate: string = '';
   assigneeEmailTemplate: string = '';
   ownerEmailTemplate: string = '';
-  userRegisterTemplate:string='';
+  userRegisterTemplate: string = '';
   resetPasswordTemplate: string = '';
   userUpdateTemplate: string = '';
 
@@ -21,66 +21,64 @@ export class EmailService {
 
   private readonly frontendUrl = environment.frontendUrl;
 
-  createdByUserName: string = '';
+  createdByUserName: any;
 
-
-
-
-  constructor(private api: ApiService,private notificationService: NotificationService, private authService: AuthService) {
-
-
+  constructor(
+    private api: ApiService,
+    private notificationService: NotificationService,
+    private authService: AuthService
+  ) {
     this.loadReviewTemplate();
     this.loadAssigneeTemplate();
     this.loadOwnerTemplate();
     this.loadUserRegisterTemplate();
     this.loadResetPasswordTemplate();
-    this .loadUserUpdateTemplate();
-
+    this.loadUserUpdateTemplate();
   }
 
-  getCreatedByUserName(riskId: string): Promise<string> {
-    return new Promise((resolve, reject) => {
-      this.api.getCreatedByUserName(riskId).subscribe({
-        next: (response) => {
-          console.log("Created user:", response.createdByUserName);
-          resolve(response.createdByUserName);
-        },
-        error: (error) => {
-          console.error("Error fetching user name:", error);
-          reject(error);
-        }
-      });
+  getCreatedByUserName(riskId: string) {
+    this.api.getCreatedByUserName(riskId).subscribe({
+      next: (response) => {
+        console.log('Created user:', response);
+        this.createdByUserName = response;
+      },
+      error: (error) => {
+        console.error('Error fetching user name:', error);
+      },
     });
   }
 
-//Reset passsword
-    private async loadResetPasswordTemplate() {
-      try {
-        this.resetPasswordTemplate = await fetch(
-          'Templates/ResetPasswordTemplate.html'
-        ).then((response) => response.text());
-      } catch (error) {
-        console.error('Failed to load reset password template:', error);
-      }
+  //Reset passsword
+  private async loadResetPasswordTemplate() {
+    try {
+      this.resetPasswordTemplate = await fetch(
+        'Templates/ResetPasswordTemplate.html'
+      ).then((response) => response.text());
+    } catch (error) {
+      console.error('Failed to load reset password template:', error);
     }
+  }
 
-      private prepareResetPasswordEmailBody(template: string, context: any): string {
-        const resetLink = `${this.frontendUrl}/resetpassword?token=${context.resetToken}&email=${context.email}`;
-        return template
-          .replace('{{fullName}}', context.fullName)
-          .replace('{{resetPasswordLink}}', resetLink)
-          .replace('{{ResetPage}}',resetLink)
-          .replace(/{{baseUrl}}/g,this.frontendUrl);
-
-      }
+  private prepareResetPasswordEmailBody(
+    template: string,
+    context: any
+  ): string {
+    const resetLink = `${this.frontendUrl}/resetpassword?token=${context.resetToken}&email=${context.email}`;
+    return template
+      .replace('{{fullName}}', context.fullName)
+      .replace('{{resetPasswordLink}}', resetLink)
+      .replace('{{ResetPage}}', resetLink)
+      .replace(/{{baseUrl}}/g, this.frontendUrl);
+  }
 
   sendResetPasswordEmail(email: string): Observable<boolean> {
-    const resetToken = Math.random().toString(36).substring(2) + Date.now().toString(36);
+    const resetToken =
+      Math.random().toString(36).substring(2) + Date.now().toString(36);
 
     const context = {
       fullName: 'User',
       email: email,
-      resetToken: resetToken
+      resetToken: resetToken,
     };
 
     const subject = 'Reset Your Risk Management System Password';
@@ -92,7 +90,9 @@ export class EmailService {
     return this.api.saveResetToken(email, resetToken).pipe(
       switchMap(() => this.api.sendMail(email, subject, body)),
       map((response: any) => {
-        this.notificationService.success('Password reset link has been sent to your email.');
+        this.notificationService.success(
+          'Password reset link has been sent to your email.'
+        );
         return true;
       }),
       catchError((error) => {
@@ -103,20 +103,17 @@ export class EmailService {
     );
   }
 
-
-// user Registration Email
-  private async loadUserRegisterTemplate(){
-    try{
+  // user Registration Email
+  private async loadUserRegisterTemplate() {
+    try {
       this.userRegisterTemplate = await fetch(
         'Templates/RegisterUserTemplate.html'
       ).then((response) => response.text());
-    }catch (error){
+    } catch (error) {
       console.error('Failed to load email template:', error);
     }
   }
   sendUserRegistrationEmail(email: string, context: any): Observable<boolean> {
-
-
     const subject = 'Your Risk Management System Account Credentials';
     const body = this.prepareUserRegistrationEmailBody(
       this.userRegisterTemplate,
@@ -136,12 +133,15 @@ export class EmailService {
       })
     );
   }
-  private prepareUserRegistrationEmailBody(template: string, context: any): string {
+  private prepareUserRegistrationEmailBody(
+    template: string,
+    context: any
+  ): string {
     return template
       .replace('{{userEmail}}', context.email)
       .replace('{{defaultPassword}}', context.defaultPassword)
       .replace(/{{fullName}}/g, context.fullName)
-      .replace(/{{baseUrl}}/g,this.frontendUrl);;
+      .replace(/{{baseUrl}}/g, this.frontendUrl);
   }
 
   //Review mail
@@ -155,21 +155,23 @@ export class EmailService {
     }
   }
   private AddRiskDetailsForReview(template: string, context: any): string {
-    return template
-      .replace('{{createdBy}}',this.authService.getUserName()|| 'user')
-      .replace('{{responsibleUser}}', context.responsibleUser)
-      .replace('{{riskId}}', context.riskId)
-      .replace('{{riskName}}', context.riskName)
-      .replace('{{description}}', context.description)
-      .replace('{{riskType}}', context.riskType)
-      .replace('{{impact}}', context.impact)
-      .replace('{{mitigation}}', context.mitigation)
-      .replace('{{plannedActionDate}}', context.plannedActionDate)
-      .replace('{{overallRiskRating}}', context.overallRiskRating)
-      // .replace('{{reason}}', context.reason)
-      .replace('{{id}}', context.id)
-      .replace('{{rid}}', context.rid)
-      .replace(/{{baseUrl}}/g,this.frontendUrl);
+    return (
+      template
+        .replace('{{createdBy}}', this.authService.getUserName() || 'user')
+        .replace('{{responsibleUser}}', context.responsibleUser)
+        .replace('{{riskId}}', context.riskId)
+        .replace('{{riskName}}', context.riskName)
+        .replace('{{description}}', context.description)
+        .replace('{{riskType}}', context.riskType)
+        .replace('{{impact}}', context.impact)
+        .replace('{{mitigation}}', context.mitigation)
+        .replace('{{plannedActionDate}}', context.plannedActionDate)
+        .replace('{{overallRiskRating}}', context.overallRiskRating)
+        // .replace('{{reason}}', context.reason)
+        .replace('{{id}}', context.id)
+        .replace('{{rid}}', context.rid)
+        .replace(/{{baseUrl}}/g, this.frontendUrl)
+    );
   }
   sendReviewerEmail(email: string, context: any): Observable<boolean> {
     const subject = `Review Risk - ${context.riskName}`;
@@ -179,11 +181,12 @@ export class EmailService {
     );
     // console.log("body:",body);
 
-
     return this.api.sendMail(email, subject, body).pipe(
       map((response: any) => {
         console.log('Email sent successfully', response);
-        this.notificationService.success('The risk has been submitted to the reviewer for approval.');
+        this.notificationService.success(
+          'The risk has been submitted to the reviewer for approval.'
+        );
         return true;
       }),
       catchError((error) => {
@@ -193,8 +196,6 @@ export class EmailService {
       })
     );
   }
-
-
 
   //Assignee Mail
   private async loadAssigneeTemplate() {
@@ -209,13 +210,12 @@ export class EmailService {
   }
 
   private AddRiskDetailstoAssignee(template: string, context: any): string {
-    this.getCreatedByUserName(context.riskId)
-    .then((createdByUserName) => {
-      console.log("Created user:", createdByUserName);
+    this.getCreatedByUserName(context.riskId);
+    console.log('Created user:', this.createdByUserName);
 
     return template
 
-      .replace('{{createdBy}}',this.createdByUserName)
+      .replace('{{createdBy}}', this.createdByUserName)
       .replace('{{assigneeName}}', context.responsibleUser)
       .replace('{{riskId}}', context.riskId)
       .replace('{{riskName}}', context.riskName)
@@ -224,14 +224,7 @@ export class EmailService {
       .replace('{{plannedActionDate}}', context.plannedActionDate)
       .replace('{{overallRiskRating}}', context.overallRiskRating)
       .replace('{{riskStatus}}', context.riskStatus)
-      .replace(/{{baseUrl}}/g,this.frontendUrl);
-    })
-    .catch((error) => {
-      console.error("Error fetching user name:", error);
-      return template;
-    });
-
-  return template; // This might execute before the async call completes
+      .replace(/{{baseUrl}}/g, this.frontendUrl);
   }
 
   sendAssigneeEmail(email: string, context: any): Observable<boolean> {
@@ -247,7 +240,9 @@ export class EmailService {
     return this.api.sendMail(email, subject, body).pipe(
       map((response: any) => {
         console.log('Email sent successfully', response);
-        this.notificationService.success('Email sent to the responsible user successfully');
+        this.notificationService.success(
+          'Email sent to the responsible user successfully'
+        );
         return true;
       }),
       catchError((error) => {
@@ -258,22 +253,21 @@ export class EmailService {
     );
   }
 
-
-//Risk Owner mail
+  //Risk Owner mail
   private async loadOwnerTemplate() {
     try {
-
-      this.ownerEmailTemplate = await fetch('Templates/RiskOwnerEmailTemplate.html')
-        .then(response => response.text());
+      this.ownerEmailTemplate = await fetch(
+        'Templates/RiskOwnerEmailTemplate.html'
+      ).then((response) => response.text());
     } catch (error) {
       console.error('Failed to load email template:', error);
     }
   }
-  private AddRiskDetailsForOwner(template:string,context:any):string{
+  private AddRiskDetailsForOwner(template: string, context: any): string {
     this.getCreatedByUserName(context.riskId);
-    console.log("current user is ::::",this.createdByUserName)
+    console.log('current user is ::::', this.createdByUserName);
     return template
-      .replace('{{createdBy}}',this.createdByUserName)
+      .replace('{{createdBy}}', this.createdByUserName)
       .replace('{{responsibleUser}}', context.responsibleUser)
       .replace('{{riskId}}', context.riskId)
       .replace('{{riskName}}', context.riskName)
@@ -283,19 +277,18 @@ export class EmailService {
       .replace('{{mitigation}}', context.mitigation)
       .replace('{{plannedActionDate}}', context.plannedActionDate)
       .replace('{{overallRiskRating}}', context.overallRiskRating)
-      .replace('{{reason}}', context.reason)
-
-
-
+      .replace('{{reason}}', context.reason);
   }
-  sendOwnerEmail(email: string, context:any): Observable<boolean> {
+  sendOwnerEmail(email: string, context: any): Observable<boolean> {
     const subject = `Review Risk - ${context.riskName}`;
     const body = this.AddRiskDetailsForOwner(this.ownerEmailTemplate, context);
 
     return this.api.sendMail(email, subject, body).pipe(
-      map((response:any) => {
+      map((response: any) => {
         console.log('Email sent successfully', response);
-        this.notificationService.success('Notify the risk owner that the risk has been rejected.');
+        this.notificationService.success(
+          'Notify the risk owner that the risk has been rejected.'
+        );
         return true;
       }),
       catchError((error) => {
@@ -305,7 +298,6 @@ export class EmailService {
       })
     );
   }
-
 
   //User Upadte Email
   private async loadUserUpdateTemplate() {
@@ -345,15 +337,25 @@ export class EmailService {
       .replace(/{{userEmail}}/g, context.email)
       .replace(/{{fullName}}/g, context.fullName || 'User')
       .replace(/{{departmentName}}/g, context.departmentName || 'Not specified')
-      .replace(/{{baseUrl}}/g,this.frontendUrl);
+      .replace(/{{baseUrl}}/g, this.frontendUrl);
 
-    if (context.projects && Array.isArray(context.projects) && context.projects.length > 0) {
+    if (
+      context.projects &&
+      Array.isArray(context.projects) &&
+      context.projects.length > 0
+    ) {
       let projectsList = '';
       context.projects.forEach((project: any) => {
-        const projectName = typeof project === 'object' ? (project.name || 'Unnamed project') : project;
+        const projectName =
+          typeof project === 'object'
+            ? project.name || 'Unnamed project'
+            : project;
         projectsList += `<li>${projectName}</li>`;
       });
-      updatedTemplate = updatedTemplate.replace('<!-- PROJECT_LIST_PLACEHOLDER -->', projectsList);
+      updatedTemplate = updatedTemplate.replace(
+        '<!-- PROJECT_LIST_PLACEHOLDER -->',
+        projectsList
+      );
       updatedTemplate = updatedTemplate
         .replace('{{#if projects.length}}', '')
         .replace('{{else}}', '<!--')
@@ -361,14 +363,11 @@ export class EmailService {
     } else {
       updatedTemplate = updatedTemplate
         .replace('{{#if projects.length}}', '<!--')
-        .replace('<!-- PROJECT_LIST_PLACEHOLDER -->','')
+        .replace('<!-- PROJECT_LIST_PLACEHOLDER -->', '')
         .replace('{{else}}', '-->')
         .replace('{{/if}}', '');
     }
 
     return updatedTemplate;
   }
-
-
-
 }
