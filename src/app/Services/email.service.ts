@@ -16,7 +16,6 @@ export class EmailService {
   userRegisterTemplate:string='';
   resetPasswordTemplate: string = '';
   userUpdateTemplate: string = '';
-  username: string | null;
 
   private readonly baseUrl = environment.apiUrl;
 
@@ -27,7 +26,7 @@ export class EmailService {
 
   constructor(private api: ApiService,private notificationService: NotificationService, private authService: AuthService) {
 
-    this.username = this.authService.getUserName();
+    // this.username = this.authService.getUserName();
 
     this.loadReviewTemplate();
     this.loadAssigneeTemplate();
@@ -140,7 +139,7 @@ export class EmailService {
   }
   private AddRiskDetailsForReview(template: string, context: any): string {
     return template
-      .replace('{{createdBy}}', this.username || 'user')
+      .replace('{{createdBy}}',this.authService.getUserName()|| 'user')
       .replace('{{responsibleUser}}', context.responsibleUser)
       .replace('{{riskId}}', context.riskId)
       .replace('{{riskName}}', context.riskName)
