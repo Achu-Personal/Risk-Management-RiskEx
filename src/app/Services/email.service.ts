@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { catchError, map, Observable, of, switchMap } from 'rxjs';
+import { catchError, from, map, Observable, of, switchMap } from 'rxjs';
 import { ApiService } from './api.service';
 import { NotificationService } from './notification.service';
 import { environment } from '../../enviroments/environment';
@@ -36,15 +36,20 @@ export class EmailService {
     this.loadUserUpdateTemplate();
   }
 
-  getCreatedByUserName(riskId: string) {
-    this.api.getCreatedByUserName(riskId).subscribe({
-      next: (response) => {
-        console.log('Created user:', response);
-        this.createdByUserName = response;
-      },
-      error: (error) => {
-        console.error('Error fetching user name:', error);
-      },
+  getCreatedByUserName(riskId: string): Promise<any> {
+    return new Promise((resolve) => {
+      this.api.getCreatedByUserName(riskId).subscribe({
+        next: (response) => {
+          console.log('Created user:', response);
+          this.createdByUserName = response;
+          resolve(response);
+        },
+        error: (error) => {
+          console.error('Error fetching user name:', error);
+          this.createdByUserName = 'Unknown User';
+          resolve('Unknown User');
+        }
+      });
     });
   }
 
@@ -157,7 +162,7 @@ export class EmailService {
   private AddRiskDetailsForReview(template: string, context: any): string {
     return (
       template
-        .replace('{{createdBy}}', this.authService.getUserName() || 'user')
+        .replace(/{{createdBy}}/g, this.authService.getUserName() || 'user')
         .replace('{{responsibleUser}}', context.responsibleUser)
         .replace('{{riskId}}', context.riskId)
         .replace('{{riskName}}', context.riskName)
@@ -167,7 +172,6 @@ export class EmailService {
         .replace('{{mitigation}}', context.mitigation)
         .replace('{{plannedActionDate}}', context.plannedActionDate)
         .replace('{{overallRiskRating}}', context.overallRiskRating)
-        // .replace('{{reason}}', context.reason)
         .replace('{{id}}', context.id)
         .replace('{{rid}}', context.rid)
         .replace(/{{baseUrl}}/g, this.frontendUrl)
@@ -179,7 +183,6 @@ export class EmailService {
       this.reviewerEmailTemplate,
       context
     );
-    // console.log("body:",body);
 
     return this.api.sendMail(email, subject, body).pipe(
       map((response: any) => {
@@ -203,19 +206,24 @@ export class EmailService {
       this.assigneeEmailTemplate = await fetch(
         'Templates/AssigneeEmailTemplate.html'
       ).then((response) => response.text());
-      // console.log('Loaded Template:', this.assigneeEmailTemplate); // Debug log
     } catch (error) {
       console.error('Failed to load email template:', error);
     }
   }
+async prepareAssigneeEmail(context: any): Promise<string> {
+  await this.getCreatedByUserName(context.riskId);
+  console.log('Username after fetch:', this.createdByUserName);
+
+  return this.AddRiskDetailstoAssignee(this.assigneeEmailTemplate, context);
+}
 
   private AddRiskDetailstoAssignee(template: string, context: any): string {
-    this.getCreatedByUserName(context.riskId);
-    console.log('Created user:', this.createdByUserName);
+    console.log('Using username in template:', this.createdByUserName);
+
 
     return template
 
-      .replace('{{createdBy}}', this.createdByUserName)
+      .replace(/{{createdBy}}/g, this.createdByUserName)
       .replace('{{assigneeName}}', context.responsibleUser)
       .replace('{{riskId}}', context.riskId)
       .replace('{{riskName}}', context.riskName)
@@ -229,15 +237,10 @@ export class EmailService {
 
   sendAssigneeEmail(email: string, context: any): Observable<boolean> {
     const subject = `Review Risk - ${context.riskName}`;
-    const body = this.AddRiskDetailstoAssignee(
-      this.assigneeEmailTemplate,
-      context
-    );
-
-    // console.log('Email Subject:', subject);
-    // console.log('Email Body:', body);
-
-    return this.api.sendMail(email, subject, body).pipe(
+   return from(this.prepareAssigneeEmail(context)).pipe(
+    switchMap(body => {
+      return this.api.sendMail(email, subject, body);
+    }),
       map((response: any) => {
         console.log('Email sent successfully', response);
         this.notificationService.success(
@@ -263,11 +266,18 @@ export class EmailService {
       console.error('Failed to load email template:', error);
     }
   }
+
+async prepareOwnerEmail(context: any): Promise<string> {
+  await this.getCreatedByUserName(context.riskId);
+  console.log('Username after fetch:', this.createdByUserName);
+
+  return this.AddRiskDetailsForOwner(this.ownerEmailTemplate, context);
+}
   private AddRiskDetailsForOwner(template: string, context: any): string {
-    this.getCreatedByUserName(context.riskId);
-    console.log('current user is ::::', this.createdByUserName);
+    console.log('Using username in template:', this.createdByUserName);
+
     return template
-      .replace('{{createdBy}}', this.createdByUserName)
+      .replace(/{{createdBy}}/g, this.createdByUserName)
       .replace('{{responsibleUser}}', context.responsibleUser)
       .replace('{{riskId}}', context.riskId)
       .replace('{{riskName}}', context.riskName)
@@ -281,9 +291,11 @@ export class EmailService {
   }
   sendOwnerEmail(email: string, context: any): Observable<boolean> {
     const subject = `Review Risk - ${context.riskName}`;
-    const body = this.AddRiskDetailsForOwner(this.ownerEmailTemplate, context);
+    return from(this.prepareOwnerEmail(context)).pipe(
+      switchMap(body => {
 
-    return this.api.sendMail(email, subject, body).pipe(
+    return this.api.sendMail(email, subject, body);
+      }),
       map((response: any) => {
         console.log('Email sent successfully', response);
         this.notificationService.success(
