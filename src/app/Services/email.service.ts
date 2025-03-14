@@ -42,6 +42,7 @@ export class EmailService {
     this.api.getCreatedByUserName(riskId).subscribe({
       next: (response) => {
         this.createdByUserName = response.createdByUserName;
+        console.log("creted user ::" , this.createdByUserName)
       },
       error: (error) => {
         console.error('Error fetching user name:', error);
