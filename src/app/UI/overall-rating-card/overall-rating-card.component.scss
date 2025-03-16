@@ -48,7 +48,7 @@
   h6
   {
     margin: 0px;
-    font-size: 2.2vh;
+    font-size: 2.1vh;
   }
   h1
   {
@@ -75,10 +75,10 @@
   padding: 20px;
 }
 
-/* Flip the card when hovered */
-.flip-card:hover .flip-card-inner {
-  transform: rotateY(180deg); /* This flips the card */
-}
+// /* Flip the card when hovered */
+// .flip-card:hover .flip-card-inner {
+//   transform: rotateY(180deg); /* This flips the card */
+// }
 
 /* Value styling for front face */
 .value {
@@ -108,7 +108,8 @@ div {
 
 .criticality
 {
-padding: 10px;
+padding: 0.8vh;
 background-color: rgba(245, 245, 245, 0.3);
-border-radius: 10px;
+border-radius: 5px;
+font-size: 2.2vh;
 }

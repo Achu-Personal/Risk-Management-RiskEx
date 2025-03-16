@@ -57,6 +57,10 @@ export class SidebarComponent {
     selectedItem.active = true;
     this.router.navigate([selectedItem.route]);
   }
+  removeAllOtherSelection()
+  {
+    this.menuItems.forEach((item) => (item.active = false));
+  }
 
   setActiveFromRoute(currentRoute: string) {
     this.menuItems.forEach((item) => {

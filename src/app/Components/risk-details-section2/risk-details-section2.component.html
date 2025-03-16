@@ -28,15 +28,28 @@
         <h5>Impact Of Risk</h5>
         <p >{{impact.slice(0,198.)}}..</p>
         <div class="" >
-          <h5 >Responsibility of the Action : </h5>
+          <h5 >Risk Owner : </h5>
           <h6 >{{responsibilityOfAction}}</h6>
+        </div>
+        <div class="" >
+          <h5 >Risk Creator : </h5>
+          <h6 >{{CreatedBy}}</h6>
         </div>
 
         <div  class=" " >
           <h5>Planned date of Action : </h5>
           <h6>{{plannedActionDate | date: 'd MMM yyyy'}}</h6>
+        </div>
 
 
+        <div  class=" " >
+          <h5>Closed Date : </h5>
+          <h6>{{ClosedDate | date: 'd MMM yyyy'}}</h6>
+        </div>
+
+        <div class="" >
+          <h5 >Risk Response : </h5>
+          <h6 >{{RiskResponse}}</h6>
         </div>
       </div>
 

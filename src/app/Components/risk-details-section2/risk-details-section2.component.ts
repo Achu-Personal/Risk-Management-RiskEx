@@ -30,6 +30,9 @@ export class RiskDetailsSection2Component {
   @Input() PostReviewedBy=""
   @Input() PostReviewedAt=""
   @Input() RiskStatus=""
+
+  @Input() ClosedDate=""
+  @Input() RiskResponse=""
   currentStep =1;
   constructor(private api:ApiService,private route:ActivatedRoute)
   {

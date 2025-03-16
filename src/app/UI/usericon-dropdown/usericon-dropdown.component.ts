@@ -42,6 +42,7 @@ export class UsericonDropdownComponent {
 
   @Output() changePasswordClicked = new EventEmitter<void>();
 
+
   onChangePassword(): void {
     this.changePasswordClicked.emit();
 
