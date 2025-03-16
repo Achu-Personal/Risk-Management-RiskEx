@@ -90,9 +90,21 @@ export class ReusableTableComponent {
       this.updatePaginatedItems();
       }
   }
+  isSystemAdmin(row: any): boolean {
 
+    return row.fullName?.includes('System Admin') ||
+           row.userName?.includes('System Admin') ||
+           row.fullName === 'System Admin' ||
+           row.userName === 'System Admin';
+  }
 
   onToggleChange(row: any): void {
+
+    if (this.isSystemAdmin(row)) {
+      row.isActive = !row.isActive;
+      return;
+    }
+
     this.newState = row.isActive;
     this.api.changeUserStatus(row.id, this.newState);
     console.log(`Row ID: ${row.fullName}, New State: ${this.newState}`);

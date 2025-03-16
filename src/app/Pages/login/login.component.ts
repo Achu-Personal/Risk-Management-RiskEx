@@ -37,6 +37,9 @@ export class LoginComponent {
     this.showError = false;
     this.errorMessage = "";
   }
+  onPreventDefault(event: Event): void {
+    event.preventDefault();
+  }
 
   onSubmit() {
     if (this.loginForm.valid) {

@@ -325,7 +325,7 @@ export class UsersComponent {
             if (error.status === 400) {
               errorMessage =
                 'Validation error: ' +
-                (error.error?.message || 'Invalid data provided');
+                (error.error?.message || `Department with the name '${departmentData.name}' already exists`);
             } else if (error.status === 500) {
               errorMessage = 'Server error: An internal server error occurred';
             } else if (error.status === 401) {
@@ -833,7 +833,7 @@ export class UsersComponent {
         }
         this.api.updateUser(userId, userData).subscribe({
           next: (response) => {
-            
+
             const emailContext = {
               email: userData.email,
               fullName: userData.fullName,
