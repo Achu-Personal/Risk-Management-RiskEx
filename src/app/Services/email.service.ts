@@ -178,7 +178,7 @@ export class EmailService {
     );
   }
   sendReviewerEmail(email: string, context: any): Observable<boolean> {
-    const subject = `Review Risk - ${context.riskName}`;
+    const subject = `RISK REVIEW NOTIFICATION - ${context.riskName}`;
     const body = this.AddRiskDetailsForReview(
       this.reviewerEmailTemplate,
       context
@@ -236,7 +236,7 @@ async prepareAssigneeEmail(context: any): Promise<string> {
   }
 
   sendAssigneeEmail(email: string, context: any): Observable<boolean> {
-    const subject = `Review Risk - ${context.riskName}`;
+    const subject = `RISK ASSIGNMENT NOTIFICATION - ${context.riskName}`;
    return from(this.prepareAssigneeEmail(context)).pipe(
     switchMap(body => {
       return this.api.sendMail(email, subject, body);

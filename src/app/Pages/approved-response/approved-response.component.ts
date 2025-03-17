@@ -50,7 +50,7 @@ export class ThankyouComponent {
       this.ApprovalForm.markAllAsTouched();
       return;
     }
-    this.isSubmitting = true; 
+    this.isSubmitting = true;
 
     this.ApprovalComments = this.ApprovalForm.value.reason;
     const idParam = this.route.snapshot.paramMap.get('id');
@@ -74,7 +74,7 @@ export class ThankyouComponent {
               // console.log(this.assignee);
               const context = {
                 responsibleUser: res.responsibleUser.fullName,
-                riskId: this.riskId,
+                riskId: res.riskId,
                 riskName: res.riskName,
                 description: res.description,
                 riskType: res.riskType,
