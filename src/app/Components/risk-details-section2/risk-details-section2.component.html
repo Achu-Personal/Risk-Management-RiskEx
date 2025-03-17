@@ -6,14 +6,14 @@
 
     <div id="mitigationCard" class=" primaryColor shadowType1 details-card "  >
       <h5 >Risk Mitigation</h5>
-      <p title={{riskMitigation}}>{{riskMitigation.slice(0,1020)}}..</p>
+      <p title={{riskMitigation}}>{{riskMitigation.length>1020?riskMitigation.slice(0,1020)+"...":riskMitigation}}..</p>
     </div>
 
     @if(riskContengency!=null&&riskContengency!=""&&riskContengency.length>5)
     {
       <div id="contingencyCard"  class=" primaryColor shadowType1 details-card ">
         <h5>Risk Contingency</h5>
-        <p title={{riskContengency}}>{{riskContengency.slice(0,1020)}}..</p>
+        <p title={{riskContengency}}>{{riskContengency.length>1020? riskContengency.slice(0,1020)+"...":riskContengency}}..</p>
 
       </div>
     }
@@ -26,7 +26,7 @@
     <div  class="responsibility-of-action-planned-Action-div" >
       <div>
         <h5>Impact Of Risk</h5>
-        <p >{{impact.slice(0,198.)}}..</p>
+        <p  title={{impact}}>{{ impact.length>100? impact.slice(0,100)+"....":impact}}</p>
         <div class="" >
           <h5 >Risk Owner : </h5>
           <h6 >{{responsibilityOfAction}}</h6>
@@ -42,15 +42,24 @@
         </div>
 
 
-        <div  class=" " >
-          <h5>Closed Date : </h5>
-          <h6>{{ClosedDate | date: 'd MMM yyyy'}}</h6>
-        </div>
+        @if(stepperData[2].isCompleted )
+        {
+          <div  class=" " >
+            <h5>Closed Date : </h5>
+            <h6>{{ClosedDate | date: 'd MMM yyyy'}}</h6>
+          </div>
 
-        <div class="" >
-          <h5 >Risk Response : </h5>
-          <h6 >{{RiskResponse}}</h6>
-        </div>
+          <div class="" >
+            <h5 >Risk Response : </h5>
+            <h6 >{{RiskResponse}}</h6>
+          </div>
+
+          <div class=""   style="display: flex;flex-direction: row;align-items: start;">
+
+            <p style="width: 100%;font-size: 2.1vh; margin: 0px;padding: 0px;"  ><span style="font-weight: bold;">Remarks : </span>{{ Remarks.length>70? Remarks.slice(0,90)+"....":Remarks}}</p>
+          </div>
+        }
+
       </div>
 
 
