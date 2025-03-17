@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { catchError, map, Observable, of, switchMap } from 'rxjs';
+import { catchError, from, map, Observable, of, switchMap } from 'rxjs';
 import { ApiService } from './api.service';
 import { NotificationService } from './notification.service';
 import { environment } from '../../enviroments/environment';
+import { AuthService } from './auth/auth.service';
 
 @Injectable({
   providedIn: 'root',
@@ -12,7 +13,7 @@ export class EmailService {
   reviewerEmailTemplate: string = '';
   assigneeEmailTemplate: string = '';
   ownerEmailTemplate: string = '';
-  userRegisterTemplate:string='';
+  userRegisterTemplate: string = '';
   resetPasswordTemplate: string = '';
   userUpdateTemplate: string = '';
 
@@ -20,44 +21,69 @@ export class EmailService {
 
   private readonly frontendUrl = environment.frontendUrl;
 
+  createdByUserName: any;
 
-  constructor(private api: ApiService,private notificationService: NotificationService) {
+  constructor(
+    private api: ApiService,
+    private notificationService: NotificationService,
+    private authService: AuthService
+  ) {
     this.loadReviewTemplate();
     this.loadAssigneeTemplate();
     this.loadOwnerTemplate();
     this.loadUserRegisterTemplate();
     this.loadResetPasswordTemplate();
-    this .loadUserUpdateTemplate();
-
+    this.loadUserUpdateTemplate();
   }
-//Reset passsword
-    private async loadResetPasswordTemplate() {
-      try {
-        this.resetPasswordTemplate = await fetch(
-          'Templates/ResetPasswordTemplate.html'
-        ).then((response) => response.text());
-      } catch (error) {
-        console.error('Failed to load reset password template:', error);
-      }
+
+  getCreatedByUserName(riskId: string): Promise<any> {
+    return new Promise((resolve) => {
+      this.api.getCreatedByUserName(riskId).subscribe({
+        next: (response) => {
+          console.log('Created user:', response);
+          this.createdByUserName = response;
+          resolve(response);
+        },
+        error: (error) => {
+          console.error('Error fetching user name:', error);
+          this.createdByUserName = 'Unknown User';
+          resolve('Unknown User');
+        }
+      });
+    });
+  }
+
+  //Reset passsword
+  private async loadResetPasswordTemplate() {
+    try {
+      this.resetPasswordTemplate = await fetch(
+        'Templates/ResetPasswordTemplate.html'
+      ).then((response) => response.text());
+    } catch (error) {
+      console.error('Failed to load reset password template:', error);
     }
+  }
 
-      private prepareResetPasswordEmailBody(template: string, context: any): string {
-        const resetLink = `${this.frontendUrl}/resetpassword?token=${context.resetToken}&email=${context.email}`;
-        return template
-          .replace('{{fullName}}', context.fullName)
-          .replace('{{resetPasswordLink}}', resetLink)
-          .replace('{{ResetPage}}',resetLink)
-          .replace(/{{baseUrl}}/g,this.frontendUrl);
-
-      }
+  private prepareResetPasswordEmailBody(
+    template: string,
+    context: any
+  ): string {
+    const resetLink = `${this.frontendUrl}/resetpassword?token=${context.resetToken}&email=${context.email}`;
+    return template
+      .replace('{{fullName}}', context.fullName)
+      .replace('{{resetPasswordLink}}', resetLink)
+      .replace('{{ResetPage}}', resetLink)
+      .replace(/{{baseUrl}}/g, this.frontendUrl);
+  }
 
   sendResetPasswordEmail(email: string): Observable<boolean> {
-    const resetToken = Math.random().toString(36).substring(2) + Date.now().toString(36);
+    const resetToken =
+      Math.random().toString(36).substring(2) + Date.now().toString(36);
 
     const context = {
       fullName: 'User',
       email: email,
-      resetToken: resetToken
+      resetToken: resetToken,
     };
 
     const subject = 'Reset Your Risk Management System Password';
@@ -69,7 +95,9 @@ export class EmailService {
     return this.api.saveResetToken(email, resetToken).pipe(
       switchMap(() => this.api.sendMail(email, subject, body)),
       map((response: any) => {
-        this.notificationService.success('Password reset link has been sent to your email.');
+        this.notificationService.success(
+          'Password reset link has been sent to your email.'
+        );
         return true;
       }),
       catchError((error) => {
@@ -80,20 +108,17 @@ export class EmailService {
     );
   }
 
-
-// user Registration Email
-  private async loadUserRegisterTemplate(){
-    try{
+  // user Registration Email
+  private async loadUserRegisterTemplate() {
+    try {
       this.userRegisterTemplate = await fetch(
         'Templates/RegisterUserTemplate.html'
       ).then((response) => response.text());
-    }catch (error){
+    } catch (error) {
       console.error('Failed to load email template:', error);
     }
   }
   sendUserRegistrationEmail(email: string, context: any): Observable<boolean> {
-
-
     const subject = 'Your Risk Management System Account Credentials';
     const body = this.prepareUserRegistrationEmailBody(
       this.userRegisterTemplate,
@@ -113,12 +138,15 @@ export class EmailService {
       })
     );
   }
-  private prepareUserRegistrationEmailBody(template: string, context: any): string {
+  private prepareUserRegistrationEmailBody(
+    template: string,
+    context: any
+  ): string {
     return template
       .replace('{{userEmail}}', context.email)
       .replace('{{defaultPassword}}', context.defaultPassword)
       .replace(/{{fullName}}/g, context.fullName)
-      .replace(/{{baseUrl}}/g,this.frontendUrl);;
+      .replace(/{{baseUrl}}/g, this.frontendUrl);
   }
 
   //Review mail
@@ -132,34 +160,36 @@ export class EmailService {
     }
   }
   private AddRiskDetailsForReview(template: string, context: any): string {
-    return template
-      .replace('{{responsibleUser}}', context.responsibleUser)
-      .replace('{{riskId}}', context.riskId)
-      .replace('{{riskName}}', context.riskName)
-      .replace('{{description}}', context.description)
-      .replace('{{riskType}}', context.riskType)
-      .replace('{{impact}}', context.impact)
-      .replace('{{mitigation}}', context.mitigation)
-      .replace('{{plannedActionDate}}', context.plannedActionDate)
-      .replace('{{overallRiskRating}}', context.overallRiskRating)
-      // .replace('{{reason}}', context.reason)
-      .replace('{{id}}', context.id)
-      .replace('{{rid}}', context.rid)
-      .replace(/{{baseUrl}}/g,this.frontendUrl);
+    return (
+      template
+        .replace(/{{createdBy}}/g, this.authService.getUserName() || 'user')
+        .replace('{{responsibleUser}}', context.responsibleUser)
+        .replace('{{riskId}}', context.riskId)
+        .replace('{{riskName}}', context.riskName)
+        .replace('{{description}}', context.description)
+        .replace('{{riskType}}', context.riskType)
+        .replace('{{impact}}', context.impact)
+        .replace('{{mitigation}}', context.mitigation)
+        .replace('{{plannedActionDate}}', context.plannedActionDate)
+        .replace('{{overallRiskRating}}', context.overallRiskRating)
+        .replace('{{id}}', context.id)
+        .replace('{{rid}}', context.rid)
+        .replace(/{{baseUrl}}/g, this.frontendUrl)
+    );
   }
   sendReviewerEmail(email: string, context: any): Observable<boolean> {
-    const subject = `Review Risk - ${context.riskName}`;
+    const subject = `RISK REVIEW NOTIFICATION - ${context.riskName}`;
     const body = this.AddRiskDetailsForReview(
       this.reviewerEmailTemplate,
       context
     );
-    // console.log("body:",body);
-
 
     return this.api.sendMail(email, subject, body).pipe(
       map((response: any) => {
         console.log('Email sent successfully', response);
-        this.notificationService.success('The risk has been submitted to the reviewer for approval.');
+        this.notificationService.success(
+          'The risk has been submitted to the reviewer for approval.'
+        );
         return true;
       }),
       catchError((error) => {
@@ -170,22 +200,30 @@ export class EmailService {
     );
   }
 
-  
-
   //Assignee Mail
   private async loadAssigneeTemplate() {
     try {
       this.assigneeEmailTemplate = await fetch(
         'Templates/AssigneeEmailTemplate.html'
       ).then((response) => response.text());
-      // console.log('Loaded Template:', this.assigneeEmailTemplate); // Debug log
     } catch (error) {
       console.error('Failed to load email template:', error);
     }
   }
+async prepareAssigneeEmail(context: any): Promise<string> {
+  await this.getCreatedByUserName(context.riskId);
+  console.log('Username after fetch:', this.createdByUserName);
+
+  return this.AddRiskDetailstoAssignee(this.assigneeEmailTemplate, context);
+}
 
   private AddRiskDetailstoAssignee(template: string, context: any): string {
+    console.log('Using username in template:', this.createdByUserName);
+
+
     return template
+
+      .replace(/{{createdBy}}/g, this.createdByUserName)
       .replace('{{assigneeName}}', context.responsibleUser)
       .replace('{{riskId}}', context.riskId)
       .replace('{{riskName}}', context.riskName)
@@ -194,23 +232,20 @@ export class EmailService {
       .replace('{{plannedActionDate}}', context.plannedActionDate)
       .replace('{{overallRiskRating}}', context.overallRiskRating)
       .replace('{{riskStatus}}', context.riskStatus)
-      .replace(/{{baseUrl}}/g,this.frontendUrl);
+      .replace(/{{baseUrl}}/g, this.frontendUrl);
   }
 
   sendAssigneeEmail(email: string, context: any): Observable<boolean> {
-    const subject = `Review Risk - ${context.riskName}`;
-    const body = this.AddRiskDetailstoAssignee(
-      this.assigneeEmailTemplate,
-      context
-    );
-
-    // console.log('Email Subject:', subject);
-    // console.log('Email Body:', body);
-
-    return this.api.sendMail(email, subject, body).pipe(
+    const subject = `RISK ASSIGNMENT NOTIFICATION - ${context.riskName}`;
+   return from(this.prepareAssigneeEmail(context)).pipe(
+    switchMap(body => {
+      return this.api.sendMail(email, subject, body);
+    }),
       map((response: any) => {
         console.log('Email sent successfully', response);
-        this.notificationService.success('Email sent to the responsible user successfully');
+        this.notificationService.success(
+          'Email sent to the responsible user successfully'
+        );
         return true;
       }),
       catchError((error) => {
@@ -221,19 +256,28 @@ export class EmailService {
     );
   }
 
-
-//Risk Owner mail
+  //Risk Owner mail
   private async loadOwnerTemplate() {
     try {
-
-      this.ownerEmailTemplate = await fetch('Templates/RiskOwnerEmailTemplate.html')
-        .then(response => response.text());
+      this.ownerEmailTemplate = await fetch(
+        'Templates/RiskOwnerEmailTemplate.html'
+      ).then((response) => response.text());
     } catch (error) {
       console.error('Failed to load email template:', error);
     }
   }
-  private AddRiskDetailsForOwner(template:string,context:any):string{
+
+async prepareOwnerEmail(context: any): Promise<string> {
+  await this.getCreatedByUserName(context.riskId);
+  console.log('Username after fetch:', this.createdByUserName);
+
+  return this.AddRiskDetailsForOwner(this.ownerEmailTemplate, context);
+}
+  private AddRiskDetailsForOwner(template: string, context: any): string {
+    console.log('Using username in template:', this.createdByUserName);
+
     return template
+      .replace(/{{createdBy}}/g, this.createdByUserName)
       .replace('{{responsibleUser}}', context.responsibleUser)
       .replace('{{riskId}}', context.riskId)
       .replace('{{riskName}}', context.riskName)
@@ -243,19 +287,20 @@ export class EmailService {
       .replace('{{mitigation}}', context.mitigation)
       .replace('{{plannedActionDate}}', context.plannedActionDate)
       .replace('{{overallRiskRating}}', context.overallRiskRating)
-      .replace('{{reason}}', context.reason)
-
-
-
+      .replace('{{reason}}', context.reason);
   }
-  sendOwnerEmail(email: string, context:any): Observable<boolean> {
+  sendOwnerEmail(email: string, context: any): Observable<boolean> {
     const subject = `Review Risk - ${context.riskName}`;
-    const body = this.AddRiskDetailsForOwner(this.ownerEmailTemplate, context);
+    return from(this.prepareOwnerEmail(context)).pipe(
+      switchMap(body => {
 
-    return this.api.sendMail(email, subject, body).pipe(
-      map((response:any) => {
+    return this.api.sendMail(email, subject, body);
+      }),
+      map((response: any) => {
         console.log('Email sent successfully', response);
-        this.notificationService.success('Notify the risk owner that the risk has been rejected.');
+        this.notificationService.success(
+          'Notify the risk owner that the risk has been rejected.'
+        );
         return true;
       }),
       catchError((error) => {
@@ -265,7 +310,6 @@ export class EmailService {
       })
     );
   }
-
 
   //User Upadte Email
   private async loadUserUpdateTemplate() {
@@ -305,15 +349,25 @@ export class EmailService {
       .replace(/{{userEmail}}/g, context.email)
       .replace(/{{fullName}}/g, context.fullName || 'User')
       .replace(/{{departmentName}}/g, context.departmentName || 'Not specified')
-      .replace(/{{baseUrl}}/g,this.frontendUrl);
+      .replace(/{{baseUrl}}/g, this.frontendUrl);
 
-    if (context.projects && Array.isArray(context.projects) && context.projects.length > 0) {
+    if (
+      context.projects &&
+      Array.isArray(context.projects) &&
+      context.projects.length > 0
+    ) {
       let projectsList = '';
       context.projects.forEach((project: any) => {
-        const projectName = typeof project === 'object' ? (project.name || 'Unnamed project') : project;
+        const projectName =
+          typeof project === 'object'
+            ? project.name || 'Unnamed project'
+            : project;
         projectsList += `<li>${projectName}</li>`;
       });
-      updatedTemplate = updatedTemplate.replace('<!-- PROJECT_LIST_PLACEHOLDER -->', projectsList);
+      updatedTemplate = updatedTemplate.replace(
+        '<!-- PROJECT_LIST_PLACEHOLDER -->',
+        projectsList
+      );
       updatedTemplate = updatedTemplate
         .replace('{{#if projects.length}}', '')
         .replace('{{else}}', '<!--')
@@ -321,14 +375,11 @@ export class EmailService {
     } else {
       updatedTemplate = updatedTemplate
         .replace('{{#if projects.length}}', '<!--')
-        .replace('<!-- PROJECT_LIST_PLACEHOLDER -->','')
+        .replace('<!-- PROJECT_LIST_PLACEHOLDER -->', '')
         .replace('{{else}}', '-->')
         .replace('{{/if}}', '');
     }
 
     return updatedTemplate;
   }
-
-
-
 }

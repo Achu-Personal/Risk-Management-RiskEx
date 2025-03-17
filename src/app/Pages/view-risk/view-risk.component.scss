@@ -1,7 +1,8 @@
 main{
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  justify-content: start;
+  gap: 1.5vh;
 }
 /* Hide scrollbar for all browsers */
 // .hide-scrollbar {

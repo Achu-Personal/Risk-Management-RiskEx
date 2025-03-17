@@ -42,6 +42,7 @@ export class UsericonDropdownComponent {
 
   @Output() changePasswordClicked = new EventEmitter<void>();
 
+
   onChangePassword(): void {
     this.changePasswordClicked.emit();
 
@@ -71,6 +72,26 @@ formatRoleName(role: string | null): string {
   return formattedRole.split(' ')
       .map(word => word.charAt(0).toUpperCase() + word.slice(1))
       .join(' ');
+}
+themes = ['#4D4D4D']; // Example themes
+activeTheme: string | null = null;
+activeIcon: string | null = null; // Tracks active icon
+
+setActiveTheme(theme: string) {
+  this.activeTheme = theme;
+  localStorage.setItem('activeTheme', theme);
+}
+
+setActiveIcon(icon: string) {
+  // If the same icon is clicked, deactivate it; otherwise, set it as active
+  this.activeIcon = this.activeIcon === icon ? null : icon;
+}
+ngOnInit() {
+  // Load saved theme from localStorage
+  const savedTheme = localStorage.getItem('activeTheme');
+  if (savedTheme) {
+    this.activeTheme = savedTheme;
+  }
 }
 }
 
