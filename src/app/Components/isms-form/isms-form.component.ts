@@ -28,6 +28,7 @@ import { FormConformPopupComponent } from '../form-conform-popup/form-conform-po
 import { Router } from '@angular/router';
 import { StyleButtonComponent } from '../../UI/style-button/style-button.component';
 import { FormLoaderComponent } from '../form-loader/form-loader.component';
+import { FormCategoryTableComponent } from '../form-category-table/form-category-table.component';
 
 @Component({
   selector: 'app-isms-form',
@@ -46,6 +47,7 @@ import { FormLoaderComponent } from '../form-loader/form-loader.component';
     FormConformPopupComponent,
     StyleButtonComponent,
     FormLoaderComponent,
+    FormCategoryTableComponent
   ],
   templateUrl: './isms-form.component.html',
   styleUrl: './isms-form.component.scss',
@@ -142,6 +144,8 @@ export class ISMSFormComponent {
   isLoading = false; // Initially false
   isDraftLoaded = false;
   departmentIdForAdminToAddToString:string=''
+  showModalCategory = false; // Initially hidden
+
 
 
   constructor(
@@ -1810,5 +1814,14 @@ export class ISMSFormComponent {
 
   closepopupIsValidCheck() {
     this.isValid = false;
+  }
+
+
+  toggleModalCategory() {
+    this.showModalCategory = !this.showModalCategory; // Toggle modal visibility
+  }
+
+  closeModalCategory() {
+    this.showModalCategory = false; // Ensure modal closes only on the close button
   }
 }

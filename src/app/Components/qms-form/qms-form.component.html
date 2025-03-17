@@ -19,9 +19,10 @@
       }
       <div class="form-row">
         <app-form-input
-          label="Risk Name"
+          label="Risk Category"
           required=" *"
           formControlName="riskName"
+          (infoClicked)="toggleModalCategory()"
         ></app-form-input>
 
         @if(isAdmin!=='Admin'){
@@ -57,7 +58,7 @@
       @if(qmsForm.get("riskName")){ @if
       (qmsForm.get("riskName")?.hasError('required')&&
       qmsForm.get("riskName")?.dirty) {
-      <div class="text-danger">Risk name is required</div>
+      <div class="text-danger">Risk Category is required</div>
       } }
 
       <app-form-text-area
@@ -110,6 +111,9 @@
         <app-form-dropdown
           label="Likelihood"
           required="*"
+          tooltipType="likelihood"
+          backgroundColor=" var(--form-color)"
+        [showInfoButton]="true"
           [dropdownData]="dropdownLikelihood"
           dropdownDisplay="assessmentFactor"
           dropdownValue="id"
@@ -132,6 +136,12 @@
           [openDropdownId]="openDropdownId"
           (openDropdown)="handleDropdownOpen($event)"
           dropdownId="impactDropdown"
+          tooltipType="impact"
+          backgroundColor=" var(--form-color)"
+        [showInfoButton]="true"
+
+
+
         ></app-form-dropdown>
       </div>
       <div class="form-row" [ngStyle]="{ gap: '32vw', 'margin-top': '30px' }">
@@ -198,8 +208,9 @@
         message="Mitigation refers to actions taken to reduce the likelihood or impact of a risk.
       Ensure preventive measures, such as implementing safety protocols or backup systems, to minimize
       the risk."
+      backgroundColor=" var(--form-color)"
         formControlName="mitigation"
-        backgroundColor=" var(--form-color)"
+
       ></app-form-text-area>
 
       @if(qmsForm.get("mitigation")){ @if
@@ -228,7 +239,7 @@
       <h2>Action Plan</h2>
       @if(isAdmin === 'Admin'){ @if(!isnewAssigneenameDisplay){
       <app-form-dropdown
-        label="Responsibility of action"
+        label="Risk Owner"
         required="*"
         [dropdownData]="dropdownAssigneeForAdmin"
         dropdownDisplay="fullName"
@@ -246,7 +257,7 @@
       ></app-form-dropdown>
       } } @if(isAdmin !== 'Admin'){ @if(!isnewAssigneenameDisplay){
       <app-form-dropdown
-        label="Responsibility of action"
+        label="Risk Owner"
         required="*"
         [dropdownData]="dropdownAssignee"
         dropdownDisplay="fullName"
@@ -331,11 +342,12 @@
         dropdownDisplay="fullName"
         dropdownValue="fullName"
         [selectedValue]="preSelectedReviewer"
-        backgroundColor=" var(--form-color)"
+
         selectValue="Select reviewer"
         (change)="onDropdownChangeReviewer($event)"
         [openDropdownId]="openDropdownId"
         (openDropdown)="handleDropdownOpen($event)"
+        backgroundColor=" var(--form-color)"
         message="You can select an existing reviewer from the dropdown
         or enter a new one. If you enter a new name, it will take priority over the dropdown selection."
         [showInfoButton]="true"
@@ -545,5 +557,8 @@
     (closeDialog)="closepopupIsValidCheck()"
   >
   </app-form-successfull>
+  }
+  @if(showModalCategory){
+    <app-form-category-table (closeModalEvent)="closeModalCategory()"></app-form-category-table>
   }
 </div>

@@ -4,14 +4,15 @@
       <h2>Risk Details</h2>
       <div class="form-row">
         <app-form-input
-          label="Risk Name"
+          label="Risk Category"
           required=" *"
           formControlName="riskName"
+          (infoClicked)="toggleModalCategory()"
         ></app-form-input>
         @if(qmsForm.get("riskName")){ @if
         (qmsForm.get("riskName")?.hasError('required')&&
         qmsForm.get("riskName")?.dirty) {
-        <div class="text-danger">Risk name is required</div>
+        <div class="text-danger">Risk Category is required</div>
         } }
         @if(preSelectedProject ==null){
           <div class="dropdown-header">
@@ -104,6 +105,9 @@
         <app-form-dropdown
           label="Likelihood"
           required="*"
+          tooltipType="likelihood"
+          backgroundColor=" var(--form-color)"
+        [showInfoButton]="true"
           [dropdownData]="dropdownLikelihood"
           dropdownDisplay="assessmentFactor"
           dropdownValue="id"
@@ -218,7 +222,7 @@
       <h2>Action Plan</h2>
       @if(!isnewAssigneenameDisplay){
       <app-form-dropdown
-        label="Responsibility of action"
+        label="Risk Owner"
         required="*"
         [dropdownData]="dropdownAssignee"
         dropdownDisplay="fullName"
@@ -460,5 +464,9 @@
     (closeDialog)="closepopupIsValidCheck()"
   >
   </app-form-successfull>
+  }
+
+  @if(showModalCategory){
+    <app-form-category-table (closeModalEvent)="closeModalCategory()"></app-form-category-table>
   }
 </div>

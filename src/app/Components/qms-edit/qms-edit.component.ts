@@ -29,6 +29,7 @@ import { FormConformPopupComponent } from '../form-conform-popup/form-conform-po
 import { Router } from '@angular/router';
 import { StyleButtonComponent } from '../../UI/style-button/style-button.component';
 import { FormLoaderComponent } from '../form-loader/form-loader.component';
+import { FormCategoryTableComponent } from '../form-category-table/form-category-table.component';
 
 @Component({
   selector: 'app-qms-edit',
@@ -47,6 +48,7 @@ import { FormLoaderComponent } from '../form-loader/form-loader.component';
     FormConformPopupComponent,
     StyleButtonComponent,
     FormLoaderComponent,
+    FormCategoryTableComponent
   ],
   templateUrl: './qms-edit.component.html',
   styleUrl: './qms-edit.component.scss',
@@ -109,6 +111,7 @@ export class QmsEditComponent {
   isnewReviewernameDisplay: boolean = false;
   isLoading = false; // Initially false
   departmentIdForAdminToAddToString:string=''
+  showModalCategory = false; // Initially hidden
 
 
   constructor(
@@ -565,5 +568,13 @@ export class QmsEditComponent {
 
   closepopupIsValidCheck() {
     this.isValid = false;
+  }
+
+  toggleModalCategory() {
+    this.showModalCategory = !this.showModalCategory; // Toggle modal visibility
+  }
+
+  closeModalCategory() {
+    this.showModalCategory = false; // Ensure modal closes only on the close button
   }
 }

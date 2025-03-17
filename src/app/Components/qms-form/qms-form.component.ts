@@ -29,6 +29,7 @@ import { FormConformPopupComponent } from '../form-conform-popup/form-conform-po
 import { Router } from '@angular/router';
 import { StyleButtonComponent } from '../../UI/style-button/style-button.component';
 import { FormLoaderComponent } from '../form-loader/form-loader.component';
+import { FormCategoryTableComponent } from '../form-category-table/form-category-table.component';
 @Component({
   selector: 'app-qms-form',
   standalone: true,
@@ -46,6 +47,7 @@ import { FormLoaderComponent } from '../form-loader/form-loader.component';
     FormConformPopupComponent,
     StyleButtonComponent,
     FormLoaderComponent,
+    FormCategoryTableComponent
   ],
   templateUrl: './qms-form.component.html',
   styleUrl: './qms-form.component.scss',
@@ -114,6 +116,9 @@ export class QMSFormComponent {
   isDraftLoaded = false;
   departmentIdForAdminToAddToString: string = '';
   departmentIdForAdminToAddToNumber: number = 0;
+  showModalCategory = false; // Initially hidden
+
+
 
   constructor(
     private el: ElementRef,
@@ -1020,4 +1025,13 @@ export class QMSFormComponent {
 
   conform: string =
     'Do you want to save the entered risk details? <br> You can check and edit them later if needed.';
+
+
+    toggleModalCategory() {
+      this.showModalCategory = !this.showModalCategory; // Toggle modal visibility
+    }
+
+    closeModalCategory() {
+      this.showModalCategory = false; // Ensure modal closes only on the close button
+    }
 }

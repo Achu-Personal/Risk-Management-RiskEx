@@ -28,6 +28,7 @@ import { Router } from '@angular/router';
 import { FormConformPopupComponent } from '../form-conform-popup/form-conform-popup.component';
 import { StyleButtonComponent } from '../../UI/style-button/style-button.component';
 import { FormLoaderComponent } from '../form-loader/form-loader.component';
+import { FormCategoryTableComponent } from '../form-category-table/form-category-table.component';
 
 @Component({
   selector: 'app-isms-edit',
@@ -46,6 +47,7 @@ import { FormLoaderComponent } from '../form-loader/form-loader.component';
     FormConformPopupComponent,
     StyleButtonComponent,
     FormLoaderComponent,
+    FormCategoryTableComponent
   ],
   templateUrl: './isms-edit.component.html',
   styleUrl: './isms-edit.component.scss',
@@ -135,6 +137,8 @@ export class IsmsEditComponent {
   isnewReviewernameDisplay: boolean = false;
   isLoading = false; // Initially false
   departmentIdForAdminToAddToString:string=''
+  showModalCategory = false; // Initially hidden
+
 
 
   constructor(
@@ -888,5 +892,13 @@ export class IsmsEditComponent {
 
   closepopupIsValidCheck() {
     this.isValid = false;
+  }
+
+  toggleModalCategory() {
+    this.showModalCategory = !this.showModalCategory; // Toggle modal visibility
+  }
+
+  closeModalCategory() {
+    this.showModalCategory = false; // Ensure modal closes only on the close button
   }
 }

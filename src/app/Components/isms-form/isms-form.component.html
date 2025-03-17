@@ -17,9 +17,10 @@
       }
       <div class="form-row">
         <app-form-input
-          label="Risk Name"
+          label="Risk Category"
           required=" *"
           formControlName="riskName"
+          (infoClicked)="toggleModalCategory()"
         ></app-form-input>
 
         @if(isAdmin!=='Admin'){
@@ -55,7 +56,7 @@
       @if(ismsForm.get("riskName")){ @if
       (ismsForm.get("riskName")?.hasError('required')&&
       ismsForm.get("riskName")?.dirty) {
-      <div class="text-danger">Risk name is required</div>
+      <div class="text-danger">Risk Category is required</div>
       } }
 
       <app-form-text-area
@@ -381,7 +382,7 @@
       @if(isAdmin === 'Admin'){
         @if(!isnewAssigneenameDisplay){
       <app-form-dropdown
-        label="Responsibility of action"
+        label="Risk Owner"
         required="*"
         [dropdownData]="dropdownAssigneeForAdmin"
         dropdownDisplay="fullName"
@@ -400,7 +401,7 @@
      } @if(isAdmin !== 'Admin'){
         @if(!isnewAssigneenameDisplay){
       <app-form-dropdown
-        label="Responsibility of action"
+        label="Risk Owner"
         required="*"
         [dropdownData]="dropdownAssignee"
         dropdownDisplay="fullName"
@@ -669,5 +670,8 @@
     (closeDialog)="closepopupIsValidCheck()"
   >
   </app-form-successfull>
+  }
+  @if(showModalCategory){
+    <app-form-category-table (closeModalEvent)="closeModalCategory()"></app-form-category-table>
   }
 </div>

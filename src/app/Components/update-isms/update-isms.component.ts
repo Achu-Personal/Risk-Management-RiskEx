@@ -358,6 +358,7 @@ export class UpdateIsmsComponent {
     this.isLoading=true;
     const formValue = this.updateQmsForm.value;
     console.log(formValue);
+    console.log("vvvvvvvvvvvvvvvvvvvv",this.riskResponseValue)
 
     if (
       !formValue.closeDate ||
