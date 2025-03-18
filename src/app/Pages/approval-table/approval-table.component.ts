@@ -204,7 +204,12 @@ export class ApprovalTableComponent {
               riskName: event.row.riskName,
               description: event.row.description,
               riskType: event.row.riskType,
-              plannedActionDate: event.row.plannedActionDate,
+              plannedActionDate:  new Date(event.row.plannedActionDate )
+              .toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+              }),
               overallRiskRating: event.row.overallRiskRating,
               riskStatus: event.row.riskStatus
             };
@@ -269,7 +274,12 @@ this.api.getRiskById(id).subscribe((res:any)=>{
                 riskType: event.row.riskType,
                 impact:  this.impact,
                 mitigation: this.mitigation,
-                plannedActionDate: event.row.plannedActionDate,
+                plannedActionDate: new Date(event.row.plannedActionDate )
+                .toLocaleDateString('en-US', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
+                }),
                 overallRiskRating: event.row.overallRiskRating,
                 riskStatus: event.row.riskStatus,
                 reason: event.comment
@@ -290,7 +300,12 @@ console.log("context:",context);
                           riskType: event.row.riskType,
                           impact: event.row.impact,
                           mitigation: event.row.mitigation,
-                          plannedActionDate: event.row.plannedActionDate,
+                          plannedActionDate:  new Date(event.row.plannedActionDate )
+                          .toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric',
+                          }),
                           overallRiskRating: event.row.overallRiskRating,
                           riskStatus: event.row.riskStatus,
                           reason: event.comment

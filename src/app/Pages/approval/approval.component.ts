@@ -103,7 +103,12 @@ export class ApprovalComponent {
               riskType:res.riskType,
               impact: res.impact,
               mitigation: res.mitigation,
-              plannedActionDate:res.plannedActionDate,
+              plannedActionDate:new Date(res.plannedActionDate )
+              .toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+              }),
               overallRiskRating:res.overallRiskRating,
               riskStatus:res.riskStatus,
               reason:event.comment
@@ -167,7 +172,7 @@ export class ApprovalComponent {
       let id = parseInt(this.route.snapshot.paramMap.get('id')!);
       this.api.updateReviewStatusAndComments(id,updates).subscribe((res:any)=>{
         console.log("approval response:",res);
-        
+
       });
       this.showButtons = false;
       this.api.getRiskById(id).subscribe((res:any)=>{
@@ -212,7 +217,7 @@ export class ApprovalComponent {
     setTimeout(() => {
       this.router.navigate(['/approvaltable']);
     }, 1000);
-  
+
 
   }
 

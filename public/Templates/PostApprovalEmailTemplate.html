@@ -61,7 +61,8 @@
       <h2>Risk Review Notification</h2>
     </div>
     <p>Dear {{responsibleUser}},</p>
-    <p>A newly identified risk has been added by <b>{{createdBy}}</b> and it requires your attention.  Please review the details below and approve or reject accordingly</p>
+    <p>A risk previously identified by <b>{{createdBy}}</b> has now undergone assessment. Please review the updated details
+      below.</p>
     <div style="background-color:#f8f9fa;border-radius:6px;padding:20px;margin:20px 0">
       <ul>
         <li><strong>Risk ID:</strong> {{riskId}}</li>
@@ -71,7 +72,9 @@
         <li><strong>Impact:</strong> {{impact}}</li>
         <li><strong>Mitigation:</strong> {{mitigation}}</li>
         <li><strong>Planned Date:</strong> {{plannedActionDate}}</li>
+        <li><strong>Responsible Person:</strong> {{riskOwner}}</li>
         <li><strong>Risk Rating:</strong> {{overallRiskRating}}</li>
+        <li><strong>Response:</strong> {{riskResponse}}</li>
       </ul>
     </div>
     <div
