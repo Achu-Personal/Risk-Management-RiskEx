@@ -33,6 +33,7 @@ export class RiskDetailsSection2Component {
 
   @Input() ClosedDate=""
   @Input() RiskResponse=""
+  @Input() Remarks=""
   currentStep =1;
   constructor(private api:ApiService,private route:ActivatedRoute)
   {
