@@ -212,7 +212,6 @@ export class EditRiskComponent {
               month: 'long',
               day: 'numeric',
             }),
-            riskOwner:riskData.responsibleUser.fullName,
             overallRiskRating: riskData.overallRiskRatingBefore,
             // reason:riskData.riskAssessments[0].review.comments,
             id: riskData.id,
