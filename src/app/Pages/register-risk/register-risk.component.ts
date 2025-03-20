@@ -168,7 +168,7 @@ export class RegisterRiskComponent {
 
       setTimeout(() => {
         this.isLoadingLoader = false; // Hide loader after delay
-      }, 1000); // 3 seconds delay
+      }, 500); // 3 seconds delay
 
 
 

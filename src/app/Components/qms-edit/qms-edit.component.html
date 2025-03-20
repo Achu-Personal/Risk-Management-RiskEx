@@ -57,6 +57,28 @@
         (openDropdown)="handleDropdownOpen($event)"
       ></app-form-dropdown>
       } -->
+
+      <app-form-text-area
+        label="Description"
+        required="*"
+        placeHolder="Enter description of risk"
+        message="Provide a detailed description of the risk, including what could cause it"
+        formControlName="description"
+        backgroundColor=" var(--form-color)"
+      ></app-form-text-area>
+
+      @if(qmsForm.get("description")){ @if
+      (qmsForm.get("description")?.hasError('maxlength')) {
+      <div class="text-danger">maximum length is 1000</div>
+
+      } @else if (qmsForm.get("description")?.hasError('minlength')) {
+      <div class="text-danger">minimum length is 15</div>
+
+      } @else if (qmsForm.get("description")?.hasError('required')&&
+      qmsForm.get("description")?.dirty) {
+      <div class="text-danger">Description of risk is required</div>
+      } }
+
       <app-form-text-area
         label="Impact Of Risk"
         required="*"
@@ -80,26 +102,7 @@
       <div class="text-danger">Impact of risk is required</div>
       } }
 
-      <app-form-text-area
-        label="Description"
-        required="*"
-        placeHolder="Enter description of risk"
-        message="Provide a detailed description of the risk, including what could cause it"
-        formControlName="description"
-        backgroundColor=" var(--form-color)"
-      ></app-form-text-area>
 
-      @if(qmsForm.get("description")){ @if
-      (qmsForm.get("description")?.hasError('maxlength')) {
-      <div class="text-danger">maximum length is 1000</div>
-
-      } @else if (qmsForm.get("description")?.hasError('minlength')) {
-      <div class="text-danger">minimum length is 15</div>
-
-      } @else if (qmsForm.get("description")?.hasError('required')&&
-      qmsForm.get("description")?.dirty) {
-      <div class="text-danger">Description of risk is required</div>
-      } }
     </div>
     <div class="form-details-sub-container">
       <h2>Current Risk Assessment</h2>
