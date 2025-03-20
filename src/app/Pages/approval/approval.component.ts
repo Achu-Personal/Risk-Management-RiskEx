@@ -95,6 +95,7 @@ export class ApprovalComponent {
         if(res.riskStatus==='open' || res.riskStatus==='close'){
 
             const context = {
+              reviewer: this.auth.getUserName(),
               responsibleUser: res.createdBy.fullName,
               riskId: res.riskId,
               riskName: res.riskName,
@@ -129,6 +130,7 @@ export class ApprovalComponent {
         if(res.riskStatus === 'close'){
 
           const context = {
+            reviewer: this.auth.getUserName(),
             responsibleUser: res.responsibleUser.fullName,
             riskId: res.riskId,
             riskName: res.riskName,

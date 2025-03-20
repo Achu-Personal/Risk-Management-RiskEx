@@ -94,7 +94,7 @@ export class EmailService {
       resetToken: resetToken,
     };
 
-    const subject = 'Reset Your Risk Management System Password';
+    const subject = 'RESET YOUR RISK MANAGEMENT SYSTEM PASSWORD';
     const body = this.prepareResetPasswordEmailBody(
       this.resetPasswordTemplate,
       context
@@ -127,7 +127,7 @@ export class EmailService {
     }
   }
   sendUserRegistrationEmail(email: string, context: any): Observable<boolean> {
-    const subject = 'Your Risk Management System Account Credentials';
+    const subject = 'YOUR RISK MANAGEMENT SYSTEM ACCOUNT CREDENTIALS';
     const body = this.prepareUserRegistrationEmailBody(
       this.userRegisterTemplate,
       context
@@ -286,6 +286,7 @@ async prepareOwnerEmail(context: any): Promise<string> {
 
     return template
       .replace(/{{createdBy}}/g, this.createdByUserName)
+      .replace('{{reviewer}}',context.reviewer)
       .replace('{{responsibleUser}}', context.responsibleUser)
       .replace('{{riskId}}', context.riskId)
       .replace('{{riskName}}', context.riskName)
@@ -332,7 +333,7 @@ async prepareOwnerEmail(context: any): Promise<string> {
   }
 
   sendUserUpdateEmail(email: string, context: any): Observable<boolean> {
-    const subject = ' Risk Management System Account Update';
+    const subject = ' RISK MANAGEMENT SYSTEM ACCOUNT UPDATE';
     const body = this.prepareUserUpdateEmailBody(
       this.userUpdateTemplate,
       context
@@ -560,9 +561,4 @@ sendRiskClosureEmail(email: string, context: any): Observable<boolean> {
     })
   );
 }
-
-
-
-
-
 }

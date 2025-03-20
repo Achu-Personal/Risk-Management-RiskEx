@@ -386,6 +386,7 @@ export class ApprovalTableComponent {
             next: (res: any) => {
               this.assignee = res;
               const context = {
+                reviewer: this.auth.getUserName(),
                 responsibleUser: res[0].name,
                 riskId: event.row.riskId,
                 riskName: event.row.riskName,
@@ -413,6 +414,7 @@ export class ApprovalTableComponent {
                     this.api.getAssigneeByRiskId(id).subscribe({
                       next: (assigneeRes: any) => {
                         const assigneeContext = {
+                          reviewer: this.auth.getUserName(),
                           responsibleUser: assigneeRes.fullName,
                           riskId: event.row.riskId,
                           riskName: event.row.riskName,
