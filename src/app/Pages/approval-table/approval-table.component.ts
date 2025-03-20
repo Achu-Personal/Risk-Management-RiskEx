@@ -177,132 +177,193 @@ export class ApprovalTableComponent {
   showRejectDialog = false;
   selectedRow: any;
 
-  approveRisk(event: { row: any; comment: string }) {
-    this.isLoader = true;
-    const updates = {
-      approvalStatus: 'Approved',
-      comments: event.comment,
-    };
-    let id = event.row.id;
+ approveRisk(event: { row: any; comment: string }) {
+  this.isLoader = true;
+  const updates = {
+    approvalStatus: 'Approved',
+    comments: event.comment,
+  };
+  let id = event.row.id;
 
-    this.api.getRiskById(id).subscribe(
-      (riskDetails: any) => {
-        this.impact = riskDetails.impact;
-        this.mitigation = riskDetails.mitigation;
+  this.api.getRiskById(id).subscribe(
+    (riskDetails: any) => {
+      this.impact = riskDetails.impact;
+      this.mitigation = riskDetails.mitigation;
 
-        this.api.updateReviewStatusAndComments(id, updates).subscribe({
-          next: () => {
-            if (event.row.riskStatus === 'open') {
-              this.api.getriskOwnerEmailandName(id).subscribe({
-                next: (ownerRes: any) => {
-                  this.api
-                    .getAssigneeByRiskId(id)
-                    .subscribe((assigneeRes: any) => {
-                      this.assignee = assigneeRes;
+      this.api.updateReviewStatusAndComments(id, updates).subscribe({
+        next: () => {
+          this.api.getriskOwnerEmailandName(id).subscribe({
+            next: (ownerRes: any) => {
+              this.api.getAssigneeByRiskId(id).subscribe({
+                next: (assigneeRes: any) => {
+                  this.assignee = assigneeRes;
 
-                      const context = {
-                        responsibleUser: this.assignee.fullName,
-                        riskId: event.row.riskId,
-                        riskName: event.row.riskName,
-                        description: event.row.description,
-                        riskType: event.row.riskType,
-                        impact: this.impact,
-                        mitigation: this.mitigation,
-                        plannedActionDate: new Date(
-                          event.row.plannedActionDate
-                        ).toLocaleDateString('en-US', {
-                          year: 'numeric',
-                          month: 'long',
-                          day: 'numeric',
-                        }),
-                        overallRiskRating: event.row.overallRiskRating,
-                        riskStatus: event.row.riskStatus,
-                        approvedBy: this.auth.getUserName(),
-                        comments: event.comment,
-                      };
+                  const context = {
+                    responsibleUser: this.assignee.fullName,
+                    riskId: event.row.riskId,
+                    riskName: event.row.riskName,
+                    description: event.row.description,
+                    riskType: event.row.riskType,
+                    impact: this.impact,
+                    mitigation: this.mitigation,
+                    plannedActionDate: new Date(
+                      event.row.plannedActionDate
+                    ).toLocaleDateString('en-US', {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric',
+                    }),
+                    overallRiskRating: event.row.overallRiskRating,
+                    riskStatus: event.row.riskStatus,
+                    approvedBy: this.auth.getUserName(),
+                    comments: event.comment,
+                  };
 
-                      // Send email to assignee
-                      this.email
-                        .sendAssigneeEmail(this.assignee.email, context)
-                        .subscribe({
+                  if (event.row.riskStatus === 'close') {
+                    const closureContext = {
+                      ...context,
+                      verifiedBy: this.auth.getUserName(),
+                      verificationComments: event.comment
+                    };
+                    const closureContextOwner = {
+                      riskId: event.row.riskId,
+                    riskName: event.row.riskName,
+                    description: event.row.description,
+                    riskType: event.row.riskType,
+                    impact: this.impact,
+                    mitigation: this.mitigation,
+                    plannedActionDate: new Date(
+                      event.row.plannedActionDate
+                    ).toLocaleDateString('en-US', {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric',
+                    }),
+                    overallRiskRating: event.row.overallRiskRating,
+                      verifiedBy: this.auth.getUserName(),
+                      verificationComments: event.comment
+                    };
+
+                    this.email.sendRiskClosureEmail(ownerRes[0].email, closureContextOwner).subscribe({
+                      next: () => {
+                        console.log('Risk closure email sent to owner successfully');
+
+                        this.email.sendRiskClosureEmail(this.assignee.email, closureContext).subscribe({
                           next: () => {
-                            // Send approval email to risk owner
-                            this.email
-                              .sendApprovalEmail(ownerRes[0].email, context)
-                              .subscribe({
-                                next: () => {
-                                  console.log(
-                                    'Risk Owner approval email sent successfully'
-                                  );
-                                  this.notification.success(
-                                    'The risk has been approved successfully and Email sent to assignee and risk owner'
-                                  );
-                                  this.isLoader = false;
-                                  this.refershTableData();
-                                  this.cdr.markForCheck();
-                                },
-                                error: (emailError) => {
-                                  console.error(
-                                    'Failed to send approval email to risk owner:',
-                                    emailError
-                                  );
-                                  this.notification.success(
-                                    'The risk has been approved successfully and Email sent to assignee'
-                                  );
-                                  this.isLoader = false;
-                                  this.refershTableData();
-                                  this.cdr.markForCheck();
-                                },
-                              });
-                          },
-                          error: (emailError) => {
-                            console.error(
-                              'Failed to send email to assignee:',
-                              emailError
-                            );
+                            console.log('Risk closure email sent to assignee successfully');
                             this.notification.success(
-                              'The risk has been approved successfully'
+                              'The risk has been approved and closed successfully. Closure notifications sent to owner and assignee.'
                             );
                             this.isLoader = false;
                             this.refershTableData();
                             this.cdr.markForCheck();
                           },
+                          error: (emailError) => {
+                            console.error('Failed to send closure email to assignee:', emailError);
+                            this.notification.success(
+                              'The risk has been approved and closed successfully. Closure notification sent to owner only.'
+                            );
+                            this.isLoader = false;
+                            this.refershTableData();
+                            this.cdr.markForCheck();
+                          }
                         });
+                      },
+                      error: (emailError) => {
+                        console.error('Failed to send closure email to owner:', emailError);
+                        this.notification.success(
+                          'The risk has been approved and closed successfully, but email notifications failed.'
+                        );
+                        this.isLoader = false;
+                        this.refershTableData();
+                        this.cdr.markForCheck();
+                      }
                     });
+                  } else {
+
+                    this.email.sendAssigneeEmail(this.assignee.email, context).subscribe({
+                      next: () => {
+                        console.log('Assignee approval email sent successfully');
+
+                        this.email.sendApprovalEmail(ownerRes[0].email, context).subscribe({
+                          next: () => {
+                            console.log('Risk Owner approval email sent successfully');
+                            this.notification.success(
+                              'The risk has been approved successfully and Email sent to assignee and risk owner'
+                            );
+                            this.isLoader = false;
+                            this.refershTableData();
+                            this.cdr.markForCheck();
+                          },
+                          error: (emailError) => {
+                            console.error('Failed to send approval email to risk owner:', emailError);
+                            this.notification.success(
+                              'The risk has been approved successfully and Email sent to assignee'
+                            );
+                            this.isLoader = false;
+                            this.refershTableData();
+                            this.cdr.markForCheck();
+                          }
+                        });
+                      },
+                      error: (emailError) => {
+                        console.error('Failed to send email to assignee:', emailError);
+
+                        this.email.sendApprovalEmail(ownerRes[0].email, context).subscribe({
+                          next: () => {
+                            this.notification.success(
+                              'The risk has been approved successfully and Email sent to risk owner'
+                            );
+                            this.isLoader = false;
+                            this.refershTableData();
+                            this.cdr.markForCheck();
+                          },
+                          error: (ownerEmailError) => {
+                            console.error('Failed to send email to risk owner:', ownerEmailError);
+                            this.notification.success(
+                              'The risk has been approved successfully but email notifications failed'
+                            );
+                            this.isLoader = false;
+                            this.refershTableData();
+                            this.cdr.markForCheck();
+                          }
+                        });
+                      }
+                    });
+                  }
                 },
                 error: (error) => {
-                  console.error('Failed to get risk owner details:', error);
-                  this.notification.success(
-                    'The risk has been approved successfully'
-                  );
+                  console.error('Failed to get assignee details:', error);
+                  this.notification.success('The risk has been approved successfully but email notifications could not be sent');
                   this.isLoader = false;
                   this.refershTableData();
                   this.cdr.markForCheck();
-                },
+                }
               });
-            } else if (event.row.riskStatus === 'close') {
-              this.notification.success(
-                'The risk has been approved and closed successfully'
-              );
+            },
+            error: (error) => {
+              console.error('Failed to get risk owner details:', error);
+              this.notification.success('The risk has been approved successfully but email notifications could not be sent');
               this.isLoader = false;
               this.refershTableData();
               this.cdr.markForCheck();
             }
-          },
-          error: (error) => {
-            console.error('Error updating review status:', error);
-            this.notification.error('Failed to approve risk');
-            this.isLoader = false;
-          },
-        });
-      },
-      (error) => {
-        console.error('Error getting risk details:', error);
-        this.notification.error('Failed to get risk details');
-        this.isLoader = false;
-      }
-    );
-  }
+          });
+        },
+        error: (error) => {
+          console.error('Error updating review status:', error);
+          this.notification.error('Failed to approve risk');
+          this.isLoader = false;
+        }
+      });
+    },
+    (error) => {
+      console.error('Error getting risk details:', error);
+      this.notification.error('Failed to get risk details');
+      this.isLoader = false;
+    }
+  );
+}
 
   rejectRisk(event: { row: any; comment: string }) {
     this.isLoader = true;
