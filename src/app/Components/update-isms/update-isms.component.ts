@@ -28,6 +28,7 @@ import { Router } from '@angular/router';
 import { StyleButtonComponent } from '../../UI/style-button/style-button.component';
 import { FormLoaderComponent } from '../form-loader/form-loader.component';
 import { FormLikelihoodImpactTooltipComponent } from '../form-likelihood-impact-tooltip/form-likelihood-impact-tooltip.component';
+import { FormResponseTableComponent } from '../form-response-table/form-response-table.component';
 
 @Component({
   selector: 'app-update-isms',
@@ -46,7 +47,10 @@ import { FormLikelihoodImpactTooltipComponent } from '../form-likelihood-impact-
     FormConformPopupComponent,
     StyleButtonComponent,
     FormLoaderComponent,
-    FormLikelihoodImpactTooltipComponent
+    FormLikelihoodImpactTooltipComponent,
+    FormResponseTableComponent
+
+
   ],
   templateUrl: './update-isms.component.html',
   styleUrl: './update-isms.component.scss',
@@ -584,6 +588,7 @@ export class UpdateIsmsComponent {
   tableType = '';
   showTooltipLikelihood:boolean=false;
   showTooltipImpact:boolean=false;
+  showResponseModel=false
 
   showTable(type: string) {
     this.tableType = type;
@@ -592,5 +597,13 @@ export class UpdateIsmsComponent {
 
   hideModal() {
     this.showModal = false;
+  }
+
+  handleInfoClickResponse(event: boolean){
+    this.showResponseModel=true
+
+  }
+  hideModalResponse() {
+    this.showResponseModel = false;
   }
 }

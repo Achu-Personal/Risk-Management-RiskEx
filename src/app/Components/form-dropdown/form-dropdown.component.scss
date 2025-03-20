@@ -115,7 +115,8 @@ label {
   border-radius: 5px;
   position: absolute;
   z-index: 1;
-  white-space: nowrap;
+  width: 500px;
+  text-wrap: wrap;
   left: 100%;
   top: 50%;
   transform: translateY(-50%);

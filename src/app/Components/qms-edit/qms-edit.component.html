@@ -110,7 +110,7 @@
         <app-form-dropdown
           label="Likelihood"
           required="*"
-          message="Click to view Likelihood table"
+          message="Likelihood means how likely or possible it is for a risk to happen. If something is very likely, the risk is high. If it’s unlikely, the risk is low."
           (infoClicked)="handleInfoClickLikelihood($event)"
           backgroundColor=" var(--form-color)"
           [showInfoButtonLikeliHoodImpact]="true"
@@ -139,7 +139,7 @@
           [openDropdownId]="openDropdownId"
           (openDropdown)="handleDropdownOpen($event)"
           (infoClicked)="handleInfoClickImpact($event)"
-          message="Click to view Impact table"
+          message="Impact means how bad the result will be if the risk happens. A big impact can cause serious problems, while a small impact may only cause minor issues."
           backgroundColor=" var(--form-color)"
         [showInfoButtonLikeliHoodImpact]="true"
 

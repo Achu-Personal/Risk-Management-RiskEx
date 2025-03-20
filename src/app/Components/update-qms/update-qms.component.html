@@ -4,14 +4,16 @@
       <h2>ASSESSMENT POST IMPLEMENTATION OF ACTION</h2>
       <div class="form-row">
         <app-form-dropdown label="Likelihood" [dropdownData]="dropdownLikelihood" dropdownDisplay="assessmentFactor" dropdownValue="id" selectValue="Select likelihood" (change)="onDropdownChangelikelihood($event)" [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)"
-          message="Click to view Likelihood table"
+        message="Likelihood means how likely or possible it is for a risk to happen. If something is very likely, the risk is high. If it’s unlikely, the risk is low."
+        required="*"
           (infoClicked)="handleInfoClickLikelihood($event)"
           backgroundColor=" var(--form-color)"
           [showInfoButtonLikeliHoodImpact]="true" ></app-form-dropdown>
         <app-form-dropdown label="Impact" [dropdownData]="dropdownImpact" dropdownDisplay="assessmentFactor" dropdownValue="id" selectValue="Select impact" (change)="onDropdownChangeImpact($event)" [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)"
         (infoClicked)="handleInfoClickImpact($event)"
-          message="Click to view Impact table"
-          backgroundColor=" var(--form-color)"
+        required="*"
+        message="Impact means how bad the result will be if the risk happens. A big impact can cause serious problems, while a small impact may only cause minor issues."
+        backgroundColor=" var(--form-color)"
         [showInfoButtonLikeliHoodImpact]="true"></app-form-dropdown>
       </div>
       <div class="form-row" [ngStyle]="{'gap':'32vw','margin-top':'30px'}">
@@ -35,7 +37,7 @@
         }
 
       }
-      <app-form-risk-response label="Risk Response" required="*" [riskResponses]="riskResponses" (selectedValueChange)="onRadioSelectionChange($event)" ></app-form-risk-response>
+      <app-form-risk-response label="Risk Response" required="*" (infoClicked)="handleInfoClickResponse($event)" [riskResponses]="riskResponses" (selectedValueChange)="onRadioSelectionChange($event)" ></app-form-risk-response>
     </div>
     <div class="form-details-sub-container">
       <h2>Reviewer</h2>
@@ -135,6 +137,12 @@
   @if(showModal){
     <app-form-likelihood-impact-tooltip [showModal]="showModal" [tableType]="tableType" (closeRiskModal)="hideModal()"></app-form-likelihood-impact-tooltip>
   }
+
+  @if(showResponseModel){
+    <app-form-response-table (closeResponseTable)="hideModalResponse()"></app-form-response-table>
+  }
+
+
 
 
 
