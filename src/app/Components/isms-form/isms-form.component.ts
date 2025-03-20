@@ -611,14 +611,14 @@ export class ISMSFormComponent {
     if (this.isAdmin == 'Admin') {
       if (this.projectId && this.projectId != 0) {
         await this.getRiskId(
-          Number(this.departmentIdForAdminToAdd),
+         null,
           this.projectId
         );
       }
       else {
         if (this.preSelectedProject && this.preSelectedProject != 0) {
         await this.getRiskId(
-          Number(this.departmentIdForAdminToAdd),
+          null,
           this.preSelectedProject
         );
       } else {
@@ -629,12 +629,12 @@ export class ISMSFormComponent {
 
     if (this.isAdmin !== 'Admin') {
       if (this.projectId && this.projectId != 0) {
-        await this.getRiskId(Number(this.departmentId), this.projectId);
+        await this.getRiskId(null, this.projectId);
       }
       else{
       if (this.preSelectedProject && this.preSelectedProject != 0) {
         await this.getRiskId(
-          Number(this.departmentId),
+          null,
           this.preSelectedProject
         );
       } else {
@@ -930,7 +930,7 @@ export class ISMSFormComponent {
   }
 
   private getRiskId(
-    departmentId: number,
+    departmentId: number | null = null,
     projectId: number | null = null
   ): Promise<void> {
     return new Promise((resolve, reject) => {
