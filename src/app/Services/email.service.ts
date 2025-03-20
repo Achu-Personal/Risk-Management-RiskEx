@@ -18,6 +18,8 @@ export class EmailService {
   userRegisterTemplate: string = '';
   resetPasswordTemplate: string = '';
   userUpdateTemplate: string = '';
+  riskClosureTemplate: string = '';
+
 
   private readonly baseUrl = environment.apiUrl;
 
@@ -38,6 +40,7 @@ export class EmailService {
     this.loadResetPasswordTemplate();
     this.loadUserUpdateTemplate();
     this.loadApprovalTemplate();
+    this.loadRiskClosureTemplate();
 
   }
 
@@ -506,4 +509,60 @@ sendApprovalEmail(email: string, context: any): Observable<boolean> {
     })
   );
 }
+
+
+//RiskClose Email
+
+private async loadRiskClosureTemplate() {
+  try {
+    this.riskClosureTemplate = await fetch(
+      'Templates/RiskCloseEmailTemplate.html'
+    ).then((response) => response.text());
+  } catch (error) {
+    console.error('Failed to load risk closure email template:', error);
+  }
+}
+
+async prepareRiskClosureEmail(context: any): Promise<string> {
+  await this.getCreatedByUserName(context.riskId);
+  return this.addRiskDetailsForClosure(this.riskClosureTemplate, context);
+}
+
+private addRiskDetailsForClosure(template: string, context: any): string {
+  return template
+    .replace(/{{createdBy}}/g,context.responsibleUser || this.createdByUserName)
+    .replace('{{riskId}}', context.riskId)
+    .replace('{{riskName}}', context.riskName)
+    .replace('{{description}}', context.description)
+    .replace('{{riskType}}', context.riskType)
+    .replace('{{riskRating}}', context.initialRiskRating || context.overallRiskRating)
+    .replace('{{verifiedBy}}', context.verifiedBy || this.authService.getUserName())
+    .replace('{{verificationComments}}', context.verificationComments || 'No additional comments provided.')
+    .replace(/{{baseUrl}}/g, this.frontendUrl);
+}
+
+sendRiskClosureEmail(email: string, context: any): Observable<boolean> {
+  const subject = `RISK CLOSED - ${context.riskName}`;
+  return from(this.prepareRiskClosureEmail(context)).pipe(
+    switchMap(body => {
+      return this.api.sendMail(email, subject, body);
+    }),
+    map((response: any) => {
+      this.notificationService.success(
+        'Risk owner has been notified of the successful closure.'
+      );
+      return true;
+    }),
+    catchError((error) => {
+      console.error('Error sending risk closure email:', error);
+      this.notificationService.error('Failed to send closure notification to risk owner');
+      return of(false);
+    })
+  );
+}
+
+
+
+
+
 }
