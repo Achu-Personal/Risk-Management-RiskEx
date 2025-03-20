@@ -1,3 +1,4 @@
+import { department } from './../../Interfaces/deparments.interface';
 import {
   Component,
   ElementRef,
@@ -30,6 +31,7 @@ import { Router } from '@angular/router';
 import { StyleButtonComponent } from '../../UI/style-button/style-button.component';
 import { FormLoaderComponent } from '../form-loader/form-loader.component';
 import { FormCategoryTableComponent } from '../form-category-table/form-category-table.component';
+import { FormLikelihoodImpactTooltipComponent } from '../form-likelihood-impact-tooltip/form-likelihood-impact-tooltip.component';
 
 @Component({
   selector: 'app-qms-edit',
@@ -48,7 +50,8 @@ import { FormCategoryTableComponent } from '../form-category-table/form-category
     FormConformPopupComponent,
     StyleButtonComponent,
     FormLoaderComponent,
-    FormCategoryTableComponent
+    FormCategoryTableComponent,
+    FormLikelihoodImpactTooltipComponent
   ],
   templateUrl: './qms-edit.component.html',
   styleUrl: './qms-edit.component.scss',
@@ -112,6 +115,7 @@ export class QmsEditComponent {
   isLoading = false; // Initially false
   departmentIdForAdminToAddToString:string=''
   showModalCategory = false; // Initially hidden
+  departmentidForAssignee:string=''
 
 
   constructor(
@@ -134,6 +138,7 @@ export class QmsEditComponent {
     this.riskId = this.riskData.riskId;
     this.overallRiskRating = this.riskData.overallRiskRating;
     this.riskFactor = this.riskData.riskAssessments[0].riskFactor;
+    this.departmentidForAssignee=this.riskData.department.id
     // this.departmentId=this.riskData.department.id
 
 
@@ -577,4 +582,25 @@ export class QmsEditComponent {
   closeModalCategory() {
     this.showModalCategory = false; // Ensure modal closes only on the close button
   }
+
+
+
+
+  showModal = false;
+  tableType = '';
+  handleInfoClickLikelihood(event: boolean) {
+    console.log('Info button clicked, boolean value:', event);
+    this.showModal = true;
+    this.tableType = "likelihood";
+    // Do something when button is clicked
+  }
+  handleInfoClickImpact(event: boolean) {
+    console.log('Info button clicked, boolean value:', event);
+    this.showModal = true;
+    this.tableType = "impact";
+    // Do something when button is clicked
+  }
+hideModal() {
+  this.showModal = false;
+}
 }

@@ -107,8 +107,9 @@
       <table class="risk-assessment-table">
         <tr>
           <th></th>
-          <th>Likelihood <span class="required">*</span></th>
-          <th>Impact <span class="required">*</span></th>
+          <th>Likelihood <span class="required">*</span><span class="info-icon" (click)="showTable('likelihood')" (mouseenter)="showTooltipLikelihood = true" (mouseleave)="showTooltipLikelihood = false">i <div *ngIf="showTooltipLikelihood" class="tooltip-text" >Likelihood means how likely or possible it is for a risk to happen. If something is very likely, the risk is high. If it’s unlikely, the risk is low. <span class="required">Click to view likelihood table</span></div></span></th>
+
+          <th>Impact <span class="required">*</span><span class="info-icon" (click)="showTable('impact')"  (mouseenter)="showTooltipImpact = true" (mouseleave)="showTooltipImpact = false">i <div *ngIf="showTooltipImpact" class="tooltip-text">Impact means how bad the result will be if the risk happens. A big impact can cause serious problems, while a small impact may only cause minor issues. <span class="required">Click to view impact table</span> </div></span></th>
           <th><span style="margin-left: 30px"> Risk Factor</span></th>
         </tr>
         <tr>
@@ -532,7 +533,7 @@
   <app-form-loader></app-form-loader>> }
   @if(assigneeNotInList){
 
-    @if(isAdmin=="Admin"){
+    <!-- @if(isAdmin=="Admin"){
       <app-form-data-not-in-list
         placeholder="Enter responsible person name"
         [isAssignee]="true"
@@ -544,13 +545,13 @@
         [openDropdownId]="openDropdownId"
         (openDropdown)="handleDropdownOpen($event)"
       ></app-form-data-not-in-list>
-      }
+      } -->
 
-      @if(isAdmin!=="Admin"){
+      <!-- @if(isAdmin!=="Admin"){ -->
         <app-form-data-not-in-list
         placeholder="Enter responsible person name"
         [isAssignee]="true"
-        [assigneeDepartment]="departmentId"
+        [assigneeDepartment]="departmentidForAssignee"
         textLabel="Responsible person name"
         [dropdownDepartment]="dropdownDepartment"
         (cancelForm)="receiveCancel($event)"
@@ -558,7 +559,7 @@
         [openDropdownId]="openDropdownId"
         (openDropdown)="handleDropdownOpen($event)"
       ></app-form-data-not-in-list>
-      }
+      <!-- } -->
 
   }
   @if(reviewerNotInList){
@@ -622,5 +623,9 @@
   }
   @if(showModalCategory){
     <app-form-category-table (closeModalEvent)="closeModalCategory()"></app-form-category-table>
+  }
+
+  @if(showModal){
+    <app-form-likelihood-impact-tooltip [showModal]="showModal" [tableType]="tableType" (closeRiskModal)="hideModal()"></app-form-likelihood-impact-tooltip>
   }
 </div>

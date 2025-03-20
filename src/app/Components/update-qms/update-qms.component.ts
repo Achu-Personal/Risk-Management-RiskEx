@@ -25,6 +25,7 @@ import { FormConformPopupComponent } from '../form-conform-popup/form-conform-po
 import { Router } from '@angular/router';
 import { StyleButtonComponent } from '../../UI/style-button/style-button.component';
 import { FormLoaderComponent } from '../form-loader/form-loader.component';
+import { FormLikelihoodImpactTooltipComponent } from '../form-likelihood-impact-tooltip/form-likelihood-impact-tooltip.component';
 
 @Component({
   selector: 'app-update-qms',
@@ -43,6 +44,7 @@ import { FormLoaderComponent } from '../form-loader/form-loader.component';
     FormConformPopupComponent,
     StyleButtonComponent,
     FormLoaderComponent,
+    FormLikelihoodImpactTooltipComponent
   ],
   templateUrl: './update-qms.component.html',
   styleUrl: './update-qms.component.scss',
@@ -371,5 +373,25 @@ export class UpdateQmsComponent {
 
   closepopupIsValidCheck() {
     this.isValid = false;
+  }
+
+
+
+  showModal = false;
+    tableType = '';
+    handleInfoClickLikelihood(event: boolean) {
+      console.log('Info button clicked, boolean value:', event);
+      this.showModal = true;
+      this.tableType = "likelihood";
+      // Do something when button is clicked
+    }
+    handleInfoClickImpact(event: boolean) {
+      console.log('Info button clicked, boolean value:', event);
+      this.showModal = true;
+      this.tableType = "impact";
+      // Do something when button is clicked
+    }
+  hideModal() {
+    this.showModal = false;
   }
 }

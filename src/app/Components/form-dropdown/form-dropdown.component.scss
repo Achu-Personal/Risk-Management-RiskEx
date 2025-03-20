@@ -22,6 +22,7 @@
 }
 
 .tooltip-text {
+
   visibility: hidden;
   width: 300px;
   background-color: var(--secondary-color);
@@ -58,6 +59,7 @@ label {
 
 
 .tooltip-text-html{
+
   visibility: hidden;
   width: 500px;
   background-color: white;
@@ -68,7 +70,8 @@ label {
 
   position: absolute;
   z-index: 1;
-  bottom: 100%;
+  bottom: 90%;
+  // top:0%;
   left: 90%;
   transform: translateX(-50%);
   transform: translateY(50%);
@@ -102,4 +105,24 @@ label {
 
 ::ng-deep .tooltip-text-html tr:nth-child(even) {
   background-color: #f9f9f9;
+}
+
+.tooltip-text-likelihood-impact{
+  visibility: hidden;
+  background-color: var(--secondary-color);
+  color: black;
+  padding: 5px;
+  border-radius: 5px;
+  position: absolute;
+  z-index: 1;
+  white-space: nowrap;
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 1;
+}
+
+.info-icon:hover .tooltip-text-likelihood-impact {
+  visibility: visible;
+  opacity: 1;
 }

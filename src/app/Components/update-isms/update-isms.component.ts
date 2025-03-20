@@ -27,6 +27,7 @@ import { FormConformPopupComponent } from '../form-conform-popup/form-conform-po
 import { Router } from '@angular/router';
 import { StyleButtonComponent } from '../../UI/style-button/style-button.component';
 import { FormLoaderComponent } from '../form-loader/form-loader.component';
+import { FormLikelihoodImpactTooltipComponent } from '../form-likelihood-impact-tooltip/form-likelihood-impact-tooltip.component';
 
 @Component({
   selector: 'app-update-isms',
@@ -45,6 +46,7 @@ import { FormLoaderComponent } from '../form-loader/form-loader.component';
     FormConformPopupComponent,
     StyleButtonComponent,
     FormLoaderComponent,
+    FormLikelihoodImpactTooltipComponent
   ],
   templateUrl: './update-isms.component.html',
   styleUrl: './update-isms.component.scss',
@@ -573,5 +575,22 @@ export class UpdateIsmsComponent {
   }
   closepopupIsValidCheck() {
     this.isValid = false;
+  }
+
+
+
+
+  showModal = false;
+  tableType = '';
+  showTooltipLikelihood:boolean=false;
+  showTooltipImpact:boolean=false;
+
+  showTable(type: string) {
+    this.tableType = type;
+    this.showModal = true;
+  }
+
+  hideModal() {
+    this.showModal = false;
   }
 }

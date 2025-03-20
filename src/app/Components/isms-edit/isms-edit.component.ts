@@ -29,6 +29,7 @@ import { FormConformPopupComponent } from '../form-conform-popup/form-conform-po
 import { StyleButtonComponent } from '../../UI/style-button/style-button.component';
 import { FormLoaderComponent } from '../form-loader/form-loader.component';
 import { FormCategoryTableComponent } from '../form-category-table/form-category-table.component';
+import { FormLikelihoodImpactTooltipComponent } from '../form-likelihood-impact-tooltip/form-likelihood-impact-tooltip.component';
 
 @Component({
   selector: 'app-isms-edit',
@@ -47,7 +48,8 @@ import { FormCategoryTableComponent } from '../form-category-table/form-category
     FormConformPopupComponent,
     StyleButtonComponent,
     FormLoaderComponent,
-    FormCategoryTableComponent
+    FormCategoryTableComponent,
+    FormLikelihoodImpactTooltipComponent
   ],
   templateUrl: './isms-edit.component.html',
   styleUrl: './isms-edit.component.scss',
@@ -137,7 +139,8 @@ export class IsmsEditComponent {
   isnewReviewernameDisplay: boolean = false;
   isLoading = false; // Initially false
   departmentIdForAdminToAddToString:string=''
-  showModalCategory = false; // Initially hidden
+  showModalCategory = false;
+  departmentidForAssignee:string=''
 
 
 
@@ -167,6 +170,7 @@ export class IsmsEditComponent {
     this.integrityRiskFactor = this.riskData.riskAssessments[1].riskFactor;
     this.availabilityRiskFactor = this.riskData.riskAssessments[2].riskFactor;
     this.privacyRiskFactor = this.riskData.riskAssessments[3].riskFactor;
+    this.departmentidForAssignee=this.riskData.department.id
     console.log(this.confidentialityRiskFactor);
   }
 
@@ -900,5 +904,23 @@ export class IsmsEditComponent {
 
   closeModalCategory() {
     this.showModalCategory = false; // Ensure modal closes only on the close button
+  }
+
+
+
+
+
+  showModal = false;
+  tableType = '';
+  showTooltipLikelihood:boolean=false;
+  showTooltipImpact:boolean=false;
+
+  showTable(type: string) {
+    this.tableType = type;
+    this.showModal = true;
+  }
+
+  hideModal() {
+    this.showModal = false;
   }
 }
