@@ -14,7 +14,7 @@
       line-height: 1.6
     }
 
-    .main {
+    div.main {
       max-width: 700px;
       margin: 40px auto;
       padding: 30px;
@@ -23,7 +23,7 @@
       box-shadow: 0 2px 10px rgba(0, 0, 0, .1)
     }
 
-    .header {
+    div.header {
       border-bottom: 2px solid #2c3e50;
       padding-bottom: 15px;
       margin-bottom: 25px
@@ -35,75 +35,22 @@
       font-size: 24px
     }
 
-    .risk-table {
-      width: 100%;
-      border-collapse: collapse;
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0
     }
 
-    .risk-table td {
-      padding: 8px;
-      vertical-align: top;
-    }
-
-    .risk-label {
-      color: #2c3e50;
-      font-weight: bold;
-      width: 150px;
+    li {
+      margin-bottom: 15px;
       padding-left: 20px;
-      border-left: 3px solid #2c3e50;
+      border-left: 3px solid #2c3e50
     }
 
-    .risk-value {
-      padding-left: 10px;
-    }
-
-    .warning {
+    li strong {
+      color: #2c3e50;
       display: inline-block;
-      padding: 5px 10px;
-      background-color: #fff3cd;
-      color: #856404;
-      border-radius: 4px;
-      margin-top: 10px;
-      font-size: 14px;
-    }
-
-    .action-buttons {
-      text-align: center;
-      margin: 30px 0;
-    }
-
-    .btn {
-      margin: 10px;
-      padding: 10px 15px;
-      color: white;
-      text-decoration: none;
-      border-radius: 5px;
-      display: inline-block;
-    }
-
-    .btn-approve {
-      background-color: green;
-    }
-
-    .btn-reject {
-      background-color: red;
-    }
-
-    .footer {
-      margin-top: 40px;
-      padding-top: 20px;
-      border-top: 1px solid #eee;
-      color: #666;
-      font-size: 14px;
-    }
-
-    .footer p {
-      margin: 5px 0;
-    }
-
-    .disclaimer {
-      font-size: 12px;
-      color: #888;
+      min-width: 150px
     }
   </style>
 </head>
@@ -113,58 +60,36 @@
     <div class="header">
       <h2>Risk Review Notification</h2>
     </div>
-    <p>Dear <span style="font-weight: 600;">{{responsibleUser}}</span>,</p>
-    <p>A newly identified risk has been added by <b>{{createdBy}}</b> and it requires your attention. Please review the details below and approve or reject accordingly</p>
+    <p>Dear  <span style="font-weight: 600;">{{responsibleUser}}</span> ,</p>
+    <p>A newly identified risk has been added by <b>{{createdBy}}</b> and it requires your attention.  Please review the details below and approve or reject accordingly</p>
     <div style="background-color:#f8f9fa;border-radius:6px;padding:20px;margin:20px 0">
-      <table class="risk-table">
-        <tr>
-          <td class="risk-label">Risk ID:</td>
-          <td class="risk-value">{{riskId}}</td>
-        </tr>
-        <tr>
-          <td class="risk-label">Risk Name:</td>
-          <td class="risk-value">{{riskName}}</td>
-        </tr>
-        <tr>
-          <td class="risk-label">Description:</td>
-          <td class="risk-value">{{description}}</td>
-        </tr>
-        <tr>
-          <td class="risk-label">Risk Type:</td>
-          <td class="risk-value">{{riskType}}</td>
-        </tr>
-        <tr>
-          <td class="risk-label">Impact:</td>
-          <td class="risk-value">{{impact}}</td>
-        </tr>
-        <tr>
-          <td class="risk-label">Mitigation:</td>
-          <td class="risk-value">{{mitigation}}</td>
-        </tr>
-        <tr>
-          <td class="risk-label">Planned Date:</td>
-          <td class="risk-value">{{plannedActionDate}}</td>
-        </tr>
-        <tr>
-          <td class="risk-label">Risk Rating:</td>
-          <td class="risk-value">{{overallRiskRating}}</td>
-        </tr>
-      </table>
+      <ul>
+        <li><strong>Risk ID:</strong> {{riskId}}</li>
+        <li><strong>Risk Name:</strong> {{riskName}}</li>
+        <li><strong>Description:</strong> {{description}}</li>
+        <li><strong>Risk Type:</strong> {{riskType}}</li>
+        <li><strong>Impact:</strong> {{impact}}</li>
+        <li><strong>Mitigation:</strong> {{mitigation}}</li>
+        <li><strong>Planned Date:</strong> {{plannedActionDate}}</li>
+        <li><strong>Risk Rating:</strong> {{overallRiskRating}}</li>
+      </ul>
     </div>
-    <div class="warning">
-      ⚠️ Please respond within 24 hours
-    </div>
-    <div class="action-buttons">
-      <p>Please review and take action:</p>
-      <a href="{{baseUrl}}/thankyou/{{id}}" class="btn btn-approve">Approve</a>
-      <a href="{{baseUrl}}/sorry/{{rid}}" class="btn btn-reject">Reject</a>
+    <div
+      style="display:inline-block;padding:5px 10px;background-color:#fff3cd;color:#856404;border-radius:4px;margin-top:10px;font-size:14px">
+      ⚠️ Please respond within 24 hours</div>
+    <div style="text-align:center;margin:30px 0">
+      <p>Please review and take action:</p><a href="{{baseUrl}}/thankyou/{{id}}"
+        style="margin:20px;padding:10px 15px;background-color:green;color:white;text-decoration:none;border-radius:5px">Approve</a><a
+        href="{{baseUrl}}/sorry/{{rid}}"
+        style="margin:20px;padding:10px 15px;background-color:red;color:white;text-decoration:none;border-radius:5px">Reject</a>
     </div>
     <p>If you need any clarification or have questions, please don't hesitate to reach out to the Audits and compliance team.</p>
-    <div class="footer">
-      <p>Best regards,</p>
-      <p>Audits and Compliance Team,</p>
-      <p>Experion Technologies Pvt. Ltd</p>
-      <p class="disclaimer">This is an automated notification. Please do not reply to this email.</p>
+    <div style="margin-top:40px;padding-top:20px;border-top:1px solid #eee;color:#666;font-size:14px">
+      <p style="margin:5px 0">Best regards,</p>
+      <p style="margin:5px 0">Audits and Compliance Team,</p>
+      <p style="margin:5px 0">Experion Technologies Pvt. Ltd</p>
+      <p style="font-size:12px;color:#888;margin:5px 0">This is an automated notification. Please do not reply to
+        this email.</p>
     </div>
   </div>
 </body>
