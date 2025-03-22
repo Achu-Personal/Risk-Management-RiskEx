@@ -1241,12 +1241,46 @@ export class ISMSFormComponent {
                 ],
               };
         if (this.riskTypeValue == 2) {
-          localStorage.setItem('draftSecurity', JSON.stringify(draft));
-        } else {
-          localStorage.setItem('draftPrivacy', JSON.stringify(draft));
+          const timestamp = new Date().getTime(); // Get current timestamp
+        const draftKey = `draftSecurity_${timestamp}`
+        let draftList = JSON.parse(localStorage.getItem('draftList') || '[]');
+
+        if (!draftList) {
+          // Create a new list if it does not exist
+          draftList = [];
+          console.log('No draftList found. Creating a new one.');
         }
 
-        console.log('Draft Saved as JSON:', JSON.stringify(draft));
+        // Add new draft to the list
+        draftList.push({ name: draftKey, draft: draft });
+
+        // Save the updated list back to localStorage
+        localStorage.setItem('draftList', JSON.stringify(draftList));
+
+        console.log(`Draft saved as: ${draftKey}`);
+        console.log("drat list is",draftList)
+        } else {
+          const timestamp = new Date().getTime(); // Get current timestamp
+        const draftKey = `draftPrivacy_${timestamp}`
+        let draftList = JSON.parse(localStorage.getItem('draftList') || '[]');
+
+        if (!draftList) {
+          // Create a new list if it does not exist
+          draftList = [];
+          console.log('No draftList found. Creating a new one.');
+        }
+
+        // Add new draft to the list
+        draftList.push({ name: draftKey, draft: draft });
+
+        // Save the updated list back to localStorage
+        localStorage.setItem('draftList', JSON.stringify(draftList));
+
+        console.log(`Draft saved as: ${draftKey}`);
+        console.log("drat list is",draftList)
+        }
+
+        // console.log('Draft Saved as JSON:', JSON.stringify(draft));
         this.saveAsDraft();
         this.isdraftConform = true;
       } else {
@@ -1458,18 +1492,46 @@ export class ISMSFormComponent {
         if (this.riskTypeValue == 2) {
           // localStorage.setItem('draftSecurity', JSON.stringify(draft));
 
-          const draftKey = `draft_Security${this.departmentIdForAdminToAdd}`;
-          localStorage.setItem(draftKey, JSON.stringify(draft));
-          console.log("draft for Admin draft Security Name", draftKey)
+          const timestamp = new Date().getTime();
+        const draftKey = `draftSecurity_${this.departmentIdForAdminToAdd}_${timestamp}`;
+        let draftList = JSON.parse(localStorage.getItem('draftList') || '[]');
+
+        if (!draftList) {
+          // Create a new list if it does not exist
+          draftList = [];
+          console.log('No draftList found. Creating a new one.');
+        }
+
+        // Add new draft to the list
+        draftList.push({ name: draftKey, draft: draft });
+
+        // Save the updated list back to localStorage
+        localStorage.setItem('draftList', JSON.stringify(draftList));
+
+        console.log(`Draft saved as: ${draftKey}`);
         } else {
           // localStorage.setItem('draftPrivacy', JSON.stringify(draft));
 
-          const draftKey = `draft_Privacy${this.departmentIdForAdminToAdd}`;
-          localStorage.setItem(draftKey, JSON.stringify(draft));
-          console.log("draft for Admin draft Privacy Name", draftKey)
+          const timestamp = new Date().getTime();
+        const draftKey = `draftPrivacy_${this.departmentIdForAdminToAdd}_${timestamp}`;
+        let draftList = JSON.parse(localStorage.getItem('draftList') || '[]');
+
+        if (!draftList) {
+          // Create a new list if it does not exist
+          draftList = [];
+          console.log('No draftList found. Creating a new one.');
         }
 
-        console.log('Draft Saved as JSON:', JSON.stringify(draft));
+        // Add new draft to the list
+        draftList.push({ name: draftKey, draft: draft });
+
+        // Save the updated list back to localStorage
+        localStorage.setItem('draftList', JSON.stringify(draftList));
+
+        console.log(`Draft saved as: ${draftKey}`);
+        }
+
+        // console.log('Draft Saved as JSON:', JSON.stringify(draft));
         this.saveAsDraft();
         this.isdraftConform = true;
       } else {
@@ -1633,113 +1695,213 @@ export class ISMSFormComponent {
           if (draft) {
             this.draft = JSON.parse(draft);
 
+
+              console.log("drafffffffffffftSecurityyyyyy",this.draft)
+              if (changes['dropdownLikelihood'] ) {
+                const riskFactors = [
+                  'Confidentiality',
+                  'Integrity',
+                  'Availability',
+                  'Privacy',
+                ];
+                riskFactors.forEach((factor, index) => {
+                  const preSelectedLikelihood =
+                  this.draft.riskAssessments[index].likelihood;
+                  console.log('logloglogloglog', preSelectedLikelihood);
+
+                  // const selectedFactor = this.dropdownLikelihood.find(f => f.assessmentFactor === preSelectedLikelihood);
+
+                  if (preSelectedLikelihood) {
+                    switch (factor) {
+                      case 'Confidentiality':
+                        this.preSelectedConfidentialityLikelihood =
+                          preSelectedLikelihood;
+                        break;
+                      case 'Integrity':
+                        this.preSelectedIntegrityLikelihood = preSelectedLikelihood;
+                        break;
+                      case 'Availability':
+                        this.preSelectedAvailabilityLikelihood = preSelectedLikelihood;
+                        break;
+                      case 'Privacy':
+                        this.preSelectedPrivacyLikelihood = preSelectedLikelihood;
+                        break;
+                    }
+                  }
+                });
+              }
+
+              // Handle dropdownImpact changes
+              if (changes['dropdownImpact']) {
+                const riskFactors = [
+                  'Confidentiality',
+                  'Integrity',
+                  'Availability',
+                  'Privacy',
+                ];
+
+                riskFactors.forEach((factor, index) => {
+                  const preSelectedImpact = this.draft.riskAssessments[index].impact; // Get the value from the draft
+                  // const selectedFactor = this.dropdownImpact.find(
+                  //   (f) => f.assessmentFactor === preSelectedImpact
+                  // );
+
+                  if (preSelectedImpact) {
+                    switch (factor) {
+                      case 'Confidentiality':
+                        this.preSelectedConfidentialityImpact = preSelectedImpact;
+                        break;
+                      case 'Integrity':
+                        this.preSelectedIntegrityImpact = preSelectedImpact;
+                        break;
+                      case 'Availability':
+                        this.preSelectedAvailabilityImpact = preSelectedImpact;
+                        break;
+                      case 'Privacy':
+                        this.preSelectedPrivacyImpact = preSelectedImpact;
+                        break;
+                    }
+                  }
+                });
+              }
+              if (changes['dropdownProject']) {
+                if (this.draft.projectId !== null && this.draft.projectId !== undefined) {
+                  this.preSelectedProject = this.draft.projectId;
+                }
+              }
+
+              if (changes['dropdownAssignee']) {
+                this.preSelectedResponsiblePerson = this.draft.responsibleUserId;
+              }
+
+              if (changes['dropdownReviewer']) {
+                const selectedFactor = this.dropdownReviewer.find(
+                  (factor) => factor.id === this.draft.riskAssessments[0].review.userId
+                );
+
+                if (selectedFactor) {
+                  if (selectedFactor.type === 'Internal') {
+                    this.isInternal = true;
+                    this.internalReviewerIdFromDropdown = selectedFactor.id;
+                    this.preSelectedReviewer = selectedFactor?.fullName;
+                  } else if (selectedFactor.type === 'External') {
+                    this.isInternal = false;
+                    this.externalReviewerIdFromDropdown = selectedFactor.id;
+                    this.preSelectedReviewer = selectedFactor?.fullName;
+                  }
+                }
+              }
+
+
           }
         } else {
           const draftKey = `draft_Privacy${this.departmentIdForAdminToAdd}`;
          const draft = localStorage.getItem(draftKey);
           if (draft) {
             this.draft = JSON.parse(draft);
+
+
+
+            console.log("drafffffffffffftSecurityyyyyy",this.draft)
+              if (changes['dropdownLikelihood'] ) {
+                const riskFactors = [
+                  'Confidentiality',
+                  'Integrity',
+                  'Availability',
+                  'Privacy',
+                ];
+                riskFactors.forEach((factor, index) => {
+                  const preSelectedLikelihood =
+                  this.draft.riskAssessments[index].likelihood;
+                  console.log('logloglogloglog', preSelectedLikelihood);
+
+                  // const selectedFactor = this.dropdownLikelihood.find(f => f.assessmentFactor === preSelectedLikelihood);
+
+                  if (preSelectedLikelihood) {
+                    switch (factor) {
+                      case 'Confidentiality':
+                        this.preSelectedConfidentialityLikelihood =
+                          preSelectedLikelihood;
+                        break;
+                      case 'Integrity':
+                        this.preSelectedIntegrityLikelihood = preSelectedLikelihood;
+                        break;
+                      case 'Availability':
+                        this.preSelectedAvailabilityLikelihood = preSelectedLikelihood;
+                        break;
+                      case 'Privacy':
+                        this.preSelectedPrivacyLikelihood = preSelectedLikelihood;
+                        break;
+                    }
+                  }
+                });
+              }
+
+              // Handle dropdownImpact changes
+              if (changes['dropdownImpact']) {
+                const riskFactors = [
+                  'Confidentiality',
+                  'Integrity',
+                  'Availability',
+                  'Privacy',
+                ];
+
+                riskFactors.forEach((factor, index) => {
+                  const preSelectedImpact = this.draft.riskAssessments[index].impact; // Get the value from the draft
+                  // const selectedFactor = this.dropdownImpact.find(
+                  //   (f) => f.assessmentFactor === preSelectedImpact
+                  // );
+
+                  if (preSelectedImpact) {
+                    switch (factor) {
+                      case 'Confidentiality':
+                        this.preSelectedConfidentialityImpact = preSelectedImpact;
+                        break;
+                      case 'Integrity':
+                        this.preSelectedIntegrityImpact = preSelectedImpact;
+                        break;
+                      case 'Availability':
+                        this.preSelectedAvailabilityImpact = preSelectedImpact;
+                        break;
+                      case 'Privacy':
+                        this.preSelectedPrivacyImpact = preSelectedImpact;
+                        break;
+                    }
+                  }
+                });
+              }
+              if (changes['dropdownProject']) {
+                if (this.draft.projectId !== null && this.draft.projectId !== undefined) {
+                  this.preSelectedProject = this.draft.projectId;
+                }
+              }
+
+              if (changes['dropdownAssignee']) {
+                this.preSelectedResponsiblePerson = this.draft.responsibleUserId;
+              }
+
+              if (changes['dropdownReviewer']) {
+                const selectedFactor = this.dropdownReviewer.find(
+                  (factor) => factor.id === this.draft.riskAssessments[0].review.userId
+                );
+
+                if (selectedFactor) {
+                  if (selectedFactor.type === 'Internal') {
+                    this.isInternal = true;
+                    this.internalReviewerIdFromDropdown = selectedFactor.id;
+                    this.preSelectedReviewer = selectedFactor?.fullName;
+                  } else if (selectedFactor.type === 'External') {
+                    this.isInternal = false;
+                    this.externalReviewerIdFromDropdown = selectedFactor.id;
+                    this.preSelectedReviewer = selectedFactor?.fullName;
+                  }
+                }
+              }
           }
         }
 
       }
-      if (this.draft ) {
-        console.log("drafffffffffffftSecurityyyyyy",this.draft)
-        if (changes['dropdownLikelihood'] ) {
-          const riskFactors = [
-            'Confidentiality',
-            'Integrity',
-            'Availability',
-            'Privacy',
-          ];
-          riskFactors.forEach((factor, index) => {
-            const preSelectedLikelihood =
-            this.draft.riskAssessments[index].likelihood;
-            console.log('logloglogloglog', preSelectedLikelihood);
 
-            // const selectedFactor = this.dropdownLikelihood.find(f => f.assessmentFactor === preSelectedLikelihood);
-
-            if (preSelectedLikelihood) {
-              switch (factor) {
-                case 'Confidentiality':
-                  this.preSelectedConfidentialityLikelihood =
-                    preSelectedLikelihood;
-                  break;
-                case 'Integrity':
-                  this.preSelectedIntegrityLikelihood = preSelectedLikelihood;
-                  break;
-                case 'Availability':
-                  this.preSelectedAvailabilityLikelihood = preSelectedLikelihood;
-                  break;
-                case 'Privacy':
-                  this.preSelectedPrivacyLikelihood = preSelectedLikelihood;
-                  break;
-              }
-            }
-          });
-        }
-
-        // Handle dropdownImpact changes
-        if (changes['dropdownImpact']) {
-          const riskFactors = [
-            'Confidentiality',
-            'Integrity',
-            'Availability',
-            'Privacy',
-          ];
-
-          riskFactors.forEach((factor, index) => {
-            const preSelectedImpact = this.draft.riskAssessments[index].impact; // Get the value from the draft
-            // const selectedFactor = this.dropdownImpact.find(
-            //   (f) => f.assessmentFactor === preSelectedImpact
-            // );
-
-            if (preSelectedImpact) {
-              switch (factor) {
-                case 'Confidentiality':
-                  this.preSelectedConfidentialityImpact = preSelectedImpact;
-                  break;
-                case 'Integrity':
-                  this.preSelectedIntegrityImpact = preSelectedImpact;
-                  break;
-                case 'Availability':
-                  this.preSelectedAvailabilityImpact = preSelectedImpact;
-                  break;
-                case 'Privacy':
-                  this.preSelectedPrivacyImpact = preSelectedImpact;
-                  break;
-              }
-            }
-          });
-        }
-        if (changes['dropdownProject']) {
-          if (this.draft.projectId !== null && this.draft.projectId !== undefined) {
-            this.preSelectedProject = this.draft.projectId;
-          }
-        }
-
-        if (changes['dropdownAssignee']) {
-          this.preSelectedResponsiblePerson = this.draft.responsibleUserId;
-        }
-
-        if (changes['dropdownReviewer']) {
-          const selectedFactor = this.dropdownReviewer.find(
-            (factor) => factor.id === this.draft.riskAssessments[0].review.userId
-          );
-
-          if (selectedFactor) {
-            if (selectedFactor.type === 'Internal') {
-              this.isInternal = true;
-              this.internalReviewerIdFromDropdown = selectedFactor.id;
-              this.preSelectedReviewer = selectedFactor?.fullName;
-            } else if (selectedFactor.type === 'External') {
-              this.isInternal = false;
-              this.externalReviewerIdFromDropdown = selectedFactor.id;
-              this.preSelectedReviewer = selectedFactor?.fullName;
-            }
-          }
-        }
-      }
     }
 
 
@@ -1756,17 +1918,112 @@ export class ISMSFormComponent {
           if (draft) {
             this.draft = JSON.parse(draft);
 
+            console.log("drafffffffffffftprivaccccccyyyyyyy",this.draft)
+           if (changes['dropdownLikelihood'] ) {
+          const riskFactors = [
+            'Confidentiality',
+            'Integrity',
+            'Availability',
+            'Privacy',
+          ];
+          riskFactors.forEach((factor, index) => {
+            const preSelectedLikelihood =
+            this.draft.riskAssessments[index].likelihood;
+            console.log('logloglogloglog', preSelectedLikelihood);
+
+            // const selectedFactor = this.dropdownLikelihood.find(f => f.assessmentFactor === preSelectedLikelihood);
+
+            if (preSelectedLikelihood) {
+              switch (factor) {
+                case 'Confidentiality':
+                  this.preSelectedConfidentialityLikelihood =
+                    preSelectedLikelihood;
+                  break;
+                case 'Integrity':
+                  this.preSelectedIntegrityLikelihood = preSelectedLikelihood;
+                  break;
+                case 'Availability':
+                  this.preSelectedAvailabilityLikelihood = preSelectedLikelihood;
+                  break;
+                case 'Privacy':
+                  this.preSelectedPrivacyLikelihood = preSelectedLikelihood;
+                  break;
+              }
+            }
+          });
+        }
+
+        // Handle dropdownImpact changes
+        if (changes['dropdownImpact']) {
+          const riskFactors = [
+            'Confidentiality',
+            'Integrity',
+            'Availability',
+            'Privacy',
+          ];
+
+          riskFactors.forEach((factor, index) => {
+            const preSelectedImpact = this.draft.riskAssessments[index].impact; // Get the value from the draft
+            // const selectedFactor = this.dropdownImpact.find(
+            //   (f) => f.assessmentFactor === preSelectedImpact
+            // );
+
+            if (preSelectedImpact) {
+              switch (factor) {
+                case 'Confidentiality':
+                  this.preSelectedConfidentialityImpact = preSelectedImpact;
+                  break;
+                case 'Integrity':
+                  this.preSelectedIntegrityImpact = preSelectedImpact;
+                  break;
+                case 'Availability':
+                  this.preSelectedAvailabilityImpact = preSelectedImpact;
+                  break;
+                case 'Privacy':
+                  this.preSelectedPrivacyImpact = preSelectedImpact;
+                  break;
+              }
+            }
+          });
+        }
+        if (changes['dropdownProject']) {
+          if (this.draft.projectId !== null && this.draft.projectId !== undefined) {
+            this.preSelectedProject = this.draft.projectId;
+          }
+        }
+
+        if (changes['dropdownAssignee']) {
+          this.preSelectedResponsiblePerson = this.draft.responsibleUserId;
+        }
+
+        if (changes['dropdownReviewer']) {
+          const selectedFactor = this.dropdownReviewer.find(
+            (factor) => factor.id === this.draft.riskAssessments[0].review.userId
+          );
+
+          if (selectedFactor) {
+            if (selectedFactor.type === 'Internal') {
+              this.isInternal = true;
+              this.internalReviewerIdFromDropdown = selectedFactor.id;
+              this.preSelectedReviewer = selectedFactor?.fullName;
+            } else if (selectedFactor.type === 'External') {
+              this.isInternal = false;
+              this.externalReviewerIdFromDropdown = selectedFactor.id;
+              this.preSelectedReviewer = selectedFactor?.fullName;
+            }
+          }
+        }
+
+
           }
         } else {
           const draft = localStorage.getItem('draftPrivacy');
           if (draft) {
             this.draft = JSON.parse(draft);
-          }
-        }
 
-      }
-      if (this.draft ) {
-        console.log("drafffffffffffftprivaccccccyyyyyyy",this.draft)
+
+
+            console.log("drafffffffffffftprivaccccccyyyyyyy",this.draft)
         if (changes['dropdownLikelihood'] ) {
           const riskFactors = [
             'Confidentiality',
@@ -1861,8 +2118,13 @@ export class ISMSFormComponent {
             }
           }
         }
+
+          }
+        }
+
       }
-    }
+
+  }
 
   }
 

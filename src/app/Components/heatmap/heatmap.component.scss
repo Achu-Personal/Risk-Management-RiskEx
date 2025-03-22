@@ -2,9 +2,9 @@
     padding: 20px;
     max-width: 1000px;
     margin: 0 auto;
-    
+
   }
-  
+
   .matrix {
     border: 1px solid #ffffff;
     padding: 40px;
@@ -17,12 +17,12 @@
   .right-arrow{
     font-weight: 800;
   }
-  
+
   .header-row {
     display: table-row;
     background-color: #ffffff;
   }
-  
+
   .corner-cell {
     display: table-cell;
     padding: 10px;
@@ -32,7 +32,7 @@
     background-color: #ffffff;  //#f4f1ec
 
   }
-  
+
   .header-cell {
     display: table-cell;
     padding: 10px;
@@ -40,11 +40,11 @@
     text-align: center;
     width: 100px;
   }
-  
+
   .matrix-row {
     display: table-row;
   }
-  
+
   .impact-cell {
     display: table-cell;
     padding: 10px;
@@ -52,7 +52,7 @@
     background-color: #ffffff;     //f5f5f5
     vertical-align: middle;
   }
-  
+
   .matrix-cell {
     display: table-cell;
     padding: 20px;
@@ -60,13 +60,13 @@
     font-weight: bold;
     color: #000;
     border: 1px solid #ccc;
-    
-    
+
+
   }
 
 .matrix-cell:hover {
-    transform: scale(1.03); 
-    z-index: 10; 
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+    transform: scale(1.03);
+    z-index: 10;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     // cursor: pointer;
   }

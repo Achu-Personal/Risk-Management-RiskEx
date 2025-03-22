@@ -121,6 +121,7 @@ export class QMSFormComponent {
   departmentIdForAdminToAddToNumber: number = 0;
   showModalCategory = false; // Initially hidden
   riskDisplayId: string = ''
+  draftNameToFind: string = ''
 
 
 
@@ -144,24 +145,24 @@ export class QMSFormComponent {
     this.riskDisplayId = 'RSK-' + this.departmentCode + '-***'
     console.log("id id id id id id ", this.riskDisplayId)
   }
-  generateRiskDisplayIdByProject(){
-    const ProjectDataForDisplay=this.dropdownProject.find(
-      (factor:any) => factor.id == this.projectId)
-      console.log("data simple data data simple data",ProjectDataForDisplay)
-      const ProjectCode= ProjectDataForDisplay.projectCode
-      console.log("code code code",ProjectCode)
+  generateRiskDisplayIdByProject() {
+    const ProjectDataForDisplay = this.dropdownProject.find(
+      (factor: any) => factor.id == this.projectId)
+    console.log("data simple data data simple data", ProjectDataForDisplay)
+    const ProjectCode = ProjectDataForDisplay.projectCode
+    console.log("code code code", ProjectCode)
 
 
     this.riskDisplayId = 'RSK-' + ProjectCode + '-***'
     console.log("id id id id id id ", this.riskDisplayId)
   }
 
-  generateRiskDisplayIdByProjectForAdmin(){
-    const ProjectDataForDisplay=this.dropdownDataProjectForAdmin.find(
-      (factor:any) => factor.id == this.projectId)
-      console.log("data simple data data simple data",ProjectDataForDisplay)
-      const ProjectCode= ProjectDataForDisplay.projectCode
-      console.log("code code code",ProjectCode)
+  generateRiskDisplayIdByProjectForAdmin() {
+    const ProjectDataForDisplay = this.dropdownDataProjectForAdmin.find(
+      (factor: any) => factor.id == this.projectId)
+    console.log("data simple data data simple data", ProjectDataForDisplay)
+    const ProjectCode = ProjectDataForDisplay.projectCode
+    console.log("code code code", ProjectCode)
 
 
     this.riskDisplayId = 'RSK-' + ProjectCode + '-***'
@@ -177,17 +178,77 @@ export class QMSFormComponent {
 
 
 
+        if (!this.isDraftLoaded || !this.draft) {
+          console.warn(
+            'Draft data is not yet loaded. Skipping ngOnChanges logic.'
+          );
+          const draft = localStorage.getItem('draftQuality');
+          if (draft) {
+            this.draft = JSON.parse(draft);
+
+
+          console.log('drafffffffffffft', this.draft);
+          if (changes['dropdownLikelihood']) {
+            this.preSelectedLikelihood = this.draft.riskAssessments[0].likelihood;
+          }
+
+          if (changes['dropdownImpact']) {
+            this.preSelectedImpact = this.draft.riskAssessments[0].impact;
+          }
+
+          if (changes['dropdownProject']) {
+            if (
+              this.draft.projectId !== null &&
+              this.draft.projectId !== undefined
+            ) {
+              this.preSelectedProject = this.draft.projectId;
+            }
+          }
+
+          if (changes['dropdownAssignee']) {
+            this.preSelectedResponsiblePerson = this.draft.responsibleUserId;
+          }
+
+          if (changes['dropdownReviewer']) {
+            const selectedFactor = this.dropdownReviewer.find(
+              (factor) =>
+                factor.id === this.draft.riskAssessments[0].review.userId
+            );
+
+            if (selectedFactor) {
+              if (selectedFactor.type === 'Internal') {
+                this.isInternal = true;
+                this.internalReviewerIdFromDropdown = selectedFactor.id;
+                this.preSelectedReviewer = selectedFactor?.fullName;
+              } else if (selectedFactor.type === 'External') {
+                this.isInternal = false;
+                this.externalReviewerIdFromDropdown = selectedFactor.id;
+                this.preSelectedReviewer = selectedFactor?.fullName;
+              }
+            }
+          }
+        }
+        }
+      }
+    }
+
+    if (this.isAdmin == 'Admin') {
       if (!this.isDraftLoaded || !this.draft) {
         console.warn(
           'Draft data is not yet loaded. Skipping ngOnChanges logic.'
         );
-        const draft = localStorage.getItem('draftQuality');
+        // const draftKey = `draft_${this.departmentIdForAdminToAdd}`;
+        const draft = localStorage.getItem(
+          `draft_${this.departmentIdForAdminToAdd}`
+        );
         if (draft) {
           this.draft = JSON.parse(draft);
-        }
-      }
+          console.log(
+            'Draft Loadeddddddddddddddddddddddddddddddd:',
+            this.draft
+          );
 
-      if (this.draft) {
+
         console.log('drafffffffffffft', this.draft);
         if (changes['dropdownLikelihood']) {
           this.preSelectedLikelihood = this.draft.riskAssessments[0].likelihood;
@@ -230,68 +291,6 @@ export class QMSFormComponent {
         }
       }
     }
-  }
-
-    if (this.isAdmin == 'Admin') {
-      if (!this.isDraftLoaded || !this.draft) {
-        console.warn(
-          'Draft data is not yet loaded. Skipping ngOnChanges logic.'
-        );
-        // const draftKey = `draft_${this.departmentIdForAdminToAdd}`;
-        const draft = localStorage.getItem(
-          `draft_${this.departmentIdForAdminToAdd}`
-        );
-        if (draft) {
-          this.draft = JSON.parse(draft);
-          console.log(
-            'Draft Loadeddddddddddddddddddddddddddddddd:',
-            this.draft
-          );
-        }
-      }
-
-      if (this.draft) {
-        console.log('drafffffffffffft', this.draft);
-        if (changes['dropdownLikelihood']) {
-          this.preSelectedLikelihood = this.draft.riskAssessments[0].likelihood;
-        }
-
-        if (changes['dropdownImpact']) {
-          this.preSelectedImpact = this.draft.riskAssessments[0].impact;
-        }
-
-        if (changes['dropdownProject']) {
-          if (
-            this.draft.projectId !== null &&
-            this.draft.projectId !== undefined
-          ) {
-            this.preSelectedProject = this.draft.projectId;
-          }
-        }
-
-        if (changes['dropdownAssignee']) {
-          this.preSelectedResponsiblePerson = this.draft.responsibleUserId;
-        }
-
-        if (changes['dropdownReviewer']) {
-          const selectedFactor = this.dropdownReviewer.find(
-            (factor) =>
-              factor.id === this.draft.riskAssessments[0].review.userId
-          );
-
-          if (selectedFactor) {
-            if (selectedFactor.type === 'Internal') {
-              this.isInternal = true;
-              this.internalReviewerIdFromDropdown = selectedFactor.id;
-              this.preSelectedReviewer = selectedFactor?.fullName;
-            } else if (selectedFactor.type === 'External') {
-              this.isInternal = false;
-              this.externalReviewerIdFromDropdown = selectedFactor.id;
-              this.preSelectedReviewer = selectedFactor?.fullName;
-            }
-          }
-        }
-      }
     }
   }
 
@@ -345,11 +344,11 @@ export class QMSFormComponent {
   onDropdownChangeProject(event: any): void {
     const selectedFactorId = Number(event);
     this.projectId = selectedFactorId;
-    if(this.isAdmin!='Admin'){
+    if (this.isAdmin != 'Admin') {
       this.generateRiskDisplayIdByProject();
 
     }
-    if(this.isAdmin=='Admin'){
+    if (this.isAdmin == 'Admin') {
       this.generateRiskDisplayIdByProjectForAdmin();
 
     }
@@ -368,14 +367,14 @@ export class QMSFormComponent {
     console.log('the project id isssssssssssssssssssssss', this.projectId);
 
 
-    const departmentDataForDisplay=this.dropdownDepartment.find(
-      (factor:any) => factor.id == this.departmentIdForAdminToAdd)
-      console.log("data simple data data simple data",departmentDataForDisplay)
-      const departmentCode= departmentDataForDisplay.departmentCode
-      console.log("code code code", departmentCode)
+    const departmentDataForDisplay = this.dropdownDepartment.find(
+      (factor: any) => factor.id == this.departmentIdForAdminToAdd)
+    console.log("data simple data data simple data", departmentDataForDisplay)
+    const departmentCode = departmentDataForDisplay.departmentCode
+    console.log("code code code", departmentCode)
 
-      this.riskDisplayId = 'RSK-' + departmentCode + '-***'
-      console.log("id id id id id id ", this.riskDisplayId)
+    this.riskDisplayId = 'RSK-' + departmentCode + '-***'
+    console.log("id id id id id id ", this.riskDisplayId)
 
 
 
@@ -854,6 +853,10 @@ export class QMSFormComponent {
 
   closeDraft() {
     if (this.isAdmin !== 'Admin') {
+
+
+
+
       if (this.qmsForm.value.riskName) {
         const draft = {
           formValues: this.qmsForm.value,
@@ -915,8 +918,25 @@ export class QMSFormComponent {
             },
           ],
         };
-        localStorage.setItem('draftQuality', JSON.stringify(draft));
-        console.log('Draft Saved as JSON:', JSON.stringify(draft));
+
+        const timestamp = new Date().getTime(); // Get current timestamp
+        const draftKey = `draftQuality_${timestamp}`
+        let draftList = JSON.parse(localStorage.getItem('draftList') || '[]');
+
+        if (!draftList) {
+          // Create a new list if it does not exist
+          draftList = [];
+          console.log('No draftList found. Creating a new one.');
+        }
+
+        // Add new draft to the list
+        draftList.push({ name: draftKey, draft: draft });
+
+        // Save the updated list back to localStorage
+        localStorage.setItem('draftList', JSON.stringify(draftList));
+
+        console.log(`Draft saved as: ${draftKey}`);
+        console.log("drat list is",draftList)
         this.saveAsDraft();
         this.isdraftConform = true;
       } else {
@@ -991,11 +1011,24 @@ export class QMSFormComponent {
             },
           ],
         };
-        const draftKey = `draft_${this.departmentIdForAdminToAdd}`;
-        localStorage.setItem(draftKey, JSON.stringify(draft));
-        console.log('draft for Admin draft Name', draftKey);
 
-        console.log('draft for Admin', JSON.stringify(draft));
+        const timestamp = new Date().getTime();
+        const draftKey = `draftQuality_${this.departmentIdForAdminToAdd}_${timestamp}`;
+        let draftList = JSON.parse(localStorage.getItem('draftList') || '[]');
+
+        if (!draftList) {
+          // Create a new list if it does not exist
+          draftList = [];
+          console.log('No draftList found. Creating a new one.');
+        }
+
+        // Add new draft to the list
+        draftList.push({ name: draftKey, draft: draft });
+
+        // Save the updated list back to localStorage
+        localStorage.setItem('draftList', JSON.stringify(draftList));
+
+        console.log(`Draft saved as: ${draftKey}`);
         this.saveAsDraft();
         this.isdraftConform = true;
       } else {
@@ -1018,7 +1051,7 @@ export class QMSFormComponent {
         this.draft.riskAssessments[0].likelihood
       );
       this.isDraftLoaded = true;
-    }
+
 
     const changes: SimpleChanges = {
       dropdownLikelihood: {
@@ -1057,6 +1090,7 @@ export class QMSFormComponent {
     };
 
     this.ngOnChanges(changes);
+  }
   }
 
   closeDraftWhenNoDraft() {
