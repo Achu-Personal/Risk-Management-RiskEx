@@ -126,7 +126,6 @@ export class ApprovalComponent {
 
     if (this.isPopupReject) {
       // console.log('Risk rejected with comment:', event.comment);
-      // Perform rejection logic here
       const updates = {
         approvalStatus: "Rejected",
         comments: event.comment
@@ -139,6 +138,7 @@ export class ApprovalComponent {
         if(res.riskStatus==='open' || res.riskStatus==='close'){
 
             const context = {
+              reviewer: this.auth.getUserName(),
               responsibleUser: res.createdBy.fullName,
               riskId: res.riskId,
               riskName: res.riskName,
@@ -173,6 +173,7 @@ export class ApprovalComponent {
         if(res.riskStatus === 'close'){
 
           const context = {
+            reviewer: this.auth.getUserName(),
             responsibleUser: res.responsibleUser.fullName,
             riskId: res.riskId,
             riskName: res.riskName,
@@ -191,7 +192,6 @@ export class ApprovalComponent {
             overallRiskRating: res.overallRiskRating,
             reason: event.comment,
           };
-          // Send email to reviewer
           this.email.sendOwnerEmail(res.responsibleUser.email, context).subscribe({
             next: () => {
               // console.log('Reviewer Email:', res.responsibleUser.email);
@@ -216,7 +216,6 @@ export class ApprovalComponent {
         this.showButtons = false;
 
         this.api.getRiskById(id).subscribe((res: any) => {
-          console.log("response for maillllllll:::::::::", res)
           if(res.riskStatus === 'open') {
             const context = {
               responsibleUser: res.responsibleUser.fullName,
@@ -265,9 +264,84 @@ export class ApprovalComponent {
               }
             });
           } else if(res.riskStatus === 'close') {
-            this.notification.success("The risk has been approved and closed successfully");
+            const closureContext = {
+              responsibleUser: res.responsibleUser.fullName,
+              riskId: res.riskId,
+              riskName: res.riskName,
+              description: res.description,
+              riskType: res.riskType,
+              impact: res.impact,
+              mitigation: res.mitigation,
+              plannedActionDate: new Date(res.plannedActionDate).toLocaleDateString(
+                'en-US',
+                {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
+                }
+              ),
+              overallRiskRating: res.overallRiskRating,
+              riskStatus: res.riskStatus,
+              verifiedBy: this.auth.getUserName(),
+              verificationComments: event.comment
+            };
 
+            const closureContextOwner = {
+              riskId: res.riskId,
+              riskName: res.riskName,
+              description: res.description,
+              riskType: res.riskType,
+              impact: res.impact,
+              mitigation: res.mitigation,
+              plannedActionDate: new Date(res.plannedActionDate).toLocaleDateString(
+                'en-US',
+                {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
+                }
+              ),
+              overallRiskRating: res.overallRiskRating,
+              verifiedBy: this.auth.getUserName(),
+              verificationComments: event.comment
+            };
 
+            this.api.getriskOwnerEmailandName(id).subscribe({
+              next: (ownerRes: any) => {
+                this.email.sendRiskClosureEmail(ownerRes[0].email, closureContextOwner).subscribe({
+                  next: () => {
+                    console.log('Risk closure email sent to owner successfully');
+
+                    this.email.sendRiskClosureEmail(res.responsibleUser.email, closureContext).subscribe({
+                      next: () => {
+                        console.log('Risk closure email sent to assignee successfully');
+                        this.notification.success(
+                          'The risk has been approved and closed successfully. Closure notifications sent to owner and assignee.'
+                        );
+                      },
+                      error: (emailError) => {
+                        console.error('Failed to send closure email to assignee:', emailError);
+                        this.notification.success(
+                          'The risk has been approved and closed successfully. Closure notification sent to owner only.'
+                        );
+                      }
+                    });
+                  },
+                  error: (emailError) => {
+                    console.error('Failed to send closure email to owner:', emailError);
+                    this.notification.success(
+                      'The risk has been approved and closed successfully, but email notifications failed.'
+                    );
+                  }
+                });
+              },
+              error: (error) => {
+                console.error('Failed to get risk owner details:', error);
+                this.notification.success(
+                  'The risk has been approved and closed successfully but email notifications could not be sent'
+                );
+              }
+            });
           }
         });
       });
@@ -275,7 +349,7 @@ export class ApprovalComponent {
 
     setTimeout(() => {
       this.router.navigate(['/approvaltable']);
-    }, 1000);
+    }, 2000);
   }
 
   handlePopupCancel() {
