@@ -35,7 +35,9 @@ export class ApprovalComponent {
   showButtons:boolean=true;
   constructor(public api: ApiService, public route:ActivatedRoute, private email:EmailService,private auth:AuthService, private notification:NotificationService,private router:Router) {}
   isLoading=true
-
+  basdicDetailsData:any={}
+  riskDetailsSection2Data:any={}
+  riskDetailsSection3MitigationData:any={}
 
   ngOnInit(){
     // console.log("initial data:",this.data);
@@ -45,6 +47,47 @@ export class ApprovalComponent {
     this.api.getRiskById(id).subscribe(e=>{
       // console.log("Data=",e)
       this.data=e
+      this.basdicDetailsData={
+        riskNumber:this.data.riskNumber,
+        riskType:this.data.riskType,
+        riskDesc:this.data.riskDesc,
+        riskName:this.data.riskName,
+        overallRiskRating:this.data.overallRiskRating,
+        riskStatus:this.data.riskStatus,
+        isEditable:false,
+        allData:this.data
+      }
+
+      this.riskDetailsSection2Data={
+        riskMitigation:this.data.mitigation,
+        riskContengency:this.data.contingency,
+        responsibilityOfAction:this.data.responsibleUser.fullName        ,
+        plannedActionDate:this.data.plannedActionDate,
+        impact:this.data.impact,
+        CreatedBy:this.data.createdBy.fullName,
+        CreatedAt:this.data.createdAt,
+        UpdatedBy:this.data.updatedBy.fullName,
+        UpdatedAt:this.data.updatedAt,
+        ReviewedBy:this.data.reviewedBy,
+        ReviewedAt:this.data.reviewedAt,
+        PostReviewedBy:this.data.postReviewedBy,
+        PostReviewedAt:this.data.postReviewedAt,
+        RiskStatus:this.data.riskStatus,
+        ClosedDate:this.data.closedDate,
+        RiskResponse:this.data.riskResponse,
+        Remarks:this.data.remarks
+      }
+
+      this.riskDetailsSection3MitigationData={
+        riskId:this.data.riskId,
+        riskAssesments:this.data.riskAssessments,
+        status:this.data.status,
+        type:this.data.type,
+        residualRisk:this.data.residualRisk,
+        residualValue:this.data.residualValue,
+        percentageReduction:this.data.percentageReduction,
+
+      }
       // console.log("data description",this.data.description);
       this.isLoading=false
     });
