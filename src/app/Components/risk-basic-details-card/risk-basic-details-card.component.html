@@ -18,7 +18,7 @@
           <app-edit-button title="Edit risk"  image="fa-solid fa-pen" [ngStyle]="{'display':isEditable?'flex':'none'}"  (onClick)="onEditButtonClicked()"></app-edit-button>
 
 
-            @if(preReviewstatus.isReviewed==2&&preReviewstatus.isReviewed!=5&&allData.riskStatus=="open")
+            @if(preReviewstatus.isReviewed==2&&postReviewstatus.isReviewed!=5&&allData.riskStatus=="open")
             {
 
               <app-edit-button title="Add post assessment values"  image="fa-solid fa-square-plus" [ngStyle]="{'display':isEditable?'flex':'none'}"  (onClick)="onUpdateButtonCLick()"></app-edit-button>
