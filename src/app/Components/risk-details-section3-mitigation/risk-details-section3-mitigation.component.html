@@ -7,7 +7,7 @@
 
 
 
-  @if(data.status=="close")
+  @if(data.status=="close" ||riskAssessmentAfter.length>0)
   {
     <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist" style="margin-top: 20px;">
       <li class="nav-item" role="presentation">
@@ -94,7 +94,7 @@
 
         @if(riskAssessmentAfter.length>0)
         {
-          @if(riskAssessmentAfter[0].review.reviewStatus=="ApprovalCompleted")
+          @if(riskAssessmentAfter[0].review.reviewStatus=="ApprovalCompleted"||riskAssessmentAfter[0].review.reviewStatus=="Rejected")
           {
             <h5 style="font-weight: bold;margin-top: 50px"> Reviewed By: <span> {{ riskAssessmentAfter.length>0? riskAssessmentAfter[0].review.reviewerName:'' }}</span></h5>
             @if(!((riskAssessmentAfter.length>0?riskAssessmentAfter[0].review.comments:' ').trim().length==0))
