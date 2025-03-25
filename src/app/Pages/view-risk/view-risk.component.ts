@@ -74,6 +74,8 @@ export class ViewRiskComponent {
         residualRisk:this.data.residualRisk,
         residualValue:this.data.residualValue,
         percentageReduction:this.data.percentageRedution,
+        overallRiskRatingBefore:this.data.overalRiskRatingBefore,
+        overallRiskRatingAfter:this.data.overallRiskRatingAfter
 
       }
 

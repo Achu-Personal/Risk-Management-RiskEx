@@ -9,14 +9,14 @@
 
       <div id="mitigationCard" class=" primaryColor shadowType1 details-card "  >
         <h5 >Risk Mitigation</h5>
-        @if(data.riskMitigation!=null&&data.riskMitigation!="")
+        @if(data.riskMitigation!=null&&data.riskMitigation.trim().length > 0)
         {
           <p title={{data.riskMitigation}}>{{data.riskMitigation.length>1020?data.riskMitigation.slice(0,1020)+"...":data.riskMitigation}}</p>
 
         }
       </div>
 
-      @if(data.riskContengency!=null&&data.contingency!="")
+      @if(data.riskContengency!=null&&data.riskContengency.trim().length > 0)
       {
         <div id="contingencyCard"  class=" primaryColor shadowType1 details-card ">
           <h5>Risk Contingency</h5>
