@@ -85,9 +85,10 @@ export class ApprovalComponent {
         type:this.data.type,
         residualRisk:this.data.residualRisk,
         residualValue:this.data.residualValue,
-        percentageReduction:this.data.percentageReduction,
+        percentageReduction:this.data.percentageRedution,
 
       }
+      console.log("pppp",this.data.percentageRedution)
       // console.log("data description",this.data.description);
       this.isLoading=false
     });
