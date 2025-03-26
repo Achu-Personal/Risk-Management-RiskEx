@@ -26,13 +26,19 @@
     <app-risk-basic-details-card data-aos="zoom-in" [isEditable]="true"  [allData]="data" ></app-risk-basic-details-card>
     <app-risk-details-section2 data-aos="zoom-in" [data]="riskDetailsSection2Data"></app-risk-details-section2>
     <!-- <app-risk-details-section3-mitigation [data]="riskDetailsSection3MitigationData" ></app-risk-details-section3-mitigation> -->
-    <div class="residualriskData">
-      <div style="width: 100%;display: flex;justify-content: center;margin-top: 40px;">
-        <div class="residual-div">
-          Residual Risk :{{data.residualRisk}}   |   Residual Value  :  {{data.residualValue}}    |   Percentage Reduction  : {{  data.percentageRedution }}
+
+
+    @if(data.riskAssessments[1])
+    {
+      <div class="residualriskData">
+        <div style="width: 100%;display: flex;justify-content: center;margin-top: 40px;">
+          <div class="residual-div">
+            Residual Risk :{{data.residualRisk}}   |   Residual Value  :  {{data.residualValue}}    |   Percentage Reduction  : {{  data.percentageRedution }}
+          </div>
         </div>
       </div>
-    </div>
+    }
+
   </ng-container>
   </main>
   <!-- Confirmation Popup -->
