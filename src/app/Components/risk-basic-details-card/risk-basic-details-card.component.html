@@ -9,13 +9,15 @@
           <h5>{{allData.riskType}} Risk</h5>
         </div>
 
+        <app-edit-button title="Edit risk"  image="fa-solid fa-pen" [ngStyle]="{'display':isEditable?'flex':'none'}"  (onClick)="onEditButtonClicked()"></app-edit-button>
+
+
       @if(preReviewstatus!=null)
       {
         @if((allData.riskStatus=="open"||postReviewstatus.isReviewed<4)&&(authService.getCurrentUserId()==allData.createdBy.id||authService.getCurrentUserId()==allData.responsibleUser.id||authService.getUserRole()=="Admin"))
         {
 
 
-          <app-edit-button title="Edit risk"  image="fa-solid fa-pen" [ngStyle]="{'display':isEditable?'flex':'none'}"  (onClick)="onEditButtonClicked()"></app-edit-button>
 
 
             @if(preReviewstatus.isReviewed==2&&postReviewstatus.isReviewed!=5&&allData.riskStatus=="open")

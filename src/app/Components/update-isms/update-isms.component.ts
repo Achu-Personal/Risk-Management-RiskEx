@@ -367,12 +367,10 @@ export class UpdateIsmsComponent {
     console.log("vvvvvvvvvvvvvvvvvvvv",this.riskResponseValue)
 
     if (
-      !formValue.closeDate ||
-      this.riskResponseValue <= 0 ||
-      this.overallRiskRating <= 0 ||
-      this.percentageRedution <= 0 ||
-      this.residualRisk <= 0 ||
-      this.residualValue <= 0 ||
+
+      Number(this.riskResponseValue) <= 0 ||
+      Number(this.overallRiskRating) <= 0 ||
+
       Number(this.confidentialityLikelihoodId) <= 0 ||
       Number(this.confidentialityImpactId) <= 0 ||
       Number(this.integrityLikelihoodId) <= 0 ||
