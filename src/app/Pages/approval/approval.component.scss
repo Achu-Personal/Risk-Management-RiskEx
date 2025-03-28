@@ -14,7 +14,7 @@ main{
     background-color: #ffffff;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
     box-sizing: border-box;
-    
+
 }
 
 textarea {
@@ -65,7 +65,7 @@ button.btn-danger:hover {
 }
 .cancel-message{
     width: 100%;
-    margin-top: 20px ; 
+    margin-top: 20px ;
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -88,9 +88,37 @@ button.btn-danger:hover {
     background-size: 800px 100%;
     animation: shimmer 1.5s infinite;
     border-radius: 20px;
-  
+
   }
-  
+
+  .residualriskData
+  {
+
+      border-radius: 10px;
+      height: 100px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+  }
+  .residual-div
+  {
+
+  height: 50px;
+  width: auto;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 10px;
+  background-color: white;
+  border-radius: 10px;
+  font-size: 2.5vh;
+  font-weight: bold;
+  color: rgb(215, 59, 59);
+
+  }
+
+
   @keyframes shimmer {
     0% {
       background-position: -400px 0;
@@ -99,4 +127,3 @@ button.btn-danger:hover {
       background-position: 400px 0;
     }
   }
-  
