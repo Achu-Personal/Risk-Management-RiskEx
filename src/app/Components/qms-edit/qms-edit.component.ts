@@ -136,7 +136,7 @@ export class QmsEditComponent {
       plannedActionDate: dateObj.toISOString().split('T')[0],
     });
     this.riskId = this.riskData.riskId;
-    this.overallRiskRating = this.riskData.overallRiskRating;
+    this.overallRiskRating = this.riskData.overalRiskRatingBefore;
     this.riskFactor = this.riskData.riskAssessments[0].riskFactor;
     this.departmentidForAssignee=this.riskData.department.id
     // this.departmentId=this.riskData.department.id

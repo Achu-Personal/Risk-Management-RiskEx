@@ -9,11 +9,7 @@
           formControlName="riskName"
           (infoClicked)="toggleModalCategory()"
         ></app-form-input>
-        @if(qmsForm.get("riskName")){ @if
-        (qmsForm.get("riskName")?.hasError('required')&&
-        qmsForm.get("riskName")?.dirty) {
-        <div class="text-danger">Risk Category is required</div>
-        } }
+
         @if(preSelectedProject ==null){
           <div class="dropdown-header">
             <p [ngStyle]="{
@@ -44,7 +40,13 @@
         </div>
 
         }
+
       </div>
+      @if(qmsForm.get("riskName")){ @if
+        (qmsForm.get("riskName")?.hasError('required')&&
+        qmsForm.get("riskName")?.dirty) {
+        <div class="text-danger">Risk Category is required</div>
+        } }
       <!-- @if(isAdmin === 'Admin'){
       <app-form-dropdown
         label="Department Name"
@@ -243,12 +245,12 @@
         [dropdownData]="dropdownAssignee"
         dropdownDisplay="fullName"
         dropdownValue="id"
-        selectValue="Select responsible person"
+        selectValue="Select risk owner"
         (change)="onDropdownChangeResponsiblePerson($event)"
         [selectedValue]="preSelectedResponsiblePerson"
         [openDropdownId]="openDropdownId"
         (openDropdown)="handleDropdownOpen($event)"
-        message="You can select an existing responsible person from the dropdown
+        message="You can select an existing risk owner from the dropdown
       or enter a new one. If you enter a new name, it will take priority over the dropdown selection."
         [showInfoButton]="true"
         backgroundColor=" var(--form-color)"
@@ -290,7 +292,7 @@
         }"
       >
         <p>
-          If responsible person not in the list
+          If risk owner not in the list
           <span (click)="isAssigneeNotInList()"
             ><a href="javascript:void(0);">click </a></span
           >here
@@ -411,10 +413,10 @@
 
       <!-- @if(isAdmin!=="Admin"){ -->
         <app-form-data-not-in-list
-        placeholder="Enter responsible person name"
+        placeholder="Enter risk owner name"
         [isAssignee]="true"
         [assigneeDepartment]="departmentidForAssignee"
-        textLabel="Responsible person name"
+        textLabel="Risk owner"
         [dropdownDepartment]="dropdownDepartment"
         (cancelForm)="receiveCancel($event)"
         (sendData)="saveAssignee($event)"
