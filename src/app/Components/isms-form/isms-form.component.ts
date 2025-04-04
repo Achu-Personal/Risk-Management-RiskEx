@@ -1241,46 +1241,12 @@ export class ISMSFormComponent {
                 ],
               };
         if (this.riskTypeValue == 2) {
-          const timestamp = new Date().getTime(); // Get current timestamp
-        const draftKey = `draftSecurity_${timestamp}`
-        let draftList = JSON.parse(localStorage.getItem('draftList') || '[]');
-
-        if (!draftList) {
-          // Create a new list if it does not exist
-          draftList = [];
-          console.log('No draftList found. Creating a new one.');
-        }
-
-        // Add new draft to the list
-        draftList.push({ name: draftKey, draft: draft });
-
-        // Save the updated list back to localStorage
-        localStorage.setItem('draftList', JSON.stringify(draftList));
-
-        console.log(`Draft saved as: ${draftKey}`);
-        console.log("drat list is",draftList)
+          localStorage.setItem('draftSecurity', JSON.stringify(draft));
         } else {
-          const timestamp = new Date().getTime(); // Get current timestamp
-        const draftKey = `draftPrivacy_${timestamp}`
-        let draftList = JSON.parse(localStorage.getItem('draftList') || '[]');
-
-        if (!draftList) {
-          // Create a new list if it does not exist
-          draftList = [];
-          console.log('No draftList found. Creating a new one.');
+          localStorage.setItem('draftPrivacy', JSON.stringify(draft));
         }
 
-        // Add new draft to the list
-        draftList.push({ name: draftKey, draft: draft });
-
-        // Save the updated list back to localStorage
-        localStorage.setItem('draftList', JSON.stringify(draftList));
-
-        console.log(`Draft saved as: ${draftKey}`);
-        console.log("drat list is",draftList)
-        }
-
-        // console.log('Draft Saved as JSON:', JSON.stringify(draft));
+        console.log('Draft Saved as JSON:', JSON.stringify(draft));
         this.saveAsDraft();
         this.isdraftConform = true;
       } else {
@@ -1492,46 +1458,18 @@ export class ISMSFormComponent {
         if (this.riskTypeValue == 2) {
           // localStorage.setItem('draftSecurity', JSON.stringify(draft));
 
-          const timestamp = new Date().getTime();
-        const draftKey = `draftSecurity_${this.departmentIdForAdminToAdd}_${timestamp}`;
-        let draftList = JSON.parse(localStorage.getItem('draftList') || '[]');
-
-        if (!draftList) {
-          // Create a new list if it does not exist
-          draftList = [];
-          console.log('No draftList found. Creating a new one.');
-        }
-
-        // Add new draft to the list
-        draftList.push({ name: draftKey, draft: draft });
-
-        // Save the updated list back to localStorage
-        localStorage.setItem('draftList', JSON.stringify(draftList));
-
-        console.log(`Draft saved as: ${draftKey}`);
+          const draftKey = `draft_Security${this.departmentIdForAdminToAdd}`;
+          localStorage.setItem(draftKey, JSON.stringify(draft));
+          console.log("draft for Admin draft Security Name", draftKey)
         } else {
           // localStorage.setItem('draftPrivacy', JSON.stringify(draft));
 
-          const timestamp = new Date().getTime();
-        const draftKey = `draftPrivacy_${this.departmentIdForAdminToAdd}_${timestamp}`;
-        let draftList = JSON.parse(localStorage.getItem('draftList') || '[]');
-
-        if (!draftList) {
-          // Create a new list if it does not exist
-          draftList = [];
-          console.log('No draftList found. Creating a new one.');
+          const draftKey = `draft_Privacy${this.departmentIdForAdminToAdd}`;
+          localStorage.setItem(draftKey, JSON.stringify(draft));
+          console.log("draft for Admin draft Privacy Name", draftKey)
         }
 
-        // Add new draft to the list
-        draftList.push({ name: draftKey, draft: draft });
-
-        // Save the updated list back to localStorage
-        localStorage.setItem('draftList', JSON.stringify(draftList));
-
-        console.log(`Draft saved as: ${draftKey}`);
-        }
-
-        // console.log('Draft Saved as JSON:', JSON.stringify(draft));
+        console.log('Draft Saved as JSON:', JSON.stringify(draft));
         this.saveAsDraft();
         this.isdraftConform = true;
       } else {

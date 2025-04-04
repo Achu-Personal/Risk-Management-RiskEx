@@ -853,10 +853,6 @@ export class QMSFormComponent {
 
   closeDraft() {
     if (this.isAdmin !== 'Admin') {
-
-
-
-
       if (this.qmsForm.value.riskName) {
         const draft = {
           formValues: this.qmsForm.value,
@@ -918,25 +914,8 @@ export class QMSFormComponent {
             },
           ],
         };
-
-        const timestamp = new Date().getTime(); // Get current timestamp
-        const draftKey = `draftQuality_${timestamp}`
-        let draftList = JSON.parse(localStorage.getItem('draftList') || '[]');
-
-        if (!draftList) {
-          // Create a new list if it does not exist
-          draftList = [];
-          console.log('No draftList found. Creating a new one.');
-        }
-
-        // Add new draft to the list
-        draftList.push({ name: draftKey, draft: draft });
-
-        // Save the updated list back to localStorage
-        localStorage.setItem('draftList', JSON.stringify(draftList));
-
-        console.log(`Draft saved as: ${draftKey}`);
-        console.log("drat list is",draftList)
+        localStorage.setItem('draftQuality', JSON.stringify(draft));
+        console.log('Draft Saved as JSON:', JSON.stringify(draft));
         this.saveAsDraft();
         this.isdraftConform = true;
       } else {
@@ -1011,24 +990,11 @@ export class QMSFormComponent {
             },
           ],
         };
+        const draftKey = `draft_${this.departmentIdForAdminToAdd}`;
+        localStorage.setItem(draftKey, JSON.stringify(draft));
+        console.log('draft for Admin draft Name', draftKey);
 
-        const timestamp = new Date().getTime();
-        const draftKey = `draftQuality_${this.departmentIdForAdminToAdd}_${timestamp}`;
-        let draftList = JSON.parse(localStorage.getItem('draftList') || '[]');
-
-        if (!draftList) {
-          // Create a new list if it does not exist
-          draftList = [];
-          console.log('No draftList found. Creating a new one.');
-        }
-
-        // Add new draft to the list
-        draftList.push({ name: draftKey, draft: draft });
-
-        // Save the updated list back to localStorage
-        localStorage.setItem('draftList', JSON.stringify(draftList));
-
-        console.log(`Draft saved as: ${draftKey}`);
+        console.log('draft for Admin', JSON.stringify(draft));
         this.saveAsDraft();
         this.isdraftConform = true;
       } else {
@@ -1037,7 +1003,6 @@ export class QMSFormComponent {
       }
     }
   }
-
   loadDraft() {
     const draft = localStorage.getItem('draftQuality');
     if (draft) {
