@@ -140,7 +140,8 @@ export class IsmsEditComponent {
   isLoading = false; // Initially false
   departmentIdForAdminToAddToString:string=''
   showModalCategory = false;
-  departmentidForAssignee:string=''
+  departmentidForAssignee:string='';
+   
 
 
 
@@ -164,6 +165,8 @@ export class IsmsEditComponent {
     });
     this.riskId = this.riskData.riskId;
     this.overallRiskRating = this.riskData.overalRiskRatingBefore;
+
+
 
     this.confidentialityRiskFactor = this.riskData.riskAssessments[0].riskFactor;
     this.integrityRiskFactor = this.riskData.riskAssessments[1].riskFactor;
