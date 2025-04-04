@@ -116,6 +116,7 @@ export class QmsEditComponent {
   departmentIdForAdminToAddToString:string=''
   showModalCategory = false; // Initially hidden
   departmentidForAssignee:string=''
+  
 
 
   constructor(
@@ -138,7 +139,9 @@ export class QmsEditComponent {
     this.riskId = this.riskData.riskId;
     this.overallRiskRating = this.riskData.overalRiskRatingBefore;
     this.riskFactor = this.riskData.riskAssessments[0].riskFactor;
-    this.departmentidForAssignee=this.riskData.department.id
+    this.departmentidForAssignee=this.riskData.department.id;
+
+
     // this.departmentId=this.riskData.department.id
 
 
