@@ -10,7 +10,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NgIf } from '@angular/common';
 import { EmailService } from '../../Services/email.service';
 import { AuthService } from '../../Services/auth/auth.service';
-import { RiskDetailsSection3MitigationComponent } from "../../Components/risk-details-section3-mitigation/risk-details-section3-mitigation.component";
 import { NotificationService } from '../../Services/notification.service';
 
 @Component({
@@ -24,7 +23,7 @@ import { NotificationService } from '../../Services/notification.service';
     ReactiveFormsModule,
     StyleButtonComponent,
     ConfirmationPopupComponent, NgIf,
-    RiskDetailsSection3MitigationComponent
+
 ],
   templateUrl: './approval.component.html',
   styleUrl: './approval.component.scss',
