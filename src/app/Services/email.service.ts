@@ -427,7 +427,7 @@ private AddRiskDetailsForPostReview(template: string, context: any): string {
   );
 }
 sendPostReviewerEmail(email: string, context: any): Observable<boolean> {
-  const subject = `RISK POST REVIEW NOTIFICATION - ${context.riskName}`;
+  const subject = `RISK REVIEW POST IMPLEMENTATION OF ACTION PLAN  - ${context.riskName}`;
   const body = this.AddRiskDetailsForPostReview(
     this.postreviewerEmailTemplate,
     context
