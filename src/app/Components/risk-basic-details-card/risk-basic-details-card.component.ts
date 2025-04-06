@@ -29,14 +29,14 @@ export class RiskBasicDetailsCardComponent {
     this.api.getReviewSatus(this.allData.id,false).subscribe((e)=>{
 
       this.postReviewstatus=e
-      console.log("review statushhhhhhh",e);
+  //    console.log("review statushhhhhhh",e);
       this.cdr.detectChanges()
     })
 
     this.api.getReviewSatus(this.allData.id,true).subscribe((e)=>{
 
       this.preReviewstatus=e
-      console.log("review statushhhhhhh",e);
+   //   console.log("review statushhhhhhh",e);
       this.cdr.detectChanges()
     })
   }

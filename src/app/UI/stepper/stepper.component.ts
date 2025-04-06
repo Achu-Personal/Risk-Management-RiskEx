@@ -61,7 +61,7 @@ export class StepperComponent {
         });
       }
 
-      console.log('stepsafter=', this.steps);
+    //  console.log('stepsafter=', this.steps);
 
       this.steps.forEach((e: any) => {
         if (e.isCompleted) {
