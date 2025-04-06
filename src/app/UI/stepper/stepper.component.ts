@@ -11,12 +11,12 @@ import {
   ChangeDetectorRef,
 } from '@angular/core';
 import { Step } from '../../Interfaces/Stepper.interface';
-import { CommonModule, DatePipe, SlicePipe } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-stepper',
   standalone: true,
-  imports: [DatePipe, SlicePipe,CommonModule],
+  imports: [DatePipe,CommonModule],
   templateUrl: './stepper.component.html',
   styleUrls: ['./stepper.component.scss'], // Corrected "styleUrl" to "styleUrls"
 })

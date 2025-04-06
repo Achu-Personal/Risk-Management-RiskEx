@@ -273,12 +273,12 @@
         [dropdownData]="dropdownAssigneeForAdmin"
         dropdownDisplay="fullName"
         dropdownValue="id"
-        selectValue="Select responsible person"
+        selectValue="Select risk owner"
         [selectedValue]="preSelectedResponsiblePerson"
         (change)="onDropdownChangeResponsiblePerson($event)"
         [openDropdownId]="openDropdownId"
         (openDropdown)="handleDropdownOpen($event)"
-        message="You can select an existing responsible person from the dropdown
+        message="You can select an existing risk owner from the dropdown
         or enter a new one. If you enter a new name, it will take priority over the dropdown selection."
         backgroundColor=" var(--form-color)"
         [showInfoButton]="true"
@@ -292,11 +292,11 @@
         dropdownDisplay="fullName"
         [selectedValue]="preSelectedResponsiblePerson"
         dropdownValue="id"
-        selectValue="Select responsible person"
+        selectValue="Select risk owner"
         (change)="onDropdownChangeResponsiblePerson($event)"
         [openDropdownId]="openDropdownId"
         (openDropdown)="handleDropdownOpen($event)"
-        message="You can select an existing responsible person from the dropdown
+        message="You can select an existing risk owner from the dropdown
         or enter a new one. If you enter a new name, it will take priority over the dropdown selection."
         backgroundColor=" var(--form-color)"
         [showInfoButton]="true"
@@ -342,7 +342,7 @@
         }"
       >
         <p>
-          If responsible person not in the list
+          If risk owner not in the list
           <span (click)="isAssigneeNotInList()"
             ><a href="javascript:void(0);">click </a></span
           >here
@@ -475,10 +475,10 @@
 
     @if(isAdmin=="Admin"){
       <app-form-data-not-in-list
-        placeholder="Enter responsible person name"
+        placeholder="Enter risk owner name"
         [isAssignee]="true"
         [assigneeDepartment]="departmentIdForAdminToAddToString"
-        textLabel="Responsible person name"
+        textLabel="Risk owner"
         [dropdownDepartment]="dropdownDepartment"
         (cancelForm)="receiveCancel($event)"
         (sendData)="saveAssignee($event)"
@@ -489,10 +489,10 @@
 
       @if(isAdmin!=="Admin"){
         <app-form-data-not-in-list
-        placeholder="Enter responsible person name"
+        placeholder="Enter risk owner name"
         [isAssignee]="true"
         [assigneeDepartment]="departmentId"
-        textLabel="Responsible person name"
+        textLabel="Risk owner"
         [dropdownDepartment]="dropdownDepartment"
         (cancelForm)="receiveCancel($event)"
         (sendData)="saveAssignee($event)"

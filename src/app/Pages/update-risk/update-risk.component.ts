@@ -159,6 +159,7 @@ export class UpdateRiskComponent {
         error: (error: HttpErrorResponse) => {
           this.isError = true;
           this.isLoading = false;
+          console.log("error from updating risk is",error)
 
           // Extract error message from backend response
           this.error = error.error?.details

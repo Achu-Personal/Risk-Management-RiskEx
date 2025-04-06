@@ -133,11 +133,15 @@ export class ThankyouComponent {
           }
 
           if (res.riskStatus === 'close') {
-            const reviewerName = res.riskAssessments &&
-                               res.riskAssessments.length > 0 &&
-                               res.riskAssessments[0].review ?
-                               res.riskAssessments[0].review.reviewerName :
-                               'External Reviewer';
+            let latestAssessment = null;
+
+            if (res.riskAssessments && res.riskAssessments.length > 0) {
+              latestAssessment = res.riskAssessments.reduce((latest:any, current:any) =>
+                current.id > latest.id ? current : latest, res.riskAssessments[0]);
+            }
+
+            const reviewerName = latestAssessment && latestAssessment.review ?
+              latestAssessment.review.reviewerName : 'External Reviewer';
 
             const closureContext = {
               responsibleUser: res.responsibleUser.fullName,

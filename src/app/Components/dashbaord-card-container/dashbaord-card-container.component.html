@@ -1,9 +1,9 @@
 
 <div class="urgentrisks" data-aos="zoom-in">
-  <h5>{{title}}</h5>
+  <h5>{{titleHeading}}</h5>
   <div class="maindiv1">
 
-    <div>
+    <div class="contentList">
       @for(item of list ;track $index)
       {
       <app-dashboardviewrisk [data]="item"></app-dashboardviewrisk>
