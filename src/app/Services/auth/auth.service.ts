@@ -209,7 +209,7 @@ export class AuthService {
     this.departmentId.next(null);
     this.projects.next([]);
     this.currentUserId.next(null);
-    this.router.navigate(['/auth']);
+    this.router.navigate(['/login']);
   }
 
 

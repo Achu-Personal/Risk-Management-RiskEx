@@ -112,4 +112,7 @@ checkAndSetActiveAccount() {
     this._destroying$.next(undefined);
     this._destroying$.complete();
   }
+  loginRedirectToRiskex(){
+    this.router.navigate(['/login']);
+  }
 }

@@ -230,4 +230,31 @@ $focus-shadow: #cdcaca;
     font-size: 12px;
     margin-top: 4px;
   }
+  .back-button-container {
+  
+    .back-button {
+      display: flex;
+      align-items: center;
+      background: none;
+      border: none;
+      color: $primary-color;
+      font-size: 14px;
+      padding: 5px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+
+      svg {
+        margin-right: 8px;
+      }
+
+      &:hover {
+        color: darken($primary-color, 10%);
+        transform: translateX(-3px);
+      }
+
+      &:focus {
+        outline: none;
+      }
+    }
+  }
 }

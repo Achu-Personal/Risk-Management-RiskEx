@@ -57,4 +57,10 @@ export class LoginComponent {
       });
     }
   }
+  goBack() {
+    // Navigate back to SSO page
+    this.router.navigate(['/sso']);
+    // Or if you want to use browser's back functionality:
+    // window.history.back();
+  }
 }
