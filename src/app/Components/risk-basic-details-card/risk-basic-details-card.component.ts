@@ -29,7 +29,7 @@ export class RiskBasicDetailsCardComponent {
     this.api.getReviewSatus(this.allData.id,false).subscribe((e)=>{
 
       this.postReviewstatus=e
-  //    console.log("review statushhhhhhh",e);
+      console.log("review statushhhhhhh uuuuuu",this.postReviewstatus);
       this.cdr.detectChanges()
     })
 
@@ -39,6 +39,7 @@ export class RiskBasicDetailsCardComponent {
    //   console.log("review statushhhhhhh",e);
       this.cdr.detectChanges()
     })
+    console.log("is admin",this.authService.getUserRole());
   }
 
 
