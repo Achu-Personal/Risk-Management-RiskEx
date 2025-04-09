@@ -42,6 +42,6 @@ export class VerificationSuccessComponent {
   }
 
   backToLogin(): void {
-    this.router.navigate(['/auth']);
+    this.router.navigate(['/login']);
   }
 }

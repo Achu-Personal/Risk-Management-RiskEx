@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 import { FormBuilder,  FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { NgIf } from '@angular/common';
 import { AuthService } from '../../Services/auth/auth.service';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ReactiveFormsModule, NgIf,RouterLink],
+  imports: [ReactiveFormsModule, NgIf],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
@@ -58,9 +58,10 @@ export class LoginComponent {
     }
   }
   goBack() {
-    // Navigate back to SSO page
     this.router.navigate(['/sso']);
-    // Or if you want to use browser's back functionality:
-    // window.history.back();
+
+  }
+  goForgetPassword(){
+    this.router.navigate(['/forgetpassword']);
   }
 }

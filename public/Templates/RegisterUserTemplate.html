@@ -54,6 +54,24 @@
       font-weight: bold;
     }
 
+    .login-options {
+      background-color: #f0f7f5;
+      border: 1px solid #c5e1da;
+      border-radius: 5px;
+      padding: 15px;
+      margin: 20px 0;
+    }
+
+    .note-box {
+      display: inline-block;
+      padding: 5px 10px;
+      background-color: #e3f2fd;
+      color: #0d47a1;
+      border-radius: 4px;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+
     .footer {
       margin-top: 20px;
       text-align: center;
@@ -73,6 +91,7 @@
       border-radius: 5px;
       transition: background-color 0.3s ease;
     }
+
 
     .cta-button:hover {
       background-color: #2FFEE0;
@@ -98,10 +117,22 @@
         <p><strong>Temporary Password:</strong> {{defaultPassword}}</p>
       </div>
 
-      <p class="warning">⚠️ Important: Please change your password upon first login!</p>
+      <div class="login-options">
+        <p><strong>Login Options:</strong></p>
+        <p>You can access the system using either:</p>
+        <ul>
+          <li><strong>RiskEx Login:</strong> Using the email and password above</li>
+          <li><strong>Microsoft Login:</strong> Using your Microsoft account with this email ({{userEmail}})</li>
+        </ul>
+        <p>Both options are available on the login page.</p>
+      </div>
 
-      <a href="{{baseUrl}}/auth/" class="cta-button">Login to Risk Management
-        System</a>
+      <p class="warning">⚠️ Important: Please change your password upon first login!</p>
+      <div class="note-box">
+        ℹ️ Note: The password is used only when logging in with the RiskEx login option. If you use Microsoft login, your Microsoft account password will be used instead.
+      </div>
+
+      <a href="{{baseUrl}}/sso/" class="cta-button">Login to Risk Management System</a>
     </div>
 
     <div class="footer">

@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../Services/auth/auth.service';
 import { MsalService } from '@azure/msal-angular';
-import {  firstValueFrom } from 'rxjs';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-auth',
@@ -18,14 +18,29 @@ export class AuthComponentSSO {
   usermail: string = '';
   errorMessage: string = "";
   showError = false;
+  isLoggingOut = false;
 
   constructor(
     private authService: AuthService,
     private router: Router,
+    private route: ActivatedRoute,
     private msalService: MsalService,
   ) {}
 
   async ngOnInit(): Promise<void> {
+    // Check if we're in a logout flow
+    this.route.queryParams.subscribe(params => {
+      if (params['logout'] === 'true') {
+        this.isLoggingOut = true;
+        // Just redirect to SSO and exit
+        this.router.navigate(['/sso'], { queryParams: { logout: 'true' } });
+        return;
+      }
+    });
+
+    // Skip login handling if we're explicitly logging out
+    if (this.isLoggingOut) return;
+
     try {
       this.isLoading = true;
       await this.msalService.instance.initialize();
@@ -47,7 +62,6 @@ export class AuthComponentSSO {
         this.usermail = account.username;
         console.log(' active account:', this.usermail);
 
-
         try {
           const tokenResponse = await firstValueFrom(
             this.msalService.acquireTokenSilent({
@@ -66,13 +80,19 @@ export class AuthComponentSSO {
         }
       } else {
         console.log('No active session. Redirecting to login...');
-        // this.msalService.loginRedirect();
+        // Check if we still have a loginToken but no active account
+        if (localStorage.getItem('loginToken')) {
+          localStorage.removeItem('loginToken');
+        }
         this.router.navigate(['/sso']);
       }
     } catch (error) {
       console.error('SSO Login Error:', error);
       this.handleError('Authentication failed. Please try again.');
-      this.msalService.loginRedirect();
+      // Only redirect if not already logging out
+      if (!this.isLoggingOut) {
+        // this.router.navigate(['/sso']);
+      }
     } finally {
       this.isLoading = false;
     }
@@ -87,7 +107,7 @@ export class AuthComponentSSO {
       this.isLoading = true;
       await firstValueFrom(this.authService.ssoLogin(usermail));
       console.log("SSO login successful!");
-    }catch (error: any) {
+    } catch (error: any) {
       const errorMessage = error;
       console.error("Error sending SSO email to backend:", errorMessage);
       this.handleError(errorMessage);
@@ -96,8 +116,7 @@ export class AuthComponentSSO {
     }
   }
 
-
-  private handleError(message:string) {
+  private handleError(message: string) {
     this.errorMessage = message;
     this.showError = true;
     this.isLoading = false;
@@ -106,7 +125,10 @@ export class AuthComponentSSO {
   retryLogin() {
     this.showError = false;
     this.errorMessage = '';
-    this.msalService.loginRedirect();
+    // Only redirect if not already logging out
+    if (!this.isLoggingOut) {
+      this.msalService.loginRedirect();
+    }
   }
 
   ngOnDestroy() {

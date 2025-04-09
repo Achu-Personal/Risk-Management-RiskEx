@@ -9,16 +9,14 @@ import { NotificationService } from '../../Services/notification.service';
 @Component({
   selector: 'app-changepassword',
   standalone: true,
-  imports: [ReactiveFormsModule,NgIf,CommonModule],
+  imports: [ReactiveFormsModule, NgIf, CommonModule],
   templateUrl: './changepassword.component.html',
-  styleUrl: './changepassword.component.scss'
+  styleUrl: './changepassword.component.scss',
 })
 export class ChangepasswordComponent {
-
   @Output() close = new EventEmitter<void>();
   @Input() isVisible = false;
   @Output() closeModal = new EventEmitter<void>();
-
 
   changePasswordForm: FormGroup;
   passwordChanged = false;
@@ -26,18 +24,27 @@ export class ChangepasswordComponent {
   isSubmitting = false;
 
   constructor(
-    private fb: FormBuilder,private router: Router,
-    public api:ApiService,private notification:NotificationService
-    // private emailService: EmailNotificationService
-  ) {
-    this.changePasswordForm = this.fb.group({
-      currentPassword: ['', Validators.required],
-      newPassword: [
-        '',
-        [Validators.required, Validators.minLength(8), Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/)],
-      ],
-      confirmPassword: [''],
-    }, { validators: this.passwordMatchValidator });
+    private fb: FormBuilder,
+    private router: Router,
+    public api: ApiService,
+    private notification: NotificationService
+  )
+  {
+    this.changePasswordForm = this.fb.group(
+      {
+        currentPassword: ['', Validators.required],
+        newPassword: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(8),
+            Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/),
+          ],
+        ],
+        confirmPassword: [''],
+      },
+      { validators: this.passwordMatchValidator }
+    );
   }
 
   passwordMatchValidator(form: FormGroup) {
@@ -45,8 +52,6 @@ export class ChangepasswordComponent {
       ? null
       : { mismatch: true };
   }
-
-
 
   onSubmit() {
     if (this.changePasswordForm.invalid || this.isSubmitting) {
@@ -56,13 +61,15 @@ export class ChangepasswordComponent {
     this.isSubmitting = true;
     this.errorMessage = '';
 
-    const { currentPassword, newPassword, confirmPassword } = this.changePasswordForm.value;
+    const { currentPassword, newPassword, confirmPassword } =
+      this.changePasswordForm.value;
 
-    this.api.changePassword(currentPassword, newPassword, confirmPassword)
+    this.api
+      .changePassword(currentPassword, newPassword, confirmPassword)
       .subscribe({
         next: (response) => {
           this.passwordChanged = true;
-          this.notification.success("Password changed successfully");
+          this.notification.success('Password changed successfully');
           this.close.emit();
           this.navigateToHome();
           this.changePasswordForm.reset();
@@ -72,24 +79,22 @@ export class ChangepasswordComponent {
           if (error.error?.message) {
             this.errorMessage = error.error.message;
           } else {
-            this.errorMessage = 'An error occurred while changing the password';
+            this.errorMessage =
+              'Incorrect Password or an error occurred while changing the password';
           }
         },
         complete: () => {
           this.isSubmitting = false;
-        }
+        },
       });
-    }
-    navigateToHome() {
-      this.router.navigate(['/home']);
-    }
-
-
+  }
+  navigateToHome() {
+    this.router.navigate(['/home']);
+  }
 
   onCancel() {
     this.changePasswordForm.reset();
     this.errorMessage = '';
     this.close.emit();
   }
-
 }
