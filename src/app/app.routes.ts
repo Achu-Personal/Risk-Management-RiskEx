@@ -84,6 +84,11 @@ export const routes: Routes = [
         data: { title: 'History', breadcrumb: 'History' },
       },
       {
+        path: 'draft',
+        component: HistoryComponent,
+        data: { title: 'History', breadcrumb: 'History' },
+      },
+      {
         path: 'reports',
         component: ReportsComponent,
         data: { title: 'Reports', breadcrumb: 'Report' },
