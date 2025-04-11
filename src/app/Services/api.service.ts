@@ -208,14 +208,35 @@ export class ApiService {
     );
   }
 
+  // updateReviewStatusAndComments(id: number, updates: any): Observable<any> {
+  //   console.log('updatesssss', updates);
+  //   console.log('Id:', id);
+
+  //   return this.http.put(
+  //     `${this.baseUrl}/Approval/update-review/${id}`,
+  //     updates
+  //   );
+  // }
   updateReviewStatusAndComments(id: number, updates: any): Observable<any> {
     console.log('updatesssss', updates);
     console.log('Id:', id);
 
-    return this.http.put(
-      `${this.baseUrl}/Approval/update-review/${id}`,
-      updates
-    );
+    // Extract reviewId from updates if present
+    const reviewId = updates.reviewId;
+
+    // If reviewId is provided, use it in the endpoint
+    if (reviewId) {
+      return this.http.put(
+        `${this.baseUrl}/Approval/update-review-status/${id}/${reviewId}`,
+        updates
+      );
+    } else {
+      // Maintain backward compatibility
+      return this.http.put(
+        `${this.baseUrl}/Approval/update-review/${id}`,
+        updates
+      );
+    }
   }
 
   sendEmailToAssignee(id: number) {
@@ -426,7 +447,7 @@ export class ApiService {
       return throwError(() => new Error('Either departmentId or projectId is required.'));
     }
 
-   
+
     return this.http.get(`${this.baseUrl}/Risk/riskid/new/Id`, { params });
   }
 

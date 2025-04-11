@@ -152,9 +152,9 @@ export class UsersComponent {
         },
       });
     } else if (userRole === 'DepartmentUser') {
-      const department: any = this.authService.getDepartmentId();
+      const department: any = this.authService.getDepartmentName();
       if (department) {
-        this.api.getUsersByDepartmentId(department).subscribe({
+        this.api.getAllUsersByDepartmentName(department).subscribe({
           next: (users: any) => {
             this.tableBody = users;
             this.isLoading = false;
