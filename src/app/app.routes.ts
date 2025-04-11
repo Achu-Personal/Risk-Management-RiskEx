@@ -28,6 +28,7 @@ import { VerificationSuccessComponent } from './Components/verification-success/
 import { AuthGuard } from './Gaurd/auth/auth.guard';
 import { AuthComponent } from './Layout/auth/auth.component';
 import { AuthComponentSSO } from './Gaurd/auth/auth.component';
+import { DraftPageComponent } from './Pages/draft-page/draft-page.component';
 
 export const routes: Routes = [
   {
@@ -85,7 +86,7 @@ export const routes: Routes = [
       },
       {
         path: 'draft',
-        component: HistoryComponent,
+        component: DraftPageComponent,
         data: { title: 'History', breadcrumb: 'History' },
       },
       {
