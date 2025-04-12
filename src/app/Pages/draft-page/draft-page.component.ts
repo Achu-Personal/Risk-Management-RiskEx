@@ -89,6 +89,13 @@ ngOnInit()
         this.isLoading = false;
 
       })
+
+
+      this.api.getDraftOfAdmin().subscribe((e:any)=>{
+
+        this.tableBody=e;
+        this.isLoading = false;
+      })
     }
     else{
 
@@ -107,13 +114,15 @@ ngOnInit()
           riskStatus: '',
         },
       ]
+
+
+
       this.api.getDraft(this.auth.getCurrentUserId()).subscribe((e:any)=>{
 
         this.tableBody=e;
         this.isLoading = false;
-
-
       })
+
     }
 
 }

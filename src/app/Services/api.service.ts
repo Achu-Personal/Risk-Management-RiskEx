@@ -182,6 +182,10 @@ export class ApiService {
   }
 
 
+  getDraftOfAdmin()
+  {
+    return this.http.get(`${this.baseUrl}/Risk/GetDraftOfAdmin`);
+  }
   getDraft(id: any = '') {
     return this.http.get(`${this.baseUrl}/Risk/GetRiskByAssigne?id=${id}`);
   }
