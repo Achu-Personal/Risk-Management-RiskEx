@@ -64,7 +64,7 @@ tableBody:any[]=[
 ngOnInit()
 {
     this.isLoading = true;
-    if(this.auth.getUserRole()=="Admin"||this.auth.getUserRole()?.includes("EMTUser"))
+    if(this.auth.getUserRole()=="Admin")
     {
       this.headerData=[
         "riskId","riskName","description","riskType","overallRiskRating",  "departmentName","responsibleUser","plannedActionDate","riskStatus",
@@ -83,12 +83,7 @@ ngOnInit()
           riskStatus: '',
         },
       ]
-      this.api.getAllRisksAssigned().subscribe((e:any)=>{
-        console.log("Risk assigned to a user=",e)
-        this.tableBody=e;
-        this.isLoading = false;
 
-      })
 
 
       this.api.getDraftOfAdmin().subscribe((e:any)=>{
