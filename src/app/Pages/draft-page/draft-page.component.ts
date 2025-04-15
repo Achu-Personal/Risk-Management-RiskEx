@@ -4,11 +4,12 @@ import { ReusableTableComponent } from "../../Components/reusable-table/reusable
 import { Router } from '@angular/router';
 import { ApiService } from '../../Services/api.service';
 import { AuthService } from '../../Services/auth/auth.service';
+import { DraftCardComponent } from "../../UI/draft-card/draft-card.component";
 
 @Component({
   selector: 'app-draft-page',
   standalone: true,
-  imports: [BodyContainerComponent, ReusableTableComponent],
+  imports: [BodyContainerComponent, ReusableTableComponent, DraftCardComponent],
   templateUrl: './draft-page.component.html',
   styleUrl: './draft-page.component.scss'
 })
@@ -20,7 +21,7 @@ export class DraftPageComponent {
   OnClickRow(row:any): void {
 
 
-    this.router.navigate([`/addrisk`],{queryParams:{id:row.riskId,riskType:row.riskType}});
+    this.router.navigate([`/addrisk`],{queryParams:{id:row.riskId,riskType:row.riskType}});// depart name or id
 
     console.log("draftrowdata",row);
 
@@ -28,13 +29,13 @@ export class DraftPageComponent {
 
 
 headerData:any=[
-  "riskId"," riskName","description","riskType","overallRiskRating",  "departmentName","responsibleUser","plannedActionDate","riskStatus",
+"riskName","description","riskType","overallRiskRating",  "departmentName","responsibleUser","plannedActionDate",
 ];
 
 
 headerDisplayMap: { [key: string]: string } = {
 
-  riskId: "Risk Id",
+
   riskName: "Risk Name",
   description: "Description",
   riskType: "Risk Type",
@@ -43,12 +44,12 @@ headerDisplayMap: { [key: string]: string } = {
   responsibleUser:'Responsible User',
 
   plannedActionDate:"End Date",
-  riskStatus: "Risk Status"
+
 };
 
 tableBody:any[]=[
   {
-    riskId: '',
+
     riskName: '',
     description: '',
     riskType: '',
@@ -57,7 +58,7 @@ tableBody:any[]=[
     responsibleUser:"",
 
     plannedActionDate: Date,
-    riskStatus: '',
+
   },
 ]
 
@@ -67,12 +68,12 @@ ngOnInit()
     if(this.auth.getUserRole()=="Admin")
     {
       this.headerData=[
-        "riskId","riskName","description","riskType","overallRiskRating",  "departmentName","responsibleUser","plannedActionDate","riskStatus",
+        "riskName","description","riskType","overallRiskRating",  "departmentName","responsibleUser","plannedActionDate",
       ];
 
       this.tableBody=[
         {
-          riskId: '',
+
           riskName: '',
           description: '',
           riskType: '',
@@ -80,7 +81,7 @@ ngOnInit()
           departmentName:"",
           responsibleUser:"",
           plannedActionDate: Date,
-          riskStatus: '',
+
         },
       ]
 
@@ -89,30 +90,32 @@ ngOnInit()
       this.api.getDraftOfAdmin().subscribe((e:any)=>{
 
         this.tableBody=e;
+        console.log("draftdata",e);
+
         this.isLoading = false;
       })
     }
     else{
 
       this.headerData=[
-        "riskId","riskName","description","riskType","overallRiskRating","plannedActionDate","riskStatus",
+        "riskName","description","riskType","overallRiskRating","plannedActionDate"
       ];
 
       this.tableBody=[
         {
-          riskId: '',
+
           riskName: '',
           description: '',
           riskType: '',
           overallRiskRating: 0,
           plannedActionDate: Date,
-          riskStatus: '',
+
         },
       ]
 
 
 
-      this.api.getDraft(this.auth.getCurrentUserId()).subscribe((e:any)=>{
+      this.api.getDraft(this.auth.getDepartmentId()).subscribe((e:any)=>{
 
         this.tableBody=e;
         this.isLoading = false;

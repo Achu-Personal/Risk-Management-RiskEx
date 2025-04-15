@@ -295,6 +295,8 @@ export class ReusableTableComponent {
       this.currentFilterColumn = null;
     }
   }
+
+  
   editUser(event: Event, row: any) {
     event.stopPropagation();
     this.editUserClicked.emit(row);

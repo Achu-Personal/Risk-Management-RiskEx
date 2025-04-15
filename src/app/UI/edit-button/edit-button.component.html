@@ -1,6 +1,6 @@
 
 <div (click)="onClicked()">
 
-<i style="background-color: white;padding:12px;border-radius:50%;box-shadow:5px 5px 10px rgb(241, 241, 241)" class={{image}}></i>
+<i [ngStyle]="{'box-shadow': showShadow?'5px 5px 10px rgb(241, 241, 241)':'','background-color':backgroundColor,'color':color,'font-size':fontsize}" style="padding:12px;border-radius:50%;" class={{image}}></i>
 
 </div>

@@ -1,0 +1,40 @@
+
+
+main
+{
+  background-color: white;
+  border-radius: 10px;
+  height: 320px;
+  width: 300px;
+  padding: 20px;
+  border-left: 10px solid var(--form-color);
+
+
+  .draft-card>div
+  {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    h5
+    {
+      font-weight: bold;
+      margin: 0px;
+      color: black;
+    }
+    .actions
+    {
+      display: flex;
+      gap: 10px;
+    }
+
+
+  }
+  p
+  {
+    font-size:15px;
+    color: black;
+
+  }
+}

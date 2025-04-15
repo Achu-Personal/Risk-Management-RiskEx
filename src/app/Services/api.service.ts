@@ -184,10 +184,10 @@ export class ApiService {
 
   getDraftOfAdmin()
   {
-    return this.http.get(`${this.baseUrl}/Risk/GetDraftOfAdmin`);
+    return this.http.get(`${this.baseUrl}/Risk/drafts`);
   }
   getDraft(id: any = '') {
-    return this.http.get(`${this.baseUrl}/Risk/GetRiskByAssigne?id=${id}`);
+    return this.http.get(`${this.baseUrl}Risk/drafts/department/${id}`);
   }
 
 
