@@ -30,7 +30,7 @@ export class ErrorInterceptor implements HttpInterceptor {
 
             case 401:
               errorMessage = 'You do not have access to the system. Please contact the administrator..';
-              this.router.navigate(['/auth']);
+              this.router.navigate(['/unauthorized']);
               break;
 
             case 403:

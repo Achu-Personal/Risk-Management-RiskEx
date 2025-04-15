@@ -28,6 +28,7 @@ import { VerificationSuccessComponent } from './Components/verification-success/
 import { AuthGuard } from './Gaurd/auth/auth.guard';
 import { AuthComponent } from './Layout/auth/auth.component';
 import { AuthComponentSSO } from './Gaurd/auth/auth.component';
+import { UnauthorizedComponent } from './Pages/unauthorized/unauthorized.component';
 
 export const routes: Routes = [
   {
@@ -35,6 +36,7 @@ export const routes: Routes = [
     component: AuthComponent,
     children: [{ path:'', redirectTo: 'login', pathMatch: 'full' }],
   },
+  { path: 'unauthorized', component: UnauthorizedComponent },
   {
     path: 'auth',
     component: AuthComponentSSO,
