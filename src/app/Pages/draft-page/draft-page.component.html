@@ -1,7 +1,7 @@
 
 <app-body-container backgroundColor="transparent" [showShadow]="false">
 
-  <app-reusable-table [tableHeaders]="headerData" [headerDisplayMap]="headerDisplayMap" [tableData]="tableBody"
+  <app-reusable-table [IsActionRequiered]="true" [IsUser]="true" [tableHeaders]="headerData" [headerDisplayMap]="headerDisplayMap" [tableData]="tableBody"
     (onclickrow)="OnClickRow($event)" height="80%" [IsAssignee]="true" [IsUser]="false"
     [isLoading]="isLoading" [noDataMessage]="'You are not resposible for solving any risks'" height="76%">
   </app-reusable-table>

@@ -68,7 +68,7 @@ ngOnInit()
     if(this.auth.getUserRole()=="Admin")
     {
       this.headerData=[
-        "riskName","description","riskType","overallRiskRating",  "departmentName","responsibleUser","plannedActionDate",
+        "riskName","description","riskType","overallRiskRating",  "departmentName","responsibleUser","plannedActionDate","Action"
       ];
 
       this.tableBody=[
