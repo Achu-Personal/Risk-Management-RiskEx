@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { EditButtonComponent } from "../edit-button/edit-button.component";
+import { EditButtonComponent } from "../../edit-button/edit-button.component";
 
 @Component({
   selector: 'app-draft-card',
