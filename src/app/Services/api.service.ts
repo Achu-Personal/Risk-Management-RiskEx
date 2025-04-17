@@ -271,7 +271,7 @@ export class ApiService {
     projectList.forEach((projectId) => {
       params = params.append('projectIds', projectId.toString());
     });
-    console.log('params', params);
+    // console.log('params', params);
     return this.http.get(
       `${this.baseUrl}/Risk/GetRiskWithHeighestOverallRationg`,
       {
@@ -288,7 +288,7 @@ export class ApiService {
     projectList.forEach((projectId) => {
       params = params.append('projectIds', projectId.toString());
     });
-    console.log('params', params);
+    // console.log('params', params);
     return this.http.get(`${this.baseUrl}/Risk/GetRiskApproachingDeadline`, {
       params,
     });
@@ -319,7 +319,7 @@ export class ApiService {
     projectList.forEach((projectId) => {
       params = params.append('projectIds', projectId.toString());
     });
-    console.log('params', params);
+    // console.log('params', params);
     return this.http.get(`${this.baseUrl}/Risk/RiskCategoryCountByDepartment`, {
       params,
     });
@@ -426,7 +426,7 @@ export class ApiService {
     projectList.forEach((projectId) => {
       params = params.append('projectIds', projectId.toString());
     });
-    console.log('params', params);
+    // console.log('params', params);
     return this.http.get(`${this.baseUrl}/Risk/CountOfRiskType(Open)`, {
       params,
     });
