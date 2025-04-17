@@ -4,12 +4,11 @@ import { ReusableTableComponent } from "../../Components/reusable-table/reusable
 import { Router } from '@angular/router';
 import { ApiService } from '../../Services/api.service';
 import { AuthService } from '../../Services/auth/auth.service';
-import { DraftCardComponent } from "../../UI/draft-card/draft-card.component";
 
 @Component({
   selector: 'app-draft-page',
   standalone: true,
-  imports: [BodyContainerComponent, ReusableTableComponent, DraftCardComponent],
+  imports: [BodyContainerComponent, ReusableTableComponent],
   templateUrl: './draft-page.component.html',
   styleUrl: './draft-page.component.scss'
 })

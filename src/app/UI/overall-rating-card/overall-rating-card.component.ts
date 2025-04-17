@@ -6,24 +6,20 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './overall-rating-card.component.html',
-  styleUrls: ['./overall-rating-card.component.scss']
+  styleUrls: ['./overall-rating-card.component.scss'],
 })
 export class OverallRatingCardComponent {
-
   @Input() value: number = 0;
   @Input() title: string = '';
   @Input() backgroundColor: string = '';
   @Input() textColor: string = '';
-  @Input() height: string = '100%'; // Default height in vh
-  @Input() width: string = '90%'; // Default width in vh
+  @Input() height: string = '100%';
+  @Input() width: string = '90%'; 
   @Input() assessmentData: any[] = [];
-  @Input() riskType="Quality"
+  @Input() riskType = 'Quality';
 
   isHovered: boolean = false;
-  criticality=true;
-
-
-
+  criticality = true;
 
   get getCriticality(): string {
     if (this.riskType === 'Quality') {
@@ -46,7 +42,6 @@ export class OverallRatingCardComponent {
       return 'Critical';
     }
   }
-
 
   get dynamicBackgroundColor(): string {
     if (this.backgroundColor) {
@@ -100,15 +95,14 @@ export class OverallRatingCardComponent {
     }
   }
 
-
   // Return dynamic styles for width, height, background, and text color
   get dynamicStyles(): { [key: string]: string } {
     return {
-      'background-color': this.dynamicBackgroundColor,  // Dynamic background color
-      'color': this.dynamicTextColor,  // Dynamic text color
-      'height':this.height,
-      'width':'100%',
-      'transition': 'all 0.5s ease',   // Transition for smooth resizing
+      'background-color': this.dynamicBackgroundColor,
+      color: this.dynamicTextColor,
+      height: this.height,
+      width: '100%',
+      transition: 'all 0.5s ease',
     };
   }
 }

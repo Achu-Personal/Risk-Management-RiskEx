@@ -1,13 +1,10 @@
-import { BaseChartDirective} from 'ng2-charts';
-import { ChangeDetectorRef, Component, Input, SimpleChanges, ViewChild} from '@angular/core';
-import { Chart, ChartConfiguration, ChartType, registerables,CategoryScale ,} from 'chart.js';
-import ChartDataLabels from 'chartjs-plugin-datalabels'; // Import the plugin
+import { BaseChartDirective } from 'ng2-charts';
+import { ChangeDetectorRef, Component, Input, SimpleChanges, ViewChild } from '@angular/core';
+import { Chart, ChartConfiguration, ChartType, registerables, CategoryScale, } from 'chart.js';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 
 
-// Register the components
 Chart.register(...registerables, ChartDataLabels);
-
-
 
 @Component({
   selector: 'app-chart',
@@ -21,7 +18,7 @@ export class ChartComponent {
   @Input() chartType: ChartType = 'bar';
   @Input() datasets: any[] = [];
   @Input() chartRouter: any = '';
-  @Input() legend:boolean=true
+  @Input() legend: boolean = true
 
 
   @ViewChild(BaseChartDirective) chart!: BaseChartDirective;
@@ -29,8 +26,6 @@ export class ChartComponent {
   chartData: ChartConfiguration['data'] & { type?: ChartType } = {
     datasets: [],
     labels: [],
-
-
   };
 
   public lineChartOptions: ChartConfiguration['options'] = {
@@ -44,33 +39,29 @@ export class ChartComponent {
         formatter: (value: any) => {
           return value;
         },
-        color: '#000000', // Text color (e.g., red)
+        color: '#000000',
         font: {
-          size: 14, // Font size
-          // family: 'Arial', // Font family
-          weight: 'bold', // Font weight (e.g., bold, normal, lighter)
+          size: 14,
+          weight: 'bold',
 
         }
       },
       legend: {
-      // position: 'right', // Legend on the right
-      labels: {
+        labels: {
+          boxWidth: 25,
+          boxHeight: 8,
+          font: {
+            size: 10,
+            family: 'Montserrat',
+            weight: 'normal'
+          },
+          color: '#000000'
 
-        // padding: 30, // Adjust this to increase the gap
-        boxWidth: 25,
-        boxHeight: 8,
-      font: {
-      size: 10,
-      family: 'Montserrat', // Font family
-      weight: 'normal' // Font weight
-      },
-      color: '#000000'
-
-      }
+        }
 
       },
 
-      },
+    },
   };
 
   ngOnChanges(changes: SimpleChanges) {
@@ -79,7 +70,7 @@ export class ChartComponent {
     if (changes['labels'] || changes['datasets'] || changes['chartType']) {
       this.chartData.labels = [...this.labels];
       this.chartData.datasets = [...this.datasets];
-      this.chartData.type = this.chartType; // Set the chart type
+      this.chartData.type = this.chartType;
 
       if (this.chart) {
         this.chart.update();

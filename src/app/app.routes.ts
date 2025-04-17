@@ -89,7 +89,7 @@ export const routes: Routes = [
       {
         path: 'draft',
         component: DraftPageComponent,
-        data: { title: 'History', breadcrumb: 'History' },
+        data: { title: 'Draft', breadcrumb: 'Draft' },
       },
       {
         path: 'reports',

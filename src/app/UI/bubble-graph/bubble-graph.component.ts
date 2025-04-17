@@ -7,34 +7,26 @@ import { Router } from '@angular/router';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './bubble-graph.component.html',
-  styleUrl: './bubble-graph.component.scss'
+  styleUrl: './bubble-graph.component.scss',
 })
 export class BubbleGraphComponent {
   @Input() privacyRiskCount: number = 4;
   @Input() qualityRiskCount: number = 4;
   @Input() securityRiskCount: number = 10;
 
-  constructor(private router:Router)
-  {
-
-  }
+  constructor(private router: Router) {}
 
   ngOnInit() {
-
-
-    // Log the value of qualityRiskCount
-    console.log('qualityRiskCount on init:', this.securityRiskCount);
+    // console.log('qualityRiskCount on init:', this.securityRiskCount);
   }
 
-
-  getDimension(value:number)
-  {
-    let sum=this.privacyRiskCount+this.qualityRiskCount+this.securityRiskCount
-      return (((value/sum)*100)/3.5)
+  getDimension(value: number) {
+    let sum =
+      this.privacyRiskCount + this.qualityRiskCount + this.securityRiskCount;
+    return ((value / sum) * 100) / 3.5;
   }
 
-  onBubbleClicked(type:string)
-  {
-    this.router.navigate([`reports`], { state: { type: type} });
+  onBubbleClicked(type: string) {
+    this.router.navigate([`reports`], { state: { type: type } });
   }
 }
