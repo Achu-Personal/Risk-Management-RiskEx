@@ -124,7 +124,7 @@ export class ReusableTableComponent {
 
     this.newState = row.isActive;
     this.api.changeUserStatus(row.id, this.newState);
-    console.log(`Row ID: ${row.fullName}, New State: ${this.newState}`);
+    console.log(`User Name: ${row.fullName}, New State: ${this.newState}`);
     this.cdr.markForCheck();
   }
 

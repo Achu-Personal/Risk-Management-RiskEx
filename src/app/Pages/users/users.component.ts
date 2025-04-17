@@ -508,8 +508,7 @@ export class UsersComponent {
 
             if (error.status === 400) {
               errorMessage =
-                'Validation error: ' +
-                (error.error?.message || 'Invalid data provided');
+                (error.error?.message || 'Invalid data provided :Project with the name already exists');
             } else if (error.status === 500) {
               errorMessage = 'Server error: An internal server error occurred';
             } else if (error.status === 401) {

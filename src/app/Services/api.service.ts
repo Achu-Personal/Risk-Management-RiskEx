@@ -333,7 +333,7 @@ export class ApiService {
         { responseType: 'text' }
       )
       .subscribe((response) => {
-        console.log('UserId and status:', userId, status);
+        // console.log('UserId and status:', userId, status);
         console.log('API Response:', response);
       });
   }

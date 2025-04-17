@@ -4,14 +4,13 @@ import { RiskStatusCardComponent } from "../../UI/risk-status-card/risk-status-c
 import { EditButtonComponent } from "../../UI/edit-button/edit-button.component";
 import {  Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { UpdateButtonComponent } from "../../UI/update-button/update-button.component";
 import { AuthService } from '../../Services/auth/auth.service';
 import { ApiService } from '../../Services/api.service';
 
 @Component({
   selector: 'app-risk-basic-details-card',
   standalone: true,
-  imports: [OverallRatingCardComponent, RiskStatusCardComponent, EditButtonComponent, CommonModule, UpdateButtonComponent],
+  imports: [OverallRatingCardComponent, RiskStatusCardComponent, EditButtonComponent, CommonModule],
   templateUrl: './risk-basic-details-card.component.html',
   styleUrl: './risk-basic-details-card.component.scss'
 })
