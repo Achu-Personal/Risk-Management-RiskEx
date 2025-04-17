@@ -18,14 +18,7 @@ export class DraftPageComponent {
 
   constructor(private router: Router,private api:ApiService,private auth:AuthService) {}
 
-  OnClickRow(row:any): void {
 
-
-    this.router.navigate([`/addrisk`],{queryParams:{id:row.riskId,riskType:row.riskType}});// depart name or id
-
-    console.log("draftrowdata",row);
-
-  }
 
 
 headerData:any=[
@@ -77,13 +70,14 @@ ngOnInit()
           riskName: '',
           description: '',
           riskType: '',
-          overallRiskRating: 0,
+          overallRiskRatingBefore: 0,
           departmentName:"",
-          responsibleUser:"",
+          responsibleUserName:"",
           plannedActionDate: Date,
 
         },
       ]
+
 
 
 
@@ -98,16 +92,17 @@ ngOnInit()
     else{
 
       this.headerData=[
-        "riskName","description","riskType","overallRiskRating","plannedActionDate"
+        "riskName","description","riskType","overallRiskRating",  "departmentName","responsibleUser","plannedActionDate","Action"
       ];
-
       this.tableBody=[
         {
 
           riskName: '',
           description: '',
           riskType: '',
-          overallRiskRating: 0,
+          overallRiskRatingBefore: 0,
+          departmentName:"",
+          responsibleUserName:"",
           plannedActionDate: Date,
 
         },
@@ -116,12 +111,38 @@ ngOnInit()
 
 
       this.api.getDraft(this.auth.getDepartmentId()).subscribe((e:any)=>{
-
+          console.log("draftdata",e);
         this.tableBody=e;
         this.isLoading = false;
       })
 
     }
 
+
+
+
+}
+
+
+onDraftEdited(row: any) {
+  //console.log("draftrowdata",row);
+    this.router.navigate([`/addrisk`],{queryParams:row});// depart name or id
+
+
+}
+
+
+onDraftDeleted(row: any) {
+  console.log("Draftid",row.id);
+  this.api.deleteDraft(row.id).subscribe((e:any)=>{
+  });
+
+  this.tableBody.forEach((item, index) => {
+    if (item.id === row.id) {
+      let templist=[...this.tableBody]
+      templist.splice(index, 1);
+      this.tableBody=[...templist]
+    }
+  })
 }
 }

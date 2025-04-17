@@ -224,6 +224,18 @@
 
 
             }
+            @else if(IsDraft && IsActionRequiered)
+            {
+              <td >
+              <div style="display: flex;align-items: center;gap: 10px; height: 100%">
+                <app-edit-button title="Edit risk"  image="fa-solid fa-pen" [ngStyle]="{'display':'flex'}" (onClick)="onDraftEditt(row)"  ></app-edit-button>
+                <app-edit-button title="Edit risk"  image="fa-solid fa-trash" [ngStyle]="{'display':'flex'}" (onClick)="onDraftDelete(row)"  ></app-edit-button>
+              </div>
+              </td>
+
+
+
+            }
             @else if(IsUser && !isAdmin && !isDepartmentUser){
               <td *ngIf="IsUser">
                 <div
