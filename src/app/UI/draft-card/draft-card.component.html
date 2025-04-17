@@ -1,0 +1,18 @@
+<main>
+  <div class="draft-card">
+    <div>
+      <h5>{{data.riskName}}</h5>
+      <div class="actions">
+        <app-edit-button color="white" image="fa-solid fa-pen" fontsize="10px" backgroundColor="var(--foreground-color)" [showShadow]="false"> </app-edit-button>
+        <app-edit-button color="white" image="fa-solid fa-trash" fontsize="10px" backgroundColor="red" [showShadow]="false"> </app-edit-button>
+
+      </div>
+    </div>
+    <p style="margin-top: 20px;">{{"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,".slice(0,50)}}</p>
+    <p><span style="font-weight: bold;">Mitigation:</span> {{"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,".slice(0,50)}}</p>
+    <p> <span style="font-weight: bold;">Risk Owner:</span> {{data.riskOwner}}</p>
+    <p><span style="font-weight: bold;">Risk Type:</span>  {{data.riskType}}</p>
+    <p><span style="font-weight: bold;">Reviewer:</span>  {{data.riskType}}</p>
+  </div>
+
+</main>

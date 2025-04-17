@@ -181,6 +181,20 @@ export class ApiService {
     return this.http.get(`${this.baseUrl}/Risk/GetRiskByAssigne?id=${id}`);
   }
 
+
+  getDraftOfAdmin()
+  {
+    return this.http.get(`${this.baseUrl}/Risk/drafts`);
+  }
+  getDraft(id: any = '') {
+    return this.http.get(`${this.baseUrl}/Risk/drafts/department/${id}`);
+  }
+
+  deleteDraft(id: number) {
+    return this.http.delete(`${this.baseUrl}/Risk/drafts/${id}`);
+  }
+
+
   getAllRisksAssigned() {
     return this.http.get(`${this.baseUrl}/Risk/GetAllRisksAssigned`);
   }
