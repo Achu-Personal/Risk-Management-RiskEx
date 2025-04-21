@@ -30,7 +30,6 @@ import { AuthComponent } from './Layout/auth/auth.component';
 import { AuthComponentSSO } from './Gaurd/auth/auth.component';
 import { UnauthorizedComponent } from './Pages/unauthorized/unauthorized.component';
 import { DraftPageComponent } from './Pages/draft-page/draft-page.component';
-import { EditTextAreaComponent } from './UI/Unused Components/edit-text-area/edit-text-area.component';
 
 export const routes: Routes = [
   {
@@ -159,6 +158,6 @@ export const routes: Routes = [
 
   {
     path: '**',
-    component: EditTextAreaComponent,
+    component: WildComponentComponent,
   },
 ];
