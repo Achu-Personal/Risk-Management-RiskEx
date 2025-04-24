@@ -426,7 +426,7 @@ export class ApiService {
       return throwError(() => new Error('Either departmentId or projectId is required.'));
     }
 
-   
+
     return this.http.get(`${this.baseUrl}/Risk/riskid/new/Id`, { params });
   }
 
@@ -490,6 +490,13 @@ export class ApiService {
   getCreatedByUserName(riskId: string): Observable<string> {
     return this.http.get(`${this.baseUrl}/User/${riskId}/createdBy`, { responseType: 'text' });
   }
+
+
+  setDraftQuality(payload:any){
+    return this.http.post('https://localhost:7216/api/Risk/draft-quality',payload)
+
+  }
+  setDraftSecurityOrPrivacy(){}
 
 }
 

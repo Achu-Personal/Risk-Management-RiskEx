@@ -145,7 +145,14 @@ export class RegisterRiskComponent {
         })
       )
       .subscribe((res: any) => {
-        this.dropdownDataReviewer = res.reviewers;
+        console.log("regeregeregeregereg",res.reviewers)
+        const dropdownDataReviewer = res.reviewers.sort((a:any, b:any) => {
+          const fullNameA = a.fullName ? a.fullName.toLowerCase() : ''; // Ensure case-insensitive comparison
+          const fullNameB = b.fullName ? b.fullName.toLowerCase() : '';
+          return fullNameA.localeCompare(fullNameB);
+      });
+      console.log("the sorted is is ",dropdownDataReviewer)
+      this.dropdownDataReviewer=dropdownDataReviewer;
         this.cdRef.detectChanges();
       });
 

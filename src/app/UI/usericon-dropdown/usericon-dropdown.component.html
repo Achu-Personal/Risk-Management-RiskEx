@@ -3,7 +3,7 @@
   <div class="themes-circle"
        *ngFor="let theme of themes"
        [ngClass]="{'active': activeTheme === theme}"
-       (click)="setActiveTheme(theme)">
+       (click)="setActiveTheme(theme)" [title]='"logout"' class="sidebar-link">
     <i (click)="setActiveIcon('logout'); logout(); $event.stopPropagation()"
        class="fa-solid fa-right-from-bracket"
        [ngClass]="{'icon-active': activeIcon === 'logout'}">
@@ -12,7 +12,7 @@
    <div class="themes-circle"
    *ngFor="let theme of themes"
    [ngClass]="{'active': activeTheme === theme}"
-   (click)="setActiveTheme(theme)">
+   (click)="setActiveTheme(theme)" [title]='"Profile"' class="sidebar-link">
 <i (click)="setActiveIcon('user'); toggleDropdown(); $event.stopPropagation()"
    class="fa-regular fa-circle-user"
    [ngClass]="{'icon-active': activeIcon === 'user'}">

@@ -567,12 +567,23 @@
 
   } @if(isNothingInDraft){
   <app-form-successfull
-    message="Draft is empty. Please add content before saving"
+    message="Draft is empty. Please add atleast name before saving"
     [isSuccessfull]="false"
     (closeDialog)="closeDraftWhenNoDraft()"
   >
   </app-form-successfull>
-  } @if(isdraftConform){
+  }
+
+  @if(isdraftErrorDisplay){
+    <app-form-successfull
+      [message]= draftErrorDisplay
+      [isSuccessfull]="false"
+      (closeDialog)="closeDraftWhenErrorOccur()"
+    >
+    </app-form-successfull>
+    }
+
+  @if(isdraftConform){
   <app-form-successfull
     message="Draft saved successfully. Your progress will be available the next time you access this page."
     [isSuccessfull]="true"
