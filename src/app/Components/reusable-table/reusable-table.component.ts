@@ -13,15 +13,22 @@ import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../Services/auth/auth.service';
 import { ConfirmationPopupComponent } from '../confirmation-popup/confirmation-popup.component';
 import { ApiService } from '../../Services/api.service';
-import { PaginationComponent } from "../../UI/pagination/pagination.component";
-import { SearchbarComponent } from "../../UI/searchbar/searchbar.component";
+import { PaginationComponent } from '../../UI/pagination/pagination.component';
+import { SearchbarComponent } from '../../UI/searchbar/searchbar.component';
 import { ActivatedRoute } from '@angular/router';
-import { EditButtonComponent } from "../../UI/edit-button/edit-button.component";
+import { EditButtonComponent } from '../../UI/edit-button/edit-button.component';
 
 @Component({
   selector: 'app-reusable-table',
   standalone: true,
-  imports: [CommonModule, FormsModule, ConfirmationPopupComponent, PaginationComponent, SearchbarComponent, EditButtonComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    ConfirmationPopupComponent,
+    PaginationComponent,
+    SearchbarComponent,
+    EditButtonComponent,
+  ],
   templateUrl: './reusable-table.component.html',
   styleUrl: './reusable-table.component.scss',
 })
@@ -40,12 +47,11 @@ export class ReusableTableComponent {
   draftEditButton = output();
   draftDeleteButton = output();
 
-
-  tableData1:any[]=[];
+  tableData1: any[] = [];
   isEyeOpen = false;
-  isAdmin: boolean=false;
-  isDepartmentUser=false;
-  newState:boolean=true;
+  isAdmin: boolean = false;
+  isDepartmentUser = false;
+  newState: boolean = true;
   showApproveDialog = false;
   showRejectDialog = false;
   currentRow: any;
@@ -55,20 +61,16 @@ export class ReusableTableComponent {
   @Output() rejectRisk = new EventEmitter<{ row: any; comment: string }>();
   @Output() editUserClicked = new EventEmitter<any>();
 
-
   constructor(
     public auth: AuthService,
     public api: ApiService,
     private cdr: ChangeDetectorRef,
-    private route:ActivatedRoute
-  ) {
-
-  }
+    private route: ActivatedRoute
+  ) { }
 
   rowKeys: string[] = [];
   isButtonVisible = false;
   ngOnInit(): void {
-
     const currentRoute = this.route.snapshot.url.join('/');
     if (currentRoute === 'users') {
       this.isButtonVisible = true;
@@ -80,44 +82,53 @@ export class ReusableTableComponent {
     this.isDepartmentUser = role === 'DepartmentUser';
     this.isAdmin = role === 'Admin';
     if (this.tableData && this.tableData.length > 0) {
-
       this.rowKeys = Object.keys(this.tableData[0]);
     }
-
   }
   ngOnChanges(changes: SimpleChanges) {
     if (changes['tableData'] && changes['tableData'].currentValue) {
       this.originalTableData = [...changes['tableData'].currentValue];
       // console.log('Original Table Data updated:', this.originalTableData);
     }
-    if (changes['tableData'] ) {
-      this.tableData1=[...this.tableData]
+    if (changes['tableData']) {
+      this.tableData1 = [...this.tableData];
       // console.log("tabledata1",this.tableData1)
       this.totalItems = this.tableData1.length;
       this.updatePaginatedItems();
-      }
+    }
   }
   isSystemAdmin(row: any): boolean {
+    return (
+      row.fullName?.includes('System Admin') ||
+      row.userName?.includes('System Admin') ||
+      row.fullName === 'System Admin' ||
+      row.userName === 'System Admin'
+    );
+  }
+  isCurrentUser(row: any): boolean {
+    const user = this.auth.getUserName();
 
-    return row.fullName?.includes('System Admin') ||
-           row.userName?.includes('System Admin') ||
-           row.fullName === 'System Admin' ||
-           row.userName === 'System Admin';
+    return (
+      row.fullName?.includes(user) ||
+      row.userName?.includes(user) ||
+      row.fullName === user ||
+      row.userName === user
+    );
   }
 
-
-  onDraftEditt(row:any)
-  {
+  onDraftEditt(row: any) {
     this.draftEditButton.emit(row);
   }
-  onDraftDelete(row:any)
-  {
+  onDraftDelete(row: any) {
     this.draftDeleteButton.emit(row);
   }
 
   onToggleChange(row: any): void {
-
     if (this.isSystemAdmin(row)) {
+      row.isActive = !row.isActive;
+      return;
+    }
+    if (this.isCurrentUser(row)) {
       row.isActive = !row.isActive;
       return;
     }
@@ -184,8 +195,7 @@ export class ReusableTableComponent {
   onclickrow = output();
   rowClick(row: any) {
     this.onclickrow.emit(row);
-    }
-
+  }
 
   hasValidData(): boolean {
     return (
@@ -195,7 +205,7 @@ export class ReusableTableComponent {
     );
   }
 
-  table:any[]=[];
+  table: any[] = [];
   itemsPerPage = 10;
   currentPage = 1;
   totalItems: number = 0;
@@ -208,7 +218,7 @@ export class ReusableTableComponent {
   }
 
   updatePaginatedItems(): void {
-    const startIndex = (this.currentPage -1 ) * this.itemsPerPage;
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
     const endIndex = startIndex + this.itemsPerPage;
     this.tableData = this.tableData1.slice(startIndex, endIndex);
     this.totalItems = this.tableData1.length;
@@ -218,8 +228,10 @@ export class ReusableTableComponent {
   onSearch(searchText: string): void {
     const lowercasedSearchText = searchText.toLowerCase();
     this.tableData1 = this.originalTableData.filter((item: any) =>
-      Object.values(item).some((value: any) =>
-        value != null && value.toString().toLowerCase().includes(lowercasedSearchText)
+      Object.values(item).some(
+        (value: any) =>
+          value != null &&
+          value.toString().toLowerCase().includes(lowercasedSearchText)
       )
     );
 
@@ -227,7 +239,6 @@ export class ReusableTableComponent {
     this.totalItems = this.filterData.length;
     this.updatePaginatedItems();
   }
-
 
   showFilterDropdown = false;
   currentFilterColumn: string | null = null;
@@ -249,7 +260,9 @@ export class ReusableTableComponent {
   }
 
   getColumnValues(column: string): string[] {
-    const uniqueValues = [...new Set(this.originalTableData.map((row) => row[column]))];
+    const uniqueValues = [
+      ...new Set(this.originalTableData.map((row) => row[column])),
+    ];
     return ['Select All', ...uniqueValues].filter(Boolean);
   }
 
@@ -264,17 +277,13 @@ export class ReusableTableComponent {
     );
   }
 
-  searchFilterOptions() {
-  }
+  searchFilterOptions() { }
 
   applyFilter(column: string, value: string) {
     if (value === 'Select All') {
       delete this.activeFilters[column];
-
     } else {
       this.activeFilters[column] = value;
-
-
     }
     this.filterData();
     this.showFilterDropdown = false;
@@ -289,12 +298,11 @@ export class ReusableTableComponent {
   private filterData() {
     let filteredData = [...this.originalTableData];
 
-     if (Object.keys(this.activeFilters).length > 0) {
+    if (Object.keys(this.activeFilters).length > 0) {
       Object.entries(this.activeFilters).forEach(([column, value]) => {
         filteredData = filteredData.filter((row) => row[column] === value);
       });
     }
-
 
     this.tableData = filteredData;
   }
