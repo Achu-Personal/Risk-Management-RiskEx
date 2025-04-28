@@ -68,7 +68,7 @@ ngOnInit()
 
           riskName: '',
           description: '',
-          riskType: '',
+          riskTypeName: '',
           overallRiskRatingBefore: 0,
           departmentName:"",
           responsibleUserName:"",
@@ -98,7 +98,7 @@ ngOnInit()
 
           riskName: '',
           description: '',
-          riskType: '',
+          riskTypeName: '',
           overallRiskRatingBefore: 0,
           departmentName:"",
           responsibleUserName:"",
@@ -124,8 +124,8 @@ ngOnInit()
 
 
 onDraftEdited(row: any) {
-  //console.log("draftrowdata",row);
-    this.router.navigate([`/addrisk`],{queryParams:row});// depart name or id
+  console.log("draftrowdata",row);
+    //this.router.navigate([`/addrisk`],{queryParams:row});// depart name or id
 
 
 }
