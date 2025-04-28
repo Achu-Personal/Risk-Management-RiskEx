@@ -126,13 +126,13 @@ export class DropdownComponent implements ControlValueAccessor {
     this.value = item[this.valueField];
     console.log('the value is selected is', this.value);
 
-    this.onChange(this.value); // Notify parent of the change
-    this.onTouched(); // Mark as touched
-    this.isDropdownOpen = false; // Close the dropdown
-    this.searchQuery = ''; // Optionally clear the search input
+    this.onChange(this.value);
+    this.onTouched();
+    this.isDropdownOpen = false;
+    this.searchQuery = '';
 
     this.valueChange.emit(this.value);
-    this.openDropdown.emit(undefined); // Notify parent to close all dropdowns
+    this.openDropdown.emit(undefined);
   }
 
   // Get selected option's display text
@@ -156,7 +156,7 @@ export class DropdownComponent implements ControlValueAccessor {
     const dropdown = document.querySelector('.dropdown-container');
     if (dropdown && !dropdown.contains(event.target as Node)) {
       this.isDropdownOpen = false;
-      this.openDropdown.emit(undefined); // Notify parent to close all dropdowns
+      this.openDropdown.emit(undefined);
     }
   }
 }

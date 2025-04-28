@@ -1,4 +1,3 @@
-
 import { Component, Inject, OnInit, OnDestroy } from '@angular/core';
 import {
   AuthenticationResult,
@@ -12,7 +11,7 @@ import {
   MsalGuardConfiguration,
   MsalService
 } from '@azure/msal-angular';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-loginsso',
@@ -27,19 +26,32 @@ export class SsoComponent implements OnInit, OnDestroy {
   loginDisplay = false;
   isIframe = false;
   isInitialized = false;
+  isLoggingOut = false; // Flag to track logout state
 
   constructor(
     @Inject(MSAL_GUARD_CONFIG) private msalGuardConfig: MsalGuardConfiguration,
     private msalService: MsalService,
     private router: Router,
+    private route: ActivatedRoute,
     private msalBroadcastService: MsalBroadcastService,
   ) {}
 
   ngOnInit(): void {
+    // Check if we're in a logout flow
+    this.route.queryParams.subscribe(params => {
+      if (params['logout'] === 'true') {
+        this.isLoggingOut = true;
+        this.performLogout();
+        return;
+      }
+    });
+
+    // Skip redirect handling if we're explicitly logging out
+    if (this.isLoggingOut) return;
+
     this.msalService.handleRedirectObservable().subscribe({
       next: (response: AuthenticationResult) => {
         if (response && response.accessToken) {
-          // console.log('Login successful', response);
           localStorage.setItem('loginToken', response.accessToken);
           this.router.navigate(['/auth']);
         }
@@ -58,11 +70,16 @@ export class SsoComponent implements OnInit, OnDestroy {
       )
       .subscribe(() => {
         this.setLoginDisplay();
-        this.checkAndSetActiveAccount();
-
+        // Only check for active account if we're not logging out
+        if (!this.isLoggingOut) {
+          this.checkAndSetActiveAccount();
+        }
       });
-        this.checkAndSetActiveAccount();
 
+    // Only check for active account if we're not logging out
+    if (!this.isLoggingOut) {
+      this.checkAndSetActiveAccount();
+    }
   }
 
   setLoginDisplay() {
@@ -80,36 +97,71 @@ export class SsoComponent implements OnInit, OnDestroy {
   }
 
   logout() {
+    // Clear local storage first
     localStorage.removeItem('loginToken');
-    this.msalService.logoutRedirect({
-      postLogoutRedirectUri: window.location.origin
-    });
+    localStorage.removeItem('token');
+    localStorage.clear();
+
+    // Set logout flag
+    this.isLoggingOut = true;
+
+    // Use MSAL logout
+    this.performLogout();
   }
 
-checkAndSetActiveAccount() {
-  const activeAccount = this.msalService.instance.getActiveAccount();
-  if (!activeAccount && this.msalService.instance.getAllAccounts().length > 0) {
-    const account = this.msalService.instance.getAllAccounts()[0];
-    this.msalService.instance.setActiveAccount(account);
+  performLogout() {
+    // The correct way to clear accounts in MSAL
+    try {
+      // First try to get all accounts
+      const accounts = this.msalService.instance.getAllAccounts();
 
-    this.msalService.acquireTokenSilent({
-      scopes: ["user.read"],
-      account: account
-    }).subscribe({
-      next: (response: AuthenticationResult) => {
-        if (response && response.accessToken) {
-          localStorage.setItem('loginToken', response.accessToken);
-        }
-      },
-      error: (error) => {
-        console.error('Silent token acquisition failed', error);
+      // If we have active accounts, clear the active account first
+      if (accounts && accounts.length > 0) {
+        this.msalService.instance.setActiveAccount(null);
       }
-    });
+
+      // Logout with redirect
+      this.msalService.logoutRedirect({
+        postLogoutRedirectUri: window.location.origin + '/sso'
+      });
+    } catch (error) {
+      console.error('Error during MSAL logout:', error);
+      // Fallback to simple redirect
+      window.location.href = '/sso';
+    }
   }
-}
+
+  checkAndSetActiveAccount() {
+    // Don't check active account during logout
+    if (this.isLoggingOut) return;
+
+    const activeAccount = this.msalService.instance.getActiveAccount();
+    if (!activeAccount && this.msalService.instance.getAllAccounts().length > 0) {
+      const account = this.msalService.instance.getAllAccounts()[0];
+      this.msalService.instance.setActiveAccount(account);
+
+      this.msalService.acquireTokenSilent({
+        scopes: ["user.read"],
+        account: account
+      }).subscribe({
+        next: (response: AuthenticationResult) => {
+          if (response && response.accessToken) {
+            localStorage.setItem('loginToken', response.accessToken);
+          }
+        },
+        error: (error) => {
+          console.error('Silent token acquisition failed', error);
+        }
+      });
+    }
+  }
 
   ngOnDestroy(): void {
     this._destroying$.next(undefined);
     this._destroying$.complete();
+  }
+
+  loginRedirectToRiskex() {
+    this.router.navigate(['/login']);
   }
 }

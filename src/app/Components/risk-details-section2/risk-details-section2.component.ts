@@ -88,7 +88,7 @@ export class RiskDetailsSection2Component {
         let id = params.get('id');
 
         this.api.getReviewSatus(id!, true).subscribe((e: any) => {
-          console.log('ReviewSatus', e);
+          console.log('ReviewSatusy', e);
 
 
           this.stepperData[0].actionBy = this.data.CreatedBy;
@@ -113,7 +113,7 @@ export class RiskDetailsSection2Component {
 
         this.api.getReviewSatus(id!, false).subscribe((e: any) => {
           console.log('ReviewSatusafter', e);
-          this.stepperData[3].actionBy = e.isReviewed >= 4 ?this.data.UpdatedBy: '...' ;
+          this.stepperData[3].actionBy = e.isReviewed >= 4 ?e.actionBy: '...' ;
           this.stepperData[3].isCompleted = e.isReviewed >= 4 ? true : false;
           this.stepperData[3].date = e.isReviewed >= 4? e.date : "...";
           this.stepperData[3].message = e.isReviewed!=5? (e.isReviewed>=4 ?"(Accepted)":''):`(Rejected)`;

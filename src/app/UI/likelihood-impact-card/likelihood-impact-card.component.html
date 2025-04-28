@@ -8,12 +8,10 @@
   <!-- Likelihood section with conditional styling -->
   <h6 style="margin-top: 10px;">
     Likelihood
-    <span
-      [ngStyle]="{
+    <span [ngStyle]="{
         'color': assessment.likelihoodMatrix?.likeliHood === 'Low' ? 'green' :
                  assessment.likelihoodMatrix?.likeliHood === 'Medium' ? '#FFBF00' : 'red'
-      }"
-    >
+      }">
       {{ assessment.likelihoodMatrix?.likeliHood | capitalizeFirst }}
     </span>
   </h6>
@@ -21,12 +19,10 @@
   <!-- Impact section with conditional styling -->
   <h6>
     Impact
-    <span
-      [ngStyle]="{
+    <span [ngStyle]="{
         'color': assessment.impactMatix?.impact === 'Low' ? 'green' :
                  assessment.impactMatix?.impact === 'Medium' ? '#FFBF00' : 'red'
-      }"
-    >
+      }">
       {{ assessment.impactMatix?.impact | capitalizeFirst }}
     </span>
   </h6>
@@ -34,9 +30,7 @@
   <!-- Risk Factor section with conditional styling -->
   <h6>
     Risk Factor
-    <span
-      [ngStyle]="{'color':dynamicBackgroundColor}"
-    >
+    <span [ngStyle]="{'color':dynamicBackgroundColor}">
       {{ assessment.riskFactor }}
     </span>
   </h6>

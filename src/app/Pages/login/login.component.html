@@ -2,9 +2,19 @@
   <div class="login-card">
     <div class="left">
       <div class="left-section">
+
+          <div class="back-button-container">
+            <button type="button" class="back-button" (click)="goBack()">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+              </svg>
+              Back to Sign-In Methods
+            </button>
+          </div>
         <h1>RiskEx</h1>
         <h2>Login with RiskEx</h2>
-        <p class="tagline">If There Is Risk, We are There</p>
+        <p class="tagline"></p>
 
         <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
           <div class="form-group">
@@ -79,9 +89,10 @@
               </div>
             }
           </div>
-
-          <div class="options">
-            <a routerLink="/forgetpassword">Forgot Password?</a>
+          <div  class="forgot-button-container">
+            <button type="button" class="forgot-button" (click)="goForgetPassword()">
+              Forgot Password?
+            </button>
           </div>
 
           <!-- Error message container with fixed height -->

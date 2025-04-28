@@ -20,12 +20,36 @@
 </div>
   <div *ngIf="dropdownVisible" class="dropdown-card">
     <div class="profile-card">
-      <img src="/Images/usericon.png" alt="Profile Picture" class="profile-image" />
-      <h3 class="truncate" [title]="auth.getUserName()">{{ auth.getUserName() }}</h3>
+      <img
+        src="/Images/usericon.png"
+        alt="Profile Picture"
+        class="profile-image"
+      />
+      <h3 class="truncate" [title]="auth.getUserName()">
+        {{ auth.getUserName() }}
+      </h3>
       <p class="role">{{ formatRoleName(getPrimaryRole()) }}</p>
-      <p class="department truncate"  [title]="auth.getDepartmentName()">{{ auth.getDepartmentName() }}</p>
-      <p class="email truncate" [title]="auth.getUserMail()">{{ auth.getUserMail() }}</p>
+      <p class="department truncate" [title]="auth.getDepartmentName()">
+        {{ auth.getDepartmentName() }}
+      </p>
+      <p class="email truncate" [title]="auth.getUserMail()">
+        {{ auth.getUserMail() }}
+      </p>
 
+      <ng-container *ngIf="!isAdminUser()">
+        <hr class="divider" />
+        <div class="changebutton">
+          <app-style-button
+            (clicked)="onChangePassword()"
+            label="Change Password"
+          ></app-style-button>
+        </div>
+      </ng-container>
     </div>
   </div>
+  <app-changepassword
+    [isVisible]="changePasswordVisible"
+    (close)="closeChangePassword()"
+  >
+  </app-changepassword>
 </div>

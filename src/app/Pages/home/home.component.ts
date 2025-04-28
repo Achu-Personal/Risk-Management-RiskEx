@@ -63,7 +63,7 @@ export class HomeComponent {
   }
 
   ApiInvocations() {
-    console.log('Role', this.authService.getProjects());
+    // console.log('Role', this.authService.getProjects());
 
     let isAdminOrEMTuser =
       this.authService.getUserRole() === 'Admin' ||
@@ -82,7 +82,7 @@ export class HomeComponent {
       .subscribe((e: any) => {
         this.openRiskCountByType = e;
         this.list = e;
-        console.log(this.list);
+        // console.log(this.list);
         const count = this.list.map(
           (element: { riskCount: any }) => element.riskCount
         );
@@ -103,7 +103,7 @@ export class HomeComponent {
 
         const riskcounts = this.list.reduce((acc: any, item: any) => {
           acc[item.riskType] = item.riskCount;
-          console.log(item.riskType);
+          // console.log(item.riskType);
           return acc;
         }, {});
 
@@ -111,7 +111,7 @@ export class HomeComponent {
         this.qualityRiskCount = riskcounts['Quality'];
         this.securityRiskCount = riskcounts['Security'];
 
-        console.log('OpenRiskCount', e);
+        // console.log('OpenRiskCount', e);
         this.cdr.detectChanges();
 
         this.isAllDataFetched++;
@@ -125,13 +125,13 @@ export class HomeComponent {
           : []
       )
       .subscribe((e: any) => {
-        console.log('darat', e);
+        // console.log('darat', e);
         this.riskCategoryCounts = e;
         this.list = e;
         const count = this.list.map((element: { count: any }) => element.count);
         this.counter = count;
         const counter: number[] = count;
-        console.log('Output', counter);
+        // console.log('Output', counter);
 
         const riskCat = this.list.map(
           (element: { riskCategory: any }) => element.riskCategory
@@ -154,7 +154,7 @@ export class HomeComponent {
 
         this.graph2chartType = 'doughnut';
         this.graph2labels = this.risk;
-        console.log('criticalitylevel', e);
+        // console.log('criticalitylevel', e);
         this.cdr.detectChanges();
         this.isAllDataFetched++;
       });
@@ -190,7 +190,7 @@ export class HomeComponent {
 
         this.graph2chartType = 'doughnut';
         this.graph2labels = riskCat;
-        console.log('criticalitylevel', e);
+        // console.log('criticalitylevel', e);
         this.cdr.detectChanges();
         this.isAllDataFetched++;
       });
@@ -204,7 +204,7 @@ export class HomeComponent {
       )
       .subscribe((e: any) => {
         this.riskApproachingDeadline = e;
-        console.log('approaching', e);
+        // console.log('approaching', e);
         this.cdr.detectChanges();
         this.isAllDataFetched++;
       });
@@ -218,7 +218,7 @@ export class HomeComponent {
       )
       .subscribe((e: any) => {
         this.risksWithHeighesOverallRating = e;
-        console.log('heigest', e);
+        // console.log('heigest', e);
         this.cdr.detectChanges();
         this.isAllDataFetched++;
       });
@@ -238,12 +238,12 @@ export class HomeComponent {
 
   GetSelectedDepartment(event: any) {
     this.isAllDataFetched = 0;
-    console.log('Selected Departments=', event);
+    // console.log('Selected Departments=', event);
 
     this.api
       .getRiskCategoryCountsByDepartment(event, [])
       .subscribe((e: any) => {
-        console.log('darat', e);
+        // console.log('darat', e);
 
         this.riskCategoryCounts = e;
         this.list = e;
@@ -272,7 +272,7 @@ export class HomeComponent {
 
         this.graph2chartType = 'doughnut';
         this.graph2labels = this.risk;
-        console.log('criticalitylevel', e);
+        // console.log('criticalitylevel', e);
         this.cdr.detectChanges();
         this.isAllDataFetched++;
       });
@@ -288,11 +288,11 @@ export class HomeComponent {
       this.privacyRiskCount = riskcounts['Privacy'];
       this.qualityRiskCount = riskcounts['Quality'];
       this.securityRiskCount = riskcounts['Security'];
-      console.log(
-        this.privacyRiskCount,
-        this.qualityRiskCount,
-        this.securityRiskCount
-      );
+      // console.log(
+      //   this.privacyRiskCount,
+      //   this.qualityRiskCount,
+      //   this.securityRiskCount
+      // );
 
       this.cdr.detectChanges();
       this.isAllDataFetched++;

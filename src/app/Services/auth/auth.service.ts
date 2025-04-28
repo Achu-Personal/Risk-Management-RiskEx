@@ -203,15 +203,30 @@ export class AuthService {
   // }
 
   logout() {
+    localStorage.clear();
     localStorage.removeItem('token');
+    localStorage.removeItem('loginToken');
+
     this.userRole.next(null);
     this.departmentName.next(null);
     this.departmentId.next(null);
     this.projects.next([]);
     this.currentUserId.next(null);
-    this.router.navigate(['/auth']);
-  }
 
+    // Handle MSAL logout if available
+    try {
+      // Use a type assertion for the window object
+      const msalInstance = (window as any).msal || this.msalService?.instance;
+      if (msalInstance) {
+        window.location.href = '/sso';
+      } else {
+        this.router.navigate(['/sso']);
+      }
+    } catch (error) {
+      console.error('Error during logout:', error);
+      this.router.navigate(['/sso']);
+    }
+  }
 
   private navigateToDashboard() {
      this.router.navigate(['/home']);

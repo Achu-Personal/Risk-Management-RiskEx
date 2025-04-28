@@ -16,11 +16,12 @@ import { ApiService } from '../../Services/api.service';
 import { PaginationComponent } from "../../UI/pagination/pagination.component";
 import { SearchbarComponent } from "../../UI/searchbar/searchbar.component";
 import { ActivatedRoute } from '@angular/router';
+import { EditButtonComponent } from "../../UI/edit-button/edit-button.component";
 
 @Component({
   selector: 'app-reusable-table',
   standalone: true,
-  imports: [CommonModule, FormsModule, ConfirmationPopupComponent, PaginationComponent, SearchbarComponent],
+  imports: [CommonModule, FormsModule, ConfirmationPopupComponent, PaginationComponent, SearchbarComponent, EditButtonComponent],
   templateUrl: './reusable-table.component.html',
   styleUrl: './reusable-table.component.scss',
 })
@@ -29,11 +30,17 @@ export class ReusableTableComponent {
   @Input() tableData: any[] = [];
   @Input() IsActionRequiered: boolean = false;
   @Input() IsUser: boolean = false;
+  @Input() IsDraft: boolean = false;
   @Input() height: any = '65%';
   @Input() IsAssignee: boolean = false;
   @Input() headerDisplayMap: any = this.tableHeaders;
   @Input() noDataMessage: string = 'No Data Available';
   @Input() isLoading: boolean = false;
+
+  draftEditButton = output();
+  draftDeleteButton = output();
+
+
   tableData1:any[]=[];
   isEyeOpen = false;
   isAdmin: boolean=false;
@@ -98,6 +105,16 @@ export class ReusableTableComponent {
            row.userName === 'System Admin';
   }
 
+
+  onDraftEditt(row:any)
+  {
+    this.draftEditButton.emit(row);
+  }
+  onDraftDelete(row:any)
+  {
+    this.draftDeleteButton.emit(row);
+  }
+
   onToggleChange(row: any): void {
 
     if (this.isSystemAdmin(row)) {
@@ -107,7 +124,7 @@ export class ReusableTableComponent {
 
     this.newState = row.isActive;
     this.api.changeUserStatus(row.id, this.newState);
-    console.log(`Row ID: ${row.fullName}, New State: ${this.newState}`);
+    console.log(`User Name: ${row.fullName}, New State: ${this.newState}`);
     this.cdr.markForCheck();
   }
 

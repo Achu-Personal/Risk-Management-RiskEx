@@ -1,12 +1,10 @@
-import {ChangeDetectionStrategy, EventEmitter, HostListener, model, Output} from '@angular/core';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {provideNativeDateAdapter} from '@angular/material/core';
-import {MatDatepickerModule} from '@angular/material/datepicker';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatCardModule} from '@angular/material/card';
+import { ChangeDetectionStrategy, EventEmitter, HostListener, model, Output } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { provideNativeDateAdapter } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatCardModule } from '@angular/material/card';
 import { Component, OnInit } from '@angular/core';
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
 import { StyleButtonComponent } from "../style-button/style-button.component";
 
 
@@ -52,10 +50,10 @@ export class DatepickerComponent {
   }
 
   @HostListener('document:click', ['$event'])
-    onDocumentClick(event: MouseEvent): void {
-      const target = event.target as HTMLElement;
-      if (!target.closest('.filter-by-date')) {
-        this.showDropdown = false;
-      }
+  onDocumentClick(event: MouseEvent): void {
+    const target = event.target as HTMLElement;
+    if (!target.closest('.filter-by-date')) {
+      this.showDropdown = false;
     }
+  }
 }

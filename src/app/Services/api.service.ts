@@ -181,6 +181,20 @@ export class ApiService {
     return this.http.get(`${this.baseUrl}/Risk/GetRiskByAssigne?id=${id}`);
   }
 
+
+  getDraftOfAdmin()
+  {
+    return this.http.get(`${this.baseUrl}/Risk/drafts`);
+  }
+  getDraft(id: any = '') {
+    return this.http.get(`${this.baseUrl}/Risk/drafts/department/${id}`);
+  }
+
+  deleteDraft(id: number) {
+    return this.http.delete(`${this.baseUrl}/Risk/drafts/${id}`);
+  }
+
+
   getAllRisksAssigned() {
     return this.http.get(`${this.baseUrl}/Risk/GetAllRisksAssigned`);
   }
@@ -208,14 +222,35 @@ export class ApiService {
     );
   }
 
+  // updateReviewStatusAndComments(id: number, updates: any): Observable<any> {
+  //   console.log('updatesssss', updates);
+  //   console.log('Id:', id);
+
+  //   return this.http.put(
+  //     `${this.baseUrl}/Approval/update-review/${id}`,
+  //     updates
+  //   );
+  // }
   updateReviewStatusAndComments(id: number, updates: any): Observable<any> {
     console.log('updatesssss', updates);
     console.log('Id:', id);
 
-    return this.http.put(
-      `${this.baseUrl}/Approval/update-review/${id}`,
-      updates
-    );
+    // Extract reviewId from updates if present
+    const reviewId = updates.reviewId;
+
+    // If reviewId is provided, use it in the endpoint
+    if (reviewId) {
+      return this.http.put(
+        `${this.baseUrl}/Approval/update-review-status/${id}/${reviewId}`,
+        updates
+      );
+    } else {
+      // Maintain backward compatibility
+      return this.http.put(
+        `${this.baseUrl}/Approval/update-review/${id}`,
+        updates
+      );
+    }
   }
 
   sendEmailToAssignee(id: number) {
@@ -236,7 +271,7 @@ export class ApiService {
     projectList.forEach((projectId) => {
       params = params.append('projectIds', projectId.toString());
     });
-    console.log('params', params);
+    // console.log('params', params);
     return this.http.get(
       `${this.baseUrl}/Risk/GetRiskWithHeighestOverallRationg`,
       {
@@ -253,7 +288,7 @@ export class ApiService {
     projectList.forEach((projectId) => {
       params = params.append('projectIds', projectId.toString());
     });
-    console.log('params', params);
+    // console.log('params', params);
     return this.http.get(`${this.baseUrl}/Risk/GetRiskApproachingDeadline`, {
       params,
     });
@@ -284,7 +319,7 @@ export class ApiService {
     projectList.forEach((projectId) => {
       params = params.append('projectIds', projectId.toString());
     });
-    console.log('params', params);
+    // console.log('params', params);
     return this.http.get(`${this.baseUrl}/Risk/RiskCategoryCountByDepartment`, {
       params,
     });
@@ -298,7 +333,7 @@ export class ApiService {
         { responseType: 'text' }
       )
       .subscribe((response) => {
-        console.log('UserId and status:', userId, status);
+        // console.log('UserId and status:', userId, status);
         console.log('API Response:', response);
       });
   }
@@ -391,7 +426,7 @@ export class ApiService {
     projectList.forEach((projectId) => {
       params = params.append('projectIds', projectId.toString());
     });
-    console.log('params', params);
+    // console.log('params', params);
     return this.http.get(`${this.baseUrl}/Risk/CountOfRiskType(Open)`, {
       params,
     });
@@ -493,7 +528,7 @@ export class ApiService {
 
 
   setDraftQuality(payload:any){
-    return this.http.post('https://localhost:7216/api/Risk/draft-quality',payload)
+    return this.http.post(`${this.baseUrl}/Risk/draft-quality`,payload)
 
   }
   setDraftSecurityOrPrivacy(){}

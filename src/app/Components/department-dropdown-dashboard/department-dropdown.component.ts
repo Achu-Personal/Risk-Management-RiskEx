@@ -27,7 +27,7 @@ export class DepartmentDropdownComponent {
     this.api.getDepartment().subscribe({
       next: (response: department[]) => {
         this.dropdownOptions = this.sortDepartments(response);
-        console.log('Departments fetched and sorted successfully:', this.dropdownOptions);
+        // console.log('Departments fetched and sorted successfully:', this.dropdownOptions);
       },
       error: (error) => {
         console.error('Failed to fetch departments', error);
