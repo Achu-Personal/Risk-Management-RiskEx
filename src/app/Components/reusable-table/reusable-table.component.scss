@@ -568,12 +568,25 @@ transform: translateX(20px);
 }
 .admin-toggle {
   cursor: not-allowed;
-
 }
-
 
 .admin-toggle .slider {
-  opacity: 0.4;
+  opacity: 0.3;
 }
 
+.icon.edit.disabled-edit {
+  opacity: 0.7 !important;
+  cursor: not-allowed !important;
+  pointer-events: none;
+}
+
+.disabled-edit svg path,
+.disabled-edit svg {
+  opacity: 0.7;
+}
+
+.admin-toggle svg path,
+.admin-toggle svg {
+  opacity: 0.7;
+}
 

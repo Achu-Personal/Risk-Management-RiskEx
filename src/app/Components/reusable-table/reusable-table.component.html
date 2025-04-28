@@ -188,14 +188,15 @@
             <td *ngIf="IsUser">
              <div class="action-buttons-container">
               <div class="toggle-container"
-                [ngClass]="{'admin-toggle': isSystemAdmin(row)}"
-                [title]="isSystemAdmin(row) ? 'System Admin status cannot be changed' : ''">
+                [ngClass]="{'admin-toggle': isSystemAdmin(row)|| isCurrentUser(row)}"
+                [title]="isSystemAdmin(row) ? 'System Admin status cannot be changed' :
+                         isCurrentUser(row) ? 'You cannot change your own status' : ''">
                <label class="switch">
                  <input
                    type="checkbox"
                    [(ngModel)]="row.isActive"
                    (change)="onToggleChange(row)"
-                   [disabled]="isSystemAdmin(row)"
+                   [disabled]="isSystemAdmin(row) || isCurrentUser(row)"
                    />
                   <span class="slider"></span>
                 </label>
@@ -205,11 +206,11 @@
                 <div
                   class="icon edit"
                   title="Edit User"
-                  [class.disabled]="isSystemAdmin(row)"
-                  (click)="isSystemAdmin(row) ? null : editUser($event, row)"
-                  [ngClass]="{'admin-toggle': isSystemAdmin(row)}"
-                  [title]="isSystemAdmin(row) ? 'System Admin status cannot be Edited' : ''"
-                >
+                  [class.disabled]="isSystemAdmin(row) || isCurrentUser(row)"
+                  (click)="(isSystemAdmin(row) || isCurrentUser(row)) ? null : editUser($event, row)"
+                  [ngClass]="{'admin-toggle': isSystemAdmin(row) || isCurrentUser(row)}"
+                  [title]="isSystemAdmin(row) ? 'System Admin status cannot be Edited' :
+                           isCurrentUser(row) ? 'You cannot Edit your own details' : ''">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" >
                     <path
                       d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"
@@ -292,5 +293,18 @@
   [isReject]="true"
   (confirm)="onReject($event)"
   (cancel)="showRejectDialog = false"
+>
+</app-confirmation-popup>
+
+<app-confirmation-popup
+  [isOpen]="showStatusChangeDialog"
+  title="Change User Status"
+  confirmText="Confirm"
+  [showComment]="false"
+  [message]="currentToggleRow ?
+    'Are you sure you want to ' + (currentToggleRow.isActive ? 'activate' : 'deactivate') +
+    ' user ' + (currentToggleRow.fullName || currentToggleRow.userName || 'User') + '?' : ''"
+  (confirm)="onStatusConfirm($event)"
+  (cancel)="onStatusCancel()"
 >
 </app-confirmation-popup>
