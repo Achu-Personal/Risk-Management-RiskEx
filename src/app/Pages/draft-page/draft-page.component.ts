@@ -125,7 +125,7 @@ ngOnInit()
 
 onDraftEdited(row: any) {
   console.log("draftrowdata",row);
-    //this.router.navigate([`/addrisk`],{queryParams:row});// depart name or id
+this.router.navigate([`/addrisk`],{queryParams:row});// depart name or id
 
 
 }
