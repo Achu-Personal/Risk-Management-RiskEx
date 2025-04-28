@@ -12,6 +12,8 @@ export class StyleButtonComponent {
   @Input() label: string = 'Click Me';
   @Input() disabled: boolean = false;
   @Input() color: string = 'primary';
+  @Input() customHeight: string = '5.5vh';
+
   private _type: 'button' | 'submit' | 'reset' = 'button';
 
   @Input()

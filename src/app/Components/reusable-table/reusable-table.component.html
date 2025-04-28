@@ -295,3 +295,16 @@
   (cancel)="showRejectDialog = false"
 >
 </app-confirmation-popup>
+
+<app-confirmation-popup
+  [isOpen]="showStatusChangeDialog"
+  title="Change User Status"
+  confirmText="Confirm"
+  [showComment]="false"
+  [message]="currentToggleRow ?
+    'Are you sure you want to ' + (currentToggleRow.isActive ? 'activate' : 'deactivate') +
+    ' user ' + (currentToggleRow.fullName || currentToggleRow.userName || 'User') + '?' : ''"
+  (confirm)="onStatusConfirm($event)"
+  (cancel)="onStatusCancel()"
+>
+</app-confirmation-popup>

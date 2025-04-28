@@ -11,39 +11,6 @@ import { StyleButtonComponent } from "../../UI/style-button/style-button.compone
   styleUrl: './confirmation-popup.component.scss'
 })
 export class ConfirmationPopupComponent {
-  // @Input() isOpen = false;
-  // @Input() title = '';
-  // @Input() confirmText = 'Confirm';
-  // @Input() showComment = true;
-  // @Input() isReject = false;
-  // @Output() confirm = new EventEmitter<{comment: string}>();
-  // @Output() cancel = new EventEmitter<void>();
-
-  // form: FormGroup;
-
-  // constructor(private fb: FormBuilder) {
-  //   this.form = this.fb.group({
-  //     comment: ['', []]
-  //   });
-  // }
-
-  // ngOnInit() {
-  //   if (this.isReject) {
-  //     this.form.get('comment')?.setValidators(Validators.required);
-  //   }
-  // }
-
-  // onConfirm() {
-  //   if (this.form.valid) {
-  //     this.confirm.emit({
-  //       comment: this.form.get('comment')?.value || ''
-  //     });
-  //   }
-  // }
-
-  // onCancel() {
-  //   this.cancel.emit();
-  // }
 
 
   @Input() isOpen = false;
@@ -53,6 +20,8 @@ export class ConfirmationPopupComponent {
   @Input() isReject = false;
   @Output() confirm = new EventEmitter<{comment: string}>();
   @Output() cancel = new EventEmitter<void>();
+  @Input() message: string = '';
+
 
   form: FormGroup;
 

@@ -58,6 +58,10 @@ export class ReusableTableComponent {
   currentRow: any;
   originalTableData: any[] = [];
 
+  showStatusChangeDialog = false;
+  currentToggleRow: any = null;
+  previousToggleState: boolean = false;
+
   @Output() approveRisk = new EventEmitter<{ row: any; comment: string }>();
   @Output() rejectRisk = new EventEmitter<{ row: any; comment: string }>();
   @Output() editUserClicked = new EventEmitter<any>();
@@ -67,7 +71,7 @@ export class ReusableTableComponent {
     public api: ApiService,
     private cdr: ChangeDetectorRef,
     private route: ActivatedRoute,
-    private notification:NotificationService
+    private notification: NotificationService
   ) { }
 
   rowKeys: string[] = [];
@@ -125,28 +129,45 @@ export class ReusableTableComponent {
     this.draftDeleteButton.emit(row);
   }
 
+
   onToggleChange(row: any): void {
-    if (this.isSystemAdmin(row)) {
-      row.isActive = !row.isActive;
-      return;
-    }
-    if (this.isCurrentUser(row)) {
+    if (this.isSystemAdmin(row) || this.isCurrentUser(row)) {
       row.isActive = !row.isActive;
       return;
     }
 
-    this.newState = row.isActive;
-    this.api.changeUserStatus(row.id, this.newState);
+    this.currentToggleRow = row;
+    this.previousToggleState = !row.isActive;
 
-    const statusAction = this.newState ? 'Activated' : 'Deactivated';
-    const userName = row.fullName || row.userName || 'User';
-
-    console.log(`User Name: ${userName}, New State: ${this.newState}`);
+    this.showStatusChangeDialog = true;
     this.cdr.markForCheck();
+  }
+
+  onStatusConfirm(data: { comment: string }): void {
+    if (!this.currentToggleRow) return;
+
+    const statusAction = this.currentToggleRow.isActive ? 'Activated' : 'Deactivated';
+    const userName = this.currentToggleRow.fullName || this.currentToggleRow.userName || 'User';
+
+    this.api.changeUserStatus(this.currentToggleRow.id, this.currentToggleRow.isActive);
 
     this.notification.success(
-      `${userName} has been ${statusAction} successfully !`
+      `${userName} has been ${statusAction} successfully!`
     );
+
+    this.showStatusChangeDialog = false;
+    this.currentToggleRow = null;
+    this.cdr.markForCheck();
+  }
+
+  onStatusCancel(): void {
+    if (!this.currentToggleRow) return;
+
+    this.currentToggleRow.isActive = this.previousToggleState;
+
+    this.showStatusChangeDialog = false;
+    this.currentToggleRow = null;
+    this.cdr.markForCheck();
   }
 
   rejectButton(event: Event, row: any) {
