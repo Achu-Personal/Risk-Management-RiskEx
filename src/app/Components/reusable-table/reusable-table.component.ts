@@ -17,6 +17,7 @@ import { PaginationComponent } from '../../UI/pagination/pagination.component';
 import { SearchbarComponent } from '../../UI/searchbar/searchbar.component';
 import { ActivatedRoute } from '@angular/router';
 import { EditButtonComponent } from '../../UI/edit-button/edit-button.component';
+import { NotificationService } from '../../Services/notification.service';
 
 @Component({
   selector: 'app-reusable-table',
@@ -65,7 +66,8 @@ export class ReusableTableComponent {
     public auth: AuthService,
     public api: ApiService,
     private cdr: ChangeDetectorRef,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private notification:NotificationService
   ) { }
 
   rowKeys: string[] = [];
@@ -135,8 +137,16 @@ export class ReusableTableComponent {
 
     this.newState = row.isActive;
     this.api.changeUserStatus(row.id, this.newState);
-    console.log(`User Name: ${row.fullName}, New State: ${this.newState}`);
+
+    const statusAction = this.newState ? 'Activated' : 'Deactivated';
+    const userName = row.fullName || row.userName || 'User';
+
+    console.log(`User Name: ${userName}, New State: ${this.newState}`);
     this.cdr.markForCheck();
+
+    this.notification.success(
+      `${userName} has been ${statusAction} successfully !`
+    );
   }
 
   rejectButton(event: Event, row: any) {
@@ -200,6 +210,7 @@ export class ReusableTableComponent {
   hasValidData(): boolean {
     return (
       this.tableData &&
+      Array.isArray(this.tableData) &&
       this.tableData.length > 0 &&
       this.tableData.some((row) => row.riskName || row.riskId || row.fullName)
     );
