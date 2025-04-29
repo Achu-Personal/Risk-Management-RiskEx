@@ -13,6 +13,7 @@
 
      <div class="form-row">
       @if(isAdmin === 'Admin'){
+        @if(isDraftidPresent){
         <app-form-dropdown
           label="Department Name"
           required=" *"
@@ -34,6 +35,7 @@
         </div>
 
         }
+      }
      </div>
 
 
@@ -705,4 +707,13 @@
   @if(showModal){
     <app-form-likelihood-impact-tooltip [showModal]="showModal" [tableType]="tableType" (closeRiskModal)="hideModal()"></app-form-likelihood-impact-tooltip>
   }
+
+  @if(isdraftErrorDisplay){
+    <app-form-successfull
+      [message]= draftErrorDisplay
+      [isSuccessfull]="false"
+      (closeDialog)="closeDraftWhenErrorOccur()"
+    >
+    </app-form-successfull>
+    }
 </div>

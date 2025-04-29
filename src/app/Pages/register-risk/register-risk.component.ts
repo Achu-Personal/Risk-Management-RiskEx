@@ -6,7 +6,7 @@ import { ApiService } from '../../Services/api.service';
 import { AuthService } from '../../Services/auth/auth.service';
 import { CommonModule } from '@angular/common';
 import { FormSuccessfullComponent } from '../../Components/form-successfull/form-successfull.component';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { EmailService } from '../../Services/email.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
@@ -37,7 +37,8 @@ export class RegisterRiskComponent {
     public authService: AuthService,
     private cdRef: ChangeDetectorRef,
     public email: EmailService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {}
   receivedDepartmentIdForAdmin: number = 0;
 
@@ -67,8 +68,24 @@ export class RegisterRiskComponent {
   riskData: any;
   isLoading = false; // Initially false
   departmentCode: string = '';
+  draft:any={};
+  draftId:string='';
 
   ngOnInit() {
+    this.route.queryParams.subscribe(params => {
+      if (Object.keys(params).length > 0) {
+      console.log("draft dataaaaaaaaaaaaaaa from drafttttt",params); // All query parameters as an object
+      this.draft = params
+      this.selectedRiskType = Number(params['riskType']);
+      this.departmentName=params['departmentName'];
+      this.departmentId=params['departmentId'];
+      this.draftId=params['id']
+    }
+
+
+    });
+
+
     this.departmentName = this.authService.getDepartmentName()!;
 
     this.departmentId = this.authService.getDepartmentId()!;

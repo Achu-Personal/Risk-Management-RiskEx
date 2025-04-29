@@ -190,7 +190,7 @@ export class ApiService {
     return this.http.get(`${this.baseUrl}/Risk/drafts/department/${id}`);
   }
 
-  deleteDraft(id: number) {
+  deleteDraft(id: string) {
     return this.http.delete(`${this.baseUrl}/Risk/drafts/${id}`);
   }
 
@@ -531,7 +531,13 @@ export class ApiService {
     return this.http.post(`${this.baseUrl}/Risk/draft-quality`,payload)
 
   }
-  setDraftSecurityOrPrivacy(){}
+  setDraftSecurityOrPrivacy(payload:any){
+    return this.http.post(`${this.baseUrl}/Risk/Draft-security-or-privacy`,payload)
+  }
+
+  getSingleDraftById(id:string){
+    return this.http.get(`${this.baseUrl}/Risk/draft/${id}`,)
+  }
 
 }
 
