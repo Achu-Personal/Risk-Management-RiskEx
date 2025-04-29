@@ -186,7 +186,7 @@ export class ReportGenerationService {
 
         // Column headers
         const columnHeaders = [
-          'Risk ID', 'Risk Name', 'Department', 'Description', 'Risk Type',
+          'Risk ID', 'Risk Category', 'Department', 'Description', 'Risk Type',
           'Risk Status', 'Impact', 'Mitigation', 'Contingency', 'Risk Response',
           'Overall Risk Rating', 'Responsible User', 'Created By', 'Created At', 'Remarks'
         ];
@@ -221,7 +221,7 @@ export class ReportGenerationService {
 
         // Column headers
         const columnHeaders = [
-          'Risk ID', 'Risk Name', 'Department', 'Description', 'Risk Type',
+          'Risk ID', 'Risk Category', 'Department', 'Description', 'Risk Type',
           'Risk Status', 'Impact', 'Mitigation', 'Contingency', 'Risk Response',
           'Overall Risk Rating', 'Responsible User', 'Created By', 'Created At', 'Remarks',
           'Impact', 'Likelihood', 'Risk Factor','Impact', 'Likelihood', 'Risk Factor'
@@ -273,7 +273,7 @@ export class ReportGenerationService {
         if (risk.riskType === 'Quality') {
           const preAssessment = getAssessmentDetails(risk.riskAssessments || [], null, false);
           const postAssessment = getAssessmentDetails(risk.riskAssessments || [], null, true);
-         
+
           const row = qualitySheet.addRow([
             ...baseRiskInfo,
             preAssessment.impact,
