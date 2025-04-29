@@ -4,16 +4,20 @@ import { ReusableTableComponent } from "../../Components/reusable-table/reusable
 import { Router } from '@angular/router';
 import { ApiService } from '../../Services/api.service';
 import { AuthService } from '../../Services/auth/auth.service';
+import { FormConformPopupComponent } from '../../Components/form-conform-popup/form-conform-popup.component';
 
 @Component({
   selector: 'app-draft-page',
   standalone: true,
-  imports: [BodyContainerComponent, ReusableTableComponent],
+  imports: [BodyContainerComponent, ReusableTableComponent,FormConformPopupComponent],
   templateUrl: './draft-page.component.html',
   styleUrl: './draft-page.component.scss'
 })
 export class DraftPageComponent {
  isLoading = false;
+ isconformDelete:boolean=false
+ conformDelteDraft:boolean=false
+ rowData:string=''
 
   constructor(private router: Router,private api:ApiService,private auth:AuthService) {}
 
@@ -125,14 +129,30 @@ ngOnInit()
 
 onDraftEdited(row: any) {
   console.log("draftrowdata",row);
-this.router.navigate([`/addrisk`],{queryParams:row});// depart name or id
+    this.router.navigate([`/addrisk`],{queryParams:row});// depart name or id
 
+
+}
+
+conformDraftDelete(){
+  this.conformDelteDraft=true;
+  this.isconformDelete=false;
+  this.onDraftDeleted(this.rowData);
+
+}
+
+closeDeleteDraft(){
+  this.isconformDelete=false;
 
 }
 
 
 onDraftDeleted(row: any) {
-  console.log("Draftid",row.id);
+  this.rowData=row;
+
+  this.isconformDelete=true;
+  if(this.conformDelteDraft){
+    console.log("Draftid",row.id);
   this.api.deleteDraft(row.id).subscribe((e:any)=>{
   });
 
@@ -143,5 +163,10 @@ onDraftDeleted(row: any) {
       this.tableBody=[...templist]
     }
   })
+  this.isconformDelete=false;
+  this.conformDelteDraft=false;
+  }
+
+
 }
 }

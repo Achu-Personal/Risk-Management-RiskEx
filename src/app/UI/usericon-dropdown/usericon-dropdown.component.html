@@ -1,33 +1,23 @@
-<div class="box" style="padding: 5px" (click)="$event.stopPropagation()">
-  <div style="height: 6px"></div>
-  <div
-    class="themes-circle"
-    *ngFor="let theme of themes"
-    [ngClass]="{ active: activeTheme === theme }"
-    (click)="setActiveTheme(theme)"
-  >
-    <i
-      (click)="setActiveIcon('logout'); logout(); $event.stopPropagation()"
-      class="fa-solid fa-right-from-bracket"
-      [ngClass]="{ 'icon-active': activeIcon === 'logout' }"
-    >
+<div class="box" style="padding: 5px;" (click)="$event.stopPropagation()">
+  <div style="height: 6px;"></div>
+  <div class="themes-circle"
+       *ngFor="let theme of themes"
+       [ngClass]="{'active': activeTheme === theme}"
+       (click)="setActiveTheme(theme)" [title]='"logout"' class="sidebar-link">
+    <i (click)="setActiveIcon('logout'); logout(); $event.stopPropagation()"
+       class="fa-solid fa-right-from-bracket"
+       [ngClass]="{'icon-active': activeIcon === 'logout'}">
     </i>
   </div>
-  <div
-    class="themes-circle"
-    *ngFor="let theme of themes"
-    [ngClass]="{ active: activeTheme === theme }"
-    (click)="setActiveTheme(theme)"
-  >
-    <i
-      (click)="
-        setActiveIcon('user'); toggleDropdown(); $event.stopPropagation()
-      "
-      class="fa-regular fa-circle-user"
-      [ngClass]="{ 'icon-active': activeIcon === 'user' }"
-    >
-    </i>
-  </div>
+   <div class="themes-circle"
+   *ngFor="let theme of themes"
+   [ngClass]="{'active': activeTheme === theme}"
+   (click)="setActiveTheme(theme)" [title]='"Profile"' class="sidebar-link">
+<i (click)="setActiveIcon('user'); toggleDropdown(); $event.stopPropagation()"
+   class="fa-regular fa-circle-user"
+   [ngClass]="{'icon-active': activeIcon === 'user'}">
+</i>
+</div>
   <div *ngIf="dropdownVisible" class="dropdown-card">
     <div class="profile-card">
       <img

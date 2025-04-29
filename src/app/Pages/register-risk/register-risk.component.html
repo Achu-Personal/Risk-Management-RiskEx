@@ -42,6 +42,7 @@
       (departmentSelectedByAdmin)="receiveValue($event)"
       [dropdownDataProjectForAdmin]="dropdownDataProjectForAdmin"
       [dropdownAssigneeForAdmin]="dropdownAssigneeForAdmin"
+      [qmsDraftId]="draftId"
     ></app-qms-form>
     } @if (selectedRiskType === 2) {
     <app-isms-form
@@ -60,6 +61,7 @@
       (departmentSelectedByAdmin)="receiveValue($event)"
       [dropdownDataProjectForAdmin]="dropdownDataProjectForAdmin"
       [dropdownAssigneeForAdmin]="dropdownAssigneeForAdmin"
+      [qmsDraftId]="draftId"
     ></app-isms-form>
     } @if (selectedRiskType === 3) {
     <app-isms-form
@@ -78,6 +80,7 @@
       (departmentSelectedByAdmin)="receiveValue($event)"
       [dropdownDataProjectForAdmin]="dropdownDataProjectForAdmin"
       [dropdownAssigneeForAdmin]="dropdownAssigneeForAdmin"
+      [qmsDraftId]="draftId"
     ></app-isms-form>
     } @if(isSuccess){
     <app-form-successfull
