@@ -10,8 +10,8 @@
   border-radius: 50px;
   .dropdown-card {
     position: absolute;
-    top: 60px;
-    left: 0; 
+    top: 60px; // Adjust this based on the spacing you need
+    left: 0; // Align the dropdown to the starting side
     width: 250px;
     background-color: #ffffff;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -70,4 +70,76 @@ i {
   border-radius: 50%;
   transition: background-color 0.3s;
   cursor: pointer;
+  // display: inline-block;
+}
+
+// .icon-active {
+//   background-color: var(--foreground-color);
+//   color: var(--selection-color)!important;
+//   border-radius: 50%;
+// }
+
+
+
+.sidebar-link {
+  position: relative;
+  z-index: 100;
+}
+
+.sidebar-link::before {
+  content: attr(title);
+  position: absolute;
+  left: 100%;
+  margin-left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 8px 12px;
+  background: linear-gradient(135deg, #ebe2bc, #f0eed0);
+  color: rgb(0, 0, 0);
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: 6px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  z-index: 1000;
+}
+
+.sidebar-link::after {
+  content: '';
+  position: absolute;
+  left: 100%;
+  margin-left: 5px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 6px solid transparent;
+  border-right-color: #c0b769;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  z-index: 1000;
+}
+
+.sidebar-link:hover::before,
+.sidebar-link:hover::after {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Smooth entrance animation */
+@keyframes tooltipFade {
+  from {
+    opacity: 0;
+    transform: translateY(-50%) translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(-50%) translateX(0);
+  }
+}
+
+.sidebar-link:hover::before {
+  animation: tooltipFade 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
