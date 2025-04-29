@@ -11,6 +11,7 @@ import { NgIf } from '@angular/common';
 import { EmailService } from '../../Services/email.service';
 import { AuthService } from '../../Services/auth/auth.service';
 import { NotificationService } from '../../Services/notification.service';
+import { FormLoaderComponent } from "../../Components/form-loader/form-loader.component";
 
 @Component({
   selector: 'app-approval',
@@ -23,7 +24,8 @@ import { NotificationService } from '../../Services/notification.service';
     ReactiveFormsModule,
     StyleButtonComponent,
     ConfirmationPopupComponent, NgIf,
-  ],
+    FormLoaderComponent
+],
   templateUrl: './approval.component.html',
   styleUrl: './approval.component.scss',
 })
@@ -31,6 +33,7 @@ export class ApprovalComponent {
   data:any=[];
   isAdmin:boolean=false;
   showButtons:boolean=true;
+  isLoader = false;
   constructor(
     public api: ApiService,
     public route:ActivatedRoute,
@@ -118,6 +121,7 @@ export class ApprovalComponent {
   }
 
   handlePopupConfirm(event: { comment: string }) {
+    this.isLoader = true;
     this.isPopupOpen = false;
     let id = parseInt(this.route.snapshot.paramMap.get('id')!);
 
@@ -170,9 +174,11 @@ export class ApprovalComponent {
               this.email.sendOwnerEmail(res.createdBy.email, context).subscribe({
                 next: () => {
                   // Email sent successfully to owner
+                  this.isLoader = false;
                 },
                 error: (emailError) => {
                   console.error('Failed to send email to risk owner:', emailError);
+                  this.isLoader = false;
                 }
               });
             }
@@ -202,23 +208,26 @@ export class ApprovalComponent {
               this.email.sendOwnerEmail(res.responsibleUser.email, context).subscribe({
                 next: () => {
                   // Email sent successfully to reviewer
+                  this.isLoader = false;
                 },
                 error: (emailError) => {
                   console.error('Failed to send email to reviewer:', emailError);
+                  this.isLoader = false;
                 },
               });
             }
 
-            setTimeout(() => {
-              this.router.navigate(['/approvaltable']);
-            }, 2000);
+            this.isLoader = false;
+            this.router.navigate(['/approvaltable']);
           },
           error: (error) => {
             console.error('Error updating review status:', error);
             this.notification.error('Failed to reject risk');
+            this.isLoader = false;
           }
         });
       } else {
+        this.isLoader = true;
         // Handle approve workflow
         const updates = {
           approvalStatus: "Approved",
@@ -257,25 +266,30 @@ export class ApprovalComponent {
               this.email.sendAssigneeEmail(res.responsibleUser.email, context).subscribe({
                 next: () => {
                   console.log('Assignee email sent successfully');
+                  this.isLoader = false;
 
                   this.api.getriskOwnerEmailandName(id).subscribe({
                     next: (ownerRes: any) => {
                       this.email.sendApprovalEmail(ownerRes[0].email, context).subscribe({
                         next: () => {
                           console.log('Risk owner approval email sent successfully');
+                          this.isLoader = false;
                         },
                         error: (emailError) => {
                           console.error('Failed to send approval email to risk owner:', emailError);
+                          this.isLoader = false;
                         }
                       });
                     },
                     error: (error) => {
                       console.error('Failed to get risk owner details:', error);
+                      this.isLoader = false;
                     }
                   });
                 },
                 error: (emailError) => {
                   console.error('Failed to send email to assignee:', emailError);
+                  this.isLoader = false;
                 }
               });
             } else if (res.riskStatus === 'close') {
@@ -326,6 +340,7 @@ export class ApprovalComponent {
                   this.email.sendRiskClosureEmail(ownerRes[0].email, closureContextOwner).subscribe({
                     next: () => {
                       console.log('Risk closure email sent to owner successfully');
+                      this.isLoader = false;
 
                       this.email.sendRiskClosureEmail(res.responsibleUser.email, closureContext).subscribe({
                         next: () => {
@@ -333,12 +348,14 @@ export class ApprovalComponent {
                           this.notification.success(
                             'The risk has been approved and closed successfully. Closure notifications sent to owner and assignee.'
                           );
+                          this.isLoader = false;
                         },
                         error: (emailError) => {
                           console.error('Failed to send closure email to assignee:', emailError);
                           this.notification.success(
                             'The risk has been approved and closed successfully. Closure notification sent to owner only.'
                           );
+                          this.isLoader = false;
                         }
                       });
                     },
@@ -347,6 +364,7 @@ export class ApprovalComponent {
                       this.notification.success(
                         'The risk has been approved and closed successfully, but email notifications failed.'
                       );
+                      this.isLoader = false;
                     }
                   });
                 },
@@ -355,17 +373,18 @@ export class ApprovalComponent {
                   this.notification.success(
                     'The risk has been approved and closed successfully but email notifications could not be sent'
                   );
+                  this.isLoader = false;
                 }
               });
             }
 
-            setTimeout(() => {
-              this.router.navigate(['/approvaltable']);
-            }, 2000);
+            this.isLoader = false;
+            this.router.navigate(['/approvaltable']);
           },
           error: (error) => {
             console.error('Error updating review status:', error);
             this.notification.error('Failed to approve risk');
+            this.isLoader = false;
           }
         });
       }
@@ -373,6 +392,7 @@ export class ApprovalComponent {
     (error) => {
       console.error('Error getting risk details:', error);
       this.notification.error('Failed to get risk details');
+      this.isLoader = false;
     });
   }
 

@@ -72,7 +72,7 @@ ngOnInit()
 
           riskName: '',
           description: '',
-          riskType: '',
+          riskTypeName: '',
           overallRiskRatingBefore: 0,
           departmentName:"",
           responsibleUserName:"",
@@ -102,7 +102,7 @@ ngOnInit()
 
           riskName: '',
           description: '',
-          riskType: '',
+          riskTypeName: '',
           overallRiskRatingBefore: 0,
           departmentName:"",
           responsibleUserName:"",

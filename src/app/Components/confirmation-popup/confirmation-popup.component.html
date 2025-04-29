@@ -1,53 +1,46 @@
-
 <div class="modal-overlay" *ngIf="isOpen">
-    <div class="modal-content">
-      <h2>{{title}}</h2>
-      <form [formGroup]="form" (ngSubmit)="onConfirm()">
-        <div *ngIf="showComment || isReject" class="form-group">
-          <label>
-            @if(!isReject){
-                Are you sure you want to approve this risk?
-            }
-            @else{
-                Are you sure you want to reject the risk? Please enter your comments.
-            }
-            
-            <span *ngIf="isReject" class="required">*</span>
-          </label>
-          <textarea 
-            formControlName="comment"
-            [placeholder]="isReject ? 'Please enter your Comments' : 'Optional comment'">
-          </textarea>
-          <div *ngIf="form.get('comment')?.errors?.['required'] && form.touched" 
-               class="error-message">
-            Comment is required for rejection
-          </div>
+  <div class="modal-content">
+    <h2>{{title}}</h2>
+    <form [formGroup]="form" (ngSubmit)="onConfirm()">
+      <div *ngIf="message" class="form-group">
+        <label>{{message}}</label>
+      </div>
+      <div *ngIf="showComment || isReject" class="form-group">
+        <label>
+          @if(!isReject && !message){
+            Are you sure you want to approve this risk?
+          }
+          @else if(isReject && !message){
+            Are you sure you want to reject the risk? Please enter your comments.
+          }
+          <span *ngIf="isReject" class="required">*</span>
+        </label>
+        <textarea
+          formControlName="comment"
+          [placeholder]="isReject ? 'Please enter your Comments' : 'Optional comment'">
+        </textarea>
+        <div *ngIf="form.get('comment')?.errors?.['required'] && form.touched"
+             class="error-message">
+          Comment is required for rejection
         </div>
-        <div class="button-group">
-          <!-- <button type="button" (click)="onCancel()">Cancel</button> -->
-          <app-style-button
+      </div>
+      <div class="button-group">
+        <app-style-button
           type="submit"
           label={{confirmText}}
           color="primary"
           class="btn-success"
           [disabled]="isReject && form.invalid"
         ></app-style-button>
-        
-          <app-style-button
+
+        <app-style-button
           type="button"
           label="Cancel"
           color="primary"
           class="btn-success"
           (clicked)="onCancel()"
-        >
-        </app-style-button>
-
-          <!-- <button type="submit" 
-                  [disabled]="isReject && form.invalid"
-                  [ngClass]="{'approve': !isReject, 'reject': isReject}">
-            {{confirmText}}
-          </button> -->
-        </div>
-      </form>
-    </div>
+        ></app-style-button>
+      </div>
+    </form>
   </div>
+</div>
