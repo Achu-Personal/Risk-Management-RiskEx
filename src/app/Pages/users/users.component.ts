@@ -143,7 +143,11 @@ export class UsersComponent {
     if (userRole === 'Admin' || userRole?.includes('EMTUser')) {
       this.api.getAllUsers().subscribe({
         next: (users: any) => {
-          this.tableBodyAdmin = users;
+
+          const sortedUsers = [...users].sort((a: any, b: any) => {
+            return a.fullName.toLowerCase().localeCompare(b.fullName.toLowerCase());
+          });
+          this.tableBodyAdmin = sortedUsers.reverse();
           this.isLoading = false;
         },
         error: (error) => {
@@ -156,7 +160,10 @@ export class UsersComponent {
       if (department) {
         this.api.getAllUsersByDepartmentName(department).subscribe({
           next: (users: any) => {
-            this.tableBody = users;
+            const sortedUsers = [...users].sort((a: any, b: any) => {
+              return a.fullName.toLowerCase().localeCompare(b.fullName.toLowerCase());
+            });
+            this.tableBody = sortedUsers.reverse();
             this.isLoading = false;
           },
           error: (error) => {
@@ -168,7 +175,10 @@ export class UsersComponent {
     } else if (userRole?.includes('ProjectUsers')) {
       this.api.getUsersByProjects().subscribe({
         next: (users) => {
-          this.tableBody = users;
+          const sortedUsers = [...users].sort((a: any, b: any) => {
+            return a.fullName.toLowerCase().localeCompare(b.fullName.toLowerCase());
+          });
+          this.tableBody = sortedUsers.reverse();
           this.isLoading = false;
         },
         error: (error) => {

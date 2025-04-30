@@ -93,11 +93,11 @@ export class ReusableTableComponent {
   }
   ngOnChanges(changes: SimpleChanges) {
     if (changes['tableData'] && changes['tableData'].currentValue) {
-      this.originalTableData = [...changes['tableData'].currentValue];
+      this.originalTableData = [...changes['tableData'].currentValue].reverse();
       // console.log('Original Table Data updated:', this.originalTableData);
     }
     if (changes['tableData']) {
-      this.tableData1 = [...this.tableData];
+      this.tableData1 = [...this.tableData].reverse();
       // console.log("tabledata1",this.tableData1)
       this.totalItems = this.tableData1.length;
       this.updatePaginatedItems();
@@ -337,6 +337,7 @@ export class ReusableTableComponent {
     }
 
     this.tableData = filteredData;
+    this.updatePaginatedItems();
   }
 
   @HostListener('document:click', ['$event'])
