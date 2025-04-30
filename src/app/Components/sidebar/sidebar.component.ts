@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { NavigationEnd, Router, RouterLink } from '@angular/router';
 import { UsericonDropdownComponent } from "../../UI/usericon-dropdown/usericon-dropdown.component";
+import { AuthService } from '../../Services/auth/auth.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -32,7 +33,7 @@ export class SidebarComponent {
 
   menuItems = [
     { id: 1, label: 'Dashboard', icon: 'fa-solid fa-house', route: '/home', active: false },
-    {id: 2, label: "Assignments", icon: "fa-solid fa-tasks", route: "/assignee",active: false},
+    { id: 2, label: "Assignments", icon: "fa-solid fa-tasks", route: "/assignee",active: false},
     { id: 3, label: 'Approvals', icon: ' fa-solid fa-clipboard-check', route: '/approvaltable', active: false },
     { id: 4, label: 'Reports', icon: 'fa-solid fa-chart-simple', route: '/reports', active: false },
     { id: 5, label: 'Draft', icon: 'fa-brands fa-firstdraft', route: '/draft', active: false },
@@ -42,9 +43,20 @@ export class SidebarComponent {
 
   ];
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private auth: AuthService) {}
 
   ngOnInit() {
+
+    const role = this.auth.getUserRole();
+    const roles = Array.isArray(role) ? role : [role];
+
+    const isEmtUser = roles.includes('EMTUser');
+
+    if (isEmtUser) {
+      // Remove the Draft menu item (id = 5)
+      this.menuItems = this.menuItems.filter(item => item.id !== 5);
+    }
+
     this.setActiveFromRoute(this.router.url);
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
