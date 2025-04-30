@@ -48,7 +48,7 @@
               <th title="{{header === 'overallRiskRating' ? 'Current Risk Rating' : headerDisplayMap[header] || header}}">
                 <div class="header-with-filter">
                   {{ headerDisplayMap[header] || header }}
-                  @if(header === 'departmentName' || header === 'riskType' || header ==='riskDepartment'){
+                  @if(header === 'departmentName' || header === 'riskType' || header ==='riskDepartment' ||  header ==='riskTypeName'){
                     <span class="filter-icon" (click)="toggleFilter($event, header)">&#9662;</span>
                     @if(showFilterDropdown && currentFilterColumn === header){
                       <div class="filter-dropdown" (click)="$event.stopPropagation()">
@@ -95,6 +95,12 @@
                 </div>
               </ng-container>
 
+              <ng-container *ngIf="key === 'overallRiskRatingBefore'">
+                <div [ngClass]="getRiskRatingStyle(row[key])">
+                  {{ row[key] }}
+                </div>
+              </ng-container>
+
               <ng-container *ngIf="key === 'plannedActionDate'">
                 {{ row[key] | date : "d MMM yyyy" }}
               </ng-container>
@@ -111,7 +117,7 @@
                   ----
                 </ng-template></ng-container>
 
-              @if(key !=='riskStatus'&& key !=='overallRiskRating' && key
+              @if(key !=='riskStatus'&& key !=='overallRiskRating' && key !=='overallRiskRatingBefore' && key
               !=='plannedActionDate' && key!=='projects') {
               <ng-container>
                 {{row[key]!=null? (row[key].toString() | slice : 0 : 40):'' }}{{ row[key]!=null? (row[key].length > 40 ? "..." : "") : "" }}
