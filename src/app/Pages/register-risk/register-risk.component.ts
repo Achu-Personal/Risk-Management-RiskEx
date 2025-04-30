@@ -418,8 +418,9 @@ export class RegisterRiskComponent {
     );
     console.log(departmentData);
 
+    const departmentId = departmentData.id;
     const departmentName = departmentData.departmentName;
-    console.log('department name from child', departmentName);
+    console.log('department id from child', departmentId);
 
     this.api
       .getProjects(departmentName)
@@ -436,7 +437,7 @@ export class RegisterRiskComponent {
       });
 
     this.api
-      .getAllUsersByDepartmentName(departmentName)
+      .getUsersByDepartmentId(departmentId)
       .pipe(
         catchError((error) => {
           console.error('Error fetching users:', error);
