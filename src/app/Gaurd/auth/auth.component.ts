@@ -58,9 +58,9 @@ export class AuthComponentSSO {
 
       const account = this.msalService.instance.getActiveAccount();
       if (account) {
-        console.log('Session active:', account);
+        // console.log('Session active:', account);
         this.usermail = account.username;
-        console.log(' active account:', this.usermail);
+        // console.log(' active account:', this.usermail);
 
         try {
           const tokenResponse = await firstValueFrom(
