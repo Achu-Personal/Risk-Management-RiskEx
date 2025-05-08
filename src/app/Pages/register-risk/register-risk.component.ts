@@ -72,6 +72,7 @@ export class RegisterRiskComponent {
   draftId:string='';
 
   ngOnInit() {
+    if(this.route.queryParams){
     this.route.queryParams.subscribe(params => {
       if (Object.keys(params).length > 0) {
       console.log("draft dataaaaaaaaaaaaaaa from drafttttt",params); // All query parameters as an object
@@ -84,6 +85,7 @@ export class RegisterRiskComponent {
 
 
     });
+  }
 
 
     this.departmentName = this.authService.getDepartmentName()!;

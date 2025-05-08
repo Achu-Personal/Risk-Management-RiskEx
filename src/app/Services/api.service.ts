@@ -539,6 +539,10 @@ export class ApiService {
     return this.http.get(`${this.baseUrl}/Risk/draft/${id}`,)
   }
 
+  updateDraft(id:any,payload:any){
+    return this.http.put(`${this.baseUrl}/Risk/draft/${id}`,payload)
+  }
+
 }
 
 
