@@ -168,6 +168,11 @@ export class ISMSFormComponent {
   ngOnInit() {
     if (this.qmsDraftId) {
       this.isDraftidPresent = false;
+      this.isLoading = true;
+
+      setTimeout(() => {
+        this.isLoading = false;
+      }, 5000); // 5000 milliseconds = 5 seconds
 
       console.log('qmsDraftId received, loading draft...');
       this.loadDraft();
@@ -1049,6 +1054,7 @@ export class ISMSFormComponent {
   }
 
   closeDraft() {
+    this.isLoading=true;
 
       if (this.ismsForm.value.riskName) {
         const draft = {
@@ -1257,6 +1263,7 @@ export class ISMSFormComponent {
           ],
         };
         if (this.riskTypeValue == 2) {
+          if(this.isDraftidPresent){
          this.api.setDraftSecurityOrPrivacy(draft).subscribe({
                  next: (res: any) => {
                    this.isdraftConform = true;
@@ -1269,7 +1276,26 @@ export class ISMSFormComponent {
                    this.saveAsDraft();
                  },
                });
+              }else{
+                this.api.updateDraft(this.qmsDraftId,draft).subscribe({
+                  next: (res: any) => {
+                    this.isdraftConform = true;
+                    this.isLoading=false;
+
+                    this.saveAsDraft();
+                  },
+
+                  error: (error: HttpErrorResponse) => {
+                    this.draftErrorDisplay = error.message;
+                    this.isdraftErrorDisplay = true;
+                    this.isLoading=false;
+
+                    this.saveAsDraft();
+                  },
+                });
+              }
         } else {
+          if(this.isDraftidPresent){
           this.api.setDraftSecurityOrPrivacy(draft).subscribe({
             next: (res: any) => {
               this.isdraftConform = true;
@@ -1282,6 +1308,24 @@ export class ISMSFormComponent {
               this.saveAsDraft();
             },
           });
+        }else{
+          this.api.updateDraft(this.qmsDraftId,draft).subscribe({
+            next: (res: any) => {
+              this.isdraftConform = true;
+              this.isLoading=false;
+
+              this.saveAsDraft();
+            },
+
+            error: (error: HttpErrorResponse) => {
+              this.draftErrorDisplay = error.message;
+              this.isdraftErrorDisplay = true;
+              this.isLoading=false;
+
+              this.saveAsDraft();
+            },
+          });
+        }
         }
 
         // console.log('Draft Saved as JSON:', JSON.stringify(draft));
@@ -1685,6 +1729,7 @@ export class ISMSFormComponent {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    if (this.qmsDraftId.length>0) {
     if (!this.isDraftLoaded || !this.qmsDraft) {
       console.warn('Draft data is not yet loaded. Skipping ngOnChanges logic.');
 
@@ -1927,6 +1972,7 @@ export class ISMSFormComponent {
         }
       }
     }
+  }
   }
   //   } else {
   //     const draftKey = `draft_Privacy${this.departmentIdForAdminToAdd}`;
