@@ -847,7 +847,9 @@ export class QMSFormComponent {
   }
 
   async closeDraft() {
+
     this.isLoading=true;
+    this.saveAsDraft()
 
     const formValue = this.qmsForm.value;
     if (formValue.riskName) {
@@ -937,7 +939,7 @@ export class QMSFormComponent {
           next: (res: any) => {
             this.isdraftConform = true;
             this.isLoading=false;
-            this.saveAsDraft();
+            // this.saveAsDraft();
 
           },
 
@@ -945,7 +947,7 @@ export class QMSFormComponent {
             this.draftErrorDisplay = error.message;
             this.isdraftErrorDisplay = true;
             this.isLoading=false;
-            this.saveAsDraft();
+            // this.saveAsDraft();
           },
         });
 
@@ -955,7 +957,7 @@ export class QMSFormComponent {
             this.isdraftConform = true;
             this.isLoading=false;
 
-            this.saveAsDraft();
+            // this.saveAsDraft();
           },
 
           error: (error: HttpErrorResponse) => {
@@ -963,7 +965,7 @@ export class QMSFormComponent {
             this.isdraftErrorDisplay = true;
             this.isLoading=false;
 
-            this.saveAsDraft();
+            // this.saveAsDraft();
           },
         });
       }
@@ -973,7 +975,7 @@ export class QMSFormComponent {
       this.isNothingInDraft = true;
       this.isLoading=false;
 
-      this.saveAsDraft();
+      // this.saveAsDraft();
     }
   }
 

@@ -1055,6 +1055,7 @@ export class ISMSFormComponent {
 
   closeDraft() {
     this.isLoading=true;
+    this.saveAsDraft();
 
       if (this.ismsForm.value.riskName) {
         const draft = {
@@ -1267,13 +1268,13 @@ export class ISMSFormComponent {
          this.api.setDraftSecurityOrPrivacy(draft).subscribe({
                  next: (res: any) => {
                    this.isdraftConform = true;
-                   this.saveAsDraft();
+                  //  this.saveAsDraft();
                  },
 
                  error: (error: HttpErrorResponse) => {
                    this.draftErrorDisplay = error.message;
                    this.isdraftErrorDisplay = true;
-                   this.saveAsDraft();
+                  //  this.saveAsDraft();
                  },
                });
               }else{
@@ -1282,7 +1283,7 @@ export class ISMSFormComponent {
                     this.isdraftConform = true;
                     this.isLoading=false;
 
-                    this.saveAsDraft();
+                    // this.saveAsDraft();
                   },
 
                   error: (error: HttpErrorResponse) => {
@@ -1290,7 +1291,7 @@ export class ISMSFormComponent {
                     this.isdraftErrorDisplay = true;
                     this.isLoading=false;
 
-                    this.saveAsDraft();
+                    // this.saveAsDraft();
                   },
                 });
               }
@@ -1299,13 +1300,13 @@ export class ISMSFormComponent {
           this.api.setDraftSecurityOrPrivacy(draft).subscribe({
             next: (res: any) => {
               this.isdraftConform = true;
-              this.saveAsDraft();
+              // this.saveAsDraft();
             },
 
             error: (error: HttpErrorResponse) => {
               this.draftErrorDisplay = error.message;
               this.isdraftErrorDisplay = true;
-              this.saveAsDraft();
+              // this.saveAsDraft();
             },
           });
         }else{
@@ -1314,7 +1315,7 @@ export class ISMSFormComponent {
               this.isdraftConform = true;
               this.isLoading=false;
 
-              this.saveAsDraft();
+              // this.saveAsDraft();
             },
 
             error: (error: HttpErrorResponse) => {
@@ -1322,7 +1323,7 @@ export class ISMSFormComponent {
               this.isdraftErrorDisplay = true;
               this.isLoading=false;
 
-              this.saveAsDraft();
+              // this.saveAsDraft();
             },
           });
         }
@@ -1333,7 +1334,7 @@ export class ISMSFormComponent {
         // this.isdraftConform = true;
       } else {
         this.isNothingInDraft = true;
-        this.saveAsDraft();
+        // this.saveAsDraft();
       }
 
 
