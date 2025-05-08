@@ -34,6 +34,7 @@ import { FormCategoryTableComponent } from '../form-category-table/form-category
 import { FormLikelihoodImpactTooltipComponent } from '../form-likelihood-impact-tooltip/form-likelihood-impact-tooltip.component';
 import { HttpErrorResponse } from '@angular/common/http';
 import { catchError, of } from 'rxjs';
+import { AuthService } from '../../Services/auth/auth.service';
 @Component({
   selector: 'app-qms-form',
   standalone: true,
@@ -136,11 +137,17 @@ export class QMSFormComponent {
     private el: ElementRef,
     private renderer: Renderer2,
     private api: ApiService,
-    private router: Router
+    private router: Router,
+    public authService: AuthService
   ) {}
   ngOnInit() {
-    if (this.qmsDraftId) {
+    if (this.qmsDraftId.length>0) {
       this.isDraftidPresent = false;
+      this.isLoading = true;
+
+      setTimeout(() => {
+        this.isLoading = false;
+      }, 5000); // 5000 milliseconds = 5 seconds
 
       console.log('qmsDraftId received, loading draft...');
       this.loadDraft();
@@ -178,6 +185,7 @@ export class QMSFormComponent {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    if(this.qmsDraftId.length>0){
     if (!this.isDraftLoaded || !this.qmsDraft) {
       console.warn('Draft data is not yet loaded. Skipping ngOnChanges logic.');
 
@@ -311,6 +319,7 @@ export class QMSFormComponent {
         }
 
     }
+  }
   }
 
   qmsForm = new FormGroup({
@@ -838,26 +847,7 @@ export class QMSFormComponent {
   }
 
   async closeDraft() {
-    // if (this.isAdmin == 'Admin') {
-    //   if (this.projectId && this.projectId != 0) {
-    //     await this.getRiskId(null, this.projectId);
-    //   } else {
-    //     await this.getRiskId(Number(this.departmentIdForAdminToAdd));
-    //   }
-    // }
-
-    // if (this.isAdmin !== 'Admin') {
-    //   if (this.projectId && this.projectId != 0) {
-    //     await this.getRiskId(null, this.projectId);
-    //   } else {
-    //     await this.getRiskId(Number(this.departmentId));
-    //   }
-    // }
-
-    // if (!this.riskId) {
-    //   console.error('Failed to fetch Risk ID. Submission aborted.');
-    //   return;
-    // }
+    this.isLoading=true;
 
     const formValue = this.qmsForm.value;
     if (formValue.riskName) {
@@ -902,6 +892,7 @@ export class QMSFormComponent {
               Number(this.preSelectedProject) !== 0
             ? Number(this.preSelectedProject)
             : null,
+       createdBy:this.authService.getCurrentUserId(),
 
         riskAssessments: [
           {
@@ -941,25 +932,53 @@ export class QMSFormComponent {
         ],
       };
 
-      this.api.setDraftQuality(payload).subscribe({
-        next: (res: any) => {
-          this.isdraftConform = true;
-          this.saveAsDraft();
-        },
+      if(this.isDraftidPresent){
+        this.api.setDraftQuality(payload).subscribe({
+          next: (res: any) => {
+            this.isdraftConform = true;
+            this.isLoading=false;
+            this.saveAsDraft();
 
-        error: (error: HttpErrorResponse) => {
-          this.draftErrorDisplay = error.message;
-          this.isdraftErrorDisplay = true;
-          this.saveAsDraft();
-        },
-      });
+          },
+
+          error: (error: HttpErrorResponse) => {
+            this.draftErrorDisplay = error.message;
+            this.isdraftErrorDisplay = true;
+            this.isLoading=false;
+            this.saveAsDraft();
+          },
+        });
+
+      } else{
+        this.api.updateDraft(this.qmsDraftId,payload).subscribe({
+          next: (res: any) => {
+            this.isdraftConform = true;
+            this.isLoading=false;
+
+            this.saveAsDraft();
+          },
+
+          error: (error: HttpErrorResponse) => {
+            this.draftErrorDisplay = error.message;
+            this.isdraftErrorDisplay = true;
+            this.isLoading=false;
+
+            this.saveAsDraft();
+          },
+        });
+      }
+
+
     } else {
       this.isNothingInDraft = true;
+      this.isLoading=false;
+
       this.saveAsDraft();
     }
   }
 
   loadDraft() {
+
     this.api.getSingleDraftById(this.qmsDraftId).subscribe((res: any) => {
       this.qmsDraft = res;
       console.log('draft in load draft function is is issinsu', this.qmsDraft);
