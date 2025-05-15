@@ -52,6 +52,7 @@ export class RiskBasicDetailsCardComponent {
     "mitigation": " ",
     "contingency": " ",
     "overallRiskRating": null,
+    "overalRiskRatingBefore":null,
     "plannedActionDate": " ",
     "remarks": " ",
     "riskStatus": "",
@@ -107,7 +108,7 @@ export class RiskBasicDetailsCardComponent {
   {
     console.log("id",this.allData.id);
 
-    this.router.navigate(['update'], { queryParams: {riskId:this.allData.id ,riskType:this.allData.riskType,overallRiskRatingBefore:this.allData.overallRiskRating} }); //         /ViewRisk/${this.allData.id}
+    this.router.navigate(['update'], { queryParams: {riskId:this.allData.id ,riskType:this.allData.riskType,overallRiskRatingBefore:this.allData.overalRiskRatingBefore} }); //         /ViewRisk/${this.allData.id}
   }
 
 }
