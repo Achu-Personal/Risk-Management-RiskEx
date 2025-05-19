@@ -39,7 +39,6 @@ export class ThankyouComponent {
   ApprovalForm: FormGroup;
   isReasonSubmitted: boolean = false;
 
-  // Getter for form control
   get reasonControl() {
     return this.ApprovalForm.get('reason');
   }
@@ -57,17 +56,50 @@ export class ThankyouComponent {
     this.riskId = idParam ? +idParam : 0;
     this.approvalStatus = 'Approved';
 
-    // First get risk details to determine which review to update
     this.api.getRiskById(this.riskId).subscribe({
       next: (riskDetails: any) => {
-        // Determine which review to update based on risk status and number of assessments
-        let reviewToUpdate: number;
-        if (riskDetails.riskStatus === 'open' && riskDetails.riskAssessments.length > 1) {
-          // If risk is open and has more than one review, update the first review
-          reviewToUpdate = riskDetails.riskAssessments[0].review.id;
-        } else {
-          // If risk is closed or has only one review, update the latest review
-          reviewToUpdate = riskDetails.riskAssessments[riskDetails.riskAssessments.length - 1].review.id;
+
+        let reviewToUpdate: number | null = null;
+        let pendingReviewFound = false;
+
+        for (const assessment of riskDetails.riskAssessments) {
+          if (assessment.review && assessment.review.reviewStatus === "ReviewPending") {
+            reviewToUpdate = assessment.review.id;
+            pendingReviewFound = true;
+            break;
+          }
+        }
+
+        if (!pendingReviewFound) {
+          if (riskDetails.riskStatus === 'close') {
+            let latestReview = null;
+            let latestReviewId = 0;
+
+            for (const assessment of riskDetails.riskAssessments) {
+              if (assessment.review && assessment.review.id > latestReviewId) {
+                latestReview = assessment.review;
+                latestReviewId = assessment.review.id;
+              }
+            }
+
+            reviewToUpdate = latestReview ? latestReview.id : null;
+            if (!reviewToUpdate) {
+              this.notification.error('No valid review found for this closed risk');
+              return;
+            }
+          } else {
+            if (riskDetails.riskAssessments.length > 0) {
+              for (let i = 0; i < riskDetails.riskAssessments.length; i++) {
+                if (riskDetails.riskAssessments[i].review) {
+                  reviewToUpdate = riskDetails.riskAssessments[i].review.id;
+                  break;
+                }
+              }
+            } else {
+              this.notification.error('No assessments found for this risk');
+              return;
+            }
+          }
         }
 
         const approvalUpdates = {
@@ -82,7 +114,6 @@ export class ThankyouComponent {
             const impact = riskDetails.impact;
             const mitigation = riskDetails.mitigation;
 
-            // Find reviewer name based on the review being updated
             let reviewerName = 'External Reviewer';
             if (riskDetails.riskStatus === 'open' && riskDetails.riskAssessments.length > 1) {
               reviewerName = riskDetails.riskAssessments[0].review?.reviewerName || reviewerName;

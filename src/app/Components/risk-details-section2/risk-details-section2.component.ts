@@ -13,10 +13,6 @@ import { ActivatedRoute } from '@angular/router';
   styleUrl: './risk-details-section2.component.scss'
 })
 export class RiskDetailsSection2Component {
-
-
-
-
   @Input() data:any= null;
 
   currentStep =1;
@@ -83,12 +79,12 @@ export class RiskDetailsSection2Component {
 
 
     setTimeout(()=>{
-        console.log('Datsssssssssa=', this.data);
+        // console.log('Datsssssssssa=', this.data);
       this.route.paramMap.subscribe((params) => {
         let id = params.get('id');
 
         this.api.getReviewSatus(id!, true).subscribe((e: any) => {
-          console.log('ReviewSatusy', e);
+          // console.log('ReviewSatusy', e);
 
 
           this.stepperData[0].actionBy = this.data.CreatedBy;
@@ -103,7 +99,7 @@ export class RiskDetailsSection2Component {
 
         });
         this.api.getMitigationSatus(id!).subscribe((e: any) => {
-          console.log('MitigationSatus', e);
+          // console.log('MitigationSatus', e);
           this.stepperData[2].actionBy = e.actionBy;
           this.stepperData[2].isCompleted = e.isMitigated;
           this.stepperData[2].date = e.isMitigated? e.date:'...';
@@ -112,7 +108,7 @@ export class RiskDetailsSection2Component {
 
 
         this.api.getReviewSatus(id!, false).subscribe((e: any) => {
-          console.log('ReviewSatusafter', e);
+          // console.log('ReviewSatusafter', e);
           this.stepperData[3].actionBy = e.isReviewed >= 4 ?e.actionBy: '...' ;
           this.stepperData[3].isCompleted = e.isReviewed >= 4 ? true : false;
           this.stepperData[3].date = e.isReviewed >= 4? e.date : "...";

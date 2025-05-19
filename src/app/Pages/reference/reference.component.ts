@@ -27,7 +27,7 @@ export class ReferenceComponent {
 
   ngOnInit(): void {
     this.api.getRiskResponses().subscribe((e) => {
-      console.log('Data=', e);
+      // console.log('Data=', e);
       this.riskResponseBody = e;
     });
 
@@ -39,7 +39,7 @@ export class ReferenceComponent {
     });
   }
 
-  
+
   selectedTab: number = 0;
   tabs = [
     { label: 'Likelihood' },

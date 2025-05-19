@@ -91,7 +91,7 @@ export class DraftPageComponent {
 
       this.api.getDraftOfAdmin().subscribe((e: any) => {
         this.tableBody = e;
-        console.log('draftdata', e);
+        // console.log('draftdata', e);
 
         this.isLoading = false;
       });
@@ -119,7 +119,7 @@ export class DraftPageComponent {
       ];
 
       this.api.getDraft(this.auth.getDepartmentId()).subscribe((e: any) => {
-        console.log('draftdata', e);
+        // console.log('draftdata', e);
         this.tableBody = e;
         this.isLoading = false;
       });
@@ -127,8 +127,8 @@ export class DraftPageComponent {
   }
 
   onDraftEdited(row: any) {
-    console.log('draftrowdata', row);
-    this.router.navigate([`/addrisk`], { queryParams: row }); 
+    // console.log('draftrowdata', row);
+    this.router.navigate([`/addrisk`], { queryParams: row });
   }
 
   conformDraftDelete() {
@@ -146,7 +146,7 @@ export class DraftPageComponent {
 
     this.isconformDelete = true;
     if (this.conformDelteDraft) {
-      console.log('Draftid', row.id);
+      // console.log('Draftid', row.id);
       this.api.deleteDraft(row.id).subscribe((e: any) => {});
 
       this.tableBody.forEach((item, index) => {
