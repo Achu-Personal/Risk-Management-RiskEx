@@ -20,11 +20,8 @@ export class AssignmentComponent {
   constructor(private router: Router,private api:ApiService,private auth:AuthService) {}
 
   OnClickRow(row:any): void {
-
-
     this.router.navigate([`/ViewRisk/${row.id}`]);
     // console.log("rowdata",row);
-
   }
 
 

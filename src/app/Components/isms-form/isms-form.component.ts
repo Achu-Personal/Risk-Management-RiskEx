@@ -174,7 +174,7 @@ export class ISMSFormComponent {
         this.isLoading = false;
       }, 5000); // 5000 milliseconds = 5 seconds
 
-      console.log('qmsDraftId received, loading draft...');
+      // console.log('qmsDraftId received, loading draft...');
       this.loadDraft();
     } else {
       this.isDraftidPresent = true;
@@ -183,30 +183,30 @@ export class ISMSFormComponent {
 
   generateRiskDisplayId() {
     this.riskDisplayId = 'RSK-' + this.departmentCode + '-***';
-    console.log('id id id id id id ', this.riskDisplayId);
+    // console.log('id id id id id id ', this.riskDisplayId);
   }
   generateRiskDisplayIdByProject() {
     const ProjectDataForDisplay = this.dropdownProject.find(
       (factor: any) => factor.id == this.projectId
     );
-    console.log('data simple data data simple data', ProjectDataForDisplay);
+    // console.log('data simple data data simple data', ProjectDataForDisplay);
     const ProjectCode = ProjectDataForDisplay.projectCode;
-    console.log('code code code', ProjectCode);
+    // console.log('code code code', ProjectCode);
 
     this.riskDisplayId = 'RSK-' + ProjectCode + '-***';
-    console.log('id id id id id id ', this.riskDisplayId);
+    // console.log('id id id id id id ', this.riskDisplayId);
   }
 
   generateRiskDisplayIdByProjectForAdmin() {
     const ProjectDataForDisplay = this.dropdownDataProjectForAdmin.find(
       (factor: any) => factor.id == this.projectId
     );
-    console.log('data simple data data simple data', ProjectDataForDisplay);
+    // console.log('data simple data data simple data', ProjectDataForDisplay);
     const ProjectCode = ProjectDataForDisplay.projectCode;
-    console.log('code code code', ProjectCode);
+    // console.log('code code code', ProjectCode);
 
     this.riskDisplayId = 'RSK-' + ProjectCode + '-***';
-    console.log('id id id id id id ', this.riskDisplayId);
+    // console.log('id id id id id id ', this.riskDisplayId);
   }
 
   handleDropdownOpen(dropdownId: string | undefined): void {
@@ -244,12 +244,12 @@ export class ISMSFormComponent {
     const departmentDataForDisplay = this.dropdownDepartment.find(
       (factor: any) => factor.id == this.departmentIdForAdminToAdd
     );
-    console.log('data simple data data simple data', departmentDataForDisplay);
+    // console.log('data simple data data simple data', departmentDataForDisplay);
     const departmentCode = departmentDataForDisplay.departmentCode;
-    console.log('code code code', departmentCode);
+    // console.log('code code code', departmentCode);
 
     this.riskDisplayId = 'RSK-' + departmentCode + '-***';
-    console.log('id id id id id id ', this.riskDisplayId);
+    // console.log('id id id id id id ', this.riskDisplayId);
   }
 
   // loadDraftForAdmin() {
@@ -466,30 +466,30 @@ export class ISMSFormComponent {
 
   onDropdownChangeReviewer(selectedReviewer: any) {
     const selectedreviewer = selectedReviewer;
-    console.log('selected factor id is ', selectedreviewer);
+    // console.log('selected factor id is ', selectedreviewer);
 
     const selectedFactor = this.dropdownReviewer.find(
       (factor) => factor.fullName === selectedreviewer
     );
-    console.log('selected factor is ', selectedFactor);
+    // console.log('selected factor is ', selectedFactor);
     if (selectedFactor) {
       if (selectedFactor.type === 'Internal') {
         this.isInternal = true;
         this.internalReviewerIdFromDropdown = selectedFactor.id;
-        console.log(
-          'Selected internal reviewer ID:',
-          this.internalReviewerIdFromDropdown
-        );
+        // console.log(
+        //   'Selected internal reviewer ID:',
+        //   this.internalReviewerIdFromDropdown
+        // );
 
-        console.log('this is a internal reviewer', this.isInternal);
+        // console.log('this is a internal reviewer', this.isInternal);
       } else if (selectedFactor.type === 'External') {
         this.isInternal = false;
         this.externalReviewerIdFromDropdown = selectedFactor.id;
-        console.log(
-          'Selected external reviewer ID:',
-          this.externalReviewerIdFromDropdown
-        );
-        console.log('this is a internal reviewer', this.isInternal);
+        // console.log(
+        //   'Selected external reviewer ID:',
+        //   this.externalReviewerIdFromDropdown
+        // );
+        // console.log('this is a internal reviewer', this.isInternal);
       }
     } else {
       console.error('No matching reviewer found for the selected ID.');
@@ -658,7 +658,7 @@ export class ISMSFormComponent {
       return;
     }
 
-    console.log(this.ismsForm.value);
+    // console.log(this.ismsForm.value);
     const formValue = this.ismsForm.value;
 
     if (this.ismsForm.invalid) {
@@ -922,7 +922,7 @@ export class ISMSFormComponent {
 
     if (this.qmsDraftId) {
       this.api.deleteDraft(this.qmsDraftId).subscribe((res: any) => {
-        console.log(res);
+        // console.log(res);
         console.log('Draft Removed!');
       });
 
@@ -939,7 +939,7 @@ export class ISMSFormComponent {
         next: (res: any) => {
           if (res && res.riskId) {
             this.riskId = res.riskId;
-            console.log('Risk ID received:', this.riskId);
+            // console.log('Risk ID received:', this.riskId);
             resolve();
           } else {
             console.error('Risk ID is not available in the response:', res);
@@ -1552,10 +1552,10 @@ export class ISMSFormComponent {
     if (this.riskTypeValue == 2) {
       this.api.getSingleDraftById(this.qmsDraftId).subscribe((res: any) => {
         this.qmsDraft = res;
-        console.log(
-          'draft in load draft function is is issinsu',
-          this.qmsDraft
-        );
+        // console.log(
+        //   'draft in load draft function is is issinsu',
+        //   this.qmsDraft
+        // );
 
         this.ismsForm.patchValue({
           riskName: this.qmsDraft.riskName ?? null,
@@ -1625,10 +1625,10 @@ export class ISMSFormComponent {
     } else {
       this.api.getSingleDraftById(this.qmsDraftId).subscribe((res: any) => {
         this.qmsDraft = res;
-        console.log(
-          'draft in load draft function is is issinsu',
-          this.qmsDraft
-        );
+        // console.log(
+        //   'draft in load draft function is is issinsu',
+        //   this.qmsDraft
+        // );
 
         this.ismsForm.patchValue({
           riskName: this.qmsDraft.riskName ?? null,
@@ -1867,7 +1867,7 @@ export class ISMSFormComponent {
       }
 
       if (changes['qmsDraftId'] && changes['qmsDraftId'].currentValue) {
-        console.log('Received qmsDraftId from parent:', this.qmsDraftId);
+        // console.log('Received qmsDraftId from parent:', this.qmsDraftId);
         this.loadDraft();
       }
 
@@ -1884,7 +1884,7 @@ export class ISMSFormComponent {
         riskFactors.forEach((factor, index) => {
           const preSelectedLikelihood =
             this.qmsDraft.riskAssessments[index].likelihood;
-          console.log('logloglogloglog', preSelectedLikelihood);
+          // console.log('logloglogloglog', preSelectedLikelihood);
 
           // const selectedFactor = this.dropdownLikelihood.find(f => f.assessmentFactor === preSelectedLikelihood);
 
@@ -1975,7 +1975,7 @@ export class ISMSFormComponent {
       }
     }
     if (changes['departmentCode'] && this.departmentCode) {
-        console.log('department code from parent', this.departmentCode);
+        // console.log('department code from parent', this.departmentCode);
         this.generateRiskDisplayId();
       }
   }

@@ -30,26 +30,15 @@ ngOnInit(): void {
   // Set IsCommentRequiered to true if the approval status is 'rejected'
   if (this.data.approvalStatus === 'rejected') {
     this.IsCommentRequiered = true;
-    this.commentForm.get('approve')?.setValidators([Validators.required]); // Make comment field required
+    this.commentForm.get('approve')?.setValidators([Validators.required]);
   } else {
     this.IsCommentRequiered = false;
-    this.commentForm.get('approve')?.clearValidators(); // Remove validation for other cases
+    this.commentForm.get('approve')?.clearValidators();
   }
 
-  this.commentForm.get('approve')?.updateValueAndValidity(); // Refresh validation
+  this.commentForm.get('approve')?.updateValueAndValidity();
 }
 
-  // onConfirm(): void {
-  //   this.dialogRef.close(true);
-
-
-  //     console.log(this.commentForm.value);
-
-  // }
-
-  // onCancel(): void {
-  //   this.dialogRef.close(false);
-  // }
 
   onConfirm(): void {
     if (this.commentForm.valid) {

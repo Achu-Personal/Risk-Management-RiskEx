@@ -62,10 +62,10 @@ export class FormDataNotInListComponent {
 
   }
 
-  dropdownId = Math.random().toString(36).substring(2, 9); // Generate unique ID
+  dropdownId = Math.random().toString(36).substring(2, 9);
 
   toggleDropdown() {
-    this.openDropdown.emit(this.dropdownId); // Notify parent
+    this.openDropdown.emit(this.dropdownId); 
   }
 
   get isDropdownOpen() {

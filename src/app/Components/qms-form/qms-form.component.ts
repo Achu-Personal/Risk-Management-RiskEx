@@ -1,4 +1,3 @@
-import { department } from './../../Interfaces/deparments.interface';
 import {
   Component,
   ElementRef,
@@ -141,7 +140,7 @@ export class QMSFormComponent {
     public authService: AuthService
   ) {}
   ngOnInit() {
-    console.log('department code is', this.departmentCode);
+    // console.log('department code is', this.departmentCode);
 
     if (this.qmsDraftId.length > 0) {
       this.isDraftidPresent = false;
@@ -151,7 +150,7 @@ export class QMSFormComponent {
         this.isLoading = false;
       }, 5000); // 5000 milliseconds = 5 seconds
 
-      console.log('qmsDraftId received, loading draft...');
+      // console.log('qmsDraftId received, loading draft...');
       this.loadDraft();
     } else {
       this.isDraftidPresent = true;
@@ -160,30 +159,30 @@ export class QMSFormComponent {
 
   generateRiskDisplayId() {
     this.riskDisplayId = 'RSK-' + this.departmentCode + '-***';
-    console.log('id id id id id id ', this.riskDisplayId);
+    // console.log('id id id id id id ', this.riskDisplayId);
   }
   generateRiskDisplayIdByProject() {
     const ProjectDataForDisplay = this.dropdownProject.find(
       (factor: any) => factor.id == this.projectId
     );
-    console.log('data simple data data simple data', ProjectDataForDisplay);
+    // console.log('data simple data data simple data', ProjectDataForDisplay);
     const ProjectCode = ProjectDataForDisplay.projectCode;
-    console.log('code code code', ProjectCode);
+    // console.log('code code code', ProjectCode);
 
     this.riskDisplayId = 'RSK-' + ProjectCode + '-***';
-    console.log('id id id id id id ', this.riskDisplayId);
+    // console.log('id id id id id id ', this.riskDisplayId);
   }
 
   generateRiskDisplayIdByProjectForAdmin() {
     const ProjectDataForDisplay = this.dropdownDataProjectForAdmin.find(
       (factor: any) => factor.id == this.projectId
     );
-    console.log('data simple data data simple data', ProjectDataForDisplay);
+    // console.log('data simple data data simple data', ProjectDataForDisplay);
     const ProjectCode = ProjectDataForDisplay.projectCode;
-    console.log('code code code', ProjectCode);
+    // console.log('code code code', ProjectCode);
 
     this.riskDisplayId = 'RSK-' + ProjectCode + '-***';
-    console.log('id id id id id id ', this.riskDisplayId);
+    // console.log('id id id id id id ', this.riskDisplayId);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -274,12 +273,12 @@ export class QMSFormComponent {
         });
       }
       if (changes['qmsDraftId'] && changes['qmsDraftId'].currentValue) {
-        console.log('Received qmsDraftId from parent:', this.qmsDraftId);
+        // console.log('Received qmsDraftId from parent:', this.qmsDraftId);
         this.loadDraft();
       }
 
       if (changes['departmentCode'] && this.departmentCode) {
-        console.log('department code from parent', this.departmentCode);
+        // console.log('department code from parent', this.departmentCode);
         this.generateRiskDisplayId();
       }
 
@@ -326,7 +325,7 @@ export class QMSFormComponent {
     }
 
       if (changes['departmentCode'] && this.departmentCode) {
-        console.log('department code from parent', this.departmentCode);
+        // console.log('department code from parent', this.departmentCode);
         this.generateRiskDisplayId();
       }
   }
@@ -393,21 +392,21 @@ export class QMSFormComponent {
     const selectedFactorId = Number(event);
     this.departmentIdForAdminToAdd = selectedFactorId;
     this.departmentSelectedByAdmin.emit(this.departmentIdForAdminToAdd);
-    console.log('dfghjkldfghjkdcfvghj', this.departmentIdForAdminToAdd);
+    // console.log('dfghjkldfghjkdcfvghj', this.departmentIdForAdminToAdd);
     this.departmentIdForAdminToAddToNumber = this.departmentIdForAdminToAdd;
     this.departmentIdForAdminToAddToString =
       this.departmentIdForAdminToAddToNumber.toString();
-    console.log('the project id isssssssssssssssssssssss', this.projectId);
+    // console.log('the project id isssssssssssssssssssssss', this.projectId);
 
     const departmentDataForDisplay = this.dropdownDepartment.find(
       (factor: any) => factor.id == this.departmentIdForAdminToAdd
     );
-    console.log('data simple data data simple data', departmentDataForDisplay);
+    // console.log('data simple data data simple data', departmentDataForDisplay);
     const departmentCode = departmentDataForDisplay.departmentCode;
-    console.log('code code code', departmentCode);
+    // console.log('code code code', departmentCode);
 
     this.riskDisplayId = 'RSK-' + departmentCode + '-***';
-    console.log('id id id id id id ', this.riskDisplayId);
+    // console.log('id id id id id id ', this.riskDisplayId);
 
     // this.loadDraftForAdmin();
   }
@@ -492,7 +491,7 @@ export class QMSFormComponent {
     );
     if (selectedFactor) {
       this.likelihoodValue = selectedFactor.likelihood;
-      console.log('Selected Likelihood:', this.likelihoodValue);
+      // console.log('Selected Likelihood:', this.likelihoodValue);
     } else {
       console.log('Selected factor not found.');
     }
@@ -507,7 +506,7 @@ export class QMSFormComponent {
     );
     if (selectedFactor) {
       this.impactValue = selectedFactor.impact;
-      console.log('Selected Impact:', this.impactValue);
+      // console.log('Selected Impact:', this.impactValue);
     } else {
       console.log('Selected factor not found.');
     }
@@ -521,30 +520,30 @@ export class QMSFormComponent {
 
   onDropdownChangeReviewer(selectedReviewer: any) {
     const selectedreviewer = selectedReviewer;
-    console.log('selected factor id is ', selectedreviewer);
+    // console.log('selected factor id is ', selectedreviewer);
 
     const selectedFactor = this.dropdownReviewer.find(
       (factor) => factor.fullName === selectedreviewer
     );
-    console.log('selected factor is ', selectedFactor);
+    // console.log('selected factor is ', selectedFactor);
     if (selectedFactor) {
       if (selectedFactor.type === 'Internal') {
         this.isInternal = true;
         this.internalReviewerIdFromDropdown = selectedFactor.id;
-        console.log(
-          'Selected internal reviewer ID:',
-          this.internalReviewerIdFromDropdown
-        );
+        // console.log(
+        //   'Selected internal reviewer ID:',
+        //   this.internalReviewerIdFromDropdown
+        // );
 
-        console.log('this is a internal reviewer', this.isInternal);
+        // console.log('this is a internal reviewer', this.isInternal);
       } else if (selectedFactor.type === 'External') {
         this.isInternal = false;
         this.externalReviewerIdFromDropdown = selectedFactor.id;
-        console.log(
-          'Selected external reviewer ID:',
-          this.externalReviewerIdFromDropdown
-        );
-        console.log('this is a internal reviewer', this.isInternal);
+        // console.log(
+        //   'Selected external reviewer ID:',
+        //   this.externalReviewerIdFromDropdown
+        // );
+        // console.log('this is a internal reviewer', this.isInternal);
       }
     } else {
       console.error('No matching reviewer found for the selected ID.');
@@ -600,7 +599,7 @@ export class QMSFormComponent {
       return;
     }
 
-    console.log(this.qmsForm.value);
+    // console.log(this.qmsForm.value);
 
     if (this.qmsForm.invalid) {
       console.log('Form is invalid, submission blocked');
@@ -712,7 +711,7 @@ export class QMSFormComponent {
     this.submitForm.emit(payload);
     if (this.qmsDraftId) {
       this.api.deleteDraft(this.qmsDraftId).subscribe((res: any) => {
-        console.log(res);
+        // console.log(res);
         console.log('Draft Removed!');
       });
     }
@@ -729,7 +728,7 @@ export class QMSFormComponent {
         next: (res: any) => {
           if (res && res.riskId) {
             this.riskId = res.riskId;
-            console.log('Risk ID received in function:', this.riskId);
+            // console.log('Risk ID received in function:', this.riskId);
             resolve();
           } else {
             console.error('Risk ID is not available in the response:', res);
@@ -794,18 +793,18 @@ export class QMSFormComponent {
       },
     });
 
-    console.log(
-      'the project id isssssssssssssssssssssss after assignee add api',
-      this.projectId
-    );
+    // console.log(
+    //   'the project id isssssssssssssssssssssss after assignee add api',
+    //   this.projectId
+    // );
   }
 
   saveReviewer(value: any) {
     this.isLoading = true; // Show loader when function starts
-    console.log(
-      'the project id isssssssssssssssssssssss before reviewer add api',
-      this.projectId
-    );
+    // console.log(
+    //   'the project id isssssssssssssssssssssss before reviewer add api',
+    //   this.projectId
+    // );
 
     const payload = {
       email: value.email,
@@ -836,10 +835,10 @@ export class QMSFormComponent {
       },
     });
 
-    console.log(
-      'the project id isssssssssssssssssssssss after reviewer add api',
-      this.projectId
-    );
+    // console.log(
+    //   'the project id isssssssssssssssssssssss after reviewer add api',
+    //   this.projectId
+    // );
   }
 
   closeHeatMap() {
@@ -986,7 +985,7 @@ export class QMSFormComponent {
   loadDraft() {
     this.api.getSingleDraftById(this.qmsDraftId).subscribe((res: any) => {
       this.qmsDraft = res;
-      console.log('draft in load draft function is is issinsu', this.qmsDraft);
+      // console.log('draft in load draft function is is issinsu', this.qmsDraft);
 
       this.qmsForm.patchValue({
         riskName: this.qmsDraft.riskName ?? null,
@@ -1091,13 +1090,13 @@ export class QMSFormComponent {
   showModal = false;
   tableType = '';
   handleInfoClickLikelihood(event: boolean) {
-    console.log('Info button clicked, boolean value:', event);
+    // console.log('Info button clicked, boolean value:', event);
     this.showModal = true;
     this.tableType = 'likelihood';
     // Do something when button is clicked
   }
   handleInfoClickImpact(event: boolean) {
-    console.log('Info button clicked, boolean value:', event);
+    // console.log('Info button clicked, boolean value:', event);
     this.showModal = true;
     this.tableType = 'impact';
     // Do something when button is clicked

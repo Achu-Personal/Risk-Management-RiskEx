@@ -1,6 +1,5 @@
 import { Component, ElementRef, EventEmitter, Input, Output } from '@angular/core';
 import { StyleButtonComponent } from '../../UI/style-button/style-button.component';
-import { Pipe, PipeTransform } from '@angular/core';
 
 
 @Component({
@@ -15,16 +14,12 @@ export class FormConformPopupComponent {
 
   @Output() closeDialog = new EventEmitter<void>();
   @Output() notCloseDialog = new EventEmitter<void>();
-  constructor(private el: ElementRef){}
-
-
-
-
+  constructor(private el: ElementRef) { }
 
   close() {
     this.closeDialog.emit();
   }
-  notClose(){
+  notClose() {
     this.notCloseDialog.emit();
   }
 
