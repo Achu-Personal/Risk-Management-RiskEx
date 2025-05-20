@@ -250,8 +250,6 @@ export class ISMSFormComponent {
 
     this.riskDisplayId = 'RSK-' + departmentCode + '-***';
     console.log('id id id id id id ', this.riskDisplayId);
-
-
   }
 
   // loadDraftForAdmin() {
@@ -922,16 +920,15 @@ export class ISMSFormComponent {
 
     this.submitForm.emit(payload);
 
-      if (this.qmsDraftId) {
-        this.api.deleteDraft(this.qmsDraftId).subscribe((res: any) => {
-          console.log(res);
-          console.log('Draft Removed!');
-        });
+    if (this.qmsDraftId) {
+      this.api.deleteDraft(this.qmsDraftId).subscribe((res: any) => {
+        console.log(res);
+        console.log('Draft Removed!');
+      });
 
-
-    this.isLoading = false;
+      this.isLoading = false;
+    }
   }
-}
 
   private getRiskId(
     departmentId: number | null = null,
@@ -1054,249 +1051,248 @@ export class ISMSFormComponent {
   }
 
   closeDraft() {
-    this.isLoading=true;
+    this.isLoading = true;
     this.saveAsDraft();
 
-      if (this.ismsForm.value.riskName) {
-        const draft = {
-          riskId: this.riskId || null,
-          riskName: this.ismsForm.value.riskName,
-          description: this.ismsForm.value.description || null,
-          riskType: Number(this.riskTypeValue),
-          impact: this.ismsForm.value.impact || null,
-          mitigation: this.ismsForm.value.mitigation || null,
-          contingency: this.ismsForm.value.contingency || null,
-          OverallRiskRatingBefore: Number(this.overallRiskRating) || null,
-          responsibleUserId:
-            Number(this.newAssigneeId) !== 0 &&
-            !isNaN(Number(this.newAssigneeId))
-              ? Number(this.newAssigneeId)
-              : Number(this.responsiblePersonId) !== 0 &&
-                !isNaN(Number(this.responsiblePersonId))
-              ? Number(this.responsiblePersonId)
-              : this.preSelectedResponsiblePerson !== 0 &&
-                !isNaN(Number(this.preSelectedResponsiblePerson))
-              ? Number(this.preSelectedResponsiblePerson)
-              : null,
-          plannedActionDate: this.ismsForm.value.plannedActionDate
-            ? `${this.ismsForm.value.plannedActionDate}T00:00:00.000Z`
+    if (this.ismsForm.value.riskName) {
+      const draft = {
+        riskId: this.riskId || null,
+        riskName: this.ismsForm.value.riskName,
+        description: this.ismsForm.value.description || null,
+        riskType: Number(this.riskTypeValue),
+        impact: this.ismsForm.value.impact || null,
+        mitigation: this.ismsForm.value.mitigation || null,
+        contingency: this.ismsForm.value.contingency || null,
+        OverallRiskRatingBefore: Number(this.overallRiskRating) || null,
+        responsibleUserId:
+          Number(this.newAssigneeId) !== 0 && !isNaN(Number(this.newAssigneeId))
+            ? Number(this.newAssigneeId)
+            : Number(this.responsiblePersonId) !== 0 &&
+              !isNaN(Number(this.responsiblePersonId))
+            ? Number(this.responsiblePersonId)
+            : this.preSelectedResponsiblePerson !== 0 &&
+              !isNaN(Number(this.preSelectedResponsiblePerson))
+            ? Number(this.preSelectedResponsiblePerson)
             : null,
+        plannedActionDate: this.ismsForm.value.plannedActionDate
+          ? `${this.ismsForm.value.plannedActionDate}T00:00:00.000Z`
+          : null,
 
-          departmentId:
-            Number(this.departmentIdForAdminToAdd) &&
-            !isNaN(Number(this.departmentIdForAdminToAdd))
-              ? Number(this.departmentIdForAdminToAdd)
-              : Number(this.departmentId) !== 0 &&
-                !isNaN(Number(this.departmentId))
-              ? Number(this.departmentId)
-              : null,
-          projectId:
-            this.projectId &&
-            !isNaN(Number(this.projectId)) &&
-            Number(this.projectId) !== 0
-              ? Number(this.projectId)
-              : this.preSelectedProject &&
-                !isNaN(Number(this.preSelectedProject)) &&
-                Number(this.preSelectedProject) !== 0
-              ? Number(this.preSelectedProject)
-              : null,
-          riskAssessments: [
-            {
-              likelihood:
-                Number(this.confidentialityLikelihoodId) &&
-                !isNaN(Number(this.confidentialityLikelihoodId))
-                  ? Number(this.confidentialityLikelihoodId)
-                  : this.preSelectedConfidentialityLikelihood &&
-                    !isNaN(Number(this.preSelectedConfidentialityLikelihood))
-                  ? Number(this.preSelectedConfidentialityLikelihood)
+        departmentId:
+          Number(this.departmentIdForAdminToAdd) &&
+          !isNaN(Number(this.departmentIdForAdminToAdd))
+            ? Number(this.departmentIdForAdminToAdd)
+            : Number(this.departmentId) !== 0 &&
+              !isNaN(Number(this.departmentId))
+            ? Number(this.departmentId)
+            : null,
+        projectId:
+          this.projectId &&
+          !isNaN(Number(this.projectId)) &&
+          Number(this.projectId) !== 0
+            ? Number(this.projectId)
+            : this.preSelectedProject &&
+              !isNaN(Number(this.preSelectedProject)) &&
+              Number(this.preSelectedProject) !== 0
+            ? Number(this.preSelectedProject)
+            : null,
+        riskAssessments: [
+          {
+            likelihood:
+              Number(this.confidentialityLikelihoodId) &&
+              !isNaN(Number(this.confidentialityLikelihoodId))
+                ? Number(this.confidentialityLikelihoodId)
+                : this.preSelectedConfidentialityLikelihood &&
+                  !isNaN(Number(this.preSelectedConfidentialityLikelihood))
+                ? Number(this.preSelectedConfidentialityLikelihood)
+                : null,
+            impact:
+              Number(this.confidentialityImpactId) &&
+              !isNaN(Number(this.confidentialityImpactId))
+                ? Number(this.confidentialityImpactId)
+                : this.preSelectedConfidentialityImpact &&
+                  !isNaN(Number(this.preSelectedConfidentialityImpact))
+                ? Number(this.preSelectedConfidentialityImpact)
+                : null,
+            isMitigated: false,
+            assessmentBasisId: 1,
+            riskFactor: this.confidentialityRiskFactor,
+            review: {
+              userId:
+                this.isInternal &&
+                Number(this.internalReviewerIdFromDropdown) !== 0 &&
+                !isNaN(Number(this.internalReviewerIdFromDropdown))
+                  ? Number(this.internalReviewerIdFromDropdown)
                   : null,
-              impact:
-                Number(this.confidentialityImpactId) &&
-                !isNaN(Number(this.confidentialityImpactId))
-                  ? Number(this.confidentialityImpactId)
-                  : this.preSelectedConfidentialityImpact &&
-                    !isNaN(Number(this.preSelectedConfidentialityImpact))
-                  ? Number(this.preSelectedConfidentialityImpact)
+              externalReviewerId:
+                Number(this.externalReviewerIdFromInput) &&
+                !isNaN(Number(this.externalReviewerIdFromInput))
+                  ? Number(this.externalReviewerIdFromInput)
+                  : !this.isInternal &&
+                    Number(this.externalReviewerIdFromDropdown) !== 0 &&
+                    !isNaN(Number(this.externalReviewerIdFromDropdown))
+                  ? Number(this.externalReviewerIdFromDropdown)
                   : null,
-              isMitigated: false,
-              assessmentBasisId: 1,
-              riskFactor: this.confidentialityRiskFactor,
-              review: {
-                userId:
-                  this.isInternal &&
-                  Number(this.internalReviewerIdFromDropdown) !== 0 &&
-                  !isNaN(Number(this.internalReviewerIdFromDropdown))
-                    ? Number(this.internalReviewerIdFromDropdown)
-                    : null,
-                externalReviewerId:
-                  Number(this.externalReviewerIdFromInput) &&
-                  !isNaN(Number(this.externalReviewerIdFromInput))
-                    ? Number(this.externalReviewerIdFromInput)
-                    : !this.isInternal &&
-                      Number(this.externalReviewerIdFromDropdown) !== 0 &&
-                      !isNaN(Number(this.externalReviewerIdFromDropdown))
-                    ? Number(this.externalReviewerIdFromDropdown)
-                    : null,
-                comments: ' ',
-                reviewStatus: 1,
-              },
+              comments: ' ',
+              reviewStatus: 1,
             },
-            {
-              likelihood:
-                Number(this.integrityLikelihoodId) &&
-                !isNaN(Number(this.integrityLikelihoodId))
-                  ? Number(this.integrityLikelihoodId)
-                  : this.preSelectedIntegrityLikelihood &&
-                    !isNaN(Number(this.preSelectedIntegrityLikelihood))
-                  ? Number(this.preSelectedIntegrityLikelihood)
+          },
+          {
+            likelihood:
+              Number(this.integrityLikelihoodId) &&
+              !isNaN(Number(this.integrityLikelihoodId))
+                ? Number(this.integrityLikelihoodId)
+                : this.preSelectedIntegrityLikelihood &&
+                  !isNaN(Number(this.preSelectedIntegrityLikelihood))
+                ? Number(this.preSelectedIntegrityLikelihood)
+                : null,
+            impact:
+              Number(this.integrityImpactId) &&
+              !isNaN(Number(this.integrityImpactId))
+                ? Number(this.integrityImpactId)
+                : this.preSelectedIntegrityImpact &&
+                  !isNaN(Number(this.preSelectedIntegrityImpact))
+                ? Number(this.preSelectedIntegrityImpact)
+                : null,
+            isMitigated: false,
+            assessmentBasisId: 2,
+            riskFactor: this.integrityRiskFactor,
+            review: {
+              userId:
+                this.isInternal &&
+                Number(this.internalReviewerIdFromDropdown) !== 0 &&
+                !isNaN(Number(this.internalReviewerIdFromDropdown))
+                  ? Number(this.internalReviewerIdFromDropdown)
                   : null,
-              impact:
-                Number(this.integrityImpactId) &&
-                !isNaN(Number(this.integrityImpactId))
-                  ? Number(this.integrityImpactId)
-                  : this.preSelectedIntegrityImpact &&
-                    !isNaN(Number(this.preSelectedIntegrityImpact))
-                  ? Number(this.preSelectedIntegrityImpact)
+              externalReviewerId:
+                Number(this.externalReviewerIdFromInput) &&
+                !isNaN(Number(this.externalReviewerIdFromInput))
+                  ? Number(this.externalReviewerIdFromInput)
+                  : !this.isInternal &&
+                    Number(this.externalReviewerIdFromDropdown) !== 0 &&
+                    !isNaN(Number(this.externalReviewerIdFromDropdown))
+                  ? Number(this.externalReviewerIdFromDropdown)
                   : null,
-              isMitigated: false,
-              assessmentBasisId: 2,
-              riskFactor: this.integrityRiskFactor,
-              review: {
-                userId:
-                  this.isInternal &&
-                  Number(this.internalReviewerIdFromDropdown) !== 0 &&
-                  !isNaN(Number(this.internalReviewerIdFromDropdown))
-                    ? Number(this.internalReviewerIdFromDropdown)
-                    : null,
-                externalReviewerId:
-                  Number(this.externalReviewerIdFromInput) &&
-                  !isNaN(Number(this.externalReviewerIdFromInput))
-                    ? Number(this.externalReviewerIdFromInput)
-                    : !this.isInternal &&
-                      Number(this.externalReviewerIdFromDropdown) !== 0 &&
-                      !isNaN(Number(this.externalReviewerIdFromDropdown))
-                    ? Number(this.externalReviewerIdFromDropdown)
-                    : null,
-                comments: ' ',
-                reviewStatus: 1,
-              },
+              comments: ' ',
+              reviewStatus: 1,
             },
-            {
-              likelihood:
-                Number(this.availabilityLikelihoodId) &&
-                !isNaN(Number(this.availabilityLikelihoodId))
-                  ? Number(this.availabilityLikelihoodId)
-                  : this.preSelectedAvailabilityLikelihood &&
-                    !isNaN(Number(this.preSelectedAvailabilityLikelihood))
-                  ? Number(this.preSelectedAvailabilityLikelihood)
+          },
+          {
+            likelihood:
+              Number(this.availabilityLikelihoodId) &&
+              !isNaN(Number(this.availabilityLikelihoodId))
+                ? Number(this.availabilityLikelihoodId)
+                : this.preSelectedAvailabilityLikelihood &&
+                  !isNaN(Number(this.preSelectedAvailabilityLikelihood))
+                ? Number(this.preSelectedAvailabilityLikelihood)
+                : null,
+            impact:
+              Number(this.availabilityImpactId) &&
+              !isNaN(Number(this.availabilityImpactId))
+                ? Number(this.availabilityImpactId)
+                : this.preSelectedAvailabilityImpact &&
+                  !isNaN(Number(this.preSelectedAvailabilityImpact))
+                ? Number(this.preSelectedAvailabilityImpact)
+                : null,
+            isMitigated: false,
+            assessmentBasisId: 3,
+            riskFactor: this.availabilityRiskFactor,
+            review: {
+              userId:
+                this.isInternal &&
+                Number(this.internalReviewerIdFromDropdown) !== 0 &&
+                !isNaN(Number(this.internalReviewerIdFromDropdown))
+                  ? Number(this.internalReviewerIdFromDropdown)
                   : null,
-              impact:
-                Number(this.availabilityImpactId) &&
-                !isNaN(Number(this.availabilityImpactId))
-                  ? Number(this.availabilityImpactId)
-                  : this.preSelectedAvailabilityImpact &&
-                    !isNaN(Number(this.preSelectedAvailabilityImpact))
-                  ? Number(this.preSelectedAvailabilityImpact)
+              externalReviewerId:
+                Number(this.externalReviewerIdFromInput) &&
+                !isNaN(Number(this.externalReviewerIdFromInput))
+                  ? Number(this.externalReviewerIdFromInput)
+                  : !this.isInternal &&
+                    Number(this.externalReviewerIdFromDropdown) !== 0 &&
+                    !isNaN(Number(this.externalReviewerIdFromDropdown))
+                  ? Number(this.externalReviewerIdFromDropdown)
                   : null,
-              isMitigated: false,
-              assessmentBasisId: 3,
-              riskFactor: this.availabilityRiskFactor,
-              review: {
-                userId:
-                  this.isInternal &&
-                  Number(this.internalReviewerIdFromDropdown) !== 0 &&
-                  !isNaN(Number(this.internalReviewerIdFromDropdown))
-                    ? Number(this.internalReviewerIdFromDropdown)
-                    : null,
-                externalReviewerId:
-                  Number(this.externalReviewerIdFromInput) &&
-                  !isNaN(Number(this.externalReviewerIdFromInput))
-                    ? Number(this.externalReviewerIdFromInput)
-                    : !this.isInternal &&
-                      Number(this.externalReviewerIdFromDropdown) !== 0 &&
-                      !isNaN(Number(this.externalReviewerIdFromDropdown))
-                    ? Number(this.externalReviewerIdFromDropdown)
-                    : null,
-                comments: ' ',
-                reviewStatus: 1,
-              },
+              comments: ' ',
+              reviewStatus: 1,
             },
-            {
-              likelihood:
-                Number(this.privacyLikelihoodId) &&
-                !isNaN(Number(this.privacyLikelihoodId))
-                  ? Number(this.privacyLikelihoodId)
-                  : this.preSelectedPrivacyLikelihood &&
-                    !isNaN(Number(this.preSelectedPrivacyLikelihood))
-                  ? Number(this.preSelectedPrivacyLikelihood)
+          },
+          {
+            likelihood:
+              Number(this.privacyLikelihoodId) &&
+              !isNaN(Number(this.privacyLikelihoodId))
+                ? Number(this.privacyLikelihoodId)
+                : this.preSelectedPrivacyLikelihood &&
+                  !isNaN(Number(this.preSelectedPrivacyLikelihood))
+                ? Number(this.preSelectedPrivacyLikelihood)
+                : null,
+            impact:
+              Number(this.privacyImpactId) &&
+              !isNaN(Number(this.privacyImpactId))
+                ? Number(this.privacyImpactId)
+                : this.preSelectedPrivacyImpact &&
+                  !isNaN(Number(this.preSelectedPrivacyImpact))
+                ? Number(this.preSelectedPrivacyImpact)
+                : null,
+            isMitigated: false,
+            assessmentBasisId: 4,
+            riskFactor: this.privacyRiskFactor,
+            review: {
+              userId:
+                this.isInternal &&
+                Number(this.internalReviewerIdFromDropdown) !== 0 &&
+                !isNaN(Number(this.internalReviewerIdFromDropdown))
+                  ? Number(this.internalReviewerIdFromDropdown)
                   : null,
-              impact:
-                Number(this.privacyImpactId) &&
-                !isNaN(Number(this.privacyImpactId))
-                  ? Number(this.privacyImpactId)
-                  : this.preSelectedPrivacyImpact &&
-                    !isNaN(Number(this.preSelectedPrivacyImpact))
-                  ? Number(this.preSelectedPrivacyImpact)
+              externalReviewerId:
+                Number(this.externalReviewerIdFromInput) &&
+                !isNaN(Number(this.externalReviewerIdFromInput))
+                  ? Number(this.externalReviewerIdFromInput)
+                  : !this.isInternal &&
+                    Number(this.externalReviewerIdFromDropdown) !== 0 &&
+                    !isNaN(Number(this.externalReviewerIdFromDropdown))
+                  ? Number(this.externalReviewerIdFromDropdown)
                   : null,
-              isMitigated: false,
-              assessmentBasisId: 4,
-              riskFactor: this.privacyRiskFactor,
-              review: {
-                userId:
-                  this.isInternal &&
-                  Number(this.internalReviewerIdFromDropdown) !== 0 &&
-                  !isNaN(Number(this.internalReviewerIdFromDropdown))
-                    ? Number(this.internalReviewerIdFromDropdown)
-                    : null,
-                externalReviewerId:
-                  Number(this.externalReviewerIdFromInput) &&
-                  !isNaN(Number(this.externalReviewerIdFromInput))
-                    ? Number(this.externalReviewerIdFromInput)
-                    : !this.isInternal &&
-                      Number(this.externalReviewerIdFromDropdown) !== 0 &&
-                      !isNaN(Number(this.externalReviewerIdFromDropdown))
-                    ? Number(this.externalReviewerIdFromDropdown)
-                    : null,
-                comments: ' ',
-                reviewStatus: 1,
-              },
+              comments: ' ',
+              reviewStatus: 1,
             },
-          ],
-        };
-        if (this.riskTypeValue == 2) {
-          if(this.isDraftidPresent){
-         this.api.setDraftSecurityOrPrivacy(draft).subscribe({
-                 next: (res: any) => {
-                   this.isdraftConform = true;
-                  //  this.saveAsDraft();
-                 },
+          },
+        ],
+      };
+      if (this.riskTypeValue == 2) {
+        if (this.isDraftidPresent) {
+          this.api.setDraftSecurityOrPrivacy(draft).subscribe({
+            next: (res: any) => {
+              this.isdraftConform = true;
+              //  this.saveAsDraft();
+            },
 
-                 error: (error: HttpErrorResponse) => {
-                   this.draftErrorDisplay = error.message;
-                   this.isdraftErrorDisplay = true;
-                  //  this.saveAsDraft();
-                 },
-               });
-              }else{
-                this.api.updateDraft(this.qmsDraftId,draft).subscribe({
-                  next: (res: any) => {
-                    this.isdraftConform = true;
-                    this.isLoading=false;
-
-                    // this.saveAsDraft();
-                  },
-
-                  error: (error: HttpErrorResponse) => {
-                    this.draftErrorDisplay = error.message;
-                    this.isdraftErrorDisplay = true;
-                    this.isLoading=false;
-
-                    // this.saveAsDraft();
-                  },
-                });
-              }
+            error: (error: HttpErrorResponse) => {
+              this.draftErrorDisplay = error.message;
+              this.isdraftErrorDisplay = true;
+              //  this.saveAsDraft();
+            },
+          });
         } else {
-          if(this.isDraftidPresent){
+          this.api.updateDraft(this.qmsDraftId, draft).subscribe({
+            next: (res: any) => {
+              this.isdraftConform = true;
+              this.isLoading = false;
+
+              // this.saveAsDraft();
+            },
+
+            error: (error: HttpErrorResponse) => {
+              this.draftErrorDisplay = error.message;
+              this.isdraftErrorDisplay = true;
+              this.isLoading = false;
+
+              // this.saveAsDraft();
+            },
+          });
+        }
+      } else {
+        if (this.isDraftidPresent) {
           this.api.setDraftSecurityOrPrivacy(draft).subscribe({
             next: (res: any) => {
               this.isdraftConform = true;
@@ -1309,11 +1305,11 @@ export class ISMSFormComponent {
               // this.saveAsDraft();
             },
           });
-        }else{
-          this.api.updateDraft(this.qmsDraftId,draft).subscribe({
+        } else {
+          this.api.updateDraft(this.qmsDraftId, draft).subscribe({
             next: (res: any) => {
               this.isdraftConform = true;
-              this.isLoading=false;
+              this.isLoading = false;
 
               // this.saveAsDraft();
             },
@@ -1321,22 +1317,21 @@ export class ISMSFormComponent {
             error: (error: HttpErrorResponse) => {
               this.draftErrorDisplay = error.message;
               this.isdraftErrorDisplay = true;
-              this.isLoading=false;
+              this.isLoading = false;
 
               // this.saveAsDraft();
             },
           });
         }
-        }
-
-        // console.log('Draft Saved as JSON:', JSON.stringify(draft));
-        // this.saveAsDraft();
-        // this.isdraftConform = true;
-      } else {
-        this.isNothingInDraft = true;
-        // this.saveAsDraft();
       }
 
+      // console.log('Draft Saved as JSON:', JSON.stringify(draft));
+      // this.saveAsDraft();
+      // this.isdraftConform = true;
+    } else {
+      this.isNothingInDraft = true;
+      // this.saveAsDraft();
+    }
 
     // if(this.isAdmin =='Admin'){
     //   if (this.ismsForm.value.riskName) {
@@ -1552,7 +1547,6 @@ export class ISMSFormComponent {
     //     this.saveAsDraft();
     //   }
     // }
-
   }
   loadDraft() {
     if (this.riskTypeValue == 2) {
@@ -1730,250 +1724,260 @@ export class ISMSFormComponent {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (this.qmsDraftId.length>0) {
-    if (!this.isDraftLoaded || !this.qmsDraft) {
-      console.warn('Draft data is not yet loaded. Skipping ngOnChanges logic.');
+    if (this.qmsDraftId.length > 0) {
+      if (!this.isDraftLoaded || !this.qmsDraft) {
+        console.warn(
+          'Draft data is not yet loaded. Skipping ngOnChanges logic.'
+        );
 
-      this.api.getSingleDraftById(this.qmsDraftId).subscribe((res: any) => {
-        this.qmsDraft = res;
-        if (this.isAdmin == 'Admin') {
-          this.departmentId = this.qmsDraft.departmentId;
-          const departmentNameDetails = this.dropdownDepartment.find(
-            (factor) => factor.id === this.departmentId
-          );
-          this.departmentName = departmentNameDetails.departmentName;
+        this.api.getSingleDraftById(this.qmsDraftId).subscribe((res: any) => {
+          this.qmsDraft = res;
+          if (this.isAdmin == 'Admin') {
+            this.departmentId = this.qmsDraft.departmentId;
+            const departmentNameDetails = this.dropdownDepartment.find(
+              (factor) => factor.id === this.departmentId
+            );
+            this.departmentName = departmentNameDetails.departmentName;
 
-          this.api
-            .getProjects(this.departmentName)
-            .pipe(
-              catchError((error: any) => {
-                console.error('Error fetching Projects:', error);
-                return of([]);
-              })
-            )
-            .subscribe((res: any) => {
-              this.dropdownDataProjectForAdmin = res;
+            this.api
+              .getProjects(this.departmentName)
+              .pipe(
+                catchError((error: any) => {
+                  console.error('Error fetching Projects:', error);
+                  return of([]);
+                })
+              )
+              .subscribe((res: any) => {
+                this.dropdownDataProjectForAdmin = res;
+              });
+            this.api
+              .getUsersByDepartmentId(Number(this.departmentId))
+              .pipe(
+                catchError((error) => {
+                  console.error('Error fetching Users by Department:', error);
+                  return of([]);
+                })
+              )
+              .subscribe((res: any) => {
+                this.dropdownAssigneeForAdmin = res;
+              });
+          }
+
+          if (changes['dropdownLikelihood']) {
+            const riskFactors = [
+              'Confidentiality',
+              'Integrity',
+              'Availability',
+              'Privacy',
+            ];
+            riskFactors.forEach((factor, index) => {
+              const preSelectedLikelihood =
+                this.qmsDraft.riskAssessments[index].likelihood;
+              console.log('logloglogloglog', preSelectedLikelihood);
+
+              // const selectedFactor = this.dropdownLikelihood.find(f => f.assessmentFactor === preSelectedLikelihood);
+
+              if (preSelectedLikelihood) {
+                switch (factor) {
+                  case 'Confidentiality':
+                    this.preSelectedConfidentialityLikelihood =
+                      preSelectedLikelihood;
+                    break;
+                  case 'Integrity':
+                    this.preSelectedIntegrityLikelihood = preSelectedLikelihood;
+                    break;
+                  case 'Availability':
+                    this.preSelectedAvailabilityLikelihood =
+                      preSelectedLikelihood;
+                    break;
+                  case 'Privacy':
+                    this.preSelectedPrivacyLikelihood = preSelectedLikelihood;
+                    break;
+                }
+              }
             });
-          this.api
-            .getUsersByDepartmentId(Number(this.departmentId))
-            .pipe(
-              catchError((error) => {
-                console.error('Error fetching Users by Department:', error);
-                return of([]);
-              })
-            )
-            .subscribe((res: any) => {
-              this.dropdownAssigneeForAdmin = res;
+          }
+
+          // Handle dropdownImpact changes
+          if (changes['dropdownImpact']) {
+            const riskFactors = [
+              'Confidentiality',
+              'Integrity',
+              'Availability',
+              'Privacy',
+            ];
+
+            riskFactors.forEach((factor, index) => {
+              const preSelectedImpact =
+                this.qmsDraft.riskAssessments[index].impact; // Get the value from the draft
+              // const selectedFactor = this.dropdownImpact.find(
+              //   (f) => f.assessmentFactor === preSelectedImpact
+              // );
+
+              if (preSelectedImpact) {
+                switch (factor) {
+                  case 'Confidentiality':
+                    this.preSelectedConfidentialityImpact = preSelectedImpact;
+                    break;
+                  case 'Integrity':
+                    this.preSelectedIntegrityImpact = preSelectedImpact;
+                    break;
+                  case 'Availability':
+                    this.preSelectedAvailabilityImpact = preSelectedImpact;
+                    break;
+                  case 'Privacy':
+                    this.preSelectedPrivacyImpact = preSelectedImpact;
+                    break;
+                }
+              }
             });
+          }
+          if (changes['dropdownProject']) {
+            if (
+              this.qmsDraft.projectId !== null &&
+              this.qmsDraft.projectId !== undefined
+            ) {
+              this.preSelectedProject = this.qmsDraft.projectId;
+            }
+          }
 
+          if (changes['dropdownAssignee']) {
+            this.preSelectedResponsiblePerson = this.qmsDraft.responsibleUserId;
+          }
 
-        }
+          if (changes['dropdownReviewer']) {
+            const selectedFactor = this.dropdownReviewer.find(
+              (factor) =>
+                factor.id === this.qmsDraft.riskAssessments[0].review.userId
+            );
 
-        if (changes['dropdownLikelihood']) {
-          const riskFactors = [
-            'Confidentiality',
-            'Integrity',
-            'Availability',
-            'Privacy',
-          ];
-          riskFactors.forEach((factor, index) => {
-            const preSelectedLikelihood =
+            if (selectedFactor) {
+              if (selectedFactor.type === 'Internal') {
+                this.isInternal = true;
+                this.internalReviewerIdFromDropdown = selectedFactor.id;
+                this.preSelectedReviewer = selectedFactor?.fullName;
+              } else if (selectedFactor.type === 'External') {
+                this.isInternal = false;
+                this.externalReviewerIdFromDropdown = selectedFactor.id;
+                this.preSelectedReviewer = selectedFactor?.fullName;
+              }
+            }
+          }
+        });
+      }
+
+      if (changes['qmsDraftId'] && changes['qmsDraftId'].currentValue) {
+        console.log('Received qmsDraftId from parent:', this.qmsDraftId);
+        this.loadDraft();
+      }
+
+      if (changes['departmentCode'] && this.departmentCode) {
+        this.generateRiskDisplayId();
+      }
+      if (changes['dropdownLikelihood']) {
+        const riskFactors = [
+          'Confidentiality',
+          'Integrity',
+          'Availability',
+          'Privacy',
+        ];
+        riskFactors.forEach((factor, index) => {
+          const preSelectedLikelihood =
             this.qmsDraft.riskAssessments[index].likelihood;
-            console.log('logloglogloglog', preSelectedLikelihood);
+          console.log('logloglogloglog', preSelectedLikelihood);
 
-            // const selectedFactor = this.dropdownLikelihood.find(f => f.assessmentFactor === preSelectedLikelihood);
+          // const selectedFactor = this.dropdownLikelihood.find(f => f.assessmentFactor === preSelectedLikelihood);
 
-            if (preSelectedLikelihood) {
-              switch (factor) {
-                case 'Confidentiality':
-                  this.preSelectedConfidentialityLikelihood =
-                    preSelectedLikelihood;
-                  break;
-                case 'Integrity':
-                  this.preSelectedIntegrityLikelihood = preSelectedLikelihood;
-                  break;
-                case 'Availability':
-                  this.preSelectedAvailabilityLikelihood =
-                    preSelectedLikelihood;
-                  break;
-                case 'Privacy':
-                  this.preSelectedPrivacyLikelihood = preSelectedLikelihood;
-                  break;
-              }
-            }
-          });
-        }
-
-        // Handle dropdownImpact changes
-        if (changes['dropdownImpact']) {
-          const riskFactors = [
-            'Confidentiality',
-            'Integrity',
-            'Availability',
-            'Privacy',
-          ];
-
-          riskFactors.forEach((factor, index) => {
-            const preSelectedImpact = this.qmsDraft.riskAssessments[index].impact; // Get the value from the draft
-            // const selectedFactor = this.dropdownImpact.find(
-            //   (f) => f.assessmentFactor === preSelectedImpact
-            // );
-
-            if (preSelectedImpact) {
-              switch (factor) {
-                case 'Confidentiality':
-                  this.preSelectedConfidentialityImpact = preSelectedImpact;
-                  break;
-                case 'Integrity':
-                  this.preSelectedIntegrityImpact = preSelectedImpact;
-                  break;
-                case 'Availability':
-                  this.preSelectedAvailabilityImpact = preSelectedImpact;
-                  break;
-                case 'Privacy':
-                  this.preSelectedPrivacyImpact = preSelectedImpact;
-                  break;
-              }
-            }
-          });
-        }
-        if (changes['dropdownProject']) {
-          if (
-            this.qmsDraft.projectId !== null &&
-            this.qmsDraft.projectId !== undefined
-          ) {
-            this.preSelectedProject = this.qmsDraft.projectId;
-          }
-        }
-
-        if (changes['dropdownAssignee']) {
-          this.preSelectedResponsiblePerson = this.qmsDraft.responsibleUserId;
-        }
-
-        if (changes['dropdownReviewer']) {
-          const selectedFactor = this.dropdownReviewer.find(
-            (factor) =>
-              factor.id === this.qmsDraft.riskAssessments[0].review.userId
-          );
-
-          if (selectedFactor) {
-            if (selectedFactor.type === 'Internal') {
-              this.isInternal = true;
-              this.internalReviewerIdFromDropdown = selectedFactor.id;
-              this.preSelectedReviewer = selectedFactor?.fullName;
-            } else if (selectedFactor.type === 'External') {
-              this.isInternal = false;
-              this.externalReviewerIdFromDropdown = selectedFactor.id;
-              this.preSelectedReviewer = selectedFactor?.fullName;
+          if (preSelectedLikelihood) {
+            switch (factor) {
+              case 'Confidentiality':
+                this.preSelectedConfidentialityLikelihood =
+                  preSelectedLikelihood;
+                break;
+              case 'Integrity':
+                this.preSelectedIntegrityLikelihood = preSelectedLikelihood;
+                break;
+              case 'Availability':
+                this.preSelectedAvailabilityLikelihood = preSelectedLikelihood;
+                break;
+              case 'Privacy':
+                this.preSelectedPrivacyLikelihood = preSelectedLikelihood;
+                break;
             }
           }
+        });
+      }
+
+      // Handle dropdownImpact changes
+      if (changes['dropdownImpact']) {
+        const riskFactors = [
+          'Confidentiality',
+          'Integrity',
+          'Availability',
+          'Privacy',
+        ];
+
+        riskFactors.forEach((factor, index) => {
+          const preSelectedImpact = this.qmsDraft.riskAssessments[index].impact; // Get the value from the draft
+          // const selectedFactor = this.dropdownImpact.find(
+          //   (f) => f.assessmentFactor === preSelectedImpact
+          // );
+
+          if (preSelectedImpact) {
+            switch (factor) {
+              case 'Confidentiality':
+                this.preSelectedConfidentialityImpact = preSelectedImpact;
+                break;
+              case 'Integrity':
+                this.preSelectedIntegrityImpact = preSelectedImpact;
+                break;
+              case 'Availability':
+                this.preSelectedAvailabilityImpact = preSelectedImpact;
+                break;
+              case 'Privacy':
+                this.preSelectedPrivacyImpact = preSelectedImpact;
+                break;
+            }
+          }
+        });
+      }
+
+      if (changes['dropdownProject']) {
+        if (
+          this.qmsDraft.projectId !== null &&
+          this.qmsDraft.projectId !== undefined
+        ) {
+          this.preSelectedProject = this.qmsDraft.projectId;
         }
-      });
-    }
+      }
 
-    if (changes['qmsDraftId'] && changes['qmsDraftId'].currentValue) {
-      console.log('Received qmsDraftId from parent:', this.qmsDraftId);
-      this.loadDraft();
-    }
+      if (changes['dropdownAssignee']) {
+        this.preSelectedResponsiblePerson = this.qmsDraft.responsibleUserId;
+      }
 
+      if (changes['dropdownReviewer']) {
+        const selectedFactor = this.dropdownReviewer.find(
+          (factor) =>
+            factor.id === this.qmsDraft.riskAssessments[0].review.userId
+        );
+
+        if (selectedFactor) {
+          if (selectedFactor.type === 'Internal') {
+            this.isInternal = true;
+            this.internalReviewerIdFromDropdown = selectedFactor.id;
+            this.preSelectedReviewer = selectedFactor?.fullName;
+          } else if (selectedFactor.type === 'External') {
+            this.isInternal = false;
+            this.externalReviewerIdFromDropdown = selectedFactor.id;
+            this.preSelectedReviewer = selectedFactor?.fullName;
+          }
+        }
+      }
+    }
     if (changes['departmentCode'] && this.departmentCode) {
-      this.generateRiskDisplayId();
-    }
-    if (changes['dropdownLikelihood']) {
-      const riskFactors = [
-        'Confidentiality',
-        'Integrity',
-        'Availability',
-        'Privacy',
-      ];
-      riskFactors.forEach((factor, index) => {
-        const preSelectedLikelihood =
-        this.qmsDraft.riskAssessments[index].likelihood;
-        console.log('logloglogloglog', preSelectedLikelihood);
-
-        // const selectedFactor = this.dropdownLikelihood.find(f => f.assessmentFactor === preSelectedLikelihood);
-
-        if (preSelectedLikelihood) {
-          switch (factor) {
-            case 'Confidentiality':
-              this.preSelectedConfidentialityLikelihood = preSelectedLikelihood;
-              break;
-            case 'Integrity':
-              this.preSelectedIntegrityLikelihood = preSelectedLikelihood;
-              break;
-            case 'Availability':
-              this.preSelectedAvailabilityLikelihood = preSelectedLikelihood;
-              break;
-            case 'Privacy':
-              this.preSelectedPrivacyLikelihood = preSelectedLikelihood;
-              break;
-          }
-        }
-      });
-    }
-
-    // Handle dropdownImpact changes
-    if (changes['dropdownImpact']) {
-      const riskFactors = [
-        'Confidentiality',
-        'Integrity',
-        'Availability',
-        'Privacy',
-      ];
-
-      riskFactors.forEach((factor, index) => {
-        const preSelectedImpact = this.qmsDraft.riskAssessments[index].impact; // Get the value from the draft
-        // const selectedFactor = this.dropdownImpact.find(
-        //   (f) => f.assessmentFactor === preSelectedImpact
-        // );
-
-        if (preSelectedImpact) {
-          switch (factor) {
-            case 'Confidentiality':
-              this.preSelectedConfidentialityImpact = preSelectedImpact;
-              break;
-            case 'Integrity':
-              this.preSelectedIntegrityImpact = preSelectedImpact;
-              break;
-            case 'Availability':
-              this.preSelectedAvailabilityImpact = preSelectedImpact;
-              break;
-            case 'Privacy':
-              this.preSelectedPrivacyImpact = preSelectedImpact;
-              break;
-          }
-        }
-      });
-    }
-
-    if (changes['dropdownProject']) {
-      if (this.qmsDraft.projectId !== null && this.qmsDraft.projectId !== undefined) {
-        this.preSelectedProject = this.qmsDraft.projectId;
+        console.log('department code from parent', this.departmentCode);
+        this.generateRiskDisplayId();
       }
-    }
-
-    if (changes['dropdownAssignee']) {
-      this.preSelectedResponsiblePerson = this.qmsDraft.responsibleUserId;
-    }
-
-    if (changes['dropdownReviewer']) {
-      const selectedFactor = this.dropdownReviewer.find(
-        (factor) => factor.id === this.qmsDraft.riskAssessments[0].review.userId
-      );
-
-      if (selectedFactor) {
-        if (selectedFactor.type === 'Internal') {
-          this.isInternal = true;
-          this.internalReviewerIdFromDropdown = selectedFactor.id;
-          this.preSelectedReviewer = selectedFactor?.fullName;
-        } else if (selectedFactor.type === 'External') {
-          this.isInternal = false;
-          this.externalReviewerIdFromDropdown = selectedFactor.id;
-          this.preSelectedReviewer = selectedFactor?.fullName;
-        }
-      }
-    }
-  }
   }
   //   } else {
   //     const draftKey = `draft_Privacy${this.departmentIdForAdminToAdd}`;
