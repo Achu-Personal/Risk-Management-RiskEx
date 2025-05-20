@@ -151,7 +151,7 @@ export class RegisterRiskComponent {
         (factor:any) => factor.id == this.departmentId)
         console.log("data simple data data simple data",departmentDataForDisplay)
         this.departmentCode= departmentDataForDisplay.departmentCode
-        console.log("code code code",this.departmentCode)
+        console.log("code code code code code code",this.departmentCode)
         this.cdRef.detectChanges();
       });
 
