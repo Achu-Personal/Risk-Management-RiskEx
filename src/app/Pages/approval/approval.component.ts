@@ -125,20 +125,58 @@ export class ApprovalComponent {
     this.isPopupOpen = false;
     let id = parseInt(this.route.snapshot.paramMap.get('id')!);
 
-    // Get risk details to determine which review to update
     this.api.getRiskById(id).subscribe((res: any) => {
-      // Determine which review to update based on risk status and number of assessments
-      let reviewToUpdate: number;
-      if (res.riskStatus === 'open' && res.riskAssessments.length > 1) {
-        // If risk is open and has more than one review, update the first review
-        reviewToUpdate = res.riskAssessments[0].review.id;
-      } else {
-        // If risk is closed or has only one review, update the latest review
-        reviewToUpdate = res.riskAssessments[res.riskAssessments.length - 1].review.id;
-      }
+
+
+        let reviewToUpdate: number | null = null;
+        let pendingReviewFound = false;
+
+        // First check if there's a review with "Pending" status, prioritize it
+        for (const assessment of res.riskAssessments) {
+          if (assessment.review && assessment.review.reviewStatus === "ReviewPending") {
+            reviewToUpdate = assessment.review.id;
+            pendingReviewFound = true;
+            break;
+          }
+        }
+
+        if (!pendingReviewFound) {
+          if (res.riskStatus === 'close') {
+            // For closed risks, find the latest review in the assessments
+            let latestReview = null;
+            let latestReviewId = 0;
+
+            for (const assessment of res.riskAssessments) {
+              if (assessment.review && assessment.review.id > latestReviewId) {
+                latestReview = assessment.review;
+                latestReviewId = assessment.review.id;
+              }
+            }
+
+            reviewToUpdate = latestReview ? latestReview.id : null;
+            if (!reviewToUpdate) {
+              this.notification.error('No valid review found for this closed risk');
+              this.isLoader = false;
+              return;
+            }
+          } else {
+            if (res.riskAssessments.length > 0) {
+              for (let i = 0; i < res.riskAssessments.length; i++) {
+                if (res.riskAssessments[i].review) {
+                  reviewToUpdate = res.riskAssessments[i].review.id;
+                  break;
+                }
+              }
+            } else {
+              this.notification.error('No assessments found for this risk');
+              this.isLoader = false;
+              return;
+            }
+          }
+        }
+
 
       if (this.isPopupReject) {
-        // Handle reject workflow
         const updates = {
           approvalStatus: "Rejected",
           comments: event.comment,
@@ -228,7 +266,6 @@ export class ApprovalComponent {
         });
       } else {
         this.isLoader = true;
-        // Handle approve workflow
         const updates = {
           approvalStatus: "Approved",
           comments: event.comment,

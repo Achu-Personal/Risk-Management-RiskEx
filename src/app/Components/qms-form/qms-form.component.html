@@ -524,28 +524,41 @@
   ></app-form-data-not-in-list>
   } @if(isSuccessReviewer){
   <app-form-successfull
-    message="The new Reviewer has been added successfully!"
+    message="The new reviewer has been added successfully!"
     [isSuccessfull]="true"
     (closeDialog)="closeReviewer()"
   >
   </app-form-successfull>
+
   } @if(isErrorReviewer){
   <app-form-successfull
-    message="Something went wrong! <br> Please ensure all required fields are filled in correctly and check your internet connection.<br> If the issue persists, try again later or contact support."
+  message="Something went wrong!
+  <br><br>
+  A reviewer with this email already exists.
+  <br>
+  Please ensure all required fields are completed correctly and check your internet connection.
+  <br><br>
+  If the issue persists, please try again later or contact support for assistance."
     [isSuccessfull]="false"
     (closeDialog)="closeReviewer()"
   >
   </app-form-successfull>
   } @if(isSuccessAssignee){
   <app-form-successfull
-    message="The new Assignee has been added successfully!"
+    message="The new risk owner has been added successfully!"
     [isSuccessfull]="true"
     (closeDialog)="closeAssignee()"
   >
   </app-form-successfull>
   } @if(isErrorAssignee){
   <app-form-successfull
-    message="Something went wrong! <br> Please ensure all required fields are filled in correctly and check your internet connection.<br> If the issue persists, try again later or contact support."
+  message="Something went wrong!
+  <br><br>
+  A risk owner with this email already exists or may have been deactivated.
+  <br>
+  Please make sure all required fields are completed correctly and check your internet connection.
+  <br><br>
+  If the problem continues, please try again later or contact support for assistance."
     [isSuccessfull]="false"
     (closeDialog)="closeAssignee()"
   >
@@ -571,7 +584,7 @@
 
   } @if(isNothingInDraft){
   <app-form-successfull
-    message="Draft is empty. Please add atleast name before saving"
+    message="Draft is empty. Please add content before saving"
     [isSuccessfull]="false"
     (closeDialog)="closeDraftWhenNoDraft()"
   >
@@ -589,7 +602,7 @@
 
   @if(isdraftConform){
   <app-form-successfull
-    message="Draft saved successfully. Your progress will be available the next time you access this page."
+    message="Draft saved successfully.  You can access your progress on the Drafts page.."
     [isSuccessfull]="true"
     (closeDialog)="closeDialogSuccess()"
   >

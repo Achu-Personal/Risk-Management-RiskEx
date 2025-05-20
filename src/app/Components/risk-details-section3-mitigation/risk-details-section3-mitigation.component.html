@@ -44,7 +44,7 @@
 
         @if(riskAssessmentBefore.length>0)
         {
-          @if(riskAssessmentBefore[0].review.reviewStatus=="ReviewCompleted")
+          @if(riskAssessmentBefore[0].review.reviewStatus=="ReviewCompleted"||riskAssessmentBefore[0].review.reviewStatus=="Rejected")
           {
             <h5 style="font-weight: bold;margin-top: 50px">Reviewed By: <span> {{ riskAssessmentBefore.length>0?riskAssessmentBefore[0].review.reviewerName:'' }}</span></h5>
 

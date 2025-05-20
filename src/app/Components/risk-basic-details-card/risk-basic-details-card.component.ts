@@ -28,7 +28,7 @@ export class RiskBasicDetailsCardComponent {
     this.api.getReviewSatus(this.allData.id,false).subscribe((e)=>{
 
       this.postReviewstatus=e
-      console.log("review statushhhhhhh uuuuuu",this.postReviewstatus);
+      // console.log("review statushhhhhhh uuuuuu",this.postReviewstatus);
       this.cdr.detectChanges()
     })
 
@@ -38,7 +38,7 @@ export class RiskBasicDetailsCardComponent {
    //   console.log("review statushhhhhhh",e);
       this.cdr.detectChanges()
     })
-    console.log("is admin",this.authService.getUserRole());
+    // console.log("is admin",this.authService.getUserRole());
   }
 
 
@@ -52,6 +52,7 @@ export class RiskBasicDetailsCardComponent {
     "mitigation": " ",
     "contingency": " ",
     "overallRiskRating": null,
+    "overalRiskRatingBefore":null,
     "plannedActionDate": " ",
     "remarks": " ",
     "riskStatus": "",
@@ -91,23 +92,18 @@ export class RiskBasicDetailsCardComponent {
   @Input() preReviewstatus:any=null
   @Input() postReviewstatus:any=null
 
-
-
-
-
-
   onEditButtonClicked()
   {
-    console.log("id",this.allData.id);
+    // console.log("id",this.allData.id);
 
-    this.router.navigate([`edit`], { state: { riskData: this.allData } }) //         /ViewRisk/${this.allData.id}/
+    this.router.navigate([`edit`], { state: { riskData: this.allData } }) ///ViewRisk/${this.allData.id}/
   }
 
   onUpdateButtonCLick()
   {
-    console.log("id",this.allData.id);
+    // console.log("id",this.allData.id);
 
-    this.router.navigate(['update'], { queryParams: {riskId:this.allData.id ,riskType:this.allData.riskType,overallRiskRatingBefore:this.allData.overallRiskRating} }); //         /ViewRisk/${this.allData.id}
+    this.router.navigate(['update'], { queryParams: {riskId:this.allData.id ,riskType:this.allData.riskType,overallRiskRatingBefore:this.allData.overalRiskRatingBefore} }); //         /ViewRisk/${this.allData.id}
   }
 
 }
