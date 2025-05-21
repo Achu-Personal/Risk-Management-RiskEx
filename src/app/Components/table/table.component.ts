@@ -141,6 +141,8 @@ export class TableComponent {
       this.updateResidualRiskStatus();
       this.totalItems = this.filteredItems.length;
       this.updatePaginatedItems();
+
+      console.log("table items",this.items)
     },800)
 
   }

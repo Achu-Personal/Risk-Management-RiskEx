@@ -183,10 +183,10 @@
             }
             <td>{{ item.responsibleUser }}</td>
             <td> {{item.riskAssessments[0].reviewer}}</td>
-
+<!-- ApprovalCompleted -->
             <td> {{reviewStatusMap[item.riskAssessments[0].reviewStatus] }}</td>
             @if(!isButtonVisible){
-            <td><div [ngClass]="{'red-cell': item.riskStatus === 'open', 'green-cell': item.riskStatus === 'close'}">{{ item.riskStatus }}</div></td>
+            <td><div [ngClass]="{'red-cell':item.riskAssessments[0].reviewStatus != 'ReviewCompleted', 'green-cell': item.riskAssessments[0].reviewStatus == 'ReviewCompleted'}">{{ item.riskAssessments[0].reviewStatus != 'ReviewCompleted'?"Open":"Closed" }}</div></td>
             }
             @if(isButtonVisible){
               <td>
