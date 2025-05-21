@@ -75,7 +75,7 @@ export class RegisterRiskComponent {
     if(this.route.queryParams){
     this.route.queryParams.subscribe(params => {
       if (Object.keys(params).length > 0) {
-      console.log("draft dataaaaaaaaaaaaaaa from drafttttt",params); // All query parameters as an object
+      // console.log("draft dataaaaaaaaaaaaaaa from drafttttt",params); // All query parameters as an object
       this.draft = params
       this.selectedRiskType = Number(params['riskType']);
       this.departmentName=params['departmentName'];
@@ -91,10 +91,10 @@ export class RegisterRiskComponent {
     this.departmentName = this.authService.getDepartmentName()!;
 
     this.departmentId = this.authService.getDepartmentId()!;
-    console.log('departttttt', this.departmentId);
+    // console.log('departttttt', this.departmentId);
 
     this.isAdmin = this.authService.getUserRole()!;
-    console.log('roleeeeeeeee', this.isAdmin);
+    // console.log('roleeeeeeeee', this.isAdmin);
 
     this.api
       .getLikelyHoodDefinition()
@@ -145,13 +145,13 @@ export class RegisterRiskComponent {
       )
       .subscribe((res: any) => {
         this.dropdownDataDepartment = res;
-        console.log("datadropdown data",this.dropdownDataDepartment)
-        console.log("departmentidisisis",this.departmentId)
+        // console.log("datadropdown data",this.dropdownDataDepartment)
+        // console.log("departmentidisisis",this.departmentId)
       const departmentDataForDisplay=res.find(
         (factor:any) => factor.id == this.departmentId)
-        console.log("data simple data data simple data",departmentDataForDisplay)
+        // console.log("data simple data data simple data",departmentDataForDisplay)
         this.departmentCode= departmentDataForDisplay.departmentCode
-        console.log("code code code",this.departmentCode)
+        // console.log("code code code code code code",this.departmentCode)
         this.cdRef.detectChanges();
       });
 
@@ -164,13 +164,13 @@ export class RegisterRiskComponent {
         })
       )
       .subscribe((res: any) => {
-        console.log("regeregeregeregereg",res.reviewers)
+        // console.log("regeregeregeregereg",res.reviewers)
         const dropdownDataReviewer = res.reviewers.sort((a:any, b:any) => {
           const fullNameA = a.fullName ? a.fullName.toLowerCase() : ''; // Ensure case-insensitive comparison
           const fullNameB = b.fullName ? b.fullName.toLowerCase() : '';
           return fullNameA.localeCompare(fullNameB);
       });
-      console.log("the sorted is is ",dropdownDataReviewer)
+      // console.log("the sorted is is ",dropdownDataReviewer)
       this.dropdownDataReviewer=dropdownDataReviewer;
         this.cdRef.detectChanges();
       });
@@ -215,18 +215,18 @@ export class RegisterRiskComponent {
   onFormSubmit(payload: any) {
     let isSubmited = false;
     this.isLoading = true;
-    console.log('Payload received from child:', payload);
+    // console.log('Payload received from child:', payload);
     if (payload.riskType == 1) {
       this.api.addnewQualityRisk(payload).subscribe({
         next: (res: any) => {
           this.isLoading = false;
-          console.log('Risk saved successfully(Quality):', res);
-          console.log('Generated Risk ID:', res.id);
+          // console.log('Risk saved successfully(Quality):', res);
+          // console.log('Generated Risk ID:', res.id);
           this.isSuccess = true;
           this.riskId = res.id;
           this.riskData = res;
           isSubmited = true;
-          console.log('fgggggggggggggggggggg', res);
+          // console.log('fgggggggggggggggggggg', res);
 
           this.sendEmailOnRegisterRisk(res.id, res);
           this.cdRef.detectChanges();
@@ -280,12 +280,12 @@ export class RegisterRiskComponent {
       this.api.addnewSecurityOrPrivacyRisk(payload).subscribe({
         next: (res: any) => {
           this.isLoading = false;
-          console.log(res);
+          // console.log(res);
           if (res.id) {
             this.isSuccess = true;
             this.riskId = res.id;
             this.riskData = res;
-            console.log('response id for njnnmbhh security', this.riskId);
+            // console.log('response id for njnnmbhh security', this.riskId);
             isSubmited = true;
             this.sendEmailOnRegisterRisk(res.id, res);
             this.cdRef.detectChanges();
@@ -340,9 +340,9 @@ export class RegisterRiskComponent {
       this.api.addnewSecurityOrPrivacyRisk(payload).subscribe({
         next: (res: any) => {
           this.isLoading = false;
-          console.log('check res:', res);
+          // console.log('check res:', res);
           if (res.id) {
-            console.log('res.id if ulill keri');
+            // console.log('res.id if Accepted');
             this.isSuccess = true;
             this.riskId = res.id;
             this.riskData = res;
@@ -411,18 +411,18 @@ export class RegisterRiskComponent {
 
   receiveValue(value: any) {
     this.receivedDepartmentIdForAdmin = value;
-    console.log(
-      'this.receivedDepartmentIdForAdmin',
-      this.receivedDepartmentIdForAdmin
-    );
+    // console.log(
+    //   'this.receivedDepartmentIdForAdmin',
+    //   this.receivedDepartmentIdForAdmin
+    // );
     const departmentData = this.dropdownDataDepartment.find(
       (factor) => Number(factor.id) === this.receivedDepartmentIdForAdmin
     );
-    console.log(departmentData);
+    // console.log(departmentData);
 
     const departmentId = departmentData.id;
     const departmentName = departmentData.departmentName;
-    console.log('department id from child', departmentId);
+    // console.log('department id from child', departmentId);
 
     this.api
       .getProjects(departmentName)
@@ -463,14 +463,14 @@ export class RegisterRiskComponent {
   }
 
   sendEmailOnRegisterRisk(riskId: number, riskData: any) {
-    console.log('before is submit:', this.isSuccess);
+    // console.log('before is submit:', this.isSuccess);
     if (this.isSuccess) {
-      console.log('after is submit');
+      // console.log('after is submit');
       // Fetch reviewer details
       this.api.getRevieverDetails(riskId, 'ReviewPending').subscribe({
         next: (r: any) => {
           const reviewer = r[0].fullName;
-          console.log('Reviewer Details:', reviewer);
+          // console.log('Reviewer Details:', reviewer);
 
           const context = {
             responsibleUser: reviewer,
@@ -497,13 +497,13 @@ export class RegisterRiskComponent {
             id: riskData.id,
             rid: riskData.id,
           };
-          console.log('Email Context:', context);
-          console.log('Reviewer Email:', r[0].email);
+          // console.log('Email Context:', context);
+          // console.log('Reviewer Email:', r[0].email);
 
           // Send email to reviewer
           this.email.sendReviewerEmail(r[0].email, context).subscribe({
             next: () => {
-              console.log('Reviewer Email:', r[0].email);
+              // console.log('Reviewer Email:', r[0].email);
               console.log('Email Sent Successfully.');
             },
             error: (emailError) => {

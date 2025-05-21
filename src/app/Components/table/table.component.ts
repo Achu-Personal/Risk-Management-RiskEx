@@ -307,7 +307,7 @@ export class TableComponent {
       this.currentpage();
     }
     if(changes['reset']){
-      console.log("clicked")
+      // console.log("clicked")
       this.resetFilters();
     }
   }

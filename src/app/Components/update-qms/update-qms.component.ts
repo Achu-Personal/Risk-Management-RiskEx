@@ -121,7 +121,7 @@ export class UpdateQmsComponent {
 
   onDropdownChangelikelihood(event: any): void {
     const selectedFactorId = Number(event);
-    console.log(selectedFactorId);
+    // console.log(selectedFactorId);
     this.likelihoodId = selectedFactorId;
 
     const selectedFactor = this.dropdownLikelihood.find(
@@ -129,7 +129,7 @@ export class UpdateQmsComponent {
     );
     if (selectedFactor) {
       this.likelihoodValue = selectedFactor.likelihood;
-      console.log('Selected Likelihood:', this.likelihoodValue);
+      // console.log('Selected Likelihood:', this.likelihoodValue);
     } else {
       console.log('Selected factor not found.');
     }
@@ -144,7 +144,7 @@ export class UpdateQmsComponent {
     );
     if (selectedFactor) {
       this.impactValue = selectedFactor.impact;
-      console.log('Selected Impact:', this.impactValue);
+      // console.log('Selected Impact:', this.impactValue);
     } else {
       console.log('Selected factor not found.');
     }
@@ -183,35 +183,35 @@ export class UpdateQmsComponent {
 
   onRadioSelectionChange(value: any) {
     this.riskResponseValue = value;
-    console.log('Selected value from child:', value);
+    // console.log('Selected value from child:', value);
   }
 
   onDropdownChangeReviewer(selectedReviewer: any) {
     const selectedreviewer = selectedReviewer;
-    console.log('selected factor id is ', selectedreviewer);
+    // console.log('selected factor id is ', selectedreviewer);
 
     const selectedFactor = this.dropdownReviewer.find(
       (factor) => factor.fullName === selectedreviewer
     );
-    console.log('selected factor is ', selectedFactor);
+    // console.log('selected factor is ', selectedFactor);
     if (selectedFactor) {
       if (selectedFactor.type === 'Internal') {
         this.isInternal = true;
         this.internalReviewerIdFromDropdown = selectedFactor.id;
-        console.log(
-          'Selected internal reviewer ID:',
-          this.internalReviewerIdFromDropdown
-        );
+        // console.log(
+        //   'Selected internal reviewer ID:',
+        //   this.internalReviewerIdFromDropdown
+        // );
 
-        console.log('this is a internal reviewer', this.isInternal);
+        // console.log('this is a internal reviewer', this.isInternal);
       } else if (selectedFactor.type === 'External') {
         this.isInternal = false;
         this.externalReviewerIdFromDropdown = selectedFactor.id;
-        console.log(
-          'Selected external reviewer ID:',
-          this.externalReviewerIdFromDropdown
-        );
-        console.log('this is a internal reviewer', this.isInternal);
+        // console.log(
+        //   'Selected external reviewer ID:',
+        //   this.externalReviewerIdFromDropdown
+        // );
+        // console.log('this is a internal reviewer', this.isInternal);
       }
     } else {
       console.error('No matching reviewer found for the selected ID.');
@@ -236,29 +236,29 @@ export class UpdateQmsComponent {
         Number(this.externalReviewerIdFromInput) <= 0 &&
         Number(this.externalReviewerIdFromDropdown) <= 0)
     ) {
-      console.log('Risk Response Value: ', this.riskResponseValue);
-      console.log('Overall Risk Rating: ', this.overallRiskRating);
-      console.log('Percentage Reduction: ', this.percentageRedution);
-      console.log('Residual Risk: ', this.residualRisk);
-      console.log('Residual Value: ', this.residualValue);
-      console.log('Likelihood ID: ', this.likelihoodId);
-      console.log('Impact ID: ', this.impactId);
-      console.log(
-        'Internal Reviewer ID: ',
-        this.internalReviewerIdFromDropdown
-      );
-      console.log(
-        'External Reviewer ID from input: ',
-        this.externalReviewerIdFromInput
-      );
-      console.log(
-        'External Reviewer ID from dropdown: ',
-        this.externalReviewerIdFromDropdown
-      );
-      console.log(
-        'External Reviewer ID from dropdown: ',
-        this.overallRiskRatingBefore
-      );
+      // console.log('Risk Response Value: ', this.riskResponseValue);
+      // console.log('Overall Risk Rating: ', this.overallRiskRating);
+      // console.log('Percentage Reduction: ', this.percentageRedution);
+      // console.log('Residual Risk: ', this.residualRisk);
+      // console.log('Residual Value: ', this.residualValue);
+      // console.log('Likelihood ID: ', this.likelihoodId);
+      // console.log('Impact ID: ', this.impactId);
+      // console.log(
+      //   'Internal Reviewer ID: ',
+      //   this.internalReviewerIdFromDropdown
+      // );
+      // console.log(
+      //   'External Reviewer ID from input: ',
+      //   this.externalReviewerIdFromInput
+      // );
+      // console.log(
+      //   'External Reviewer ID from dropdown: ',
+      //   this.externalReviewerIdFromDropdown
+      // );
+      // console.log(
+      //   'External Reviewer ID from dropdown: ',
+      //   this.overallRiskRatingBefore
+      // );
 
       console.log('Invalid numeric fields: Values must be greater than 0.');
       this.isValid = true;
@@ -304,7 +304,7 @@ export class UpdateQmsComponent {
       ],
     };
 
-    console.log(payload);
+    // console.log(payload);
     this.submitForm.emit({ payload, riskType: this.riskTypeId });
     this.isLoading=false;
   }

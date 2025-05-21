@@ -10,10 +10,10 @@ import { Component, EventEmitter, Output } from '@angular/core';
 })
 export class FormCategoryTableComponent {
 
-  @Output() closeModalEvent = new EventEmitter<void>(); // Event to notify parent
+  @Output() closeModalEvent = new EventEmitter<void>(); 
 
   closeModal() {
-    this.closeModalEvent.emit(); 
+    this.closeModalEvent.emit();
   }
 
 }

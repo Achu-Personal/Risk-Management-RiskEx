@@ -158,7 +158,6 @@ export class ReportsComponent {
     }
   }
 
-  //datepicker
   selectedDateRange: { startDate: string; endDate: string } | null = null;
 
   onDateRangeSelected(dateRange: { startDate: string; endDate: string }) {

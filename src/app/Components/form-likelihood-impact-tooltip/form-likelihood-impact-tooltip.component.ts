@@ -11,7 +11,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 export class FormLikelihoodImpactTooltipComponent {
   @Input() showModal: boolean = false;
   @Input() tableType: string = '';
-  @Output() closeRiskModal = new EventEmitter<void>(); // Notify parent when closed
+  @Output() closeRiskModal = new EventEmitter<void>();
 
   likelihoodHeader = ['Likelihood', 'Definitions', 'Chance of Occurrence'];
   likelihoodRows = [
@@ -29,7 +29,6 @@ export class FormLikelihoodImpactTooltipComponent {
     ['Critical', 'Severe consequences, threatening operations.']
   ];
 
-  // Emit event to notify parent on close
   close() {
     this.closeRiskModal.emit();
   }

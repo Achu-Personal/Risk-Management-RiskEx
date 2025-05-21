@@ -24,7 +24,7 @@
 @media (min-width: 80%) {
   .modal-content {
     max-height: 80%;
-    overflow-y: auto; /* Enable scroll */
+    overflow-y: auto;
   }
 }
 
@@ -32,7 +32,7 @@
 @media (max-width: 75%) {
   .modal-content {
     max-height: none;
-    overflow-y: visible; /* Disable scroll */
+    overflow-y: visible;
   }
 }
 
@@ -43,7 +43,7 @@
 }
 
 .modal-content::-webkit-scrollbar-thumb {
-  background-color: var(--form-color); /* Scroll thumb color */
+  background-color: var(--form-color);
   border-radius: 12px;
 }
 
@@ -79,7 +79,8 @@ table {
   font-size: 12px;
 }
 
-th, td {
+th,
+td {
   border: 1px solid #ddd;
   padding: 6px;
   text-align: left;
@@ -89,7 +90,6 @@ th {
   background-color: var(--foreground-color);
   color: white;
 }
-
 
 /* Enable scroll only for screens >= 80% */
 @media (min-width: 1024px) {

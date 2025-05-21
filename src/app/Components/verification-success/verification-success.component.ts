@@ -22,6 +22,7 @@ export class VerificationSuccessComponent {
     this.emailAddress = navigation?.extras?.state?.['email'] || localStorage.getItem('resetEmail') || '';
   }
 
+  
   resendEmail(): void {
     if (this.emailAddress && !this.isResending) {
       this.isResending = true;
