@@ -1,14 +1,9 @@
 <div class="modal-overlay">
   <div class="modal-content">
-    <p [innerHTML]="message"></p>
-
+    <p class="modal-message" [innerHTML]="message"></p>
     <div class="button-group">
-
       <app-style-button (clicked)="close()" label="Yes" type="button"></app-style-button>
       <app-style-button (clicked)="notClose()" label="No" type="button"></app-style-button>
     </div>
-
-
   </div>
-
 </div>

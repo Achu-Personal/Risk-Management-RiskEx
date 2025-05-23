@@ -633,19 +633,19 @@
   ></app-form-data-not-in-list>
   } @if(isSuccessReviewer){
   <app-form-successfull
-    message="The new reviewer has been added successfully!"
+    message="The new reviewer has been added successfully."
     [isSuccessfull]="true"
     (closeDialog)="closeReviewer()"
   >
   </app-form-successfull>
   } @if(isErrorReviewer){
   <app-form-successfull
-  message="Something went wrong!
-  <br><br>
+  message="Reasons May be:
+  <br>
   A reviewer with this email already exists.
   <br>
   Please ensure all required fields are completed correctly and check your internet connection.
-  <br><br>
+  <br>
   If the issue persists, please try again later or contact support for assistance."
     [isSuccessfull]="false"
     (closeDialog)="closeReviewer()"
@@ -653,19 +653,19 @@
   </app-form-successfull>
   } @if(isSuccessAssignee){
   <app-form-successfull
-    message="The new risk owner has been added successfully!"
+    message="The new risk owner has been added successfully."
     [isSuccessfull]="true"
     (closeDialog)="closeAssignee()"
   >
   </app-form-successfull>
   } @if(isErrorAssignee){
   <app-form-successfull
-  message="Something went wrong!
-  <br><br>
+  message="Reasons May be:
+  <br>
   A risk owner with this email already exists or may have been deactivated.
   <br>
   Please make sure all required fields are completed correctly and check your internet connection.
-  <br><br>
+  <br>
   If the problem continues, please try again later or contact support for assistance."
     [isSuccessfull]="false"
     (closeDialog)="closeAssignee()"
@@ -685,28 +685,28 @@
   ></app-form-conform-popup>
   } @if(isdraft){
   <app-form-conform-popup
-    message="Do you want to save the entered risk details as a draft? <br> You can continue editing them the next time you open this page."
+    message="Do you want to save the entered risk details as a draft? <br> You can continue editing them on Draft page."
     (closeDialog)="closeDraft()"
     (notCloseDialog)="saveAsDraft()"
   ></app-form-conform-popup>
 
   } @if(isNothingInDraft){
   <app-form-successfull
-    message="Draft is empty. Please add content before saving"
+    message="Draft is empty. Please add content before saving."
     [isSuccessfull]="false"
     (closeDialog)="closeDraftWhenNoDraft()"
   >
   </app-form-successfull>
   } @if(isdraftConform){
   <app-form-successfull
-    message="Draft saved successfully.<br>  You can access your progress on the Drafts page.."
+    message="Draft saved successfully.<br>  You can access your progress on the Drafts page."
     [isSuccessfull]="true"
     (closeDialog)="closeDialogSuccess()"
   >
   </app-form-successfull>
   } @if(isValid){
   <app-form-successfull
-    message="Please check the form fields and <br> ensure all mandatory fields are satisfied "
+    message="Please check the form fields and <br> ensure all mandatory fields are satisfied. "
     [isSuccessfull]="false"
     (closeDialog)="closepopupIsValidCheck()"
   >

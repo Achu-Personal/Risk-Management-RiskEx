@@ -587,19 +587,19 @@
   ></app-form-data-not-in-list>
   } @if(isSuccessReviewer){
   <app-form-successfull
-    message="The new reviewer has been added successfully!"
+    message="The new reviewer has been added successfully."
     [isSuccessfull]="true"
     (closeDialog)="closeReviewer()"
   >
   </app-form-successfull>
   } @if(isErrorReviewer){
   <app-form-successfull
-  message="Something went wrong!
-  <br><br>
+  message="Reasons May be:
+  <br>
   The reviewer with the email already exists
   <br>
   Please make sure all required fields are completed correctly and check your internet connection.
-  <br><br>
+  <br>
   If the problem continues, please try again later or contact support for assistance."
     [isSuccessfull]="false"
     (closeDialog)="closeReviewer()"
@@ -607,19 +607,19 @@
   </app-form-successfull>
   } @if(isSuccessAssignee){
   <app-form-successfull
-    message="The new risk owner has been added successfully!"
+    message="The new risk owner has been added successfully."
     [isSuccessfull]="true"
     (closeDialog)="closeAssignee()"
   >
   </app-form-successfull>
   } @if(isErrorAssignee){
   <app-form-successfull
-    message="Something went wrong!
-    <br><br>
+    message="Reasons May be:
+    <br>
     A risk owner with this email already exists or may have been deactivated.
     <br>
     Please make sure all required fields are completed correctly and check your internet connection.
-    <br><br>
+    <br>
     If the problem continues, please try again later or contact support for assistance."
     [isSuccessfull]="false"
     (closeDialog)="closeAssignee()"
@@ -639,7 +639,7 @@
   ></app-form-conform-popup>
   } @if(isValid){
   <app-form-successfull
-    message="Please check the form fields and <br> ensure all mandatory fields are satisfied "
+    message="Please check the form fields and <br> ensure all mandatory fields are satisfied. "
     [isSuccessfull]="false"
     (closeDialog)="closepopupIsValidCheck()"
   >

@@ -111,9 +111,9 @@ export class QmsEditComponent {
   newAssigneename: string = '';
   isnewAssigneenameDisplay: boolean = false;
   isnewReviewernameDisplay: boolean = false;
-  isLoading = false; // Initially false
+  isLoading = false;
   departmentIdForAdminToAddToString:string=''
-  showModalCategory = false; // Initially hidden
+  showModalCategory = false;
   departmentidForAssignee:string=''
 
 
@@ -141,7 +141,7 @@ export class QmsEditComponent {
     this.departmentidForAssignee=this.riskData.department.id;
 
 
-    // this.departmentId=this.riskData.department.id
+
 
 
   }
@@ -229,10 +229,7 @@ export class QmsEditComponent {
     textarea.style.height = `${Math.max(minHeight, textarea.scrollHeight)}px`;
   }
 
-  // handleDropdownOpen(dropdownId: string) {
-  //   this.openDropdownId =
-  //     this.openDropdownId === dropdownId ? undefined : dropdownId;
-  // }
+
 
   handleDropdownOpen(dropdownId: string | undefined): void {
 
@@ -255,12 +252,7 @@ export class QmsEditComponent {
     this.projectId = selectedFactorId;
   }
 
-  // onDropdownChangeDepartment(event: any): void {
-  //   const selectedFactorId = Number(event);
-  //   this.departmentIdForAdminToAdd = selectedFactorId;
-  //   this.departmentIdForAdminToAddToString= this.departmentIdForAdminToAdd.toString();
 
-  // }
 
   onDropdownChangelikelihood(event: any): void {
     const selectedFactorId = Number(event);
@@ -274,7 +266,6 @@ export class QmsEditComponent {
       this.likelihoodValue = selectedFactor.likelihood;
       // console.log('Selected Likelihood:', this.likelihoodValue);
     } else {
-      console.log('Selected factor not found.');
     }
     this.calculateOverallRiskRating();
   }
@@ -289,7 +280,6 @@ export class QmsEditComponent {
       this.impactValue = selectedFactor.impact;
       // console.log('Selected Impact:', this.impactValue);
     } else {
-      console.log('Selected factor not found.');
     }
     this.calculateOverallRiskRating();
   }
