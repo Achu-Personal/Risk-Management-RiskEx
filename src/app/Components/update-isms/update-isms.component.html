@@ -351,19 +351,19 @@
   ></app-form-data-not-in-list>
   } @if(isSuccessReviewer){
   <app-form-successfull
-    message="The new reviewer has been added successfully!"
+    message="The new reviewer has been added successfully."
     [isSuccessfull]="true"
     (closeDialog)="closeReviewer()"
   >
   </app-form-successfull>
   } @if(isErrorReviewer){
   <app-form-successfull
-  message="Something went wrong!
-  <br><br>
+  message="Reasons May be:
+  <br>
   A reviewer with this email already exists.
   <br>
   Please ensure all required fields are completed correctly and check your internet connection.
-  <br><br>
+  <br>
   If the issue persists, please try again later or contact support for assistance."
   [isSuccessfull]="false"
     (closeDialog)="closeReviewer()"
@@ -384,7 +384,7 @@
   }
   @if(isValid){
     <app-form-successfull
-    message="Please check the form fields and <br> ensure all mandatory fields are satisfied "
+    message="Please check the form fields and <br> ensure all mandatory fields are satisfied. "
     [isSuccessfull] ="false"
     (closeDialog)="closepopupIsValidCheck()" >
     </app-form-successfull>

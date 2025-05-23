@@ -12,7 +12,7 @@
     z-index: 1000;
   }
   .modal-content {
-    background: white;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
     padding: 20px;
     border-radius: 10px;
     min-width: 400px;
@@ -28,7 +28,7 @@
     margin: 15px 0;
   }
   textarea {
-    
+
     width: 100%;
     min-height: 50px;
     margin-top: 20px;

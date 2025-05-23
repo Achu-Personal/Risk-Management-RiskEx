@@ -1,4 +1,3 @@
-import { department } from './../../Interfaces/deparments.interface';
 import {
   Component,
   ElementRef,
@@ -125,7 +124,7 @@ export class QMSFormComponent {
   isDraftLoaded = false;
   departmentIdForAdminToAddToString: string = '';
   departmentIdForAdminToAddToNumber: number = 0;
-  showModalCategory = false; // Initially hidden
+  showModalCategory = false;
   riskDisplayId: string = '';
   draftNameToFind: string = '';
   draftErrorDisplay: string = '';
@@ -141,17 +140,14 @@ export class QMSFormComponent {
     public authService: AuthService
   ) {}
   ngOnInit() {
-    console.log('department code is', this.departmentCode);
-
     if (this.qmsDraftId.length > 0) {
       this.isDraftidPresent = false;
       this.isLoading = true;
 
       setTimeout(() => {
         this.isLoading = false;
-      }, 5000); // 5000 milliseconds = 5 seconds
+      }, 5000);
 
-      console.log('qmsDraftId received, loading draft...');
       this.loadDraft();
     } else {
       this.isDraftidPresent = true;
@@ -160,30 +156,23 @@ export class QMSFormComponent {
 
   generateRiskDisplayId() {
     this.riskDisplayId = 'RSK-' + this.departmentCode + '-***';
-    console.log('id id id id id id ', this.riskDisplayId);
   }
   generateRiskDisplayIdByProject() {
     const ProjectDataForDisplay = this.dropdownProject.find(
       (factor: any) => factor.id == this.projectId
     );
-    console.log('data simple data data simple data', ProjectDataForDisplay);
     const ProjectCode = ProjectDataForDisplay.projectCode;
-    console.log('code code code', ProjectCode);
 
     this.riskDisplayId = 'RSK-' + ProjectCode + '-***';
-    console.log('id id id id id id ', this.riskDisplayId);
   }
 
   generateRiskDisplayIdByProjectForAdmin() {
     const ProjectDataForDisplay = this.dropdownDataProjectForAdmin.find(
       (factor: any) => factor.id == this.projectId
     );
-    console.log('data simple data data simple data', ProjectDataForDisplay);
     const ProjectCode = ProjectDataForDisplay.projectCode;
-    console.log('code code code', ProjectCode);
 
     this.riskDisplayId = 'RSK-' + ProjectCode + '-***';
-    console.log('id id id id id id ', this.riskDisplayId);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -274,12 +263,10 @@ export class QMSFormComponent {
         });
       }
       if (changes['qmsDraftId'] && changes['qmsDraftId'].currentValue) {
-        console.log('Received qmsDraftId from parent:', this.qmsDraftId);
         this.loadDraft();
       }
 
       if (changes['departmentCode'] && this.departmentCode) {
-        console.log('department code from parent', this.departmentCode);
         this.generateRiskDisplayId();
       }
 
@@ -325,10 +312,9 @@ export class QMSFormComponent {
       }
     }
 
-      if (changes['departmentCode'] && this.departmentCode) {
-        console.log('department code from parent', this.departmentCode);
-        this.generateRiskDisplayId();
-      }
+    if (changes['departmentCode'] && this.departmentCode) {
+      this.generateRiskDisplayId();
+    }
   }
 
   qmsForm = new FormGroup({
@@ -393,98 +379,20 @@ export class QMSFormComponent {
     const selectedFactorId = Number(event);
     this.departmentIdForAdminToAdd = selectedFactorId;
     this.departmentSelectedByAdmin.emit(this.departmentIdForAdminToAdd);
-    console.log('dfghjkldfghjkdcfvghj', this.departmentIdForAdminToAdd);
     this.departmentIdForAdminToAddToNumber = this.departmentIdForAdminToAdd;
     this.departmentIdForAdminToAddToString =
       this.departmentIdForAdminToAddToNumber.toString();
-    console.log('the project id isssssssssssssssssssssss', this.projectId);
 
     const departmentDataForDisplay = this.dropdownDepartment.find(
       (factor: any) => factor.id == this.departmentIdForAdminToAdd
     );
-    console.log('data simple data data simple data', departmentDataForDisplay);
     const departmentCode = departmentDataForDisplay.departmentCode;
-    console.log('code code code', departmentCode);
 
     this.riskDisplayId = 'RSK-' + departmentCode + '-***';
-    console.log('id id id id id id ', this.riskDisplayId);
-
-    // this.loadDraftForAdmin();
   }
-
-  // loadDraftForAdmin() {
-  //   console.log('the project id isssssssssssssssssssssss', this.projectId);
-  //   this.qmsForm.reset();
-  //   this.overallRiskRating = 0;
-  //   this.riskFactor = 0;
-  //   this.preSelectedProject = null;
-  //   this.preSelectedLikelihood = 0;
-  //   this.preSelectedImpact = 0;
-  //   this.preSelectedResponsiblePerson = null;
-  //   this.preSelectedReviewer = null;
-
-  //   const draftKey = `draft_${this.departmentIdForAdminToAdd}`;
-  //   const draft = localStorage.getItem(draftKey);
-  //   if (draft) {
-  //     this.draft = JSON.parse(draft);
-  //     console.log('Draft Loaded:', this.draft);
-  //     this.qmsForm.patchValue(this.draft.formValues);
-  //     this.overallRiskRating = this.draft.OverallRiskRatingBefore;
-  //     this.riskFactor = this.draft.riskAssessments[0].riskFactor;
-  //     console.log(
-  //       'likelihooooooooooooooood',
-  //       this.draft.riskAssessments[0].likelihood
-  //     );
-  //     this.isDraftLoaded = true;
-
-  //     const changes: SimpleChanges = {
-  //       dropdownLikelihood: {
-  //         currentValue: this.draft.riskAssessments?.[0]?.likelihood ?? null,
-  //         previousValue: undefined,
-  //         firstChange: true,
-  //         isFirstChange: () => true,
-  //       },
-  //       dropdownImpact: {
-  //         currentValue: this.draft.riskAssessments?.[0]?.impact ?? null,
-  //         previousValue: undefined,
-  //         firstChange: true,
-  //         isFirstChange: () => true,
-  //       },
-  //       dropdownProject: {
-  //         currentValue:
-  //           this.draft.projectId !== null && this.draft.projectId !== undefined
-  //             ? this.draft.projectId
-  //             : this.preSelectedProject, // Keeps the previous value if null
-  //         previousValue: null,
-  //         firstChange: true,
-  //         isFirstChange: () => true,
-  //       },
-  //       dropdownAssignee: {
-  //         currentValue: this.draft.responsibleUserId ?? null,
-  //         previousValue: undefined,
-  //         firstChange: true,
-  //         isFirstChange: () => true,
-  //       },
-  //       dropdownReviewer: {
-  //         currentValue: this.draft.riskAssessments?.[0]?.review?.userId ?? null,
-  //         previousValue: undefined,
-  //         firstChange: true,
-  //         isFirstChange: () => true,
-  //       },
-  //     };
-
-  //     this.ngOnChanges(changes);
-  //     console.log('the project id isssssssssssssssssssssss', this.projectId);
-  //   }
-  //   console.log(
-  //     'the project id isssssssssssssssssssssss after draft',
-  //     this.projectId
-  //   );
-  // }
 
   onDropdownChangelikelihood(event: any): void {
     const selectedFactorId = Number(event);
-    console.log(selectedFactorId);
     this.likelihoodId = selectedFactorId;
 
     const selectedFactor = this.dropdownLikelihood.find(
@@ -492,9 +400,7 @@ export class QMSFormComponent {
     );
     if (selectedFactor) {
       this.likelihoodValue = selectedFactor.likelihood;
-      console.log('Selected Likelihood:', this.likelihoodValue);
     } else {
-      console.log('Selected factor not found.');
     }
     this.calculateOverallRiskRating();
   }
@@ -507,9 +413,7 @@ export class QMSFormComponent {
     );
     if (selectedFactor) {
       this.impactValue = selectedFactor.impact;
-      console.log('Selected Impact:', this.impactValue);
     } else {
-      console.log('Selected factor not found.');
     }
     this.calculateOverallRiskRating();
   }
@@ -521,30 +425,17 @@ export class QMSFormComponent {
 
   onDropdownChangeReviewer(selectedReviewer: any) {
     const selectedreviewer = selectedReviewer;
-    console.log('selected factor id is ', selectedreviewer);
 
     const selectedFactor = this.dropdownReviewer.find(
       (factor) => factor.fullName === selectedreviewer
     );
-    console.log('selected factor is ', selectedFactor);
     if (selectedFactor) {
       if (selectedFactor.type === 'Internal') {
         this.isInternal = true;
         this.internalReviewerIdFromDropdown = selectedFactor.id;
-        console.log(
-          'Selected internal reviewer ID:',
-          this.internalReviewerIdFromDropdown
-        );
-
-        console.log('this is a internal reviewer', this.isInternal);
       } else if (selectedFactor.type === 'External') {
         this.isInternal = false;
         this.externalReviewerIdFromDropdown = selectedFactor.id;
-        console.log(
-          'Selected external reviewer ID:',
-          this.externalReviewerIdFromDropdown
-        );
-        console.log('this is a internal reviewer', this.isInternal);
       }
     } else {
       console.error('No matching reviewer found for the selected ID.');
@@ -600,10 +491,7 @@ export class QMSFormComponent {
       return;
     }
 
-    console.log(this.qmsForm.value);
-
     if (this.qmsForm.invalid) {
-      console.log('Form is invalid, submission blocked');
       this.qmsForm.markAllAsTouched();
       this.isValid = true;
       this.isLoading = false;
@@ -626,7 +514,6 @@ export class QMSFormComponent {
         Number(this.externalReviewerIdFromInput) <= 0 &&
         Number(this.externalReviewerIdFromDropdown) <= 0)
     ) {
-      console.log('Invalid numeric fields: Numbers must be greater than 0');
       this.isValid = true;
       this.isLoading = false;
       return;
@@ -711,10 +598,7 @@ export class QMSFormComponent {
 
     this.submitForm.emit(payload);
     if (this.qmsDraftId) {
-      this.api.deleteDraft(this.qmsDraftId).subscribe((res: any) => {
-        console.log(res);
-        console.log('Draft Removed!');
-      });
+      this.api.deleteDraft(this.qmsDraftId).subscribe((res: any) => {});
     }
 
     this.isLoading = false;
@@ -729,17 +613,16 @@ export class QMSFormComponent {
         next: (res: any) => {
           if (res && res.riskId) {
             this.riskId = res.riskId;
-            console.log('Risk ID received in function:', this.riskId);
             resolve();
           } else {
             console.error('Risk ID is not available in the response:', res);
-            this.riskId = ''; // Reset riskId if invalid
+            this.riskId = '';
             reject('Invalid Risk ID');
           }
         },
         error: (err) => {
           console.error('Error occurred while fetching Risk ID:', err);
-          this.riskId = ''; // Reset riskId if an error occurs
+          this.riskId = '';
           reject(err);
         },
       });
@@ -755,7 +638,7 @@ export class QMSFormComponent {
     }
   }
   saveAssignee(value: any) {
-    this.isLoading = true; // Show loader when function starts
+    this.isLoading = true;
     let departmentName;
     if (value.departmentId) {
       const departmentNameDetails = this.dropdownDepartment.find(
@@ -771,7 +654,7 @@ export class QMSFormComponent {
     };
     this.api.addResponsiblePerson(payload).subscribe({
       next: (res: any) => {
-        this.isLoading = false; // Hide loader after success
+        this.isLoading = false;
         if (res) {
           this.newAssigneeId = res.id;
           this.isSuccessAssignee = true;
@@ -785,27 +668,18 @@ export class QMSFormComponent {
         }
       },
       error: (err) => {
-        this.isLoading = false; // Hide loader on error
+        this.isLoading = false;
         console.error(
           'Error occurred while fetching Responsible person ID:',
           err
-        ); // Log the full error to see what went wrong
+        );
         this.isErrorAssignee = true;
       },
     });
-
-    console.log(
-      'the project id isssssssssssssssssssssss after assignee add api',
-      this.projectId
-    );
   }
 
   saveReviewer(value: any) {
-    this.isLoading = true; // Show loader when function starts
-    console.log(
-      'the project id isssssssssssssssssssssss before reviewer add api',
-      this.projectId
-    );
+    this.isLoading = true;
 
     const payload = {
       email: value.email,
@@ -815,7 +689,7 @@ export class QMSFormComponent {
 
     this.api.addExternalReviewer(payload).subscribe({
       next: (res: any) => {
-        this.isLoading = false; // Hide loader after success
+        this.isLoading = false;
 
         if (res) {
           this.externalReviewerIdFromInput = res.reviewerId;
@@ -830,16 +704,11 @@ export class QMSFormComponent {
         }
       },
       error: (err) => {
-        this.isLoading = false; // Hide loader on error
+        this.isLoading = false;
         console.error('Error occurred while fetching Reviewer ID:', err);
         this.isErrorReviewer = true;
       },
     });
-
-    console.log(
-      'the project id isssssssssssssssssssssss after reviewer add api',
-      this.projectId
-    );
   }
 
   closeHeatMap() {
@@ -924,7 +793,7 @@ export class QMSFormComponent {
               userId:
                 Number(this.externalReviewerIdFromInput) &&
                 !isNaN(Number(this.externalReviewerIdFromInput))
-                  ? null // If externalReviewerId is present, userId should be null
+                  ? null
                   : this.isInternal &&
                     Number(this.internalReviewerIdFromDropdown) !== 0
                   ? Number(this.internalReviewerIdFromDropdown)
@@ -947,14 +816,14 @@ export class QMSFormComponent {
           next: (res: any) => {
             this.isdraftConform = true;
             this.isLoading = false;
-            // this.saveAsDraft();
+
           },
 
           error: (error: HttpErrorResponse) => {
             this.draftErrorDisplay = error.message;
             this.isdraftErrorDisplay = true;
             this.isLoading = false;
-            // this.saveAsDraft();
+
           },
         });
       } else {
@@ -963,7 +832,7 @@ export class QMSFormComponent {
             this.isdraftConform = true;
             this.isLoading = false;
 
-            // this.saveAsDraft();
+
           },
 
           error: (error: HttpErrorResponse) => {
@@ -971,7 +840,7 @@ export class QMSFormComponent {
             this.isdraftErrorDisplay = true;
             this.isLoading = false;
 
-            // this.saveAsDraft();
+
           },
         });
       }
@@ -979,14 +848,13 @@ export class QMSFormComponent {
       this.isNothingInDraft = true;
       this.isLoading = false;
 
-      // this.saveAsDraft();
+
     }
   }
 
   loadDraft() {
     this.api.getSingleDraftById(this.qmsDraftId).subscribe((res: any) => {
       this.qmsDraft = res;
-      console.log('draft in load draft function is is issinsu', this.qmsDraft);
 
       this.qmsForm.patchValue({
         riskName: this.qmsDraft.riskName ?? null,
@@ -1020,7 +888,7 @@ export class QMSFormComponent {
             this.qmsDraft.projectId !== null &&
             this.qmsDraft.projectId !== undefined
               ? this.qmsDraft.projectId
-              : this.preSelectedProject, // Keeps the previous value if null
+              : this.preSelectedProject,
           previousValue: null,
           firstChange: true,
           isFirstChange: () => true,
@@ -1081,26 +949,22 @@ export class QMSFormComponent {
     'Do you want to save the entered risk details? <br> You can check and edit them later if needed.';
 
   toggleModalCategory() {
-    this.showModalCategory = !this.showModalCategory; // Toggle modal visibility
+    this.showModalCategory = !this.showModalCategory;
   }
 
   closeModalCategory() {
-    this.showModalCategory = false; // Ensure modal closes only on the close button
+    this.showModalCategory = false;
   }
 
   showModal = false;
   tableType = '';
   handleInfoClickLikelihood(event: boolean) {
-    console.log('Info button clicked, boolean value:', event);
     this.showModal = true;
     this.tableType = 'likelihood';
-    // Do something when button is clicked
   }
   handleInfoClickImpact(event: boolean) {
-    console.log('Info button clicked, boolean value:', event);
     this.showModal = true;
     this.tableType = 'impact';
-    // Do something when button is clicked
   }
   hideModal() {
     this.showModal = false;

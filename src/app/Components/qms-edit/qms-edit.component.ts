@@ -1,4 +1,3 @@
-import { department } from './../../Interfaces/deparments.interface';
 import {
   Component,
   ElementRef,
@@ -112,11 +111,11 @@ export class QmsEditComponent {
   newAssigneename: string = '';
   isnewAssigneenameDisplay: boolean = false;
   isnewReviewernameDisplay: boolean = false;
-  isLoading = false; // Initially false
+  isLoading = false;
   departmentIdForAdminToAddToString:string=''
-  showModalCategory = false; // Initially hidden
+  showModalCategory = false;
   departmentidForAssignee:string=''
-  
+
 
 
   constructor(
@@ -126,7 +125,7 @@ export class QmsEditComponent {
     private router: Router
   ) {}
   ngOnInit() {
-    console.log('data:', this.riskData);
+
     const dateObj = new Date(this.riskData.plannedActionDate);
     this.qmsForm.patchValue({
       riskName: this.riskData.riskName,
@@ -142,7 +141,7 @@ export class QmsEditComponent {
     this.departmentidForAssignee=this.riskData.department.id;
 
 
-    // this.departmentId=this.riskData.department.id
+
 
 
   }
@@ -178,25 +177,16 @@ export class QmsEditComponent {
       const selectedFactor = this.dropdownReviewer.find(
         (factor) => factor.fullName === this.preSelectedReviewer
       );
-      console.log('selected factor is ', selectedFactor);
       if (selectedFactor) {
         if (selectedFactor.type === 'Internal') {
           this.isInternal = true;
           this.internalReviewerIdFromDropdown = selectedFactor.id;
-          console.log(
-            'Selected internal reviewer ID:',
-            this.internalReviewerIdFromDropdown
-          );
 
-          console.log('this is a internal reviewer', this.isInternal);
+
         } else if (selectedFactor.type === 'External') {
           this.isInternal = false;
           this.externalReviewerIdFromDropdown = selectedFactor.id;
-          console.log(
-            'Selected external reviewer ID:',
-            this.externalReviewerIdFromDropdown
-          );
-          console.log('this is a internal reviewer', this.isInternal);
+
         }
       }
     }
@@ -230,10 +220,7 @@ export class QmsEditComponent {
     textarea.style.height = `${Math.max(minHeight, textarea.scrollHeight)}px`;
   }
 
-  // handleDropdownOpen(dropdownId: string) {
-  //   this.openDropdownId =
-  //     this.openDropdownId === dropdownId ? undefined : dropdownId;
-  // }
+
 
   handleDropdownOpen(dropdownId: string | undefined): void {
 
@@ -256,12 +243,7 @@ export class QmsEditComponent {
     this.projectId = selectedFactorId;
   }
 
-  // onDropdownChangeDepartment(event: any): void {
-  //   const selectedFactorId = Number(event);
-  //   this.departmentIdForAdminToAdd = selectedFactorId;
-  //   this.departmentIdForAdminToAddToString= this.departmentIdForAdminToAdd.toString();
 
-  // }
 
   onDropdownChangelikelihood(event: any): void {
     const selectedFactorId = Number(event);
@@ -273,9 +255,7 @@ export class QmsEditComponent {
     );
     if (selectedFactor) {
       this.likelihoodValue = selectedFactor.likelihood;
-      console.log('Selected Likelihood:', this.likelihoodValue);
     } else {
-      console.log('Selected factor not found.');
     }
     this.calculateOverallRiskRating();
   }
@@ -288,9 +268,7 @@ export class QmsEditComponent {
     );
     if (selectedFactor) {
       this.impactValue = selectedFactor.impact;
-      console.log('Selected Impact:', this.impactValue);
     } else {
-      console.log('Selected factor not found.');
     }
     this.calculateOverallRiskRating();
   }
@@ -302,30 +280,20 @@ export class QmsEditComponent {
 
   onDropdownChangeReviewer(selectedReviewer: any) {
     const selectedreviewer = selectedReviewer;
-    console.log('selected factor id is ', selectedreviewer);
 
     const selectedFactor = this.dropdownReviewer.find(
       (factor) => factor.fullName === selectedreviewer
     );
-    console.log('selected factor is ', selectedFactor);
     if (selectedFactor) {
       if (selectedFactor.type === 'Internal') {
         this.isInternal = true;
         this.internalReviewerIdFromDropdown = selectedFactor.id;
-        console.log(
-          'Selected internal reviewer ID:',
-          this.internalReviewerIdFromDropdown
-        );
 
-        console.log('this is a internal reviewer', this.isInternal);
+
       } else if (selectedFactor.type === 'External') {
         this.isInternal = false;
         this.externalReviewerIdFromDropdown = selectedFactor.id;
-        console.log(
-          'Selected external reviewer ID:',
-          this.externalReviewerIdFromDropdown
-        );
-        console.log('this is a internal reviewer', this.isInternal);
+
       }
     } else {
       console.error('No matching reviewer found for the selected ID.');
@@ -352,11 +320,7 @@ export class QmsEditComponent {
 
   onSubmit() {
     this.isLoading=true;
-    console.log("projectidddddddddd",this.projectId)
-    console.log("prselecyted projectidddddddddd",this.preSelectedProject)
-    console.log("preSelectedResponsiblePerson responsible person",this.preSelectedResponsiblePerson)
-    console.log(" responsible person",this.responsiblePersonId)
-    console.log("newassignee responsible person",this.newAssigneeId)
+
 
 
 

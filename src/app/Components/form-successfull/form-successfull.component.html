@@ -1,20 +1,13 @@
 <div class="modal-overlay">
-  <div  class="modal-content">
-  <!-- <div class="modal-content-container"> -->
+  <div class="modal-content">
 
-        <h4 [ngStyle]="{'color': isSuccessfull ? 'green' : 'red'}">
-          {{ isSuccessfull ? 'Success' : 'Error' }}
-        </h4>
-        <p [innerHTML]="HeaderMessage"></p>
-        <p [innerHTML]="message"></p>
+    <h4 [ngStyle]="{'color': isSuccessfull ? 'green' : 'red'}">
+      {{ isSuccessfull ? 'Success' : 'Error' }}
+    </h4>
+    <p class="modal-header" [innerHTML]="HeaderMessage"></p>
+    <p class="modal-message" [innerHTML]="message"></p>
 
-        <!-- <button class="close-btn" (click)="close()">OK</button> -->
-        <app-style-button (clicked)="close()" label="OK" type="button"></app-style-button>
+    <app-style-button (clicked)="close()" label="OK" type="button"></app-style-button>
 
-
-  <!-- </div> -->
+  </div>
 </div>
-
-</div>
-
-
