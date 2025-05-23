@@ -98,13 +98,13 @@ export class EditRiskComponent {
     });
 
     this.api.getAllReviewer().subscribe((res: any) => {
-        console.log("regeregeregeregereg",res.reviewers)
+        // console.log("regeregeregeregereg",res.reviewers)
         const dropdownDataReviewer = res.reviewers.sort((a:any, b:any) => {
           const fullNameA = a.fullName ? a.fullName.toLowerCase() : ''; // Ensure case-insensitive comparison
           const fullNameB = b.fullName ? b.fullName.toLowerCase() : '';
           return fullNameA.localeCompare(fullNameB);
       });
-      console.log("the sorted is is ",dropdownDataReviewer)
+      // console.log("the sorted is is ",dropdownDataReviewer)
       this.dropdownDataReviewer=dropdownDataReviewer;
 
       });
@@ -143,9 +143,9 @@ export class EditRiskComponent {
     apiCall.subscribe({
       next: (res: any) => {
         this.isLoading = false;
-        console.log('Success Response:', res);
+        // console.log('Success Response:', res);
 
-        console.log('SENDING EMAIL');
+        // console.log('SENDING EMAIL');
 
         this.isSuccess = true;
         this.sendEmailOnRegisterRisk(res.id, res);
@@ -190,14 +190,14 @@ export class EditRiskComponent {
   }
 
   sendEmailOnRegisterRisk(riskId: number, riskData: any) {
-    console.log('before is submit:', this.isSuccess);
+    // console.log('before is submit:', this.isSuccess);
     if (this.isSuccess) {
-      console.log('after is submit');
+      // console.log('after is submit');
       // Fetch reviewer details
       this.api.getRevieverDetails(riskId, 'ReviewPending').subscribe({
         next: (r: any) => {
           const reviewer = r[0].fullName;
-          console.log('Reviewer Details:', reviewer);
+          // console.log('Reviewer Details:', reviewer);
 
           const context = {
             responsibleUser: reviewer,
@@ -224,13 +224,13 @@ export class EditRiskComponent {
             id: riskData.id,
             rid: riskData.id,
           };
-          console.log('Email Context:', context);
-          console.log('Reviewer Email:', r[0].email);
+          // console.log('Email Context:', context);
+          // console.log('Reviewer Email:', r[0].email);
 
           // Send email to reviewer
           this.email.sendReviewerEmail(r[0].email, context).subscribe({
             next: () => {
-              console.log('Reviewer Email:', r[0].email);
+              // console.log('Reviewer Email:', r[0].email);
               console.log('Email Sent Successfully.');
             },
             error: (emailError) => {

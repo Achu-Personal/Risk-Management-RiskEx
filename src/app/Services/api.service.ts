@@ -126,7 +126,7 @@ export class ApiService {
   }
 
   getRisk() {
-    console.log('hai');
+    // console.log('hai');
     return this.http.get(`data/getRisk.json`);
   }
 
@@ -143,7 +143,7 @@ export class ApiService {
   }
 
   addnewQualityRisk(qualityRisk: any) {
-    console.log('quality risk payload', qualityRisk);
+    // console.log('quality risk payload', qualityRisk);
     return this.http.post(`${this.baseUrl}/Risk/add/quality`, qualityRisk);
   }
 
@@ -232,8 +232,8 @@ export class ApiService {
   //   );
   // }
   updateReviewStatusAndComments(id: number, updates: any): Observable<any> {
-    console.log('updatesssss', updates);
-    console.log('Id:', id);
+    // console.log('updatesssss', updates);
+    // console.log('Id:', id);
 
     // Extract reviewId from updates if present
     const reviewId = updates.reviewId;
@@ -384,7 +384,7 @@ export class ApiService {
       body: body,
       isBodyHtml: true,
     };
-    console.log('Sending payload:', payload);
+    // console.log('Sending payload:', payload);
     return this.http.post(`${this.baseUrl}/emails`, payload);
   }
 
@@ -395,10 +395,10 @@ export class ApiService {
   }
 
   getRevieverDetails(riskId: number, reviewStatus: string) {
-    console.log(
-      'api url:',
-      `${this.baseUrl}/Reviewer/gettheReviewer/${riskId}?reviewStatus=${reviewStatus}`
-    );
+    // console.log(
+    //   'api url:',
+    //   `${this.baseUrl}/Reviewer/gettheReviewer/${riskId}?reviewStatus=${reviewStatus}`
+    // );
 
     return this.http.get(
       `${this.baseUrl}/Reviewer/gettheReviewer/${riskId}?reviewStatus=${reviewStatus}`

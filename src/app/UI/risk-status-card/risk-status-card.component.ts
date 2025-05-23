@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { flush } from '@angular/core/testing';
 
 @Component({
   selector: 'app-risk-status-card',

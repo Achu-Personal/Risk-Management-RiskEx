@@ -189,7 +189,7 @@ export class EmailService {
 
     return this.api.sendMail(email, subject, body).pipe(
       map((response: any) => {
-        console.log('Email sent successfully', response);
+        console.log('Email sent successfully');
         this.notificationService.success(
           'The risk has been submitted to the reviewer for approval.'
         );
@@ -215,13 +215,13 @@ export class EmailService {
   }
   async prepareAssigneeEmail(context: any): Promise<string> {
     await this.getCreatedByUserName(context.riskId);
-    console.log('Username after fetch:', this.createdByUserName);
+    // console.log('Username after fetch:', this.createdByUserName);
 
     return this.AddRiskDetailstoAssignee(this.assigneeEmailTemplate, context);
   }
 
   private AddRiskDetailstoAssignee(template: string, context: any): string {
-    console.log('Using username in template:', this.createdByUserName);
+    // console.log('Using username in template:', this.createdByUserName);
 
     return template
 
@@ -271,12 +271,12 @@ export class EmailService {
 
   async prepareOwnerEmail(context: any): Promise<string> {
     await this.getCreatedByUserName(context.riskId);
-    console.log('Username after fetch:', this.createdByUserName);
+    // console.log('Username after fetch:', this.createdByUserName);
 
     return this.AddRiskDetailsForOwner(this.ownerEmailTemplate, context);
   }
   private AddRiskDetailsForOwner(template: string, context: any): string {
-    console.log('Using username in template:', this.createdByUserName);
+    // console.log('Using username in template:', this.createdByUserName);
 
     return template
       .replace(/{{createdBy}}/g, this.createdByUserName)
@@ -347,7 +347,7 @@ export class EmailService {
   }
 
   private prepareUserUpdateEmailBody(template: string, context: any): string {
-    console.log('Email context:', context);
+    // console.log('Email context:', context);
     let updatedTemplate = template
       .replace(/{{userEmail}}/g, context.email)
       .replace(/{{fullName}}/g, context.fullName || 'User')
@@ -450,13 +450,13 @@ export class EmailService {
 
   async prepareApprovalEmail(context: any): Promise<string> {
     await this.getCreatedByUserName(context.riskId);
-    console.log('Username after fetch:', this.createdByUserName);
+    // console.log('Username after fetch:', this.createdByUserName);
 
     return this.addRiskDetailsForApproval(this.approvalEmailTemplate, context);
   }
 
   private addRiskDetailsForApproval(template: string, context: any): string {
-    console.log('Using username in template:', this.createdByUserName);
+    // console.log('Using username in template:', this.createdByUserName);
 
     return template
       .replace(/{{createdBy}}/g, this.createdByUserName)

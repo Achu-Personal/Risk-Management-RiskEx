@@ -138,13 +138,13 @@ export class UpdateRiskComponent {
         })
       )
       .subscribe((res: any) => {
-        console.log("regeregeregeregereg",res.reviewers)
+        // console.log("regeregeregeregereg",res.reviewers)
         const dropdownDataReviewer = res.reviewers.sort((a:any, b:any) => {
           const fullNameA = a.fullName ? a.fullName.toLowerCase() : ''; // Ensure case-insensitive comparison
           const fullNameB = b.fullName ? b.fullName.toLowerCase() : '';
           return fullNameA.localeCompare(fullNameB);
       });
-      console.log("the sorted is is ",dropdownDataReviewer)
+      // console.log("the sorted is is ",dropdownDataReviewer)
       this.dropdownDataReviewer=dropdownDataReviewer;
 
       });
@@ -159,14 +159,14 @@ export class UpdateRiskComponent {
       this.api.updateQualityRisk(payload, Number(this.riskId)).subscribe({
         next: (res: any) => {
           this.isLoading = false;
-          console.log('Updated quality API response:', res);
+          // console.log('Updated quality API response:', res);
           this.isSuccess = true;
           // this.sendReviewerMailOnClose();
         },
         error: (error: HttpErrorResponse) => {
           this.isError = true;
           this.isLoading = false;
-          console.log("error from updating risk is",error)
+          // console.log("error from updating risk is",error)
 
           // Extract error message from backend response
           this.error = error.error?.details
@@ -241,15 +241,15 @@ export class UpdateRiskComponent {
     this.api
       .getRevieverDetails(Number(this.riskId), 'ApprovalPending')
       .subscribe((r: any) => {
-        console.log('response on update to get reviewer details:', r);
+        // console.log('response on update to get reviewer details:', r);
 
-        console.log('reviewer details fetching');
+        // console.log('reviewer details fetching');
 
         this.reviewer = r[0].fullName;
-        console.log('Reviewer Details:', this.reviewer);
+        // console.log('Reviewer Details:', this.reviewer);
         this.api.getRiskById(Number(this.riskId)).subscribe((res: any) => {
           this.riskData = res;
-          console.log('risk Data:', this.riskData);
+          // console.log('risk Data:', this.riskData);
           this.context = {
             responsibleUser: this.reviewer,
             riskId: res.riskId,
@@ -271,12 +271,12 @@ export class UpdateRiskComponent {
             id: res.id,
             rid: res.id,
           };
-          console.log('Email Context:', this.context);
+          // console.log('Email Context:', this.context);
 
           // Send email to reviewer
           this.email.sendPostReviewerEmail(r[0].email, this.context).subscribe({
             next: () => {
-              console.log('Reviewer Email:', r[0].email);
+              // console.log('Reviewer Email:', r[0].email);
               console.log('Email Sent Successfully.');
             },
             error: (emailError) => {

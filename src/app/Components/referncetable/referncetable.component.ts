@@ -31,7 +31,7 @@ getCellStyle(value: string): { [key: string]: string } {
       case 'red':
           return { backgroundColor: 'red', color: 'white' };
       default:
-          return {}; // Default style for unrecognized values
+          return {}; 
   }
 }
 

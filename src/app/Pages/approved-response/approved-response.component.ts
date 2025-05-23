@@ -147,7 +147,7 @@ export class ThankyouComponent {
 
               this.email.sendAssigneeEmail(riskDetails.responsibleUser.email, context).subscribe({
                 next: () => {
-                  console.log('Assignee email sent successfully');
+                  // console.log('Assignee email sent successfully');
 
                   this.api.getriskOwnerEmailandName(this.riskId).subscribe({
                     next: (ownerRes: any) => {

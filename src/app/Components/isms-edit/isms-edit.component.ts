@@ -141,7 +141,7 @@ export class IsmsEditComponent {
   departmentIdForAdminToAddToString:string=''
   showModalCategory = false;
   departmentidForAssignee:string='';
-   
+
 
 
 
@@ -274,30 +274,30 @@ export class IsmsEditComponent {
 
   onDropdownChangeReviewer(selectedReviewer: any) {
     const selectedreviewer = selectedReviewer;
-    console.log('selected factor id is ', selectedreviewer);
+    // console.log('selected factor id is ', selectedreviewer);
 
     const selectedFactor = this.dropdownReviewer.find(
       (factor) => factor.fullName === selectedreviewer
     );
-    console.log('selected factor is ', selectedFactor);
+    // console.log('selected factor is ', selectedFactor);
     if (selectedFactor) {
       if (selectedFactor.type === 'Internal') {
         this.isInternal = true;
         this.internalReviewerIdFromDropdown = selectedFactor.id;
-        console.log(
-          'Selected internal reviewer ID:',
-          this.internalReviewerIdFromDropdown
-        );
+        // console.log(
+        //   'Selected internal reviewer ID:',
+        //   this.internalReviewerIdFromDropdown
+        // );
 
         console.log('this is a internal reviewer', this.isInternal);
       } else if (selectedFactor.type === 'External') {
         this.isInternal = false;
         this.externalReviewerIdFromDropdown = selectedFactor.id;
-        console.log(
-          'Selected external reviewer ID:',
-          this.externalReviewerIdFromDropdown
-        );
-        console.log('this is a internal reviewer', this.isInternal);
+        // console.log(
+        //   'Selected external reviewer ID:',
+        //   this.externalReviewerIdFromDropdown
+        // );
+        // console.log('this is a internal reviewer', this.isInternal);
       }
     } else {
       console.error('No matching reviewer found for the selected ID.');
@@ -491,25 +491,25 @@ export class IsmsEditComponent {
       const selectedFactor = this.dropdownReviewer.find(
         (factor) => factor.fullName === this.preSelectedReviewer
       );
-      console.log('selected factor is ', selectedFactor);
+      // console.log('selected factor is ', selectedFactor);
       if (selectedFactor) {
         if (selectedFactor.type === 'Internal') {
           this.isInternal = true;
           this.internalReviewerIdFromDropdown = selectedFactor.id;
-          console.log(
-            'Selected internal reviewer ID:',
-            this.internalReviewerIdFromDropdown
-          );
+          // console.log(
+          //   'Selected internal reviewer ID:',
+          //   this.internalReviewerIdFromDropdown
+          // );
 
-          console.log('this is a internal reviewer', this.isInternal);
+          // console.log('this is a internal reviewer', this.isInternal);
         } else if (selectedFactor.type === 'External') {
           this.isInternal = false;
           this.externalReviewerIdFromDropdown = selectedFactor.id;
-          console.log(
-            'Selected external reviewer ID:',
-            this.externalReviewerIdFromDropdown
-          );
-          console.log('this is a internal reviewer', this.isInternal);
+          // console.log(
+          //   'Selected external reviewer ID:',
+          //   this.externalReviewerIdFromDropdown
+          // );
+          // console.log('this is a internal reviewer', this.isInternal);
         }
       } else {
         console.error('No matching reviewer found for the selected ID.');
@@ -540,7 +540,7 @@ export class IsmsEditComponent {
 
   onSubmit() {
     this.isLoading=true;
-    console.log(this.ismsForm.value);
+    // console.log(this.ismsForm.value);
     const formValue = this.ismsForm.value;
 
     if (this.ismsForm.invalid) {
