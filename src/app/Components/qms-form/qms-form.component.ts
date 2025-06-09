@@ -975,8 +975,9 @@ export class QMSFormComponent {
         });
       }
     } else {
-      this.isNothingInDraft = true;
       this.isLoading = false;
+      this.isNothingInDraft = true;
+
 
       // this.saveAsDraft();
     }
