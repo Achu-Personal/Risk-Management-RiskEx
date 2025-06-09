@@ -1331,6 +1331,7 @@ export class ISMSFormComponent {
       // this.isdraftConform = true;
     } else {
       this.isNothingInDraft = true;
+      this.isLoading = false;
       // this.saveAsDraft();
     }
 
