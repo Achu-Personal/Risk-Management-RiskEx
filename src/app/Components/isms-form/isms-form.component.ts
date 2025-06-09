@@ -926,8 +926,9 @@ export class ISMSFormComponent {
         console.log('Draft Removed!');
       });
 
-      this.isLoading = false;
+
     }
+     this.isLoading = false;
   }
 
   private getRiskId(
@@ -1640,7 +1641,7 @@ export class ISMSFormComponent {
             : null,
           impact: this.qmsDraft.impact ?? null,
         });
-        this.overallRiskRating = this.qmsDraft.OverallRiskRatingBefore;
+        this.overallRiskRating = this.qmsDraft.overallRiskRatingBefore;
 
         this.confidentialityRiskFactor =
           this.qmsDraft.riskAssessments[0].riskFactor;
