@@ -34,7 +34,7 @@ export class SidebarComponent {
   menuItems = [
     { id: 1, label: 'Dashboard', icon: 'fa-solid fa-house', route: '/home', active: false },
     { id: 2, label: "Assignments", icon: "fa-solid fa-tasks", route: "/assignee",active: false},
-    { id: 3, label: 'Approvals', icon: ' fa-solid fa-clipboard-check', route: '/approvaltable', active: false },
+    { id: 3, label: 'Approvals', icon: ' fa-solid fa-clipboard-check', route: '/approvals', active: false },
     { id: 4, label: 'Reports', icon: 'fa-solid fa-chart-simple', route: '/reports', active: false },
     { id: 5, label: 'Draft', icon: 'fa-brands fa-firstdraft', route: '/draft', active: false },
     { id: 6, label: 'History', icon: 'fa-solid fa-clock', route: '/history', active: false },
