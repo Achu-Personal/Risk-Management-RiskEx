@@ -53,6 +53,8 @@ export class ApprovalComponent {
     let id = parseInt(this.route.snapshot.paramMap.get('id')!);
     this.api.getRiskById(id).subscribe(e=>{
       this.data=e
+
+      console.log("data in approval table",this.data)
       this.basdicDetailsData={
         riskNumber:this.data.riskNumber,
         riskType:this.data.riskType,
