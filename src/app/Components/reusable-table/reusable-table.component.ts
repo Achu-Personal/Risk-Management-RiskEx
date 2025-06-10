@@ -252,8 +252,8 @@ export class ReusableTableComponent {
   updatePaginatedItems(): void {
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
     const endIndex = startIndex + this.itemsPerPage;
-    this.tableData = this.tableData1.slice(startIndex, endIndex);
-    this.totalItems = this.tableData1.length;
+    this.tableData = this.tableData.slice(startIndex, endIndex);
+    this.totalItems = this.tableData.length;
     this.cdr.markForCheck();
   }
 
