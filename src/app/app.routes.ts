@@ -98,7 +98,7 @@ export const routes: Routes = [
       },
 
       {
-        path: 'approvaltable',
+        path: 'approvals',
         component: ApprovalTableComponent,
         data: { title: 'Approvals', breadcrumb: 'Approvals' },
       },

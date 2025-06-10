@@ -258,7 +258,7 @@ export class ApprovalComponent {
             }
 
             this.isLoader = false;
-            this.router.navigate(['/approvaltable']);
+            this.router.navigate(['/approvals']);
           },
           error: (error) => {
             console.error('Error updating review status:', error);
@@ -418,7 +418,7 @@ export class ApprovalComponent {
             }
 
             this.isLoader = false;
-            this.router.navigate(['/approvaltable']);
+            this.router.navigate(['/approvals']);
           },
           error: (error) => {
             console.error('Error updating review status:', error);
