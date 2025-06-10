@@ -233,8 +233,7 @@ export class UpdateIsmsComponent {
         this.integrityRiskFactor +
         this.availabilityRiskFactor +
         this.privacyRiskFactor;
-      this.residualValue =
-        this.overallRiskRatingBefore - this.overallRiskRating;
+      this.residualValue = this.overallRiskRatingBefore - this.overallRiskRating;
       this.percentageRedution = parseFloat(
         ((this.residualValue / this.overallRiskRatingBefore) * 100).toFixed(2)
       );

@@ -28,7 +28,8 @@
     <!-- <app-risk-details-section3-mitigation [data]="riskDetailsSection3MitigationData" ></app-risk-details-section3-mitigation> -->
 
 
-    @if(data.riskAssessments[1])
+    @if((data.riskType === 'Quality' && data.riskAssessments[1]) ||
+  ((data.riskType === 'Security' || data.riskType === 'Privacy') && data.riskAssessments[4]))
     {
       <div class="residualriskData">
         <div style="width: 100%;display: flex;justify-content: center;margin-top: 40px;">
