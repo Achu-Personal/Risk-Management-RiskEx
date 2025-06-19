@@ -16,7 +16,7 @@
 
 /* Style for individual buttons */
 .btnn button {
-  padding: 1.1vh 1.1vh;
+ padding: 0 1.1vh;
   height: 5.5vh;
   background-color: #4D4D4D ;
   color: #ffffff ;
@@ -27,6 +27,11 @@
   cursor: pointer;
   transition: background-color 0.3s, border-color 0.3s;
   width: 170px;
+
+  display: flex;
+  align-items: center;     /* Vertical centering */
+  justify-content: center; /* Horizontal centering */
+  line-height: normal;
 }
 
 /* Hover effect */
