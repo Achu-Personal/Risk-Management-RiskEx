@@ -164,6 +164,6 @@ export class ReportsComponent {
     this.selectedDateRange = dateRange;
   }
   Draft() {
-    this.router.navigate(['/draft']);
+    this.router.navigate(['/drafts']);
   }
 }

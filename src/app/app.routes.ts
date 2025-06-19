@@ -77,7 +77,7 @@ export const routes: Routes = [
         },
       },
       {
-        path: 'assignee',
+        path: 'assignments',
         component: AssignmentComponent,
         data: { title: 'Assignments', breadcrumb: 'Assignments' },
       },
@@ -87,7 +87,7 @@ export const routes: Routes = [
         data: { title: 'History', breadcrumb: 'History' },
       },
       {
-        path: 'draft',
+        path: 'drafts',
         component: DraftPageComponent,
         data: { title: 'Draft', breadcrumb: 'Draft' },
       },
