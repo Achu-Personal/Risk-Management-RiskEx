@@ -6,6 +6,20 @@ body {
   font-family: "Inter", sans-serif;
 }
 
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  width: 100%;
+  overflow-x: hidden; /* prevent horizontal scroll */
+  box-sizing: border-box;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
 :root {
   --primary-color: #f4f1ec;
   --foreground-color: #4d4d4d;

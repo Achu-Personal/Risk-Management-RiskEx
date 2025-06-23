@@ -1,6 +1,6 @@
 
-<app-body-container backgroundColor="transparent" [showShadow]=false >
-  <div class="tab"></div>
+<app-body-container backgroundColor="transparent" [showShadow]=false  padding="0">
+  <div class="tab">
   <div class="contains">
 
 
@@ -29,5 +29,6 @@
     [filteredDateRange]="selectedDateRange"
     (filteredData)="onFilteredData($event)">
   </app-table>
+  </div>
 </app-body-container>
 
