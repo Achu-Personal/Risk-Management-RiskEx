@@ -19,6 +19,7 @@ export class CrumbsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.breadcrumbs = this.createBreadcrumbs(this.activatedRoute.root);
     this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
       .subscribe(() => {
