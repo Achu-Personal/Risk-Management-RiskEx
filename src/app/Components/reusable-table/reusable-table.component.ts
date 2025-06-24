@@ -259,7 +259,7 @@ export class ReusableTableComponent {
 
   onSearch(searchText: string): void {
     const lowercasedSearchText = searchText.toLowerCase();
-    this.tableData1 = this.originalTableData.filter((item: any) =>
+    this.tableData = this.originalTableData.filter((item: any) =>
       Object.values(item).some(
         (value: any) =>
           value != null &&
