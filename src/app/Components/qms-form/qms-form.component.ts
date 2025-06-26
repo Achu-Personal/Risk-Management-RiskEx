@@ -1,3 +1,4 @@
+import { department } from './../../Interfaces/deparments.interface';
 import {
   Component,
   ElementRef,
@@ -999,6 +1000,8 @@ export class QMSFormComponent {
         impact: this.qmsDraft.impact ?? null,
       });
 
+      this.departmentIdForAdminToAdd = this.qmsDraft.departmentId;
+      console.log("lohing " ,this.departmentIdForAdminToAdd  );
       this.overallRiskRating = this.qmsDraft.overallRiskRatingBefore;
       this.riskFactor = this.qmsDraft.riskAssessments[0].riskFactor;
       this.isDraftLoaded = true;

@@ -1569,6 +1569,8 @@ export class ISMSFormComponent {
             : null,
           impact: this.qmsDraft.impact ?? null,
         });
+        this.departmentIdForAdminToAdd = this.qmsDraft.departmentId;
+        console.log("lohing " ,this.departmentIdForAdminToAdd  );
         this.overallRiskRating = this.qmsDraft.overallRiskRatingBefore;
 
         this.confidentialityRiskFactor =
@@ -1642,6 +1644,8 @@ export class ISMSFormComponent {
             : null,
           impact: this.qmsDraft.impact ?? null,
         });
+        this.departmentIdForAdminToAdd = this.qmsDraft.departmentId;
+        console.log("lohing " ,this.departmentIdForAdminToAdd  );
         this.overallRiskRating = this.qmsDraft.overallRiskRatingBefore;
 
         this.confidentialityRiskFactor =
@@ -1775,7 +1779,7 @@ export class ISMSFormComponent {
             riskFactors.forEach((factor, index) => {
               const preSelectedLikelihood =
                 this.qmsDraft.riskAssessments[index].likelihood;
-              console.log('logloglogloglog', preSelectedLikelihood);
+              // console.log('logloglogloglog', preSelectedLikelihood);
 
               // const selectedFactor = this.dropdownLikelihood.find(f => f.assessmentFactor === preSelectedLikelihood);
 
