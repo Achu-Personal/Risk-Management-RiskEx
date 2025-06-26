@@ -1001,7 +1001,6 @@ export class QMSFormComponent {
       });
 
       this.departmentIdForAdminToAdd = this.qmsDraft.departmentId;
-      console.log("lohing " ,this.departmentIdForAdminToAdd  );
       this.overallRiskRating = this.qmsDraft.overallRiskRatingBefore;
       this.riskFactor = this.qmsDraft.riskAssessments[0].riskFactor;
       this.isDraftLoaded = true;

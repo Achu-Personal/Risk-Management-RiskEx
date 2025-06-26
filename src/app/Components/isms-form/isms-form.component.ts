@@ -1570,7 +1570,6 @@ export class ISMSFormComponent {
           impact: this.qmsDraft.impact ?? null,
         });
         this.departmentIdForAdminToAdd = this.qmsDraft.departmentId;
-        console.log("lohing " ,this.departmentIdForAdminToAdd  );
         this.overallRiskRating = this.qmsDraft.overallRiskRatingBefore;
 
         this.confidentialityRiskFactor =
@@ -1645,7 +1644,6 @@ export class ISMSFormComponent {
           impact: this.qmsDraft.impact ?? null,
         });
         this.departmentIdForAdminToAdd = this.qmsDraft.departmentId;
-        console.log("lohing " ,this.departmentIdForAdminToAdd  );
         this.overallRiskRating = this.qmsDraft.overallRiskRatingBefore;
 
         this.confidentialityRiskFactor =
