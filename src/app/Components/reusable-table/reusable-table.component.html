@@ -85,7 +85,7 @@
         </thead>
 
         <tbody>
-          @for(row of tableData ; track row){
+          @for(row of paginatedData ; track row){
           <tr (click)="rowClick(row)">
             @for(key of rowKeys; track key ){
             <td [title]="row[key]">
