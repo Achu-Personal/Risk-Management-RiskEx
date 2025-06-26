@@ -9,4 +9,3 @@ export const environment = {
     postLogoutRedirectUri: 'https://riskex.experionglobal.dev/'
   }
 };
- 
