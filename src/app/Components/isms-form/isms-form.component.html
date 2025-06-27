@@ -13,6 +13,7 @@
 
      <div class="form-row">
       @if(isAdmin === 'Admin'){
+        @if(isDraftidPresent){
         <app-form-dropdown
           label="Department Name"
           required=" *"
@@ -34,6 +35,7 @@
         </div>
 
         }
+      }
      </div>
 
 
@@ -142,9 +144,9 @@
         <tr>
           <td>
             <h2
-              [ngStyle]="{ 'border-bottom': '0px', 'text-transform': 'none' }"
+              [ngStyle]="{ 'border-bottom': '0px', 'text-transform': 'none', 'font-weight':'bold','font-size':'1rem'}"
             >
-              Confidentiality
+              Confidentiality <span class="required">*</span>
             </h2>
           </td>
           <td>
@@ -190,9 +192,9 @@
         <tr>
           <td>
             <h2
-              [ngStyle]="{ 'border-bottom': '0px', 'text-transform': 'none' }"
+              [ngStyle]="{ 'border-bottom': '0px', 'text-transform': 'none' ,'font-weight':'bold','font-size':'1rem' }"
             >
-              Integrity
+              Integrity <span class="required">*</span>
             </h2>
           </td>
           <td>
@@ -236,9 +238,9 @@
         <tr>
           <td>
             <h2
-              [ngStyle]="{ 'border-bottom': '0px', 'text-transform': 'none' }"
+              [ngStyle]="{ 'border-bottom': '0px', 'text-transform': 'none' ,'font-weight':'bold','font-size':'1rem'}"
             >
-              Availability
+              Availability <span class="required">*</span>
             </h2>
           </td>
           <td>
@@ -282,9 +284,9 @@
         <tr>
           <td>
             <h2
-              [ngStyle]="{ 'border-bottom': '0px', 'text-transform': 'none' }"
+              [ngStyle]="{ 'border-bottom': '0px', 'text-transform': 'none','font-weight':'bold','font-size':'1rem' }"
             >
-              Privacy
+              Privacy <span class="required">*</span>
             </h2>
           </td>
           <td>
@@ -414,12 +416,12 @@
         [dropdownData]="dropdownAssigneeForAdmin"
         dropdownDisplay="fullName"
         dropdownValue="id"
-        selectValue="Select responsible person"
+        selectValue="Select risk owner"
         (change)="onDropdownChangeResponsiblePerson($event)"
         [openDropdownId]="openDropdownId"
         [selectedValue]="preSelectedResponsiblePerson"
         (openDropdown)="handleDropdownOpen($event)"
-        message="You can select an existing responsible person from the dropdown
+        message="You can select an existing risk owner from the dropdown
         or enter a new one. If you enter a new name, it will take priority over the dropdown selection."
         backgroundColor=" var(--form-color)"
         [showInfoButton]="true"
@@ -433,12 +435,12 @@
         [dropdownData]="dropdownAssignee"
         dropdownDisplay="fullName"
         dropdownValue="id"
-        selectValue="Select responsible person"
+        selectValue="Select risk owner"
         (change)="onDropdownChangeResponsiblePerson($event)"
         [openDropdownId]="openDropdownId"
         [selectedValue]="preSelectedResponsiblePerson"
         (openDropdown)="handleDropdownOpen($event)"
-        message="You can select an existing responsible person from the dropdown
+        message="You can select an existing risk owner from the dropdown
         or enter a new one. If you enter a new name, it will take priority over the dropdown selection."
         backgroundColor=" var(--form-color)"
         [showInfoButton]="true"
@@ -478,7 +480,7 @@
         }"
       >
         <p>
-          If responsible person not in the list
+          If risk owner not in the list
           <span (click)="isAssigneeNotInList()"
             ><a href="javascript:void(0);">click </a></span
           >here
@@ -590,10 +592,10 @@
 
     @if(isAdmin=="Admin"){
       <app-form-data-not-in-list
-        placeholder="Enter responsible person name"
+        placeholder="Enter risk owner name"
         [isAssignee]="true"
         [assigneeDepartment]="departmentIdForAdminToAddToString"
-        textLabel="Responsible person name"
+        textLabel="Risk owner"
         [dropdownDepartment]="dropdownDepartment"
         (cancelForm)="receiveCancel($event)"
         (sendData)="saveAssignee($event)"
@@ -604,10 +606,10 @@
 
       @if(isAdmin!=="Admin"){
         <app-form-data-not-in-list
-        placeholder="Enter responsible person name"
+        placeholder="Enter risk owner name"
         [isAssignee]="true"
         [assigneeDepartment]="departmentId"
-        textLabel="Responsible person name"
+        textLabel="Risk owner"
         [dropdownDepartment]="dropdownDepartment"
         (cancelForm)="receiveCancel($event)"
         (sendData)="saveAssignee($event)"
@@ -631,28 +633,40 @@
   ></app-form-data-not-in-list>
   } @if(isSuccessReviewer){
   <app-form-successfull
-    message="The new Reviewer has been added successfully!"
+    message="The new reviewer has been added successfully."
     [isSuccessfull]="true"
     (closeDialog)="closeReviewer()"
   >
   </app-form-successfull>
   } @if(isErrorReviewer){
   <app-form-successfull
-    message="Something went wrong! <br> Please ensure all required fields are filled in correctly and check your internet connection.<br> If the issue persists, try again later or contact support."
+  message="Reasons May be:
+  <br>
+  A reviewer with this email already exists.
+  <br>
+  Please ensure all required fields are completed correctly and check your internet connection.
+  <br>
+  If the issue persists, please try again later or contact support for assistance."
     [isSuccessfull]="false"
     (closeDialog)="closeReviewer()"
   >
   </app-form-successfull>
   } @if(isSuccessAssignee){
   <app-form-successfull
-    message="The new Assignee has been added successfully!"
+    message="The new risk owner has been added successfully."
     [isSuccessfull]="true"
     (closeDialog)="closeAssignee()"
   >
   </app-form-successfull>
   } @if(isErrorAssignee){
   <app-form-successfull
-    message="Something went wrong! <br> Please ensure all required fields are filled in correctly and check your internet connection.<br> If the issue persists, try again later or contact support."
+  message="Reasons May be:
+  <br>
+  A risk owner with this email already exists or may have been deactivated.
+  <br>
+  Please make sure all required fields are completed correctly and check your internet connection.
+  <br>
+  If the problem continues, please try again later or contact support for assistance."
     [isSuccessfull]="false"
     (closeDialog)="closeAssignee()"
   >
@@ -671,28 +685,28 @@
   ></app-form-conform-popup>
   } @if(isdraft){
   <app-form-conform-popup
-    message="Do you want to save the entered risk details as a draft? <br> You can continue editing them the next time you open this page."
+    message="Do you want to save the entered risk details as a draft? <br> You can continue editing them on Draft page."
     (closeDialog)="closeDraft()"
     (notCloseDialog)="saveAsDraft()"
   ></app-form-conform-popup>
 
   } @if(isNothingInDraft){
   <app-form-successfull
-    message="Draft is empty. Please add content before saving"
+    message="Draft is empty. Please add content before saving."
     [isSuccessfull]="false"
     (closeDialog)="closeDraftWhenNoDraft()"
   >
   </app-form-successfull>
   } @if(isdraftConform){
   <app-form-successfull
-    message="Draft saved successfully.<br> Your progress will be available the next time you access this page."
+    message="Draft saved successfully.<br>  You can access your progress on the Drafts page."
     [isSuccessfull]="true"
     (closeDialog)="closeDialogSuccess()"
   >
   </app-form-successfull>
   } @if(isValid){
   <app-form-successfull
-    message="Please check the form fields and <br> ensure all mandatory fields are satisfied "
+    message="Please check the form fields and <br> ensure all mandatory fields are satisfied. "
     [isSuccessfull]="false"
     (closeDialog)="closepopupIsValidCheck()"
   >
@@ -705,4 +719,13 @@
   @if(showModal){
     <app-form-likelihood-impact-tooltip [showModal]="showModal" [tableType]="tableType" (closeRiskModal)="hideModal()"></app-form-likelihood-impact-tooltip>
   }
+
+  @if(isdraftErrorDisplay){
+    <app-form-successfull
+      [message]= draftErrorDisplay
+      [isSuccessfull]="false"
+      (closeDialog)="closeDraftWhenErrorOccur()"
+    >
+    </app-form-successfull>
+    }
 </div>

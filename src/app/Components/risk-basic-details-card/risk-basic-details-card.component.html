@@ -9,16 +9,60 @@
           <h5>{{allData.riskType}} Risk</h5>
         </div>
 
-      @if(preReviewstatus!=null)
+
+        @if(preReviewstatus!=null&&postReviewstatus!=null)
+        {
+
+          @if((authService.getCurrentUserId()==allData.createdBy.id||authService.getCurrentUserId()==allData.responsibleUser.id||authService.getUserRole()=="Admin"))
+          {
+
+
+            @if(preReviewstatus.isReviewed!=1&&postReviewstatus.isReviewed!=3)
+            {
+
+              <!-- if first  review is rejected -->
+              @if(preReviewstatus.isReviewed==5)
+              {
+
+                <!-- access is given to admina nd creator only -->
+                @if((authService.getCurrentUserId()==allData.createdBy.id||authService.getUserRole()=="Admin"))
+                {
+                  <app-edit-button title="Edit risk"  image="fa-solid fa-pen" [ngStyle]="{'display':isEditable?'flex':'none'}"  (onClick)="onEditButtonClicked()"></app-edit-button>
+
+                }
+              }
+              <!-- Other wise show edit button -->
+              @else
+              {
+                <app-edit-button title="Edit risk"  image="fa-solid fa-pen" [ngStyle]="{'display':isEditable?'flex':'none'}"  (onClick)="onEditButtonClicked()"></app-edit-button>
+
+              }
+            }
+
+              @if(preReviewstatus.isReviewed==2&&postReviewstatus.isReviewed!=3)
+              {
+
+               <app-edit-button title="Add post assessment values"  image="fa-solid fa-square-plus" [ngStyle]="{'display':isEditable?'flex':'none'}"  (onClick)="onUpdateButtonCLick()"></app-edit-button>
+
+              }
+          }
+
+        }
+
+
+
+<!--
+      @if(preReviewstatus!=null&&postReviewstatus!=null)
       {
-        @if((allData.riskStatus=="open"||postReviewstatus.isReviewed<4)&&(authService.getCurrentUserId()==allData.createdBy.id||authService.getCurrentUserId()==allData.responsibleUser.id||authService.getUserRole()=="Admin"))
+
+        @if((allData.riskStatus=="open"||postReviewstatus!=null? postReviewstatus.isReviewed<4:true)&&(authService.getCurrentUserId()==allData.createdBy.id||authService.getCurrentUserId()==allData.responsibleUser.id||authService.getUserRole()=="Admin"))
         {
 
 
           <app-edit-button title="Edit risk"  image="fa-solid fa-pen" [ngStyle]="{'display':isEditable?'flex':'none'}"  (onClick)="onEditButtonClicked()"></app-edit-button>
 
 
-            @if(preReviewstatus.isReviewed==2&&postReviewstatus.isReviewed!=5&&allData.riskStatus=="open")
+            @if(preReviewstatus.isReviewed==2&&postReviewstatus!=null?postReviewstatus.isReviewed!=5:true&&allData.riskStatus=="open")
             {
 
               <app-edit-button title="Add post assessment values"  image="fa-solid fa-square-plus" [ngStyle]="{'display':isEditable?'flex':'none'}"  (onClick)="onUpdateButtonCLick()"></app-edit-button>
@@ -26,7 +70,7 @@
             }
         }
 
-      }
+      } -->
 
 
       </div>

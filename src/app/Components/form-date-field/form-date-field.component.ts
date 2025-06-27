@@ -19,8 +19,8 @@ import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/f
 export class FormDateFieldComponent implements ControlValueAccessor {
   @Input() label: string = '';
   @Input() required: string = '';
-  value: string = ''; // Stores YYYY-MM-DD (for backend)
-  displayValue: string = ''; // Stores DD/MM/YYYY (for user display)
+  value: string = '';
+  displayValue: string = '';
   onChange: (value: any) => void = () => {};
   onTouched: () => void = () => {};
 
@@ -64,7 +64,7 @@ export class FormDateFieldComponent implements ControlValueAccessor {
       this.value = this.convertToModelFormat(this.displayValue);
       this.onChange(this.value);
     } else {
-      this.displayValue = ''; // Reset if invalid format
+      this.displayValue = ''; 
     }
   }
 
@@ -77,5 +77,5 @@ export class FormDateFieldComponent implements ControlValueAccessor {
 
 
 
-  
+
 }

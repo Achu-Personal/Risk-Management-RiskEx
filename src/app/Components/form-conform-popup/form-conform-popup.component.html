@@ -1,17 +1,9 @@
 <div class="modal-overlay">
-  <div  class="modal-content">
-  <!-- <div class="modal-content-container"> -->
-    <p [innerHTML]="message"></p>
-
-        <div class="button-group">
-          <!-- <button class="close-btn" (click)="close()">Yes</button>
-          <button class="close-btn" (click)="notClose()">No</button> -->
-          <app-style-button (clicked)="close()" label="Yes" type="button"></app-style-button>
-        <app-style-button (clicked)="notClose()" label="No" type="button"></app-style-button>
-        </div>
-
-
-  <!-- </div> -->
-</div>
-
+  <div class="modal-content">
+    <p class="modal-message" [innerHTML]="message"></p>
+    <div class="button-group">
+      <app-style-button (clicked)="close()" label="Yes" type="button"></app-style-button>
+      <app-style-button (clicked)="notClose()" label="No" type="button"></app-style-button>
+    </div>
+  </div>
 </div>

@@ -1,11 +1,4 @@
-
-// .main{
-//  margin-top: -10px;
-// }
-// app-body-container{
-//   margin-top: -10px;
-// }
-.dashboard{
+.dashboard {
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -13,13 +6,8 @@
   gap: 10px;
 
   position: relative;
-
-  // overflow: hidden;
-  // box-sizing: border-box;
-  // max-width: 100vw; /* Prevent horizontal overflow */
-  // max-height: 100vh; /* Prevent vertical overflow */
 }
-.topbuttons{
+.topbuttons {
   justify-self: start;
   display: flex;
   flex-direction: row;
@@ -30,28 +18,28 @@
   right: 0;
   top: 0; /* Adjust this based on how far from the top you want it to stick */
 
-  background-color:var(--primary-color); /* Optional: Add a background to prevent overlap artifacts */
+  background-color: var(
+    --primary-color
+  ); /* Optional: Add a background to prevent overlap artifacts */
   z-index: 1; /* Optional: Ensures it stays above elements with lower z-index */
 }
-.dropdown{
+.dropdown {
   display: flex;
   align-items: center;
   margin-right: -25px;
-
 }
-app-department-dropdown{
-   margin-right: 40px;
-
+app-department-dropdown {
+  margin-right: 40px;
 }
-.btn{
+.btn {
   font-size: 14px;
   border: none;
   cursor: pointer;
-  &:focus{
+  &:focus {
     outline: none;
     border: none;
   }
-  :hover{
+  :hover {
     // background-color: #0056b3;
     color: white;
     // border-color: #b34200;
@@ -60,7 +48,7 @@ app-department-dropdown{
 // .btn:hover {
 //   background-color: #0056b3; /* Changes background on hover */
 // }
-.graphs{
+.graphs {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
@@ -68,12 +56,12 @@ app-department-dropdown{
   // gap: 10px;
   height: 50%;
   width: 100%;
-  margin-top: 15px;
+  margin-top: 8px;
   // padding-top: 40px;
 }
 
-.graph1{
-  background-color:var(--accent-color) ;
+.graph1 {
+  background-color: var(--accent-color);
   height: 40vh;
   width: 55%;
   border-radius: 10px;
@@ -107,7 +95,7 @@ app-department-dropdown{
   }
 
 }
-.leftside{
+.leftside {
   display: flex;
   flex-direction: column;
   .labels
@@ -119,10 +107,10 @@ app-department-dropdown{
   }
 
 }
-.heading{
+.heading {
   color: black;
   // padding: 15px;
-  h4{
+  h4 {
     font-weight: 600;
     font-size: 2.5vh;
   }
@@ -133,17 +121,16 @@ app-department-dropdown{
   align-items: center;
   margin-bottom: 10px;
 
-  span{
+  span {
     font-weight: bold;
     width: 20vh;
     font-size: 2.3vh;
   }
-  h6{
+  h6 {
     font-weight: bold;
 
     font-size: 2.3vh;
     margin: 0px;
-
   }
 }
 .risk-indicator div {
@@ -151,22 +138,21 @@ app-department-dropdown{
   height: 12px;
   margin-right: 10px;
   border-radius: 5px;
-
 }
 // .labels{
 //   // background-color: red;
 
 // }
 .privacy-risk {
-  background-color:#6742c1;
+  background-color: #6742c1;
 }
 .quality-risk {
-  background-color:#0097a7;
+  background-color: #0097a7;
 }
 .security-risk {
-  background-color: #0047AB;
+  background-color: #0047ab;
 }
-.rightside{
+.rightside {
   // background-color: red;
   width: 65%;
   height: 100%;
@@ -177,8 +163,8 @@ app-department-dropdown{
 // .forchart{
 //   // background-color: red;
 // }
-.graph2{
-  background-color: #FFFFFF;
+.graph2 {
+  background-color: #ffffff;
   height: 40vh;
   width: 45%;
   border-radius: 10px;
@@ -208,8 +194,7 @@ app-department-dropdown{
     }
   }
 }
-.riskratingcategory{
-
+.riskratingcategory {
   display: flex;
   flex-direction: row;
 
@@ -228,10 +213,9 @@ app-department-dropdown{
 
     font-size: 2.5vh;
     margin: 0px;
-
   }
 }
-.forchart{
+.forchart {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -240,7 +224,7 @@ app-department-dropdown{
 
   // background-color: red;
 }
-.graphchart{
+.graphchart {
   overflow: hidden;
 }
 
@@ -254,20 +238,17 @@ app-department-dropdown{
 
   height: 50%;
   width: 100%;
-
 }
-.urgentrisks{
+.urgentrisks {
   background-color: var(--accent-color);
   height: 90%;
   width: 50%;
   border-radius: 20px;
   padding: 20px;
 
-  h5{
+  h5 {
     color: black;
     font-weight: 600;
-
-
   }
   // overflow: auto;
   // overflow-y: scroll;
@@ -276,26 +257,24 @@ app-department-dropdown{
   // scrollbar-width: thin; /* For Firefox */
   // scrollbar-color: #c5c4c4 #f1f1f1; /* For Firefox */
 }
-.maindiv1{
+.maindiv1 {
   display: flex;
   flex-direction: column;
   gap: 5px;
   height: 30vh;
-
 }
 .risk-card1 {
   width: 91%;
   height: 25%;
   border-radius: 10px;
-  background-color: #F4F1EC;
+  background-color: #f4f1ec;
   margin-left: 25px;
   display: flex;
   flex-direction: row;
   padding: 10px;
   // margin-top: -20px;
 }
-.riskCard1-left
-{
+.riskCard1-left {
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -305,9 +284,9 @@ app-department-dropdown{
   color: black;
   font-size: 16px;
 }
-.riskCard1-right{
+.riskCard1-right {
   display: flex;
-  flex-direction:column ;
+  flex-direction: column;
   width: 30%;
   justify-content: center;
   align-items: end;
@@ -328,16 +307,16 @@ app-department-dropdown{
   font-weight: 500;
   font-size: 12px;
 }
-.imprisk{
+.imprisk {
   // display: flex;
   // flex-direction: column;
   // gap: 5px;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   max-height: 90%;
   width: 50%;
   border-radius: 20px;
   // padding: 25px;
-  h5{
+  h5 {
     color: black;
     font-weight: 600;
     padding: 10px;
@@ -347,9 +326,8 @@ app-department-dropdown{
     // background-color: #FFFFFF; /* Matches container background */
     // z-index: 1; /* Ensures it appears above other content */
   }
-
 }
-.maindiv{
+.maindiv {
   display: flex;
   flex-direction: column;
   gap: 5px;
@@ -370,14 +348,14 @@ app-department-dropdown{
   height: 25%;
   margin-left: 25px;
   border-radius: 15px;
-  background-color: #D0C6B6;
+  background-color: #d0c6b6;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   padding: 10px;
   // margin-top: -20px;
 }
-.top{
+.top {
   display: flex;
   flex-direction: row;
   gap: 10px;
@@ -388,7 +366,7 @@ app-department-dropdown{
   font-size: 16px;
 }
 .risk-count {
-  background-color:black;
+  background-color: black;
   color: #fff;
   border-radius: 20px;
   height: 25px;
@@ -397,7 +375,7 @@ app-department-dropdown{
   align-items: center;
   justify-content: center;
 }
-.bottom{
+.bottom {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -430,8 +408,7 @@ app-department-dropdown{
 //   height: 100%;
 //   position: relative;
 // }
-.graph2Legend
-{
+.graph2Legend {
   height: 110px;
   display: flex;
   flex-direction: column;
@@ -439,28 +416,24 @@ app-department-dropdown{
   padding-left: 20px;
   margin-top: 30px;
 }
-.graph2Legend>div
-{
-display: flex;
-flex-direction: row;
-align-items: center;
-gap: 15px;
+.graph2Legend > div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 15px;
 }
-.graph2Legend>div>h5
-{
-font-size: 15px;
-font-weight: bold;
-margin: 0px;
+.graph2Legend > div > h5 {
+  font-size: 15px;
+  font-weight: bold;
+  margin: 0px;
 }
-.graph2Legend>div>h6
-{
-font-size: 13px;
-font-weight: 500;
-margin: 0px;
-color: grey;
+.graph2Legend > div > h6 {
+  font-size: 13px;
+  font-weight: 500;
+  margin: 0px;
+  color: grey;
 }
-.graph2Legend>div>div
-{
+.graph2Legend > div > div {
   height: 8px;
   width: 20px;
   background-color: red;
@@ -474,20 +447,22 @@ color: grey;
   margin-top: 70px;
 }
 
-
-.shimmer-container
-{
+.shimmer-container {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 .shimmer {
   background-color: #eee; /* Base color */
-  background-image: linear-gradient(to right, #ededed 0%, #fff 20%, #ecebeb 40%);
+  background-image: linear-gradient(
+    to right,
+    #ededed 0%,
+    #fff 20%,
+    #ecebeb 40%
+  );
   background-size: 800px 100%;
   animation: shimmer 1.5s infinite;
   border-radius: 20px;
-
 }
 
 @keyframes shimmer {

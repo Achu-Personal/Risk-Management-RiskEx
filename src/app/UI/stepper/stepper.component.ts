@@ -11,12 +11,12 @@ import {
   ChangeDetectorRef,
 } from '@angular/core';
 import { Step } from '../../Interfaces/Stepper.interface';
-import { CommonModule, DatePipe, SlicePipe } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-stepper',
   standalone: true,
-  imports: [DatePipe, SlicePipe,CommonModule],
+  imports: [DatePipe, CommonModule],
   templateUrl: './stepper.component.html',
   styleUrls: ['./stepper.component.scss'], // Corrected "styleUrl" to "styleUrls"
 })
@@ -43,7 +43,7 @@ export class StepperComponent {
   ngOnChanges(changes: SimpleChanges) {
     if (changes['steps']) {
       // Handle initial changes or significant list modifications
-     // console.log('steps changed:', this.steps);
+      // console.log('steps changed:', this.steps);
       this.myListDiffer = this.differs.find(this.steps).create();
     }
   }
@@ -56,13 +56,10 @@ export class StepperComponent {
           console.log(`Object with id ${change.key} changed:`);
           console.log('Previous Value:', change.previousValue);
           console.log('Current Value:', change.currentValue);
-
           // Handle specific property changes within the object
         });
       }
-
-      console.log('stepsafter=', this.steps);
-
+      //  console.log('stepsafter=', this.steps);
       this.steps.forEach((e: any) => {
         if (e.isCompleted) {
           this.completeStep(e.id);
@@ -72,8 +69,7 @@ export class StepperComponent {
   }
 
   ngOnInit() {
-    console.log('steps=', this.steps);
-
+    // console.log('steps=', this.steps);
     setTimeout(() => {
       this.steps.forEach((e: any) => {
         if (e.isCompleted) {

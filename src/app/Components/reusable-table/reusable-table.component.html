@@ -48,7 +48,7 @@
               <th title="{{header === 'overallRiskRating' ? 'Current Risk Rating' : headerDisplayMap[header] || header}}">
                 <div class="header-with-filter">
                   {{ headerDisplayMap[header] || header }}
-                  @if(header === 'departmentName' || header === 'riskType' || header ==='riskDepartment'){
+                  @if(header === 'departmentName' || header === 'riskType' || header ==='riskDepartment' ||  header ==='riskTypeName'){
                     <span class="filter-icon" (click)="toggleFilter($event, header)">&#9662;</span>
                     @if(showFilterDropdown && currentFilterColumn === header){
                       <div class="filter-dropdown" (click)="$event.stopPropagation()">
@@ -85,11 +85,17 @@
         </thead>
 
         <tbody>
-          @for(row of tableData ; track row){
+          @for(row of paginatedData ; track row){
           <tr (click)="rowClick(row)">
             @for(key of rowKeys; track key ){
             <td [title]="row[key]">
               <ng-container *ngIf="key === 'overallRiskRating'">
+                <div [ngClass]="getRiskRatingStyle(row[key])">
+                  {{ row[key] }}
+                </div>
+              </ng-container>
+
+              <ng-container *ngIf="key === 'overallRiskRatingBefore'">
                 <div [ngClass]="getRiskRatingStyle(row[key])">
                   {{ row[key] }}
                 </div>
@@ -111,10 +117,10 @@
                   ----
                 </ng-template></ng-container>
 
-              @if(key !=='riskStatus'&& key !=='overallRiskRating' && key
+              @if(key !=='riskStatus'&& key !=='overallRiskRating' && key !=='overallRiskRatingBefore' && key
               !=='plannedActionDate' && key!=='projects') {
               <ng-container>
-                {{ row[key] | slice : 0 : 40 }}{{ row[key].length > 40 ? "..." : "" }}
+                {{row[key]!=null? (row[key].toString() | slice : 0 : 40):'' }}{{ row[key]!=null? (row[key].length > 40 ? "..." : "") : "" }}
               </ng-container>
               }
               <!-- {{formatDate(row[key]) | slice : 0 : 30
@@ -188,14 +194,15 @@
             <td *ngIf="IsUser">
              <div class="action-buttons-container">
               <div class="toggle-container"
-                [ngClass]="{'admin-toggle': isSystemAdmin(row)}"
-                [title]="isSystemAdmin(row) ? 'System Admin status cannot be changed' : ''">
+                [ngClass]="{'admin-toggle': isSystemAdmin(row)|| isCurrentUser(row)}"
+                [title]="isSystemAdmin(row) ? 'System Admin status cannot be changed' :
+                         isCurrentUser(row) ? 'You cannot change your own status' : ''">
                <label class="switch">
                  <input
                    type="checkbox"
                    [(ngModel)]="row.isActive"
                    (change)="onToggleChange(row)"
-                   [disabled]="isSystemAdmin(row)"
+                   [disabled]="isSystemAdmin(row) || isCurrentUser(row)"
                    />
                   <span class="slider"></span>
                 </label>
@@ -205,11 +212,11 @@
                 <div
                   class="icon edit"
                   title="Edit User"
-                  [class.disabled]="isSystemAdmin(row)"
-                  (click)="isSystemAdmin(row) ? null : editUser($event, row)"
-                  [ngClass]="{'admin-toggle': isSystemAdmin(row)}"
-                  [title]="isSystemAdmin(row) ? 'System Admin status cannot be Edited' : ''"
-                >
+                  [class.disabled]="isSystemAdmin(row) || isCurrentUser(row)"
+                  (click)="(isSystemAdmin(row) || isCurrentUser(row)) ? null : editUser($event, row)"
+                  [ngClass]="{'admin-toggle': isSystemAdmin(row) || isCurrentUser(row)}"
+                  [title]="isSystemAdmin(row) ? 'System Admin status cannot be Edited' :
+                           isCurrentUser(row) ? 'You cannot Edit your own details' : ''">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" >
                     <path
                       d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"
@@ -221,6 +228,18 @@
                 </div>
               </div>
             </td>
+
+
+            }
+            @else if(IsDraft && IsActionRequiered)
+            {
+              <td >
+              <div style="display: flex;align-items: center;gap: 10px; height: 100%">
+                <app-edit-button title="Edit Draft"  image="fa-solid fa-pen" [ngStyle]="{'display':'flex'}" (onClick)="onDraftEditt(row)"  ></app-edit-button>
+                <app-edit-button title="Delete Draft"  image="fa-solid fa-trash" [ngStyle]="{'display':'flex'}" (onClick)="onDraftDelete(row)"  ></app-edit-button>
+              </div>
+              </td>
+
 
 
             }
@@ -253,6 +272,8 @@
 
       </app-pagination>
     }
+
+
   </div>
 </ng-container>
 <ng-template #noData>
@@ -280,5 +301,18 @@
   [isReject]="true"
   (confirm)="onReject($event)"
   (cancel)="showRejectDialog = false"
+>
+</app-confirmation-popup>
+
+<app-confirmation-popup
+  [isOpen]="showStatusChangeDialog"
+  title="Change User Status"
+  confirmText="Confirm"
+  [showComment]="false"
+  [message]="currentToggleRow ?
+    'Are you sure you want to ' + (currentToggleRow.isActive ? 'activate' : 'deactivate') +
+    ' user ' + (currentToggleRow.fullName || currentToggleRow.userName || 'User') + '?' : ''"
+  (confirm)="onStatusConfirm($event)"
+  (cancel)="onStatusCancel()"
 >
 </app-confirmation-popup>

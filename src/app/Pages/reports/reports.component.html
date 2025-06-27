@@ -1,7 +1,10 @@
 
-<app-body-container backgroundColor="transparent" [showShadow]=false >
-  <div class="tab"></div>
+<app-body-container backgroundColor="transparent" [showShadow]=false  padding="0">
+  <div class="tab">
   <div class="contains">
+
+
+
     <app-style-button label="Reset Filters" (click)="reset()"></app-style-button>
     <!-- <div class="contains1"> -->
     <app-datepicker (click)="toggleDropdown()" (dateRangeSelected)="onDateRangeSelected($event)"></app-datepicker>
@@ -10,6 +13,12 @@
     label="Generate Report"
     (click)="onGenerateReport()">
    </app-style-button>
+
+   <app-style-button
+    label="Drafts"
+    (click)="Draft()"
+    *ngIf="!isEmtUser">
+  </app-style-button>
 
   </div>
 
@@ -20,5 +29,6 @@
     [filteredDateRange]="selectedDateRange"
     (filteredData)="onFilteredData($event)">
   </app-table>
+  </div>
 </app-body-container>
 

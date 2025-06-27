@@ -1,12 +1,10 @@
 
-<app-body-container backgroundColor="transparent" [showShadow]=false >
-  <div class="tab"></div>
+<app-body-container backgroundColor="transparent" [showShadow]=false padding="0" >
+  <div class="tab">
   <div class="btnn">
     <app-style-button label="Reset Filters" (click)="reset()"></app-style-button>
     <app-datepicker (dateRangeSelected)="onDateRangeSelected($event)"></app-datepicker>
   </div>
-
-
 
   <app-table
     [isLoading]="isLoading"
@@ -15,6 +13,7 @@
     [reset]="isreset"
     [filteredDateRange]="selectedDateRange">
   </app-table>
+  </div>
 
 </app-body-container>
 

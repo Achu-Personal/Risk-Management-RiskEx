@@ -20,11 +20,8 @@ export class AssignmentComponent {
   constructor(private router: Router,private api:ApiService,private auth:AuthService) {}
 
   OnClickRow(row:any): void {
-
-
     this.router.navigate([`/ViewRisk/${row.id}`]);
-    console.log("rowdata",row);
-
+    // console.log("rowdata",row);
   }
 
 
@@ -85,7 +82,7 @@ ngOnInit()
         },
       ]
       this.api.getAllRisksAssigned().subscribe((e:any)=>{
-        console.log("Risk assigned to a user=",e)
+        // console.log("Risk assigned to a user=",e)
         this.tableBody=e;
         this.isLoading = false;
 
@@ -109,7 +106,7 @@ ngOnInit()
         },
       ]
       this.api.getRisksAssignedToUser(this.auth.getCurrentUserId()).subscribe((e:any)=>{
-        console.log("Risk assigned to a user=",e)
+        // console.log("Risk assigned to a user=",e)
         this.tableBody=e;
         this.isLoading = false;
 

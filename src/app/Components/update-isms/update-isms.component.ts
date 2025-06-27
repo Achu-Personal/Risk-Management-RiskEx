@@ -233,8 +233,7 @@ export class UpdateIsmsComponent {
         this.integrityRiskFactor +
         this.availabilityRiskFactor +
         this.privacyRiskFactor;
-      this.residualValue =
-        this.overallRiskRatingBefore - this.overallRiskRating;
+      this.residualValue = this.overallRiskRatingBefore - this.overallRiskRating;
       this.percentageRedution = parseFloat(
         ((this.residualValue / this.overallRiskRatingBefore) * 100).toFixed(2)
       );
@@ -320,35 +319,35 @@ export class UpdateIsmsComponent {
 
   onRadioSelectionChange(value: any) {
     this.riskResponseValue = value;
-    console.log('Selected value from child:', value);
+    // console.log('Selected value from child:', value);
   }
 
   onDropdownChangeReviewer(selectedReviewer: any) {
     const selectedreviewer = selectedReviewer;
-    console.log('selected factor id is ', selectedreviewer);
+    // console.log('selected factor id is ', selectedreviewer);
 
     const selectedFactor = this.dropdownReviewer.find(
       (factor) => factor.fullName === selectedreviewer
     );
-    console.log('selected factor is ', selectedFactor);
+    // console.log('selected factor is ', selectedFactor);
     if (selectedFactor) {
       if (selectedFactor.type === 'Internal') {
         this.isInternal = true;
         this.internalReviewerIdFromDropdown = selectedFactor.id;
-        console.log(
-          'Selected internal reviewer ID:',
-          this.internalReviewerIdFromDropdown
-        );
+        // console.log(
+        //   'Selected internal reviewer ID:',
+        //   this.internalReviewerIdFromDropdown
+        // );
 
-        console.log('this is a internal reviewer', this.isInternal);
+        // console.log('this is a internal reviewer', this.isInternal);
       } else if (selectedFactor.type === 'External') {
         this.isInternal = false;
         this.externalReviewerIdFromDropdown = selectedFactor.id;
-        console.log(
-          'Selected external reviewer ID:',
-          this.externalReviewerIdFromDropdown
-        );
-        console.log('this is a internal reviewer', this.isInternal);
+        // console.log(
+        //   'Selected external reviewer ID:',
+        //   this.externalReviewerIdFromDropdown
+        // );
+        // console.log('this is a internal reviewer', this.isInternal);
       }
     } else {
       console.error('No matching reviewer found for the selected ID.');
@@ -364,15 +363,13 @@ export class UpdateIsmsComponent {
     this.isLoading=true;
     const formValue = this.updateQmsForm.value;
     console.log(formValue);
-    console.log("vvvvvvvvvvvvvvvvvvvv",this.riskResponseValue)
+    // console.log("vvvvvvvvvvvvvvvvvvvv",this.riskResponseValue)
 
     if (
-      !formValue.closeDate ||
-      this.riskResponseValue <= 0 ||
-      this.overallRiskRating <= 0 ||
-      this.percentageRedution <= 0 ||
-      this.residualRisk <= 0 ||
-      this.residualValue <= 0 ||
+
+      Number(this.riskResponseValue) <= 0 ||
+      Number(this.overallRiskRating) <= 0 ||
+
       Number(this.confidentialityLikelihoodId) <= 0 ||
       Number(this.confidentialityImpactId) <= 0 ||
       Number(this.integrityLikelihoodId) <= 0 ||
@@ -507,7 +504,7 @@ export class UpdateIsmsComponent {
       ],
     };
 
-    console.log(payload);
+    // console.log(payload);
     this.submitForm.emit({ payload, riskType: this.riskTypeId });
     this.isLoading=false;
   }

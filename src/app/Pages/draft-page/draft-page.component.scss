@@ -1,0 +1,10 @@
+.draft-container {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 20px;
+  box-sizing: border-box;
+  overflow-y: auto;
+  background-color: var(--primary-color);
+  height: 100%;
+  padding: 20px;
+}

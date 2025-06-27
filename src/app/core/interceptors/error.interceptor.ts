@@ -29,8 +29,19 @@ export class ErrorInterceptor implements HttpInterceptor {
               break;
 
             case 401:
-              errorMessage = 'You do not have access to the system. Please contact the administrator..';
-              this.router.navigate(['/auth']);
+              // Check if the error is related to account deactivation
+              const errorString = JSON.stringify(error.error).toLowerCase();
+              if (
+                errorString.includes('deactivated') ||
+                errorString.includes('you do not have access') ||
+                (request.url.includes('/api/AuthControllers/ssologin') && error.status === 401)
+              ) {
+                errorMessage = 'Your account has been deactivated. Please contact the admin.';
+                this.router.navigate(['/unauthorized'], { queryParams: { type: 'deactivated' } });
+              } else {
+                errorMessage = 'You do not have permission to access this resource.';
+                this.router.navigate(['/unauthorized'], { queryParams: { type: 'permission' } });
+              }
               break;
 
             case 403:

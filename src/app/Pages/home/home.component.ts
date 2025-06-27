@@ -69,9 +69,8 @@ export class HomeComponent
     this.ApiInvocations();
   }
 
-  ApiInvocations()
-  {
-    console.log('Role', this.authService.getProjects());
+  ApiInvocations() {
+    // console.log('Role', this.authService.getProjects());
 
     let isAdminOrEMTuser =
       this.authService.getUserRole() === 'Admin' ||
@@ -91,7 +90,7 @@ export class HomeComponent
       {
         this.openRiskCountByType = e;
         this.list = e;
-        console.log(this.list);
+        // console.log(this.list);
         const count = this.list.map(
           (element: { riskCount: any }) => element.riskCount
         );
@@ -115,31 +114,28 @@ export class HomeComponent
         const riskcounts = this.list.reduce((acc: any, item: any) =>
         {
           acc[item.riskType] = item.riskCount;
-          console.log(item.riskType);
+          // console.log(item.riskType);
           return acc;
         }, {});
 
         this.privacyRiskCount = riskcounts['Privacy'] ?? 0;
         this.qualityRiskCount = riskcounts['Quality'] ?? 0;
         this.securityRiskCount = riskcounts['Security'] ?? 0;
-
-        console.log('OpenRiskCount', e);
-
-           this.graph1datasets = [
+        this.graph1datasets = [
           {
-            data: [10,4,9],
+            data: [this.privacyRiskCount,this.securityRiskCount,this.qualityRiskCount],
             backgroundColor: ['#FF6F3C', '#4d4d4d', '#F9C528'],
             hoverOffset: 10,
           },
         ];
 
         this.graph1chartType = 'doughnut';
-        this.graph1labels =["Privacy","Security","Quality"];
-        console.log('criticalitylevel', e);
+        this.graph1labels = ["Privacy","Security","Quality"];
+        // console.log('criticalitylevel', e);
         this.cdr.detectChanges();
+        this.isAllDataFetched++;
 
-
-
+        // console.log('OpenRiskCount', e);
         this.cdr.detectChanges();
 
         this.isAllDataFetched++;
@@ -152,15 +148,14 @@ export class HomeComponent
           ? this.authService.getProjects().map((item) => item.Id)
           : []
       )
-      .subscribe((e: any) =>
-      {
-        console.log('darat', e);
+      .subscribe((e: any) => {
+        // console.log('darat', e);
         this.riskCategoryCounts = e;
         this.list = e;
         const count = this.list.map((element: { count: any }) => element.count);
         this.counter = count;
         const counter: number[] = count;
-        console.log('Output', counter);
+        // console.log('Output', counter);
 
         const riskCat = this.list.map(
           (element: { riskCategory: any }) => element.riskCategory
@@ -184,7 +179,7 @@ export class HomeComponent
 
         this.graph2chartType = 'doughnut';
         this.graph2labels = this.risk;
-        console.log('criticalitylevel', counter);
+        // console.log('criticalitylevel', e);
         this.cdr.detectChanges();
         this.isAllDataFetched++;
       });
@@ -222,7 +217,7 @@ export class HomeComponent
 
         this.graph2chartType = 'doughnut';
         this.graph2labels = riskCat;
-        console.log('criticalitylevel', e);
+        // console.log('criticalitylevel', e);
         this.cdr.detectChanges();
         this.isAllDataFetched++;
       });
@@ -237,7 +232,7 @@ export class HomeComponent
       .subscribe((e: any) =>
       {
         this.riskApproachingDeadline = e;
-        console.log('approaching', e);
+        // console.log('approaching', e);
         this.cdr.detectChanges();
         this.isAllDataFetched++;
       });
@@ -252,7 +247,7 @@ export class HomeComponent
       .subscribe((e: any) =>
       {
         this.risksWithHeighesOverallRating = e;
-        console.log('heigest', e);
+        // console.log('heigest', e);
         this.cdr.detectChanges();
         this.isAllDataFetched++;
       });
@@ -276,13 +271,12 @@ export class HomeComponent
   GetSelectedDepartment(event: any)
   {
     this.isAllDataFetched = 0;
-    console.log('Selected Departments=', event);
+    // console.log('Selected Departments=', event);
 
     this.api
       .getRiskCategoryCountsByDepartment(event, [])
-      .subscribe((e: any) =>
-      {
-        console.log('darat', e);
+      .subscribe((e: any) => {
+        // console.log('darat', e);
 
         this.riskCategoryCounts = e;
         this.list = e;
@@ -312,7 +306,7 @@ export class HomeComponent
 
         this.graph2chartType = 'doughnut';
         this.graph2labels = this.risk;
-        console.log('criticalitylevel', e);
+        // console.log('criticalitylevel', e);
         this.cdr.detectChanges();
         this.isAllDataFetched++;
       });
@@ -330,11 +324,11 @@ export class HomeComponent
       this.privacyRiskCount = riskcounts['Privacy'];
       this.qualityRiskCount = riskcounts['Quality'];
       this.securityRiskCount = riskcounts['Security'];
-      console.log(
-        this.privacyRiskCount,
-        this.qualityRiskCount,
-        this.securityRiskCount
-      );
+      // console.log(
+      //   this.privacyRiskCount,
+      //   this.qualityRiskCount,
+      //   this.securityRiskCount
+      // );
 
       this.cdr.detectChanges();
       this.isAllDataFetched++;

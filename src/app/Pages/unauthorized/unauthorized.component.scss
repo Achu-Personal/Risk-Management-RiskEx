@@ -1,0 +1,83 @@
+.unauthorized-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f5f5f5;
+}
+
+.unauthorized-card {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 2.5rem;
+  text-align: center;
+  max-width: 500px;
+  width: 90%;
+}
+
+.icon {
+  margin-bottom: 1.5rem;
+}
+
+.icon i {
+  font-size: 5rem;
+}
+
+.icon-deactivated {
+  color: #e53935; // bright red for deactivated account
+}
+
+.icon-permission {
+  color: #ff9800; // orange for permission issues
+}
+
+h1 {
+  color: #333;
+  margin-bottom: 1.5rem;
+  font-size: 1.8rem;
+  font-weight: bolder;
+}
+
+.main-message {
+  color: #e60a0a;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.contact-info {
+  color: #666;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  opacity: 0.75;
+  line-height: 1.4;
+}
+
+.login-button {
+  padding: 1.5vh 1.5vh;
+  margin-top: 1.75rem;
+  height: 5.5vh;
+  background-color: #4D4D4D ;
+  color: #ffffff ;
+  box-shadow: 0px 0px 4px rgba(185, 154, 62, 0.5);
+  border: none;
+  border-radius: 5px;
+  font-size: small;
+  cursor: pointer;
+  transition: background-color 0.3s, border-color 0.3s;
+  width: 170px;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.login-button:hover {
+  background-color: #d0c6b6;
+  color: rgb(43, 28, 6);
+}
+.login-button:focus {
+  outline: none;
+  box-shadow: 0 0 5px rgba(255, 166, 0, 0.5);
+}
+

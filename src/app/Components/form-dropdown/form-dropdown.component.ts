@@ -4,9 +4,6 @@ import { DropdownComponent } from '../../UI/dropdown/dropdown.component';
 import { CommonModule } from '@angular/common';
 
 
-
-
-
 @Component({
   selector: 'app-form-dropdown',
   standalone: true,
@@ -19,15 +16,15 @@ export class FormDropdownComponent  {
   @Input() dropdownData:any[]=[]
   @Input() dropdownDisplay:string=''
   @Input() dropdownValue:string=''
-   @Input() dropdownCode:string=''
-    @Input() showInfoButton:boolean=false
+  @Input() dropdownCode:string=''
+  @Input() showInfoButton:boolean=false
   @Input() label:string=''
   @Input() required:string=''
   @Input() selectValue:string=''
   @Output() change = new EventEmitter<any>();
   @Input() selectedValue: any = null;
-  @Input() openDropdownId: string | undefined = undefined; // Get from parent
-  @Output() openDropdown = new EventEmitter<string>(); // Notify parent
+  @Input() openDropdownId: string | undefined = undefined;
+  @Output() openDropdown = new EventEmitter<string>();
   @Input() message:string=''
   @Input() backgroundColor:string=''
   @Input() showInfoButtonLikeliHoodImpact:boolean=false
@@ -35,9 +32,6 @@ export class FormDropdownComponent  {
   notifyParent() {
     this.infoClicked.emit(true);
   }
-
-
-
 
 
   onChange(event: any): void {
@@ -49,14 +43,10 @@ export class FormDropdownComponent  {
   }
 
 
-
-
-
-
-  dropdownId = Math.random().toString(36).substring(2, 9); // Generate unique ID
+  dropdownId = Math.random().toString(36).substring(2, 9);
 
   toggleDropdown() {
-    this.openDropdown.emit(this.dropdownId); // Notify parent
+    this.openDropdown.emit(this.dropdownId); 
 
   }
 

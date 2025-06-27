@@ -22,9 +22,7 @@ constructor(private el: ElementRef){}
 
 onRadioChange(event: any) {
   this.selectedValueChange.emit(this.selectedResponse);
-  console.log("selecetd value:",this.selectedResponse);
-
-
+  // console.log("selecetd value:",this.selectedResponse);
 
 }
 

@@ -1,4 +1,4 @@
-import { Component, forwardRef, OnInit, ElementRef, HostListener, Output, EventEmitter, ViewChild } from '@angular/core';
+import { Component, forwardRef, OnInit, ElementRef, HostListener, Output, EventEmitter } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { department } from '../../Interfaces/deparments.interface';
 import { ApiService } from '../../Services/api.service';

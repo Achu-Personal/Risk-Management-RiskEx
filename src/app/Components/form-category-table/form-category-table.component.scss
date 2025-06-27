@@ -20,6 +20,44 @@
   padding-top: 30px;
 }
 
+/* Scrollable only at 100% and 80% screen size */
+@media (min-width: 80%) {
+  .modal-content {
+    max-height: 80%;
+    overflow-y: auto;
+  }
+}
+
+/* No scroll at 75% and below */
+@media (max-width: 75%) {
+  .modal-content {
+    max-height: none;
+    overflow-y: visible;
+  }
+}
+
+/* Scrollbar styling for a cleaner look */
+.modal-content::-webkit-scrollbar {
+  width: 8px;
+  border-radius: 12px;
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+  background-color: var(--form-color);
+  border-radius: 12px;
+}
+
+.modal-content::-webkit-scrollbar-thumb:hover {
+  background-color: var(--form-color);
+  border-radius: 12px;
+}
+
+.modal-content::-webkit-scrollbar-track {
+  background-color: #f1f1f1;
+  border-radius: 12px;
+}
+
+/* Modal container */
 .modal-content-container {
   border: 2px solid var(--form-color);
   padding: 20px;
@@ -27,19 +65,22 @@
   text-align: end;
 }
 
+/* Cancel button */
 .btn.cancel {
   color: black;
   background-color: transparent;
   display: inline-block;
 }
 
+/* Table styling */
 table {
   width: 100%;
   border-collapse: collapse;
   font-size: 12px;
 }
 
-th, td {
+th,
+td {
   border: 1px solid #ddd;
   padding: 6px;
   text-align: left;
@@ -48,4 +89,13 @@ th, td {
 th {
   background-color: var(--foreground-color);
   color: white;
+}
+
+/* Enable scroll only for screens >= 80% */
+@media (min-width: 1024px) {
+  .modal-content {
+    width: 50%;
+    max-height: 80%;
+    overflow-y: auto;
+  }
 }

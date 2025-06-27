@@ -1,13 +1,10 @@
-import { BaseChartDirective} from 'ng2-charts';
-import { ChangeDetectorRef, Component, Input, SimpleChanges, ViewChild} from '@angular/core';
-import { Chart, ChartConfiguration, ChartType, registerables,CategoryScale ,} from 'chart.js';
-import ChartDataLabels from 'chartjs-plugin-datalabels'; // Import the plugin
+import { BaseChartDirective } from 'ng2-charts';
+import { ChangeDetectorRef, Component, Input, SimpleChanges, ViewChild } from '@angular/core';
+import { Chart, ChartConfiguration, ChartType, registerables, CategoryScale, } from 'chart.js';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 
 
-// Register the components
 Chart.register(...registerables, ChartDataLabels);
-
-
 
 @Component({
   selector: 'app-chart',
@@ -21,7 +18,7 @@ export class ChartComponent {
   @Input() chartType: ChartType = 'bar';
   @Input() datasets: any[] = [];
   @Input() chartRouter: any = '';
-  @Input() legend:boolean=true
+  @Input() legend: boolean = true
 
 
   @ViewChild(BaseChartDirective) chart!: BaseChartDirective;
@@ -29,8 +26,6 @@ export class ChartComponent {
   chartData: ChartConfiguration['data'] & { type?: ChartType } = {
     datasets: [],
     labels: [],
-
-
   };
 
   public lineChartOptions: ChartConfiguration['options'] = {
@@ -71,7 +66,7 @@ export class ChartComponent {
 
       },
 
-      },
+    },
   };
 
   ngOnChanges(changes: SimpleChanges) {
@@ -80,7 +75,7 @@ export class ChartComponent {
     if (changes['labels'] || changes['datasets'] || changes['chartType']) {
       this.chartData.labels = [...this.labels];
       this.chartData.datasets = [...this.datasets];
-      this.chartData.type = this.chartType; // Set the chart type
+      this.chartData.type = this.chartType;
 
       if (this.chart) {
         this.chart.update();

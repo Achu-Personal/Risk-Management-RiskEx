@@ -57,7 +57,7 @@ export class SingleProjectDropdownComponent implements OnChanges, ControlValueAc
     this.emitChanges();
   }
   ngOnInit(){
-    this.loadProjectsForDepartment();
+    // this.loadProjectsForDepartment();
 
     this.subscription.add(this.api.projectUpdate$.subscribe(() => {
       this.loadProjectsForDepartment();

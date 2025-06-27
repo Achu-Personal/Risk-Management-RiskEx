@@ -1,6 +1,4 @@
-
-.likelihood-impact-card
-{
+.likelihood-impact-card {
   height: 26vh;
   width: 14vw;
   background-color: var(--primary-color);
@@ -9,10 +7,9 @@
   display: flex;
   flex-direction: column;
   gap: 1.1vh;
-
 }
 
-h6{
+h6 {
   font-size: 2.2vh;
   font-weight: 400;
   display: flex;
@@ -21,15 +18,13 @@ h6{
   color: var(--secondary-text-color);
 }
 
-span{
+span {
   width: 40%;
   text-align: start;
   font-weight: 500;
-
 }
 
-.heading
-{
+.heading {
   font-weight: bold;
   font-size: 2.3vh;
   color: var(--secondary-text-color);

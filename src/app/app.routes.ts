@@ -28,17 +28,20 @@ import { VerificationSuccessComponent } from './Components/verification-success/
 import { AuthGuard } from './Gaurd/auth/auth.guard';
 import { AuthComponent } from './Layout/auth/auth.component';
 import { AuthComponentSSO } from './Gaurd/auth/auth.component';
+import { UnauthorizedComponent } from './Pages/unauthorized/unauthorized.component';
+import { DraftPageComponent } from './Pages/draft-page/draft-page.component';
 
 export const routes: Routes = [
   {
-    path: 'auth',
+    path: 'login',
     component: AuthComponent,
-    children: [{ path: '', redirectTo: 'auth', pathMatch: 'full' }],
+    children: [{ path:'', redirectTo: 'login', pathMatch: 'full' }],
   },
-  // {
-  //   path: 'auth',
-  //   component: AuthComponentSSO,
-  // },
+  { path: 'unauthorized', component: UnauthorizedComponent },
+  {
+    path: 'auth',
+    component: AuthComponentSSO,
+  },
   {
     path: 'sso',
     component: SsoComponent,
@@ -74,7 +77,7 @@ export const routes: Routes = [
         },
       },
       {
-        path: 'assignee',
+        path: 'assignments',
         component: AssignmentComponent,
         data: { title: 'Assignments', breadcrumb: 'Assignments' },
       },
@@ -84,13 +87,18 @@ export const routes: Routes = [
         data: { title: 'History', breadcrumb: 'History' },
       },
       {
+        path: 'drafts',
+        component: DraftPageComponent,
+        data: { title: 'Draft', breadcrumb: 'Draft' },
+      },
+      {
         path: 'reports',
         component: ReportsComponent,
         data: { title: 'Reports', breadcrumb: 'Report' },
       },
 
       {
-        path: 'approvaltable',
+        path: 'approvals',
         component: ApprovalTableComponent,
         data: { title: 'Approvals', breadcrumb: 'Approvals' },
       },

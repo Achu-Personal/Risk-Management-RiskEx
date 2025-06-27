@@ -1,7 +1,15 @@
 <div class="main-container">
   <h2>RiskEx</h2>
   <div class="box-container">
-    <a href="" class="back-to-login"><i class="fa-solid fa-arrow-left"></i> Back to login</a>
+    <div class="back-button-container">
+      <button type="button" class="back-button" (click)="goBack()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        Back to LogIn
+      </button>
+    </div>
 
     <h1>Forgot Your Password?</h1>
     <p>Don't worry, happens to all of us. Enter your email below to recover your password.</p>

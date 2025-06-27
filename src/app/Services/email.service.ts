@@ -11,15 +11,14 @@ import { AuthService } from './auth/auth.service';
 export class EmailService {
   emailTemplate: string = '';
   reviewerEmailTemplate: string = '';
-  postreviewerEmailTemplate:string ='';
-  approvalEmailTemplate:string='';
+  postreviewerEmailTemplate: string = '';
+  approvalEmailTemplate: string = '';
   assigneeEmailTemplate: string = '';
   ownerEmailTemplate: string = '';
   userRegisterTemplate: string = '';
   resetPasswordTemplate: string = '';
   userUpdateTemplate: string = '';
   riskClosureTemplate: string = '';
-
 
   private readonly baseUrl = environment.apiUrl;
 
@@ -41,7 +40,6 @@ export class EmailService {
     this.loadUserUpdateTemplate();
     this.loadApprovalTemplate();
     this.loadRiskClosureTemplate();
-
   }
 
   getCreatedByUserName(riskId: string): Promise<any> {
@@ -56,12 +54,12 @@ export class EmailService {
           console.error('Error fetching user name:', error);
           this.createdByUserName = 'Unknown User';
           resolve('Unknown User');
-        }
+        },
       });
     });
   }
 
-  //Reset passsword
+  //RESET PASSSWORD
   private async loadResetPasswordTemplate() {
     try {
       this.resetPasswordTemplate = await fetch(
@@ -116,7 +114,7 @@ export class EmailService {
     );
   }
 
-  // user Registration Email
+  //USER REGISTRATION EMAIL
   private async loadUserRegisterTemplate() {
     try {
       this.userRegisterTemplate = await fetch(
@@ -135,7 +133,6 @@ export class EmailService {
 
     return this.api.sendMail(email, subject, body).pipe(
       map((response: any) => {
-        // console.log('Registration email sent successfully', response);
         return true;
       }),
       catchError((error) => {
@@ -151,13 +148,13 @@ export class EmailService {
     context: any
   ): string {
     return template
-      .replace('{{userEmail}}', context.email)
+      .replace(/{{userEmail}}/g, context.email)
       .replace('{{defaultPassword}}', context.defaultPassword)
       .replace(/{{fullName}}/g, context.fullName)
       .replace(/{{baseUrl}}/g, this.frontendUrl);
   }
 
-  //Review mail
+  //REVIEW MAIL
   private async loadReviewTemplate() {
     try {
       this.reviewerEmailTemplate = await fetch(
@@ -168,22 +165,20 @@ export class EmailService {
     }
   }
   private AddRiskDetailsForReview(template: string, context: any): string {
-    return (
-      template
-        .replace(/{{createdBy}}/g, this.authService.getUserName() || 'user')
-        .replace('{{responsibleUser}}', context.responsibleUser)
-        .replace('{{riskId}}', context.riskId)
-        .replace('{{riskName}}', context.riskName)
-        .replace('{{description}}', context.description)
-        .replace('{{riskType}}', context.riskType)
-        .replace('{{impact}}', context.impact)
-        .replace('{{mitigation}}', context.mitigation)
-        .replace('{{plannedActionDate}}', context.plannedActionDate)
-        .replace('{{overallRiskRating}}', context.overallRiskRating)
-        .replace('{{id}}', context.id)
-        .replace('{{rid}}', context.rid)
-        .replace(/{{baseUrl}}/g, this.frontendUrl)
-    );
+    return template
+      .replace(/{{createdBy}}/g, this.authService.getUserName() || 'user')
+      .replace('{{responsibleUser}}', context.responsibleUser)
+      .replace('{{riskId}}', context.riskId)
+      .replace('{{riskName}}', context.riskName)
+      .replace('{{description}}', context.description)
+      .replace('{{riskType}}', context.riskType)
+      .replace('{{impact}}', context.impact)
+      .replace('{{mitigation}}', context.mitigation)
+      .replace('{{plannedActionDate}}', context.plannedActionDate)
+      .replace('{{overallRiskRating}}', context.overallRiskRating)
+      .replace('{{id}}', context.id)
+      .replace('{{rid}}', context.rid)
+      .replace(/{{baseUrl}}/g, this.frontendUrl);
   }
   sendReviewerEmail(email: string, context: any): Observable<boolean> {
     const subject = `RISK REVIEW NOTIFICATION - ${context.riskName}`;
@@ -194,7 +189,7 @@ export class EmailService {
 
     return this.api.sendMail(email, subject, body).pipe(
       map((response: any) => {
-        console.log('Email sent successfully', response);
+        console.log('Email sent successfully');
         this.notificationService.success(
           'The risk has been submitted to the reviewer for approval.'
         );
@@ -208,7 +203,7 @@ export class EmailService {
     );
   }
 
-  //Assignee Mail
+  //ASSIGNEE MAIL
   private async loadAssigneeTemplate() {
     try {
       this.assigneeEmailTemplate = await fetch(
@@ -218,16 +213,15 @@ export class EmailService {
       console.error('Failed to load email template:', error);
     }
   }
-async prepareAssigneeEmail(context: any): Promise<string> {
-  await this.getCreatedByUserName(context.riskId);
-  console.log('Username after fetch:', this.createdByUserName);
+  async prepareAssigneeEmail(context: any): Promise<string> {
+    await this.getCreatedByUserName(context.riskId);
+    // console.log('Username after fetch:', this.createdByUserName);
 
-  return this.AddRiskDetailstoAssignee(this.assigneeEmailTemplate, context);
-}
+    return this.AddRiskDetailstoAssignee(this.assigneeEmailTemplate, context);
+  }
 
   private AddRiskDetailstoAssignee(template: string, context: any): string {
-    console.log('Using username in template:', this.createdByUserName);
-
+    // console.log('Using username in template:', this.createdByUserName);
 
     return template
 
@@ -245,10 +239,10 @@ async prepareAssigneeEmail(context: any): Promise<string> {
 
   sendAssigneeEmail(email: string, context: any): Observable<boolean> {
     const subject = `RISK ASSIGNMENT NOTIFICATION - ${context.riskName}`;
-   return from(this.prepareAssigneeEmail(context)).pipe(
-    switchMap(body => {
-      return this.api.sendMail(email, subject, body);
-    }),
+    return from(this.prepareAssigneeEmail(context)).pipe(
+      switchMap((body) => {
+        return this.api.sendMail(email, subject, body);
+      }),
       map((response: any) => {
         // console.log('Email sent successfully', response);
         this.notificationService.success(
@@ -264,7 +258,7 @@ async prepareAssigneeEmail(context: any): Promise<string> {
     );
   }
 
-  //Risk Owner mail
+  //RISK OWNER MAIL
   private async loadOwnerTemplate() {
     try {
       this.ownerEmailTemplate = await fetch(
@@ -275,18 +269,18 @@ async prepareAssigneeEmail(context: any): Promise<string> {
     }
   }
 
-async prepareOwnerEmail(context: any): Promise<string> {
-  await this.getCreatedByUserName(context.riskId);
-  console.log('Username after fetch:', this.createdByUserName);
+  async prepareOwnerEmail(context: any): Promise<string> {
+    await this.getCreatedByUserName(context.riskId);
+    // console.log('Username after fetch:', this.createdByUserName);
 
-  return this.AddRiskDetailsForOwner(this.ownerEmailTemplate, context);
-}
+    return this.AddRiskDetailsForOwner(this.ownerEmailTemplate, context);
+  }
   private AddRiskDetailsForOwner(template: string, context: any): string {
-    console.log('Using username in template:', this.createdByUserName);
+    // console.log('Using username in template:', this.createdByUserName);
 
     return template
       .replace(/{{createdBy}}/g, this.createdByUserName)
-      .replace('{{reviewer}}',context.reviewer)
+      .replace('{{reviewer}}', context.reviewer)
       .replace('{{responsibleUser}}', context.responsibleUser)
       .replace('{{riskId}}', context.riskId)
       .replace('{{riskName}}', context.riskName)
@@ -302,9 +296,8 @@ async prepareOwnerEmail(context: any): Promise<string> {
   sendOwnerEmail(email: string, context: any): Observable<boolean> {
     const subject = `RISK REVIEW REJECTED - ${context.riskName}`;
     return from(this.prepareOwnerEmail(context)).pipe(
-      switchMap(body => {
-
-    return this.api.sendMail(email, subject, body);
+      switchMap((body) => {
+        return this.api.sendMail(email, subject, body);
       }),
       map((response: any) => {
         // console.log('Email sent successfully', response);
@@ -321,7 +314,7 @@ async prepareOwnerEmail(context: any): Promise<string> {
     );
   }
 
-  //User Upadte Email
+  //USER UPADTE EMAIL
   private async loadUserUpdateTemplate() {
     try {
       this.userUpdateTemplate = await fetch(
@@ -354,7 +347,7 @@ async prepareOwnerEmail(context: any): Promise<string> {
   }
 
   private prepareUserUpdateEmailBody(template: string, context: any): string {
-    console.log('Email context:', context);
+    // console.log('Email context:', context);
     let updatedTemplate = template
       .replace(/{{userEmail}}/g, context.email)
       .replace(/{{fullName}}/g, context.fullName || 'User')
@@ -393,22 +386,18 @@ async prepareOwnerEmail(context: any): Promise<string> {
     return updatedTemplate;
   }
 
-
-
-
-//PostReviewEmail
-private async loadPostTemplate() {
-  try {
-    this.postreviewerEmailTemplate = await fetch(
-      'Templates/PostApprovalEmailTemplate.html'
-    ).then((response) => response.text());
-  } catch (error) {
-    console.error('Failed to load email template:', error);
+  //POST REVIEW EMAIL
+  private async loadPostTemplate() {
+    try {
+      this.postreviewerEmailTemplate = await fetch(
+        'Templates/PostApprovalEmailTemplate.html'
+      ).then((response) => response.text());
+    } catch (error) {
+      console.error('Failed to load email template:', error);
+    }
   }
-}
-private AddRiskDetailsForPostReview(template: string, context: any): string {
-  return (
-    template
+  private AddRiskDetailsForPostReview(template: string, context: any): string {
+    return template
       .replace(/{{createdBy}}/g, this.authService.getUserName() || 'user')
       .replace('{{responsibleUser}}', context.responsibleUser)
       .replace('{{riskId}}', context.riskId)
@@ -418,147 +407,160 @@ private AddRiskDetailsForPostReview(template: string, context: any): string {
       .replace('{{impact}}', context.impact)
       .replace('{{mitigation}}', context.mitigation)
       .replace('{{plannedActionDate}}', context.plannedActionDate)
-      .replace('{{riskOwner}}',context.riskOwner)
+      .replace('{{riskOwner}}', context.riskOwner)
       .replace('{{overallRiskRating}}', context.overallRiskRating)
       .replace(/{{riskResponse}}/g, context.riskresponse)
       .replace('{{id}}', context.id)
       .replace('{{rid}}', context.rid)
-      .replace(/{{baseUrl}}/g, this.frontendUrl)
-  );
-}
-sendPostReviewerEmail(email: string, context: any): Observable<boolean> {
-  const subject = `RISK POST REVIEW NOTIFICATION - ${context.riskName}`;
-  const body = this.AddRiskDetailsForPostReview(
-    this.postreviewerEmailTemplate,
-    context
-  );
-  // console.log("context checkkkk:::::" , context)
-  // console.log("body check " , body)
-
-
-  return this.api.sendMail(email, subject, body).pipe(
-    map((response: any) => {
-      // console.log('Email sent successfully', response);
-      this.notificationService.success(
-        'The risk has been submitted to the reviewer for approval.'
-      );
-      return true;
-    }),
-    catchError((error) => {
-      console.error('Error sending email:', error);
-      this.notificationService.error('Failed to send email to reviewer');
-      return of(false);
-    })
-  );
-}
-
-//Risk OwnerMail After Approval
-
-private async loadApprovalTemplate() {
-  try {
-    this.approvalEmailTemplate = await fetch(
-      'Templates/RiskApprovalEmailTemplate.html'
-    ).then((response) => response.text());
-  } catch (error) {
-    console.error('Failed to load approval email template:', error);
+      .replace(/{{baseUrl}}/g, this.frontendUrl);
   }
-}
+  sendPostReviewerEmail(email: string, context: any): Observable<boolean> {
+    const subject = `RISK REVIEW POST IMPLEMENTATION OF ACTION PLAN  - ${context.riskName}`;
+    const body = this.AddRiskDetailsForPostReview(
+      this.postreviewerEmailTemplate,
+      context
+    );
 
-async prepareApprovalEmail(context: any): Promise<string> {
-  await this.getCreatedByUserName(context.riskId);
-  console.log('Username after fetch:', this.createdByUserName);
-
-  return this.addRiskDetailsForApproval(this.approvalEmailTemplate, context);
-}
-
-private addRiskDetailsForApproval(template: string, context: any): string {
-  console.log('Using username in template:', this.createdByUserName);
-
-  return template
-    .replace(/{{createdBy}}/g, this.createdByUserName)
-    .replace('{{responsibleUser}}', context.responsibleUser)
-    .replace('{{riskId}}', context.riskId)
-    .replace('{{riskName}}', context.riskName)
-    .replace('{{description}}', context.description)
-    .replace('{{riskType}}', context.riskType)
-    .replace('{{impact}}', context.impact)
-    .replace('{{mitigation}}', context.mitigation)
-    .replace('{{plannedActionDate}}', context.plannedActionDate)
-    .replace('{{overallRiskRating}}', context.overallRiskRating)
-    .replace('{{approvedBy}}', context.approvedBy || context.responsibleUser)
-    .replace('{{comments}}', context.comments || 'No additional comments provided.')
-    .replace(/{{baseUrl}}/g, this.frontendUrl);
-}
-
-sendApprovalEmail(email: string, context: any): Observable<boolean> {
-  const subject = `RISK APPROVED - ${context.riskName}`;
-  return from(this.prepareApprovalEmail(context)).pipe(
-    switchMap(body => {
-      return this.api.sendMail(email, subject, body);
-    }),
-    map((response: any) => {
-      // console.log('Email sent successfully', response);
-      this.notificationService.success(
-        'Risk owner has been notified of the approval.'
-      );
-      return true;
-    }),
-    catchError((error) => {
-      console.error('Error sending approval email:', error);
-      this.notificationService.error('Failed to send approval email to risk owner');
-      return of(false);
-    })
-  );
-}
-
-
-//RiskClose Email
-
-private async loadRiskClosureTemplate() {
-  try {
-    this.riskClosureTemplate = await fetch(
-      'Templates/RiskCloseEmailTemplate.html'
-    ).then((response) => response.text());
-  } catch (error) {
-    console.error('Failed to load risk closure email template:', error);
+    return this.api.sendMail(email, subject, body).pipe(
+      map((response: any) => {
+        // console.log('Email sent successfully', response);
+        this.notificationService.success(
+          'The risk has been submitted to the reviewer for approval.'
+        );
+        return true;
+      }),
+      catchError((error) => {
+        console.error('Error sending email:', error);
+        this.notificationService.error('Failed to send email to reviewer');
+        return of(false);
+      })
+    );
   }
-}
 
-async prepareRiskClosureEmail(context: any): Promise<string> {
-  await this.getCreatedByUserName(context.riskId);
-  return this.addRiskDetailsForClosure(this.riskClosureTemplate, context);
-}
+  //RISK OWNERMAIL AFTER APPROVAL
+  private async loadApprovalTemplate() {
+    try {
+      this.approvalEmailTemplate = await fetch(
+        'Templates/RiskApprovalEmailTemplate.html'
+      ).then((response) => response.text());
+    } catch (error) {
+      console.error('Failed to load approval email template:', error);
+    }
+  }
 
-private addRiskDetailsForClosure(template: string, context: any): string {
-  return template
-    .replace(/{{createdBy}}/g,context.responsibleUser || this.createdByUserName)
-    .replace('{{riskId}}', context.riskId)
-    .replace('{{riskName}}', context.riskName)
-    .replace('{{description}}', context.description)
-    .replace('{{riskType}}', context.riskType)
-    .replace('{{riskRating}}', context.initialRiskRating || context.overallRiskRating)
-    .replace('{{verifiedBy}}', context.verifiedBy || this.authService.getUserName())
-    .replace('{{verificationComments}}', context.verificationComments || 'No additional comments provided.')
-    .replace(/{{baseUrl}}/g, this.frontendUrl);
-}
+  async prepareApprovalEmail(context: any): Promise<string> {
+    await this.getCreatedByUserName(context.riskId);
+    // console.log('Username after fetch:', this.createdByUserName);
 
-sendRiskClosureEmail(email: string, context: any): Observable<boolean> {
-  const subject = `RISK CLOSED - ${context.riskName}`;
-  return from(this.prepareRiskClosureEmail(context)).pipe(
-    switchMap(body => {
-      return this.api.sendMail(email, subject, body);
-    }),
-    map((response: any) => {
-      this.notificationService.success(
-        'Risk owner has been notified of the successful closure.'
-      );
-      return true;
-    }),
-    catchError((error) => {
-      console.error('Error sending risk closure email:', error);
-      this.notificationService.error('Failed to send closure notification to risk owner');
-      return of(false);
-    })
-  );
-}
+    return this.addRiskDetailsForApproval(this.approvalEmailTemplate, context);
+  }
+
+  private addRiskDetailsForApproval(template: string, context: any): string {
+    // console.log('Using username in template:', this.createdByUserName);
+
+    return template
+      .replace(/{{createdBy}}/g, this.createdByUserName)
+      .replace('{{responsibleUser}}', context.responsibleUser)
+      .replace('{{riskId}}', context.riskId)
+      .replace('{{riskName}}', context.riskName)
+      .replace('{{description}}', context.description)
+      .replace('{{riskType}}', context.riskType)
+      .replace('{{impact}}', context.impact)
+      .replace('{{mitigation}}', context.mitigation)
+      .replace('{{plannedActionDate}}', context.plannedActionDate)
+      .replace('{{overallRiskRating}}', context.overallRiskRating)
+      .replace('{{approvedBy}}', context.approvedBy || context.responsibleUser)
+      .replace(
+        '{{comments}}',
+        context.comments || 'No additional comments provided.'
+      )
+      .replace(/{{baseUrl}}/g, this.frontendUrl);
+  }
+
+  sendApprovalEmail(email: string, context: any): Observable<boolean> {
+    const subject = `RISK APPROVED - ${context.riskName}`;
+    return from(this.prepareApprovalEmail(context)).pipe(
+      switchMap((body) => {
+        return this.api.sendMail(email, subject, body);
+      }),
+      map((response: any) => {
+        // console.log('Email sent successfully', response);
+        this.notificationService.success(
+          'Risk owner has been notified of the approval.'
+        );
+        return true;
+      }),
+      catchError((error) => {
+        console.error('Error sending approval email:', error);
+        this.notificationService.error(
+          'Failed to send approval email to risk owner'
+        );
+        return of(false);
+      })
+    );
+  }
+
+  //RISKCLOSE EMAIL
+
+  private async loadRiskClosureTemplate() {
+    try {
+      this.riskClosureTemplate = await fetch(
+        'Templates/RiskCloseEmailTemplate.html'
+      ).then((response) => response.text());
+    } catch (error) {
+      console.error('Failed to load risk closure email template:', error);
+    }
+  }
+
+  async prepareRiskClosureEmail(context: any): Promise<string> {
+    await this.getCreatedByUserName(context.riskId);
+    return this.addRiskDetailsForClosure(this.riskClosureTemplate, context);
+  }
+
+  private addRiskDetailsForClosure(template: string, context: any): string {
+    return template
+      .replace(
+        /{{createdBy}}/g,
+        context.responsibleUser || this.createdByUserName
+      )
+      .replace('{{riskId}}', context.riskId)
+      .replace('{{riskName}}', context.riskName)
+      .replace('{{description}}', context.description)
+      .replace('{{riskType}}', context.riskType)
+      .replace(
+        '{{riskRating}}',
+        context.initialRiskRating || context.overallRiskRating
+      )
+      .replace(
+        '{{verifiedBy}}',
+        context.verifiedBy || this.authService.getUserName()
+      )
+      .replace(
+        '{{verificationComments}}',
+        context.verificationComments || 'No additional comments provided.'
+      )
+      .replace(/{{baseUrl}}/g, this.frontendUrl);
+  }
+
+  sendRiskClosureEmail(email: string, context: any): Observable<boolean> {
+    const subject = `RISK CLOSED - ${context.riskName}`;
+    return from(this.prepareRiskClosureEmail(context)).pipe(
+      switchMap((body) => {
+        return this.api.sendMail(email, subject, body);
+      }),
+      map((response: any) => {
+        this.notificationService.success(
+          'Risk owner has been notified of the successful closure.'
+        );
+        return true;
+      }),
+      catchError((error) => {
+        console.error('Error sending risk closure email:', error);
+        this.notificationService.error(
+          'Failed to send closure notification to risk owner'
+        );
+        return of(false);
+      })
+    );
+  }
 }

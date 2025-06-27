@@ -36,7 +36,7 @@
               [dropdownData]="dropdownImpact"
               dropdownDisplay="assessmentFactor"
               dropdownValue="id"
-              selectValue="Impact"
+              selectValue="Select Impact"
               (change)="onDropdownChange($event, 'Impact', 'Confidentiality')"
               [openDropdownId]="openDropdownId"
               (openDropdown)="handleDropdownOpen($event)"
@@ -351,15 +351,21 @@
   ></app-form-data-not-in-list>
   } @if(isSuccessReviewer){
   <app-form-successfull
-    message="The new Reviewer has been added successfully!"
+    message="The new reviewer has been added successfully."
     [isSuccessfull]="true"
     (closeDialog)="closeReviewer()"
   >
   </app-form-successfull>
   } @if(isErrorReviewer){
   <app-form-successfull
-    message="Something went wrong! <br> Please ensure all required fields are filled in correctly and check your internet connection.<br> If the issue persists, try again later or contact support."
-    [isSuccessfull]="false"
+  message="Reasons May be:
+  <br>
+  A reviewer with this email already exists.
+  <br>
+  Please ensure all required fields are completed correctly and check your internet connection.
+  <br>
+  If the issue persists, please try again later or contact support for assistance."
+  [isSuccessfull]="false"
     (closeDialog)="closeReviewer()"
   >
   </app-form-successfull>
@@ -378,7 +384,7 @@
   }
   @if(isValid){
     <app-form-successfull
-    message="Please check the form fields and <br> ensure all mandatory fields are satisfied "
+    message="Please check the form fields and <br> ensure all mandatory fields are satisfied. "
     [isSuccessfull] ="false"
     (closeDialog)="closepopupIsValidCheck()" >
     </app-form-successfull>

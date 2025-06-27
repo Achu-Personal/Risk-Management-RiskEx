@@ -107,7 +107,7 @@ a:hover {
   border-collapse: collapse;
 }
 
-.risk-assessment-table th,
+.risk-assessment-table th ,
 .risk-assessment-table td {
   width: 25%;
   text-align: left;
@@ -118,6 +118,7 @@ a:hover {
 .risk-assessment-table th {
   font-weight: bold;
   text-align: left;
+  font-size: 1rem;
 }
 
 .button-group {
@@ -359,7 +360,7 @@ a:hover {
   visibility: visible;
   background-color: var(--secondary-color);
   color: black;
-  width: 500px;
+  width: 400px;
   text-wrap: wrap;
   padding: 5px;
   border-radius: 5px;
@@ -434,7 +435,7 @@ a:hover {
   visibility: hidden;
   background-color: var(--secondary-color);
   color: black;
-  width: 500px;
+  width: 400px;
   padding: 5px;
   border-radius: 5px;
   position: absolute;

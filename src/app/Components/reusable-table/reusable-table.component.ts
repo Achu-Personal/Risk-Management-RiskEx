@@ -13,14 +13,23 @@ import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../Services/auth/auth.service';
 import { ConfirmationPopupComponent } from '../confirmation-popup/confirmation-popup.component';
 import { ApiService } from '../../Services/api.service';
-import { PaginationComponent } from "../../UI/pagination/pagination.component";
-import { SearchbarComponent } from "../../UI/searchbar/searchbar.component";
+import { PaginationComponent } from '../../UI/pagination/pagination.component';
+import { SearchbarComponent } from '../../UI/searchbar/searchbar.component';
 import { ActivatedRoute } from '@angular/router';
+import { EditButtonComponent } from '../../UI/edit-button/edit-button.component';
+import { NotificationService } from '../../Services/notification.service';
 
 @Component({
   selector: 'app-reusable-table',
   standalone: true,
-  imports: [CommonModule, FormsModule, ConfirmationPopupComponent, PaginationComponent, SearchbarComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    ConfirmationPopupComponent,
+    PaginationComponent,
+    SearchbarComponent,
+    EditButtonComponent,
+  ],
   templateUrl: './reusable-table.component.html',
   styleUrl: './reusable-table.component.scss',
 })
@@ -29,39 +38,47 @@ export class ReusableTableComponent {
   @Input() tableData: any[] = [];
   @Input() IsActionRequiered: boolean = false;
   @Input() IsUser: boolean = false;
+  @Input() IsDraft: boolean = false;
   @Input() height: any = '65%';
   @Input() IsAssignee: boolean = false;
   @Input() headerDisplayMap: any = this.tableHeaders;
   @Input() noDataMessage: string = 'No Data Available';
   @Input() isLoading: boolean = false;
-  tableData1:any[]=[];
+
+  draftEditButton = output();
+  draftDeleteButton = output();
+
+  originalTableData: any[] = [];
+  filteredData: any[] = [];
+  paginatedData: any[] = [];
+
   isEyeOpen = false;
-  isAdmin: boolean=false;
-  isDepartmentUser=false;
-  newState:boolean=true;
+  isAdmin: boolean = false;
+  isDepartmentUser = false;
+  newState: boolean = true;
   showApproveDialog = false;
   showRejectDialog = false;
   currentRow: any;
-  originalTableData: any[] = [];
+
+  showStatusChangeDialog = false;
+  currentToggleRow: any = null;
+  previousToggleState: boolean = false;
 
   @Output() approveRisk = new EventEmitter<{ row: any; comment: string }>();
   @Output() rejectRisk = new EventEmitter<{ row: any; comment: string }>();
   @Output() editUserClicked = new EventEmitter<any>();
 
-
   constructor(
     public auth: AuthService,
     public api: ApiService,
     private cdr: ChangeDetectorRef,
-    private route:ActivatedRoute
-  ) {
-
-  }
+    private route: ActivatedRoute,
+    private notification: NotificationService
+  ) { }
 
   rowKeys: string[] = [];
   isButtonVisible = false;
   ngOnInit(): void {
-
     const currentRoute = this.route.snapshot.url.join('/');
     if (currentRoute === 'users') {
       this.isButtonVisible = true;
@@ -73,41 +90,109 @@ export class ReusableTableComponent {
     this.isDepartmentUser = role === 'DepartmentUser';
     this.isAdmin = role === 'Admin';
     if (this.tableData && this.tableData.length > 0) {
+      this.initializeTableData();
+    }
+  }
 
-      this.rowKeys = Object.keys(this.tableData[0]);
+
+  private initializeTableData(): void {
+    if (!this.tableData || this.tableData.length === 0) {
+      this.rowKeys = [];
+      this.originalTableData = [];
+      this.filteredData = [];
+      this.paginatedData = [];
+      this.totalItems = 0;
+      return;
     }
 
+    const allKeys = Object.keys(this.tableData[0]);
+
+
+    if (this.tableHeaders && this.tableHeaders.length > 0) {
+      this.rowKeys = this.tableHeaders.filter(header => allKeys.includes(header));
+    } else {
+      this.rowKeys = allKeys;
+      this.tableHeaders = allKeys;
+    }
+
+    this.originalTableData = [...this.tableData].reverse();
+    this.filteredData = [...this.originalTableData];
+    this.currentPage = 1;
+    this.totalItems = this.filteredData.length;
+    this.updatePaginatedItems();
   }
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['tableData'] && changes['tableData'].currentValue) {
-      this.originalTableData = [...changes['tableData'].currentValue];
-      // console.log('Original Table Data updated:', this.originalTableData);
+     if (changes['tableData'] && changes['tableData'].currentValue) {
+      this.initializeTableData();
     }
-    if (changes['tableData'] ) {
-      this.tableData1=[...this.tableData]
-      // console.log("tabledata1",this.tableData1)
-      this.totalItems = this.tableData1.length;
-      this.updatePaginatedItems();
+      if (changes['tableHeaders'] && changes['tableHeaders'].currentValue) {
+      if (this.tableData && this.tableData.length > 0) {
+        this.initializeTableData();
       }
+    }
   }
   isSystemAdmin(row: any): boolean {
+    return (
+      row.fullName?.includes('System Admin') ||
+      row.userName?.includes('System Admin') ||
+      row.fullName === 'System Admin' ||
+      row.userName === 'System Admin'
+    );
+  }
+  isCurrentUser(row: any): boolean {
+    const user = this.auth.getUserName();
 
-    return row.fullName?.includes('System Admin') ||
-           row.userName?.includes('System Admin') ||
-           row.fullName === 'System Admin' ||
-           row.userName === 'System Admin';
+    return (
+      row.fullName?.includes(user) ||
+      row.userName?.includes(user) ||
+      row.fullName === user ||
+      row.userName === user
+    );
   }
 
-  onToggleChange(row: any): void {
+  onDraftEditt(row: any) {
+    this.draftEditButton.emit(row);
+  }
+  onDraftDelete(row: any) {
+    this.draftDeleteButton.emit(row);
+  }
 
-    if (this.isSystemAdmin(row)) {
+
+  onToggleChange(row: any): void {
+    if (this.isSystemAdmin(row) || this.isCurrentUser(row)) {
       row.isActive = !row.isActive;
       return;
     }
 
-    this.newState = row.isActive;
-    this.api.changeUserStatus(row.id, this.newState);
-    console.log(`Row ID: ${row.fullName}, New State: ${this.newState}`);
+    this.currentToggleRow = row;
+    this.previousToggleState = !row.isActive;
+    this.showStatusChangeDialog = true;
+    this.cdr.markForCheck();
+  }
+
+  onStatusConfirm(data: { comment: string }): void {
+    if (!this.currentToggleRow) return;
+
+    const statusAction = this.currentToggleRow.isActive ? 'Activated' : 'Deactivated';
+    const userName = this.currentToggleRow.fullName || this.currentToggleRow.userName || 'User';
+
+    this.api.changeUserStatus(this.currentToggleRow.id, this.currentToggleRow.isActive);
+
+    this.notification.success(
+      `${userName} has been ${statusAction} successfully!`
+    );
+
+    this.showStatusChangeDialog = false;
+    this.currentToggleRow = null;
+    this.cdr.markForCheck();
+  }
+
+  onStatusCancel(): void {
+    if (!this.currentToggleRow) return;
+
+    this.currentToggleRow.isActive = this.previousToggleState;
+    this.showStatusChangeDialog = false;
+    this.currentToggleRow = null;
     this.cdr.markForCheck();
   }
 
@@ -167,23 +252,23 @@ export class ReusableTableComponent {
   onclickrow = output();
   rowClick(row: any) {
     this.onclickrow.emit(row);
-    }
+  }
 
-
-  hasValidData(): boolean {
+   hasValidData(): boolean {
     return (
-      this.tableData &&
-      this.tableData.length > 0 &&
-      this.tableData.some((row) => row.riskName || row.riskId || row.fullName)
+      this.filteredData &&
+      Array.isArray(this.filteredData) &&
+      this.filteredData.length > 0 &&
+      this.filteredData.some((row) => row.riskName || row.riskId || row.fullName)
     );
   }
 
-  table:any[]=[];
+
   itemsPerPage = 10;
   currentPage = 1;
   totalItems: number = 0;
   shouldDisplayPagination(): boolean {
-    return this.tableData1.length > this.itemsPerPage;
+    return this.filteredData.length > this.itemsPerPage;
   }
   onPageChange(page: number): void {
     this.currentPage = page;
@@ -191,32 +276,41 @@ export class ReusableTableComponent {
   }
 
   updatePaginatedItems(): void {
-    const startIndex = (this.currentPage -1 ) * this.itemsPerPage;
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
     const endIndex = startIndex + this.itemsPerPage;
-    this.tableData = this.tableData1.slice(startIndex, endIndex);
-    this.totalItems = this.tableData1.length;
+
+    this.paginatedData = this.filteredData.slice(startIndex, endIndex);
+
+    if (this.paginatedData.length > 0 && (!this.rowKeys || this.rowKeys.length === 0)) {
+      this.rowKeys = Object.keys(this.paginatedData[0]);
+    }
+
     this.cdr.markForCheck();
   }
 
+
   onSearch(searchText: string): void {
     const lowercasedSearchText = searchText.toLowerCase();
-    this.tableData1 = this.originalTableData.filter((item: any) =>
-      Object.values(item).some((value: any) =>
-        value != null && value.toString().toLowerCase().includes(lowercasedSearchText)
+    let searchFiltered = this.originalTableData.filter((item: any) =>
+      Object.values(item).some(
+        (value: any) =>
+          value != null &&
+          value.toString().toLowerCase().includes(lowercasedSearchText)
       )
     );
 
+      this.filteredData = this.applyColumnFilters(searchFiltered);
+
+
     this.currentPage = 1;
-    this.totalItems = this.filterData.length;
+    this.totalItems = this.filteredData.length;
     this.updatePaginatedItems();
   }
-
 
   showFilterDropdown = false;
   currentFilterColumn: string | null = null;
   filterSearchText = '';
   activeFilters: { [key: string]: string } = {};
-  // originalTableData: any[] = []
 
   toggleFilter(event: Event, header: string) {
     event.stopPropagation();
@@ -232,7 +326,9 @@ export class ReusableTableComponent {
   }
 
   getColumnValues(column: string): string[] {
-    const uniqueValues = [...new Set(this.originalTableData.map((row) => row[column]))];
+    const uniqueValues = [
+      ...new Set(this.originalTableData.map((row) => row[column])),
+    ];
     return ['Select All', ...uniqueValues].filter(Boolean);
   }
 
@@ -247,17 +343,13 @@ export class ReusableTableComponent {
     );
   }
 
-  searchFilterOptions() {
-  }
+  searchFilterOptions() { }
 
   applyFilter(column: string, value: string) {
     if (value === 'Select All') {
       delete this.activeFilters[column];
-
     } else {
       this.activeFilters[column] = value;
-
-
     }
     this.filterData();
     this.showFilterDropdown = false;
@@ -269,17 +361,28 @@ export class ReusableTableComponent {
     this.filterData();
   }
 
-  private filterData() {
-    let filteredData = [...this.originalTableData];
-
-     if (Object.keys(this.activeFilters).length > 0) {
-      Object.entries(this.activeFilters).forEach(([column, value]) => {
-        filteredData = filteredData.filter((row) => row[column] === value);
-      });
+   private applyColumnFilters(data: any[]): any[] {
+    if (Object.keys(this.activeFilters).length === 0) {
+      return data;
     }
 
+    return data.filter(row => {
+      return Object.entries(this.activeFilters).every(([column, value]) => {
+        return row[column] === value;
+      });
+    });
+  }
 
-    this.tableData = filteredData;
+   private filterData() {
+    let filteredData = [...this.originalTableData];
+
+    filteredData = this.applyColumnFilters(filteredData);
+
+    this.filteredData = filteredData;
+
+    this.currentPage = 1;
+    this.totalItems = this.filteredData.length;
+    this.updatePaginatedItems();
   }
 
   @HostListener('document:click', ['$event'])

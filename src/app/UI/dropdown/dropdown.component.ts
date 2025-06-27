@@ -51,11 +51,11 @@ export class DropdownComponent implements ControlValueAccessor {
   searchQuery: string = '';
 
   ngOnInit() {
-    console.log('get value of likelihood is ', this.selectedValue);
+    // console.log('get value of likelihood is ', this.selectedValue);
 
     if (this.selectedValue !== null) {
       this.value = this.selectedValue;
-      console.log('get value of this.value is ', this.value);
+      // console.log('get value of this.value is ', this.value);
     }
     setTimeout(() => {
       if (
@@ -63,14 +63,14 @@ export class DropdownComponent implements ControlValueAccessor {
         DropdownComponent.instance === 6 ||
         DropdownComponent.instance === 18
       ) {
-        console.log('First time component loaded', DropdownComponent.instance);
+        // console.log('First time component loaded', DropdownComponent.instance);
         this.isfirst = true;
         this.cdr.detectChanges();
       } else {
-        console.log(
-          'Component has been loaded before',
-          DropdownComponent.instance
-        );
+        // console.log(
+        //   'Component has been loaded before',
+        //   DropdownComponent.instance
+        // );
       }
       DropdownComponent.instance++;
     }, 100);
@@ -124,15 +124,15 @@ export class DropdownComponent implements ControlValueAccessor {
   // Handle selection change
   selectOption(item: any): void {
     this.value = item[this.valueField];
-    console.log('the value is selected is', this.value);
+    // console.log('the value is selected is', this.value);
 
-    this.onChange(this.value); // Notify parent of the change
-    this.onTouched(); // Mark as touched
-    this.isDropdownOpen = false; // Close the dropdown
-    this.searchQuery = ''; // Optionally clear the search input
+    this.onChange(this.value);
+    this.onTouched();
+    this.isDropdownOpen = false;
+    this.searchQuery = '';
 
     this.valueChange.emit(this.value);
-    this.openDropdown.emit(undefined); // Notify parent to close all dropdowns
+    this.openDropdown.emit(undefined);
   }
 
   // Get selected option's display text
@@ -156,7 +156,7 @@ export class DropdownComponent implements ControlValueAccessor {
     const dropdown = document.querySelector('.dropdown-container');
     if (dropdown && !dropdown.contains(event.target as Node)) {
       this.isDropdownOpen = false;
-      this.openDropdown.emit(undefined); // Notify parent to close all dropdowns
+      this.openDropdown.emit(undefined);
     }
   }
 }

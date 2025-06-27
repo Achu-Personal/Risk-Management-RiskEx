@@ -1,0 +1,18 @@
+
+<app-body-container backgroundColor="transparent" [showShadow]="false">
+
+  <app-reusable-table [IsActionRequiered]="true" [IsUser]="true" [tableHeaders]="headerData" [headerDisplayMap]="headerDisplayMap" [tableData]="tableBody"
+     height="74%" [IsAssignee]="true" [IsUser]="false"
+    [isLoading]="isLoading" [IsDraft]="true" (draftDeleteButton)="onDraftDeleted($event)"  (draftEditButton)="onDraftEdited($event)"   [noDataMessage]="'You are not resposible for solving any risks'" height="76%">
+  </app-reusable-table>
+@if(isconformDelete){
+  <app-form-conform-popup
+  message="Do you want to delete the draft? "
+  (closeDialog)="conformDraftDelete()"
+  (notCloseDialog)="closeDeleteDraft()"
+></app-form-conform-popup>
+}
+
+
+
+</app-body-container>

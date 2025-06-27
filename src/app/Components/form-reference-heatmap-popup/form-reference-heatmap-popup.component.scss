@@ -10,24 +10,70 @@
   align-items: center;
   z-index: 1000;
 }
+
 .modal-content {
   background: white;
   padding: 20px;
   border-radius: 8px;
-  // text-align: center;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
   width: 50%;
   padding-top: 30px;
 }
-.modal-content-container{
-  border:2px solid var(--form-color);
-  padding: 20px;
+
+/* Scrollable only at 100% and 80% screen size */
+@media (min-width: 80%) {
+  .modal-content {
+    max-height: 80%;
+    overflow-y: auto;
+  }
+}
+
+/* No scroll at 75% and below */
+@media (max-width: 75%) {
+  .modal-content {
+    max-height: none;
+    overflow-y: visible;
+  }
+}
+
+/* Custom Scrollbar Styling */
+.modal-content::-webkit-scrollbar {
+  width: 8px;
+  border-radius: 10px;
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+  background-color: #087494;
+  border-radius: 10px;
+  border: 2px solid #f1f1f1;
+}
+
+.modal-content::-webkit-scrollbar-thumb:hover {
+  background-color: #065a72;
+}
+
+.modal-content::-webkit-scrollbar-track {
+  background-color: #f1f1f1;
+  border-radius: 10px; 
+}
+
+/* Modal content container */
+.modal-content-container {
+  border: 2px solid var(--form-color);
+  padding: 10px;
   border-radius: 8px;
   text-align: end;
 }
 
-.btn.cancel{
+/* Cancel button styling */
+.btn.cancel {
   color: black;
   background-color: transparent;
   display: inline-block;
 }
+
+
+
+
+
+

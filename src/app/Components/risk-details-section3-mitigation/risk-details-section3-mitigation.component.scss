@@ -12,15 +12,15 @@
 
 
 .tab-button {
-  background-color: var(--primary-color); /* Non-selected buttons */
+  background-color: var(--primary-color);
   color: black;
 
 }
 
 .tab-button.active {
-  background-color: #5800C8; /* Change to your desired active button color */
-  color: white; /* Text color for active button */
-  border-color: transparent; /* Match the border color */
+  background-color: #5800C8;
+  color: white;
+  border-color: transparent; 
 }
 
 .mytab-content

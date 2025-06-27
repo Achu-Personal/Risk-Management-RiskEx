@@ -67,4 +67,8 @@ export class ForgetpswrdComponent {
       });
     }
   }
+  goBack() {
+    this.router.navigate(['/login']);
+
+  }
 }

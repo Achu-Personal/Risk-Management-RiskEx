@@ -7,30 +7,31 @@ import { DatepickerComponent } from "../../UI/datepicker/datepicker.component";
 import { ReportGenerationService } from '../../Services/report-generation.service';
 import { ApiService } from '../../Services/api.service';
 import { AuthService } from '../../Services/auth/auth.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-reports',
   standalone: true,
-  imports: [TableComponent, BodyContainerComponent, StyleButtonComponent, DatepickerComponent],
+  imports: [TableComponent, BodyContainerComponent, StyleButtonComponent, DatepickerComponent, CommonModule],
   templateUrl: './reports.component.html',
   styleUrl: './reports.component.scss'
 })
 export class ReportsComponent {
   isAdmin: boolean = false;
   isDepartmentUser: boolean = false;
-  isProjectUser : boolean = false;
-  isEmtUser:boolean =false;
+  isProjectUser: boolean = false;
+  isEmtUser: boolean = false;
   isLoading = false;
-  projectList: number[] =[];
-  item:any=[];
-  isreset:boolean=false;
+  projectList: number[] = [];
+  item: any = [];
+  isreset: boolean = false;
   @Input() label: string = 'Generate Report';
-  data:any;
-  items:any=[];
+  data: any;
+  items: any = [];
   type: any;
-  constructor(private excelService: ReportGenerationService,private router: Router,public api: ApiService,public auth: AuthService, private cdr: ChangeDetectorRef) {}
+  constructor(private excelService: ReportGenerationService, private router: Router, public api: ApiService, public auth: AuthService, private cdr: ChangeDetectorRef) { }
 
-  filtereddata():void{
+  filtereddata(): void {
 
   }
   onGenerateReport(): void {
@@ -54,113 +55,115 @@ export class ReportsComponent {
   }
 
   @HostListener('document:click', ['$event'])
-    onDocumentClick(event: MouseEvent): void {
-      const target = event.target as HTMLElement;
-      if (!target.closest('.contains1')) {
-        this.isDropdownOpen = false;
-      }
+  onDocumentClick(event: MouseEvent): void {
+    const target = event.target as HTMLElement;
+    if (!target.closest('.contains1')) {
+      this.isDropdownOpen = false;
     }
+  }
 
-      OnClickRow(rowid:any): void {
-        this.router.navigate([`/ViewRisk/${rowid}`]);
-      }
+  OnClickRow(rowid: any): void {
+    this.router.navigate([`/ViewRisk/${rowid}`]);
+  }
 
-      reset(): void {
-        this.isreset = false;
-        setTimeout(() => {
-          this.isreset = true;
-        });
-      }
+  reset(): void {
+    this.isreset = false;
+    setTimeout(() => {
+      this.isreset = true;
+    });
+  }
 
 
-      ngOnInit(): void {
-        this.type = history.state.type;
+  ngOnInit(): void {
+    this.type = history.state.type;
 
-        setTimeout(() => {
-          const role = this.auth.getUserRole();
-          const department = this.auth.getDepartmentId();
-          const pro = this.auth.getProjects();
-          this.isLoading = true;
+    setTimeout(() => {
+      const role = this.auth.getUserRole();
+      const department = this.auth.getDepartmentId();
+      const pro = this.auth.getProjects();
+      this.isLoading = true;
 
-          // Set roles
-          this.isAdmin = Array.isArray(role) ? role.includes('Admin') : role === 'Admin';
-          this.isDepartmentUser = role === 'DepartmentUser';
-          this.isProjectUser = Array.isArray(role) ? role.includes('ProjectUsers') : role === 'ProjectUsers';
-          this.isEmtUser = Array.isArray(role) ? role.includes('EMTUser') : role ==="EMTUser";
+      // Set roles
+      this.isAdmin = Array.isArray(role) ? role.includes('Admin') : role === 'Admin';
+      this.isDepartmentUser = role === 'DepartmentUser';
+      this.isProjectUser = Array.isArray(role) ? role.includes('ProjectUsers') : role === 'ProjectUsers';
+      this.isEmtUser = Array.isArray(role) ? role.includes('EMTUser') : role === "EMTUser";
 
-          // Prepare Project List
-          this.projectList = pro ? pro.map((project) => project.Id) : [];
+      // Prepare Project List
+      this.projectList = pro ? pro.map((project) => project.Id) : [];
 
-          // Fetch data based on conditions
-          this.fetchData(department);
-          this.cdr.detectChanges();
-        }, 50);
-      }
+      // Fetch data based on conditions
+      this.fetchData(department);
+      this.cdr.detectChanges();
+    }, 50);
+  }
 
-      fetchData(department: any): void {
+  fetchData(department: any): void {
 
-        if (this.type !== null && this.type !== undefined) {
-          this.fetchFilteredData(department, this.type);
-        } else {
-          this.fetchAllData(department);
-        }
-      }
+    if (this.type !== null && this.type !== undefined) {
+      this.fetchFilteredData(department, this.type);
+    } else {
+      this.fetchAllData(department);
+    }
+  }
 
-      fetchFilteredData(department: any, type: any): void {
-        if (this.isAdmin ||this.isEmtUser) {
-          this.api.gettabledata().subscribe((res: any) => {
-            this.item = res.filter((item: { riskType: any }) => item.riskType === type);
-            this.items =this.item.filter((item: { riskStatus: any }) => item.riskStatus === 'open');
-            this.cdr.detectChanges();
-            this.isLoading = false;
-          });
-        }
-        if (this.isDepartmentUser) {
-          this.api.getDepartmentTable(department).subscribe((res: any) => {
-            this.item = res.filter((item: { riskType: any }) => item.riskType === type);
-            this.items =this.item.filter((item: { riskStatus: any }) => item.riskStatus === 'open');
-            this.cdr.detectChanges();
-            this.isLoading = false;
-          });
-        }
-        if (this.isProjectUser) {
-          this.api.getProjectTable(this.projectList).subscribe((res: any) => {
-            this.item = res.filter((item: { riskType: any }) => item.riskType === type);
-            this.items =this.item.filter((item: { riskStatus: any }) => item.riskStatus === 'open');
-            this.cdr.detectChanges();
-            this.isLoading = false;
-          });
-        }
-      }
+  fetchFilteredData(department: any, type: any): void {
+    if (this.isAdmin || this.isEmtUser) {
+      this.api.gettabledata().subscribe((res: any) => {
+        this.item = res.filter((item: { riskType: any }) => item.riskType === type);
+        this.items = this.item.filter((item: { riskStatus: any }) => item.riskStatus === 'open');
+        this.cdr.detectChanges();
+        this.isLoading = false;
+      });
+    }
+    if (this.isDepartmentUser) {
+      this.api.getDepartmentTable(department).subscribe((res: any) => {
+        this.item = res.filter((item: { riskType: any }) => item.riskType === type);
+        this.items = this.item.filter((item: { riskStatus: any }) => item.riskStatus === 'open');
+        this.cdr.detectChanges();
+        this.isLoading = false;
+      });
+    }
+    if (this.isProjectUser) {
+      this.api.getProjectTable(this.projectList).subscribe((res: any) => {
+        this.item = res.filter((item: { riskType: any }) => item.riskType === type);
+        this.items = this.item.filter((item: { riskStatus: any }) => item.riskStatus === 'open');
+        this.cdr.detectChanges();
+        this.isLoading = false;
+      });
+    }
+  }
 
-      fetchAllData(department: any): void {
-        if (this.isAdmin||this.isEmtUser) {
-          this.api.gettabledata().subscribe((res: any) => {
-            this.items = res;
-            this.cdr.detectChanges();
-            this.isLoading = false;
-          });
-        }
-        if (this.isDepartmentUser) {
-          this.api.getDepartmentTable(department).subscribe((res: any) => {
-            this.items = res;
-            this.cdr.detectChanges();
-            this.isLoading = false;
-          });
-        }
-        if (this.isProjectUser) {
-          this.api.getProjectTable(this.projectList).subscribe((res: any) => {
-            this.items = res;
-            this.cdr.detectChanges();
-            this.isLoading = false;
-          });
-        }
-      }
+  fetchAllData(department: any): void {
+    if (this.isAdmin || this.isEmtUser) {
+      this.api.gettabledata().subscribe((res: any) => {
+        this.items = res;
+        this.cdr.detectChanges();
+        this.isLoading = false;
+      });
+    }
+    if (this.isDepartmentUser) {
+      this.api.getDepartmentTable(department).subscribe((res: any) => {
+        this.items = res;
+        this.cdr.detectChanges();
+        this.isLoading = false;
+      });
+    }
+    if (this.isProjectUser) {
+      this.api.getProjectTable(this.projectList).subscribe((res: any) => {
+        this.items = res;
+        this.cdr.detectChanges();
+        this.isLoading = false;
+      });
+    }
+  }
 
-      //datepicker
-    selectedDateRange: { startDate: string; endDate: string } | null = null;
+  selectedDateRange: { startDate: string; endDate: string } | null = null;
 
-    onDateRangeSelected(dateRange: { startDate: string; endDate: string }) {
+  onDateRangeSelected(dateRange: { startDate: string; endDate: string }) {
     this.selectedDateRange = dateRange;
-}
+  }
+  Draft() {
+    this.router.navigate(['/drafts']);
+  }
 }

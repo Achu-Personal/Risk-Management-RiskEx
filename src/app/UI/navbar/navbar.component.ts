@@ -1,4 +1,3 @@
-
 import { Component, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
@@ -7,22 +6,20 @@ import { ActivatedRoute } from '@angular/router';
   standalone: true,
   imports: [],
   templateUrl: './navbar.component.html',
-  styleUrl: './navbar.component.scss'
+  styleUrl: './navbar.component.scss',
 })
 export class NavbarComponent {
-  @Input() data: any = {}; 
-
+  @Input() data: any = {};
 
   constructor(private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.route.data.subscribe((routeData: any) => {
-      this.data.title = routeData.title;  
-      // this.
+      this.data.title = routeData.title;
     });
   }
 
-  showDropdown: boolean = false; 
+  showDropdown: boolean = false;
 
   // Toggles dropdown menu
   toggleDropdown() {
@@ -37,6 +34,4 @@ export class NavbarComponent {
   onLogout() {
     alert('Log Out Clicked');
   }
-
-  
 }

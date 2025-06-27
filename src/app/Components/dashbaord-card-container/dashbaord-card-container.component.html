@@ -6,7 +6,7 @@
   {
  <div class="maindiv1">
 
-    <div>
+    <div class="contentList">
       @for(item of list ;track $index)
       {
       <app-dashboardviewrisk [data]="item"></app-dashboardviewrisk>
@@ -14,7 +14,7 @@
       @if(list.length==0)
       {
         <div class="placeholderr">
-          <h5>No Risks To Show</h5>
+          <h5>No Open Risks To Show</h5>
         </div>
 
       }
