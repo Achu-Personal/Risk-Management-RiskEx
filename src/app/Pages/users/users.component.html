@@ -405,7 +405,7 @@
     (completed)="handleModalComplete()"></app-usermanagementpopup>
   <app-reusable-table [tableHeaders]="isAdmin ? headerData : headerDataDpt"
     [tableData]="isAdmin ? tableBodyAdmin : tableBody" [headerDisplayMap]="headerDisplayMap" [IsActionRequiered]="true"
-    [IsUser]="true" [isLoading]="isLoading" [noDataMessage]="'No users found'"  (editUserClicked)="onEditUser($event)">
+    [IsUser]="true" [isLoading]="isLoading" [noDataMessage]="'No users found'"  (editUserClicked)="onEditUser($event)" height = "65%">
   </app-reusable-table>
 
   @if(isLoader){

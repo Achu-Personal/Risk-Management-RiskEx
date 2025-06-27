@@ -35,7 +35,7 @@ export class DraftPageComponent {
     'riskTypeName',
     'overallRiskRatingBefore',
     'departmentName',
-    'responsibleUser',
+    'responsibleUserName',
     'plannedActionDate',
   ];
 
@@ -45,7 +45,7 @@ export class DraftPageComponent {
     riskTypeName: 'Risk Type',
     overallRiskRatingBefore: 'CRR',
     departmentName: 'Department ',
-    responsibleUser: 'Responsible User',
+    responsibleUserName: 'Responsible User',
 
     plannedActionDate: 'End Date',
   };
@@ -72,7 +72,7 @@ export class DraftPageComponent {
         'riskTypeName',
         'overallRiskRatingBefore',
         'departmentName',
-        'responsibleUser',
+        'responsibleUserName',
         'plannedActionDate',
         'Action',
       ];
@@ -102,7 +102,7 @@ export class DraftPageComponent {
         'riskTypeName',
         'overallRiskRatingBefore',
         'departmentName',
-        'responsibleUser',
+        'responsibleUserName',
         'plannedActionDate',
         'Action',
       ];

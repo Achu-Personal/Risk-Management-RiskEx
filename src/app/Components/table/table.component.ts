@@ -24,16 +24,23 @@ export class TableComponent {
   open = true;
   closed = false;
   isButtonVisible = false;
+
   @Input() isLoading: boolean = false;
   @Input() paginated:any=[];
   @Input() reset:boolean=false;
-  filteredItems = [...this.items];
+
+    // Separate arrays for data management
+  filteredItems: any[] = [];
+  paginatedItems: any[] = []; // Add this for display items
+
+  // filteredItems = [...this.items];
   isDepartmentDropdownOpen: boolean = false;
   isTypeDropdownOpen: boolean = false;
   isStatusDropdownOpen:boolean =false;
   isReviewStatusDropdownOpen:boolean =false;
   isResidualRiskDropdownOpen:boolean =false;
   isData:boolean = false;
+
   itemsPerPage = 10;
   currentPage = 1;
   totalItems: number = 0;
@@ -126,70 +133,77 @@ export class TableComponent {
       this.isButtonVisible = false;
     }
   }
+
   isDepartmentUser:boolean=false;
+
   private initializeItems(): void {
-    setTimeout(()=>{
-      const role = this.auth.getUserRole();
-      this.isDepartmentUser = role === 'DepartmentUser';
+
+    const role = this.auth.getUserRole();
+    this.isDepartmentUser = role === 'DepartmentUser';
+
+    // Ensure we have valid data before processing
+    if (this.paginated && Array.isArray(this.paginated)) {
       this.items = [...this.paginated];
-      this.hasValidData();
       this.filteredItems = [...this.items];
+
       this.updateUniqueDepartments();
       this.updateUniqueTypes();
       this.updateUniqueReviewStatus();
       this.updateUniqueStatus();
       this.updateResidualRiskStatus();
+
       this.totalItems = this.filteredItems.length;
       this.updatePaginatedItems();
-    },800)
+    }
 
   }
   @Input() noDataMessage:string='No risks'
+
   hasValidData(): boolean {
-    return this.paginated && this.paginated.length >0;
+    return this.paginated && Array.isArray(this.paginated) && this.paginated.length > 0;
   }
 
   updateUniqueDepartments(): void {
-
-    this.uniqueDepartments = [...new Set(this.items.map((item: any) => item.departmentName))];
+    this.uniqueDepartments = [...new Set(this.items.map((item: any) => item.departmentName).filter(Boolean))];
   }
 
   updateUniqueTypes(): void {
-
-    this.uniqueRiskTypes= [...new Set(this.items.map((item: any) => item.riskType))];
-
+    this.uniqueRiskTypes = [...new Set(this.items.map((item: any) => item.riskType).filter(Boolean))];
   }
+
   updateUniqueStatus(): void {
-
-    this.uniqueStatus = [...new Set(this.items.map((item: any) => item.riskStatus))];
-
+    this.uniqueStatus = [...new Set(this.items.map((item: any) => item.riskStatus).filter(Boolean))];
   }
+
   updateUniqueReviewStatus(): void {
-
-    this.uniqueReviewStatus = [...new Set(this.items.map((item: any) => this.reviewStatusMap[item.riskAssessments[0].reviewStatus]))];
-
+    this.uniqueReviewStatus = [...new Set(this.items
+      .map((item: any) => item.riskAssessments?.[0]?.reviewStatus)
+      .filter(Boolean)
+      .map((status : string) => this.reviewStatusMap[status])
+      .filter(Boolean))];
   }
+
   updateResidualRiskStatus(): void {
-
-    this.uniqueResidual = [...new Set(this.items.map((item: any) => item.residualRisk))];
-
+    this.uniqueResidual = [...new Set(this.items.map((item: any) => item.residualRisk).filter(Boolean))];
   }
 
   updatePaginatedItems(): void {
-    if(this.filteredItems){
-      this.isData =true;
-    }
-    const startIndex = (this.currentPage -1 ) * this.itemsPerPage;
+    this.isData = this.filteredItems && this.filteredItems.length > 0;
+
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
     const endIndex = startIndex + this.itemsPerPage;
-    this.paginated = this.filteredItems.slice(startIndex, endIndex);
+
+    // Update paginatedItems instead of overwriting paginated input
+    this.paginatedItems = this.filteredItems.slice(startIndex, endIndex);
     this.totalItems = this.filteredItems.length;
+
     this.cdr.markForCheck();
     this.filteredData.emit(this.filteredItems);
   }
 
   onItemsPerPageChange(newItemsPerPage: number) {
     this.itemsPerPage = newItemsPerPage;
-    this.currentpage();
+    this.currentPage = 1;
     this.updatePaginatedItems();
   }
 
@@ -291,27 +305,20 @@ export class TableComponent {
 
   ngOnChanges(changes: SimpleChanges): void {
 
-    if (changes['paginated'] ) {
-      this.filteredItems = [...this.items];
-      this.totalItems = this.filteredItems.length;
+    if (changes['paginated'] && this.paginated) {
       this.initializeItems();
     }
 
     if (changes['filteredDateRange'] && this.filteredDateRange) {
-
       this.filterTable();
     }
-    if(changes['itemsPerPage']){
-      this.currentpage();
-    }
-    if(changes['reset']){
-      // console.log("clicked")
+     if (changes['reset'] && this.reset) {
       this.resetFilters();
     }
   }
-  currentpage(){
-    this.currentPage = 1;
-  }
+  // currentpage(){
+  //   this.currentPage = 1;
+  // }
 
   shouldDisplayPagination(): boolean {
     return this.filteredItems.length > this.itemsPerPage;
@@ -341,7 +348,6 @@ export class TableComponent {
   });
     this.currentPage = 1;
     this.updatePaginatedItems();
-    this.cdr.markForCheck();
   }
   private getCRRValue(item: any): number {
     return item.overallRiskRatingAfter !== null

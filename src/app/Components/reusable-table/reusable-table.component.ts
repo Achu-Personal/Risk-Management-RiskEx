@@ -48,7 +48,10 @@ export class ReusableTableComponent {
   draftEditButton = output();
   draftDeleteButton = output();
 
-  tableData1: any[] = [];
+  originalTableData: any[] = [];
+  filteredData: any[] = [];
+  paginatedData: any[] = [];
+
   isEyeOpen = false;
   isAdmin: boolean = false;
   isDepartmentUser = false;
@@ -56,7 +59,6 @@ export class ReusableTableComponent {
   showApproveDialog = false;
   showRejectDialog = false;
   currentRow: any;
-  originalTableData: any[] = [];
 
   showStatusChangeDialog = false;
   currentToggleRow: any = null;
@@ -88,19 +90,45 @@ export class ReusableTableComponent {
     this.isDepartmentUser = role === 'DepartmentUser';
     this.isAdmin = role === 'Admin';
     if (this.tableData && this.tableData.length > 0) {
-      this.rowKeys = Object.keys(this.tableData[0]);
+      this.initializeTableData();
     }
   }
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes['tableData'] && changes['tableData'].currentValue) {
-      this.originalTableData = [...changes['tableData'].currentValue].reverse();
-      // console.log('Original Table Data updated:', this.originalTableData);
+
+
+  private initializeTableData(): void {
+    if (!this.tableData || this.tableData.length === 0) {
+      this.rowKeys = [];
+      this.originalTableData = [];
+      this.filteredData = [];
+      this.paginatedData = [];
+      this.totalItems = 0;
+      return;
     }
-    if (changes['tableData']) {
-      this.tableData1 = [...this.tableData].reverse();
-      // console.log("tabledata1",this.tableData1)
-      this.totalItems = this.tableData1.length;
-      this.updatePaginatedItems();
+
+    const allKeys = Object.keys(this.tableData[0]);
+
+
+    if (this.tableHeaders && this.tableHeaders.length > 0) {
+      this.rowKeys = this.tableHeaders.filter(header => allKeys.includes(header));
+    } else {
+      this.rowKeys = allKeys;
+      this.tableHeaders = allKeys;
+    }
+
+    this.originalTableData = [...this.tableData].reverse();
+    this.filteredData = [...this.originalTableData];
+    this.currentPage = 1;
+    this.totalItems = this.filteredData.length;
+    this.updatePaginatedItems();
+  }
+  ngOnChanges(changes: SimpleChanges) {
+     if (changes['tableData'] && changes['tableData'].currentValue) {
+      this.initializeTableData();
+    }
+      if (changes['tableHeaders'] && changes['tableHeaders'].currentValue) {
+      if (this.tableData && this.tableData.length > 0) {
+        this.initializeTableData();
+      }
     }
   }
   isSystemAdmin(row: any): boolean {
@@ -138,7 +166,6 @@ export class ReusableTableComponent {
 
     this.currentToggleRow = row;
     this.previousToggleState = !row.isActive;
-
     this.showStatusChangeDialog = true;
     this.cdr.markForCheck();
   }
@@ -164,7 +191,6 @@ export class ReusableTableComponent {
     if (!this.currentToggleRow) return;
 
     this.currentToggleRow.isActive = this.previousToggleState;
-
     this.showStatusChangeDialog = false;
     this.currentToggleRow = null;
     this.cdr.markForCheck();
@@ -228,21 +254,21 @@ export class ReusableTableComponent {
     this.onclickrow.emit(row);
   }
 
-  hasValidData(): boolean {
+   hasValidData(): boolean {
     return (
-      this.tableData &&
-      Array.isArray(this.tableData) &&
-      this.tableData.length > 0 &&
-      this.tableData.some((row) => row.riskName || row.riskId || row.fullName)
+      this.filteredData &&
+      Array.isArray(this.filteredData) &&
+      this.filteredData.length > 0 &&
+      this.filteredData.some((row) => row.riskName || row.riskId || row.fullName)
     );
   }
 
-  table: any[] = [];
+
   itemsPerPage = 10;
   currentPage = 1;
   totalItems: number = 0;
   shouldDisplayPagination(): boolean {
-    return this.tableData1.length > this.itemsPerPage;
+    return this.filteredData.length > this.itemsPerPage;
   }
   onPageChange(page: number): void {
     this.currentPage = page;
@@ -252,14 +278,20 @@ export class ReusableTableComponent {
   updatePaginatedItems(): void {
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
     const endIndex = startIndex + this.itemsPerPage;
-    this.tableData = this.tableData.slice(startIndex, endIndex);
-    this.totalItems = this.tableData.length;
+
+    this.paginatedData = this.filteredData.slice(startIndex, endIndex);
+
+    if (this.paginatedData.length > 0 && (!this.rowKeys || this.rowKeys.length === 0)) {
+      this.rowKeys = Object.keys(this.paginatedData[0]);
+    }
+
     this.cdr.markForCheck();
   }
 
+
   onSearch(searchText: string): void {
     const lowercasedSearchText = searchText.toLowerCase();
-    this.tableData = this.originalTableData.filter((item: any) =>
+    let searchFiltered = this.originalTableData.filter((item: any) =>
       Object.values(item).some(
         (value: any) =>
           value != null &&
@@ -267,8 +299,11 @@ export class ReusableTableComponent {
       )
     );
 
+      this.filteredData = this.applyColumnFilters(searchFiltered);
+
+
     this.currentPage = 1;
-    this.totalItems = this.filterData.length;
+    this.totalItems = this.filteredData.length;
     this.updatePaginatedItems();
   }
 
@@ -276,7 +311,6 @@ export class ReusableTableComponent {
   currentFilterColumn: string | null = null;
   filterSearchText = '';
   activeFilters: { [key: string]: string } = {};
-  // originalTableData: any[] = []
 
   toggleFilter(event: Event, header: string) {
     event.stopPropagation();
@@ -327,16 +361,27 @@ export class ReusableTableComponent {
     this.filterData();
   }
 
-  private filterData() {
-    let filteredData = [...this.originalTableData];
-
-    if (Object.keys(this.activeFilters).length > 0) {
-      Object.entries(this.activeFilters).forEach(([column, value]) => {
-        filteredData = filteredData.filter((row) => row[column] === value);
-      });
+   private applyColumnFilters(data: any[]): any[] {
+    if (Object.keys(this.activeFilters).length === 0) {
+      return data;
     }
 
-    this.tableData = filteredData;
+    return data.filter(row => {
+      return Object.entries(this.activeFilters).every(([column, value]) => {
+        return row[column] === value;
+      });
+    });
+  }
+
+   private filterData() {
+    let filteredData = [...this.originalTableData];
+
+    filteredData = this.applyColumnFilters(filteredData);
+
+    this.filteredData = filteredData;
+
+    this.currentPage = 1;
+    this.totalItems = this.filteredData.length;
     this.updatePaginatedItems();
   }
 
