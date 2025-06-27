@@ -164,7 +164,7 @@
         </tr>
       </thead>
         <tbody>
-          @for(item of paginated ;track item.id){
+          @for(item of paginatedItems ;track item.id){
 
           <tr (click)="rowClick(item.id)" style="height:10px;">
             <td>{{ ((currentPage-1)*10)+($index+1) }}</td>
