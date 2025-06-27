@@ -125,16 +125,16 @@ export class HomeComponent
 
         console.log('OpenRiskCount', e);
 
-           this.graph2datasets = [
+           this.graph1datasets = [
           {
-            data: [this.privacyRiskCount,this.qualityRiskCount,this.securityRiskCount],
+            data: [10,4,9],
             backgroundColor: ['#FF6F3C', '#4d4d4d', '#F9C528'],
             hoverOffset: 10,
           },
         ];
 
-        this.graph2chartType = 'doughnut';
-        this.graph2labels =["Privacy","Security","Quality"];
+        this.graph1chartType = 'doughnut';
+        this.graph1labels =["Privacy","Security","Quality"];
         console.log('criticalitylevel', e);
         this.cdr.detectChanges();
 
