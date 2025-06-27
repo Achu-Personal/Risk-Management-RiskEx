@@ -26,18 +26,24 @@ import { DashbaordCardContainerComponent } from '../../Components/dashbaord-card
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
-export class HomeComponent {
+export class HomeComponent
+{
   list: any;
   constructor(
     public api: ApiService,
     private router: Router,
     public authService: AuthService,
     private cdr: ChangeDetectorRef
-  ) {}
+  ) { }
 
   privacyRiskCount: number = 0;
   qualityRiskCount: number = 0;
   securityRiskCount: number = 0;
+
+
+  graph1labels: string[] = [];
+  graph1chartType: any;
+  graph1datasets: any[] = [];
 
   graph2labels: string[] = [];
   graph2chartType: any;
@@ -58,11 +64,13 @@ export class HomeComponent {
 
   isAllDataFetched = 0;
 
-  ngOnInit() {
+  ngOnInit()
+  {
     this.ApiInvocations();
   }
 
-  ApiInvocations() {
+  ApiInvocations()
+  {
     console.log('Role', this.authService.getProjects());
 
     let isAdminOrEMTuser =
@@ -79,7 +87,8 @@ export class HomeComponent {
           ? this.authService.getProjects().map((item) => item.Id)
           : []
       )
-      .subscribe((e: any) => {
+      .subscribe((e: any) =>
+      {
         this.openRiskCountByType = e;
         this.list = e;
         console.log(this.list);
@@ -93,25 +102,44 @@ export class HomeComponent {
         );
         this.risk = riskCat;
 
-        setTimeout(() => {
-          this.Criticality = this.list.reduce((acc: any, item: any) => {
+        setTimeout(() =>
+        {
+          this.Criticality = this.list.reduce((acc: any, item: any) =>
+          {
             acc[item.riskCategory] = item.count;
             return acc;
           }, {});
 
-        },1000);
+        }, 1000);
 
-        const riskcounts = this.list.reduce((acc: any, item: any) => {
+        const riskcounts = this.list.reduce((acc: any, item: any) =>
+        {
           acc[item.riskType] = item.riskCount;
           console.log(item.riskType);
           return acc;
         }, {});
 
-        this.privacyRiskCount = riskcounts['Privacy'];
-        this.qualityRiskCount = riskcounts['Quality'];
-        this.securityRiskCount = riskcounts['Security'];
+        this.privacyRiskCount = riskcounts['Privacy'] ?? 0;
+        this.qualityRiskCount = riskcounts['Quality'] ?? 0;
+        this.securityRiskCount = riskcounts['Security'] ?? 0;
 
         console.log('OpenRiskCount', e);
+
+           this.graph2datasets = [
+          {
+            data: [this.privacyRiskCount,this.qualityRiskCount,this.securityRiskCount],
+            backgroundColor: ['#FF6F3C', '#4d4d4d', '#F9C528'],
+            hoverOffset: 10,
+          },
+        ];
+
+        this.graph2chartType = 'doughnut';
+        this.graph2labels =["Privacy","Security","Quality"];
+        console.log('criticalitylevel', e);
+        this.cdr.detectChanges();
+
+
+
         this.cdr.detectChanges();
 
         this.isAllDataFetched++;
@@ -124,7 +152,8 @@ export class HomeComponent {
           ? this.authService.getProjects().map((item) => item.Id)
           : []
       )
-      .subscribe((e: any) => {
+      .subscribe((e: any) =>
+      {
         console.log('darat', e);
         this.riskCategoryCounts = e;
         this.list = e;
@@ -138,7 +167,8 @@ export class HomeComponent {
         );
         this.risk = riskCat;
 
-        this.Criticality = this.list.reduce((acc: any, item: any) => {
+        this.Criticality = this.list.reduce((acc: any, item: any) =>
+        {
           acc[item.riskCategory] = item.count;
 
           return acc;
@@ -147,14 +177,14 @@ export class HomeComponent {
         this.graph2datasets = [
           {
             data: counter,
-            backgroundColor: ['#962DFF', '#C6D2FD', '#E0C6FD'],
+            backgroundColor: ['#FF6F3C', '#4d4d4d', '#F9C528'],
             hoverOffset: 10,
           },
         ];
 
         this.graph2chartType = 'doughnut';
         this.graph2labels = this.risk;
-        console.log('criticalitylevel', e);
+        console.log('criticalitylevel', counter);
         this.cdr.detectChanges();
         this.isAllDataFetched++;
       });
@@ -163,7 +193,8 @@ export class HomeComponent {
       .getRiskCategoryCounts(
         isAdminOrEMTuser ? '' : this.authService.getDepartmentId()
       )
-      .subscribe((e: any) => {
+      .subscribe((e: any) =>
+      {
         this.riskCategoryCounts = e;
         this.list = e;
 
@@ -175,7 +206,8 @@ export class HomeComponent {
         );
         this.risk = riskCat;
 
-        this.Criticality = this.list.reduce((acc: any, item: any) => {
+        this.Criticality = this.list.reduce((acc: any, item: any) =>
+        {
           acc[item.riskCategory] = item.count;
           return acc;
         }, {});
@@ -183,7 +215,7 @@ export class HomeComponent {
         this.graph2datasets = [
           {
             data: counter,
-            backgroundColor: ['#962DFF', '#C6D2FD', '#E0C6FD'],
+            backgroundColor: ['#FF6F3C', '#4d4d4d', '#F9C528'],
             hoverOffset: 10,
           },
         ];
@@ -202,7 +234,8 @@ export class HomeComponent {
           ? this.authService.getProjects().map((item) => item.Id)
           : []
       )
-      .subscribe((e: any) => {
+      .subscribe((e: any) =>
+      {
         this.riskApproachingDeadline = e;
         console.log('approaching', e);
         this.cdr.detectChanges();
@@ -216,7 +249,8 @@ export class HomeComponent {
           ? this.authService.getProjects().map((item) => item.Id)
           : []
       )
-      .subscribe((e: any) => {
+      .subscribe((e: any) =>
+      {
         this.risksWithHeighesOverallRating = e;
         console.log('heigest', e);
         this.cdr.detectChanges();
@@ -224,25 +258,30 @@ export class HomeComponent {
       });
   }
 
-  OnCardClicked(id: number) {
+  OnCardClicked(id: number)
+  {
     this.router.navigate([`ViewRisk/${id}`]);
   }
 
-  onBubbleClicked(type: string) {
+  onBubbleClicked(type: string)
+  {
     this.router.navigate([`reports`], { state: { type: type } });
   }
 
-  OnRegisterRiskButtonCLicked() {
+  OnRegisterRiskButtonCLicked()
+  {
     this.router.navigate([`/addrisk`]);
   }
 
-  GetSelectedDepartment(event: any) {
+  GetSelectedDepartment(event: any)
+  {
     this.isAllDataFetched = 0;
     console.log('Selected Departments=', event);
 
     this.api
       .getRiskCategoryCountsByDepartment(event, [])
-      .subscribe((e: any) => {
+      .subscribe((e: any) =>
+      {
         console.log('darat', e);
 
         this.riskCategoryCounts = e;
@@ -256,7 +295,8 @@ export class HomeComponent {
         );
         this.risk = riskCat;
 
-        this.Criticality = this.list.reduce((acc: any, item: any) => {
+        this.Criticality = this.list.reduce((acc: any, item: any) =>
+        {
           acc[item.riskCategory] = item.count;
 
           return acc;
@@ -265,7 +305,7 @@ export class HomeComponent {
         this.graph2datasets = [
           {
             data: counter,
-            backgroundColor: ['#962DFF', '#C6D2FD', '#E0C6FD'],
+            backgroundColor: ['#FF6F3C', '#4d4d4d', '#F9C528'],
             hoverOffset: 10,
           },
         ];
@@ -277,10 +317,12 @@ export class HomeComponent {
         this.isAllDataFetched++;
       });
 
-    this.api.getOpenRiskCountByType(event, []).subscribe((e: any) => {
+    this.api.getOpenRiskCountByType(event, []).subscribe((e: any) =>
+    {
       this.openRiskCountByType = e;
       this.list = e;
-      const riskcounts = this.list.reduce((acc: any, item: any) => {
+      const riskcounts = this.list.reduce((acc: any, item: any) =>
+      {
         acc[item.riskType] = item.riskCount;
         return acc;
       }, {});
@@ -298,13 +340,15 @@ export class HomeComponent {
       this.isAllDataFetched++;
     });
 
-    this.api.getRisksWithHeigestOverallRating(event, []).subscribe((e: any) => {
+    this.api.getRisksWithHeigestOverallRating(event, []).subscribe((e: any) =>
+    {
       this.risksWithHeighesOverallRating = e;
       this.cdr.detectChanges();
       this.isAllDataFetched++;
     });
 
-    this.api.getRiskApproachingDeadline(event, []).subscribe((e: any) => {
+    this.api.getRiskApproachingDeadline(event, []).subscribe((e: any) =>
+    {
       this.riskApproachingDeadline = e;
       this.isAllDataFetched++;
     });

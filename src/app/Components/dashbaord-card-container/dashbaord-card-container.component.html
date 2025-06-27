@@ -1,7 +1,10 @@
 
 <div class="urgentrisks" data-aos="zoom-in">
   <h5>{{title}}</h5>
-  <div class="maindiv1">
+
+  @if(list.length!=0)
+  {
+ <div class="maindiv1">
 
     <div>
       @for(item of list ;track $index)
@@ -19,4 +22,14 @@
     </div>
 
   </div>
+  }
+
+  @else {
+      <div class="empty-state">
+            <img height="150px" width="150px" src="/assets/icons/emptyState2.png" />
+            <h6>No Risk found</h6>
+          </div>
+
+  }
+
 </div>
