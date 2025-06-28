@@ -124,7 +124,7 @@ export class HomeComponent
         this.graph1datasets = [
           {
             data: [this.privacyRiskCount,this.securityRiskCount,this.qualityRiskCount],
-            backgroundColor: ['#FF6F3C', '#4d4d4d', '#F9C528'],
+            backgroundColor: ['#962DFF', '#E0C6FD', '#C6D2FD'],
             hoverOffset: 10,
           },
         ];
@@ -172,7 +172,7 @@ export class HomeComponent
         this.graph2datasets = [
           {
             data: counter,
-            backgroundColor: ['#FF6F3C', '#4d4d4d', '#F9C528'],
+           backgroundColor: ['#962DFF', '#E0C6FD', '#C6D2FD'],
             hoverOffset: 10,
           },
         ];
@@ -210,7 +210,7 @@ export class HomeComponent
         this.graph2datasets = [
           {
             data: counter,
-            backgroundColor: ['#FF6F3C', '#4d4d4d', '#F9C528'],
+           backgroundColor: ['#962DFF', '#E0C6FD', '#C6D2FD'],
             hoverOffset: 10,
           },
         ];
@@ -299,7 +299,7 @@ export class HomeComponent
         this.graph2datasets = [
           {
             data: counter,
-            backgroundColor: ['#FF6F3C', '#4d4d4d', '#F9C528'],
+           backgroundColor: ['#962DFF', '#E0C6FD', '#C6D2FD'],
             hoverOffset: 10,
           },
         ];
