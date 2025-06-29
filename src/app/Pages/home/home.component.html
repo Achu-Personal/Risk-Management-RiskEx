@@ -19,26 +19,28 @@
 
 
 
-      <div class="graph1" >
+      <div class="graph1">
         <div class="heading">
           <h4>Open Risks</h4>
         </div>
-        <div >
-          @if(privacyRiskCount!=0&&qualityRiskCount!=0&&securityRiskCount!=0)
+        <div>
+          @if(privacyRiskCount!=0||qualityRiskCount!=0||securityRiskCount!=0)
           {
           <div class="riskratingcategory">
-          <p>This chart shows the number of open risks categorized by type—Privacy, Security, and Quality—giving a quick overview of where attention is needed.</p>
-          <div class="forchart">
-            <div class="graphchart">
-              <app-chart class="mainchart" [labels]="graph1labels" [chartType]="'polarArea'"  [datasets]="graph1datasets"></app-chart>
-              <!-- <app-bubble-graph class="bubbly" [securityRiskCount]="securityRiskCount ? securityRiskCount : 0"
+            <p>This chart shows the number of open risks categorized by type Privacy, Security, and Quality giving a
+              quick overview of where attention is needed.</p>
+            <div class="forchart">
+              <div class="graphchart">
+                <app-chart class="mainchart" [labels]="graph1labels" [chartType]="graph1chartType"
+                                                                                                                                                                      [datasets]="graph1datasets"></app-chart>
+                <!-- <app-bubble-graph class="bubbly" [securityRiskCount]="securityRiskCount ? securityRiskCount : 0"
                 [privacyRiskCount]="privacyRiskCount ? privacyRiskCount : 0"
                 [qualityRiskCount]="qualityRiskCount ? qualityRiskCount :0"></app-bubble-graph> -->
+              </div>
+
             </div>
 
           </div>
-
-        </div>
 
           }
 
@@ -56,15 +58,15 @@
       <div class="graph2">
 
         <div class="heading">
-            <h4>Risk Rating</h4>
+          <h4>Risk Rating</h4>
         </div>
-        @if(graph2datasets[0].data!=null&&graph2datasets[0].data.length>0)
+        @if(graph2datasets.length > 0 && graph2datasets[0].data && graph2datasets[0].data.length > 0)
         {
         <div class="riskratingcategory">
 
           <div class="forchart">
             <div class="graphchart">
-              <app-chart class="mainchart" [labels]="graph2labels" [chartType]="graph2chartType"  [datasets]="graph2datasets"></app-chart>
+              <app-chart class="mainchart" [labels]="graph2labels" [chartType]="graph2chartType" [datasets]="graph2datasets"></app-chart>
             </div>
 
           </div>
@@ -74,7 +76,7 @@
         @else {
         <div class="empty-state">
           <img height="200px" width="250px" src="/assets/icons/Empty sate1.png" />
-          <h6>No Data found</h6>
+          <h6>No Risk found</h6>
         </div>
         }
 

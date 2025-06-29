@@ -124,12 +124,12 @@ export class HomeComponent
         this.graph1datasets = [
           {
             data: [this.privacyRiskCount,this.securityRiskCount,this.qualityRiskCount],
-            backgroundColor: ['#962DFF', '#E0C6FD', '#C6D2FD'],
+            backgroundColor: ['#6742C1', '#0097A7', '#0047AB'],
             hoverOffset: 10,
           },
         ];
 
-        this.graph1chartType = 'doughnut';
+        this.graph1chartType = 'pie';
         this.graph1labels = ["Privacy","Security","Quality"];
         // console.log('criticalitylevel', e);
         this.cdr.detectChanges();
@@ -141,48 +141,6 @@ export class HomeComponent
         this.isAllDataFetched++;
       });
 
-    this.api
-      .getRiskCategoryCountsByDepartment(
-        isAdminOrEMTuser ? [] : [parseInt(this.authService.getDepartmentId()!)],
-        isProjectUser
-          ? this.authService.getProjects().map((item) => item.Id)
-          : []
-      )
-      .subscribe((e: any) => {
-        // console.log('darat', e);
-        this.riskCategoryCounts = e;
-        this.list = e;
-        const count = this.list.map((element: { count: any }) => element.count);
-        this.counter = count;
-        const counter: number[] = count;
-        // console.log('Output', counter);
-
-        const riskCat = this.list.map(
-          (element: { riskCategory: any }) => element.riskCategory
-        );
-        this.risk = riskCat;
-
-        this.Criticality = this.list.reduce((acc: any, item: any) =>
-        {
-          acc[item.riskCategory] = item.count;
-
-          return acc;
-        }, {});
-
-        this.graph2datasets = [
-          {
-            data: counter,
-           backgroundColor: ['#962DFF', '#E0C6FD', '#C6D2FD'],
-            hoverOffset: 10,
-          },
-        ];
-
-        this.graph2chartType = 'doughnut';
-        this.graph2labels = this.risk;
-        // console.log('criticalitylevel', e);
-        this.cdr.detectChanges();
-        this.isAllDataFetched++;
-      });
 
     this.api
       .getRiskCategoryCounts(
