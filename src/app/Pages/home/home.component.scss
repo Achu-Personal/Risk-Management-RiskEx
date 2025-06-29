@@ -52,7 +52,7 @@ app-department-dropdown {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-  gap: 15px;
+  gap: 10px;
   // gap: 10px;
   height: 50%;
   width: 100%;
@@ -64,7 +64,7 @@ app-department-dropdown {
   background-color: var(--accent-color);
   height: 40vh;
   width: 55%;
-  border-radius: 10px;
+  border-radius: 7px;
  display: flex;
   flex-direction: column;
   align-items: center;
@@ -170,7 +170,7 @@ app-department-dropdown {
   background-color: #ffffff;
   height: 40vh;
   width: 45%;
-  border-radius: 10px;
+  border-radius: 7px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -238,7 +238,7 @@ app-department-dropdown {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-  gap: 15px;
+  gap: 10px;
   // gap: 10px;
 
   height: 50%;
