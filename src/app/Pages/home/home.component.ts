@@ -6,7 +6,6 @@ import { ChartComponent } from '../../UI/chart/chart.component';
 import { Router } from '@angular/router';
 import { AuthService } from '../../Services/auth/auth.service';
 import { ApiService } from '../../Services/api.service';
-import { BubbleGraphComponent } from '../../UI/bubble-graph/bubble-graph.component';
 import { StyleButtonComponent } from '../../UI/style-button/style-button.component';
 import { DashbaordCardContainerComponent } from '../../Components/dashbaord-card-container/dashbaord-card-container.component';
 import { ActiveElement } from 'chart.js';
@@ -19,7 +18,6 @@ import { ActiveElement } from 'chart.js';
     BodyContainerComponent,
     DepartmentDropdownComponent,
     ChartComponent,
-    BubbleGraphComponent,
     CommonModule,
     StyleButtonComponent,
     DashbaordCardContainerComponent,
