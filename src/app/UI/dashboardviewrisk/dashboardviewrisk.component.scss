@@ -17,7 +17,7 @@
   width: 100%;
 }
 .risk-text1 {
-  font-weight: 400;
+  font-weight: 500;
   color: rgb(41, 34, 26);
   font-size: 2vh;
   margin-top: -8px;
@@ -43,7 +43,7 @@
   font-size: 12px;
 }
 .risk-date1 {
-  color: #666;
+  color: #b5b5b5;
   font-size: 1.9vh;
   width: 200px;
   margin-top: -13px;
@@ -54,23 +54,23 @@
   flex-direction: row;
   align-items: center;
 
-  gap: 10px;
+  gap: 1px;
 
 }
 
 .riskCard1-left>div>h5{
   background-color: var(--foreground-color);
 
-  font-size: 15px;
-  font-weight: 700;
+  font-size: 2vh;
+  font-weight: 500;
   padding: 5px;
-  border-radius: 5px;
+  border-radius: 50px;
   width: 45px;
   text-align: center;
-  opacity: 0.4;
+
   height: 25px;
   color: white;
   margin-top: -5px;
-  margin-left: 20px;
+  margin-left: 7px;
 }
 

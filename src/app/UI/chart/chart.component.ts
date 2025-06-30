@@ -14,20 +14,21 @@ Chart.register(...registerables, ChartDataLabels);
   templateUrl: './chart.component.html',
   styleUrl: './chart.component.scss'
 })
-export class ChartComponent {
+export class ChartComponent
+{
   @Input() labels: string[] = [];
   @Input() chartType: ChartType = 'bar';
   @Input() datasets: any[] = [];
   @Input() chartRouter: any = '';
   @Input() legend: boolean = true
 
-  onChartElementClicked=output<any>()
+  onChartElementClicked = output<any>()
 
 
   @ViewChild(BaseChartDirective) chart!: BaseChartDirective;
 
 
-  constructor(private router:Router)
+  constructor(private router: Router)
   {
 
   }
@@ -39,39 +40,49 @@ export class ChartComponent {
 
   public lineChartOptions: ChartConfiguration['options'] = {
     elements: {
-      line: { tension: 0 },
+      line: {
+        borderWidth: 0,            // Remove line stroke
+        borderColor: 'transparent'
+      },
+      point: {
+        borderWidth: 0,            // Remove point border
+        radius: 5,
+        backgroundColor: '#4E6DA1'
+      }
     },
     maintainAspectRatio: false,
     responsive: true,
     plugins: {
       datalabels: {
-        formatter: (value: any) => {
+        formatter: (value: any) =>
+        {
           return value;
         },
-        color: 'white', // Text color (e.g., red)
+        color: 'black', // Text color (e.g., red)
         font: {
           size: 18, // Font size
           // family: 'Arial', // Font family
           weight: 'bold', // Font weight (e.g., bold, normal, lighter)
 
-        }
+        },
+
       },
       legend: {
-      position: 'right', // Legend on the right
-      labels: {
-        usePointStyle: true,
-        pointStyle: 'circle',
-        padding: 20, // Adjust this to increase the gap
-        boxWidth: 20,
-        boxHeight:20,
-      font: {
-      size: window.innerHeight * 0.021,
-      family: '"Inter", sans-serif', // Font family
-      weight: 'bold' // Font weight
-      },
-      color: '#000000'
+        position: 'right', // Legend on the right
+        labels: {
+          usePointStyle: true,
+          pointStyle: 'circle',
+          padding: 20, // Adjust this to increase the gap
+          boxWidth: 20,
+          boxHeight: 20,
+          font: {
+            size: window.innerHeight * 0.021,
+            family: '"Inter", sans-serif', // Font family
+            weight: 'bold' // Font weight
+          },
+          color: '#000000'
 
-      }
+        }
 
       },
 
@@ -81,20 +92,24 @@ export class ChartComponent {
 
   };
 
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges(changes: SimpleChanges)
+  {
 
 
-    if (changes['labels'] || changes['datasets'] || changes['chartType']) {
+    if (changes['labels'] || changes['datasets'] || changes['chartType'])
+    {
       this.chartData.labels = [...this.labels];
       this.chartData.datasets = [...this.datasets];
       this.chartData.type = this.chartType;
 
-      if (this.chart) {
+      if (this.chart)
+      {
         this.chart.update();
       }
     }
 
-    if (changes['legend']) {
+    if (changes['legend'])
+    {
       this.lineChartOptions = this.lineChartOptions || {};
       this.lineChartOptions.plugins = this.lineChartOptions.plugins || {};
       this.lineChartOptions.plugins.legend = this.lineChartOptions.plugins.legend || {};
@@ -103,8 +118,9 @@ export class ChartComponent {
   }
 
 
-    onChartClick(event: { event?: ChartEvent; active?: {}[] }) {
-        this.onChartElementClicked.emit(event)
+  onChartClick(event: { event?: ChartEvent; active?: {}[] })
+  {
+    this.onChartElementClicked.emit(event)
   }
 
 }

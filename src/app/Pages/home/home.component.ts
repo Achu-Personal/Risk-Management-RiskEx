@@ -64,7 +64,7 @@ export class HomeComponent
   graph2options: any;
 
   isAllDataFetched = 0;
-  graph1Color= ['#9AB1DE', '#38B4C6', '#A78BDC'];
+  graph1Color= ['#9AB1DE', '#38B4C6', '#8F6BCF'];
   //['#962DFF', '#E0C6FD', '#C6D2FD']
   //['#F9C528', '#4D4D4D', '#FF6F3C']
  // graph2Color= ['#F9C528', '#4D4D4D', '#FF6F3C']
@@ -131,6 +131,8 @@ export class HomeComponent
             data: [this.privacyRiskCount,this.securityRiskCount,this.qualityRiskCount],
             backgroundColor:this.graph1Color,
             hoverOffset: 10,
+            borderColor: '#EFE8DC',       // line color
+            borderWidth: 2,
           },
         ];
 
