@@ -282,11 +282,18 @@ export class HomeComponent
       this.privacyRiskCount = riskcounts['Privacy'];
       this.qualityRiskCount = riskcounts['Quality'];
       this.securityRiskCount = riskcounts['Security'];
-      // console.log(
-      //   this.privacyRiskCount,
-      //   this.qualityRiskCount,
-      //   this.securityRiskCount
-      // );
+      this.graph1datasets = [
+          {
+            data: [this.privacyRiskCount,this.securityRiskCount,this.qualityRiskCount],
+            backgroundColor: ['#9e81e0', '#66c9d2', '#4d7ed1'],
+            hoverOffset: 10,
+          },
+        ];
+
+        this.graph1chartType = 'pie';
+        this.graph1labels = ["Privacy","Security","Quality"];
+        // console.log('criticalitylevel', e);
+
 
       this.cdr.detectChanges();
       this.isAllDataFetched++;
