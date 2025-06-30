@@ -52,7 +52,7 @@ app-department-dropdown {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-  gap: 15px;
+  gap: 10px;
   // gap: 10px;
   height: 50%;
   width: 100%;
@@ -64,22 +64,54 @@ app-department-dropdown {
   background-color: var(--accent-color);
   height: 40vh;
   width: 55%;
-  border-radius: 20px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  background-color: rgb(224, 204, 172, 25%);
+  border-radius: 7px;
+ display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: start;
+
+  background-color: rgb(224, 204, 172,25%);
+  padding: 20px;
+
+
+   .heading
+   {
+    width: 100%;
+    display: flex;
+   }
+
+
+
+  .empty-state
+  {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    h6
+    {
+      color: grey;
+    }
+  }
+
 }
 .leftside {
   display: flex;
   flex-direction: column;
+  .labels
+  {
+    display: flex;
+    flex-direction: column;
 
-  justify-content: space-between;
-  padding: 30px;
-  // background-color: #4D4D4D;
+    height: 100%;
+  }
+
 }
 .heading {
   color: black;
+
   // padding: 15px;
   h4 {
     font-weight: 600;
@@ -138,18 +170,50 @@ app-department-dropdown {
   background-color: #ffffff;
   height: 40vh;
   width: 45%;
-  border-radius: 20px;
+  border-radius: 7px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   overflow: hidden;
+   padding: 20px;
+
+   .heading
+   {
+    width: 100%;
+    display: flex;
+   }
+
+   .empty-state
+  {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    h6
+    {
+      color: grey;
+    }
+  }
 }
 .riskratingcategory {
   display: flex;
-  flex-direction: column;
-  justify-content: space-around;
+  flex-direction: row;
+
+  justify-content: start;
 
   height: 100%;
-  padding: 20px;
-  h4 {
-    color: #000000;
+  p
+  {
+    color: var(--foreground-color);
+    font-size: 2.1vh;
+    width: 50%;
+
+  }
+
+  h4{
+    color: var(--foreground-color);
     font-weight: 600;
 
     font-size: 2.5vh;
@@ -163,18 +227,18 @@ app-department-dropdown {
   // overflow: hidden;
   width: 350px;
 
-  margin-left: 60px;
-
   // background-color: red;
 }
 .graphchart {
   overflow: hidden;
 }
-.riskdetails {
+
+
+.riskdetails{
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-  gap: 15px;
+  gap: 10px;
   // gap: 10px;
 
   height: 50%;

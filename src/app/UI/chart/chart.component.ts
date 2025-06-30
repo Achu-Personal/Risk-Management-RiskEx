@@ -39,25 +39,30 @@ export class ChartComponent {
         formatter: (value: any) => {
           return value;
         },
-        color: '#000000',
+        color: 'white', // Text color (e.g., red)
         font: {
-          size: 14,
-          weight: 'bold',
+          size: 18, // Font size
+          // family: 'Arial', // Font family
+          weight: 'bold', // Font weight (e.g., bold, normal, lighter)
 
         }
       },
       legend: {
-        labels: {
-          boxWidth: 25,
-          boxHeight: 8,
-          font: {
-            size: 10,
-            family: 'Montserrat',
-            weight: 'normal'
-          },
-          color: '#000000'
+      position: 'right', // Legend on the right
+      labels: {
+        usePointStyle: true,
+        pointStyle: 'circle',
+        padding: 20, // Adjust this to increase the gap
+        boxWidth: 20,
+        boxHeight:20,
+      font: {
+      size: 18,
+      family: '"Inter", sans-serif', // Font family
+      weight: 'bold' // Font weight
+      },
+      color: '#000000'
 
-        }
+      }
 
       },
 

@@ -29,12 +29,11 @@
 
   h5{
     color: var(--accent-color);
-     font-size: clamp(0.7rem, 1.5vw, 1rem);
+     font-size: 2vh ;
     font-weight: 500;
     // z-index: 1000;
-    display: flex;
-     align-items: center;
-     justify-content: center;
+
+     margin: 0px;
   }
 
 }

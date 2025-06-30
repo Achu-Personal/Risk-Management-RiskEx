@@ -12,6 +12,6 @@ export class DashbaordCardContainerComponent {
 
   @Input() list=[]
 
-  @Input() titleHeading=""
+  @Input() title=""
 
 }

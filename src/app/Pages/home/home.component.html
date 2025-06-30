@@ -3,10 +3,11 @@
     <div class="topbuttons">
       <div class="dropdown">
         <app-department-dropdown *ngIf="authService.getUserRole() === 'Admin'|| authService.getUserRole()?.includes('EMTUser')"
-          (departmentsSelected)="GetSelectedDepartment($event)"></app-department-dropdown>
+                                                                                                                                                              (departmentsSelected)="GetSelectedDepartment($event)"></app-department-dropdown>
       </div>
       <div class="registerrisk">
-        <app-style-button *ngIf="!authService.getUserRole()?.includes('EMTUser')" (clicked)="OnRegisterRiskButtonCLicked()" label="Register Risk"></app-style-button>
+        <app-style-button *ngIf="!authService.getUserRole()?.includes('EMTUser')" (clicked)="OnRegisterRiskButtonCLicked()"
+                                                                                                                                                              label="Register Risk"></app-style-button>
       </div>
     </div>
 
@@ -14,105 +15,106 @@
 
     @if(isAllDataFetched)
     {
-      <div class="graphs">
-        <div class="graph1" data-aos="zoom-in">
-
-          <div class="leftside">
-            <div class="heading">
-              <h4>Open Risks</h4>
-            </div>
-            <div class="labels">
-              <div class="risk-indicator">
-                <div class="privacy-risk"></div>
-                <span>Privacy Risk</span>
-                <h6>{{privacyRiskCount ? privacyRiskCount : 0}}</h6>
-              </div>
-              <div class="risk-indicator">
-                <div class="quality-risk"></div>
-                <span>Quality Risk</span>
-                <h6>{{qualityRiskCount ? qualityRiskCount :0}}</h6>
-              </div>
-              <div class="risk-indicator">
-                <div class="security-risk"></div>
-                <span>Security Risk</span>
-                <h6>{{securityRiskCount ? securityRiskCount : 0}}</h6>
-              </div>
-            </div>
-          </div>
-          <div class="rightside ">
-
-            <div class="circlegraph">
+    <div class="graphs">
 
 
-              <app-bubble-graph class="bubbly" [securityRiskCount]="securityRiskCount ? securityRiskCount : 0"
-                [privacyRiskCount]="privacyRiskCount ? privacyRiskCount : 0"
-                [qualityRiskCount]="qualityRiskCount ? qualityRiskCount :0"></app-bubble-graph>
-                <!-- <app-chart class="mainchart" [labels]="graph3labels" [chartType]="graph3chartType"
-                [datasets]="graph3datasets"></app-chart> -->
 
-            </div>
-          </div>
+      <div class="graph1">
+        <div class="heading">
+          <h4>Open Risks</h4>
         </div>
-        <div class="graph2">
+        <div>
+          @if(privacyRiskCount!=0||qualityRiskCount!=0||securityRiskCount!=0)
+          {
           <div class="riskratingcategory">
-            <h4>Risk Rating</h4>
+            <p>This chart shows the number of open risks categorized by type Privacy, Security, and Quality giving a
+              quick overview of where attention is needed.</p>
             <div class="forchart">
               <div class="graphchart">
-                <app-chart class="mainchart" [labels]="graph2labels" [chartType]="graph2chartType"
-                  [datasets]="graph2datasets"></app-chart>
+                <app-chart class="mainchart" [labels]="graph1labels"  [chartType]="graph1chartType"
+                                                                                                                                                                      [datasets]="graph1datasets"></app-chart>
+                <!-- <app-bubble-graph class="bubbly" [securityRiskCount]="securityRiskCount ? securityRiskCount : 0"
+                [privacyRiskCount]="privacyRiskCount ? privacyRiskCount : 0"
+                [qualityRiskCount]="qualityRiskCount ? qualityRiskCount :0"></app-bubble-graph> -->
               </div>
-              <div class="graph2Legend">
-                <div>
-                  <!-- <div style="background-color:#962DFF;"></div> -->
-                  <h5>Critical</h5>
-                  <h6>{{Criticality.Critical ? Criticality.Critical : 0}}</h6>
-                </div>
-                <div>
-                  <!-- <div style="background-color:#C6D2FD;"></div> -->
-                  <h5>Moderate</h5>
-                  <h6>{{Criticality.Moderate ? Criticality.Moderate : 0}}</h6>
-                </div>
-                <div>
-                  <!-- <div style="background-color:#E0C6FD;"></div> -->
-                  <h5>Low</h5>
-                  <h6>{{Criticality.Low ? Criticality.Low: 0}}</h6>
-                </div>
-              </div>
+
             </div>
+
+          </div>
+
+          }
+
+          @else {
+          <div class="empty-state">
+            <img height="200px" width="250px" src="/assets/icons/Empty sate1.png" />
+            <h6>No Risk found</h6>
+          </div>
+
+          }
+
+        </div>
+
+      </div>
+      <div class="graph2">
+
+        <div class="heading">
+          <h4>Risk Rating</h4>
+        </div>
+        @if(graph2datasets.length > 0 && graph2datasets[0].data && graph2datasets[0].data.length > 0)
+        {
+        <div class="riskratingcategory">
+
+          <div class="forchart">
+            <div class="graphchart">
+              <app-chart class="mainchart" [labels]="graph2labels" [chartType]="graph2chartType" [datasets]="graph2datasets"></app-chart>
+            </div>
+
           </div>
         </div>
+        }
+
+        @else {
+        <div class="empty-state">
+          <img height="200px" width="250px" src="/assets/icons/Empty sate1.png" />
+          <h6>No Risk found</h6>
+        </div>
+        }
+
       </div>
+    </div>
 
 
-      <div class="riskdetails">
+    <div class="riskdetails">
 
-        <app-dashbaord-card-container titleHeading="Upcoming Risk Deadlines"  [list]="riskApproachingDeadline"  > </app-dashbaord-card-container>
+      <app-dashbaord-card-container title="Upcoming Risk Deadlines" [list]="riskApproachingDeadline">
+      </app-dashbaord-card-container>
 
-        <app-dashbaord-card-container titleHeading="Risks With Highest Overall Rating"  [list]="risksWithHeighesOverallRating"  > </app-dashbaord-card-container>
+      <app-dashbaord-card-container title="Risks With Highest Overall Rating" [list]="risksWithHeighesOverallRating">
+      </app-dashbaord-card-container>
 
-      </div>
+    </div>
     }
 
     @else {
-      <div class="shimmer-container">
-        <div style="display: flex;flex-direction: row; gap: 10px;">
-          <div  class="shimmer" style="height: 40vh;width: 60%;">
+    <div class="shimmer-container">
+      <div style="display: flex;flex-direction: row; gap: 10px;">
+        <div class="shimmer" style="height: 40vh;width: 60%;">
 
-          </div>
-          <div  class="shimmer" style="height: 40vh;width: 40%;">
-
-          </div>
         </div>
+        <div class="shimmer" style="height: 40vh;width: 40%;">
 
-
-        <div style="display: flex;flex-direction: row; gap: 10px;">
-          <div  class="shimmer" style="height: 30vh;width: 50%;">
-
-          </div>
-          <div  class="shimmer" style="height: 30vh;width: 50%;">
-
-          </div>
         </div>
+      </div>
+
+
+      <div style="display: flex;flex-direction: row; gap: 10px;">
+        <div class="shimmer" style="height: 30vh;width: 50%;">
+
+        </div>
+        <div class="shimmer" style="height: 30vh;width: 50%;">
+
+        </div>
+      </div>
     </div>
     }
 
@@ -123,11 +125,3 @@
 
   </div>
 </app-body-container>
-
-
-
-
-
-
-
-
