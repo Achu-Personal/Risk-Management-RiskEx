@@ -1,4 +1,4 @@
 <div class="canvas">
-  <canvas id="chartCanvas" width="400" height="200" baseChart [data]="chartData" [options]="lineChartOptions"
+  <canvas id="chartCanvas" width="400" height="200" (chartClick)=" onChartClick($event)" baseChart [data]="chartData" [options]="lineChartOptions"
     [type]="chartType"></canvas>
 </div>

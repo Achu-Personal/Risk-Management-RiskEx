@@ -124,7 +124,7 @@ export class HomeComponent
         this.graph1datasets = [
           {
             data: [this.privacyRiskCount,this.securityRiskCount,this.qualityRiskCount],
-            backgroundColor: ['#6742C1', '#0097A7', '#0047AB'],
+            backgroundColor: ['#9e81e0', '#66c9d2', '#4d7ed1'],
             hoverOffset: 10,
           },
         ];

@@ -1,7 +1,8 @@
 import { BaseChartDirective } from 'ng2-charts';
 import { ChangeDetectorRef, Component, Input, SimpleChanges, ViewChild } from '@angular/core';
-import { Chart, ChartConfiguration, ChartType, registerables, CategoryScale, } from 'chart.js';
+import { Chart, ChartConfiguration, ChartType, registerables, CategoryScale, ChartEvent, ActiveElement, } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
+import { Router } from '@angular/router';
 
 
 Chart.register(...registerables, ChartDataLabels);
@@ -22,6 +23,12 @@ export class ChartComponent {
 
 
   @ViewChild(BaseChartDirective) chart!: BaseChartDirective;
+
+
+  constructor(private router:Router)
+  {
+
+  }
 
   chartData: ChartConfiguration['data'] & { type?: ChartType } = {
     datasets: [],
@@ -56,7 +63,7 @@ export class ChartComponent {
         boxWidth: 20,
         boxHeight:20,
       font: {
-      size: 18,
+      size: window.innerHeight * 0.021,
       family: '"Inter", sans-serif', // Font family
       weight: 'bold' // Font weight
       },
@@ -66,7 +73,10 @@ export class ChartComponent {
 
       },
 
+
     },
+
+
   };
 
   ngOnChanges(changes: SimpleChanges) {
@@ -87,6 +97,19 @@ export class ChartComponent {
       this.lineChartOptions.plugins = this.lineChartOptions.plugins || {};
       this.lineChartOptions.plugins.legend = this.lineChartOptions.plugins.legend || {};
       this.lineChartOptions.plugins.legend.display = this.legend;
+    }
+  }
+
+
+    onChartClick(event: { event?: ChartEvent; active?: {}[] }) {
+    if (event.active && event.active.length > 0) {
+      const activeElement = event.active[0] as ActiveElement;
+      const clickedIndex = activeElement.index;
+      const label = this.labels[clickedIndex];
+
+      if (label) {
+       this.router.navigate([`reports`], { state: { type: label } });
+      }
     }
   }
 
