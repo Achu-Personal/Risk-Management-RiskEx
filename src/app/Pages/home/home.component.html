@@ -32,7 +32,7 @@
             <div class="forchart">
               <div class="graphchart">
                 <app-chart class="mainchart" [labels]="graph1labels"  [chartType]="graph1chartType"
-                                                                                                                                                                      [datasets]="graph1datasets"></app-chart>
+                                                                                               (onChartElementClicked)="onGraph1ChartElementClicked($event)"                                                                        [datasets]="graph1datasets"></app-chart>
                 <!-- <app-bubble-graph class="bubbly" [securityRiskCount]="securityRiskCount ? securityRiskCount : 0"
                 [privacyRiskCount]="privacyRiskCount ? privacyRiskCount : 0"
                 [qualityRiskCount]="qualityRiskCount ? qualityRiskCount :0"></app-bubble-graph> -->
@@ -66,7 +66,7 @@
 
           <div class="forchart">
             <div class="graphchart">
-              <app-chart class="mainchart" [labels]="graph2labels" [chartType]="graph2chartType" [datasets]="graph2datasets"></app-chart>
+              <app-chart class="mainchart" [labels]="graph2labels" [chartType]="graph2chartType" [datasets]="graph2datasets" ></app-chart>
             </div>
 
           </div>

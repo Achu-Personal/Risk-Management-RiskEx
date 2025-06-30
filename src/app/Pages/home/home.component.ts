@@ -9,6 +9,7 @@ import { ApiService } from '../../Services/api.service';
 import { BubbleGraphComponent } from '../../UI/bubble-graph/bubble-graph.component';
 import { StyleButtonComponent } from '../../UI/style-button/style-button.component';
 import { DashbaordCardContainerComponent } from '../../Components/dashbaord-card-container/dashbaord-card-container.component';
+import { ActiveElement } from 'chart.js';
 
 @Component({
   selector: 'app-home',
@@ -63,7 +64,11 @@ export class HomeComponent
   graph2options: any;
 
   isAllDataFetched = 0;
-
+  graph1Color= ['#9AB1DE', '#38B4C6', '#A78BDC'];
+  //['#962DFF', '#E0C6FD', '#C6D2FD']
+  //['#F9C528', '#4D4D4D', '#FF6F3C']
+ // graph2Color= ['#F9C528', '#4D4D4D', '#FF6F3C']
+  graph2Color= ['#962DFF', '#E0C6FD', '#C6D2FD']
   ngOnInit()
   {
     this.ApiInvocations();
@@ -124,7 +129,7 @@ export class HomeComponent
         this.graph1datasets = [
           {
             data: [this.privacyRiskCount,this.securityRiskCount,this.qualityRiskCount],
-            backgroundColor: ['#9e81e0', '#66c9d2', '#4d7ed1'],
+            backgroundColor:this.graph1Color,
             hoverOffset: 10,
           },
         ];
@@ -168,7 +173,7 @@ export class HomeComponent
         this.graph2datasets = [
           {
             data: counter,
-           backgroundColor: ['#962DFF', '#E0C6FD', '#C6D2FD'],
+           backgroundColor: this.graph2Color,
             hoverOffset: 10,
           },
         ];
@@ -257,7 +262,7 @@ export class HomeComponent
         this.graph2datasets = [
           {
             data: counter,
-           backgroundColor: ['#962DFF', '#E0C6FD', '#C6D2FD'],
+           backgroundColor: this.graph2Color,
             hoverOffset: 10,
           },
         ];
@@ -285,7 +290,7 @@ export class HomeComponent
       this.graph1datasets = [
           {
             data: [this.privacyRiskCount,this.securityRiskCount,this.qualityRiskCount],
-            backgroundColor: ['#9e81e0', '#66c9d2', '#4d7ed1'],
+            backgroundColor: this.graph1Color,
             hoverOffset: 10,
           },
         ];
@@ -311,5 +316,20 @@ export class HomeComponent
       this.riskApproachingDeadline = e;
       this.isAllDataFetched++;
     });
+  }
+
+
+
+  onGraph1ChartElementClicked(event:any)
+  {
+     if (event.active && event.active.length > 0) {
+      const activeElement = event.active[0] as ActiveElement;
+      const clickedIndex = activeElement.index;
+      const label = this.graph1labels[clickedIndex];
+
+      if (label) {
+       this.router.navigate([`reports`], { state: { type: label } });
+      }
+    }
   }
 }

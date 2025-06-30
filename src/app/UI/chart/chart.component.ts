@@ -1,5 +1,5 @@
 import { BaseChartDirective } from 'ng2-charts';
-import { ChangeDetectorRef, Component, Input, SimpleChanges, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, output, SimpleChanges, ViewChild } from '@angular/core';
 import { Chart, ChartConfiguration, ChartType, registerables, CategoryScale, ChartEvent, ActiveElement, } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { Router } from '@angular/router';
@@ -20,6 +20,8 @@ export class ChartComponent {
   @Input() datasets: any[] = [];
   @Input() chartRouter: any = '';
   @Input() legend: boolean = true
+
+  onChartElementClicked=output<any>()
 
 
   @ViewChild(BaseChartDirective) chart!: BaseChartDirective;
@@ -102,15 +104,7 @@ export class ChartComponent {
 
 
     onChartClick(event: { event?: ChartEvent; active?: {}[] }) {
-    if (event.active && event.active.length > 0) {
-      const activeElement = event.active[0] as ActiveElement;
-      const clickedIndex = activeElement.index;
-      const label = this.labels[clickedIndex];
-
-      if (label) {
-       this.router.navigate([`reports`], { state: { type: label } });
-      }
-    }
+        this.onChartElementClicked.emit(event)
   }
 
 }
