@@ -26,7 +26,7 @@ export class AssignmentComponent {
 
 
 headerData:any=[
-  "riskId"," riskName","description","riskType","overallRiskRating",  "departmentName","responsibleUser","plannedActionDate","riskStatus",
+  "riskId","riskName","description","riskType","overallRiskRating",  "departmentName","responsibleUser","plannedActionDate","riskStatus",
 ];
 
 
@@ -91,8 +91,18 @@ ngOnInit()
     else{
 
       this.headerData=[
-        "riskId"," riskName","description","riskType","overallRiskRating","plannedActionDate","riskStatus",
+        "riskId","riskName","description","riskType","overallRiskRating","plannedActionDate","riskStatus",
       ];
+
+      this.headerDisplayMap = {
+        riskId: "Risk Id",
+        riskName: "Risk Name",
+        description: "Description",
+        riskType: "Risk Type",
+        overallRiskRating: "CRR",
+        plannedActionDate: "End Date",
+        riskStatus: "Risk Status"
+      };
 
       this.tableBody=[
         {
