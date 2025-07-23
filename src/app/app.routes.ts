@@ -32,20 +32,22 @@ import { UnauthorizedComponent } from './Pages/unauthorized/unauthorized.compone
 import { DraftPageComponent } from './Pages/draft-page/draft-page.component';
 
 export const routes: Routes = [
+
+  {
+    path: 'sso',
+    component: SsoComponent,
+  },
+  {
+    path: 'auth',
+    component: AuthComponentSSO,
+  },
   {
     path: 'login',
     component: AuthComponent,
     children: [{ path:'', redirectTo: 'login', pathMatch: 'full' }],
   },
   { path: 'unauthorized', component: UnauthorizedComponent },
-  {
-    path: 'auth',
-    component: AuthComponentSSO,
-  },
-  {
-    path: 'sso',
-    component: SsoComponent,
-  },
+  
   {
     path: '',
     component: DashboardComponent,

@@ -1,13 +1,13 @@
 export const environment = {
   production: false,
-  apiUrl: 'https://riskex.experionglobal.dev/api',
-  // apiUrl: 'https://risk-management-riskex-backend-2.onrender.com/api',
+  // apiUrl: 'https://riskex.experionglobal.dev/api',
+  apiUrl: 'https://risk-management-riskex-backend-2.onrender.com/api',
   // apiUrl: 'https://localhost:7216/api',
   frontendUrl: 'http://localhost:4200',
   ssoConfig: {
-    clientId: '4fdd2973-09a8-4c28-a786-16f63cf33207',
-    authority: 'https://login.microsoftonline.com/5b751804-232f-410d-bb2f-714e3bb466eb',
-    redirectUri: 'https://riskex.experionglobal.dev/auth',
-    postLogoutRedirectUri: 'https://riskex.experionglobal.dev/'
+    clientId: '89f01728-5df7-48b1-a0ab-68fb303a95d0',
+    authority: 'https://login.microsoftonline.com/13ec0e67-00c5-44c4-8bdb-52adb4a2feae',
+    redirectUri: 'http://localhost:4200/auth',
+    postLogoutRedirectUri: 'http://localhost:4200/'
   }
 };

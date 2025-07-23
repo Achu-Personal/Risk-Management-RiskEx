@@ -4,7 +4,7 @@ import {
   InteractionStatus,
   RedirectRequest
 } from '@azure/msal-browser';
-import { filter, Subject, takeUntil } from 'rxjs';
+import { filter, Subject, take, takeUntil } from 'rxjs';
 import {
   MSAL_GUARD_CONFIG,
   MsalBroadcastService,
@@ -26,7 +26,8 @@ export class SsoComponent implements OnInit, OnDestroy {
   loginDisplay = false;
   isIframe = false;
   isInitialized = false;
-  isLoggingOut = false; // Flag to track logout state
+  isLoggingOut = false;
+  private interactionInProgress = false; // Track interaction state
 
   constructor(
     @Inject(MSAL_GUARD_CONFIG) private msalGuardConfig: MsalGuardConfiguration,
@@ -49,6 +50,20 @@ export class SsoComponent implements OnInit, OnDestroy {
     // Skip redirect handling if we're explicitly logging out
     if (this.isLoggingOut) return;
 
+    // Monitor interaction status
+    this.msalBroadcastService.inProgress$
+      .pipe(takeUntil(this._destroying$))
+      .subscribe((status: InteractionStatus) => {
+        this.interactionInProgress = status !== InteractionStatus.None;
+        if (status === InteractionStatus.None) {
+          this.setLoginDisplay();
+          // Only check for active account if we're not logging out
+          if (!this.isLoggingOut) {
+            this.checkAndSetActiveAccount();
+          }
+        }
+      });
+
     this.msalService.handleRedirectObservable().subscribe({
       next: (response: AuthenticationResult) => {
         if (response && response.accessToken) {
@@ -63,19 +78,6 @@ export class SsoComponent implements OnInit, OnDestroy {
     this.setLoginDisplay();
     this.msalService.instance.enableAccountStorageEvents();
 
-    this.msalBroadcastService.inProgress$
-      .pipe(
-        filter((status: InteractionStatus) => status === InteractionStatus.None),
-        takeUntil(this._destroying$)
-      )
-      .subscribe(() => {
-        this.setLoginDisplay();
-        // Only check for active account if we're not logging out
-        if (!this.isLoggingOut) {
-          this.checkAndSetActiveAccount();
-        }
-      });
-
     // Only check for active account if we're not logging out
     if (!this.isLoggingOut) {
       this.checkAndSetActiveAccount();
@@ -86,17 +88,50 @@ export class SsoComponent implements OnInit, OnDestroy {
     this.loginDisplay = this.msalService.instance.getAllAccounts().length > 0;
   }
 
-  loginRedirect() {
-    const request: RedirectRequest = {
-      ...this.msalGuardConfig.authRequest as RedirectRequest,
-      scopes: this.defaultScopes,
-      prompt: 'select_account'
-    };
+  async loginRedirect() {
+    // Prevent multiple simultaneous login attempts
+    if (this.interactionInProgress) {
+      console.log('Interaction already in progress, skipping login attempt');
+      return;
+    }
 
-    this.msalService.loginRedirect(request);
+    try {
+      // Wait for any ongoing interaction to complete
+      await this.waitForInteractionToComplete();
+
+      const request: RedirectRequest = {
+        ...this.msalGuardConfig.authRequest as RedirectRequest,
+        scopes: this.defaultScopes,
+        prompt: 'select_account'
+      };
+
+      this.msalService.loginRedirect(request);
+    } catch (error) {
+      console.error('Login redirect error:', error);
+    }
   }
 
-  logout() {
+  // Helper method to wait for interaction to complete using broadcast service
+  private async waitForInteractionToComplete(): Promise<void> {
+    return new Promise((resolve) => {
+      // First check current status
+      this.msalBroadcastService.inProgress$
+        .pipe(
+          filter((status: InteractionStatus) => status === InteractionStatus.None),
+          take(1)
+        )
+        .subscribe(() => {
+          resolve();
+        });
+    });
+  }
+
+  async logout() {
+    // Prevent multiple logout attempts
+    if (this.isLoggingOut || this.interactionInProgress) {
+      return;
+    }
+
     // Clear local storage first
     localStorage.removeItem('loginToken');
     localStorage.removeItem('token');
@@ -104,6 +139,9 @@ export class SsoComponent implements OnInit, OnDestroy {
 
     // Set logout flag
     this.isLoggingOut = true;
+
+    // Wait for any ongoing interaction to complete
+    await this.waitForInteractionToComplete();
 
     // Use MSAL logout
     this.performLogout();
@@ -132,8 +170,8 @@ export class SsoComponent implements OnInit, OnDestroy {
   }
 
   checkAndSetActiveAccount() {
-    // Don't check active account during logout
-    if (this.isLoggingOut) return;
+    // Don't check active account during logout or if interaction is in progress
+    if (this.isLoggingOut || this.interactionInProgress) return;
 
     const activeAccount = this.msalService.instance.getActiveAccount();
     if (!activeAccount && this.msalService.instance.getAllAccounts().length > 0) {

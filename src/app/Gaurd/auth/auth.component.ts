@@ -2,8 +2,9 @@ import { Component } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../Services/auth/auth.service';
-import { MsalService } from '@azure/msal-angular';
-import { firstValueFrom } from 'rxjs';
+import { MsalService, MsalBroadcastService } from '@azure/msal-angular';
+import { firstValueFrom, filter, take } from 'rxjs';
+import { InteractionStatus } from '@azure/msal-browser';
 
 @Component({
   selector: 'app-auth',
@@ -25,25 +26,26 @@ export class AuthComponentSSO {
     private router: Router,
     private route: ActivatedRoute,
     private msalService: MsalService,
+    private msalBroadcastService: MsalBroadcastService,
   ) {}
 
   async ngOnInit(): Promise<void> {
-    // Check if we're in a logout flow
     this.route.queryParams.subscribe(params => {
       if (params['logout'] === 'true') {
         this.isLoggingOut = true;
-        // Just redirect to SSO and exit
         this.router.navigate(['/sso'], { queryParams: { logout: 'true' } });
         return;
       }
     });
 
-    // Skip login handling if we're explicitly logging out
     if (this.isLoggingOut) return;
 
     try {
       this.isLoading = true;
       await this.msalService.instance.initialize();
+
+      // Wait for any ongoing interaction to complete
+      await this.waitForInteractionToComplete();
 
       const result = await this.msalService.instance.handleRedirectPromise();
 
@@ -58,11 +60,12 @@ export class AuthComponentSSO {
 
       const account = this.msalService.instance.getActiveAccount();
       if (account) {
-        // console.log('Session active:', account);
         this.usermail = account.username;
-        // console.log(' active account:', this.usermail);
 
         try {
+          // Wait for interaction to complete before acquiring token
+          await this.waitForInteractionToComplete();
+
           const tokenResponse = await firstValueFrom(
             this.msalService.acquireTokenSilent({
               scopes: ['user.read'],
@@ -89,13 +92,28 @@ export class AuthComponentSSO {
     } catch (error) {
       console.error('SSO Login Error:', error);
       this.handleError('Authentication failed. Please try again.');
-      // Only redirect if not already logging out
+
       if (!this.isLoggingOut) {
         // this.router.navigate(['/sso']);
       }
     } finally {
       this.isLoading = false;
     }
+  }
+
+  // Helper method to wait for interaction to complete using broadcast service
+  private async waitForInteractionToComplete(): Promise<void> {
+    return new Promise((resolve) => {
+      // First check current status
+      this.msalBroadcastService.inProgress$
+        .pipe(
+          filter((status: InteractionStatus) => status === InteractionStatus.None),
+          take(1)
+        )
+        .subscribe(() => {
+          resolve();
+        });
+    });
   }
 
   async ssoLoginToBackend(usermail: string) {
@@ -122,11 +140,13 @@ export class AuthComponentSSO {
     this.isLoading = false;
   }
 
-  retryLogin() {
+  async retryLogin() {
     this.showError = false;
     this.errorMessage = '';
     // Only redirect if not already logging out
     if (!this.isLoggingOut) {
+      // Wait for any ongoing interaction to complete before retrying
+      await this.waitForInteractionToComplete();
       this.msalService.loginRedirect();
     }
   }
