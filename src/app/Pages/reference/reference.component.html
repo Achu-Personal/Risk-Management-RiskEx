@@ -16,43 +16,38 @@
       <div class="tab-container">
         <!-- Tab Navigation -->
         <div class="tabs">
-          <button 
-            *ngFor="let tab of tabs; let i = index" 
-            [class.active]="selectedTab === i" 
+          <button
+            *ngFor="let tab of tabs; let i = index"
+            [class.active]="selectedTab === i"
             (click)="selectTab(i)">
             {{ tab.label }}
           </button>
         </div>
-    
+
         <!-- Tab Content -->
         <div class="tab-content">
           <!-- Dynamic content based on the selected tab -->
           <div *ngIf="selectedTab === 0">
             <div class="content-section">
               <h5>{{ tabs[0].label }}</h5>
-              <!-- <p>Risk refers to the uncertainty that something may result in a loss or injury.</p> -->
-              <app-referncetable [tableHead]="likelyHoodTableHead" [tableBody]="likelyHoodTableBody"></app-referncetable>
+              <app-referncetable [tableHead]="likelyHoodTableHead" [tableHeadLabels]="likelyHoodTableHeadLabels" [tableBody]="likelyHoodTableBody"></app-referncetable>
             </div>
           </div>
           <div *ngIf="selectedTab === 1">
             <div class="content-section">
               <h5>{{ tabs[1].label }}</h5>
-              <!-- <p>Details about Likelihood Table.</p> -->
-              
               <app-referncetable [tableHead]="impactTableHead" [tableBody]="impactTableBody"></app-referncetable>
             </div>
           </div>
           <div *ngIf="selectedTab === 2">
             <div class="content-section">
               <h5>{{ tabs[2].label }}</h5>
-              <!-- <p>Details about Impact Table.</p> -->
               <app-referncetable [tableHead]="QMStablehead" [tableBody]="QMSTablebody"></app-referncetable>
             </div>
           </div>
           <div *ngIf="selectedTab === 3">
             <div class="content-section">
               <h5>{{ tabs[3].label }}</h5>
-              <!-- <p>Details about Risk Response Table.</p> -->
               <app-referncetable [tableHead]="ISMSTableHead" [tableBody]="ISMSTableBody"></app-referncetable>
             </div>
           </div>
@@ -62,10 +57,28 @@
               <app-referncetable [tableHead]="riskResponseHead" [tableBody]="riskResponseBody"></app-referncetable>
             </div>
           </div>
+          <div *ngIf="selectedTab === 5">
+            <div class="content-section">
+              <h5>{{ tabs[5].label }}</h5>
+              <app-referncetable [tableHead]="RiskStatusHead" [tableBody]="RiskStatusBody"></app-referncetable>
+            </div>
+          </div>
+          <div *ngIf="selectedTab === 6">
+            <div class="content-section">
+              <h5>{{ tabs[6].label }}</h5>
+              <app-referncetable [tableHead]="QMSImpactHead" [tableBody]="QMSImpactBody"></app-referncetable>
+            </div>
+          </div>
+          <div *ngIf="selectedTab === 7">
+            <div class="content-section">
+              <h5>{{ tabs[7].label }}</h5>
+              <app-referncetable [tableHead]="ISMSImpactHead" [tableBody]="ISMSImpactBody"></app-referncetable>
+            </div>
+          </div>
         </div>
       </div>
-        
+
       </div>
     </div>
- 
+
 </app-body-container>

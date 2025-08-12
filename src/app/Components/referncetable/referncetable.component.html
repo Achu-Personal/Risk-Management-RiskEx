@@ -2,16 +2,19 @@
     <table class="tableBody">
         <thead>
             <tr>
-                @for(head of tableHead; track head){
-                    <th>{{head}}</th>
+               @for(header of displayHeaders; track header; let i = $index){
+                    <th>{{header}}</th>
                 }
             </tr>
         </thead>
         <tbody>
             @for(row of tableBody; track row){
-                <tr>
+               <tr>
                     @for(header of tableHead; track header){
-                        <td [ngStyle]="header === 'Risk Rating Category' || header === 'Risk Rating' ? getCellStyle(row[header]) : {}">{{ row[header] }}</td>
+                        <td [ngStyle]="getCombinedCellStyle(row[header])"
+                            [class]="getAlignmentClass()">
+                            {{ row[header] }}
+                        </td>
                     }
                 </tr>
             }

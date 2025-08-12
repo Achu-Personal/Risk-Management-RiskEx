@@ -543,6 +543,10 @@ export class ApiService {
     return this.http.put(`${this.baseUrl}/Risk/draft/${id}`,payload)
   }
 
+    getReferenceTableData() : Observable<any>{
+    return this.http.get('/data/risk-tables.json')
+  }
+
 }
 
 
