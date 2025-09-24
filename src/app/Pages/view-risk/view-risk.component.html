@@ -17,12 +17,21 @@
 @else {
   <app-body-container class="hide-scrollbar" backgroundColor="transparent"  [showShadow]=false >
     <main>
-      <app-risk-basic-details-card data-aos="zoom-in" [isEditable]="true"  [allData]="data" ></app-risk-basic-details-card>
+      <app-risk-basic-details-card data-aos="zoom-in" [isEditable]="true"  [allData]="data" (editClicked)="handleEditClicked($event)" ></app-risk-basic-details-card>
       <app-risk-details-section2 data-aos="zoom-in" [data]="riskDetailsSection2Data"></app-risk-details-section2>
       <app-risk-details-section3-mitigation [data]="riskDetailsSection3MitigationData" ></app-risk-details-section3-mitigation>
     </main>
 
   </app-body-container>
 }
+
+@if(isShowPopupForUpdateStatus)
+{
+  <app-change-risk-status [RiskStatuses]="RiskStatuses" (closeRiskStatusModal)="hideModal()" (submitForm)="handleSubmitForm($event)" (sendToReview)="handleSendToReview($event)"></app-change-risk-status>
+}
+
+ @if(isLoader) {
+    <app-form-loader></app-form-loader>>
+   }
 
 

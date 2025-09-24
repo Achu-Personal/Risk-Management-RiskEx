@@ -67,12 +67,9 @@ export class UpdateIsmsComponent {
     email: string;
     type: string;
   }> = [];
-  @Input() riskResponses: Array<{
+  @Input() RiskStatuses: Array<{
     id: number;
     name: string;
-    description: string;
-    example: string;
-    risks: string;
   }> = [];
   @Input() riskTypeId: number = 0;
   overallRiskRating: number = 0;
@@ -118,6 +115,9 @@ export class UpdateIsmsComponent {
   newReviewername: string = '';
   isnewReviewernameDisplay: boolean = false;
   isLoading = false; // Initially false
+
+   riskStatusValue: number = 0;
+   showCloseDate: boolean = false;
 
   constructor(
     private el: ElementRef,
@@ -237,9 +237,9 @@ export class UpdateIsmsComponent {
       this.percentageRedution = parseFloat(
         ((this.residualValue / this.overallRiskRatingBefore) * 100).toFixed(2)
       );
-      if (this.percentageRedution > 60) {
+      if (this.percentageRedution <= 45) {
         this.residualRisk = 1;
-      } else if (this.percentageRedution >= 40) {
+      } else if (this.percentageRedution >= 46 && this.percentageRedution <= 69) {
         this.residualRisk = 2;
       } else {
         this.residualRisk = 3;
@@ -247,59 +247,59 @@ export class UpdateIsmsComponent {
     }
   }
 
-  changeColorRiskFactor(category: string) {
+   changeColorRiskFactor(category: string) {
     // Define color for confidentialityRiskFactor
     if (category == 'Confidentiality') {
       if (
-        this.confidentialityRiskFactor > 0 &&
-        this.confidentialityRiskFactor < 9
+        this.confidentialityRiskFactor >= 0 &&
+        this.confidentialityRiskFactor <=4
       ) {
         return '#6DA34D'; // Green for low risk
       }
       if (
-        this.confidentialityRiskFactor > 8 &&
-        this.confidentialityRiskFactor < 17
+        this.confidentialityRiskFactor >= 6 &&
+        this.confidentialityRiskFactor <=16
       ) {
         return '#FFC107'; // Yellow for medium risk
       }
-      if (this.confidentialityRiskFactor > 16) {
+      if (this.confidentialityRiskFactor >=17) {
         return '#D9534F'; // Red for high risk
       }
     }
     if (category == 'Integrity') {
       // Define color for integrityRiskFactor
-      if (this.integrityRiskFactor > 0 && this.integrityRiskFactor < 9) {
+      if (this.integrityRiskFactor >= 0 && this.integrityRiskFactor <= 4) {
         return '#6DA34D'; // Green for low risk
       }
-      if (this.integrityRiskFactor > 8 && this.integrityRiskFactor < 17) {
+      if (this.integrityRiskFactor >= 6 && this.integrityRiskFactor <= 16) {
         return '#FFC107'; // Yellow for medium risk
       }
-      if (this.integrityRiskFactor > 16) {
+      if (this.integrityRiskFactor >= 17) {
         return '#D9534F'; // Red for high risk
       }
     }
     if (category == 'Availability') {
       // Define color for availabilityRiskFactor
-      if (this.availabilityRiskFactor > 0 && this.availabilityRiskFactor < 9) {
+      if (this.availabilityRiskFactor >= 0 && this.availabilityRiskFactor <= 4) {
         return '#6DA34D'; // Green for low risk
       }
-      if (this.availabilityRiskFactor > 8 && this.availabilityRiskFactor < 17) {
+      if (this.availabilityRiskFactor >= 6 && this.availabilityRiskFactor <= 16) {
         return '#FFC107'; // Yellow for medium risk
       }
-      if (this.availabilityRiskFactor > 16) {
+      if (this.availabilityRiskFactor >= 17) {
         return '#D9534F'; // Red for high risk
       }
     }
 
     if (category == 'Privacy') {
       // Define color for privacyRiskFactor
-      if (this.privacyRiskFactor > 0 && this.privacyRiskFactor < 9) {
+      if (this.privacyRiskFactor >= 0 && this.privacyRiskFactor <= 4) {
         return '#6DA34D'; // Green for low risk
       }
-      if (this.privacyRiskFactor > 8 && this.privacyRiskFactor < 17) {
+      if (this.privacyRiskFactor >= 6 && this.privacyRiskFactor <= 16) {
         return '#FFC107'; // Yellow for medium risk
       }
-      if (this.privacyRiskFactor > 16) {
+      if (this.privacyRiskFactor >= 17) {
         return '#D9534F'; // Red for high risk
       }
     }
@@ -307,16 +307,15 @@ export class UpdateIsmsComponent {
   }
 
   changeColorOverallRiskRating() {
-    if (this.overallRiskRating < 30) {
+    if (this.overallRiskRating <= 45) {
       return '#6DA34D';
     }
-    if (this.overallRiskRating > 31 && this.overallRiskRating < 99) {
+    if (this.overallRiskRating >= 46 && this.overallRiskRating <= 69) {
       return '#FFC107';
     } else {
       return '#D9534F';
     }
   }
-
   onRadioSelectionChange(value: any) {
     this.riskResponseValue = value;
     // console.log('Selected value from child:', value);
@@ -355,7 +354,7 @@ export class UpdateIsmsComponent {
   }
 
   updateQmsForm = new FormGroup({
-    closeDate: new FormControl('', Validators.required),
+    closeDate: new FormControl(''),
     remarks: new FormControl(''),
   });
 
@@ -366,8 +365,9 @@ export class UpdateIsmsComponent {
     // console.log("vvvvvvvvvvvvvvvvvvvv",this.riskResponseValue)
 
     if (
-
-      Number(this.riskResponseValue) <= 0 ||
+       (this.showCloseDate==false&&this.riskStatusValue==2)||
+      Number(this.riskStatusValue) <= 0 ||
+      Number(this.riskStatusValue) <= 0 ||
       Number(this.overallRiskRating) <= 0 ||
 
       Number(this.confidentialityLikelihoodId) <= 0 ||
@@ -392,13 +392,13 @@ export class UpdateIsmsComponent {
     }
 
     const payload = {
-      closedDate: `${formValue.closeDate}T00:00:00.000Z`,
-      riskResponseId: Number(this.riskResponseValue),
-      riskStatus: 2,
+      closedDate: formValue.closeDate ? `${formValue.closeDate}T00:00:00.000Z`: null,
+     riskStatus: Number(this.riskStatusValue),
+
       overallRiskRatingAfter: Number(this.overallRiskRating),
       percentageRedution: Number(this.percentageRedution),
       residualRisk: Number(this.residualRisk),
-      residualValue: Number(this.residualValue),
+      residualValue: Number(this.overallRiskRating),
       remarks: formValue.remarks || '',
       riskAssessments: [
         {
@@ -504,7 +504,7 @@ export class UpdateIsmsComponent {
       ],
     };
 
-    // console.log(payload);
+    console.log(payload);
     this.submitForm.emit({ payload, riskType: this.riskTypeId });
     this.isLoading=false;
   }
@@ -602,5 +602,29 @@ export class UpdateIsmsComponent {
   }
   hideModalResponse() {
     this.showResponseModel = false;
+  }
+
+  onDropdownRiskStatus(event: any): void {
+    const selectedFactorId = Number(event);
+    // // console.log(selectedFactorId);
+    // this.riskStatusId = selectedFactorId;
+    // console.log('Selected risk staggggggggtus:', this.riskStatusId);
+
+    const selectedFactor = this.RiskStatuses.find(
+      (factor) => Number(factor.id) === selectedFactorId
+    );
+    if (selectedFactor) {
+      this.riskStatusValue = selectedFactor.id;
+      console.log('Selected risk status:', this.riskStatusValue);
+    } else {
+      console.log('Selected factor not found.');
+    }
+    if(this.riskStatusValue==2){
+      this.showCloseDate=true;
+    }
+    else{
+      this.showCloseDate=false;
+    }
+
   }
 }

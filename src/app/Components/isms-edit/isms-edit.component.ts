@@ -357,55 +357,55 @@ export class IsmsEditComponent {
     // Define color for confidentialityRiskFactor
     if (category == 'Confidentiality') {
       if (
-        this.confidentialityRiskFactor > 0 &&
-        this.confidentialityRiskFactor < 9
+        this.confidentialityRiskFactor >= 0 &&
+        this.confidentialityRiskFactor <=4
       ) {
         return '#6DA34D'; // Green for low risk
       }
       if (
-        this.confidentialityRiskFactor > 8 &&
-        this.confidentialityRiskFactor < 17
+        this.confidentialityRiskFactor >= 6 &&
+        this.confidentialityRiskFactor <=16
       ) {
         return '#FFC107'; // Yellow for medium risk
       }
-      if (this.confidentialityRiskFactor > 16) {
+      if (this.confidentialityRiskFactor >=17) {
         return '#D9534F'; // Red for high risk
       }
     }
     if (category == 'Integrity') {
       // Define color for integrityRiskFactor
-      if (this.integrityRiskFactor > 0 && this.integrityRiskFactor < 9) {
+      if (this.integrityRiskFactor >= 0 && this.integrityRiskFactor <= 4) {
         return '#6DA34D'; // Green for low risk
       }
-      if (this.integrityRiskFactor > 8 && this.integrityRiskFactor < 17) {
+      if (this.integrityRiskFactor >= 6 && this.integrityRiskFactor <= 16) {
         return '#FFC107'; // Yellow for medium risk
       }
-      if (this.integrityRiskFactor > 16) {
+      if (this.integrityRiskFactor >= 17) {
         return '#D9534F'; // Red for high risk
       }
     }
     if (category == 'Availability') {
       // Define color for availabilityRiskFactor
-      if (this.availabilityRiskFactor > 0 && this.availabilityRiskFactor < 9) {
+      if (this.availabilityRiskFactor >= 0 && this.availabilityRiskFactor <= 4) {
         return '#6DA34D'; // Green for low risk
       }
-      if (this.availabilityRiskFactor > 8 && this.availabilityRiskFactor < 17) {
+      if (this.availabilityRiskFactor >= 6 && this.availabilityRiskFactor <= 16) {
         return '#FFC107'; // Yellow for medium risk
       }
-      if (this.availabilityRiskFactor > 16) {
+      if (this.availabilityRiskFactor >= 17) {
         return '#D9534F'; // Red for high risk
       }
     }
 
     if (category == 'Privacy') {
       // Define color for privacyRiskFactor
-      if (this.privacyRiskFactor > 0 && this.privacyRiskFactor < 9) {
+      if (this.privacyRiskFactor >= 0 && this.privacyRiskFactor <= 4) {
         return '#6DA34D'; // Green for low risk
       }
-      if (this.privacyRiskFactor > 8 && this.privacyRiskFactor < 17) {
+      if (this.privacyRiskFactor >= 6 && this.privacyRiskFactor <= 16) {
         return '#FFC107'; // Yellow for medium risk
       }
-      if (this.privacyRiskFactor > 16) {
+      if (this.privacyRiskFactor >= 17) {
         return '#D9534F'; // Red for high risk
       }
     }
@@ -413,10 +413,10 @@ export class IsmsEditComponent {
   }
 
   changeColorOverallRiskRating() {
-    if (this.overallRiskRating < 30) {
+    if (this.overallRiskRating <= 45) {
       return '#6DA34D';
     }
-    if (this.overallRiskRating > 31 && this.overallRiskRating < 99) {
+    if (this.overallRiskRating >= 46 && this.overallRiskRating <= 69) {
       return '#FFC107';
     } else {
       return '#D9534F';

@@ -63,12 +63,9 @@ export class UpdateQmsComponent {
     email: string;
     type: string;
   }> = [];
-  @Input() riskResponses: Array<{
+  @Input() RiskStatuses: Array<{
     id: number;
     name: string;
-    description: string;
-    example: string;
-    risks: string;
   }> = [];
 
   @Input() riskTypeId: number = 0;
@@ -100,6 +97,9 @@ export class UpdateQmsComponent {
   newReviewername: string = '';
   isnewReviewernameDisplay: boolean = false;
   isLoading = false; // Initially false
+  riskStatusId: number = 0;
+  riskStatusValue: number = 0;
+  showCloseDate: boolean = false;
 
   constructor(
     private el: ElementRef,
@@ -154,16 +154,16 @@ export class UpdateQmsComponent {
   calculateOverallRiskRating() {
     if (this.likelihoodValue != 0 && this.impactValue != 0) {
       this.overallRiskRating = this.likelihoodValue * this.impactValue;
-      this.residualValue =
-        this.overallRiskRatingBefore - this.overallRiskRating;
+      // this.residualValue =
+      //   this.overallRiskRatingBefore - this.overallRiskRating;
       this.percentageRedution = parseFloat(
-        ((this.residualValue / this.overallRiskRatingBefore) * 100).toFixed(2)
+        (((this.overallRiskRatingBefore - this.overallRiskRating) / this.overallRiskRatingBefore) * 100).toFixed(2)
       );
-      if (this.percentageRedution > 60) {
+      if (this.overallRiskRating <= 4) {
         this.residualRisk = 1;
-      } else if (this.percentageRedution >= 40) {
+      } else if (this.overallRiskRating >= 6 && this.overallRiskRating <= 16) {
         this.residualRisk = 2;
-      } else {
+      } else if(this.overallRiskRating>= 24){
         this.residualRisk = 3;
       }
     }
@@ -171,20 +171,20 @@ export class UpdateQmsComponent {
   }
 
   changeColorOverallRiskRating() {
-    if (this.overallRiskRating < 8) {
+    if (this.overallRiskRating <= 4) {
       return '#6DA34D';
     }
-    if (this.overallRiskRating > 10 && this.overallRiskRating < 32) {
+    if (this.overallRiskRating >= 6 && this.overallRiskRating <= 16) {
       return '#FFC107';
-    } else {
+    } else  {
       return '#D9534F';
     }
   }
 
-  onRadioSelectionChange(value: any) {
-    this.riskResponseValue = value;
-    // console.log('Selected value from child:', value);
-  }
+  // onRadioSelectionChange(value: any) {
+  //   this.riskResponseValue = value;
+  //   // console.log('Selected value from child:', value);
+  // }
 
   onDropdownChangeReviewer(selectedReviewer: any) {
     const selectedreviewer = selectedReviewer;
@@ -219,7 +219,7 @@ export class UpdateQmsComponent {
   }
 
   updateQmsForm = new FormGroup({
-    closeDate: new FormControl('', Validators.required),
+    closeDate: new FormControl(''),
     remarks: new FormControl(''),
   });
 
@@ -228,7 +228,8 @@ export class UpdateQmsComponent {
     const formValue = this.updateQmsForm.value;
     console.log(formValue);
     if (
-      Number(this.riskResponseValue) <= 0 ||
+       (this.showCloseDate==false&&this.riskStatusValue==2)||
+      Number(this.riskStatusValue) <= 0 ||
       Number(this.overallRiskRating) <= 0 ||
       (Number(this.likelihoodId) <= 0 && Number(this.impactId) <= 0) ||
       (this.isInternal &&
@@ -267,13 +268,13 @@ export class UpdateQmsComponent {
     }
 
     const payload = {
-      closedDate: `${formValue.closeDate}T00:00:00.000Z`,
-      riskResponseId: Number(this.riskResponseValue),
-      riskStatus: 2,
+      closedDate: formValue.closeDate ? `${formValue.closeDate}T00:00:00.000Z`: null,
+      riskStatus: Number(this.riskStatusValue),
+      // riskStatus: 2,
       overallRiskRatingAfter: Number(this.overallRiskRating),
       percentageRedution: Number(this.percentageRedution),
       residualRisk: Number(this.residualRisk),
-      residualValue: Number(this.residualValue),
+      residualValue: Number(this.overallRiskRating),
       remarks: formValue.remarks || '',
       riskAssessments: [
         {
@@ -381,7 +382,7 @@ export class UpdateQmsComponent {
 
   showModal = false;
     tableType = '';
-    showResponseModel=false
+    // showResponseModel=false
     handleInfoClickLikelihood(event: boolean) {
       console.log('Info button clicked, boolean value:', event);
       this.showModal = true;
@@ -398,11 +399,37 @@ export class UpdateQmsComponent {
     this.showModal = false;
   }
 
-  handleInfoClickResponse(event: boolean){
-    this.showResponseModel=true
+  // handleInfoClickResponse(event: boolean){
+  //   this.showResponseModel=true
 
-  }
-  hideModalResponse() {
-    this.showResponseModel = false;
+  // }
+  // hideModalResponse() {
+  //   this.showResponseModel = false;
+  // }
+
+
+
+    onDropdownRiskStatus(event: any): void {
+    const selectedFactorId = Number(event);
+    // // console.log(selectedFactorId);
+    // this.riskStatusId = selectedFactorId;
+    // console.log('Selected risk staggggggggtus:', this.riskStatusId);
+
+    const selectedFactor = this.RiskStatuses.find(
+      (factor) => Number(factor.id) === selectedFactorId
+    );
+    if (selectedFactor) {
+      this.riskStatusValue = selectedFactor.id;
+      console.log('Selected risk status:', this.riskStatusValue);
+    } else {
+      console.log('Selected factor not found.');
+    }
+    if(this.riskStatusValue==2){
+      this.showCloseDate=true;
+    }
+    else{
+      this.showCloseDate=false;
+    }
+
   }
 }
