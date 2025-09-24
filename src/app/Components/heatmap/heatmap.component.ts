@@ -61,12 +61,12 @@ Chart.register(...registerables);
 
 
 
-        if (value <= 10) {
+        if (value <= 5) {
           color = '#4CAF50';
       } else if (value <= 20) {
           color = '#FDD835';
       } else {
-          color = '#EF5350';      
+          color = '#EF5350';
       }
 
         return {

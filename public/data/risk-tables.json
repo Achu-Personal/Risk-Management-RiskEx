@@ -1,0 +1,166 @@
+{
+  "QMSTable": {
+    "head": [
+      "Risk Rating / Residual Risk",
+      "Risk / Residual Risk Category",
+      "Action Required"
+    ],
+    "body": [
+      {
+        "Risk Rating / Residual Risk": "Risk Factor <= 4",
+        "Risk / Residual Risk Category": "Low Risk",
+        "Action Required": "Acceptable; no additional action needed"
+      },
+      {
+        "Risk Rating / Residual Risk": "Risk Factor >= 6 and <= 16",
+        "Risk / Residual Risk Category": "Medium Risk",
+        "Action Required": "A Mitigation and contingency plan shall be identified and closely tracked by the risk owner. Risk may be accepted with proper justification."
+      },
+      {
+        "Risk Rating / Residual Risk": "Risk Factor >= 24",
+        "Risk / Residual Risk Category": "Critical Risk",
+        "Action Required": "Not acceptable; Risk must be treated by the risk owner or approved by Management/CISO. Critical risks shall be monitored on a periodic basis and these risks should be highlighted in project review meetings"
+      }
+    ]
+  },
+  "ISMSTable": {
+    "head": [
+      "Overall Risk Rating / Residual Risk",
+      "Overall Risk / Residual Risk Category",
+      "Action Required"
+    ],
+    "body": [
+      {
+        "Overall Risk Rating / Residual Risk": "Risk Value <= 45",
+        "Overall Risk / Residual Risk Category": "Low Risk",
+        "Action Required": "Acceptable; no additional action needed"
+      },
+      {
+        "Overall Risk Rating / Residual Risk": "Risk Value >= 46 and <= 69",
+        "Overall Risk / Residual Risk Category": "Medium Risk",
+        "Action Required": "A Mitigation and contingency plan shall be identified and closely tracked by the risk owner. Risk may be accepted with proper justification."
+      },
+      {
+        "Overall Risk Rating / Residual Risk": "Risk Value >= 70",
+        "Overall Risk / Residual Risk Category": "Critical Risk",
+        "Action Required": "Not acceptable; Risk must be treated by the risk owner or approved by Management/CISO. Critical risks shall be monitored on a periodic basis and these risks should be highlighted in project review meetings."
+      }
+    ]
+  },
+  "RiskStatusTable": {
+    "head": [
+      "Risk Status",
+      "Description"
+    ],
+    "body": [
+      {
+        "Risk Status": "Monitoring",
+        "Description": "Risk is under observation post-treatment or awaiting changes."
+      },
+      {
+        "Risk Status": "Open",
+        "Description": "Risk has been identified and assessed, but not yet treated or accepted."
+      },
+      {
+        "Risk Status": "Under Treatment",
+        "Description": "Controls are being implemented or risk mitigation is in progress."
+      },
+      {
+        "Risk Status": "Accepted",
+        "Description": "Residual risk is within acceptable limits and formally accepted."
+      },
+      {
+        "Risk Status": "Closed",
+        "Description": "Risk has been treated and no longer poses a threat (or is no longer relevant)."
+      },
+      {
+        "Risk Status": "Deferred",
+        "Description": "Risk is known but treatment is postponed (e.g., due to budget or priorities)."
+      }
+    ]
+  },
+  "QMSImpactDefinitions": {
+    "head": [
+      "Category",
+      "Types of Impact"
+    ],
+    "body": [
+      {
+        "Category": "Product/Service Quality",
+        "Types of Impact": "Software bugs, hardware defects, poor performance, failure to meet specifications."
+      },
+      {
+        "Category": "Customer Impact",
+        "Types of Impact": "Delayed deliveries, unmet expectations, high complaint volumes, loss of clients."
+      },
+      {
+        "Category": "Operational Impact",
+        "Types of Impact": "Missed deadlines, inefficient development or QA processes, unstable DevOps."
+      },
+      {
+        "Category": "Financial Impact",
+        "Types of Impact": "Rework costs, SLA penalties, increased support costs, revenue loss."
+      },
+      {
+        "Category": "Compliance Impact",
+        "Types of Impact": "Non-conformities, certification risk, unmet quality clauses in contracts."
+      },
+      {
+        "Category": "Reputation Impact",
+        "Types of Impact": "Negative brand perception, poor reviews, reduced customer trust and retention."
+      }
+    ]
+  },
+  "ISMSImpactDefinitions": {
+    "head": [
+      "Category",
+      "Types of Impact"
+    ],
+    "body": [
+      {
+        "Category": "Confidentiality",
+        "Types of Impact": "Exposure of source code, client data leaks (e.g., PII, PHI), unauthorized access to repositories or cloud environments, vendor/supplier data leakage."
+      },
+      {
+        "Category": "Integrity",
+        "Types of Impact": "Tampering of source code or build pipelines, corrupted data during transmission or storage, compromised audit logs, altered client deliverables."
+      },
+      {
+        "Category": "Availability",
+        "Types of Impact": "Downtime of applications/services (due to attacks or failures), unavailability of CI/CD tools, disrupted deployments or client access to products."
+      },
+      {
+        "Category": "Legal/Regulatory",
+        "Types of Impact": "Violations of HIPAA, GDPR, ISO 27001, SOC 2 requirements; breach notification obligations; fines or contract terminations."
+      },
+      {
+        "Category": "Reputation",
+        "Types of Impact": "Loss of client trust (especially regulated industries), bad press, loss of certifications, damaged standing in vendor listings or RFP processes."
+      },
+      {
+        "Category": "Financial",
+        "Types of Impact": "Penalties, legal fees, client compensation, breach response and recovery costs, SLA violation penalties, revenue loss from terminated contracts."
+      },
+      {
+        "Category": "Operational",
+        "Types of Impact": "Delay in SDLC activities, backlog in sprints or releases, additional work to recover or secure systems, disruption in DevOps/Agile workflows."
+      },
+      {
+        "Category": "IT Operations",
+        "Types of Impact": "Disruption to network or infrastructure availability, increased response time to incidents or tickets, delayed patching or vulnerability remediation, loss of access, unauthorized changes to system configurations."
+      },
+      {
+        "Category": "HR",
+        "Types of Impact": "Breach of employee personal data (PII), loss of access to HRMS or payroll systems, delay in onboarding/offboarding processes, increased workload due to manual fallback methods, employee dissatisfaction due to transparency or communication gaps."
+      },
+      {
+        "Category": "DevOps",
+        "Types of Impact": "Disruption to CI/CD pipelines, delay in code commits, builds, or releases, integrity loss in version control systems, unauthorized access to repositories (GitHub, Bitbucket), delay in hotfixes or feature delivery, compromised test environments impacting QA."
+      },
+      {
+        "Category": "Marketing",
+        "Types of Impact": "Loss of access to campaign tools (e.g., CRM, email automation), leak of customer contact lists or campaign strategies, inability to track or report campaign KPIs, delay in launching product announcements, brand damage, reputation damage."
+      }
+    ]
+  }
+}

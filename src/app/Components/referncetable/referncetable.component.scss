@@ -1,5 +1,5 @@
 .table-container .tableBody{
-  margin-top: 20px;
+  // margin-top: 20px;
   padding: 0;
   border-radius: 12px;
   background: #ffffff;
@@ -7,7 +7,31 @@
   border: 1px solid #d0c6b6;
   width: 100%;
   height: auto;
+
 }
+.table-container {
+  max-height: 350px;
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.table-container::-webkit-scrollbar {
+  display: none;
+}
+
+.tableBody {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.tableBody thead th {
+  position: sticky;
+  top: 0;
+  background: #d0c6b6;
+  z-index: 2;
+}
+
 
 thead {
   tr {
@@ -45,5 +69,20 @@ thead {
   color: #555;
   vertical-align: middle;
   // padding: 8px;
-  text-align: center;
+  // text-align: left;
+}
+.text-align-left {
+  text-align: left !important;
+}
+
+.text-align-center {
+  text-align: center !important;
+}
+
+.text-align-right {
+  text-align: right !important;
+}
+
+.text-align-justify {
+  text-align: justify !important;
 }
