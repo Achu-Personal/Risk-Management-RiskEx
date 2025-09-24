@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { BodyContainerComponent } from '../../Components/body-container/body-container.component';
 import { QmsEditComponent } from '../../Components/qms-edit/qms-edit.component';
 import { ApiService } from '../../Services/api.service';
@@ -9,6 +9,7 @@ import { FormSuccessfullComponent } from '../../Components/form-successfull/form
 import { Router } from '@angular/router';
 import { EmailService } from '../../Services/email.service';
 import { FormLoaderComponent } from '../../Components/form-loader/form-loader.component';
+import { catchError, of } from 'rxjs';
 
 @Component({
   selector: 'app-edit-risk',
@@ -50,9 +51,18 @@ export class EditRiskComponent {
   error: string = '';
   isLoading = false; // Initially false
 
+      riskResponses: Array<{
+    id: number;
+    name: string;
+    description: string;
+    example: string;
+    risks: string;
+  }> = [];
+
   constructor(
     private api: ApiService,
     public authService: AuthService,
+     private cdRef: ChangeDetectorRef,
     private router: Router,
     private email: EmailService
   ) {}
@@ -80,6 +90,19 @@ export class EditRiskComponent {
 
     this.isAdmin = this.authService.getUserRole()!;
     console.log(this.isAdmin);
+
+     this.api
+          .getRiskResponses()
+          .pipe(
+            catchError((error) => {
+              console.error('Error fetching Reviewer responses:', error);
+              return of([]); // Return an empty array to prevent app crash
+            })
+          )
+          .subscribe((res: any) => {
+            this.riskResponses = res;
+            this.cdRef.detectChanges();
+          });
 
     this.api.getLikelyHoodDefinition().subscribe((res: any) => {
       this.dropdownDataLikelihood = res;

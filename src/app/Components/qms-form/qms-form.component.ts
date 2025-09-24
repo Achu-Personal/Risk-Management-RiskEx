@@ -35,6 +35,8 @@ import { FormLikelihoodImpactTooltipComponent } from '../form-likelihood-impact-
 import { HttpErrorResponse } from '@angular/common/http';
 import { catchError, of } from 'rxjs';
 import { AuthService } from '../../Services/auth/auth.service';
+import { FormRiskResponseComponent } from '../form-risk-response/form-risk-response.component';
+import { FormResponseTableComponent } from "../form-response-table/form-response-table.component";
 @Component({
   selector: 'app-qms-form',
   standalone: true,
@@ -54,7 +56,9 @@ import { AuthService } from '../../Services/auth/auth.service';
     FormLoaderComponent,
     FormCategoryTableComponent,
     FormLikelihoodImpactTooltipComponent,
-  ],
+    FormRiskResponseComponent,
+    FormResponseTableComponent
+],
   templateUrl: './qms-form.component.html',
   styleUrl: './qms-form.component.scss',
 })
@@ -81,6 +85,13 @@ export class QMSFormComponent {
   }> = [];
   @Input() dropdownDataProjectForAdmin: any[] = [];
   @Input() dropdownAssigneeForAdmin: any[] = [];
+    @Input() riskResponses: Array<{
+    id: number;
+    name: string;
+    description: string;
+    example: string;
+    risks: string;
+  }> = [];
   overallRiskRating: number = 0;
   reviewerNotInList: boolean = false;
   assigneeNotInList: boolean = false;
@@ -132,6 +143,11 @@ export class QMSFormComponent {
   isdraftErrorDisplay: boolean = false;
   isDraftidPresent: boolean = true;
   dropdownDataProject: any;
+  riskResponseValue: number = 0;
+  showResponseModel=false
+    preselectedResponseName:string='';
+
+
 
   constructor(
     private el: ElementRef,
@@ -158,6 +174,18 @@ export class QMSFormComponent {
     }
   }
 
+    handleInfoClickResponse(event: boolean){
+    this.showResponseModel=true
+
+  }
+    hideModalResponse() {
+    this.showResponseModel = false;
+  }
+
+   onRadioSelectionChange(value: any) {
+    this.riskResponseValue = value;
+    // console.log('Selected value from child:', value);
+  }
   generateRiskDisplayId() {
     this.riskDisplayId = 'RSK-' + this.departmentCode + '-***';
     // console.log('id id id id id id ', this.riskDisplayId);
@@ -225,6 +253,14 @@ export class QMSFormComponent {
                 this.dropdownAssigneeForAdmin = res;
               });
           }
+
+       if (this.qmsDraft?.responseId && Array.isArray(this.riskResponses) && this.riskResponses.length > 0) {
+    const match = this.riskResponses.find(r =>
+      Number(r.id) === Number(this.qmsDraft.riskResponseId)   // 👈 force number
+    );
+    this.preselectedResponseName = match ? match.name : '';
+    console.log('match match match', match);
+  }
 
           if (changes['dropdownLikelihood']) {
             if (this.qmsDraft?.riskAssessments?.length > 0) {
@@ -350,6 +386,7 @@ export class QMSFormComponent {
     ]),
     contingency: new FormControl(''),
     plannedActionDate: new FormControl('', Validators.required),
+    ISOClause:new FormControl('')
   });
 
   isDisabled(): boolean {
@@ -559,13 +596,13 @@ export class QMSFormComponent {
   }
 
   changeColorOverallRiskRating() {
-    if (this.overallRiskRating < 8) {
-      return '#6DA34D';
+    if (this.overallRiskRating <= 4) {
+      return '#548135';
     }
-    if (this.overallRiskRating > 10 && this.overallRiskRating < 32) {
-      return '#FFC107';
+    if (this.overallRiskRating >= 6 && this.overallRiskRating <= 16) {
+      return '#ffcc00';
     } else {
-      return '#D9534F';
+      return '#ff0000';
     }
   }
 
@@ -611,7 +648,7 @@ export class QMSFormComponent {
     }
 
     if (
-      Number(this.riskTypeValue) <= 0 ||
+      Number(this.riskTypeValue) <= 0 ||Number(this.riskResponseValue) <= 0||
       Number(this.overallRiskRating) <= 0 ||
       (Number(this.responsiblePersonId) <= 0 &&
         Number(this.preSelectedResponsiblePerson) <= 0 &&
@@ -640,8 +677,10 @@ export class QMSFormComponent {
       riskType: Number(this.riskTypeValue),
       impact: formValue.impact,
       mitigation: formValue.mitigation,
-      contingency: formValue.contingency || ' ',
+      contingency: formValue.contingency || null,
       OverallRiskRatingBefore: Number(this.overallRiskRating),
+      riskResponseId:this.riskResponseValue,
+      ISOClauseNumber:formValue.ISOClause || null,
       responsibleUserId:
         Number(this.newAssigneeId) !== 0 && !isNaN(Number(this.newAssigneeId))
           ? Number(this.newAssigneeId)
@@ -708,6 +747,8 @@ export class QMSFormComponent {
         },
       ],
     };
+
+    console.log("payload from qms ",payload);
 
     this.submitForm.emit(payload);
     if (this.qmsDraftId) {
@@ -869,6 +910,8 @@ export class QMSFormComponent {
         impact: formValue.impact || null,
         mitigation: formValue.mitigation || null,
         contingency: formValue.contingency || null,
+        ISOClauseNumber:formValue.ISOClause || null,
+        riskResponseId:this.riskResponseValue,
         OverallRiskRatingBefore: Number(this.overallRiskRating) || null,
         responsibleUserId:
           Number(this.newAssigneeId) !== 0 && !isNaN(Number(this.newAssigneeId))
@@ -998,7 +1041,15 @@ export class QMSFormComponent {
           ? this.qmsDraft.plannedActionDate.split('T')[0]
           : null,
         impact: this.qmsDraft.impact ?? null,
+        ISOClause: this.qmsDraft.isoClauseNumber ?? null,
       });
+
+
+      const match = this.riskResponses.find(r =>
+      Number(r.id) === Number(this.qmsDraft.riskResponseId)   // 👈 force number
+    );
+    this.preselectedResponseName = match ? match.name : '';
+    console.log('match match match', match);
 
       this.departmentIdForAdminToAdd = this.qmsDraft.departmentId;
       this.overallRiskRating = this.qmsDraft.overallRiskRatingBefore;

@@ -32,6 +32,8 @@ import { FormCategoryTableComponent } from '../form-category-table/form-category
 import { FormLikelihoodImpactTooltipComponent } from '../form-likelihood-impact-tooltip/form-likelihood-impact-tooltip.component';
 import { catchError, of } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
+import { FormRiskResponseComponent } from "../form-risk-response/form-risk-response.component";
+import { FormResponseTableComponent } from "../form-response-table/form-response-table.component";
 
 @Component({
   selector: 'app-isms-form',
@@ -52,7 +54,9 @@ import { HttpErrorResponse } from '@angular/common/http';
     FormLoaderComponent,
     FormCategoryTableComponent,
     FormLikelihoodImpactTooltipComponent,
-  ],
+    FormRiskResponseComponent,
+    FormResponseTableComponent
+],
   templateUrl: './isms-form.component.html',
   styleUrl: './isms-form.component.scss',
 })
@@ -80,6 +84,13 @@ export class ISMSFormComponent {
   }> = [];
   @Input() dropdownDataProjectForAdmin: any[] = [];
   @Input() dropdownAssigneeForAdmin: any[] = [];
+  @Input() riskResponses: Array<{
+    id: number;
+    name: string;
+    description: string;
+    example: string;
+    risks: string;
+  }> = [];
   overallRiskRating: number = 0;
   reviewerNotInList: boolean = false;
   assigneeNotInList: boolean = false;
@@ -157,6 +168,9 @@ export class ISMSFormComponent {
   isDraftidPresent: boolean = true;
   draftErrorDisplay: string = '';
   isdraftErrorDisplay: boolean = false;
+  showResponseModel=false
+  riskResponseValue: number = 0;
+  preselectedResponseName:string='';
 
   constructor(
     private api: ApiService,
@@ -621,6 +635,7 @@ export class ISMSFormComponent {
     ]),
     contingency: new FormControl(''),
     plannedActionDate: new FormControl('', Validators.required),
+    ISOClause:new FormControl('')
   });
 
   isDisabled(): boolean {
@@ -670,7 +685,7 @@ export class ISMSFormComponent {
     }
 
     if (
-      Number(this.riskTypeValue) <= 0 ||
+      Number(this.riskTypeValue) <= 0 ||Number(this.riskResponseValue) <= 0||
       Number(this.overallRiskRating) <= 0 ||
       (Number(this.responsiblePersonId) <= 0 &&
         Number(this.preSelectedResponsiblePerson) <= 0 &&
@@ -713,8 +728,10 @@ export class ISMSFormComponent {
       riskType: Number(this.riskTypeValue),
       impact: formValue.impact,
       mitigation: formValue.mitigation,
-      contingency: formValue.contingency || ' ',
+      contingency: formValue.contingency || null,
       OverallRiskRatingBefore: Number(this.overallRiskRating),
+      riskResponseId:this.riskResponseValue,
+      ISOClauseNumber:formValue.ISOClause || null,
       responsibleUserId:
         Number(this.newAssigneeId) !== 0 && !isNaN(Number(this.newAssigneeId))
           ? Number(this.newAssigneeId)
@@ -918,6 +935,7 @@ export class ISMSFormComponent {
       ],
     };
 
+    console.log("payload from isms ",payload);
     this.submitForm.emit(payload);
 
     if (this.qmsDraftId) {
@@ -1064,6 +1082,8 @@ export class ISMSFormComponent {
         impact: this.ismsForm.value.impact || null,
         mitigation: this.ismsForm.value.mitigation || null,
         contingency: this.ismsForm.value.contingency || null,
+        ISOClauseNumber:this.ismsForm.value.ISOClause || null,
+        riskResponseId:this.riskResponseValue,
         OverallRiskRatingBefore: Number(this.overallRiskRating) || null,
         responsibleUserId:
           Number(this.newAssigneeId) !== 0 && !isNaN(Number(this.newAssigneeId))
@@ -1568,7 +1588,13 @@ export class ISMSFormComponent {
             ? this.qmsDraft.plannedActionDate.split('T')[0]
             : null,
           impact: this.qmsDraft.impact ?? null,
+          ISOClause: this.qmsDraft.isoClauseNumber ?? null,
         });
+                const match = this.riskResponses.find(r =>
+      Number(r.id) === Number(this.qmsDraft.riskResponseId)   // 👈 force number
+    );
+    this.preselectedResponseName = match ? match.name : '';
+    console.log('match match match', match);
         this.departmentIdForAdminToAdd = this.qmsDraft.departmentId;
         this.overallRiskRating = this.qmsDraft.overallRiskRatingBefore;
 
@@ -1642,7 +1668,13 @@ export class ISMSFormComponent {
             ? this.qmsDraft.plannedActionDate.split('T')[0]
             : null,
           impact: this.qmsDraft.impact ?? null,
+          ISOClause: this.qmsDraft.isoClauseNumber ?? null,
         });
+        const match = this.riskResponses.find(r =>
+      Number(r.id) === Number(this.qmsDraft.riskResponseId)   // 👈 force number
+    );
+    this.preselectedResponseName = match ? match.name : '';
+    console.log('match match match', match);
         this.departmentIdForAdminToAdd = this.qmsDraft.departmentId;
         this.overallRiskRating = this.qmsDraft.overallRiskRatingBefore;
 
@@ -1766,6 +1798,14 @@ export class ISMSFormComponent {
                 this.dropdownAssigneeForAdmin = res;
               });
           }
+
+                 if (this.qmsDraft?.responseId && Array.isArray(this.riskResponses) && this.riskResponses.length > 0) {
+    const match = this.riskResponses.find(r =>
+      Number(r.id) === Number(this.qmsDraft.riskResponseId)   // 👈 force number
+    );
+    this.preselectedResponseName = match ? match.name : '';
+    console.log('match match match', match);
+  }
 
           if (changes['dropdownLikelihood']) {
             const riskFactors = [
@@ -2334,5 +2374,20 @@ export class ISMSFormComponent {
 
   closeDraftWhenErrorOccur() {
     this.isdraftErrorDisplay = !this.isdraftErrorDisplay;
+  }
+
+
+   handleInfoClickResponse(event: boolean){
+    this.showResponseModel=true
+
+  }
+
+      hideModalResponse() {
+    this.showResponseModel = false;
+  }
+
+   onRadioSelectionChange(value: any) {
+    this.riskResponseValue = value;
+    // console.log('Selected value from child:', value);
   }
 }

@@ -57,6 +57,14 @@ export class RegisterRiskComponent {
     email: string;
     type: string;
   }> = [];
+
+    riskResponses: Array<{
+    id: number;
+    name: string;
+    description: string;
+    example: string;
+    risks: string;
+  }> = [];
   dropdownDataProjectForAdmin: any[] = [];
   dropdownAssigneeForAdmin: any[] = [];
   isSuccess: boolean = false;
@@ -95,6 +103,19 @@ export class RegisterRiskComponent {
 
     this.isAdmin = this.authService.getUserRole()!;
     // console.log('roleeeeeeeee', this.isAdmin);
+
+        this.api
+      .getRiskResponses()
+      .pipe(
+        catchError((error) => {
+          console.error('Error fetching Reviewer responses:', error);
+          return of([]); // Return an empty array to prevent app crash
+        })
+      )
+      .subscribe((res: any) => {
+        this.riskResponses = res;
+        this.cdRef.detectChanges();
+      });
 
     this.api
       .getLikelyHoodDefinition()

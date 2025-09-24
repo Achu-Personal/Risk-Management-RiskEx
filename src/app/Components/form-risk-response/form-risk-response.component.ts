@@ -14,11 +14,27 @@ export class FormRiskResponseComponent {
 @Input() label:string=''
 @Input() required:string=''
 @Output() infoClicked = new EventEmitter<boolean>();
+@Input() preselectedName: string | null = null;
+// @Input() selectedResponse!: number | null;
 
 
 selectedResponse: any = null
 
 constructor(private el: ElementRef){}
+
+ngOnChanges() {
+  if (this.preselectedName && Array.isArray(this.riskResponses) && this.riskResponses.length > 0) {
+    const match = this.riskResponses.find(r =>
+      r?.name?.toLowerCase() === this.preselectedName?.toLowerCase()
+    );
+
+    if (match) {
+      this.selectedResponse = match.id; // ✅ safe now
+      this.selectedValueChange.emit(this.selectedResponse);
+    }
+  }
+}
+
 
 onRadioChange(event: any) {
   this.selectedValueChange.emit(this.selectedResponse);

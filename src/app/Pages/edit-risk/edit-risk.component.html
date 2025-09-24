@@ -15,6 +15,7 @@
         [isAdmin]="isAdmin"
         (submitForm)="onFormSubmit($event)"
         [riskData]="riskData"
+        [riskResponses]="riskResponses"
       ></app-qms-edit>
 
       } @if (riskType==="Security"){
@@ -31,6 +32,7 @@
         [isAdmin]="isAdmin"
         (submitForm)="onFormSubmit($event)"
         [riskData]="riskData"
+        [riskResponses]="riskResponses"
       ></app-isms-edit>
       } @if (riskType==="Privacy"){
       <app-isms-edit
@@ -46,6 +48,7 @@
         [isAdmin]="isAdmin"
         (submitForm)="onFormSubmit($event)"
         [riskData]="riskData"
+        [riskResponses]="riskResponses"
       ></app-isms-edit>
       }
     </div>
