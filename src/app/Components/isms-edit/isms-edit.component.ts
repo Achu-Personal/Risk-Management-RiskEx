@@ -30,6 +30,8 @@ import { StyleButtonComponent } from '../../UI/style-button/style-button.compone
 import { FormLoaderComponent } from '../form-loader/form-loader.component';
 import { FormCategoryTableComponent } from '../form-category-table/form-category-table.component';
 import { FormLikelihoodImpactTooltipComponent } from '../form-likelihood-impact-tooltip/form-likelihood-impact-tooltip.component';
+import { FormRiskResponseComponent } from "../form-risk-response/form-risk-response.component";
+import { FormResponseTableComponent } from "../form-response-table/form-response-table.component";
 
 @Component({
   selector: 'app-isms-edit',
@@ -49,8 +51,10 @@ import { FormLikelihoodImpactTooltipComponent } from '../form-likelihood-impact-
     StyleButtonComponent,
     FormLoaderComponent,
     FormCategoryTableComponent,
-    FormLikelihoodImpactTooltipComponent
-  ],
+    FormLikelihoodImpactTooltipComponent,
+    FormRiskResponseComponent,
+    FormResponseTableComponent
+],
   templateUrl: './isms-edit.component.html',
   styleUrl: './isms-edit.component.scss',
 })
@@ -71,6 +75,14 @@ export class IsmsEditComponent {
     fullName: string;
     email: string;
     type: string;
+  }> = [];
+
+     @Input() riskResponses: Array<{
+    id: number;
+    name: string;
+    description: string;
+    example: string;
+    risks: string;
   }> = [];
   overallRiskRating: number = 0;
   reviewerNotInList: boolean = false;
@@ -141,7 +153,9 @@ export class IsmsEditComponent {
   departmentIdForAdminToAddToString:string=''
   showModalCategory = false;
   departmentidForAssignee:string='';
-
+  preselectedResponseName:string='';
+  showResponseModel=false;
+  riskResponseValue: number = 0;
 
 
 
@@ -162,12 +176,11 @@ export class IsmsEditComponent {
       mitigation: this.riskData.mitigation,
       contingency: this.riskData.contingency,
       plannedActionDate: dateObj.toISOString().split('T')[0],
+      ISOClause:this.riskData.isoClauseNumber
     });
     this.riskId = this.riskData.riskId;
     this.overallRiskRating = this.riskData.overalRiskRatingBefore;
-
-
-
+    this.preselectedResponseName=this.riskData.riskResponse;
     this.confidentialityRiskFactor = this.riskData.riskAssessments[0].riskFactor;
     this.integrityRiskFactor = this.riskData.riskAssessments[1].riskFactor;
     this.availabilityRiskFactor = this.riskData.riskAssessments[2].riskFactor;
@@ -536,6 +549,7 @@ export class IsmsEditComponent {
     ]),
     contingency: new FormControl(''),
     plannedActionDate: new FormControl('', Validators.required),
+    ISOClause:new FormControl('')
   });
 
   onSubmit() {
@@ -552,6 +566,7 @@ export class IsmsEditComponent {
     }
 
     if (
+      Number(this.riskTypeValue) <= 0 ||Number(this.riskResponseValue) <= 0||
       Number(this.riskTypeValue) <= 0 ||
       Number(this.overallRiskRating) <= 0 ||
       (Number(this.responsiblePersonId) <= 0 &&
@@ -596,6 +611,8 @@ export class IsmsEditComponent {
       impact: formValue.impact,
       mitigation: formValue.mitigation,
       contingency: formValue.contingency || ' ',
+      riskResponseId:this.riskResponseValue,
+      ISOClauseNumber:formValue.ISOClause || null,
       OverallRiskRatingBefore: Number(this.overallRiskRating),
       responsibleUserId: Number(this.newAssigneeId)!== 0 && !isNaN(Number(this.newAssigneeId)) ? Number(this.newAssigneeId) :
                              Number(this.responsiblePersonId) !== 0 && !isNaN(Number(this.responsiblePersonId)) ? Number(this.responsiblePersonId):
@@ -924,5 +941,20 @@ export class IsmsEditComponent {
 
   hideModal() {
     this.showModal = false;
+  }
+
+
+
+    handleInfoClickResponse(event: boolean){
+    this.showResponseModel=true
+
+  }
+        hideModalResponse() {
+    this.showResponseModel = false;
+  }
+
+       onRadioSelectionChange(value: any) {
+    this.riskResponseValue = value;
+    // console.log('Selected value from child:', value);
   }
 }

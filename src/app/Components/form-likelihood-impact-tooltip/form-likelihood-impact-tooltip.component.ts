@@ -15,18 +15,18 @@ export class FormLikelihoodImpactTooltipComponent {
 
   likelihoodHeader = ['Likelihood', 'Definitions', 'Chance of Occurrence'];
   likelihoodRows = [
-    ['Low', 'Minimal probability of occurrence.', '≤10%'],
-    ['Medium', 'Moderate probability with some historical evidence.', '10-50%'],
-    ['High', 'Significant probability based on trends.', '50-90%'],
-    ['Critical', 'Almost certain to occur.', '≥90%']
+    ['Low', 'The probability of the risk occurring is minimal, with little to no historical evidence or indication of occurrence.(Once in 3 Years)', '<=10%'],
+    ['Medium', 'There is a moderate probability of the risk occurring. It may have occurred in the past under similar circumstances(Once a year)', '10-50%'],
+    ['High', 'The probability of the risk occurring is significant, and it is likely to happen based on historical trends or current conditions.(Once a quarter)', '50-90%'],
+    ['Critical', 'The risk is almost certain to occur, with a very high probability of materializing(Once a month)', '≥90%']
   ];
 
   impactHeader = ['Impact', 'Definitions'];
   impactRows = [
-    ['Low', 'Minimal effects on operations or finances.'],
-    ['Medium', 'Moderate disruption or manageable losses.'],
-    ['High', 'Major disruptions or substantial financial losses.'],
-    ['Critical', 'Severe consequences, threatening operations.']
+    ['Low', 'The consequences of the risk are minimal, with negligible effects on the organization’s operations, finances, or reputation.'],
+    ['Medium', 'The consequences of the risk are moderate, causing some disruption or financial loss, but manageable without significant impact on key objectives.'],
+    ['High', 'The consequences of the risk are significant, causing major disruptions, substantial financial losses, or harm to the organization’s reputation.'],
+    ['Critical', 'The consequences of the risk are severe, potentially threatening the organization’s ability to operate or causing irreparable harm.']
   ];
 
   close() {

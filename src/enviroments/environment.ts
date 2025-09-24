@@ -1,7 +1,7 @@
 export const environment = {
   production: false,
   // apiUrl: 'https://riskex.experionglobal.com/api',
-  apiUrl: 'https://risk-management-riskex-backend-2.onrender.com/api',
+  apiUrl: 'http://localhost:5039/api',
   // apiUrl: 'https://localhost:7216/api',
   frontendUrl: 'http://localhost:4200',
   ssoConfig: {

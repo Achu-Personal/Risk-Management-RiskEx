@@ -428,4 +428,49 @@ button:hover {
 }
 
 
+.tooltip-text-table {
+  visibility: hidden;
+  background-color: white;
+  border: 2px solid var(--secondary-color);
 
+  color: black;
+  padding: 20px;
+  border-radius: 5px;
+  position: absolute;
+  z-index: 1;
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  white-space: normal;
+  max-width: 1000px;
+  width: max-content;
+}
+
+.tooltip-table {
+
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 12px;
+  font-weight: normal;
+}
+
+.tooltip-table th,
+.tooltip-table td {
+  border: 1px solid black;
+  padding: 4px 6px;
+  background-color: #f2f2f2;
+  text-align: left;
+
+}
+
+.tooltip-table th {
+  background-color: var(--foreground-color);
+  font-weight: bold;
+  color:white;
+
+
+}
+
+.info-icon:hover .tooltip-text-table {
+  visibility: visible;
+}
