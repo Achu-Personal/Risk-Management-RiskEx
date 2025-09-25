@@ -547,6 +547,11 @@ export class ApiService {
     return this.http.get('/data/risk-tables.json')
   }
 
+  getRiskStatus(){
+     return this.http.get(`${this.baseUrl}/Risk/statuses`,)
+
+  }
+
 }
 
 

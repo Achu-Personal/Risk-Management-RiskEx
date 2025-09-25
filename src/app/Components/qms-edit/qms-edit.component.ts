@@ -348,12 +348,12 @@ export class QmsEditComponent {
   }
 
   changeColorOverallRiskRating() {
-    if (this.overallRiskRating < 8) {
+  if (this.overallRiskRating <= 4) {
       return '#6DA34D';
     }
-    if (this.overallRiskRating > 10 && this.overallRiskRating < 32) {
+    if (this.overallRiskRating >= 6 && this.overallRiskRating <= 16) {
       return '#FFC107';
-    } else {
+    } else  {
       return '#D9534F';
     }
   }

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Input, input } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, input, Output } from '@angular/core';
 import { OverallRatingCardComponent } from "../../UI/overall-rating-card/overall-rating-card.component";
 import { RiskStatusCardComponent } from "../../UI/risk-status-card/risk-status-card.component";
 import { EditButtonComponent } from "../../UI/edit-button/edit-button.component";
@@ -6,11 +6,12 @@ import {  Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../Services/auth/auth.service';
 import { ApiService } from '../../Services/api.service';
+import { ChangeRiskStatusComponent } from "../change-risk-status/change-risk-status.component";
 
 @Component({
   selector: 'app-risk-basic-details-card',
   standalone: true,
-  imports: [OverallRatingCardComponent, RiskStatusCardComponent, EditButtonComponent, CommonModule],
+  imports: [OverallRatingCardComponent, RiskStatusCardComponent, EditButtonComponent, CommonModule, ChangeRiskStatusComponent],
   templateUrl: './risk-basic-details-card.component.html',
   styleUrl: './risk-basic-details-card.component.scss'
 })
@@ -20,8 +21,11 @@ export class RiskBasicDetailsCardComponent {
   {
 
   }
+  @Output() editClicked = new EventEmitter<boolean>();
 
   color='red';
+
+  showPopupForUpdateStatus=false;
 
   ngOnInit()
   {
@@ -105,5 +109,13 @@ export class RiskBasicDetailsCardComponent {
 
     this.router.navigate(['update'], { queryParams: {riskId:this.allData.id ,riskType:this.allData.riskType,overallRiskRatingBefore:this.allData.overalRiskRatingBefore} }); //         /ViewRisk/${this.allData.id}
   }
+
+
+onEditIconClicked(){
+  this.showPopupForUpdateStatus=true;
+
+  console.log("showPopupForUpdateStatus",this.showPopupForUpdateStatus);
+  this.editClicked.emit(this.showPopupForUpdateStatus);
+}
 
 }

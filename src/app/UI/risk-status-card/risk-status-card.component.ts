@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-risk-status-card',
@@ -10,5 +10,17 @@ import { Component, Input } from '@angular/core';
 })
 export class RiskStatusCardComponent {
   @Input() isOpen = false;
+  @Output() editClicked = new EventEmitter<boolean>();
+
+
+ onEditClick(event?: MouseEvent) {
+    // optional: prevent parent handlers
+    if (event) {
+      event.stopPropagation();
+      event.preventDefault();
+    }
+    this.editClicked.emit(true);
+  }
+
 
 }

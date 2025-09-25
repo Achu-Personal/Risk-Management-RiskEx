@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { RiskBasicDetailsCardComponent } from '../../Components/risk-basic-details-card/risk-basic-details-card.component';
 import { BodyContainerComponent } from '../../Components/body-container/body-container.component';
 import { RiskDetailsSection2Component } from '../../Components/risk-details-section2/risk-details-section2.component';
@@ -6,6 +6,9 @@ import { RiskDetailsSection3MitigationComponent } from '../../Components/risk-de
 import { ApiService } from '../../Services/api.service';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { ChangeRiskStatusComponent } from "../../Components/change-risk-status/change-risk-status.component";
+import { catchError, of } from 'rxjs';
+import { FormLoaderComponent } from "../../Components/form-loader/form-loader.component";
 
 @Component({
   selector: 'app-view-risk',
@@ -15,7 +18,9 @@ import { CommonModule } from '@angular/common';
     BodyContainerComponent,
     RiskDetailsSection2Component,
     RiskDetailsSection3MitigationComponent,
-    CommonModule
+    CommonModule,
+    ChangeRiskStatusComponent,
+    FormLoaderComponent
 ],
   templateUrl: './view-risk.component.html',
   styleUrl: './view-risk.component.scss',
@@ -26,11 +31,32 @@ export class ViewRiskComponent {
   riskDetailsSection2Data:any={}
   riskDetailsSection3MitigationData:any={}
 
-  constructor(public api: ApiService, public route: ActivatedRoute) { }
+    RiskStatuses: Array<{
+    id: number;
+    name: string;
+  }> = [];
+
+  constructor(public api: ApiService, public route: ActivatedRoute,  private cdRef: ChangeDetectorRef) { }
   isLoading=true
+  isShowPopupForUpdateStatus=false;
+  isLoader=false;
+  RiskId:number=0;
 
   ngOnInit() {
+
+      this.api.getRiskStatus().pipe(
+            catchError((error) => {
+              console.error('Error fetching Reviewer responses:', error);
+              return of([]); // Return an empty array to prevent app crash
+            })
+          )
+          .subscribe((res: any) => {
+            this.RiskStatuses = res;
+            this.cdRef.detectChanges();
+          });
+
     let id = parseInt(this.route.snapshot.paramMap.get('id')!);
+    this.RiskId=id;
     this.api.getRiskById(id).subscribe((e) => {
       // console.log('Data=', e);
       this.data = e;
@@ -83,4 +109,34 @@ export class ViewRiskComponent {
       this.isLoading=false
     });
   }
+
+
+
+
+
+  handleEditClicked(isOpen: boolean) {
+  console.log("Child notified parent →", isOpen);
+  if (isOpen) {
+
+    this.isShowPopupForUpdateStatus = true;
+    console.log("isShowPopupForUpdateStatus",this.isShowPopupForUpdateStatus);
+  }
+}
+
+hideModal(){
+  this.isShowPopupForUpdateStatus=false;
+  console.log("isShowPopupForUpdateStatus",this.isShowPopupForUpdateStatus);
+}
+
+
+handleSubmitForm(event:{ payload: any }){
+  this.isLoader=true;
+  const payload = event.payload;
+
+}
+
+handleSendToReview(event:{ payload: any }){
+  this.isLoader=true;
+  const payload = event.payload;
+}
 }

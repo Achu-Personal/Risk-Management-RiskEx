@@ -1,1 +1,30 @@
-<div [ngStyle]="{ 'background-color': isOpen?'#F36661':'#34C759' }">{{isOpen?"Open":"closed"}}</div>
+<div class="status-box" [ngStyle]="{ 'background-color': isOpen ? '#F36661' : '#34C759' }">
+  <span class="status-text">{{ isOpen ? "Open" : "Closed" }}</span>
+
+  <button
+    type="button"
+    class="edit-btn"
+    aria-label="Edit status"
+    title="Edit"
+    (click)="onEditClick($event)"
+  >
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path
+        d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25z"
+        fill="currentColor"
+      />
+      <path
+        d="M20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"
+        fill="currentColor"
+      />
+    </svg>
+  </button>
+</div>

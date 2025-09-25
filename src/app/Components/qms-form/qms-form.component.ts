@@ -596,13 +596,13 @@ export class QMSFormComponent {
   }
 
   changeColorOverallRiskRating() {
-    if (this.overallRiskRating <= 4) {
-      return '#548135';
+   if (this.overallRiskRating <= 4) {
+      return '#6DA34D';
     }
     if (this.overallRiskRating >= 6 && this.overallRiskRating <= 16) {
-      return '#ffcc00';
-    } else {
-      return '#ff0000';
+      return '#FFC107';
+    } else  {
+      return '#D9534F';
     }
   }
 

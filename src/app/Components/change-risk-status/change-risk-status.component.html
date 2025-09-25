@@ -1,0 +1,65 @@
+<div class="modal-overlay">
+  <div class="modal-content">
+    <button class="btn cancel" (click)="close()">
+        <i class="fa-regular fa-circle-xmark" style="font-size: xx-large;"></i>
+      </button>
+
+
+
+      <div class="modal-header">
+      <h4>Risk Status Update</h4>
+    </div>
+     <form [formGroup]="updateForm" (ngSubmit)="onSubmit()">
+
+     <div class="form-details-sub-container">
+      <app-form-dropdown label="Risk Status" [dropdownData]="RiskStatuses" dropdownDisplay="name" dropdownValue="id" selectValue="Select Risk Status" (change)="onDropdownRiskStatus($event)" [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)"
+        message=""
+        required="*"
+          backgroundColor=" var(--form-color)"
+          style="margin-top: 20px;"
+       ></app-form-dropdown>
+
+               @if(showCloseDate){
+      <app-form-date-field
+        label="Actual Close Date"
+        required="*"
+        formControlName="closeDate"
+      ></app-form-date-field>
+
+        }
+
+        <app-form-text-area label="Remarks" placeHolder="Enter remark"
+      message="Remarks on risk after mitigation indicate the effectiveness of applied controls,
+      the remaining (residual) risk level, and whether further actions are needed to manage the
+      risk within acceptable limits."  formControlName="remarks" ></app-form-text-area>
+         </div>
+
+
+        <div class="form-details-sub-container" style="margin-top: 30px;">
+      <div class="button-group">
+        <app-style-button  label="Submit" type="submit"></app-style-button>
+         <app-style-button (clicked)="sendToReviewInitiator()" label="Send To Review" type="button"></app-style-button>
+        <app-style-button (clicked)="close()" label="Cancel" type="button"></app-style-button>
+      </div>
+    </div>
+    </form>
+
+
+
+
+
+  </div>
+
+   @if(isLoading) {
+    <app-form-loader></app-form-loader>>
+  }
+
+  @if(isValid){
+  <app-form-successfull
+  message="Please check the form fields and <br> ensure all mandatory fields are satisfied. "
+  [isSuccessfull] ="false"
+  (closeDialog)="closepopupIsValidCheck()" >
+  </app-form-successfull>
+  }
+</div>
+

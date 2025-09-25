@@ -1,11 +1,39 @@
-div {
-  height: 4vh;
-  width: 70px;
-  border: none;
+.status-box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  padding: 6px 10px;
   border-radius: 20px;
   color: white;
-  font-size: 15px;
+  font-size: 14px;
+  font-weight: 500;
+  min-width: 80px;
+  transition: background-color 0.3s ease;
+}
+
+.status-text {
+  flex: 1;
+}
+
+.edit-btn {
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  color: inherit; /* matches status text */
+  cursor: pointer;
+  padding: 2px;
+  border-radius: 50%;
+  transition: background 0.2s ease;
+}
+
+.edit-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.edit-btn:focus {
+  outline: 2px solid white;
+  outline-offset: 2px;
 }

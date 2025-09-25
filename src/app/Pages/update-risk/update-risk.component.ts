@@ -43,12 +43,9 @@ export class UpdateRiskComponent {
     email: string;
     type: string;
   }> = [];
-  riskResponses: Array<{
+  RiskStatuses: Array<{
     id: number;
     name: string;
-    description: string;
-    example: string;
-    risks: string;
   }> = [];
   isSuccess: boolean = false;
   isError: boolean = false;
@@ -79,18 +76,30 @@ export class UpdateRiskComponent {
       this.riskTypeId = 3;
     }
 
-    this.api
-      .getRiskResponses()
-      .pipe(
+    // this.api
+    //   .getRiskResponses()
+    //   .pipe(
+    //     catchError((error) => {
+    //       console.error('Error fetching Reviewer responses:', error);
+    //       return of([]); // Return an empty array to prevent app crash
+    //     })
+    //   )
+    //   .subscribe((res: any) => {
+    //     this.riskResponses = res;
+    //     this.cdRef.detectChanges();
+    //   });
+
+      this.api.getRiskStatus().pipe(
         catchError((error) => {
           console.error('Error fetching Reviewer responses:', error);
           return of([]); // Return an empty array to prevent app crash
         })
       )
       .subscribe((res: any) => {
-        this.riskResponses = res;
+        this.RiskStatuses = res;
         this.cdRef.detectChanges();
       });
+
 
     this.api
       .getLikelyHoodDefinition()

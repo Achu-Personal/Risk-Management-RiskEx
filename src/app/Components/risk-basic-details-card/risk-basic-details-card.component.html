@@ -80,7 +80,8 @@
           <h5 style="font-weight: bold;margin: 0px;">{{allData.riskName}}</h5>
           @if(postReviewstatus!=null)
           {
-            <app-risk-status-card [isOpen]="postReviewstatus.isReviewed!=4"></app-risk-status-card>
+
+            <app-risk-status-card [isOpen]="postReviewstatus.isReviewed" (editClicked)="onEditIconClicked()"></app-risk-status-card>
           }
 
         </div>
@@ -106,3 +107,4 @@
 
 
 </div>
+

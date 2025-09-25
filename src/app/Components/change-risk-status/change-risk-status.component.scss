@@ -1,0 +1,145 @@
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  padding: 20px; /* prevents modal from touching edges */
+}
+
+.modal-content {
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  color: var(--foreground-color);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 20px;
+  padding: 36px 30px;
+  width: 100%;
+  max-width: 50vw;
+  max-height: auto;
+  min-height: 57vh;       /* 🔥 prevents overflow beyond screen */
+  // overflow-y: auto;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25),
+              inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+  position: relative;
+  transform: scale(0.95);
+  animation: popUp 0.3s ease-out forwards;
+
+  display: flex;
+  flex-direction: column;
+  // text-align: center;
+}
+
+.modal-content::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -50%;
+  width: 200%;
+  height: 100%;
+  background: linear-gradient(120deg, rgba(255,255,255,0.08), rgba(255,255,255,0));
+  pointer-events: none;
+  animation: shine 3s ease-in-out infinite;
+  border-radius: 20px;
+  z-index: 0;
+}
+
+/* Headings and messages stay above shine */
+h4, .modal-header, .modal-message {
+  position: relative;
+  z-index: 1;
+}
+
+.modal-message {
+  font-size: 1rem;
+  line-height: 1.5;
+  margin-bottom: 24px;
+  color: var(--foreground-color);
+}
+
+app-style-button {
+  position: relative;
+  z-index: 1;
+  align-self: center;
+}
+
+
+
+
+
+
+
+
+
+.modal-header {
+  margin-bottom: 24px;
+  color: var(--foreground-color);
+  position: relative; /* stays above shine */
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+.modal-header h4 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.btn.cancel {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background-color: transparent;
+  border: none;
+  color: var(--foreground-color);
+  font-size: 1.5rem;
+  cursor: pointer;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+
+
+
+
+
+
+.form-details-sub-container {
+  background-color: var(--accent-color);
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  border-left: 20px solid var(--form-color);
+  margin-top: 10px;
+}
+.required {
+  color: red;
+}
+.form-details-sub-container h2 {
+  font-size: 1.4rem;
+  color: var(--foreground-color);
+  margin-bottom: 15px;
+  text-transform: uppercase;
+  border-bottom: 2px solid var(--foreground-color);
+  padding-bottom: 8px;
+}
+.button-group {
+  display: flex;
+  justify-content: flex-end;
+  gap: 30px;
+  margin-top: 20px;
+  // margin-right: 50px;
+}
+
+@media (max-width: 768px) {
+    .button-group {
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+  }
+}
