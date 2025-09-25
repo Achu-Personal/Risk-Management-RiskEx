@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Risk Status Change Notification</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #fff;
+      color: #333;
+      line-height: 1.6;
+    }
+    .main {
+      max-width: 700px;
+      margin: 40px auto;
+      padding: 30px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,.1);
+    }
+    .header {
+      border-bottom: 2px solid #6f42c1;
+      padding-bottom: 15px;
+      margin-bottom: 25px;
+    }
+    h2 {
+      color: #6f42c1;
+      margin: 0;
+      font-size: 24px;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    li {
+      margin-bottom: 10px;
+      padding-left: 10px;
+      border-left: 3px solid #6f42c1;
+    }
+    li strong {
+      color: #2c3e50;
+      display: inline-block;
+      min-width: 130px;
+    }
+    .status-notice {
+      background-color: #e7e3ff;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 24px;
+      color: #4a148c;
+      border: 1px solid #d1c4e9;
+    }
+    .status-badge {
+      padding: 5px 14px;
+      border-radius: 4px;
+      background: #6f42c1;
+      color: #fff;
+      text-transform: uppercase;
+      font-weight: 600;
+      font-size: 13px;
+      margin-left: 8px;
+    }
+    .action-button {
+      display: inline-block;
+      background-color: #6f42c1;
+      color: white;
+      padding: 12px 24px;
+      text-decoration: none;
+      border-radius: 6px;
+      font-weight: 600;
+      margin: 20px 0;
+      text-align: center;
+      transition: background-color 0.2s;
+    }
+    .action-button:hover {
+      background-color: #5a379e;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+  <div class="main">
+    <div class="header">
+      <h2>Risk Status Change Notification</h2>
+    </div>
+    <div class="status-notice">
+      <strong>Status Change Notice:</strong> The status of risk <strong>{{riskId}}</strong> - "{{riskName}}" has been updated to <span class="status-badge">{{riskStatus}}</span>.
+    </div>
+    <div style="background-color:#f8f9fa;border-radius:6px;padding:20px;margin:20px 0">
+      <ul>
+        <li><strong>Risk ID:</strong> {{riskId}}</li>
+        <li><strong>Risk Name:</strong> {{riskName}}</li>
+        <li><strong>Status:</strong> <span class="status-badge">{{riskStatus}}</span></li>
+        <li><strong>Updated By:</strong> {{approvedBy}}</li>
+        <li><strong>Comments:</strong> {{comments}}</li>
+      </ul>
+    </div>
+    <div class="status-notice">
+      <ul style="margin:0; padding-left: 18px;">
+        <li><strong>Review:</strong> Please review the current risk status and implications.</li>
+        <li><strong>Action:</strong> Take any necessary actions based on the new status.</li>
+        <li><strong>Communication:</strong> Inform relevant stakeholders about the status change.</li>
+        <li><strong>Documentation:</strong> Update any related documentation or processes.</li>
+      </ul>
+    </div>
+    <div style="text-align: center; margin: 30px 0;">
+      <a href="{{baseUrl}}/risk-details/{{riskId}}" class="action-button">
+        View Full Risk Details
+      </a>
+    </div>
+    <div style="margin-top:40px;padding-top:20px;border-top:1px solid #eee;color:#666;font-size:14px">
+      <p style="margin: 5px 0;">Best regards,</p>
+      <p style="margin: 5px 0;">Audits and Compliance Team,</p>
+      <p style="margin: 5px 0;">Experion Technologies Pvt. Ltd</p>
+      <p style="font-size: 12px; color: #888; margin: 5px 0;">This is an automated notification. Please do not reply to this email.</p>
+    </div>
+  </div>
+</body>
+</html>

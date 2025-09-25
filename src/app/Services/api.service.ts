@@ -81,7 +81,7 @@ export class ApiService {
   }
 
   gethistorytabledata() {
-    return this.http.get(`${this.baseUrl}/Report?riskStatus=close`);
+    return this.http.get(`${this.baseUrl}/Report?riskStatus=closed`);
   }
 
   getDepartmentTable(department: any) {
@@ -92,7 +92,7 @@ export class ApiService {
 
   getDepartmentHistoryTable(department: any) {
     return this.http.get(
-      `${this.baseUrl}/Report/DepartmentwiseRisk/${department}?riskStatus=close`
+      `${this.baseUrl}/Report/DepartmentwiseRisk/${department}?riskStatus=closed`
     );
   }
   getProjectHistroyTable(projectList: any) {
@@ -100,7 +100,7 @@ export class ApiService {
       .map((id: number) => `projectIds=${id}`)
       .join('&');
     return this.http.get(
-      `${this.baseUrl}/Report/projectrisks?${queryParams}&riskStatus=close`
+      `${this.baseUrl}/Report/projectrisks?${queryParams}&riskStatus=closed`
     );
   }
   getProjectTable(projectList: any) {
