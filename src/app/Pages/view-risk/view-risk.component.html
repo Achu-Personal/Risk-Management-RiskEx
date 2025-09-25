@@ -34,4 +34,21 @@
     <app-form-loader></app-form-loader>>
    }
 
+   @if(isSuccess){
+    <app-form-successfull
+      message="Risk Status has been updated successfully! <br> You can now check it in the Report page."
+      [isSuccessfull]="true"
+      (closeDialog)="closeDialogSuccess()"
+    >
+    </app-form-successfull>
+    } @if(isError){
+    <app-form-successfull
+      [message]="error"
+      [isSuccessfull]="false"
+      (closeDialog)="closeDialog()"
+    >
+    </app-form-successfull>
+
+    }
+
 

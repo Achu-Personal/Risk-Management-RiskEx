@@ -552,6 +552,10 @@ export class ApiService {
 
   }
 
+  updateRiskStatus(riskId:number,payload:any){
+    return this.http.put(`${this.baseUrl}/Risk/update/status/${riskId}`,payload)
+
+}
 }
 
 

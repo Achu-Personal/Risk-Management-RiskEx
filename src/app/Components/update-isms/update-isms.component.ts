@@ -365,7 +365,8 @@ export class UpdateIsmsComponent {
     // console.log("vvvvvvvvvvvvvvvvvvvv",this.riskResponseValue)
 
     if (
-       (this.showCloseDate==false&&this.riskStatusValue==2)||
+      (this.showCloseDate && !formValue.closeDate) ||
+       (this.showCloseDate==false&&this.riskStatusValue==2&& !formValue.closeDate)||
       Number(this.riskStatusValue) <= 0 ||
       Number(this.riskStatusValue) <= 0 ||
       Number(this.overallRiskRating) <= 0 ||
