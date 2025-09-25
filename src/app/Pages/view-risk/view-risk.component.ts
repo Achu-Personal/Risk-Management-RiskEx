@@ -9,6 +9,8 @@ import { CommonModule } from '@angular/common';
 import { ChangeRiskStatusComponent } from "../../Components/change-risk-status/change-risk-status.component";
 import { catchError, of } from 'rxjs';
 import { FormLoaderComponent } from "../../Components/form-loader/form-loader.component";
+import { FormSuccessfullComponent } from "../../Components/form-successfull/form-successfull.component";
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-view-risk',
@@ -20,7 +22,8 @@ import { FormLoaderComponent } from "../../Components/form-loader/form-loader.co
     RiskDetailsSection3MitigationComponent,
     CommonModule,
     ChangeRiskStatusComponent,
-    FormLoaderComponent
+    FormLoaderComponent,
+    FormSuccessfullComponent
 ],
   templateUrl: './view-risk.component.html',
   styleUrl: './view-risk.component.scss',
@@ -41,6 +44,9 @@ export class ViewRiskComponent {
   isShowPopupForUpdateStatus=false;
   isLoader=false;
   RiskId:number=0;
+  isSuccess: boolean = false;
+  isError: boolean = false;
+  error: string = '';
 
   ngOnInit() {
 
@@ -132,11 +138,37 @@ hideModal(){
 handleSubmitForm(event:{ payload: any }){
   this.isLoader=true;
   const payload = event.payload;
+  if(this.RiskId>0){
+    this.api.updateRiskStatus(this.RiskId,payload).subscribe({
+      next: (res) => {
+        this.isLoader=false;
+        this.isSuccess=true;
+        this.hideModal();
+      },
+      error: (error: HttpErrorResponse) => {
+                this.isError = true;
+                this.isLoading = false;
+                this.error = error.error?.details
+                  ? error.error.details
+                  : 'An unexpected error occurred. Please try again.';
+
+                console.error('Error updating risk:', error);
+              },
+    });
+  }
 
 }
 
 handleSendToReview(event:{ payload: any }){
   this.isLoader=true;
   const payload = event.payload;
+}
+
+closeDialogSuccess(){
+  this.isSuccess=false
+}
+
+closeDialog(){
+  this.isError=false
 }
 }

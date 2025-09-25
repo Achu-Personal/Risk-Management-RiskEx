@@ -82,6 +82,7 @@ export class ChangeRiskStatusComponent {
     this.isLoading = true;
     const formValue = this.updateForm.value;
     if (
+      (this.showCloseDate && !formValue.closeDate) ||
       (this.showCloseDate == false && this.riskStatusValue == 2) ||
       Number(this.riskStatusValue) <= 0
     ) {
@@ -107,7 +108,8 @@ export class ChangeRiskStatusComponent {
     this.isLoading = true;
     const formValue = this.updateForm.value;
     if (
-      (this.showCloseDate == false && this.riskStatusValue == 2) ||
+      (this.showCloseDate && !formValue.closeDate) ||
+      (this.showCloseDate == false && this.riskStatusValue == 2 && !formValue.closeDate) ||
       Number(this.riskStatusValue) <= 0
     ) {
       console.log('Invalid numeric fields: Values must be greater than 0.');
