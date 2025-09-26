@@ -11,6 +11,7 @@ import { catchError, of } from 'rxjs';
 import { FormLoaderComponent } from "../../Components/form-loader/form-loader.component";
 import { FormSuccessfullComponent } from "../../Components/form-successfull/form-successfull.component";
 import { HttpErrorResponse } from '@angular/common/http';
+import { StatusChangeReviewerPopupComponent } from "../../Components/status-change-reviewer-popup/status-change-reviewer-popup.component";
 
 @Component({
   selector: 'app-view-risk',
@@ -23,7 +24,8 @@ import { HttpErrorResponse } from '@angular/common/http';
     CommonModule,
     ChangeRiskStatusComponent,
     FormLoaderComponent,
-    FormSuccessfullComponent
+    FormSuccessfullComponent,
+    StatusChangeReviewerPopupComponent
 ],
   templateUrl: './view-risk.component.html',
   styleUrl: './view-risk.component.scss',
@@ -47,6 +49,8 @@ export class ViewRiskComponent {
   isSuccess: boolean = false;
   isError: boolean = false;
   error: string = '';
+  isReviewerShow: boolean = false;
+  payloadForReview: any;
 
   ngOnInit() {
 
@@ -160,8 +164,8 @@ handleSubmitForm(event:{ payload: any }){
 }
 
 handleSendToReview(event:{ payload: any }){
-  this.isLoader=true;
-  const payload = event.payload;
+  this.isReviewerShow=true;
+  this.payloadForReview = event.payload;
 }
 
 closeDialogSuccess(){
@@ -170,5 +174,17 @@ closeDialogSuccess(){
 
 closeDialog(){
   this.isError=false
+}
+
+hideReviewerModal(){
+   this.isReviewerShow=false;
+
+}
+
+
+submitSendToReview(event:{ payload: any }){
+  this.isLoader=true;
+  const payloadForReviewer = event.payload;
+  console.log("Payload for Reviewer:", payloadForReviewer);
 }
 }
