@@ -22,12 +22,12 @@
       box-shadow: 0 2px 10px rgba(0,0,0,.1);
     }
     .header {
-      border-bottom: 2px solid #ffc107;
+      border-bottom: 2px solid #2c3e50;
       padding-bottom: 15px;
       margin-bottom: 25px;
     }
     h2 {
-      color: #ffc107;
+      color: #2c3e50;
       margin: 0;
       font-size: 24px;
     }
@@ -39,35 +39,36 @@
     li {
       margin-bottom: 10px;
       padding-left: 10px;
-      border-left: 3px solid #ffc107;
+      border-left: 3px solid #2c3e50;
     }
     li strong {
-      color: #212529;
-      min-width: 120px;
+      color: #2c3e50;
+      min-width: 130px;
       display: inline-block;
+    }
+    .deferred-notice {
+      background-color: #f0f9ff;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 22px;
+      color: #1A544B;
+      border: 1px solid #d1fae5;
     }
     .status-badge {
       padding: 5px 14px;
       border-radius: 4px;
-      background: #ffc107;
-      color: #212529;
+      background: #1565c0;
+      color: #fff;
       text-transform: uppercase;
       font-weight: 600;
       font-size: 13px;
       margin-left: 8px;
-    }
-    .deferred-notice {
-      background-color: #fff3cd;
-      border-radius: 8px;
-      padding: 16px;
-      margin-bottom: 22px;
-      color: #856404;
-      border: 1px solid #ffeaa7;
+      letter-spacing: 1px;
     }
     .action-button {
       display: inline-block;
-      background-color: #ffc107;
-      color: #212529;
+      background-color: #1A544B;
+      color: white;
       padding: 12px 24px;
       text-decoration: none;
       border-radius: 6px;
@@ -77,8 +78,14 @@
       transition: background-color 0.2s;
     }
     .action-button:hover {
-      background-color: #ffeaa7;
-      color: #856404;
+      background-color: #2FFEE0;
+      color: #1A544B;
+    }
+     .acceptance-comment {
+      background-color: #f1f8ff;
+      border-radius: 8px;
+      padding: 24px;
+      margin-bottom: 24px;
     }
   </style>
 </head>
@@ -91,30 +98,30 @@
       Dear <span style="font-weight: 600;">{{responsibleUser}}</span>,
     </p>
     <div class="deferred-notice">
-      <strong>Risk treatment for <span>{{riskName}} ({{riskId}})</span> has been <span style="color:#856404;">DEFERRED</span>.</strong>
-      <div style="margin-top: 6px;">Reason: <span>{{deferredReason}}</span></div>
+      <strong>Risk treatment for <span>{{riskName}} ({{riskId}})</span> has been <span style="color:#1565c0; font-weight:600;">DEFERRED</span>.</strong>
     </div>
     <div style="background-color:#f8f9fa;border-radius:6px;padding:20px;margin:18px 0">
       <ul>
         <li><strong>Description:</strong> {{description}}</li>
         <li><strong>Risk Type:</strong> {{riskType}}</li>
-        <li><strong>Impact:</strong> {{impact}}</li>
-        <li><strong>Mitigation:</strong> {{mitigation}}</li>
-        <li><strong>Planned Date:</strong> {{plannedActionDate}}</li>
-        <li><strong>Risk Rating:</strong> {{overallRiskRating}}</li>
+        <li><strong>Impact Of Risk:</strong> {{impact}}</li>
+        <li><strong>Treatment Plan:</strong> {{mitigation}}</li>
+        <li><strong>Residual Risk:</strong> {{overallRiskRating}}</li>
         <li>
-          <strong>Status:</strong>
+          <strong>Risk Status:</strong>
           <span class="status-badge">DEFERRED</span>
         </li>
-        <li><strong>Deferred By:</strong> {{deferredBy}}</li>
-        <li><strong>Created By:</strong> {{createdBy}}</li>
       </ul>
+    </div>
+    <div class="acceptance-comment">
+      <h3 style="margin: 0 0 12px 0; color: #2c3e50; font-size: 18px;">Reviewer Comments</h3>
+      <p style="margin: 0; line-height: 1.6;">{{deferredReason}}</p>
     </div>
     <div class="deferred-notice" style="margin-bottom: 18px;">
       <strong>Important:</strong> Continue monitoring this risk during deferral and schedule periodic reviews for reassessment.
     </div>
     <div style="text-align: center; margin: 30px 0;">
-      <a href="{{baseUrl}}/risk-details/{{riskId}}" class="action-button">
+      <a href="{{baseUrl}}/" class="action-button">
         View Risk Details
       </a>
     </div>

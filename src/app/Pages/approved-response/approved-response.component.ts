@@ -44,6 +44,134 @@ export class ThankyouComponent {
   }
   isSubmitting = false;
 
+  // NEW METHOD: Get email recipients and template based on risk status
+  private getEmailRecipientsAndTemplate(riskStatus: string, riskDetails: any) {
+    const config = {
+      recipients: [] as string[],
+      emailMethods: [] as string[],
+    };
+
+    switch (riskStatus.toLowerCase()) {
+      case 'open':
+        config.recipients = [riskDetails.responsibleUser.email, 'owner'];
+        config.emailMethods = ['sendAssigneeEmail', 'sendApprovalEmail'];
+        break;
+
+      case 'undertreatment':
+      case 'monitoring':
+        config.recipients = [riskDetails.responsibleUser.email, 'owner'];
+        config.emailMethods = ['sendStatusUpdateEmail', 'sendStatusUpdateEmail'];
+        break;
+
+      case 'accepted':
+        config.recipients = ['owner', riskDetails.responsibleUser.email];
+        config.emailMethods = ['sendRiskAcceptanceEmail', 'sendRiskAcceptanceEmail'];
+        break;
+
+      case 'deferred':
+        config.recipients = [riskDetails.responsibleUser.email, 'owner'];
+        config.emailMethods = ['sendRiskDeferredEmail', 'sendRiskDeferredEmail'];
+        break;
+
+      case 'close':
+      case 'closed':
+        config.recipients = [riskDetails.responsibleUser.email, 'owner'];
+        config.emailMethods = ['sendRiskClosureEmail', 'sendRiskClosureEmail'];
+        break;
+
+      default:
+        config.recipients = ['owner'];
+        config.emailMethods = ['sendGeneralStatusEmail'];
+    }
+
+    return config;
+  }
+
+  // NEW METHOD: Send emails based on status
+  private sendEmailsBasedOnStatus(riskDetails: any, baseContext: any, emailConfig: any) {
+    let emailsSent = 0;
+    const totalEmails = emailConfig.recipients.length;
+
+    const checkEmailsComplete = () => {
+      emailsSent++;
+      if (emailsSent >= totalEmails) {
+        this.isSubmitting = false;
+        this.isReasonSubmitted = true;
+      }
+    };
+
+    emailConfig.recipients.forEach((recipient: string, index: number) => {
+      if (recipient === 'owner') {
+        // Get owner email
+        this.api.getriskOwnerEmailandName(this.riskId).subscribe({
+          next: (ownerRes: any) => {
+            const ownerContext = {
+            ...baseContext,
+            responsibleUser: ownerRes[0].name  // Override with owner's name
+          };
+            this.sendEmailByMethod(emailConfig.emailMethods[index], ownerRes[0].email, ownerContext);
+            checkEmailsComplete();
+          },
+          error: (error) => {
+            console.error('Failed to get risk owner details:', error);
+            checkEmailsComplete();
+          }
+        });
+      } else {
+        // Direct email address
+        this.sendEmailByMethod(emailConfig.emailMethods[index], recipient, baseContext);
+        checkEmailsComplete();
+      }
+    });
+  }
+
+  // NEW METHOD: Route to appropriate email sending method
+  private sendEmailByMethod(methodName: string, email: string, context: any) {
+    switch (methodName) {
+      case 'sendAssigneeEmail':
+        this.email.sendAssigneeEmail(email, context).subscribe({
+          next: () => console.log('Assignee email sent successfully'),
+          error: (error) => console.error('Failed to send assignee email:', error)
+        });
+        break;
+      case 'sendApprovalEmail':
+        this.email.sendApprovalEmail(email, context).subscribe({
+          next: () => console.log('Approval email sent successfully'),
+          error: (error) => console.error('Failed to send approval email:', error)
+        });
+        break;
+      case 'sendRiskClosureEmail':
+        this.email.sendRiskClosureEmail(email, context).subscribe({
+          next: () => console.log('Closure email sent successfully'),
+          error: (error) => console.error('Failed to send closure email:', error)
+        });
+        break;
+      case 'sendStatusUpdateEmail':
+        this.email.sendStatusUpdateEmail(email, context).subscribe({
+          next: () => console.log('Status update email sent successfully'),
+          error: (error) => console.error('Failed to send status update email:', error)
+        });
+        break;
+      case 'sendRiskAcceptanceEmail':
+        this.email.sendRiskAcceptanceEmail(email, context).subscribe({
+          next: () => console.log('Risk acceptance email sent successfully'),
+          error: (error) => console.error('Failed to send risk acceptance email:', error)
+        });
+        break;
+      case 'sendRiskDeferredEmail':
+        this.email.sendRiskDeferredEmail(email, context).subscribe({
+          next: () => console.log('Risk deferred email sent successfully'),
+          error: (error) => console.error('Failed to send risk deferred email:', error)
+        });
+        break;
+      default:
+        this.email.sendGeneralStatusEmail(email, context).subscribe({
+          next: () => console.log('General status email sent successfully'),
+          error: (error) => console.error('Failed to send general status email:', error)
+        });
+    }
+  }
+
   submitReason(): void {
     if (this.ApprovalForm.invalid) {
       this.ApprovalForm.markAllAsTouched();
@@ -58,7 +186,6 @@ export class ThankyouComponent {
 
     this.api.getRiskById(this.riskId).subscribe({
       next: (riskDetails: any) => {
-
         let reviewToUpdate: number | null = null;
         let pendingReviewFound = false;
 
@@ -71,7 +198,7 @@ export class ThankyouComponent {
         }
 
         if (!pendingReviewFound) {
-          if (riskDetails.riskStatus === 'close') {
+          if (riskDetails.riskStatus === 'closed') {
             let latestReview = null;
             let latestReviewId = 0;
 
@@ -85,6 +212,7 @@ export class ThankyouComponent {
             reviewToUpdate = latestReview ? latestReview.id : null;
             if (!reviewToUpdate) {
               this.notification.error('No valid review found for this closed risk');
+              this.isSubmitting = false;
               return;
             }
           } else {
@@ -97,6 +225,7 @@ export class ThankyouComponent {
               }
             } else {
               this.notification.error('No assessments found for this risk');
+              this.isSubmitting = false;
               return;
             }
           }
@@ -110,7 +239,8 @@ export class ThankyouComponent {
 
         this.api.updateReviewStatusAndComments(this.riskId, approvalUpdates).subscribe({
           next: () => {
-            this.isReasonSubmitted = true;
+            this.notification.success("The risk has been Approved successfully");
+
             const impact = riskDetails.impact;
             const mitigation = riskDetails.mitigation;
 
@@ -122,143 +252,41 @@ export class ThankyouComponent {
               reviewerName = latestAssessment.review?.reviewerName || reviewerName;
             }
 
-            if (riskDetails.riskStatus === 'open') {
-              const context = {
-                responsibleUser: riskDetails.responsibleUser.fullName,
-                riskId: riskDetails.riskId,
-                riskName: riskDetails.riskName,
-                description: riskDetails.description,
-                riskType: riskDetails.riskType,
-                impact: impact,
-                mitigation: mitigation,
-                plannedActionDate: new Date(riskDetails.plannedActionDate).toLocaleDateString(
-                  'en-US',
-                  {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                  }
-                ),
-                overallRiskRating: riskDetails.overallRiskRating,
-                riskStatus: riskDetails.riskStatus,
-                approvedBy: reviewerName,
-                comments: this.ApprovalComments,
-              };
+            // Get email configuration based on risk status
+            const emailConfig = this.getEmailRecipientsAndTemplate(riskDetails.riskStatus, riskDetails);
 
-              this.email.sendAssigneeEmail(riskDetails.responsibleUser.email, context).subscribe({
-                next: () => {
-                  // console.log('Assignee email sent successfully');
+            // Prepare base context
+            const baseContext = {
+              responsibleUser: riskDetails.responsibleUser.fullName,
+              riskId: riskDetails.riskId,
+              riskName: riskDetails.riskName,
+              description: riskDetails.description,
+              riskType: riskDetails.riskType,
+              impact: impact,
+              mitigation: mitigation,
+              plannedActionDate: new Date(riskDetails.plannedActionDate).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+              }),
+              overallRiskRating: riskDetails.overallRiskRating,
+              riskStatus: riskDetails.riskStatus,
+              approvedBy: reviewerName,
+              verifiedBy: reviewerName,
+              acceptedBy: reviewerName,
+              deferredBy: reviewerName,
+              comments: this.ApprovalComments,
+              verificationComments: this.ApprovalComments,
+              acceptanceReason: this.ApprovalComments,
+              deferredReason: this.ApprovalComments
+            };
 
-                  this.api.getriskOwnerEmailandName(this.riskId).subscribe({
-                    next: (ownerRes: any) => {
-                      this.email.sendApprovalEmail(ownerRes[0].email, context).subscribe({
-                        next: () => {
-                          console.log('Risk Owner approval email sent successfully');
-                          this.notification.success('The risk has been approved successfully and emails sent to assignee and risk owner');
-                        },
-                        error: (emailError) => {
-                          console.error('Failed to send approval email to risk owner:', emailError);
-                          this.notification.success('The risk has been approved successfully and email sent to assignee');
-                        }
-                      });
-                    },
-                    error: (error) => {
-                      console.error('Failed to get risk owner details:', error);
-                      this.notification.success('The risk has been approved successfully and email sent to assignee');
-                    }
-                  });
-                },
-                error: (emailError) => {
-                  console.error('Failed to send email to assignee:', emailError);
-                  this.notification.success('The risk has been approved successfully');
-                }
-              });
-            } else if (riskDetails.riskStatus === 'close') {
-              const closureContext = {
-                responsibleUser: riskDetails.responsibleUser.fullName,
-                riskId: riskDetails.riskId,
-                riskName: riskDetails.riskName,
-                description: riskDetails.description,
-                riskType: riskDetails.riskType,
-                impact: impact,
-                mitigation: mitigation,
-                plannedActionDate: new Date(riskDetails.plannedActionDate).toLocaleDateString(
-                  'en-US',
-                  {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                  }
-                ),
-                overallRiskRating: riskDetails.overallRiskRating,
-                riskStatus: riskDetails.riskStatus,
-                verifiedBy: reviewerName,
-                verificationComments: this.ApprovalComments
-              };
-
-              const closureContextOwner = {
-                riskId: riskDetails.riskId,
-                riskName: riskDetails.riskName,
-                description: riskDetails.description,
-                riskType: riskDetails.riskType,
-                impact: impact,
-                mitigation: mitigation,
-                plannedActionDate: new Date(riskDetails.plannedActionDate).toLocaleDateString(
-                  'en-US',
-                  {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                  }
-                ),
-                overallRiskRating: riskDetails.overallRiskRating,
-                verifiedBy: reviewerName,
-                verificationComments: this.ApprovalComments
-              };
-
-              this.api.getriskOwnerEmailandName(this.riskId).subscribe({
-                next: (ownerRes: any) => {
-                  this.email.sendRiskClosureEmail(ownerRes[0].email, closureContextOwner).subscribe({
-                    next: () => {
-                      console.log('Risk closure email sent to owner successfully');
-
-                      this.email.sendRiskClosureEmail(riskDetails.responsibleUser.email, closureContext).subscribe({
-                        next: () => {
-                          console.log('Risk closure email sent to assignee successfully');
-                          this.notification.success(
-                            'The risk has been approved and closed successfully. Closure notifications sent to owner and assignee.'
-                          );
-                        },
-                        error: (emailError) => {
-                          console.error('Failed to send closure email to assignee:', emailError);
-                          this.notification.success(
-                            'The risk has been approved and closed successfully. Closure notification sent to owner only.'
-                          );
-                        }
-                      });
-                    },
-                    error: (emailError) => {
-                      console.error('Failed to send closure email to owner:', emailError);
-                      this.notification.success(
-                        'The risk has been approved and closed successfully, but email notifications failed.'
-                      );
-                    }
-                  });
-                },
-                error: (error) => {
-                  console.error('Failed to get risk owner details:', error);
-                  this.notification.success(
-                    'The risk has been approved and closed successfully but email notifications could not be sent'
-                  );
-                }
-              });
-            }
+            // Send emails based on risk status
+            this.sendEmailsBasedOnStatus(riskDetails, baseContext, emailConfig);
           },
           error: (error) => {
             console.error('Error updating review status:', error);
             this.notification.error('Failed to approve risk');
-          },
-          complete: () => {
             this.isSubmitting = false;
           }
         });

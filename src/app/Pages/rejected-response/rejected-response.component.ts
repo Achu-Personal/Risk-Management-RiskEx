@@ -44,6 +44,100 @@ export class RejectedResponseComponent {
   }
   isSubmitting = false;
 
+  // NEW METHOD: Get email recipients for rejection based on risk status
+  private getRejectionEmailRecipients(riskStatus: string, riskDetails: any) {
+    const config = {
+      recipients: [] as string[],
+      emailMethods: [] as string[]
+    };
+
+    switch (riskStatus.toLowerCase()) {
+      case 'open':
+        // For open risks, send to creator (owner) and optionally to assignee
+        config.recipients = [riskDetails.createdBy.email, 'owner'];
+        config.emailMethods = ['sendOwnerEmail', 'sendOwnerEmail'];
+        break;
+
+      case 'close':
+      case 'closed':
+        // For closure rejections, send to responsible user and owner
+        config.recipients = [riskDetails.responsibleUser.email, 'owner'];
+        config.emailMethods = ['sendOwnerEmail', 'sendOwnerEmail'];
+        break;
+
+      case 'undertreatment':
+      case 'monitoring':
+      case 'accepted':
+      case 'deferred':
+        // For other status changes, send to responsible user and owner
+        config.recipients = [riskDetails.responsibleUser.email, 'owner'];
+        config.emailMethods = ['sendOwnerEmail', 'sendOwnerEmail'];
+        break;
+
+      default:
+        // Default: send only to owner
+        config.recipients = ['owner'];
+        config.emailMethods = ['sendOwnerEmail'];
+    }
+
+    return config;
+  }
+
+  // NEW METHOD: Send rejection emails based on status
+  private sendRejectionEmailsBasedOnStatus(riskDetails: any, baseContext: any, emailConfig: any) {
+    let emailsSent = 0;
+    const totalEmails = emailConfig.recipients.length;
+
+    const checkEmailsComplete = () => {
+      emailsSent++;
+      if (emailsSent >= totalEmails) {
+        this.isSubmitting = false;
+        this.isReasonSubmitted = true;
+      }
+    };
+
+    emailConfig.recipients.forEach((recipient: string, index: number) => {
+      if (recipient === 'owner') {
+        // Get owner email
+        this.api.getriskOwnerEmailandName(this.riskId).subscribe({
+          next: (ownerRes: any) => {
+            // Create owner-specific context
+            const ownerContext = {
+              ...baseContext,
+              responsibleUser: ownerRes[0].name
+            };
+            this.email.sendOwnerEmail(ownerRes[0].email, ownerContext).subscribe({
+              next: () => {
+                console.log('Rejection email sent to owner successfully');
+                checkEmailsComplete();
+              },
+              error: (error) => {
+                console.error('Failed to send rejection email to owner:', error);
+                checkEmailsComplete();
+              }
+            });
+          },
+          error: (error) => {
+            console.error('Failed to get risk owner details:', error);
+            checkEmailsComplete();
+          }
+        });
+      } else {
+        // Direct email address
+        this.email.sendOwnerEmail(recipient, baseContext).subscribe({
+          next: () => {
+            console.log('Rejection email sent successfully to:', recipient);
+            checkEmailsComplete();
+          },
+          error: (error) => {
+            console.error('Failed to send rejection email:', error);
+            checkEmailsComplete();
+          }
+        });
+      }
+    });
+  }
+
   submitReason(): void {
     if (this.rejectionForm.invalid) {
       this.rejectionForm.markAllAsTouched();
@@ -58,8 +152,6 @@ export class RejectedResponseComponent {
 
     this.api.getRiskById(this.riskId).subscribe({
       next: (riskDetails: any) => {
-
-
         let reviewToUpdate: number | null = null;
         let pendingReviewFound = false;
 
@@ -72,7 +164,7 @@ export class RejectedResponseComponent {
         }
 
         if (!pendingReviewFound) {
-          if (riskDetails.riskStatus === 'close') {
+          if (riskDetails.riskStatus === 'closed') {
             let latestReview = null;
             let latestReviewId = 0;
 
@@ -86,6 +178,7 @@ export class RejectedResponseComponent {
             reviewToUpdate = latestReview ? latestReview.id : null;
             if (!reviewToUpdate) {
               this.notification.error('No valid review found for this closed risk');
+              this.isSubmitting = false;
               return;
             }
           } else {
@@ -98,6 +191,7 @@ export class RejectedResponseComponent {
               }
             } else {
               this.notification.error('No assessments found for this risk');
+              this.isSubmitting = false;
               return;
             }
           }
@@ -111,7 +205,7 @@ export class RejectedResponseComponent {
 
         this.api.updateReviewStatusAndComments(this.riskId, rejectionUpdates).subscribe({
           next: () => {
-            this.isReasonSubmitted = true;
+            this.notification.success("The risk has been Rejected successfully");
 
             let reviewerName = 'External Reviewer';
             if (riskDetails.riskStatus === 'open' && riskDetails.riskAssessments.length > 1) {
@@ -121,79 +215,40 @@ export class RejectedResponseComponent {
               reviewerName = latestAssessment.review?.reviewerName || reviewerName;
             }
 
-            if (riskDetails.riskStatus === 'open') {
-              this.context = {
-                reviewer: reviewerName,
-                responsibleUser: riskDetails.createdBy.fullName,
-                riskId: riskDetails.riskId,
-                riskName: riskDetails.riskName,
-                description: riskDetails.description,
-                riskType: riskDetails.riskType,
-                impact: riskDetails.impact,
-                mitigation: riskDetails.mitigation,
-                plannedActionDate: new Date(riskDetails.plannedActionDate).toLocaleDateString(
-                  'en-US',
-                  {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                  }
-                ),
-                overallRiskRating: riskDetails.overallRiskRating,
-                reason: this.rejectionReason,
-              };
+            // Determine responsible user based on status
+            const responsibleUserName = riskDetails.riskStatus === 'open'
+              ? riskDetails.createdBy.fullName
+              : riskDetails.responsibleUser.fullName;
 
-              this.email.sendOwnerEmail(riskDetails.createdBy.email, this.context).subscribe({
-                next: () => {
-                  console.log('Email sent successfully to creator:', riskDetails.createdBy.email);
-                  this.notification.success('Risk has been rejected and notification sent to risk creator');
-                },
-                error: (emailError) => {
-                  console.error('Failed to send email to creator:', emailError);
-                  this.notification.success('Risk has been rejected but notification could not be sent');
-                },
-              });
-            }
+            // Get email configuration based on risk status
+            const emailConfig = this.getRejectionEmailRecipients(riskDetails.riskStatus, riskDetails);
 
-            if (riskDetails.riskStatus === 'close') {
-              this.context = {
-                reviewer: reviewerName,
-                responsibleUser: riskDetails.responsibleUser.fullName,
-                riskId: riskDetails.riskId,
-                riskName: riskDetails.riskName,
-                description: riskDetails.description,
-                riskType: riskDetails.riskType,
-                impact: riskDetails.impact,
-                mitigation: riskDetails.mitigation,
-                plannedActionDate: new Date(riskDetails.plannedActionDate).toLocaleDateString(
-                  'en-US',
-                  {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                  }
-                ),
-                overallRiskRating: riskDetails.overallRiskRating,
-                reason: this.rejectionReason,
-              };
+            // Prepare base context
+            const baseContext = {
+              reviewer: reviewerName,
+              responsibleUser: responsibleUserName,
+              riskId: riskDetails.riskId,
+              riskName: riskDetails.riskName,
+              description: riskDetails.description,
+              riskType: riskDetails.riskType,
+              impact: riskDetails.impact,
+              mitigation: riskDetails.mitigation,
+              plannedActionDate: new Date(riskDetails.plannedActionDate).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+              }),
+              overallRiskRating: riskDetails.overallRiskRating,
+              riskStatus: riskDetails.riskStatus,
+              reason: this.rejectionReason,
+            };
 
-              this.email.sendOwnerEmail(riskDetails.responsibleUser.email, this.context).subscribe({
-                next: () => {
-                  console.log('Email sent successfully to responsible user:', riskDetails.responsibleUser.email);
-                  this.notification.success('Risk closure has been rejected and notification sent to responsible user');
-                },
-                error: (emailError) => {
-                  console.error('Failed to send email to responsible user:', emailError);
-                  this.notification.success('Risk closure has been rejected but notification could not be sent');
-                },
-              });
-            }
+            // Send rejection emails based on risk status
+            this.sendRejectionEmailsBasedOnStatus(riskDetails, baseContext, emailConfig);
           },
           error: (error) => {
             console.error('Error updating review status:', error);
             this.notification.error('Failed to reject risk');
-          },
-          complete: () => {
             this.isSubmitting = false;
           }
         });

@@ -183,7 +183,11 @@ export class ApprovalComponent {
         // Get owner email
         this.api.getriskOwnerEmailandName(riskId).subscribe({
           next: (ownerRes: any) => {
-            this.sendEmailByMethod(emailConfig.emailMethods[index], ownerRes[0].email, baseContext);
+            const ownerContext = {
+            ...baseContext,
+            responsibleUser: ownerRes[0].name  // Override with owner's name
+          };
+            this.sendEmailByMethod(emailConfig.emailMethods[index], ownerRes[0].email, ownerContext);
             checkEmailsComplete();
           },
           error: (error) => {

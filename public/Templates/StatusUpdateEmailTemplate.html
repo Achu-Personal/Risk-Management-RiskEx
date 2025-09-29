@@ -72,6 +72,12 @@
       background-color: #2FFEE0;
       color: #1A544B !important;
     }
+     .acceptance-comment {
+      background-color: #f1f8ff;
+      border-radius: 8px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
   </style>
 </head>
 <body>
@@ -87,21 +93,22 @@
       <ul>
         <li><strong>Description:</strong> {{description}}</li>
         <li><strong>Risk Type:</strong> {{riskType}}</li>
-        <li><strong>Impact:</strong> {{impact}}</li>
-        <li><strong>Mitigation:</strong> {{mitigation}}</li>
+        <li><strong>Impact Of Risk:</strong> {{impact}}</li>
+        <li><strong>Treatment Plan:</strong> {{mitigation}}</li>
         <li><strong>Planned Date:</strong> {{plannedActionDate}}</li>
-        <li><strong>Risk Rating:</strong> {{overallRiskRating}}</li>
+        <li><strong>Residual Risk:</strong> {{overallRiskRating}}</li>
         <li>
-          <strong>Status:</strong>
+          <strong>Risk Status:</strong>
           <span class="status-badge">{{riskStatus}}</span>
         </li>
-        <li><strong>Updated By:</strong> {{approvedBy}}</li>
-        <li><strong>Comments:</strong> {{comments}}</li>
-        <li><strong>Created By:</strong> {{createdBy}}</li>
       </ul>
     </div>
+    <div class="acceptance-comment">
+      <h3 style="margin: 0 0 12px 0; color: #2c3e50; font-size: 18px;">Reviewer Comments</h3>
+      <p style="margin: 0; line-height: 1.6;">{{comments}}</p>
+    </div>
     <div style="text-align: center; margin: 30px 0;">
-      <a href="{{baseUrl}}/risk-details/{{riskId}}" class="action-button" style="background-color:#1A544B;color:#fff;padding:12px 24px;text-decoration:none;border-radius:6px;font-weight:600;display:inline-block;">
+      <a href="{{baseUrl}}/" class="action-button" style="background-color:#1A544B;color:#fff;padding:12px 24px;text-decoration:none;border-radius:6px;font-weight:600;display:inline-block;">
         View Risk Details
       </a>
     </div>
