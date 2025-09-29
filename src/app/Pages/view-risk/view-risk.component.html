@@ -51,4 +51,9 @@
 
     }
 
+    @if(isReviewerShow){
+      <app-status-change-reviewer-popup (closeRiskStatusModal)="hideReviewerModal()" (sendToReview)="submitSendToReview($event)"></app-status-change-reviewer-popup>
+
+    }
+
 
