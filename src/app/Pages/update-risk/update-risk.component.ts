@@ -279,6 +279,7 @@ export class UpdateRiskComponent {
             riskresponse:res.riskResponse,
             id: res.id,
             rid: res.id,
+            riskStatus: res.riskStatus
           };
           // console.log('Email Context:', this.context);
 

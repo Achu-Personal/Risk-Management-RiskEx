@@ -20,6 +20,15 @@ export class EmailService {
   userUpdateTemplate: string = '';
   riskClosureTemplate: string = '';
 
+  // New template properties
+  statusUpdateTemplate: string = '';
+  riskAcceptanceTemplate: string = '';
+  riskDeferredTemplate: string = '';
+  generalStatusTemplate: string = '';
+
+  statusChangeReviewTemplate: string = '';
+
+
   private readonly baseUrl = environment.apiUrl;
 
   private readonly frontendUrl = environment.frontendUrl;
@@ -40,6 +49,14 @@ export class EmailService {
     this.loadUserUpdateTemplate();
     this.loadApprovalTemplate();
     this.loadRiskClosureTemplate();
+
+    this.loadStatusUpdateTemplate();
+    this.loadRiskAcceptanceTemplate();
+    this.loadRiskDeferredTemplate();
+    this.loadGeneralStatusTemplate();
+
+    this.loadStatusChangeReviewTemplate();
+
   }
 
   getCreatedByUserName(riskId: string): Promise<any> {
@@ -57,6 +74,294 @@ export class EmailService {
         },
       });
     });
+  }
+
+  // 3. Add the load template method
+private async loadStatusChangeReviewTemplate() {
+  try {
+    this.statusChangeReviewTemplate = await fetch(
+      'Templates/StatusChangeReviewTemplate.html'
+    ).then((response) => response.text());
+  } catch (error) {
+    console.error('Failed to load status change review template:', error);
+  }
+}
+
+// 4. Add helper method to get status class for styling
+private getStatusClass(status: string): string {
+  const statusLower = status.toLowerCase();
+  switch (statusLower) {
+    case 'open':
+      return 'open';
+    case 'undertreatment':
+      return 'undertreatment';
+    case 'monitoring':
+      return 'monitoring';
+    case 'accepted':
+      return 'accepted';
+    case 'deferred':
+      return 'deferred';
+    case 'close':
+    case 'closed':
+      return 'closed';
+    default:
+      return 'open';
+  }
+}
+
+// 5. Add method to prepare the email
+async prepareStatusChangeReviewEmail(context: any): Promise<string> {
+  await this.getCreatedByUserName(context.riskId);
+  return this.addRiskDetailsForStatusChangeReview(
+    this.statusChangeReviewTemplate,
+    context
+  );
+}
+
+// 6. Add method to populate template with risk details
+private addRiskDetailsForStatusChangeReview(
+  template: string,
+  context: any
+): string {
+  const statusClass = this.getStatusClass(context.newStatus);
+
+  return template
+    .replace(/{{createdBy}}/g, this.createdByUserName)
+    .replace(/{{responsibleUser}}/g, context.responsibleUser)
+    .replace(/{{riskId}}/g, context.riskId)
+    .replace(/{{riskName}}/g, context.riskName)
+    .replace(/{{description}}/g, context.description)
+    .replace(/{{riskType}}/g, context.riskType)
+    .replace(/{{mitigation}}/g, context.mitigation)
+    .replace(/{{plannedActionDate}}/g, context.plannedActionDate)
+    .replace(/{{overallRiskRating}}/g, context.overallRiskRating)
+    .replace(/{{newStatus}}/g, context.newStatus.toUpperCase())
+    .replace(/{{statusChangedBy}}/g, context.statusChangedBy || this.authService.getUserName())
+    .replace(/{{id}}/g, context.id)
+    .replace(/{{baseUrl}}/g, this.frontendUrl);
+}
+
+// 7. Add method to send the email
+sendStatusChangeReviewEmail(email: string, context: any): Observable<boolean> {
+  const subject = `RISK STATUS CHANGE REVIEW REQUIRED - ${context.riskName}`;
+  return from(this.prepareStatusChangeReviewEmail(context)).pipe(
+    switchMap((body) => {
+      return this.api.sendMail(email, subject, body);
+    }),
+    map((response: any) => {
+      this.notificationService.success(
+        'Status change review notification sent successfully'
+      );
+      return true;
+    }),
+    catchError((error) => {
+      console.error('Error sending status change review email:', error);
+      this.notificationService.error(
+        'Failed to send status change review notification'
+      );
+      return of(false);
+    })
+  );
+}
+
+
+   private async loadStatusUpdateTemplate() {
+    try {
+      this.statusUpdateTemplate = await fetch(
+        'Templates/StatusUpdateEmailTemplate.html'
+      ).then((response) => response.text());
+    } catch (error) {
+      console.error('Failed to load status update email template:', error);
+    }
+  }
+
+  private async loadRiskAcceptanceTemplate() {
+    try {
+      this.riskAcceptanceTemplate = await fetch(
+        'Templates/RiskAcceptanceEmailTemplate.html'
+      ).then((response) => response.text());
+    } catch (error) {
+      console.error('Failed to load risk acceptance email template:', error);
+    }
+  }
+
+   // RISK ACCEPTANCE EMAIL
+  async prepareRiskAcceptanceEmail(context: any): Promise<string> {
+    await this.getCreatedByUserName(context.riskId);
+    return this.addRiskDetailsForAcceptance(this.riskAcceptanceTemplate, context);
+  }
+
+  private addRiskDetailsForAcceptance(template: string, context: any): string {
+    return template
+      .replace(/{{createdBy}}/g, this.createdByUserName)
+      .replace('{{riskId}}', context.riskId)
+      .replace('{{responsibleUser}}', context.responsibleUser)
+      .replace('{{riskName}}', context.riskName)
+      .replace('{{description}}', context.description)
+      .replace('{{riskType}}', context.riskType)
+      .replace('{{impact}}', context.impact)
+      .replace('{{overallRiskRating}}', context.overallRiskRating)
+      .replace('{{acceptedBy}}', context.acceptedBy || context.approvedBy)
+      .replace('{{acceptanceReason}}', context.acceptanceReason || context.comments || 'Risk has been formally accepted.')
+      .replace(/{{baseUrl}}/g, this.frontendUrl);
+  }
+
+  sendRiskAcceptanceEmail(email: string, context: any): Observable<boolean> {
+    const subject = `RISK ACCEPTED - ${context.riskName}`;
+    return from(this.prepareRiskAcceptanceEmail(context)).pipe(
+      switchMap((body) => {
+        return this.api.sendMail(email, subject, body);
+      }),
+      map((response: any) => {
+        this.notificationService.success('Risk acceptance notification sent successfully');
+        return true;
+      }),
+      catchError((error) => {
+        console.error('Error sending risk acceptance email:', error);
+        this.notificationService.error('Failed to send risk acceptance notification');
+        return of(false);
+      })
+    );
+  }
+
+  private async loadRiskDeferredTemplate() {
+    try {
+      this.riskDeferredTemplate = await fetch(
+        'Templates/RiskDeferredEmailTemplate.html'
+      ).then((response) => response.text());
+    } catch (error) {
+      console.error('Failed to load risk deferred email template:', error);
+    }
+  }
+
+  private async loadGeneralStatusTemplate() {
+    try {
+      this.generalStatusTemplate = await fetch(
+        'Templates/GeneralStatusEmailTemplate.html'
+      ).then((response) => response.text());
+    } catch (error) {
+      console.error('Failed to load general status email template:', error);
+    }
+  }
+
+  // STATUS UPDATE EMAIL (for UnderTreatment, Monitoring)
+  async prepareStatusUpdateEmail(context: any): Promise<string> {
+     if (!this.statusUpdateTemplate) {
+    await this.loadStatusUpdateTemplate();
+  }
+    await this.getCreatedByUserName(context.riskId);
+    return this.addRiskDetailsForStatusUpdate(this.statusUpdateTemplate, context);
+  }
+
+  private addRiskDetailsForStatusUpdate(template: string, context: any): string {
+    const statusMessage = context.riskStatus === 'undertreatment'
+      ? 'is now under active treatment'
+      : 'is being actively monitored';
+
+    return template
+      .replace(/{{createdBy}}/g, this.createdByUserName)
+      .replace('{{responsibleUser}}', context.responsibleUser)
+      .replace('{{riskId}}', context.riskId)
+      .replace('{{riskName}}', context.riskName)
+      .replace('{{description}}', context.description)
+      .replace('{{riskType}}', context.riskType)
+      .replace('{{impact}}', context.impact)
+      .replace('{{mitigation}}', context.mitigation)
+      .replace('{{plannedActionDate}}', context.plannedActionDate)
+      .replace('{{overallRiskRating}}', context.overallRiskRating)
+      .replace('{{riskStatus}}', context.riskStatus.toUpperCase())
+      .replace('{{statusMessage}}', statusMessage)
+      .replace('{{approvedBy}}', context.approvedBy)
+      .replace('{{comments}}', context.comments || 'No additional comments provided.')
+      .replace(/{{baseUrl}}/g, this.frontendUrl);
+  }
+
+  sendStatusUpdateEmail(email: string, context: any): Observable<boolean> {
+    const subject = `RISK STATUS UPDATE - ${context.riskName}`;
+    return from(this.prepareStatusUpdateEmail(context)).pipe(
+      switchMap((body) => {
+        return this.api.sendMail(email, subject, body);
+      }),
+      map((response: any) => {
+        this.notificationService.success('Status update notification sent successfully');
+        return true;
+      }),
+      catchError((error) => {
+        console.error('Error sending status update email:', error);
+        this.notificationService.error('Failed to send status update notification');
+        return of(false);
+      })
+    );
+  }
+
+
+
+  // RISK DEFERRED EMAIL
+  async prepareRiskDeferredEmail(context: any): Promise<string> {
+    await this.getCreatedByUserName(context.riskId);
+    return this.addRiskDetailsForDeferred(this.riskDeferredTemplate, context);
+  }
+
+  private addRiskDetailsForDeferred(template: string, context: any): string {
+    return template
+      .replace(/{{createdBy}}/g, this.createdByUserName)
+      .replace('{{responsibleUser}}', context.responsibleUser)
+      .replace('{{riskId}}', context.riskId)
+      .replace('{{riskName}}', context.riskName)
+      .replace('{{description}}', context.description)
+      .replace('{{riskType}}', context.riskType)
+      .replace('{{impact}}', context.impact)
+      .replace('{{mitigation}}', context.mitigation)
+      .replace('{{overallRiskRating}}', context.overallRiskRating)
+      .replace('{{deferredBy}}', context.deferredBy || context.approvedBy)
+      .replace('{{deferredReason}}', context.deferredReason || context.comments || 'Risk treatment has been deferred.')
+      .replace(/{{baseUrl}}/g, this.frontendUrl);
+  }
+
+  sendRiskDeferredEmail(email: string, context: any): Observable<boolean> {
+    const subject = `RISK DEFERRED - ${context.riskName}`;
+    return from(this.prepareRiskDeferredEmail(context)).pipe(
+      switchMap((body) => {
+        return this.api.sendMail(email, subject, body);
+      }),
+      map((response: any) => {
+        this.notificationService.success('Risk deferral notification sent successfully');
+        return true;
+      }),
+      catchError((error) => {
+        console.error('Error sending risk deferral email:', error);
+        this.notificationService.error('Failed to send risk deferral notification');
+        return of(false);
+      })
+    );
+  }
+
+  // GENERAL STATUS EMAIL (fallback)
+  sendGeneralStatusEmail(email: string, context: any): Observable<boolean> {
+    const subject = `RISK STATUS CHANGE - ${context.riskName}`;
+    const body = this.addRiskDetailsForGeneral(this.generalStatusTemplate, context);
+
+    return this.api.sendMail(email, subject, body).pipe(
+      map((response: any) => {
+        this.notificationService.success('Status change notification sent successfully');
+        return true;
+      }),
+      catchError((error) => {
+        console.error('Error sending general status email:', error);
+        this.notificationService.error('Failed to send status change notification');
+        return of(false);
+      })
+    );
+  }
+
+  private addRiskDetailsForGeneral(template: string, context: any): string {
+    return template
+      .replace('{{riskId}}', context.riskId)
+      .replace('{{riskName}}', context.riskName)
+      .replace('{{riskStatus}}', context.riskStatus.toUpperCase())
+      .replace('{{approvedBy}}', context.approvedBy)
+      .replace('{{comments}}', context.comments || 'No additional comments provided.')
+      .replace(/{{baseUrl}}/g, this.frontendUrl);
   }
 
   //RESET PASSSWORD
@@ -409,6 +714,7 @@ export class EmailService {
       .replace('{{plannedActionDate}}', context.plannedActionDate)
       .replace('{{riskOwner}}', context.riskOwner)
       .replace('{{overallRiskRating}}', context.overallRiskRating)
+      .replace('{{riskStatus}}', context.riskStatus)
       .replace(/{{riskResponse}}/g, context.riskresponse)
       .replace('{{id}}', context.id)
       .replace('{{rid}}', context.rid)
