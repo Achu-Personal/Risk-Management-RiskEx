@@ -22,6 +22,7 @@ export class RiskDetailsSection3MitigationComponent {
 
   sharedData = computed(() => this.sharedDataService.data());
   approvalMessage: string = '';
+  isQualityRisk:boolean=false;
 
 
   constructor(private sharedDataService: GlobalStateServiceService,private api:ApiService,private route:ActivatedRoute)
@@ -38,6 +39,11 @@ export class RiskDetailsSection3MitigationComponent {
       this.approvalMessage = data.approve;
       // console.log("approvalMsg:",this.approvalMessage);
       // Extract the message
+    }
+
+    if(this.data.type=="Quality"){
+      this.isQualityRisk=true;
+
     }
 
     setTimeout(()=>{

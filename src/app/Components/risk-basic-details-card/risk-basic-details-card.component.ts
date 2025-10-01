@@ -26,6 +26,7 @@ export class RiskBasicDetailsCardComponent {
   color='red';
 
   showPopupForUpdateStatus=false;
+  ismitigatedRisk:boolean=false;
 
   ngOnInit()
   {
@@ -39,11 +40,36 @@ export class RiskBasicDetailsCardComponent {
     this.api.getReviewSatus(this.allData.id,true).subscribe((e)=>{
 
       this.preReviewstatus=e
-   //   console.log("review statushhhhhhh",e);
+    //  console.log("review statushhhhhhh",e);
       this.cdr.detectChanges()
     })
     // console.log("is admin",this.authService.getUserRole());
+    if(this.allData.riskType=="Quality"){
+      this.isQualityRisk=true;
+
+    }
+
+     if(this.allData.riskType=="Quality" && this.allData.riskAssessments.length >1){
+      this.ismitigatedRisk=true;
+      console.log("ismitigatedRisk",this.ismitigatedRisk);
+     }
+     else if(this.allData.riskType=="Security" && this.allData.riskAssessments.length >4){
+      this.ismitigatedRisk=false;
+      console.log("ismitigatedRisk",this.ismitigatedRisk);
+     }
+     else if(this.allData.riskType=="Privacy" && this.allData.riskAssessments.length >4){
+      this.ismitigatedRisk=false;
+      console.log("ismitigatedRisk",this.ismitigatedRisk);
+
+     }
+     else{
+      console.log("ismitigatedRisk is lesssss",this.ismitigatedRisk);
+     }
+
+
+
   }
+  isQualityRisk:boolean=false;
 
 
   @Input() isEditable=true;
@@ -53,6 +79,7 @@ export class RiskBasicDetailsCardComponent {
     "riskName": " ",
     "description": " ",
     "impact": " ",
+    "isoClauseNumber": "",
     "mitigation": " ",
     "contingency": " ",
     "overallRiskRating": null,
@@ -89,7 +116,8 @@ export class RiskBasicDetailsCardComponent {
       "email": ""
     },
     "updatedAt": "",
-    "closedDate": ""
+    "closedDate": "",
+
   }
 
 
@@ -117,5 +145,7 @@ onEditIconClicked(){
   console.log("showPopupForUpdateStatus",this.showPopupForUpdateStatus);
   this.editClicked.emit(this.showPopupForUpdateStatus);
 }
+
+
 
 }

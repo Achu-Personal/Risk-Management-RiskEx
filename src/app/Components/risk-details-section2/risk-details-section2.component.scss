@@ -166,3 +166,16 @@ p {
 app-stepper {
   margin-top: 6%;
 }
+
+
+
+.risk-response-box {
+  background: #5800C8;          /* Light grey background */
+  // border-left: 4px solid var(--primary-color);
+  padding: 6px 10px;
+  border-radius: 4px;
+  font-weight: bold;
+  color: white;
+  display: inline-block;
+  margin-left: 3px;
+}

@@ -237,9 +237,9 @@ export class UpdateIsmsComponent {
       this.percentageRedution = parseFloat(
         ((this.residualValue / this.overallRiskRatingBefore) * 100).toFixed(2)
       );
-      if (this.percentageRedution <= 45) {
+      if (this.overallRiskRating <= 45) {
         this.residualRisk = 1;
-      } else if (this.percentageRedution >= 46 && this.percentageRedution <= 69) {
+      } else if (this.overallRiskRating >= 46 && this.overallRiskRating <= 69) {
         this.residualRisk = 2;
       } else {
         this.residualRisk = 3;
