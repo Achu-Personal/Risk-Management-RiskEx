@@ -9,8 +9,9 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   styleUrl: './risk-status-card.component.scss'
 })
 export class RiskStatusCardComponent {
-  @Input() isOpen = false;
+  @Input() riskStatus = "";
   @Output() editClicked = new EventEmitter<boolean>();
+  @Input()isMitigatedRisk:boolean=false;
 
 
  onEditClick(event?: MouseEvent) {
@@ -21,6 +22,18 @@ export class RiskStatusCardComponent {
     }
     this.editClicked.emit(true);
   }
+
+ getStatusColor(status: string): string {
+  switch (status?.toLowerCase()) {
+    case 'open': return '#DC2626';            // Red (Critical/High priority)
+    case 'closed': return '#16A34A';          // Green (Resolved/Complete)
+    case 'deferred': return '#F59E0B';        // Amber (Postponed)
+    case 'undertreatment': return '#3B82F6';  // Blue (In progress)
+    case 'accepted': return '#8B5CF6';        // Purple (Acknowledged)
+    case 'monitoring': return '#EAB308';      // Yellow (Watch/Review)
+    default: return '#9CA3AF';                // Gray (Unknown/Neutral)
+  }
+}
 
 
 }

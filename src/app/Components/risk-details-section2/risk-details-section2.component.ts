@@ -60,22 +60,35 @@ export class RiskDetailsSection2Component {
         stepNumber: '04',
           message:""
       },
-      {
-        id: 5,
-        title: 'Closed',
-        isCompleted: false,
-        actionBy: '...',
-        date: '...',
-        stepNumber: '05',
-          message:""
-      }
+      // {
+      //   id: 5,
+      //   title: this.data.riskStatus,
+      //   isCompleted: false,
+      //   actionBy: '...',
+      //   date: '...',
+      //   stepNumber: '05',
+      //     message:""
+      // }
     ]
 
   ngOnInit()
   {
+    console.log('Datsssssssssa=', this.data);
 
     var mitigationCard=document.getElementById("mitigationCard")
     var contingencyCard=document.getElementById("mitigationCard")
+
+    if (this.data) {
+    this.stepperData.push({
+      id: 5,
+      title: this.data.RiskStatus ?.toLowerCase() === 'open' ? 'Close' : this.data.RiskStatus || 'Unknown',
+      isCompleted: false,
+      actionBy: '...',
+      date: '...',
+      stepNumber: '05',
+      message: ""
+    });
+  }
 
 
     setTimeout(()=>{
@@ -115,7 +128,7 @@ export class RiskDetailsSection2Component {
           this.stepperData[3].message = e.isReviewed!=5? (e.isReviewed>=4 ?"(Accepted)":''):`(Rejected)`;
 
 
-        if (this.data.RiskStatus == 'close') {
+        if (this.data.RiskStatus == 'closed') {
           this.stepperData[4].actionBy =  e.isReviewed >= 4? this.data.UpdatedBy:'...';
           this.stepperData[4].isCompleted = e.isReviewed >= 4 ? true : false;
           this.stepperData[4].date =e.isReviewed >= 4? this.data.UpdatedAt:'....';

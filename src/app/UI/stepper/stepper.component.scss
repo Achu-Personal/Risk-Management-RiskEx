@@ -26,7 +26,7 @@
       left: -7vw;
       width: 80px;
       height: 2px;
-      background-color: #4c6ef5;
+      background-color: #5800C8;
       transform: translateY(-50%);
       z-index: -1;
       opacity: 0.4;
@@ -63,8 +63,8 @@
 
 
   &.completed {
-    background: #4c6ef5;
-    border-color: #4c6ef5;
+    background: #5800C8;
+    border-color: #5800C8;
     color: white;
     transform: scale(1.1);
 
@@ -77,8 +77,8 @@
   }
 
   &.current {
-    border-color: #4c6ef5;
-    color: #4c6ef5;
+    border-color: #5800C8;
+    color: #5800C8;
     animation: pulse 2s infinite;
   }
 }
@@ -220,7 +220,7 @@
 
 .step{
   height: 62px;
-  background-color: #4c6ef5;
+  background-color: #5800C8;
 }
 
 @media (max-width: 600px) {

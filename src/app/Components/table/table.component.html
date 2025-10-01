@@ -1,32 +1,34 @@
-
 <div class="body">
-
-    <div class="header1">
-      <div class="entries">
+  <div class="header1">
+    <div class="entries">
       <label for="entries">Show</label>
-      <select id="entries" [(ngModel)]="itemsPerPage" (ngModelChange)="onItemsPerPageChange($event)">
+      <select
+        id="entries"
+        [(ngModel)]="itemsPerPage"
+        (ngModelChange)="onItemsPerPageChange($event)"
+      >
         <option value="10">10</option>
         <option value="25">25</option>
         <option value="50">50</option>
       </select>
       <label>entries</label>
     </div>
-      <app-searchbar (searchChanged)="onSearch($event)"></app-searchbar>
-   </div>
+    <app-searchbar (searchChanged)="onSearch($event)"></app-searchbar>
+  </div>
 
   <div class="loading-skeleton" *ngIf="isLoading">
     <div class="tablestyle">
       <table class="tabledata">
         <thead>
           <tr class="bord">
-            <th *ngFor="let item of [1,2,3,4,5,6,7,8,9]">
+            <th *ngFor="let item of [1, 2, 3, 4, 5, 6, 7, 8, 9]">
               <div class="skeleton-cell"></div>
             </th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let item of [1,2,3,4,5,6,7,8,9,10]">
-            <td *ngFor="let item of [1,2,3,4,5,6,7,8,9]">
+          <tr *ngFor="let item of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]">
+            <td *ngFor="let item of [1, 2, 3, 4, 5, 6, 7, 8, 9]">
               <div class="skeleton-cell"></div>
             </td>
           </tr>
@@ -35,191 +37,271 @@
     </div>
   </div>
 
-<ng-container *ngIf="!isLoading && hasValidData(); else noData">
-
-  <div class="container1">
-    <div class="table-container1 fi">
-    <table class="table1">
-      <thead>
-        <tr>
-          <th>SL No</th>
-          <th>Risk Id</th>
-          <th title="Risk Name">Risk Name</th>
-          @if(!isDepartmentUser){
-          <th title="Department">
-            <div class="dropdown-container">
-            <button class="dropdown-button" (click)="toggleDepartmentDropdown()">
-              Department &#9662;
-            </button>
-            @if(isDepartmentDropdownOpen ){
-            <ul [class.open]="isDepartmentDropdownOpen" class="dropdown-options">
-
-              @for(department of uniqueDepartments;track department){
-              <li
-                (click)="onDepartmentSelect(department)">
-                {{ department }}
-              </li>
-            }
-              <li (click)="onDepartmentSelect('')">All Departments</li>
-            </ul>
-            }
-          </div>
-          </th>
-        }
-          <th title="Risk Type">
-            <div class="dropdown-container">
-            <button class="dropdown-button" (click)="toggleTypeDropdown()">
-              Risk Type &#9662;
-            </button>
-            @if(isTypeDropdownOpen ){
-            <ul [class.open]="isTypeDropdownOpen"  class="dropdown-options">
-
-              @for(type of uniqueRiskTypes;track type){
-              <li
-                (click)="onTypeSelect(type)">
-                {{ type }}
-              </li>
-            }
-              <li (click)="onTypeSelect('')">All Risk Types</li>
-            </ul>
-            }
-          </div>
-          </th>
-          <th (click)="sortTable('plannedActionDate')" title="Expected closing date">
-            End Date
-            <span>
-              {{ sortDirection === 'asc' ? '↑' : '↓' }}
-            </span>
-          </th>
-          <th (click)="sortTable('crr')" title="Current overall risk rating">
-            CRR
-            <span>
-              {{ sortDirection === 'asc' ? '↑' : '↓' }}
-            </span>
-          </th>
-          <th title="Responsibility">Assignee</th>
-          <th>Reviewer</th>
-          <th title="Current status of review">
-            <div class="dropdown-container">
-              <button class="dropdown-button" (click)="toggleReviewStatusDropdown()">
-                Review Status &#9662;
-              </button>
-              @if(isReviewStatusDropdownOpen ){
-              <ul [class.open]="isReviewStatusDropdownOpen"  class="dropdown-options">
-
-                @for(type of uniqueReviewStatus;track type){
-                <li
-                  (click)="onReviewStatusSelect(type)">
-                  {{ type  }}
-                </li>
+  <ng-container *ngIf="!isLoading && hasValidData(); else noData">
+    <div class="container1">
+      <div class="table-container1 fi">
+        <table class="table1">
+          <thead>
+            <tr>
+              <th>SL No</th>
+              <th>Risk Id</th>
+              <th title="Risk Name">Risk Name</th>
+              @if(!isDepartmentUser){
+              <th title="Department">
+                <div class="dropdown-container">
+                  <button
+                    class="dropdown-button"
+                    (click)="toggleDepartmentDropdown()"
+                  >
+                    Department &#9662;
+                  </button>
+                  @if(isDepartmentDropdownOpen ){
+                  <ul
+                    [class.open]="isDepartmentDropdownOpen"
+                    class="dropdown-options"
+                  >
+                    @for(department of uniqueDepartments;track department){
+                    <li (click)="onDepartmentSelect(department)">
+                      {{ department }}
+                    </li>
+                    }
+                    <li (click)="onDepartmentSelect('')">All Departments</li>
+                  </ul>
+                  }
+                </div>
+              </th>
               }
-                <li (click)="onReviewStatusSelect('')">All  Review Status</li>
-              </ul>
+              <th title="Risk Type">
+                <div class="dropdown-container">
+                  <button
+                    class="dropdown-button"
+                    (click)="toggleTypeDropdown()"
+                  >
+                    Risk Type &#9662;
+                  </button>
+                  @if(isTypeDropdownOpen ){
+                  <ul
+                    [class.open]="isTypeDropdownOpen"
+                    class="dropdown-options"
+                  >
+                    @for(type of uniqueRiskTypes;track type){
+                    <li (click)="onTypeSelect(type)">
+                      {{ type }}
+                    </li>
+                    }
+                    <li (click)="onTypeSelect('')">All Risk Types</li>
+                  </ul>
+                  }
+                </div>
+              </th>
+              <th
+                (click)="sortTable('plannedActionDate')"
+                title="Expected closing date"
+              >
+                End Date
+                <span>
+                  {{ sortDirection === "asc" ? "↑" : "↓" }}
+                </span>
+              </th>
+              <th
+                (click)="sortTable('crr')"
+                title="Current overall risk rating"
+              >
+                CRR
+                <span>
+                  {{ sortDirection === "asc" ? "↑" : "↓" }}
+                </span>
+              </th>
+              <th title="Responsibility">Assignee</th>
+              <th>Reviewer</th>
+              <th title="Current status of review">
+                <div class="dropdown-container">
+                  <button
+                    class="dropdown-button"
+                    (click)="toggleReviewStatusDropdown()"
+                  >
+                    Review Status &#9662;
+                  </button>
+                  @if(isReviewStatusDropdownOpen ){
+                  <ul
+                    [class.open]="isReviewStatusDropdownOpen"
+                    class="dropdown-options"
+                  >
+                    @for(type of uniqueReviewStatus;track type){
+                    <li (click)="onReviewStatusSelect(type)">
+                      {{ type }}
+                    </li>
+                    }
+                    <li (click)="onReviewStatusSelect('')">
+                      All Review Status
+                    </li>
+                  </ul>
+                  }
+                </div>
+              </th>
+              @if(!isButtonVisible){
+              <th title="Current risk status">
+                <div class="dropdown-container">
+                  <button
+                    class="dropdown-button"
+                    (click)="toggleStatusDropdown()"
+                  >
+                    Risk Status &#9662;
+                  </button>
+                  @if(isStatusDropdownOpen ){
+                  <ul
+                    [class.open]="isStatusDropdownOpen"
+                    class="dropdown-options"
+                  >
+                    @for(type of uniqueStatus;track type){
+                    <li (click)="onStatusSelect(type)">
+                      {{ type }}
+                    </li>
+                    }
+                    <li (click)="onStatusSelect('')">All Status</li>
+                  </ul>
+                  }
+                </div>
+              </th>
+              } @if(isButtonVisible){
+              <th
+                title="Current difference between post and pre overall risk rating"
+              >
+                <div class="dropdown-container">
+                  <button
+                    class="dropdown-button"
+                    (click)="toggleResidualDropdown()"
+                  >
+                    Residual Risk &#9662;
+                  </button>
+                  @if(isResidualRiskDropdownOpen ){
+                  <ul
+                    [class.open]="isResidualRiskDropdownOpen"
+                    class="dropdown-options"
+                  >
+                    @for(type of uniqueResidual;track type){
+                    <li (click)="onResidualSelect(type)">
+                      {{ type }}
+                    </li>
+                    }
+                    <li (click)="onResidualSelect('')">All Residual Status</li>
+                  </ul>
+                  }
+                </div>
+              </th>
               }
-            </div>
+            </tr>
+          </thead>
+          <tbody>
+            @for(item of paginatedItems ;track item.id){
 
-          </th>
-          @if(!isButtonVisible){
-          <th title="Current risk status">
-            <div class="dropdown-container">
-              <button class="dropdown-button" (click)="toggleStatusDropdown()">
-                Risk Status &#9662;
-              </button>
-              @if(isStatusDropdownOpen ){
-              <ul [class.open]="isStatusDropdownOpen"  class="dropdown-options">
-
-                @for(type of uniqueStatus;track type){
-                <li
-                  (click)="onStatusSelect(type)">
-                  {{ type }}
-                </li>
+            <tr (click)="rowClick(item.id)" style="height: 10px">
+              <td>{{ (currentPage - 1) * 10 + ($index + 1) }}</td>
+              <td>{{ item.riskId }}</td>
+              <td title="{{ item.riskName }}">
+                {{ item.riskName | slice : 0 : 25 }}
+              </td>
+              @if(!isDepartmentUser){
+              <td>{{ item.departmentName }}</td>
               }
-                <li (click)="onStatusSelect('')">All Status</li>
-              </ul>
-              }
-            </div>
-          </th>
-          }
-          @if(isButtonVisible){
-            <th title="Current difference between post and pre overall risk rating">
-              <div class="dropdown-container">
-                <button class="dropdown-button" (click)="toggleResidualDropdown()">
-                  Residual Risk &#9662;
-                </button>
-                @if(isResidualRiskDropdownOpen ){
-                <ul [class.open]="isResidualRiskDropdownOpen"  class="dropdown-options">
-
-                  @for(type of uniqueResidual;track type){
-                  <li
-                    (click)="onResidualSelect(type)">
-                    {{ type }}
-                  </li>
-                }
-                  <li (click)="onResidualSelect('')">All  Residual Status</li>
-                </ul>
-                }
-              </div>
-            </th>
-          }
-        </tr>
-      </thead>
-        <tbody>
-          @for(item of paginatedItems ;track item.id){
-
-          <tr (click)="rowClick(item.id)" style="height:10px;">
-            <td>{{ ((currentPage-1)*10)+($index+1) }}</td>
-            <td>{{ item.riskId}}</td>
-            <td title={{item.riskName}}>{{ item.riskName | slice:0:25 }} </td>
-            @if(!isDepartmentUser){
-            <td>{{ item.departmentName }}</td>
-            }
-            <td>{{ item.riskType }}</td>
-            <td>{{ item.plannedActionDate| date: 'd MMM yyyy' }}</td>
-            @if(item.overallRiskRatingAfter !== null){
-            <td><div [ngClass]="{'green': item.overallRiskRatingAfter >=0 && item.overallRiskRatingAfter <= 30  , 'red': item.overallRiskRatingAfter > 99, 'yellow': item.overallRiskRatingAfter > 30 && item.overallRiskRatingAfter <= 99}">{{ item.overallRiskRatingAfter }}</div></td>
-            }
-            @else{
-            <td><div [ngClass]="{'green': item.overallRiskRatingBefore >=0 && item.overallRiskRatingBefore <= 30  , 'red': item.overallRiskRatingBefore > 99, 'yellow': item.overallRiskRatingBefore > 30 && item.overallRiskRatingBefore <= 99}">{{ item.overallRiskRatingBefore }}</div></td>
-            }
-            <td>{{ item.responsibleUser }}</td>
-            <td> {{item.riskAssessments[0].reviewer}}</td>
-
-            <td> {{reviewStatusMap[item.riskAssessments[0].reviewStatus] }}</td>
-            @if(!isButtonVisible){
-            <td><div [ngClass]="{'red-cell': item.riskStatus === 'open', 'green-cell': item.riskStatus === 'close'}">{{ item.riskStatus }}</div></td>
-            }
-            @if(isButtonVisible){
+              <td>{{ item.riskType }}</td>
+              <td>{{ item.plannedActionDate | date : "d MMM yyyy" }}</td>
+              @if(item.overallRiskRatingAfter !== null){
               <td>
-                <div [ngClass]="item.residualRisk | residualRiskStatusStyle ">
+                <div
+                  [ngClass]="{
+                    green:
+                      item.overallRiskRatingAfter >= 0 &&
+                      item.overallRiskRatingAfter <= 30,
+                    red: item.overallRiskRatingAfter > 99,
+                    yellow:
+                      item.overallRiskRatingAfter > 30 &&
+                      item.overallRiskRatingAfter <= 99
+                  }"
+                >
+                  {{ item.overallRiskRatingAfter }}
+                </div>
+              </td>
+              } @else{
+              <td>
+                <div
+                  [ngClass]="{
+                    green:
+                      item.overallRiskRatingBefore >= 0 &&
+                      item.overallRiskRatingBefore <= 30,
+                    red: item.overallRiskRatingBefore > 99,
+                    yellow:
+                      item.overallRiskRatingBefore > 30 &&
+                      item.overallRiskRatingBefore <= 99
+                  }"
+                >
+                  {{ item.overallRiskRatingBefore }}
+                </div>
+              </td>
+              }
+              <td>{{ item.responsibleUser }}</td>
+              <td>{{ item.riskAssessments[0].reviewer }}</td>
+
+              <td>
+                <div
+                  class="status-chip"
+                  [ngStyle]="{
+                    'background-color': getReviewColor(
+                      reviewStatusMap[
+                        getConditionalStatus(item.riskAssessments)
+                      ]
+                    ),
+                    color: '#fff'
+                  }"
+                >
+                  {{
+                    reviewStatusMap[getConditionalStatus(item.riskAssessments)]
+                  }}
+                </div>
+              </td>
+
+              @if(!isButtonVisible){
+              <td>
+                <div
+                  class="status-cell"
+                  [ngStyle]="{
+                    'background-color': getStatusColor(item.riskStatus),
+                    color: '#fff'
+                  }"
+                >
+                  {{ item.riskStatus }}
+                </div>
+              </td>
+              } @if(isButtonVisible){
+              <td>
+                <div [ngClass]="item.residualRisk | residualRiskStatusStyle">
                   {{ item.residualRisk }}
                 </div>
               </td>
+              }
+            </tr>
             }
+          </tbody>
+        </table>
+      </div>
 
-          </tr>
-        }
-        </tbody>
-    </table>
+      @if(shouldDisplayPagination()){
+      <app-pagination
+        [totalItems]="totalItems"
+        [itemsPerPage]="itemsPerPage"
+        [currentPage]="currentPage"
+        (pageChanged)="onPageChange($event)"
+      >
+      </app-pagination>
+      } @if(!shouldDisplayPagination()){
+      <div class="footer"></div>
+      }
     </div>
-
-   @if(shouldDisplayPagination()){
-    <app-pagination  [totalItems]="totalItems"
-    [itemsPerPage]="itemsPerPage"
-    [currentPage]="currentPage"
-    (pageChanged)="onPageChange($event)">
-    </app-pagination>
-   }
-
-    @if(!shouldDisplayPagination()){
-    <div class="footer"></div>
-   }
-
-  </div>
-</ng-container>
+  </ng-container>
 </div>
 
 <ng-template #noData>
-  <div class="no-data-container"  *ngIf=" !isLoading" >
-     <img src="../../../../Images/nodata.png" alt="no-data-message">
+  <div class="no-data-container" *ngIf="!isLoading">
+    <img src="../../../../Images/nodata.png" alt="no-data-message" />
   </div>
 </ng-template>

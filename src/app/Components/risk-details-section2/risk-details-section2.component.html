@@ -8,7 +8,7 @@
     <div>
 
       <div id="mitigationCard" class=" primaryColor shadowType1 details-card "  >
-        <h5 >Risk Mitigation</h5>
+        <h5 >Risk Treatment</h5>
         @if(data.riskMitigation!=null&&data.riskMitigation.trim().length > 0)
         {
           <p title={{data.riskMitigation}}>{{data.riskMitigation.length>1020?data.riskMitigation.slice(0,1020)+"...":data.riskMitigation}}</p>
@@ -47,19 +47,22 @@
             <h5>Planned date of Action : </h5>
             <h6>{{data.plannedActionDate | date: 'd MMM yyyy'}}</h6>
           </div>
+          <div class="" >
+             <h5>Risk Response :</h5>
+              <div class="risk-response-box">
+                {{ data.RiskResponse }}
+              </div>
+            </div>
 
 
-          @if(stepperData[2].isCompleted )
+          @if(stepperData[2].isCompleted && data.ClosedDate?.value)
           {
             <div  class=" " >
               <h5>Closed Date : </h5>
               <h6>{{data.ClosedDate | date: 'd MMM yyyy'}}</h6>
             </div>
 
-            <div class="" >
-              <h5 >Risk Response : </h5>
-              <h6 >{{data.RiskResponse}}</h6>
-            </div>
+
 
             <div class=""   style="display: flex;flex-direction: row;align-items: center;">
 

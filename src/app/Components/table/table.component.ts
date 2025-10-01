@@ -193,8 +193,10 @@ export class TableComponent {
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
     const endIndex = startIndex + this.itemsPerPage;
 
-    // Update paginatedItems instead of overwriting paginated input
+
+
     this.paginatedItems = this.filteredItems.slice(startIndex, endIndex);
+    console.log("paginatedItems",this.paginatedItems);
     this.totalItems = this.filteredItems.length;
 
     this.cdr.markForCheck();
@@ -354,4 +356,57 @@ export class TableComponent {
       ? item.overallRiskRatingAfter
       : item.overallRiskRatingBefore;
   }
+
+
+
+
+
+
+getStatusColor(status: string): string {
+  switch (status?.toLowerCase()) {
+    case 'open': return '#EF4444';            // Vibrant Red (Critical/High priority)
+    case 'closed': return '#10B981';          // Vibrant Green (Resolved/Complete)
+    case 'deferred': return '#F97316';        // Vibrant Orange (Postponed)
+    case 'undertreatment': return '#3B82F6';  // Vibrant Blue (In progress)
+    case 'accepted': return '#A855F7';        // Vibrant Purple (Acknowledged)
+    case 'monitoring': return '#FBBF24';      // Vibrant Gold (Watch/Review)
+    default: return '#9CA3AF';                // Neutral Gray (Unknown/Neutral)
+  }
+}
+
+
+getReviewColor(status: string): string {
+  switch (status?.toLowerCase())  {
+    case 'review pending':    return '#F59E0B';   // Amber (Needs attention)
+    case 'review completed':  return '#3B82F6';   // Blue (Reviewed, awaiting approval)
+    case 'approval pending':  return '#8B5CF6';   // Purple (Final stage pending)
+    case 'approval completed':return '#10B981';   // Green (Fully complete)
+    case 'rejected':         return '#EF4444';   // Red (Action needed)
+    default: return '#9CA3AF'; // Gray (Unknown)
+  }
+}
+
+
+
+getConditionalStatus(riskAssessments: any[]): string {
+  if (!riskAssessments || riskAssessments.length === 0) return '';
+
+  const count = riskAssessments.length;
+
+
+  if (count === 2 ) {
+    // Make sure index exists
+    return riskAssessments[1]?.reviewStatus || '';
+  }
+  else if (count === 1 || count === 4 ) {
+    return riskAssessments[0]?.reviewStatus || '';
+  }
+  else if (count === 8 ) {
+    return riskAssessments[5]?.reviewStatus || '';
+  }
+
+  // Default fallback
+  return riskAssessments[0]?.reviewStatus || '';
+}
+
 }
