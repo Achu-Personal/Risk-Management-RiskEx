@@ -52,6 +52,16 @@
       display: inline-block;
       min-width: 130px
     }
+     .status-badge {
+      padding: 4px 12px;
+      border-radius: 3px;
+      background-color: #17a2b8;
+      color: #fff;
+      font-size: 13px;
+      text-transform: uppercase;
+      font-weight: 600;
+      margin-left: 8px;
+    }
   </style>
 </head>
 
@@ -69,12 +79,16 @@
         <li><strong>Risk Category :</strong> {{riskName}}</li>
         <li><strong>Description :</strong> {{description}}</li>
         <li><strong>Risk Type :</strong> {{riskType}}</li>
-        <li><strong>Impact :</strong> {{impact}}</li>
-        <li><strong>Mitigation Plan :</strong> {{mitigation}}</li>
+        <li><strong>Impact Of Risk :</strong> {{impact}}</li>
+        <li><strong>Risk Treatment Plan :</strong> {{mitigation}}</li>
         <li><strong>Planned Date :</strong> {{plannedActionDate}}</li>
         <li><strong>Risk Owner :</strong> {{riskOwner}}</li>
-        <li><strong>Risk Rating :</strong> {{overallRiskRating}}</li>
-        <li><strong>Response :</strong> {{riskResponse}}</li>
+        <li><strong>Residual Risk :</strong> {{overallRiskRating}}</li>
+       <li>
+          <strong>Risk Status:</strong>
+          <span class="status-badge">{{riskStatus}}</span>
+        </li>
+        <li><strong>Risk Response :</strong> {{riskResponse}}</li>
       </ul>
     </div>
     <div
