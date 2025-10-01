@@ -89,11 +89,18 @@ private async loadStatusChangeReviewTemplate() {
 
 // 4. Add helper method to get status class for styling
 private getStatusClass(status: string): string {
-  const statusLower = status.toLowerCase();
+  // Add null/undefined check and convert to string
+  if (!status) {
+    return 'open'; // default fallback
+  }
+
+  const statusLower = String(status).toLowerCase(); // Force conversion to string
+
   switch (statusLower) {
     case 'open':
       return 'open';
     case 'undertreatment':
+    case 'under treatment':
       return 'undertreatment';
     case 'monitoring':
       return 'monitoring';
@@ -123,21 +130,27 @@ private addRiskDetailsForStatusChangeReview(
   template: string,
   context: any
 ): string {
-  const statusClass = this.getStatusClass(context.newStatus);
+  const newStatus = context.newStatus ? String(context.newStatus) : 'Open';
+  const oldStatus = context.oldStatus ? String(context.oldStatus) : 'Open';
+  const statusClass = this.getStatusClass(newStatus);
 
   return template
-    .replace(/{{createdBy}}/g, this.createdByUserName)
-    .replace(/{{responsibleUser}}/g, context.responsibleUser)
-    .replace(/{{riskId}}/g, context.riskId)
-    .replace(/{{riskName}}/g, context.riskName)
-    .replace(/{{description}}/g, context.description)
-    .replace(/{{riskType}}/g, context.riskType)
-    .replace(/{{mitigation}}/g, context.mitigation)
-    .replace(/{{plannedActionDate}}/g, context.plannedActionDate)
-    .replace(/{{overallRiskRating}}/g, context.overallRiskRating)
-    .replace(/{{newStatus}}/g, context.newStatus.toUpperCase())
-    .replace(/{{statusChangedBy}}/g, context.statusChangedBy || this.authService.getUserName())
-    .replace(/{{id}}/g, context.id)
+    .replace(/{{createdBy}}/g, this.createdByUserName || 'Unknown')
+    .replace(/{{responsibleUser}}/g, context.responsibleUser || 'Unknown')
+    .replace(/{{reviewer}}/g, context.reviewer || 'Reviewer')
+    .replace(/{{riskId}}/g, context.riskId || '')
+    .replace(/{{riskName}}/g, context.riskName || '')
+    .replace(/{{description}}/g, context.description || '')
+    .replace(/{{riskType}}/g, context.riskType || '')
+    .replace(/{{impact}}/g, context.impact || 'Not specified')
+    .replace(/{{mitigation}}/g, context.mitigation || '')
+    .replace(/{{plannedActionDate}}/g, context.plannedActionDate || 'Not specified')
+    .replace(/{{overallRiskRating}}/g, String(context.overallRiskRating || ''))
+    .replace(/{{newStatus}}/g, newStatus.toUpperCase())
+    .replace(/{{oldStatus}}/g, oldStatus.toUpperCase())
+    .replace(/{{statusChangedBy}}/g, context.statusChangedBy || this.authService.getUserName() || 'Unknown')
+    .replace(/{{id}}/g, String(context.id || ''))
+    .replace(/{{statusClass}}/g, statusClass)
     .replace(/{{baseUrl}}/g, this.frontendUrl);
 }
 

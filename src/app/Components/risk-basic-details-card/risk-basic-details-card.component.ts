@@ -6,12 +6,11 @@ import {  Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../Services/auth/auth.service';
 import { ApiService } from '../../Services/api.service';
-import { ChangeRiskStatusComponent } from "../change-risk-status/change-risk-status.component";
 
 @Component({
   selector: 'app-risk-basic-details-card',
   standalone: true,
-  imports: [OverallRatingCardComponent, RiskStatusCardComponent, EditButtonComponent, CommonModule, ChangeRiskStatusComponent],
+  imports: [OverallRatingCardComponent, RiskStatusCardComponent, EditButtonComponent, CommonModule],
   templateUrl: './risk-basic-details-card.component.html',
   styleUrl: './risk-basic-details-card.component.scss'
 })
@@ -54,11 +53,11 @@ export class RiskBasicDetailsCardComponent {
       console.log("ismitigatedRisk",this.ismitigatedRisk);
      }
      else if(this.allData.riskType=="Security" && this.allData.riskAssessments.length >4){
-      this.ismitigatedRisk=false;
+      this.ismitigatedRisk=true;
       console.log("ismitigatedRisk",this.ismitigatedRisk);
      }
      else if(this.allData.riskType=="Privacy" && this.allData.riskAssessments.length >4){
-      this.ismitigatedRisk=false;
+      this.ismitigatedRisk=true;
       console.log("ismitigatedRisk",this.ismitigatedRisk);
 
      }
