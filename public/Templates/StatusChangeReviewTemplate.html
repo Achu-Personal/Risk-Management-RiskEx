@@ -1,165 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <title>Risk Status Change Review</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background: #fff;
-      color: #333;
-      line-height: 1.6
-    }
-
-    div.main {
-      max-width: 700px;
-      margin: 40px auto;
-      padding: 30px;
-      background: #fff;
-      border-radius: 8px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, .1)
-    }
-
-    div.header {
-      border-bottom: 2px solid #2c3e50;
-      padding-bottom: 15px;
-      margin-bottom: 25px
-    }
-
-    h2 {
-      color: #2c3e50;
-      margin: 0;
-      font-size: 24px
-    }
-
-    ul {
-      list-style: none;
-      padding: 0;
-      margin: 0
-    }
-
-    li {
-      margin-bottom: 10px;
-      padding-left: 10px;
-      border-left: 3px solid #2c3e50
-    }
-
-    li strong {
-      color: #2c3e50;
-      display: inline-block;
-      min-width: 150px
-    }
-
-    .status-badge {
-      display: inline-block;
-      padding: 5px 12px;
-      border-radius: 4px;
-      font-weight: 600;
-      font-size: 14px;
-      margin-left: 10px;
-    }
-
-    .status-open {
-      background-color: #fff3cd;
-      color: #856404;
-    }
-
-    .status-undertreatment {
-      background-color: #cfe2ff;
-      color: #084298;
-    }
-
-    .status-monitoring {
-      background-color: #d1e7dd;
-      color: #0f5132;
-    }
-
-    .status-accepted {
-      background-color: #f8d7da;
-      color: #842029;
-    }
-
-    .status-deferred {
-      background-color: #e2d9f3;
-      color: #432874;
-    }
-
-    .status-closed {
-      background-color: #d3d3d3;
-      color: #383838;
-    }
-  </style>
+<meta charset="UTF-8">
+<title>Risk Status Change Review</title>
+<style>
+body{font-family:Arial,sans-serif;margin:0;padding:0;background:#fff;color:#333;line-height:1.6}
+div.main{max-width:700px;margin:40px auto;padding:30px;background:#fff;border-radius:8px;box-shadow:0 2px 10px rgba(0,0,0,.1)}
+div.header{border-bottom:2px solid #2c3e50;padding-bottom:15px;margin-bottom:25px}
+h2{color:#2c3e50;margin:0;font-size:24px}
+ul{list-style:none;padding:0;margin:0}
+li{margin-bottom:10px;padding-left:10px;border-left:3px solid #2c3e50}
+li strong{color:#2c3e50;display:inline-block;min-width:150px}
+.status-badge{display:inline-block;padding:5px 12px;border-radius:4px;font-weight:600;font-size:14px;margin-left:10px}
+.status-old{background:#fff3cd;color:#856404}
+.status-new{background:#cfe2ff;color:#084298}
+</style>
 </head>
-
 <body>
-  <div class="main">
-    <div class="header">
-      <h2>Risk Status Change - Review Required</h2>
-    </div>
-    <p>Dear <span style="font-weight: 600;">{{responsibleUser}}</span>,</p>
-    <p>A risk previously identified by <b>{{createdBy}}</b> has undergone a status change and requires your review and approval.</p>
-
-    <div style="background-color:#e8f4f8;border-left:4px solid #0288d1;padding:15px;margin:20px 0;border-radius:4px">
-      <p style="margin:0;font-weight:600;color:#0288d1">Status Update:</p>
-      <p style="margin:5px 0 0 0">
-        The risk status has been changed to:
-        <span class="status-badge status-{{statusClass}}">{{newStatus}}</span>
-      </p>
-    </div>
-
-    <div style="background-color:#f8f9fa;border-radius:6px;padding:20px;margin:20px 0">
-      <ul>
-        <li><strong>Risk ID :</strong> {{riskId}}</li>
-        <li><strong>Risk Category :</strong> {{riskName}}</li>
-        <li><strong>Description :</strong> {{description}}</li>
-        <li><strong>Risk Type :</strong> {{riskType}}</li>
-        <li><strong>Impact Of Risk :</strong> {{impact}}</li>
-        <li><strong>Risk Treatment Plan :</strong> {{mitigation}}</li>
-        <li><strong>Planned Action Date :</strong> {{plannedActionDate}}</li>
-        <li><strong>Responsible User :</strong> {{responsibleUser}}</li>
-        <li><strong>Residual Risk:</strong> {{overallRiskRating}}</li>
-        <li><strong>Risk Status :</strong> {{newStatus}}</li>
-      </ul>
-    </div>
-
-    <div
-      style="display:inline-block;padding:5px 10px;background-color:#fff3cd;color:#856404;border-radius:4px;margin-top:10px;font-size:14px">
-      ⚠️ Please review and approve within 24 hours.</div>
-
-    <div style="text-align:center;margin:30px 0">
-      <p style="font-weight:600;color:#2c3e50">Please review this status change and take action:</p>
-      <a href="{{baseUrl}}/thankyou/{{id}}"
-        style="display:inline-block;margin:10px;padding:12px 25px;background-color:#28a745;color:white;text-decoration:none;border-radius:5px;font-weight:600">
-        Approve Status Change
-      </a>
-      <a href="{{baseUrl}}/sorry/{{id}}"
-        style="display:inline-block;margin:10px;padding:12px 25px;background-color:#dc3545;color:white;text-decoration:none;border-radius:5px;font-weight:600">
-        Reject Status Change
-      </a>
-    </div>
-
-    <div style="background-color:#f8f9fa;padding:15px;border-radius:6px;margin:20px 0">
-      <p style="margin:0 0 10px 0;font-weight:600;color:#2c3e50">What happens next?</p>
-      <ul style="margin:0;padding-left:20px;list-style:disc">
-        <li style="border:none;padding:5px 0">If approved, the risk status will be updated in the system</li>
-        <li style="border:none;padding:5px 0">If rejected, the risk will revert to its previous status</li>
-        <li style="border:none;padding:5px 0">All stakeholders will be notified of your decision</li>
-      </ul>
-    </div>
-
-    <p>If you need any clarification or have questions regarding this status change, please reach out to the Audits and Compliance team or the person who initiated the change.</p>
-
-    <div style="margin-top:40px;padding-top:20px;border-top:1px solid #eee;color:#666;font-size:14px">
-      <p style="margin:5px 0">Best regards,</p>
-      <p style="margin:5px 0">Audits and Compliance Team,</p>
-      <p style="margin:5px 0">Experion Technologies Pvt. Ltd</p>
-      <p style="font-size:12px;color:#888;margin:5px 0">This is an automated notification. Please do not reply to
-        this email.</p>
-    </div>
-  </div>
+<div class="main">
+<div class="header"><h2>Risk Status Change - Review Required</h2></div>
+<p>Dear <span style="font-weight:600">{{reviewer}}</span>,</p>
+<p>A risk previously identified by <b>{{createdBy}}</b> has undergone a status change and requires your review and approval.</p>
+<div style="background:#e8f4f8;border-left:4px solid #0288d1;padding:15px;margin:20px 0;border-radius:4px">
+<p style="margin:0;font-weight:600;color:#0288d1">Status Update:</p>
+<p style="margin:5px 0 0">The risk status has changed from <span class="status-badge status-old">{{oldStatus}}</span> to <span class="status-badge status-new">{{newStatus}}</span>
+</p></div>
+<div style="background:#f8f9fa;border-radius:6px;padding:20px;margin:20px 0">
+<ul>
+<li><strong>Risk ID :</strong> {{riskId}}</li>
+<li><strong>Risk Category :</strong> {{riskName}}</li>
+<li><strong>Description :</strong> {{description}}</li>
+<li><strong>Risk Type :</strong> {{riskType}}</li>
+<li><strong>Impact Of Risk :</strong> {{impact}}</li>
+<li><strong>Risk Treatment Plan :</strong> {{mitigation}}</li>
+<li><strong>Planned Action Date :</strong> {{plannedActionDate}}</li>
+<li><strong>Responsible User :</strong> {{responsibleUser}}</li>
+<li><strong>Residual Risk:</strong> {{overallRiskRating}}</li>
+<li><strong>Risk Status :</strong> {{newStatus}}</li>
+</ul>
+</div>
+<div style="display:inline-block;padding:5px 10px;background:#fff3cd;color:#856404;border-radius:4px;margin-top:10px;font-size:14px">⚠️ Please review and approve within 24 hours.</div>
+<div style="text-align:center;margin:30px 0">
+<p style="font-weight:600;color:#2c3e50">Please review this status change and take action:</p>
+<a href="{{baseUrl}}/thankyou/{{id}}" style="display:inline-block;margin:10px;padding:12px 25px;background:#28a745;color:#fff;text-decoration:none;border-radius:5px;font-weight:600">Approve</a>
+<a href="{{baseUrl}}/sorry/{{id}}" style="display:inline-block;margin:10px;padding:12px 25px;background:#dc3545;color:#fff;text-decoration:none;border-radius:5px;font-weight:600">Reject</a>
+</div>
+<div style="background:#f8f9fa;padding:15px;border-radius:6px;margin:20px 0">
+<p style="margin:0 0 10px;font-weight:600;color:#2c3e50">What happens next?</p>
+<ul style="margin:0;padding-left:20px;list-style:disc">
+<li style="border:none;padding:5px 0">If approved, the risk status will be updated in the system</li>
+<li style="border:none;padding:5px 0">If rejected, the risk will revert to open status</li>
+<li style="border:none;padding:5px 0">All stakeholders will be notified of your decision</li>
+</ul>
+</div>
+<p>If you need any clarification or have questions regarding this status change, please reach out to the Audits and Compliance team or the person who initiated the change.</p>
+<div style="margin-top:40px;padding-top:20px;border-top:1px solid #eee;color:#666;font-size:14px">
+<p style="margin:5px 0">Best regards,</p>
+<p style="margin:5px 0">Audits and Compliance Team,</p>
+<p style="margin:5px 0">Experion Technologies Pvt. Ltd</p>
+<p style="font-size:12px;color:#888;margin:5px 0">This is an automated notification. Please do not reply to this email.</p>
+</div>
+</div>
 </body>
-
 </html>
