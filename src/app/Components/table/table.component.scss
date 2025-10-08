@@ -14,6 +14,7 @@
   flex-direction: column;
   font-size: small;
 
+
 }
 label{
   font-size: small;
@@ -251,36 +252,37 @@ tbody {
 }
 
 .green-cell {
-  background-color: #d4edda;
-  color: green;
+  background-color: #10B981;
+  color: white;
   padding: 5px;
   border-radius: 10px;
   text-align: center;
 }
 .red-cell {
-  background-color: #edd4d5;
-  color: #e82222;
+  background-color: #e82222;
+  color: white;
   padding: 5px;
   border-radius: 10px;
   text-align: center;
 }
 .yellow-cell {
-  background-color: rgba(189, 189, 7, 0.268);
-  color: rgb(189, 189, 7);
+  // background-color: rgba(189, 189, 7, 0.268);
+  color: white;
+  background-color: rgb(189, 189, 7);
   padding: 5px;
   border-radius: 10px;
   text-align: center;
 }
 .yellow{
-  color: rgb(189, 189, 7);
+  color: #FFC107;
   font-weight: bold;
 }
 .red{
-  color: red;
+  color: #D9534F;
   font-weight: bold;
 }
 .green{
-  color: green;
+  color: #6DA34D;
   font-weight: bold;
 }
 
@@ -490,14 +492,19 @@ th span {
   text-align: center;
   font-weight: 500;
   text-transform: capitalize;
+
 }
 
 .status-chip {
+  width: 160px;              /* ✅ Fixed width */
   padding: 5px 10px;
   border-radius: 12px;
   text-align: center;
   font-weight: 500;
   display: inline-block;
   text-transform: capitalize;
+  white-space: nowrap;       /* ✅ Prevent text from wrapping */
+  overflow: hidden;          /* ✅ Hide overflowing text */
+  text-overflow: ellipsis;   /* ✅ Add "..." if text is too long */
 }
 

@@ -5,7 +5,7 @@
   border-radius: 5px;
   background:white;
   width: 87.3%;
-  font-family: "Arial", sans-serif;
+  font-size: small;
   position: fixed;
   overflow-y: auto;
 }
@@ -248,8 +248,8 @@ color: gray;
 }
 
 .green-risk {
-color: green;
-// font-weight: bold;
+color: #6DA34D;
+font-weight: bold;
 // padding: 5px;
 // border-radius: 5px;
 // text-align: center;
@@ -258,8 +258,8 @@ color: green;
 }
 
 .yellow-risk {
-color: rgb(189, 189, 7);
-// font-weight: bold;
+color: #FFC107;
+font-weight: bold;
 // padding: 5px;
 // border-radius: 5px;
 // text-align: center;
@@ -268,8 +268,8 @@ color: rgb(189, 189, 7);
 }
 
 .red-risk {
-color: red;
-// font-weight: bold;
+color: #D9534F;
+font-weight: bold;
 // padding: 5px;
 // border-radius: 5px;
 // text-align: center;
@@ -576,6 +576,19 @@ transform: translateX(20px);
 .admin-toggle svg path,
 .admin-toggle svg {
   opacity: 0.7;
+}
+
+.status-cell {
+  width: 160px;              /* ✅ Fixed width */
+  padding: 5px 10px;
+  border-radius: 12px;
+  text-align: center;
+  font-weight: 500;
+  display: inline-block;
+  text-transform: capitalize;
+  white-space: nowrap;       /* ✅ Prevent text from wrapping */
+  overflow: hidden;          /* ✅ Hide overflowing text */
+  text-overflow: ellipsis;   /* ✅ Add "..." if text is too long */
 }
 
 

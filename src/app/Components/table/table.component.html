@@ -209,15 +209,7 @@
               @if(item.overallRiskRatingAfter !== null){
               <td>
                 <div
-                  [ngClass]="{
-                    green:
-                      item.overallRiskRatingAfter >= 0 &&
-                      item.overallRiskRatingAfter <= 30,
-                    red: item.overallRiskRatingAfter > 99,
-                    yellow:
-                      item.overallRiskRatingAfter > 30 &&
-                      item.overallRiskRatingAfter <= 99
-                  }"
+                  [ngClass]="getRiskColor(item.overallRiskRatingAfter,item.riskType)"
                 >
                   {{ item.overallRiskRatingAfter }}
                 </div>
@@ -225,15 +217,7 @@
               } @else{
               <td>
                 <div
-                  [ngClass]="{
-                    green:
-                      item.overallRiskRatingBefore >= 0 &&
-                      item.overallRiskRatingBefore <= 30,
-                    red: item.overallRiskRatingBefore > 99,
-                    yellow:
-                      item.overallRiskRatingBefore > 30 &&
-                      item.overallRiskRatingBefore <= 99
-                  }"
+                  [ngClass]="getRiskColor(item.overallRiskRatingBefore,item.riskType)"
                 >
                   {{ item.overallRiskRatingBefore }}
                 </div>

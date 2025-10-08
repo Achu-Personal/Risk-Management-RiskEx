@@ -14,7 +14,7 @@ export class OverallRatingCardComponent {
   @Input() backgroundColor: string = '';
   @Input() textColor: string = '';
   @Input() height: string = '100%';
-  @Input() width: string = '90%'; 
+  @Input() width: string = '90%';
   @Input() assessmentData: any[] = [];
   @Input() riskType = 'Quality';
 
@@ -24,10 +24,10 @@ export class OverallRatingCardComponent {
   get getCriticality(): string {
     if (this.riskType === 'Quality') {
       // Calculation specific to Quality risk type
-      if (this.value <= 8) {
+      if (this.value <= 4) {
         return 'Low';
       }
-      if (this.value > 8 && this.value <= 32) {
+      if (this.value >= 6 && this.value <= 16) {
         return 'Moderate';
       }
       return 'Critical';

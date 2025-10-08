@@ -392,21 +392,56 @@ getConditionalStatus(riskAssessments: any[]): string {
   if (!riskAssessments || riskAssessments.length === 0) return '';
 
   const count = riskAssessments.length;
+  if(riskAssessments[0].reviewStatus==="ReviewPending"){
+    return riskAssessments[0]?.reviewStatus
+  }
+  else{
+   const index=count-1
+  return riskAssessments[index]?.reviewStatus
 
 
-  if (count === 2 ) {
-    // Make sure index exists
-    return riskAssessments[1]?.reviewStatus || '';
-  }
-  else if (count === 1 || count === 4 ) {
-    return riskAssessments[0]?.reviewStatus || '';
-  }
-  else if (count === 8 ) {
-    return riskAssessments[5]?.reviewStatus || '';
   }
 
-  // Default fallback
-  return riskAssessments[0]?.reviewStatus || '';
+
+
 }
+
+
+
+
+getRiskColor(value: number , riskType:string): string {
+  if(riskType=="Quality"){
+     if (value <= 4) {
+    return 'green';
+  } else if (value >= 6&& value <= 16) {
+    return 'yellow';
+  } else  {
+    return 'red';
+  }
+  }
+   else if (riskType== "Security") {
+      if (value <= 45) {
+      return 'green';
+    } else if (value  >= 46 && value <= 69) {
+      return 'yellow';
+    } else {
+      return 'red';
+    }
+  }
+
+
+
+else{
+    if (value <= 45) {
+      return 'green';
+    } else if (value  >= 46 && value <= 69) {
+      return 'yellow';
+    } else {
+      return 'red';
+    }
+  }
+}
+
+
 
 }
