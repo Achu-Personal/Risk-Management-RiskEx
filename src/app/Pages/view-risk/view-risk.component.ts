@@ -234,7 +234,8 @@ submitSendToReview(event:{ payload: any }){
         this.residualRisk = 3;
       }
 
-    const payload={closedDate: this.payloadForReview.closedDate ? `${this.payloadForReview.closedDate}T00:00:00.000Z`: null,
+    const payload={
+      closedDate: this.payloadForReview.closedDate ? `${this.payloadForReview.closedDate}T00:00:00.000Z`: null,
       riskStatus: this.payloadForReview.riskStatus,
       overallRiskRatingAfter: Number(this.data.overallRiskRating),
       percentageRedution: Number(this.data.percentageRedution),

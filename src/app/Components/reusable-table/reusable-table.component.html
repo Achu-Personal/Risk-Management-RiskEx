@@ -90,13 +90,13 @@
             @for(key of rowKeys; track key ){
             <td [title]="row[key]">
               <ng-container *ngIf="key === 'overallRiskRating'">
-                <div [ngClass]="getRiskRatingStyle(row[key])">
+                <div [ngClass]="getRiskRatingStyle(row[key] ,row.riskType)">
                   {{ row[key] }}
                 </div>
               </ng-container>
 
               <ng-container *ngIf="key === 'overallRiskRatingBefore'">
-                <div [ngClass]="getRiskRatingStyle(row[key])">
+                <div [ngClass]="getRiskRatingStyle(row[key],row.riskType)">
                   {{ row[key] }}
                 </div>
               </ng-container>
@@ -105,7 +105,13 @@
                 {{ row[key] | date : "d MMM yyyy" }}
               </ng-container>
               <ng-container *ngIf="key === 'riskStatus'">
-                <span [ngClass]="getRiskStatusClass(row[key])">
+                <span [ngClass]="getRiskStatusClass(row[key])"
+                 class="status-cell"
+                [ngStyle]="{
+                    'background-color': getStatusColor(row[key]),
+                    color: '#fff'
+                  }"
+                >
                   {{ row[key] }}
                 </span>
               </ng-container>

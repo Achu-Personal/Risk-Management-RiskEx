@@ -239,15 +239,39 @@ export class ReusableTableComponent {
     }
   }
 
-  getRiskRatingStyle(riskRating: number): string {
-    if (riskRating < 30) {
+  getRiskRatingStyle(riskRating: number,riskType:string): string {
+    if(riskType=="Quality"){
+       console.log(this.paginatedData)
+    if (riskRating <= 4) {
       return 'green-risk';
-    } else if (riskRating > 31 && riskRating < 99) {
+    } else if (riskRating  >= 6 && riskRating <= 16) {
+      return 'yellow-risk';
+    } else {
+      return 'red-risk';
+    }
+
+    }
+    else if (riskType =="Security") {
+      if (riskRating <= 45) {
+      return 'green-risk';
+    } else if (riskRating  >= 46 && riskRating <= 69) {
+      return 'yellow-risk';
+    } else {
+      return 'red-risk';
+    }
+
+  }
+  else{
+    if (riskRating <= 45) {
+      return 'green-risk';
+    } else if (riskRating  >= 46 && riskRating <= 69) {
       return 'yellow-risk';
     } else {
       return 'red-risk';
     }
   }
+
+}
 
   onclickrow = output();
   rowClick(row: any) {
@@ -403,4 +427,18 @@ export class ReusableTableComponent {
     this.editUserClicked.emit(row);
     this.cdr.markForCheck();
   }
+
+
+
+  getStatusColor(status: string): string {
+  switch (status?.toLowerCase()) {
+    case 'open': return '#EF4444';            // Vibrant Red (Critical/High priority)
+    case 'closed': return '#10B981';          // Vibrant Green (Resolved/Complete)
+    case 'deferred': return '#F97316';        // Vibrant Orange (Postponed)
+    case 'undertreatment': return '#3B82F6';  // Vibrant Blue (In progress)
+    case 'accepted': return '#A855F7';        // Vibrant Purple (Acknowledged)
+    case 'monitoring': return '#FBBF24';      // Vibrant Gold (Watch/Review)
+    default: return '#9CA3AF';                // Neutral Gray (Unknown/Neutral)
+  }
+}
 }

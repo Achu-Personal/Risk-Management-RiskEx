@@ -11,7 +11,8 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 export class RiskStatusCardComponent {
   @Input() riskStatus = "";
   @Output() editClicked = new EventEmitter<boolean>();
-  @Input()isMitigatedRisk:boolean=false;
+  @Input() isMitigatedRisk: boolean = false;
+  @Input() isReviewPending: boolean = false;
 
 
  onEditClick(event?: MouseEvent) {
