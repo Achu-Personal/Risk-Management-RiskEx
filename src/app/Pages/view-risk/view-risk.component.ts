@@ -259,7 +259,7 @@ export class ViewRiskComponent {
       }
 
       const payload = {
-        closedDate: this.payloadForReview.closedDate ? `${this.payloadForReview.closedDate}T00:00:00.000Z` : null,
+        closedDate: this.payloadForReview.closedDate ? `${this.payloadForReview.closedDate}` : null,
         riskStatus: this.payloadForReview.riskStatus,
         overallRiskRatingAfter: Number(this.data.overallRiskRating),
         percentageRedution: Number(this.data.percentageRedution),
@@ -338,7 +338,7 @@ export class ViewRiskComponent {
       }
 
       const payload = {
-        closedDate: this.payloadForReview.closedDate ? `${this.payloadForReview.closedDate}T00:00:00.000Z` : null,
+        closedDate: this.payloadForReview.closedDate ? `${this.payloadForReview.closedDate}` : null,
         riskStatus: this.payloadForReview.riskStatus,
         overallRiskRatingAfter: Number(this.data.overallRiskRating),
         percentageRedution: Number(this.data.percentageRedution),
