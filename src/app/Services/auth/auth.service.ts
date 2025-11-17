@@ -27,7 +27,7 @@ export class AuthService {
 
 
 
-  constructor(private http: HttpClient, private router: Router,   private msalService: MsalService ) {
+  constructor(private http: HttpClient, private router: Router, private msalService: MsalService) {
     this.loadUserDataFromToken();
   }
 
@@ -42,15 +42,34 @@ export class AuthService {
   ssoLogin(usermail: string): Observable<any> {
     const payload = { email: usermail };
 
+    console.log('🔵 AuthService.ssoLogin called');
+    console.log('📧 Email:', usermail);
+    console.log('🌐 URL:', this.ssoUrl);
+    console.log('📦 Payload:', payload);
+
     return this.http.post(this.ssoUrl, payload).pipe(
       tap((response: any) => {
+        console.log('✅ Backend response received:', response);
+
         if (response.token) {
+          console.log('✅ Token received, storing...');
           localStorage.setItem('token', response.token);
+
+          console.log('✅ Setting user details...');
           this.setUserDetails(response.token);
+
+          console.log('✅ Navigating to dashboard...');
           this.navigateToDashboard();
+        } else {
+          console.warn('⚠️ No token in response');
         }
       }),
       catchError((error: any) => {
+        console.error('❌ Backend error in service:', error);
+        console.error('❌ Error status:', error.status);
+        console.error('❌ Error message:', error.message);
+        console.error('❌ Error body:', error.error);
+
         let errorMessage = 'An unexpected error occurred';
 
         if (error.status === 400) {
@@ -61,6 +80,7 @@ export class AuthService {
           errorMessage = error.error.message || errorMessage;
         }
 
+        console.error('❌ Final error message:', errorMessage);
         return throwError(() => errorMessage);
       })
     );
@@ -118,10 +138,10 @@ export class AuthService {
   getUserRole() {
     return this.userRole.value;
   }
-  getUserName(){
+  getUserName() {
     return this.userName.value;
   }
-  getUserMail(){
+  getUserMail() {
     return this.userMail.value;
 
   }
@@ -229,11 +249,10 @@ export class AuthService {
   }
 
   private navigateToDashboard() {
-     this.router.navigate(['/home']);
+    this.router.navigate(['/home']);
   }
 
-  getToken()
-  {
+  getToken() {
     const token = localStorage.getItem('token');
     return token;
   }
