@@ -31,9 +31,11 @@ export class AuthComponentSSO {
 
   async ngOnInit(): Promise<void> {
     console.log('🔵 AuthComponentSSO - ngOnInit started');
+    console.log('🔵 Current URL:', this.router.url);
 
+    // Check for logout flow
     this.route.queryParams.subscribe(params => {
-      console.log('Query params:', params);
+      console.log('🔵 Query params:', params);
       if (params['logout'] === 'true') {
         this.isLoggingOut = true;
         this.isLoading = false;
@@ -42,131 +44,130 @@ export class AuthComponentSSO {
       }
     });
 
-    if (this.isLoggingOut) return;
+    if (this.isLoggingOut) {
+      console.log('🔴 Logout flow detected, exiting');
+      return;
+    }
 
     try {
       this.isLoading = true;
+
+      console.log('🔵 Step 1: Initializing MSAL...');
       await this.msalService.instance.initialize();
-      console.log('✅ MSAL initialized');
+      console.log('✅ MSAL initialized successfully');
 
-      await this.waitForInteractionToComplete();
-      console.log('✅ Interaction complete');
-
+      console.log('🔵 Step 2: Handling redirect promise...');
       const result = await this.msalService.instance.handleRedirectPromise();
       console.log('🔵 Redirect result:', result);
 
-      if (result) {
-        console.log('✅ Login successful via redirect');
+      if (result && result.account) {
+        console.log('✅ Step 3: Login successful via redirect!');
         console.log('📧 User email:', result.account.username);
+        console.log('🔑 Access token present:', !!result.accessToken);
+        console.log('👤 Account:', result.account);
 
+        // Set active account
         this.msalService.instance.setActiveAccount(result.account);
-        localStorage.setItem('loginToken', result.accessToken);
+
+        // Store Microsoft token
+        if (result.accessToken) {
+          localStorage.setItem('loginToken', result.accessToken);
+          console.log('✅ LoginToken stored in localStorage');
+        }
+
+        // Get user email
         this.usermail = result.account.username;
 
-        console.log('🔵 Calling backend with email:', this.usermail);
-        // ✅ FIX: Don't await, just call it
+        console.log('🔵 Step 4: Calling backend with email:', this.usermail);
         this.ssoLoginToBackend(this.usermail);
-        return; // ✅ Return here to prevent further execution
+        return;
       }
+
+      console.log('⚠️ Step 3: No redirect result found');
+      console.log('🔵 Step 4: Checking for existing active account...');
 
       const account = this.msalService.instance.getActiveAccount();
       console.log('🔵 Active account:', account);
 
       if (account) {
+        console.log('✅ Found active account:', account.username);
         this.usermail = account.username;
-        console.log('📧 User email:', this.usermail);
 
         try {
-          await this.waitForInteractionToComplete();
-
+          console.log('🔵 Step 5: Acquiring token silently...');
           const tokenResponse = await firstValueFrom(
             this.msalService.acquireTokenSilent({
               scopes: ['user.read'],
               account
             })
           );
-          console.log('✅ Token response:', tokenResponse);
+          console.log('✅ Token acquired:', !!tokenResponse?.accessToken);
 
           if (tokenResponse?.accessToken) {
             localStorage.setItem('loginToken', tokenResponse.accessToken);
-            console.log('🔵 Calling backend with email:', this.usermail);
-            // ✅ FIX: Don't await, just call it
+            console.log('🔵 Step 6: Calling backend with email:', this.usermail);
             this.ssoLoginToBackend(this.usermail);
           } else {
-            console.log('⚠️ No token acquired, redirecting to SSO');
-            this.isLoading = false;
-            this.router.navigate(['/sso']);
+            console.warn('⚠️ No access token in response');
+            this.redirectToSSO();
           }
         } catch (error) {
           console.error('❌ Token acquisition failed:', error);
           this.handleError('Failed to acquire authentication token. Please try again.');
+          setTimeout(() => this.redirectToSSO(), 3000);
         }
       } else {
-        console.log('⚠️ No active account found');
-        if (localStorage.getItem('loginToken')) {
-          localStorage.removeItem('loginToken');
-        }
-        this.isLoading = false;
-        this.router.navigate(['/sso']);
+        console.warn('⚠️ No active account found');
+        this.redirectToSSO();
       }
     } catch (error) {
-      console.error('❌ SSO Login Error:', error);
+      console.error('❌ Fatal error in ngOnInit:', error);
       this.handleError('Authentication failed. Please try again.');
-    } finally {
-      // ✅ Don't set loading to false here - let ssoLoginToBackend handle it
-      // this.isLoading = false;
+      setTimeout(() => this.redirectToSSO(), 3000);
     }
   }
 
-  // Helper method to wait for interaction to complete using broadcast service
-  private async waitForInteractionToComplete(): Promise<void> {
-    return new Promise((resolve) => {
-      // First check current status
-      this.msalBroadcastService.inProgress$
-        .pipe(
-          filter((status: InteractionStatus) => status === InteractionStatus.None),
-          take(1)
-        )
-        .subscribe(() => {
-          resolve();
-        });
-    });
-  }
-
   ssoLoginToBackend(usermail: string) {
+    console.log('🔵 ========================================');
     console.log('🔵 ssoLoginToBackend called');
     console.log('📧 Email:', usermail);
+    console.log('🔵 ========================================');
 
     if (!usermail) {
-      console.error('❌ User email is missing');
+      console.error('❌ User email is missing!');
       this.handleError('User email is missing');
       return;
     }
 
-    // Keep loading state true
     this.isLoading = true;
 
-    console.log('🔵 Making API call to backend...');
+    console.log('🔵 Making HTTP POST request to backend...');
+    console.log('🌐 API URL:', this.authService['ssoUrl']);
 
     this.authService.ssoLogin(usermail).subscribe({
       next: (response) => {
-        console.log("✅ SSO login successful!", response);
-        console.log("✅ Response token:", response?.token);
+        console.log('✅ ========================================');
+        console.log('✅ Backend response received successfully!');
+        console.log('✅ Response:', response);
+        console.log('✅ Token present:', !!response?.token);
+        console.log('✅ ========================================');
 
-        // The service already navigated to /home
-        // Just clean up the loading state
         this.isLoading = false;
 
-        // Double-check navigation happened
+        // Double-check navigation
         if (this.router.url !== '/home') {
           console.log('🔵 Manually navigating to /home');
           this.router.navigate(['/home']);
         }
       },
       error: (error) => {
-        console.error("❌ Backend error:", error);
-        console.error("❌ Error type:", typeof error);
-        console.error("❌ Error details:", JSON.stringify(error, null, 2));
+        console.error('❌ ========================================');
+        console.error('❌ Backend error occurred!');
+        console.error('❌ Error:', error);
+        console.error('❌ Error type:', typeof error);
+        console.error('❌ Error status:', error?.status);
+        console.error('❌ Error message:', error?.message);
+        console.error('❌ ========================================');
 
         this.handleError(error || 'Authentication failed. Please try again.');
         this.isLoading = false;
@@ -174,24 +175,22 @@ export class AuthComponentSSO {
     });
   }
 
+  private redirectToSSO() {
+    console.log('🔵 Redirecting to SSO page...');
+    this.isLoading = false;
+    localStorage.removeItem('loginToken');
+    this.router.navigate(['/sso']);
+  }
+
   private handleError(message: string) {
+    console.error('❌ Handling error:', message);
     this.errorMessage = message;
     this.showError = true;
     this.isLoading = false;
   }
 
-  async retryLogin() {
-    this.showError = false;
-    this.errorMessage = '';
-    // Only redirect if not already logging out
-    if (!this.isLoggingOut) {
-      // Wait for any ongoing interaction to complete before retrying
-      await this.waitForInteractionToComplete();
-      this.msalService.loginRedirect();
-    }
-  }
-
   ngOnDestroy() {
+    console.log('🔵 AuthComponentSSO destroyed');
     this.isLoading = false;
   }
 }
