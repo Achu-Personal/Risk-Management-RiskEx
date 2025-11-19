@@ -17,10 +17,9 @@
           </div>
           <div class="step-icon"
                [class.completed]="step.isCompleted"
-
                [class.current]="step.id === currentStep">
             @if (step.isCompleted) {
-              <i class="checkmark">✓</i>
+             <span class="checkmark">✔</span>
             } @else {
               {{ step.stepNumber }}
             }

@@ -44,7 +44,6 @@
 
 }
 
-
 .step-icon {
   width: 40px;
   height: 40px;
@@ -59,26 +58,32 @@
   margin: 10px;
   position: relative;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  color: #666;
 
+  .checkmark {
+    animation: fadeInZoom 0.5s ease forwards;
 
+    // For SVG
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    // For Unicode/text
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 1;
+  }
 
   &.completed {
     background: #5800C8;
     border-color: #5800C8;
     color: white;
     transform: scale(1.1);
-
-    .checkmark {
-      opacity: 0;
-      animation: fadeInZoom 0.5s ease forwards;
-    }
-
-
   }
 
   &.current {
     border-color: #5800C8;
-    color: #5800C8;
     animation: pulse 2s infinite;
   }
 }

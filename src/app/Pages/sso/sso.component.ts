@@ -56,7 +56,7 @@ export class SsoComponent implements OnInit, OnDestroy {
     this.msalBroadcastService.inProgress$
       .pipe(takeUntil(this._destroying$))
       .subscribe((status: InteractionStatus) => {
-        console.log('🔵 MSAL Interaction Status:', InteractionStatus[status]);
+        // console.log('🔵 MSAL Interaction Status:', InteractionStatus[status]);
         this.interactionInProgress = status !== InteractionStatus.None;
         if (status === InteractionStatus.None) {
           this.setLoginDisplay();
