@@ -1,7 +1,6 @@
 <div class="status-box" [ngStyle]="{ 'background-color': getStatusColor(riskStatus) }">
   <span class="status-text">{{ riskStatus }}</span>
-
-  @if( riskStatus=="Closed" || isReviewPending){
+  @if(shouldShowEditButton()) {
     <button
       type="button"
       class="edit-btn"
