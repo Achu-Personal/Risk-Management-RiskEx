@@ -71,7 +71,7 @@ export class RiskDetailsSection2Component {
   ]
 
   ngOnInit() {
-    console.log('Datsssssssssa=', this.data);
+    // console.log('Datsssssssssa=', this.data);
 
     var mitigationCard = document.getElementById("mitigationCard")
     var contingencyCard = document.getElementById("mitigationCard")

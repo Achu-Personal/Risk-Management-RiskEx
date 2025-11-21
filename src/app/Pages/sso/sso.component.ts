@@ -39,12 +39,12 @@ export class SsoComponent implements OnInit, OnDestroy {
   ) {}
 
   async ngOnInit(): Promise<void> {
-    console.log('🔵 SsoComponent - ngOnInit started');
+    // console.log('🔵 SsoComponent - ngOnInit started');
 
     // Check if we're in a logout flow
     this.route.queryParams.subscribe(params => {
       if (params['logout'] === 'true') {
-        console.log('🔵 Logout flow detected');
+        // console.log('🔵 Logout flow detected');
         this.isLoggingOut = true;
         this.performLogout();
         return;
@@ -55,22 +55,22 @@ export class SsoComponent implements OnInit, OnDestroy {
 
     try {
       // Initialize MSAL instance first
-      console.log('🔵 Initializing MSAL instance...');
+      // console.log('🔵 Initializing MSAL instance...');
       await this.msalService.instance.initialize();
 
       // Handle any pending redirect
-      console.log('🔵 Handling redirect promise...');
+      // console.log('🔵 Handling redirect promise...');
       const redirectResult = await this.msalService.instance.handleRedirectPromise();
 
       if (redirectResult) {
-        console.log('🔵 Redirect result found, redirecting to /auth');
+        // console.log('🔵 Redirect result found, redirecting to /auth');
         // If there's a redirect result, go to auth component
         this.router.navigate(['/auth']);
         return;
       }
 
       this.isInitialized = true;
-      console.log('✅ MSAL instance initialized');
+      // console.log('✅ MSAL instance initialized');
     } catch (error) {
       console.error('❌ MSAL initialization error:', error);
     }
@@ -80,14 +80,14 @@ export class SsoComponent implements OnInit, OnDestroy {
       this.msalBroadcastService.inProgress$
         .pipe(takeUntil(this._destroying$))
         .subscribe((status: InteractionStatus) => {
-          console.log('🔵 MSAL Interaction Status:');
+          // console.log('🔵 MSAL Interaction Status:');
 
           const wasInProgress = this.interactionInProgress;
           this.interactionInProgress = status !== InteractionStatus.None;
 
           // Reset login attempted flag when interaction completes
           if (wasInProgress && !this.interactionInProgress) {
-            console.log('✅ Interaction completed, resetting login flag');
+            // console.log('✅ Interaction completed, resetting login flag');
             this.loginAttempted = false;
           }
 
@@ -108,18 +108,18 @@ export class SsoComponent implements OnInit, OnDestroy {
       this.checkAndSetActiveAccount();
     }
 
-    console.log('✅ SsoComponent initialization complete');
+    // console.log('✅ SsoComponent initialization complete');
   }
 
   setLoginDisplay() {
     this.loginDisplay = this.msalService.instance.getAllAccounts().length > 0;
-    console.log('🔵 Login display:', this.loginDisplay);
+    // console.log('🔵 Login display:', this.loginDisplay);
   }
 
   async loginRedirect() {
-    console.log('🔵 loginRedirect called');
-    console.log('🔵 Current interaction status:', this.interactionInProgress);
-    console.log('🔵 Login attempted:', this.loginAttempted);
+    // console.log('🔵 loginRedirect called');
+    // console.log('🔵 Current interaction status:', this.interactionInProgress);
+    // console.log('🔵 Login attempted:', this.loginAttempted);
 
     // Check if MSAL is initialized
     if (!this.isInitialized) {
@@ -127,7 +127,7 @@ export class SsoComponent implements OnInit, OnDestroy {
       try {
         await this.msalService.instance.initialize();
         this.isInitialized = true;
-        console.log('✅ MSAL initialized');
+        // console.log('✅ MSAL initialized');
       } catch (error) {
         console.error('❌ Failed to initialize MSAL:', error);
         return;
@@ -150,21 +150,21 @@ export class SsoComponent implements OnInit, OnDestroy {
 
     // Skip interaction check - just try to login
     // The MSAL library will handle if there's actually an interaction in progress
-    console.log('🔵 Bypassing interaction check and attempting login');
+    // console.log('🔵 Bypassing interaction check and attempting login');
 
     try {
       // Mark login as attempted
       this.loginAttempted = true;
-      console.log('🔵 Setting loginAttempted flag to true');
+      // console.log('🔵 Setting loginAttempted flag to true');
 
       const request: RedirectRequest = {
         scopes: this.defaultScopes,
         prompt: 'select_account',
       };
 
-      console.log('🔵 Initiating MSAL redirect with request:', request);
+      // console.log('🔵 Initiating MSAL redirect with request:', request);
       await this.msalService.loginRedirect(request);
-      console.log('✅ MSAL redirect initiated - user will be redirected to Microsoft');
+      // console.log('✅ MSAL redirect initiated - user will be redirected to Microsoft');
     } catch (error) {
       console.error('❌ Login redirect error:', error);
       // Reset the flag if there's an error
@@ -174,10 +174,10 @@ export class SsoComponent implements OnInit, OnDestroy {
   }
 
   async logout() {
-    console.log('🔵 logout called');
+    // console.log('🔵 logout called');
 
     if (this.isLoggingOut) {
-      console.log('⚠️ Already logging out');
+      // console.log('⚠️ Already logging out');
       return;
     }
 
@@ -191,7 +191,7 @@ export class SsoComponent implements OnInit, OnDestroy {
   }
 
   async performLogout() {
-    console.log('🔵 performLogout called');
+    // console.log('🔵 performLogout called');
 
     try {
       // Ensure MSAL is initialized
@@ -201,7 +201,7 @@ export class SsoComponent implements OnInit, OnDestroy {
       }
 
       const accounts = this.msalService.instance.getAllAccounts();
-      console.log('🔵 Accounts to logout:', accounts.length);
+      // console.log('🔵 Accounts to logout:', accounts.length);
 
       if (accounts && accounts.length > 0) {
         this.msalService.instance.setActiveAccount(null);
@@ -220,11 +220,11 @@ export class SsoComponent implements OnInit, OnDestroy {
     if (this.isLoggingOut || !this.isInitialized) return;
 
     const activeAccount = this.msalService.instance.getActiveAccount();
-    console.log('🔵 Active account:', activeAccount?.username || 'None');
+    // console.log('🔵 Active account:', activeAccount?.username || 'None');
 
     if (!activeAccount && this.msalService.instance.getAllAccounts().length > 0) {
       const account = this.msalService.instance.getAllAccounts()[0];
-      console.log('🔵 Setting active account:', account.username);
+      // console.log('🔵 Setting active account:', account.username);
       this.msalService.instance.setActiveAccount(account);
 
       this.msalService.acquireTokenSilent({
@@ -234,7 +234,7 @@ export class SsoComponent implements OnInit, OnDestroy {
         next: (response: AuthenticationResult) => {
           if (response && response.accessToken) {
             localStorage.setItem('loginToken', response.accessToken);
-            console.log('✅ Token acquired and stored');
+            // console.log('✅ Token acquired and stored');
           }
         },
         error: (error) => {
@@ -245,13 +245,13 @@ export class SsoComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    console.log('🔵 SsoComponent destroyed');
+    // console.log('🔵 SsoComponent destroyed');
     this._destroying$.next(undefined);
     this._destroying$.complete();
   }
 
   loginRedirectToRiskex() {
-    console.log('🔵 Redirecting to /login');
+    // console.log('🔵 Redirecting to /login');
     this.router.navigate(['/login']);
   }
 }

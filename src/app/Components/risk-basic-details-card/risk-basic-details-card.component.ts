@@ -45,7 +45,7 @@ export class RiskBasicDetailsCardComponent {
       this.isQualityRisk = true;
 
     }
-    console.log("allData", this.allData);
+    // console.log("allData", this.allData);
 
     if (this.allData.riskType == "Quality" && this.allData.riskAssessments.length > 1) {
       this.ismitigatedRisk = true;
@@ -61,7 +61,7 @@ export class RiskBasicDetailsCardComponent {
 
     }
     else {
-      console.log("ismitigatedRisk is lesssss", this.ismitigatedRisk);
+      // console.log("ismitigatedRisk is lesssss", this.ismitigatedRisk);
     }
 
     if (this.allData.riskAssessments[0].review.reviewStatus !== "ApprovalCompleted") {

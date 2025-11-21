@@ -1784,53 +1784,62 @@ export class ISMSFormComponent {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (this.qmsDraftId.length > 0) {
-      if (!this.isDraftLoaded || !this.qmsDraft) {
+      if (!this.isDraftLoaded || !this.qmsDraft || !this.qmsDraft.riskAssessments || this.qmsDraft.riskAssessments.length === 0) {
         console.warn(
           'Draft data is not yet loaded. Skipping ngOnChanges logic.'
         );
 
         this.api.getSingleDraftById(this.qmsDraftId).subscribe((res: any) => {
           this.qmsDraft = res;
+
+          // Add safety check here too
+          if (!this.qmsDraft.riskAssessments || this.qmsDraft.riskAssessments.length < 4) {
+            console.warn('Draft loaded but riskAssessments is empty or has insufficient data');
+            return;
+          }
+
           if (this.isAdmin == 'Admin') {
             this.departmentId = this.qmsDraft.departmentId;
             const departmentNameDetails = this.dropdownDepartment.find(
               (factor) => factor.id === this.departmentId
             );
-            this.departmentName = departmentNameDetails.departmentName;
+            if (departmentNameDetails) {
+              this.departmentName = departmentNameDetails.departmentName;
 
-            this.api
-              .getProjects(this.departmentName)
-              .pipe(
-                catchError((error: any) => {
-                  console.error('Error fetching Projects:', error);
-                  return of([]);
-                })
-              )
-              .subscribe((res: any) => {
-                this.dropdownDataProjectForAdmin = res;
-              });
-            this.api
-              .getUsersByDepartmentId(Number(this.departmentId))
-              .pipe(
-                catchError((error) => {
-                  console.error('Error fetching Users by Department:', error);
-                  return of([]);
-                })
-              )
-              .subscribe((res: any) => {
-                this.dropdownAssigneeForAdmin = res;
-              });
+              this.api
+                .getProjects(this.departmentName)
+                .pipe(
+                  catchError((error: any) => {
+                    console.error('Error fetching Projects:', error);
+                    return of([]);
+                  })
+                )
+                .subscribe((res: any) => {
+                  this.dropdownDataProjectForAdmin = res;
+                });
+              this.api
+                .getUsersByDepartmentId(Number(this.departmentId))
+                .pipe(
+                  catchError((error) => {
+                    console.error('Error fetching Users by Department:', error);
+                    return of([]);
+                  })
+                )
+                .subscribe((res: any) => {
+                  this.dropdownAssigneeForAdmin = res;
+                });
+            }
           }
 
-          if (this.qmsDraft?.responseId && Array.isArray(this.riskResponses) && this.riskResponses.length > 0) {
+          if (this.qmsDraft?.riskResponseId && Array.isArray(this.riskResponses) && this.riskResponses.length > 0) {
             const match = this.riskResponses.find(r =>
-              Number(r.id) === Number(this.qmsDraft.riskResponseId)   // 👈 force number
+              Number(r.id) === Number(this.qmsDraft.riskResponseId)
             );
             this.preselectedResponseName = match ? match.name : '';
-            console.log('match match match', match);
+            // console.log('match match match', match);
           }
 
-          if (changes['dropdownLikelihood']) {
+          if (changes['dropdownLikelihood'] && this.qmsDraft?.riskAssessments?.length >= 4) {
             const riskFactors = [
               'Confidentiality',
               'Integrity',
@@ -1839,10 +1848,7 @@ export class ISMSFormComponent {
             ];
             riskFactors.forEach((factor, index) => {
               const preSelectedLikelihood =
-                this.qmsDraft.riskAssessments[index].likelihood;
-              // console.log('logloglogloglog', preSelectedLikelihood);
-
-              // const selectedFactor = this.dropdownLikelihood.find(f => f.assessmentFactor === preSelectedLikelihood);
+                this.qmsDraft.riskAssessments[index]?.likelihood;
 
               if (preSelectedLikelihood) {
                 switch (factor) {
@@ -1866,7 +1872,7 @@ export class ISMSFormComponent {
           }
 
           // Handle dropdownImpact changes
-          if (changes['dropdownImpact']) {
+          if (changes['dropdownImpact'] && this.qmsDraft?.riskAssessments?.length >= 4) {
             const riskFactors = [
               'Confidentiality',
               'Integrity',
@@ -1875,11 +1881,7 @@ export class ISMSFormComponent {
             ];
 
             riskFactors.forEach((factor, index) => {
-              const preSelectedImpact =
-                this.qmsDraft.riskAssessments[index].impact; // Get the value from the draft
-              // const selectedFactor = this.dropdownImpact.find(
-              //   (f) => f.assessmentFactor === preSelectedImpact
-              // );
+              const preSelectedImpact = this.qmsDraft.riskAssessments[index]?.impact;
 
               if (preSelectedImpact) {
                 switch (factor) {
@@ -1899,6 +1901,7 @@ export class ISMSFormComponent {
               }
             });
           }
+
           if (changes['dropdownProject']) {
             if (
               this.qmsDraft.projectId !== null &&
@@ -1912,10 +1915,10 @@ export class ISMSFormComponent {
             this.preSelectedResponsiblePerson = this.qmsDraft.responsibleUserId;
           }
 
-          if (changes['dropdownReviewer']) {
+          if (changes['dropdownReviewer'] && this.qmsDraft?.riskAssessments?.length > 0) {
             const selectedFactor = this.dropdownReviewer.find(
               (factor) =>
-                factor.id === this.qmsDraft.riskAssessments[0].review.userId
+                factor.id === this.qmsDraft.riskAssessments[0]?.review?.userId
             );
 
             if (selectedFactor) {
@@ -1931,17 +1934,19 @@ export class ISMSFormComponent {
             }
           }
         });
+        return; // Important: exit early if data is not loaded
       }
 
       if (changes['qmsDraftId'] && changes['qmsDraftId'].currentValue) {
-        // console.log('Received qmsDraftId from parent:', this.qmsDraftId);
         this.loadDraft();
       }
 
       if (changes['departmentCode'] && this.departmentCode) {
         this.generateRiskDisplayId();
       }
-      if (changes['dropdownLikelihood']) {
+
+      // Add safety checks for all riskAssessments access
+      if (changes['dropdownLikelihood'] && this.qmsDraft?.riskAssessments?.length >= 4) {
         const riskFactors = [
           'Confidentiality',
           'Integrity',
@@ -1950,10 +1955,7 @@ export class ISMSFormComponent {
         ];
         riskFactors.forEach((factor, index) => {
           const preSelectedLikelihood =
-            this.qmsDraft.riskAssessments[index].likelihood;
-          // console.log('logloglogloglog', preSelectedLikelihood);
-
-          // const selectedFactor = this.dropdownLikelihood.find(f => f.assessmentFactor === preSelectedLikelihood);
+            this.qmsDraft.riskAssessments[index]?.likelihood;
 
           if (preSelectedLikelihood) {
             switch (factor) {
@@ -1965,7 +1967,8 @@ export class ISMSFormComponent {
                 this.preSelectedIntegrityLikelihood = preSelectedLikelihood;
                 break;
               case 'Availability':
-                this.preSelectedAvailabilityLikelihood = preSelectedLikelihood;
+                this.preSelectedAvailabilityLikelihood =
+                  preSelectedLikelihood;
                 break;
               case 'Privacy':
                 this.preSelectedPrivacyLikelihood = preSelectedLikelihood;
@@ -1976,7 +1979,7 @@ export class ISMSFormComponent {
       }
 
       // Handle dropdownImpact changes
-      if (changes['dropdownImpact']) {
+      if (changes['dropdownImpact'] && this.qmsDraft?.riskAssessments?.length >= 4) {
         const riskFactors = [
           'Confidentiality',
           'Integrity',
@@ -1985,10 +1988,7 @@ export class ISMSFormComponent {
         ];
 
         riskFactors.forEach((factor, index) => {
-          const preSelectedImpact = this.qmsDraft.riskAssessments[index].impact; // Get the value from the draft
-          // const selectedFactor = this.dropdownImpact.find(
-          //   (f) => f.assessmentFactor === preSelectedImpact
-          // );
+          const preSelectedImpact = this.qmsDraft.riskAssessments[index]?.impact;
 
           if (preSelectedImpact) {
             switch (factor) {
@@ -2022,10 +2022,10 @@ export class ISMSFormComponent {
         this.preSelectedResponsiblePerson = this.qmsDraft.responsibleUserId;
       }
 
-      if (changes['dropdownReviewer']) {
+      if (changes['dropdownReviewer'] && this.qmsDraft?.riskAssessments?.length > 0) {
         const selectedFactor = this.dropdownReviewer.find(
           (factor) =>
-            factor.id === this.qmsDraft.riskAssessments[0].review.userId
+            factor.id === this.qmsDraft.riskAssessments[0]?.review?.userId
         );
 
         if (selectedFactor) {
@@ -2041,8 +2041,8 @@ export class ISMSFormComponent {
         }
       }
     }
+
     if (changes['departmentCode'] && this.departmentCode) {
-      // console.log('department code from parent', this.departmentCode);
       this.generateRiskDisplayId();
     }
   }

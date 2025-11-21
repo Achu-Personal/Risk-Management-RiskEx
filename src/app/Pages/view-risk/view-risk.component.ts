@@ -97,9 +97,9 @@ export class ViewRiskComponent {
 
     let id = parseInt(this.route.snapshot.paramMap.get('id')!);
     this.RiskId = id;
-    this.loadRiskData(id); 
+    this.loadRiskData(id);
     this.api.getRiskById(id).subscribe((e) => {
-      console.log('Data=', e);
+      // console.log('Data=', e);
       this.data = e;
 
       this.basdicDetailsData = {
@@ -163,7 +163,7 @@ export class ViewRiskComponent {
       )
       .subscribe((res: any) => {
         this.dropdownDataLikelihood = res;
-        console.log("dropdownDataLikelihood", this.dropdownDataLikelihood);
+        // console.log("dropdownDataLikelihood", this.dropdownDataLikelihood);
         this.cdRef.detectChanges();
       });
     this.api
@@ -176,7 +176,7 @@ export class ViewRiskComponent {
       )
       .subscribe((res: any) => {
         this.dropdownDataImpact = res;
-        console.log("dropdownDataImpact", this.dropdownDataImpact);
+        // console.log("dropdownDataImpact", this.dropdownDataImpact);
         this.cdRef.detectChanges();
       });
   }
@@ -627,7 +627,7 @@ export class ViewRiskComponent {
 private loadRiskData(id: number) {
   this.isLoading = true;
   this.api.getRiskById(id).subscribe((e) => {
-    console.log('Data=', e);
+    // console.log('Data=', e);
     this.data = e;
 
     this.basdicDetailsData = {

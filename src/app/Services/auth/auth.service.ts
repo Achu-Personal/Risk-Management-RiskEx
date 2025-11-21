@@ -42,26 +42,26 @@ export class AuthService {
   ssoLogin(usermail: string): Observable<any> {
     const payload = { email: usermail };
 
-    console.log('🔵 AuthService.ssoLogin called');
-    console.log('📧 Email:', usermail);
-    console.log('🌐 URL:', this.ssoUrl);
-    console.log('📦 Payload:', payload);
+    // console.log('🔵 AuthService.ssoLogin called');
+    // console.log('📧 Email:', usermail);
+    // console.log('🌐 URL:', this.ssoUrl);
+    // console.log('📦 Payload:', payload);
 
     return this.http.post(this.ssoUrl, payload).pipe(
       tap((response: any) => {
-        console.log('✅ Backend response received:', response);
+        // console.log('✅ Backend response received:', response);
 
         if (response.token) {
-          console.log('✅ Token received, storing...');
+          // console.log('✅ Token received, storing...');
           localStorage.setItem('token', response.token);
 
-          console.log('✅ Setting user details...');
+          // console.log('✅ Setting user details...');
           this.setUserDetails(response.token);
 
-          console.log('✅ Navigating to dashboard...');
+          // console.log('✅ Navigating to dashboard...');
           this.navigateToDashboard();
         } else {
-          console.warn('⚠️ No token in response');
+          // console.warn('⚠️ No token in response');
         }
       }),
       catchError((error: any) => {

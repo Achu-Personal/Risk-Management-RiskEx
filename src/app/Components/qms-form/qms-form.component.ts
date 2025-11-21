@@ -216,171 +216,185 @@ export class QMSFormComponent {
     // console.log('id id id id id id ', this.riskDisplayId);
   }
 
- ngOnChanges(changes: SimpleChanges): void {
-  if (this.qmsDraftId.length > 0) {
-    if (!this.isDraftLoaded || !this.qmsDraft) {
-      console.warn(
-        'Draft data is not yet loaded. Skipping ngOnChanges logic.'
-      );
+  ngOnChanges(changes: SimpleChanges): void {
+    if (this.qmsDraftId.length > 0) {
+      if (!this.isDraftLoaded || !this.qmsDraft || !this.qmsDraft.riskAssessments || this.qmsDraft.riskAssessments.length === 0) {
+        console.warn(
+          'Draft data is not yet loaded. Skipping ngOnChanges logic.'
+        );
 
-      this.api.getSingleDraftById(this.qmsDraftId).subscribe((res: any) => {
-        this.qmsDraft = res;
-        if (this.isAdmin == 'Admin') {
-          this.departmentId = this.qmsDraft.departmentId;
-          const departmentNameDetails = this.dropdownDepartment.find(
-            (factor) => factor.id === this.departmentId
-          );
-          this.departmentName = departmentNameDetails.departmentName;
+        this.api.getSingleDraftById(this.qmsDraftId).subscribe((res: any) => {
+          this.qmsDraft = res;
 
-          this.api
-            .getProjects(this.departmentName)
-            .pipe(
-              catchError((error) => {
-                console.error('Error fetching Projects:', error);
-                return of([]);
-              })
-            )
-            .subscribe((res: any) => {
-              this.dropdownDataProjectForAdmin = res;
-
-              // After dropdown is populated, set the project selection
-              if (this.qmsDraft.projectId && this.qmsDraft.projectId !== 0) {
-                this.projectId = this.qmsDraft.projectId;
-                this.preSelectedProject = this.qmsDraft.projectId;
-                this.generateRiskDisplayIdByProjectForAdmin();
-              }
-            });
-
-          this.api
-            .getUsersByDepartmentId(Number(this.departmentId))
-            .pipe(
-              catchError((error) => {
-                console.error('Error fetching Users by Department:', error);
-                return of([]);
-              })
-            )
-            .subscribe((res: any) => {
-              this.dropdownAssigneeForAdmin = res;
-            });
-        }
-
-        if (this.qmsDraft?.riskResponseId && Array.isArray(this.riskResponses) && this.riskResponses.length > 0) {
-          const match = this.riskResponses.find(r =>
-            Number(r.id) === Number(this.qmsDraft.riskResponseId)
-          );
-          this.preselectedResponseName = match ? match.name : '';
-        }
-
-        if (changes['dropdownLikelihood']) {
-          if (this.qmsDraft?.riskAssessments?.length > 0) {
-            this.preSelectedLikelihood =
-              this.qmsDraft.riskAssessments[0].likelihood ?? null;
-          } else {
-            this.preSelectedLikelihood = null;
-            console.warn('No risk assessments available.');
+          // Add safety check here too
+          if (!this.qmsDraft.riskAssessments || this.qmsDraft.riskAssessments.length === 0) {
+            console.warn('Draft loaded but riskAssessments is empty or undefined');
+            return;
           }
-        }
 
-        if (changes['dropdownImpact']) {
-          this.preSelectedImpact = this.qmsDraft.riskAssessments[0].impact;
-        }
+          if (this.isAdmin == 'Admin') {
+            this.departmentId = this.qmsDraft.departmentId;
+            const departmentNameDetails = this.dropdownDepartment.find(
+              (factor) => factor.id === this.departmentId
+            );
+            if (departmentNameDetails) {
+              this.departmentName = departmentNameDetails.departmentName;
 
-        if (changes['dropdownProject']) {
-          if (
-            this.qmsDraft.projectId !== null &&
-            this.qmsDraft.projectId !== undefined
-          ) {
-            this.projectId = this.qmsDraft.projectId;
-            this.preSelectedProject = this.qmsDraft.projectId;
-          } else {
-            this.projectId = 0;
-            this.preSelectedProject = null;
-          }
-        }
+              this.api
+                .getProjects(this.departmentName)
+                .pipe(
+                  catchError((error) => {
+                    console.error('Error fetching Projects:', error);
+                    return of([]);
+                  })
+                )
+                .subscribe((res: any) => {
+                  this.dropdownDataProjectForAdmin = res;
 
-        if (changes['dropdownAssignee']) {
-          this.preSelectedResponsiblePerson = this.qmsDraft.responsibleUserId;
-        }
+                  // After dropdown is populated, set the project selection
+                  if (this.qmsDraft.projectId && this.qmsDraft.projectId !== 0) {
+                    this.projectId = this.qmsDraft.projectId;
+                    this.preSelectedProject = this.qmsDraft.projectId;
+                    this.generateRiskDisplayIdByProjectForAdmin();
+                  }
+                });
 
-        if (changes['dropdownReviewer']) {
-          const selectedFactor = this.dropdownReviewer.find(
-            (factor) =>
-              factor.id === this.qmsDraft.riskAssessments[0].review.userId
-          );
-
-          if (selectedFactor) {
-            if (selectedFactor.type === 'Internal') {
-              this.isInternal = true;
-              this.internalReviewerIdFromDropdown = selectedFactor.id;
-              this.preSelectedReviewer = selectedFactor?.fullName;
-            } else if (selectedFactor.type === 'External') {
-              this.isInternal = false;
-              this.externalReviewerIdFromDropdown = selectedFactor.id;
-              this.preSelectedReviewer = selectedFactor?.fullName;
+              this.api
+                .getUsersByDepartmentId(Number(this.departmentId))
+                .pipe(
+                  catchError((error) => {
+                    console.error('Error fetching Users by Department:', error);
+                    return of([]);
+                  })
+                )
+                .subscribe((res: any) => {
+                  this.dropdownAssigneeForAdmin = res;
+                });
             }
           }
-        }
-      });
-    }
 
-    if (changes['qmsDraftId'] && changes['qmsDraftId'].currentValue) {
-      this.loadDraft();
+          if (this.qmsDraft?.riskResponseId && Array.isArray(this.riskResponses) && this.riskResponses.length > 0) {
+            const match = this.riskResponses.find(r =>
+              Number(r.id) === Number(this.qmsDraft.riskResponseId)
+            );
+            this.preselectedResponseName = match ? match.name : '';
+          }
+
+          if (changes['dropdownLikelihood']) {
+            if (this.qmsDraft?.riskAssessments?.length > 0) {
+              this.preSelectedLikelihood =
+                this.qmsDraft.riskAssessments[0].likelihood ?? null;
+            } else {
+              this.preSelectedLikelihood = null;
+              console.warn('No risk assessments available.');
+            }
+          }
+
+          if (changes['dropdownImpact']) {
+            if (this.qmsDraft?.riskAssessments?.length > 0) {
+              this.preSelectedImpact = this.qmsDraft.riskAssessments[0].impact;
+            }
+          }
+
+          if (changes['dropdownProject']) {
+            if (
+              this.qmsDraft.projectId !== null &&
+              this.qmsDraft.projectId !== undefined
+            ) {
+              this.projectId = this.qmsDraft.projectId;
+              this.preSelectedProject = this.qmsDraft.projectId;
+            } else {
+              this.projectId = 0;
+              this.preSelectedProject = null;
+            }
+          }
+
+          if (changes['dropdownAssignee']) {
+            this.preSelectedResponsiblePerson = this.qmsDraft.responsibleUserId;
+          }
+
+          if (changes['dropdownReviewer']) {
+            if (this.qmsDraft?.riskAssessments?.length > 0) {
+              const selectedFactor = this.dropdownReviewer.find(
+                (factor) =>
+                  factor.id === this.qmsDraft.riskAssessments[0].review.userId
+              );
+
+              if (selectedFactor) {
+                if (selectedFactor.type === 'Internal') {
+                  this.isInternal = true;
+                  this.internalReviewerIdFromDropdown = selectedFactor.id;
+                  this.preSelectedReviewer = selectedFactor?.fullName;
+                } else if (selectedFactor.type === 'External') {
+                  this.isInternal = false;
+                  this.externalReviewerIdFromDropdown = selectedFactor.id;
+                  this.preSelectedReviewer = selectedFactor?.fullName;
+                }
+              }
+            }
+          }
+        });
+        return; // Important: exit early if data is not loaded
+      }
+
+      if (changes['qmsDraftId'] && changes['qmsDraftId'].currentValue) {
+        this.loadDraft();
+      }
+
+      if (changes['departmentCode'] && this.departmentCode) {
+        this.generateRiskDisplayId();
+      }
+
+      // Add safety checks for all riskAssessments access
+      if (changes['dropdownLikelihood'] && this.qmsDraft?.riskAssessments?.length > 0) {
+        this.preSelectedLikelihood = this.qmsDraft.riskAssessments[0].likelihood;
+      }
+
+      if (changes['dropdownImpact'] && this.qmsDraft?.riskAssessments?.length > 0) {
+        this.preSelectedImpact = this.qmsDraft.riskAssessments[0].impact;
+      }
+
+      if (changes['dropdownProject']) {
+        if (
+          this.qmsDraft.projectId !== null &&
+          this.qmsDraft.projectId !== undefined
+        ) {
+          this.projectId = this.qmsDraft.projectId;
+          this.preSelectedProject = this.qmsDraft.projectId;
+        } else {
+          this.projectId = 0;
+          this.preSelectedProject = null;
+        }
+      }
+
+      if (changes['dropdownAssignee']) {
+        this.preSelectedResponsiblePerson = this.qmsDraft.responsibleUserId;
+      }
+
+      if (changes['dropdownReviewer'] && this.qmsDraft?.riskAssessments?.length > 0) {
+        const selectedFactor = this.dropdownReviewer.find(
+          (factor) =>
+            factor.id === this.qmsDraft.riskAssessments[0].review.userId
+        );
+
+        if (selectedFactor) {
+          if (selectedFactor.type === 'Internal') {
+            this.isInternal = true;
+            this.internalReviewerIdFromDropdown = selectedFactor.id;
+            this.preSelectedReviewer = selectedFactor?.fullName;
+          } else if (selectedFactor.type === 'External') {
+            this.isInternal = false;
+            this.externalReviewerIdFromDropdown = selectedFactor.id;
+            this.preSelectedReviewer = selectedFactor?.fullName;
+          }
+        }
+      }
     }
 
     if (changes['departmentCode'] && this.departmentCode) {
       this.generateRiskDisplayId();
     }
-
-    if (changes['dropdownLikelihood']) {
-      this.preSelectedLikelihood =
-        this.qmsDraft.riskAssessments[0].likelihood;
-    }
-
-    if (changes['dropdownImpact']) {
-      this.preSelectedImpact = this.qmsDraft.riskAssessments[0].impact;
-    }
-
-    if (changes['dropdownProject']) {
-      if (
-        this.qmsDraft.projectId !== null &&
-        this.qmsDraft.projectId !== undefined
-      ) {
-        this.projectId = this.qmsDraft.projectId;
-        this.preSelectedProject = this.qmsDraft.projectId;
-      } else {
-        this.projectId = 0;
-        this.preSelectedProject = null;
-      }
-    }
-
-    if (changes['dropdownAssignee']) {
-      this.preSelectedResponsiblePerson = this.qmsDraft.responsibleUserId;
-    }
-
-    if (changes['dropdownReviewer']) {
-      const selectedFactor = this.dropdownReviewer.find(
-        (factor) =>
-          factor.id === this.qmsDraft.riskAssessments[0].review.userId
-      );
-
-      if (selectedFactor) {
-        if (selectedFactor.type === 'Internal') {
-          this.isInternal = true;
-          this.internalReviewerIdFromDropdown = selectedFactor.id;
-          this.preSelectedReviewer = selectedFactor?.fullName;
-        } else if (selectedFactor.type === 'External') {
-          this.isInternal = false;
-          this.externalReviewerIdFromDropdown = selectedFactor.id;
-          this.preSelectedReviewer = selectedFactor?.fullName;
-        }
-      }
-    }
   }
-
-  if (changes['departmentCode'] && this.departmentCode) {
-    this.generateRiskDisplayId();
-  }
-}
 
   qmsForm = new FormGroup({
     riskName: new FormControl('', Validators.required),
@@ -1061,152 +1075,152 @@ export class QMSFormComponent {
   }
 
   loadDraft() {
-  this.api.getSingleDraftById(this.qmsDraftId).subscribe((res: any) => {
-    this.qmsDraft = res;
-    console.log('Draft loaded:', this.qmsDraft);
+    this.api.getSingleDraftById(this.qmsDraftId).subscribe((res: any) => {
+      this.qmsDraft = res;
+      console.log('Draft loaded:', this.qmsDraft);
 
-    this.qmsForm.patchValue({
-      riskName: this.qmsDraft.riskName ?? null,
-      description: this.qmsDraft.description ?? null,
-      mitigation: this.qmsDraft.mitigation ?? null,
-      contingency: this.qmsDraft.contingency ?? null,
-      plannedActionDate: this.qmsDraft.plannedActionDate
-        ? this.qmsDraft.plannedActionDate.split('T')[0]
-        : null,
-      impact: this.qmsDraft.impact ?? null,
-      ISOClause: this.qmsDraft.isoClauseNumber ?? null,
-    });
+      this.qmsForm.patchValue({
+        riskName: this.qmsDraft.riskName ?? null,
+        description: this.qmsDraft.description ?? null,
+        mitigation: this.qmsDraft.mitigation ?? null,
+        contingency: this.qmsDraft.contingency ?? null,
+        plannedActionDate: this.qmsDraft.plannedActionDate
+          ? this.qmsDraft.plannedActionDate.split('T')[0]
+          : null,
+        impact: this.qmsDraft.impact ?? null,
+        ISOClause: this.qmsDraft.isoClauseNumber ?? null,
+      });
 
-    // Set risk response
-    const match = this.riskResponses.find(r =>
-      Number(r.id) === Number(this.qmsDraft.riskResponseId)
-    );
-    this.preselectedResponseName = match ? match.name : '';
-    this.riskResponseValue = this.qmsDraft.riskResponseId || 0;
+      // Set risk response
+      const match = this.riskResponses.find(r =>
+        Number(r.id) === Number(this.qmsDraft.riskResponseId)
+      );
+      this.preselectedResponseName = match ? match.name : '';
+      this.riskResponseValue = this.qmsDraft.riskResponseId || 0;
 
-    // Set department and risk calculations
-    this.departmentIdForAdminToAdd = this.qmsDraft.departmentId;
-    this.overallRiskRating = this.qmsDraft.overallRiskRatingBefore;
-    this.riskFactor = this.qmsDraft.riskAssessments[0].riskFactor;
+      // Set department and risk calculations
+      this.departmentIdForAdminToAdd = this.qmsDraft.departmentId;
+      this.overallRiskRating = this.qmsDraft.overallRiskRatingBefore;
+      this.riskFactor = this.qmsDraft.riskAssessments[0].riskFactor;
 
-    // Set likelihood and impact
-    this.preSelectedLikelihood = this.qmsDraft.riskAssessments?.[0]?.likelihood ?? null;
-    this.preSelectedImpact = this.qmsDraft.riskAssessments?.[0]?.impact ?? null;
-    this.likelihoodId = this.preSelectedLikelihood;
-    this.impactId = this.preSelectedImpact;
+      // Set likelihood and impact
+      this.preSelectedLikelihood = this.qmsDraft.riskAssessments?.[0]?.likelihood ?? null;
+      this.preSelectedImpact = this.qmsDraft.riskAssessments?.[0]?.impact ?? null;
+      this.likelihoodId = this.preSelectedLikelihood;
+      this.impactId = this.preSelectedImpact;
 
-    // Set responsible person
-    this.preSelectedResponsiblePerson = this.qmsDraft.responsibleUserId;
-    this.responsiblePersonId = this.qmsDraft.responsibleUserId || 0;
+      // Set responsible person
+      this.preSelectedResponsiblePerson = this.qmsDraft.responsibleUserId;
+      this.responsiblePersonId = this.qmsDraft.responsibleUserId || 0;
 
-    // Set reviewer
-    const selectedFactor = this.dropdownReviewer.find(
-      (factor) =>
-        factor.id === this.qmsDraft.riskAssessments[0].review.userId ||
-        factor.id === this.qmsDraft.riskAssessments[0].review.externalReviewerId
-    );
+      // Set reviewer
+      const selectedFactor = this.dropdownReviewer.find(
+        (factor) =>
+          factor.id === this.qmsDraft.riskAssessments[0].review.userId ||
+          factor.id === this.qmsDraft.riskAssessments[0].review.externalReviewerId
+      );
 
-    if (selectedFactor) {
-      if (selectedFactor.type === 'Internal') {
-        this.isInternal = true;
-        this.internalReviewerIdFromDropdown = selectedFactor.id;
-        this.preSelectedReviewer = selectedFactor?.fullName;
-      } else if (selectedFactor.type === 'External') {
-        this.isInternal = false;
-        this.externalReviewerIdFromDropdown = selectedFactor.id;
-        this.preSelectedReviewer = selectedFactor?.fullName;
+      if (selectedFactor) {
+        if (selectedFactor.type === 'Internal') {
+          this.isInternal = true;
+          this.internalReviewerIdFromDropdown = selectedFactor.id;
+          this.preSelectedReviewer = selectedFactor?.fullName;
+        } else if (selectedFactor.type === 'External') {
+          this.isInternal = false;
+          this.externalReviewerIdFromDropdown = selectedFactor.id;
+          this.preSelectedReviewer = selectedFactor?.fullName;
+        }
       }
-    }
 
-    // Set projectId if it exists in draft
-    if (this.qmsDraft.projectId && this.qmsDraft.projectId !== 0) {
-      this.projectId = this.qmsDraft.projectId;
-      this.preSelectedProject = this.qmsDraft.projectId;
+      // Set projectId if it exists in draft
+      if (this.qmsDraft.projectId && this.qmsDraft.projectId !== 0) {
+        this.projectId = this.qmsDraft.projectId;
+        this.preSelectedProject = this.qmsDraft.projectId;
 
-      console.log('Setting project from draft:', this.projectId);
+        console.log('Setting project from draft:', this.projectId);
 
-      // Generate project-based Risk ID
-      if (this.isAdmin === 'Admin') {
-        // Wait for dropdownDataProjectForAdmin to be populated
-        setTimeout(() => {
-          if (this.dropdownDataProjectForAdmin && this.dropdownDataProjectForAdmin.length > 0) {
-            console.log('Generating risk ID for admin with project');
-            this.generateRiskDisplayIdByProjectForAdmin();
-            this.cdr.detectChanges();
-          }
-        }, 200);
-      } else {
-        // Wait for dropdownProject to be populated
-        setTimeout(() => {
-          if (this.dropdownProject && this.dropdownProject.length > 0) {
-            console.log('Generating risk ID for user with project');
-            this.generateRiskDisplayIdByProject();
-            this.cdr.detectChanges();
-          }
-        }, 200);
-      }
-    } else {
-      // No project selected - generate department-based Risk ID
-      this.projectId = 0;
-      this.preSelectedProject = null;
-
-      if (this.isAdmin === 'Admin' && this.departmentIdForAdminToAdd) {
-        const departmentDataForDisplay = this.dropdownDepartment.find(
-          (factor: any) => factor.id == this.departmentIdForAdminToAdd
-        );
-        if (departmentDataForDisplay) {
-          const departmentCode = departmentDataForDisplay.departmentCode;
-          this.riskDisplayId = 'RSK-' + departmentCode + '-***';
+        // Generate project-based Risk ID
+        if (this.isAdmin === 'Admin') {
+          // Wait for dropdownDataProjectForAdmin to be populated
+          setTimeout(() => {
+            if (this.dropdownDataProjectForAdmin && this.dropdownDataProjectForAdmin.length > 0) {
+              console.log('Generating risk ID for admin with project');
+              this.generateRiskDisplayIdByProjectForAdmin();
+              this.cdr.detectChanges();
+            }
+          }, 200);
+        } else {
+          // Wait for dropdownProject to be populated
+          setTimeout(() => {
+            if (this.dropdownProject && this.dropdownProject.length > 0) {
+              console.log('Generating risk ID for user with project');
+              this.generateRiskDisplayIdByProject();
+              this.cdr.detectChanges();
+            }
+          }, 200);
         }
       } else {
-        this.generateRiskDisplayId();
+        // No project selected - generate department-based Risk ID
+        this.projectId = 0;
+        this.preSelectedProject = null;
+
+        if (this.isAdmin === 'Admin' && this.departmentIdForAdminToAdd) {
+          const departmentDataForDisplay = this.dropdownDepartment.find(
+            (factor: any) => factor.id == this.departmentIdForAdminToAdd
+          );
+          if (departmentDataForDisplay) {
+            const departmentCode = departmentDataForDisplay.departmentCode;
+            this.riskDisplayId = 'RSK-' + departmentCode + '-***';
+          }
+        } else {
+          this.generateRiskDisplayId();
+        }
       }
-    }
 
-    this.isDraftLoaded = true;
-    this.cdr.detectChanges();
+      this.isDraftLoaded = true;
+      this.cdr.detectChanges();
 
-    const changes: SimpleChanges = {
-      dropdownLikelihood: {
-        currentValue: this.qmsDraft.riskAssessments?.[0]?.likelihood ?? null,
-        previousValue: undefined,
-        firstChange: true,
-        isFirstChange: () => true,
-      },
-      dropdownImpact: {
-        currentValue: this.qmsDraft.riskAssessments?.[0]?.impact ?? null,
-        previousValue: undefined,
-        firstChange: true,
-        isFirstChange: () => true,
-      },
-      dropdownProject: {
-        currentValue:
-          this.qmsDraft.projectId !== null &&
-          this.qmsDraft.projectId !== undefined
-            ? this.qmsDraft.projectId
-            : null,
-        previousValue: null,
-        firstChange: true,
-        isFirstChange: () => true,
-      },
-      dropdownAssignee: {
-        currentValue: this.qmsDraft.responsibleUserId ?? null,
-        previousValue: undefined,
-        firstChange: true,
-        isFirstChange: () => true,
-      },
-      dropdownReviewer: {
-        currentValue:
-          this.qmsDraft.riskAssessments?.[0]?.review?.userId ?? null,
-        previousValue: undefined,
-        firstChange: true,
-        isFirstChange: () => true,
-      },
-    };
+      const changes: SimpleChanges = {
+        dropdownLikelihood: {
+          currentValue: this.qmsDraft.riskAssessments?.[0]?.likelihood ?? null,
+          previousValue: undefined,
+          firstChange: true,
+          isFirstChange: () => true,
+        },
+        dropdownImpact: {
+          currentValue: this.qmsDraft.riskAssessments?.[0]?.impact ?? null,
+          previousValue: undefined,
+          firstChange: true,
+          isFirstChange: () => true,
+        },
+        dropdownProject: {
+          currentValue:
+            this.qmsDraft.projectId !== null &&
+              this.qmsDraft.projectId !== undefined
+              ? this.qmsDraft.projectId
+              : null,
+          previousValue: null,
+          firstChange: true,
+          isFirstChange: () => true,
+        },
+        dropdownAssignee: {
+          currentValue: this.qmsDraft.responsibleUserId ?? null,
+          previousValue: undefined,
+          firstChange: true,
+          isFirstChange: () => true,
+        },
+        dropdownReviewer: {
+          currentValue:
+            this.qmsDraft.riskAssessments?.[0]?.review?.userId ?? null,
+          previousValue: undefined,
+          firstChange: true,
+          isFirstChange: () => true,
+        },
+      };
 
-    this.ngOnChanges(changes);
-  });
-}
+      this.ngOnChanges(changes);
+    });
+  }
 
   closeDraftWhenNoDraft() {
     this.isNothingInDraft = !this.isNothingInDraft;

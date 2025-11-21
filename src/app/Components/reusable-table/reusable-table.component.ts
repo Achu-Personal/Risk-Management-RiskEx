@@ -241,7 +241,7 @@ export class ReusableTableComponent {
 
   getRiskRatingStyle(riskRating: number,riskType:string): string {
     if(riskType=="Quality"){
-       console.log(this.paginatedData)
+      //  console.log(this.paginatedData)
     if (riskRating <= 4) {
       return 'green-risk';
     } else if (riskRating  >= 6 && riskRating <= 16) {
