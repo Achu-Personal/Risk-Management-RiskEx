@@ -39,7 +39,7 @@ export class RegisterRiskComponent {
     public email: EmailService,
     private router: Router,
     private route: ActivatedRoute
-  ) {}
+  ) { }
   receivedDepartmentIdForAdmin: number = 0;
 
   selectedRiskType: number = 1;
@@ -58,7 +58,7 @@ export class RegisterRiskComponent {
     type: string;
   }> = [];
 
-    riskResponses: Array<{
+  riskResponses: Array<{
     id: number;
     name: string;
     description: string;
@@ -76,35 +76,30 @@ export class RegisterRiskComponent {
   riskData: any;
   isLoading = false; // Initially false
   departmentCode: string = '';
-  draft:any={};
-  draftId:string='';
+  draft: any = {};
+  draftId: string = '';
 
   ngOnInit() {
-    if(this.route.queryParams){
-    this.route.queryParams.subscribe(params => {
-      if (Object.keys(params).length > 0) {
-      // console.log("draft dataaaaaaaaaaaaaaa from drafttttt",params); // All query parameters as an object
-      this.draft = params
-      this.selectedRiskType = Number(params['riskType']);
-      this.departmentName=params['departmentName'];
-      this.departmentId=params['departmentId'];
-      this.draftId=params['id']
+    if (this.route.queryParams) {
+      this.route.queryParams.subscribe(params => {
+        if (Object.keys(params).length > 0) {
+          // console.log("draft dataaaaaaaaaaaaaaa from drafttttt",params); // All query parameters as an object
+          this.draft = params
+          this.selectedRiskType = Number(params['riskType']);
+          this.departmentName = params['departmentName'];
+          this.departmentId = params['departmentId'];
+          this.draftId = params['id']
+        }
+      });
     }
 
-
-    });
-  }
-
-
     this.departmentName = this.authService.getDepartmentName()!;
-
     this.departmentId = this.authService.getDepartmentId()!;
     // console.log('departttttt', this.departmentId);
-
     this.isAdmin = this.authService.getUserRole()!;
     // console.log('roleeeeeeeee', this.isAdmin);
 
-        this.api
+    this.api
       .getRiskResponses()
       .pipe(
         catchError((error) => {
@@ -143,18 +138,37 @@ export class RegisterRiskComponent {
         this.cdRef.detectChanges();
       });
 
-    this.api
-      .getProjects(this.departmentName)
-      .pipe(
-        catchError((error) => {
-          console.error('Error fetching Projects:', error);
-          return of([]);
-        })
-      )
-      .subscribe((res: any) => {
-        this.dropdownDataProject = res;
+    // NEW LOGIC: Check if user is a Project User and load projects accordingly
+    if (this.isAdmin !== 'Admin') {
+      // For regular users (department users or project users)
+      const userProjects = this.authService.getProjects();
+
+      if (userProjects && userProjects.length > 0) {
+        // User is a Project User - use their assigned projects only
+        // console.log('Project User detected. Assigned projects:', userProjects);
+        this.dropdownDataProject = userProjects.map((project: any) => ({
+          id: project.Id || project.id,
+          name: project.Name || project.name,
+          projectCode: project.ProjectCode || project.projectCode
+        }));
         this.cdRef.detectChanges();
-      });
+      } else {
+        // User is a Department User - fetch all projects for their department
+        console.log('Department User detected. Fetching all department projects.');
+        this.api
+          .getProjects(this.departmentName)
+          .pipe(
+            catchError((error) => {
+              console.error('Error fetching Projects:', error);
+              return of([]);
+            })
+          )
+          .subscribe((res: any) => {
+            this.dropdownDataProject = res;
+            this.cdRef.detectChanges();
+          });
+      }
+    }
 
     this.api
       .getDepartment()
@@ -168,10 +182,10 @@ export class RegisterRiskComponent {
         this.dropdownDataDepartment = res;
         // console.log("datadropdown data",this.dropdownDataDepartment)
         // console.log("departmentidisisis",this.departmentId)
-      const departmentDataForDisplay=res.find(
-        (factor:any) => factor.id == this.departmentId)
+        const departmentDataForDisplay = res.find(
+          (factor: any) => factor.id == this.departmentId)
         // console.log("data simple data data simple data",departmentDataForDisplay)
-        this.departmentCode= departmentDataForDisplay.departmentCode
+        this.departmentCode = departmentDataForDisplay.departmentCode
         // console.log("code code code code code code",this.departmentCode)
         this.cdRef.detectChanges();
       });
@@ -186,13 +200,13 @@ export class RegisterRiskComponent {
       )
       .subscribe((res: any) => {
         // console.log("regeregeregeregereg",res.reviewers)
-        const dropdownDataReviewer = res.reviewers.sort((a:any, b:any) => {
+        const dropdownDataReviewer = res.reviewers.sort((a: any, b: any) => {
           const fullNameA = a.fullName ? a.fullName.toLowerCase() : ''; // Ensure case-insensitive comparison
           const fullNameB = b.fullName ? b.fullName.toLowerCase() : '';
           return fullNameA.localeCompare(fullNameB);
-      });
-      // console.log("the sorted is is ",dropdownDataReviewer)
-      this.dropdownDataReviewer=dropdownDataReviewer;
+        });
+        // console.log("the sorted is is ",dropdownDataReviewer)
+        this.dropdownDataReviewer = dropdownDataReviewer;
         this.cdRef.detectChanges();
       });
 
@@ -210,17 +224,9 @@ export class RegisterRiskComponent {
         this.cdRef.detectChanges();
       });
 
-
-
-
-      setTimeout(() => {
-        this.isLoadingLoader = false; // Hide loader after delay
-      }, 500); // 3 seconds delay
-
-
-
-
-
+    setTimeout(() => {
+      this.isLoadingLoader = false; // Hide loader after delay
+    }, 500); // 3 seconds delay
   }
 
   riskTypes = [
@@ -502,8 +508,8 @@ export class RegisterRiskComponent {
               riskData.riskType === 1
                 ? 'Quality'
                 : this.riskData.riskType === 2
-                ? 'Security'
-                : 'Privacy',
+                  ? 'Security'
+                  : 'Privacy',
             impact: riskData.impact,
             mitigation: riskData.mitigation,
             plannedActionDate: new Date(

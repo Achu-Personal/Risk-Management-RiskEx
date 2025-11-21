@@ -97,6 +97,8 @@
           [openDropdownId]="openDropdownId"
           (openDropdown)="handleDropdownOpen($event)"
           [selectedValue]="preSelectedProject"
+          [allowClear]="true"
+          clearText="Clear Selection"
         ></app-form-dropdown>
         } @if(isAdmin==='Admin'){
         <app-form-dropdown
@@ -110,6 +112,8 @@
           [openDropdownId]="openDropdownId"
           (openDropdown)="handleDropdownOpen($event)"
           [selectedValue]="preSelectedProject"
+          [allowClear]="true"
+          clearText="Clear Selection"
         ></app-form-dropdown>
         }
       </div>

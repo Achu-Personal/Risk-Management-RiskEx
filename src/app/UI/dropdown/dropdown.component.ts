@@ -7,6 +7,7 @@ import {
   HostListener,
   Input,
   Output,
+  SimpleChanges,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -32,6 +33,9 @@ export class DropdownComponent implements ControlValueAccessor {
   @Input() valueField: string = '';
   @Input() selectValue: string = 'Select an option';
   @Input() width: string = '100%';
+  @Input() allowClear: boolean = false;
+  @Input() clearText: string = 'Clear Selection';
+
   @Output() valueChange = new EventEmitter<any>();
   @Input() selectedValue: any = null;
   @Input() openDropdownId: string | undefined = undefined;
@@ -51,11 +55,8 @@ export class DropdownComponent implements ControlValueAccessor {
   searchQuery: string = '';
 
   ngOnInit() {
-    // console.log('get value of likelihood is ', this.selectedValue);
-
-    if (this.selectedValue !== null) {
+    if (this.selectedValue !== null && this.selectedValue !== undefined) {
       this.value = this.selectedValue;
-      // console.log('get value of this.value is ', this.value);
     }
     setTimeout(() => {
       if (
@@ -63,17 +64,22 @@ export class DropdownComponent implements ControlValueAccessor {
         DropdownComponent.instance === 6 ||
         DropdownComponent.instance === 18
       ) {
-        // console.log('First time component loaded', DropdownComponent.instance);
         this.isfirst = true;
         this.cdr.detectChanges();
-      } else {
-        // console.log(
-        //   'Component has been loaded before',
-        //   DropdownComponent.instance
-        // );
       }
       DropdownComponent.instance++;
     }, 100);
+  }
+
+  // NEW: Handle changes to selectedValue input
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['selectedValue']) {
+      const newValue = changes['selectedValue'].currentValue;
+      if (newValue !== undefined && newValue !== this.value) {
+        this.value = newValue;
+        this.cdr.detectChanges();
+      }
+    }
   }
 
   // Functions for ControlValueAccessor (this enables ngModel support)
@@ -84,6 +90,7 @@ export class DropdownComponent implements ControlValueAccessor {
   writeValue(value: any): void {
     if (value !== undefined) {
       this.value = value;
+      this.cdr.detectChanges();
     }
   }
 
@@ -112,6 +119,23 @@ export class DropdownComponent implements ControlValueAccessor {
     }
   }
 
+  // Clear selection method
+  clearSelection(event: MouseEvent): void {
+    event.stopPropagation(); // Prevent dropdown from toggling
+    this.value = null;
+    this.selectedValue = null;
+    this.onChange(null);
+    this.onTouched();
+    this.valueChange.emit(null);
+    this.isDropdownOpen = false;
+    this.openDropdown.emit(undefined);
+  }
+
+  // Check if there's a selected value
+  hasValue(): boolean {
+    return this.value !== null && this.value !== undefined && this.value !== '';
+  }
+
   // Getter for filtered options
   get filteredOptions(): any[] {
     return this.options.filter((opt) =>
@@ -124,13 +148,10 @@ export class DropdownComponent implements ControlValueAccessor {
   // Handle selection change
   selectOption(item: any): void {
     this.value = item[this.valueField];
-    // console.log('the value is selected is', this.value);
-
     this.onChange(this.value);
     this.onTouched();
     this.isDropdownOpen = false;
     this.searchQuery = '';
-
     this.valueChange.emit(this.value);
     this.openDropdown.emit(undefined);
   }

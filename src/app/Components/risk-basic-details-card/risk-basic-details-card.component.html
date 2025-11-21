@@ -7,11 +7,11 @@
         <h5>{{ allData.riskType }} Risk</h5>
 
         @if(allData.isoClauseNumber!=null) {
-            <div></div>
+        <div></div>
 
         <h5>
           ISO Clause :
-          <span style="color: #5800C8">{{ allData.isoClauseNumber }}</span>
+          <span style="color: #5800c8">{{ allData.isoClauseNumber }}</span>
         </h5>
         }
       </div>
@@ -43,7 +43,7 @@
         (onClick)="onEditButtonClicked()"
       ></app-edit-button>
 
-      } } @if(preReviewstatus.isReviewed==2&&postReviewstatus.isReviewed!=3) {
+      } } @if(preReviewstatus.isReviewed==2 && postReviewstatus.isReviewed!=3) {
 
       <app-edit-button
         title="Add post assessment values"
@@ -81,12 +81,16 @@
         <h5 style="font-weight: bold; margin: 0px">{{ allData.riskName }}</h5>
 
         @if(postReviewstatus!=null) {
-
         <app-risk-status-card
           [riskStatus]="allData.riskStatus"
           [isMitigatedRisk]="ismitigatedRisk"
           (editClicked)="onEditIconClicked()"
-          [isReviewPending]="isreviewCompleted"
+          [preReviewStatus]="preReviewstatus"
+          [postReviewStatus]="postReviewstatus"
+          [createdById]="allData.createdBy.id"
+          [responsibleUserId]="allData.responsibleUser.id"
+          [currentUserId]="authService.getCurrentUserId()"
+          [userRole]="authService.getUserRole()"
         ></app-risk-status-card>
         }
       </div>

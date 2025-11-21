@@ -1,4 +1,4 @@
-<div class="form-detail" >
+<div class="form-detail">
   <label for="">{{label}} <span class="required">{{required}}</span>
     <span
       *ngIf="showInfoButton"
@@ -6,7 +6,6 @@
       [ngStyle]="{'backgroundColor': backgroundColor}">
       ℹ<span class="tooltip-text">{{message}}</span>
     </span>
-
     <span
       *ngIf="showInfoButtonLikeliHoodImpact"
       class="info-icon"
@@ -15,10 +14,10 @@
       ℹ<span class="tooltip-text-likelihood-impact">{{message}} <span class="required">Click to view table</span></span>
     </span>
   </label>
-
-  <app-dropdown  [options]="dropdownData"
-    [displayField]= "dropdownDisplay"
-    [valueField]= "dropdownValue"
+  <app-dropdown
+    [options]="dropdownData"
+    [displayField]="dropdownDisplay"
+    [valueField]="dropdownValue"
     [codeField]="dropdownCode"
     width="100"
     selectValue="{{selectValue}}"
@@ -26,6 +25,8 @@
     [selectedValue]="selectedValue"
     [openDropdownId]="openDropdownId"
     [dropdownId]="dropdownId"
-    (openDropdown)="openDropdown.emit($event)" >
-   </app-dropdown>
+    [allowClear]="allowClear"
+    [clearText]="clearText"
+    (openDropdown)="openDropdown.emit($event)">
+  </app-dropdown>
 </div>

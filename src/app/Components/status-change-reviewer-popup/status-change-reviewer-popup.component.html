@@ -1,87 +1,82 @@
 <div class="modal-overlay">
   <div class="modal-content">
-        <button class="btn cancel" (click)="close()">
-        <i class="fa-regular fa-circle-xmark" style="font-size: xx-large;"></i>
-      </button>
-          <div class="form-details-sub-container">
+    <button class="btn cancel" (click)="close()">
+      <i class="fa-regular fa-circle-xmark" style="font-size: xx-large;"></i>
+    </button>
+
+    <div class="form-details-sub-container">
       <h2>Reviewer</h2>
+
       @if(!isnewReviewernameDisplay){
-      <app-form-dropdown label="Reviewer" required="*" [dropdownData]="dropdownReviewer" dropdownDisplay="fullName"
-      dropdownValue="fullName" selectValue="Select reviewer" (change)="onDropdownChangeReviewer($event)"
-      [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)" message="You can select an existing reviewer from the dropdown
-      or enter a new one. If you enter a new name, it will take priority over the dropdown selection."
+        <app-form-dropdown
+          label="Reviewer"
+          required="*"
+          [dropdownData]="dropdownReviewer"
+          dropdownDisplay="fullName"
+          dropdownValue="fullName"
+          selectValue="Select reviewer"
+          (change)="onDropdownChangeReviewer($event)"
+          [openDropdownId]="openDropdownId"
+          (openDropdown)="handleDropdownOpen($event)"
+          message="You can select an existing reviewer from the dropdown or enter a new one. If you enter a new name, it will take priority over the dropdown selection."
+          backgroundColor="var(--form-color)"
+          [showInfoButton]="true">
+        </app-form-dropdown>
 
-
-      backgroundColor=" var(--form-color)"
-
-        [showInfoButton]="true"></app-form-dropdown>
-          }
+        <!-- Error message for reviewer validation -->
+        @if(showReviewerError) {
+          <div class="error-message" style="color: red; font-size: 0.875rem; margin-top: 5px; margin-bottom: 10px;">
+            {{ reviewerErrorMessage }}
+          </div>
+        }
+      }
 
       @if(isnewReviewernameDisplay){
-        <h6
-          style="
-            margin-bottom: 5px;
-            font-weight: 600;
-            color: var(--foreground-color);
-          "
-        >
+        <h6 style="margin-bottom: 5px; font-weight: 600; color: var(--foreground-color);">
           Reviewer <span style="color: red">*</span>
         </h6>
-        <div
-          style="
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            padding: 10px;
-            background-color: #f9f9f9;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            width: 100%;
-          "
-        >
+        <div style="border: 1px solid #ccc; border-radius: 8px; padding: 10px; background-color: #f9f9f9; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); width: 100%;">
           <span>{{ newReviewername }}</span>
         </div>
-        }
+      }
 
       <div style="margin-top:20px;font-style:italic;color:grey">
-        <p>If reviewer not in the list <span (click)="isReviewerNotInList()" ><a href="javascript:void(0);">click </a></span>here</p>
+        <p>If reviewer not in the list <span (click)="isReviewerNotInList()"><a href="javascript:void(0);">click</a></span> here</p>
       </div>
-
     </div>
 
-
     <div class="button-group">
-         <app-style-button (clicked)="sendToReviewInitiator()" label="Send To Review" type="button"></app-style-button>
-        <app-style-button (clicked)="close()" label="Cancel" type="button"></app-style-button>
-      </div>
-
-
-
+      <app-style-button (clicked)="sendToReviewInitiator()" label="Send To Review" type="button"></app-style-button>
+      <app-style-button (clicked)="close()" label="Cancel" type="button"></app-style-button>
+    </div>
   </div>
 
-    @if(reviewerNotInList){
-    <app-form-data-not-in-list placeholder="Enter reviewer name" [isAssignee]="false" textLabel="Reviewer name" [dropdownDepartment]="dropdownDepartment" (cancelForm)="receiveCancel($event)" (sendData)="saveReviewer($event)"  [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)"></app-form-data-not-in-list>
+  @if(reviewerNotInList){
+    <app-form-data-not-in-list
+      placeholder="Enter reviewer name"
+      [isAssignee]="false"
+      textLabel="Reviewer name"
+      [dropdownDepartment]="dropdownDepartment"
+      (cancelForm)="receiveCancel($event)"
+      (sendData)="saveReviewer($event)"
+      [openDropdownId]="openDropdownId"
+      (openDropdown)="handleDropdownOpen($event)">
+    </app-form-data-not-in-list>
   }
 
-    @if(isSuccessReviewer){
+  @if(isSuccessReviewer){
     <app-form-successfull
-    message="The new reviewer has been added successfully."
-    [isSuccessfull] ="true"
-    (closeDialog)="closeReviewer()" >
+      message="The new reviewer has been added successfully."
+      [isSuccessfull]="true"
+      (closeDialog)="closeReviewer()">
     </app-form-successfull>
- }
- @if(isErrorReviewer){
-  <app-form-successfull
-  message="Reasons May be:
-  <br>
-  A reviewer with this email already exists.
-  <br>
-  Please ensure all required fields are completed correctly and check your internet connection.
-  <br>
-  If the issue persists, please try again later or contact support for assistance."
-  [isSuccessfull] ="false"
-  (closeDialog)="closeReviewer()" >
-  </app-form-successfull>
-}
+  }
 
-
+  @if(isErrorReviewer){
+    <app-form-successfull
+      message="Reasons May be:<br>A reviewer with this email already exists.<br>Please ensure all required fields are completed correctly and check your internet connection.<br>If the issue persists, please try again later or contact support for assistance."
+      [isSuccessfull]="false"
+      (closeDialog)="closeReviewer()">
+    </app-form-successfull>
+  }
 </div>
-

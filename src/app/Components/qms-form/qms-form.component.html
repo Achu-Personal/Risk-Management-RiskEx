@@ -100,6 +100,8 @@
             [openDropdownId]="openDropdownId"
             (openDropdown)="handleDropdownOpen($event)"
             dropdownId="projectDropdown"
+            [allowClear]="true"
+            clearText="Clear Selection">
           ></app-form-dropdown>
           }
 
@@ -116,6 +118,8 @@
           [openDropdownId]="openDropdownId"
           (openDropdown)="handleDropdownOpen($event)"
           dropdownId="projectDropdown"
+          [allowClear]="true"
+          clearText="Clear Selection">
         ></app-form-dropdown>
         }
       </div>
