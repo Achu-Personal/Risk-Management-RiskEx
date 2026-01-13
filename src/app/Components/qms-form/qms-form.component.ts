@@ -1256,7 +1256,7 @@ export class QMSFormComponent {
   }
 
   conform: string =
-    'Do you want to save the entered risk details? <br> You can check and edit them later if needed.';
+    'Do you want to Submit the risk ? ';
 
   toggleModalCategory() {
     this.showModalCategory = !this.showModalCategory; // Toggle modal visibility

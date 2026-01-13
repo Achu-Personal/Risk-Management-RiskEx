@@ -40,12 +40,16 @@
   margin-bottom: 24px;
   line-height: 1.6;
   color: var(--foreground-color);
+  text-align: center;
+  margin-bottom: 20px;
+
 }
 
 .button-group {
   display: flex;
   justify-content: center;
   gap: 18px;
+  margin-top: 20px;
 }
 
 @keyframes popFade {

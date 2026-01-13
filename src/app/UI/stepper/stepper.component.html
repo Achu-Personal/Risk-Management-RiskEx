@@ -45,8 +45,10 @@
               <span>by {{step.actionBy.split(' ')[0]+" " }} <span [ngStyle]="{'color':step.message=='Accepted'?'green':'red'}" > {{step.message }}</span> </span>
 
               <span class="date">on {{ step!=null? step.date!="..."?  (step.date | date: 'd MMM yyyy'):'...':''}}</span>
+              <span *ngIf="step.title === 'Closed'" class="date">updated on {{ step!=null? step.UpdatedAt!="..."?  (step.UpdatedAt | date: 'd MMM yyyy'):'...':''}}</span>
+
               <div class="tooltip">
-                info: {{ step.actionBy }} completed this step on {{ step!=null? step.date!="..."?  (step.date | date: 'longDate'):'...':'' }}
+                info: {{ step.actionBy }} completed this step on {{ step!=null? step.date!="..."?  (step.date | date: 'longDate'):'...':'' }},
               </div>
             </div>
           </div>

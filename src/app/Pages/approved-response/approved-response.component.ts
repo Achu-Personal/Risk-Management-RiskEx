@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ApiService } from '../../Services/api.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import {
   FormBuilder,
   FormGroup,
@@ -24,7 +24,8 @@ export class ThankyouComponent {
     private route: ActivatedRoute,
     private fb: FormBuilder,
     private email: EmailService,
-    private notification: NotificationService
+    private notification: NotificationService,
+      private router: Router
   ) {
     this.ApprovalForm = this.fb.group({
       reason: ['', Validators.required],
@@ -35,6 +36,7 @@ export class ThankyouComponent {
   ApprovalComments: string = '';
   riskData: any;
   context: any;
+  isAlreadyReviewed : boolean = false;
 
   ApprovalForm: FormGroup;
   isReasonSubmitted: boolean = false;
@@ -97,6 +99,9 @@ export class ThankyouComponent {
       if (emailsSent >= totalEmails) {
         this.isSubmitting = false;
         this.isReasonSubmitted = true;
+        setTimeout(() => {
+      this.router.navigate(['/home']);
+    }, 2000);
       }
     };
 
@@ -188,7 +193,12 @@ export class ThankyouComponent {
       next: (riskDetails: any) => {
         let reviewToUpdate: number | null = null;
         let pendingReviewFound = false;
+        console.log("review is Active ",riskDetails.riskAssessments[0].review.isActive)
+        if(riskDetails.riskAssessments[0].review.isActive === true){
+          this.isAlreadyReviewed=true
 
+          return
+        }
         for (const assessment of riskDetails.riskAssessments) {
           if (assessment.review && assessment.review.reviewStatus === "ReviewPending") {
             reviewToUpdate = assessment.review.id;

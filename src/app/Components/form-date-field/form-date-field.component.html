@@ -13,6 +13,7 @@
       <input #hiddenDateInput type="date"
              (change)="onDateSelection($event)"
              [value]="value"
+             [max]="allowOnlyPreviousDates ? today : null"
              class="hidden-date-picker">
     </button>
   </div>

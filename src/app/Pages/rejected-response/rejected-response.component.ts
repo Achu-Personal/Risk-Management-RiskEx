@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ApiService } from '../../Services/api.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import {
   FormBuilder,
   FormGroup,
@@ -24,7 +24,8 @@ export class RejectedResponseComponent {
     private route: ActivatedRoute,
     private fb: FormBuilder,
     private email: EmailService,
-    private notification: NotificationService
+    private notification: NotificationService,
+    private router: Router
   ) {
     this.rejectionForm = this.fb.group({
       reason: ['', Validators.required],
@@ -35,6 +36,7 @@ export class RejectedResponseComponent {
   rejectionReason: string = '';
   riskData: any;
   context: any;
+  isAlreadyReviewed:boolean=false;
 
   rejectionForm: FormGroup;
   isReasonSubmitted: boolean = false;
@@ -93,6 +95,10 @@ export class RejectedResponseComponent {
       if (emailsSent >= totalEmails) {
         this.isSubmitting = false;
         this.isReasonSubmitted = true;
+        setTimeout(() => {
+      this.router.navigate(['/home']);
+    }, 2000);
+
       }
     };
 
@@ -154,6 +160,11 @@ export class RejectedResponseComponent {
       next: (riskDetails: any) => {
         let reviewToUpdate: number | null = null;
         let pendingReviewFound = false;
+        if(riskDetails.riskAssessments[0].review.isActive === true){
+          this.isAlreadyReviewed=true
+
+          return
+        }
 
         for (const assessment of riskDetails.riskAssessments) {
           if (assessment.review && assessment.review.reviewStatus === "ReviewPending") {

@@ -6,4 +6,5 @@ export interface Step {
   date: string;
   stepNumber: string;
   message:string;
+  UpdatedAt:string;
 }

@@ -192,9 +192,16 @@
               <div class="text-danger">Project name is required.</div>
               }
 
-              <label for="projectCode" class="form-label p-2">
-                Project Code <span class="text-danger">*</span>
-              </label>
+             <label for="projectCode" class="form-label p-2 d-flex align-items-center gap-1">
+  Project Code <span class="text-danger">*</span>
+
+  <span class="info-icon">
+    i
+    <span class="tooltip-text">
+      Applicable only for projects
+    </span>
+  </span>
+</label>
               <input type="text" class="form-control" id="projectCode" placeholder="Enter Project Code"
                 formControlName="projectCode" />
 

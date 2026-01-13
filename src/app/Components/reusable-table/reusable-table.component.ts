@@ -18,6 +18,8 @@ import { SearchbarComponent } from '../../UI/searchbar/searchbar.component';
 import { ActivatedRoute } from '@angular/router';
 import { EditButtonComponent } from '../../UI/edit-button/edit-button.component';
 import { NotificationService } from '../../Services/notification.service';
+import { EmailService } from '../../Services/email.service';
+import { UsermanagementpopupComponent } from '../usermanagementpopup/usermanagementpopup.component';
 
 @Component({
   selector: 'app-reusable-table',
@@ -44,6 +46,7 @@ export class ReusableTableComponent {
   @Input() headerDisplayMap: any = this.tableHeaders;
   @Input() noDataMessage: string = 'No Data Available';
   @Input() isLoading: boolean = false;
+  confirmationPopup!: UsermanagementpopupComponent;
 
   draftEditButton = output();
   draftDeleteButton = output();
@@ -63,6 +66,7 @@ export class ReusableTableComponent {
   showStatusChangeDialog = false;
   currentToggleRow: any = null;
   previousToggleState: boolean = false;
+  isLoader = false;
 
   @Output() approveRisk = new EventEmitter<{ row: any; comment: string }>();
   @Output() rejectRisk = new EventEmitter<{ row: any; comment: string }>();
@@ -73,7 +77,8 @@ export class ReusableTableComponent {
     public api: ApiService,
     private cdr: ChangeDetectorRef,
     private route: ActivatedRoute,
-    private notification: NotificationService
+    private notification: NotificationService,
+    public emailService: EmailService,
   ) { }
 
   rowKeys: string[] = [];
@@ -172,6 +177,8 @@ export class ReusableTableComponent {
 
   onStatusConfirm(data: { comment: string }): void {
     if (!this.currentToggleRow) return;
+    console.log("dataaaaayyyy",this.currentToggleRow)
+
 
     const statusAction = this.currentToggleRow.isActive ? 'Activated' : 'Deactivated';
     const userName = this.currentToggleRow.fullName || this.currentToggleRow.userName || 'User';
@@ -181,6 +188,43 @@ export class ReusableTableComponent {
     this.notification.success(
       `${userName} has been ${statusAction} successfully!`
     );
+
+    if( this.currentToggleRow.isActive === true){
+      const emailContext = {
+              email: this.currentToggleRow.email,
+              fullName: this.currentToggleRow.fullName,
+              defaultPassword: 'experion@123',
+            };
+
+            this.emailService
+              .sendUserRegistrationEmail(this.currentToggleRow.email, emailContext)
+              .subscribe({
+                next: (emailSent) => {
+                  if (emailSent) {
+                    this.confirmationPopup.showResultModal(
+                      'User added successfully and welcome email sent!',
+                      true
+                    );
+                    this.isLoader = false;
+                  } else {
+                    this.confirmationPopup.showResultModal(
+                      'User added, but failed to send welcome email',
+                      false
+                    );
+                    this.isLoader = false;
+                  }
+                },
+                error: (emailError) => {
+                  this.confirmationPopup.showResultModal(
+                    'User added, but email sending failed',
+                    false
+                  );
+                  this.isLoader = false;
+                },
+              });
+    }
+
+
 
     this.showStatusChangeDialog = false;
     this.currentToggleRow = null;
@@ -426,6 +470,7 @@ export class ReusableTableComponent {
     event.stopPropagation();
     this.editUserClicked.emit(row);
     this.cdr.markForCheck();
+    console.log("edit userrrrrrrrrrrrr")
   }
 
 

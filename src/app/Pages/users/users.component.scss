@@ -111,3 +111,52 @@ button.btn-danger:hover {
 {
   height: 3%;
 }
+
+
+
+
+
+.info-icon {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  font-size: 11px;
+  font-weight: bold;
+  border-radius: 50%;
+  background-color: var(--secondary-color);
+  color: black;
+  cursor: pointer;
+}
+
+/* Hide tooltip by default */
+.info-icon .tooltip-text {
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+/* Show tooltip on hover */
+.info-icon:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* Your tooltip styling (slightly optimized) */
+.tooltip-text {
+  background-color: var(--secondary-color);
+  color: black;
+  padding: 6px 10px;
+  border-radius: 5px;
+  position: absolute;
+  z-index: 10;
+  width: auto;
+  white-space: normal;
+  left: 110%;
+  top: 50%;
+  transform: translateY(-50%);
+  white-space: nowrap;
+}
+
