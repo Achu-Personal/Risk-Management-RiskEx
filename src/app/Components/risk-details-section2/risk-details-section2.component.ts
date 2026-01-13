@@ -30,7 +30,8 @@ export class RiskDetailsSection2Component {
       actionBy: '...',
       date: '...',
       stepNumber: '01',
-      message: ""
+      message: "",
+      UpdatedAt:""
     },
     {
       id: 2,
@@ -39,7 +40,8 @@ export class RiskDetailsSection2Component {
       actionBy: '...',
       date: '...',
       stepNumber: '02',
-      message: ""
+      message: "",
+      UpdatedAt:""
     },
     {
       id: 3,
@@ -48,7 +50,8 @@ export class RiskDetailsSection2Component {
       actionBy: '....',
       date: '...',
       stepNumber: '03',
-      message: ""
+      message: "",
+      UpdatedAt:""
     },
     {
       id: 4,
@@ -57,7 +60,8 @@ export class RiskDetailsSection2Component {
       actionBy: '...',
       date: '...',
       stepNumber: '04',
-      message: ""
+      message: "",
+      UpdatedAt:""
     },
     // {
     //   id: 5,
@@ -77,6 +81,7 @@ export class RiskDetailsSection2Component {
     var contingencyCard = document.getElementById("mitigationCard")
 
     if (this.data) {
+      console.log("stepppppppppinyy",this.data)
       this.stepperData.push({
         id: 5,
         title: this.data.RiskStatus?.toLowerCase() === 'open' ? 'Close' : this.data.RiskStatus || 'Unknown',
@@ -84,7 +89,8 @@ export class RiskDetailsSection2Component {
         actionBy: '...',
         date: '...',
         stepNumber: '05',
-        message: ""
+        message: "",
+        UpdatedAt:this.data.UpdatedAt
       });
     }
 
@@ -135,7 +141,6 @@ export class RiskDetailsSection2Component {
           if (completedStatuses.includes(normalizedStatus) && e.isReviewed >= 4) {
             this.stepperData[4].actionBy = this.data.UpdatedBy || '...';
             this.stepperData[4].isCompleted = true;
-
             // Use ClosedDate if status is closed, otherwise use UpdatedAt
             this.stepperData[4].date = normalizedStatus === 'closed'
               ? (this.data.ClosedDate || this.data.UpdatedAt || '...')

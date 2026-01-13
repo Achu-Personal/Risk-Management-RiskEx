@@ -19,10 +19,18 @@ import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/f
 export class FormDateFieldComponent implements ControlValueAccessor {
   @Input() label: string = '';
   @Input() required: string = '';
+  @Input() allowOnlyPreviousDates = false;
+  today = '';
+
   value: string = '';
   displayValue: string = '';
   onChange: (value: any) => void = () => {};
   onTouched: () => void = () => {};
+
+  ngOnInit(){
+    const d = new Date();
+  this.today = d.toISOString().split('T')[0]; // YYYY-MM-DD
+  }
 
   writeValue(value: any): void {
     if (value) {
@@ -64,7 +72,7 @@ export class FormDateFieldComponent implements ControlValueAccessor {
       this.value = this.convertToModelFormat(this.displayValue);
       this.onChange(this.value);
     } else {
-      this.displayValue = ''; 
+      this.displayValue = '';
     }
   }
 

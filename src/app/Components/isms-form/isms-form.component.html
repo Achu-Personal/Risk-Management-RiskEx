@@ -727,7 +727,7 @@
   </app-form-successfull>
   } @if(isSave){
   <app-form-conform-popup
-    message="Do you want to save the entered risk details? <br> You can check and edit them later if needed."
+    message="Do you want to save the entered risk details? "
     (closeDialog)="saveRisk()"
     (notCloseDialog)="saveConfirmation()"
   ></app-form-conform-popup>
@@ -739,7 +739,7 @@
   ></app-form-conform-popup>
   } @if(isdraft){
   <app-form-conform-popup
-    message="Do you want to save the entered risk details as a draft? <br> You can continue editing them on Draft page."
+    message="Do you want to save the draft? You can access the risk from the draft page."
     (closeDialog)="closeDraft()"
     (notCloseDialog)="saveAsDraft()"
   ></app-form-conform-popup>

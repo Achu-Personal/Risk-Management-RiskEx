@@ -1,6 +1,6 @@
 <div class="body">
     <!-- Reason Input Section -->
-    <div *ngIf="!isReasonSubmitted" class="response-container">
+    <div *ngIf="!isReasonSubmitted && !isAlreadyReviewed" class="response-container">
       <h2 style="color: rgba(14, 14, 14, 0.774);">Please Enter Your Comments</h2>
       <form [formGroup]="ApprovalForm" (ngSubmit)="submitReason()">
         <div class="input-container">
@@ -30,7 +30,17 @@
             </div>
             <h1 id="responseTitle">Risk Approved</h1>
             <p id="responseMessage">Your response for the Risk has been <span id="responseStatus">recorded.</span>
-              Thank you for taking prompt action in reviewing and approving this risk.</p>
+              </p>
+            <!-- <a href="/" class="home-button">Back to Dashboard</a> -->
+        </div>
+        <div *ngIf="isAlreadyReviewed" class="response-card">
+            <div class="response-icon">
+                <!-- Display a checkmark for approval or cross for rejection -->
+                <!-- <span id="responseIcon">✔️</span> -->
+            </div>
+            <h1 id="responseTitle" style="color: red;">This Action is Already completed</h1>
+            <!-- <p id="responseMessage">Your response for the Risk has been <span id="responseStatus">recorded.</span> -->
+              <!-- </p> -->
             <!-- <a href="/" class="home-button">Back to Dashboard</a> -->
         </div>
     </div>

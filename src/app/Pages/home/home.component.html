@@ -27,8 +27,6 @@
           @if(privacyRiskCount!=0||qualityRiskCount!=0||securityRiskCount!=0)
           {
           <div class="riskratingcategory">
-            <p>This chart shows the number of open risks categorized by type Privacy, Security, and Quality giving a
-              quick overview of where attention is needed.</p>
             <div class="forchart">
               <div class="graphchart">
                 <app-chart class="mainchart" [labels]="graph1labels"  [chartType]="graph1chartType"

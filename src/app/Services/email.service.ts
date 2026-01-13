@@ -509,7 +509,7 @@ sendStatusChangeReviewEmail(email: string, context: any): Observable<boolean> {
       map((response: any) => {
         console.log('Email sent successfully');
         this.notificationService.success(
-          'The risk has been submitted to the reviewer for approval.'
+          'Risk has been submitted for approval'
         );
         return true;
       }),
@@ -744,7 +744,7 @@ sendStatusChangeReviewEmail(email: string, context: any): Observable<boolean> {
       map((response: any) => {
         // console.log('Email sent successfully', response);
         this.notificationService.success(
-          'The risk has been submitted to the reviewer for approval.'
+          'Risk has been submitted for approval'
         );
         return true;
       }),

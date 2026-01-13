@@ -7,7 +7,7 @@
 .response-container {
     text-align: center;
     width: 60%;
-    padding: 20px;
+    padding: 50px;
     border: 1px solid #b4afaf;
     border-radius: 8px;
     background-color: #ffffff;
@@ -69,3 +69,39 @@
   @keyframes spinner-border {
     to { transform: rotate(360deg); }
   }
+
+
+
+.response-card {
+  background-color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  padding: 30px;
+  max-width: 400px;
+  margin: auto;
+
+  display: flex;                 /* 👈 required */
+  flex-direction: column;        /* stack items vertically */
+  align-items: center;           /* horizontal center */
+  justify-content: center;       /* vertical center */
+  text-align: center;            /* center text */
+
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.response-icon {
+    font-size: 60px;
+    margin-bottom: 20px;
+
+}
+
+.response-card h1 {
+    font-size: 28px;
+    color: #4CAF50;
+}
+
+.response-card p {
+    font-size: 16px;
+    margin-bottom: 20px;
+    line-height: 1.5;
+}

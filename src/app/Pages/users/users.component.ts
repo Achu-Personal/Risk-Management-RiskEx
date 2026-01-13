@@ -730,6 +730,7 @@ export class UsersComponent {
   }
 
   onEditUser(user: any): void {
+    console.log("user.....",user)
     this.isLoader = true;
 
     const userProjects = user.projects || [];

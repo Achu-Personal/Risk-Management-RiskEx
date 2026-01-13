@@ -48,7 +48,7 @@
 
    @if(showCloseDate){
 
-          <app-form-date-field label="Actual Close Date" required="*"  formControlName="closeDate" ></app-form-date-field>
+          <app-form-date-field label="Actual Close Date" required="*" [allowOnlyPreviousDates]="true" formControlName="closeDate" ></app-form-date-field>
       @if(updateQmsForm.get("closeDate")){
 
         @if (updateQmsForm.get("closeDate")?.hasError('required')&& updateQmsForm.get("closeDate")?.dirty) {

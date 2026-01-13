@@ -69,7 +69,7 @@ export class StepperComponent {
   }
 
   ngOnInit() {
-    // console.log('steps=', this.steps);
+    console.log('stepssssssssssssssssss=', this.steps);
     setTimeout(() => {
       this.steps.forEach((e: any) => {
         if (e.isCompleted) {
