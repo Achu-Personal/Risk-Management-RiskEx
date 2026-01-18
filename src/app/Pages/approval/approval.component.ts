@@ -251,6 +251,7 @@ export class ApprovalComponent {
   }
 
   handlePopupConfirm(event: { comment: string }) {
+    console.log("enter the popup conform")
     this.isLoader = true;
     this.isPopupOpen = false;
     let id = parseInt(this.route.snapshot.paramMap.get('id')!);
@@ -305,6 +306,7 @@ export class ApprovalComponent {
         }
 
       if (this.isPopupReject) {
+        console.log("enter the isreject part")
         const updates = {
           approvalStatus: "Rejected",
           comments: event.comment,
@@ -316,7 +318,9 @@ export class ApprovalComponent {
             this.notification.success("The risk has been Rejected");
             this.showButtons = false;
 
-            if (res.riskStatus === 'open' || res.riskStatus === 'closed') {
+            console.log("res riskstatus",res.riskStatus)
+
+            if (res.riskStatus === 'Open') {
               const context = {
                 reviewer: this.auth.getUserName(),
                 responsibleUser: res.createdBy.fullName,
@@ -337,7 +341,11 @@ export class ApprovalComponent {
                 reason: event.comment
               };
 
-              this.email.sendOwnerEmail(res.createdBy.email, context).subscribe({
+              console.log("response",res)
+              console.log("before send owner email");
+              const cc : string[] =[res.responsibleUser.email]
+
+              this.email.sendOwnerEmail(res.createdBy.email, context,cc).subscribe({
                 next: () => {
                   // Email sent successfully to owner
                   this.isLoader = false;
@@ -371,7 +379,9 @@ export class ApprovalComponent {
                 reason: event.comment,
               };
 
-              this.email.sendOwnerEmail(res.responsibleUser.email, context).subscribe({
+              const cc : string[] =[res.createdBy.email]
+
+              this.email.sendOwnerEmail(res.responsibleUser.email, context,cc).subscribe({
                 next: () => {
                   // Email sent successfully to reviewer
                   this.isLoader = false;
@@ -393,6 +403,7 @@ export class ApprovalComponent {
           }
         });
       } else {
+        console.log("enetering else part")
         // APPROVAL LOGIC - Updated to handle all risk statuses
         this.isLoader = true;
         const updates = {

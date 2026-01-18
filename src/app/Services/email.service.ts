@@ -16,6 +16,7 @@ export class EmailService {
   assigneeEmailTemplate: string = '';
   ownerEmailTemplate: string = '';
   userRegisterTemplate: string = '';
+  userReActivateTemplate : string='';
   resetPasswordTemplate: string = '';
   userUpdateTemplate: string = '';
   riskClosureTemplate: string = '';
@@ -45,6 +46,7 @@ export class EmailService {
     this.loadOwnerTemplate();
     this.loadPostTemplate();
     this.loadUserRegisterTemplate();
+    this.loaduserReActivateTemplate();
     this.loadResetPasswordTemplate();
     this.loadUserUpdateTemplate();
     this.loadApprovalTemplate();
@@ -442,10 +444,40 @@ sendStatusChangeReviewEmail(email: string, context: any): Observable<boolean> {
       console.error('Failed to load email template:', error);
     }
   }
+
+   private async loaduserReActivateTemplate() {
+    try {
+      this.userReActivateTemplate = await fetch(
+        'Templates/ReactivateUserTemplate.html'
+      ).then((response) => response.text());
+    } catch (error) {
+      console.error('Failed to load email template:', error);
+    }
+  }
   sendUserRegistrationEmail(email: string, context: any): Observable<boolean> {
     const subject = 'YOUR RISK MANAGEMENT SYSTEM ACCOUNT CREDENTIALS';
     const body = this.prepareUserRegistrationEmailBody(
       this.userRegisterTemplate,
+      context
+    );
+
+    return this.api.sendMail(email, subject, body).pipe(
+      map((response: any) => {
+        return true;
+      }),
+      catchError((error) => {
+        console.error('Detailed error sending registration email:', {
+          error,
+        });
+        return of(false);
+      })
+    );
+  }
+
+    sendUserReActivateEmail(email: string, context: any): Observable<boolean> {
+    const subject = 'YOUR RISK MANAGEMENT SYSTEM ACCOUNT CREDENTIALS';
+    const body = this.prepareUserRegistrationEmailBody(
+      this.userReActivateTemplate,
       context
     );
 
@@ -611,10 +643,13 @@ sendStatusChangeReviewEmail(email: string, context: any): Observable<boolean> {
       .replace('{{reason}}', context.reason)
       .replace(/{{baseUrl}}/g, this.frontendUrl);
   }
-  sendOwnerEmail(email: string, context: any): Observable<boolean> {
+  sendOwnerEmail(email: string, context: any, cc?:string[]): Observable<boolean> {
     const subject = `RISK REVIEW REJECTED - ${context.riskName}`;
     return from(this.prepareOwnerEmail(context)).pipe(
       switchMap((body) => {
+        if (cc && cc.length > 0) {
+        return this.api.sendMail(email, subject, body, cc);
+      }
         return this.api.sendMail(email, subject, body);
       }),
       map((response: any) => {

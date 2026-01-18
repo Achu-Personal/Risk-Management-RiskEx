@@ -12,17 +12,17 @@
               Back to Sign-In Methods
             </button>
           </div>
-        <h1>RiskEx</h1>
-        <h2>Login with RiskEx</h2>
+        <!-- <h1>RiskEx</h1> -->
+        <h1 style="margin-top: 5px;">Login with Risk<span style="color: #dc3545;">Ex</span></h1>
         <p class="tagline"></p>
 
         <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
           <div class="form-group">
-            <label for="login-email">User Mail</label>
+            <label for="login-email">Username</label>
             <input
               type="text"
               id="email"
-              placeholder="User name"
+              placeholder="Enter your Username Here"
               formControlName="email"
               (focus)="clearError()"
               autocomplete="off"
@@ -43,12 +43,12 @@
           </div>
 
           <div class="form-group">
-            <label for="login-password">Enter your Password</label>
+            <label for="login-password">Password</label>
             <div class="password-input">
               <input
               [type]="showPassword ? 'text' : 'password'"
               id="login-password"
-              placeholder="Type your password here"
+              placeholder="Enter your password here"
               formControlName="password"
               (focus)="clearError()"
               (copy)="onPreventDefault($event)"
