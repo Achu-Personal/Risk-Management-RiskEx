@@ -84,6 +84,11 @@ export class DepartmentDropdownComponent {
   }
 
   isSelected(item: department) {
+    if(this.selectedItems.length === 0){
+      this.selectAll();
+      this.isAllSelected();
+
+    }
     return this.selectedItems.some((selected) => selected.id === item.id);
   }
 

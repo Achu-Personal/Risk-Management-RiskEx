@@ -364,12 +364,17 @@ export class ApiService {
       );
   }
 
-  sendMail(email: string, subject: string, body: string) {
-    const params = new HttpParams()
+  sendMail(email: string, subject: string, body: string,cc ?:string[]) {
+    let params = new HttpParams()
       .set('receptor', email)
       .set('subject', subject)
       .set('body', body)
       .set('isBodyHtml', 'true');
+      if (cc && cc.length > 0) {
+        cc.forEach(c => {
+          params = params.append('cc', c);
+        });
+      }
     return this.http.post(`${this.baseUrl}/emails`, null, { params });
   }
 

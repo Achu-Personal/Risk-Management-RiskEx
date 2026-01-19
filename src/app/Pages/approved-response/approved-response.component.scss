@@ -137,3 +137,97 @@
 @keyframes spinner-border {
   to { transform: rotate(360deg); }
 }
+
+
+
+
+
+.status-wrapper {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f4f6f9;
+}
+
+.status-card {
+  background: #ffffff;
+  padding: 32px 28px;
+  border-radius: 14px;
+  width: 100%;
+  max-width: 420px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  animation: fadeInUp 0.4s ease;
+}
+
+.status-icon {
+  width: 70px;
+  height: 70px;
+  margin: 0 auto 16px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  font-weight: bold;
+}
+
+.status-title {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.status-message {
+  font-size: 14px;
+  color: #6c757d;
+  line-height: 1.6;
+}
+
+/* Button (optional) */
+.status-btn {
+  display: inline-block;
+  margin-top: 18px;
+  padding: 10px 22px;
+  background: #0d6efd;
+  color: #fff;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.status-btn:hover {
+  background: #0b5ed7;
+}
+
+/* Status Variants */
+.status-error .status-icon {
+  background: #fde2e2;
+  color: #dc3545;
+}
+
+.status-error .status-title {
+  color: #dc3545;
+}
+
+.status-success .status-icon {
+  background: #e6f4ea;
+  color: #198754;
+}
+
+.status-success .status-title {
+  color: #198754;
+}
+
+/* Animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
