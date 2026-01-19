@@ -197,7 +197,7 @@ export class ReusableTableComponent {
             };
 
             this.emailService
-              .sendUserRegistrationEmail(this.currentToggleRow.email, emailContext)
+              .sendUserReActivateEmail(this.currentToggleRow.email, emailContext)
               .subscribe({
                 next: (emailSent) => {
                   if (emailSent) {
