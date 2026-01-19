@@ -484,7 +484,7 @@ export class ApprovalTableComponent {
       this.api.updateReviewStatusAndComments(id, { ...updates, reviewId: reviewToUpdate }).subscribe({
         next: () => {
           if (
-            event.row.riskStatus === 'open' ||
+            event.row.riskStatus === 'Open' ||
             event.row.riskStatus === 'closed'
           ) {
             this.api.getriskOwnerEmailandName(id).subscribe({
@@ -511,7 +511,7 @@ export class ApprovalTableComponent {
                   reason: event.comment,
                 };
 
-                this.email.sendOwnerEmail(res[0].email, context).subscribe({
+                this.email.sendOwnerEmail(res[0].email, context,).subscribe({
                   next: () => {
                     if (event.row.riskStatus === 'closed') {
                       this.api.getAssigneeByRiskId(id).subscribe({
