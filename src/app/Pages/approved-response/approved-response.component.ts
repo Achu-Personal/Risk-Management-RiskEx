@@ -196,6 +196,9 @@ export class ThankyouComponent {
         console.log("review is Active ",riskDetails.riskAssessments[0].review.isActive)
         if(riskDetails.riskAssessments[0].review.isActive === true){
           this.isAlreadyReviewed=true
+          setTimeout(() => {
+      this.router.navigate(['/home']);
+    }, 2000)
 
           return
         }

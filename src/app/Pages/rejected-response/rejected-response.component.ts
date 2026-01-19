@@ -50,6 +50,7 @@ export class RejectedResponseComponent {
   private getRejectionEmailRecipients(riskStatus: string, riskDetails: any) {
     const config = {
       recipients: [] as string[],
+      cc:[] as string[],
       emailMethods: [] as string[]
     };
 
@@ -57,6 +58,7 @@ export class RejectedResponseComponent {
       case 'open':
         // For open risks, send to creator (owner) and optionally to assignee
         config.recipients = [riskDetails.createdBy.email, 'owner'];
+        config.cc=[riskDetails.responsibleUser.email];
         config.emailMethods = ['sendOwnerEmail', 'sendOwnerEmail'];
         break;
 
@@ -64,6 +66,7 @@ export class RejectedResponseComponent {
       case 'closed':
         // For closure rejections, send to responsible user and owner
         config.recipients = [riskDetails.responsibleUser.email, 'owner'];
+        config.cc=[riskDetails.responsibleUser.email];
         config.emailMethods = ['sendOwnerEmail', 'sendOwnerEmail'];
         break;
 
@@ -73,6 +76,7 @@ export class RejectedResponseComponent {
       case 'deferred':
         // For other status changes, send to responsible user and owner
         config.recipients = [riskDetails.responsibleUser.email, 'owner'];
+        config.cc=[riskDetails.responsibleUser.email];
         config.emailMethods = ['sendOwnerEmail', 'sendOwnerEmail'];
         break;
 
@@ -102,9 +106,9 @@ export class RejectedResponseComponent {
       }
     };
 
-    emailConfig.recipients.forEach((recipient: string, index: number) => {
-      if (recipient === 'owner') {
-        // Get owner email
+    // emailConfig.recipients.forEach((recipient: string, index: number) => {
+    //   // if (recipient === 'owner') {
+    //     // Get owner email
         this.api.getriskOwnerEmailandName(this.riskId).subscribe({
           next: (ownerRes: any) => {
             // Create owner-specific context
@@ -112,10 +116,13 @@ export class RejectedResponseComponent {
               ...baseContext,
               responsibleUser: ownerRes[0].name
             };
-            this.email.sendOwnerEmail(ownerRes[0].email, ownerContext).subscribe({
+            this.email.sendOwnerEmail(ownerRes[0].email, ownerContext,emailConfig.cc).subscribe({
               next: () => {
                 console.log('Rejection email sent to owner successfully');
-                checkEmailsComplete();
+                      setTimeout(() => {
+                      this.router.navigate(['/home']);
+                    }, 2000);
+
               },
               error: (error) => {
                 console.error('Failed to send rejection email to owner:', error);
@@ -128,20 +135,20 @@ export class RejectedResponseComponent {
             checkEmailsComplete();
           }
         });
-      } else {
-        // Direct email address
-        this.email.sendOwnerEmail(recipient, baseContext).subscribe({
-          next: () => {
-            console.log('Rejection email sent successfully to:', recipient);
-            checkEmailsComplete();
-          },
-          error: (error) => {
-            console.error('Failed to send rejection email:', error);
-            checkEmailsComplete();
-          }
-        });
-      }
-    });
+      // } else {
+      //   // Direct email address
+      //   this.email.sendOwnerEmail(recipient, baseContext).subscribe({
+      //     next: () => {
+      //       console.log('Rejection email sent successfully to:', recipient);
+      //       checkEmailsComplete();
+      //     },
+      //     error: (error) => {
+      //       console.error('Failed to send rejection email:', error);
+      //       checkEmailsComplete();
+      //     }
+      //   });
+      // }
+    // });
   }
 
   submitReason(): void {
@@ -162,6 +169,9 @@ export class RejectedResponseComponent {
         let pendingReviewFound = false;
         if(riskDetails.riskAssessments[0].review.isActive === true){
           this.isAlreadyReviewed=true
+          setTimeout(() => {
+      this.router.navigate(['/home']);
+    }, 2000)
 
           return
         }
@@ -233,6 +243,7 @@ export class RejectedResponseComponent {
 
             // Get email configuration based on risk status
             const emailConfig = this.getRejectionEmailRecipients(riskDetails.riskStatus, riskDetails);
+            console.log("emaileeeeeee",emailConfig)
 
             // Prepare base context
             const baseContext = {

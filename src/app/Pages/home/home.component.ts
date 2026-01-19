@@ -28,6 +28,7 @@ import { ActiveElement } from 'chart.js';
 export class HomeComponent
 {
   list: any;
+  riskStats: any;
   constructor(
     public api: ApiService,
     private router: Router,
@@ -47,6 +48,7 @@ export class HomeComponent
   graph2labels: string[] = [];
   graph2chartType: any;
   graph2datasets: any[] = [];
+  isAnyRIskToShow:boolean=true;
 
 
 
@@ -91,58 +93,8 @@ export class HomeComponent
       )
       .subscribe((e: any) =>
       {
-        this.openRiskCountByType = e;
-        this.list = e;
-        // console.log(this.list);
-        const count = this.list.map(
-          (element: { riskCount: any }) => element.riskCount
-        );
-        const counter: number[] = count;
-
-        const riskCat = this.list.map(
-          (element: { riskType: any }) => element.riskType
-        );
-        this.risk = riskCat;
-
-        setTimeout(() =>
-        {
-          this.Criticality = this.list.reduce((acc: any, item: any) =>
-          {
-            acc[item.riskCategory] = item.count;
-            return acc;
-          }, {});
-
-        }, 1000);
-
-        const riskcounts = this.list.reduce((acc: any, item: any) =>
-        {
-          acc[item.riskType] = item.riskCount;
-          // console.log(item.riskType);
-          return acc;
-        }, {});
-
-        this.privacyRiskCount = riskcounts['Privacy'] ?? 0;
-        this.qualityRiskCount = riskcounts['Quality'] ?? 0;
-        this.securityRiskCount = riskcounts['Security'] ?? 0;
-        this.graph1datasets = [
-          {
-            data: [this.privacyRiskCount,this.securityRiskCount,this.qualityRiskCount],
-            backgroundColor:this.graph1Color,
-            hoverOffset: 10,
-            borderColor: '#EFE8DC',       // line color
-            borderWidth: 2,
-          },
-        ];
-
-        this.graph1chartType = 'pie';
-        this.graph1labels = ["Privacy","Security","Quality"];
-        // console.log('criticalitylevel', e);
+        this.riskStats = e; // Store the raw data
         this.cdr.detectChanges();
-        this.isAllDataFetched++;
-
-        // console.log('OpenRiskCount', e);
-        this.cdr.detectChanges();
-
         this.isAllDataFetched++;
       });
 
@@ -276,32 +228,14 @@ export class HomeComponent
 
     this.api.getOpenRiskCountByType(event, []).subscribe((e: any) =>
     {
-      this.openRiskCountByType = e;
-      this.list = e;
-      const riskcounts = this.list.reduce((acc: any, item: any) =>
-      {
-        acc[item.riskType] = item.riskCount;
-        return acc;
-      }, {});
-
-      this.privacyRiskCount = riskcounts['Privacy'];
-      this.qualityRiskCount = riskcounts['Quality'];
-      this.securityRiskCount = riskcounts['Security'];
-      this.graph1datasets = [
-          {
-            data: [this.privacyRiskCount,this.securityRiskCount,this.qualityRiskCount],
-            backgroundColor: this.graph1Color,
-            hoverOffset: 10,
-          },
-        ];
-
-        this.graph1chartType = 'pie';
-        this.graph1labels = ["Privacy","Security","Quality"];
-        // console.log('criticalitylevel', e);
-
-
-      this.cdr.detectChanges();
-      this.isAllDataFetched++;
+      this.riskStats = e; // Store the raw data
+      this.isAnyRIskToShow = this.riskStats.some((x: { openCount: number; closedCount: number }) => 
+       x.openCount > 0 || x.closedCount > 0
+      );
+      
+        this.cdr.detectChanges();
+        this.isAllDataFetched++;
+      
     });
 
     this.api.getRisksWithHeigestOverallRating(event, []).subscribe((e: any) =>

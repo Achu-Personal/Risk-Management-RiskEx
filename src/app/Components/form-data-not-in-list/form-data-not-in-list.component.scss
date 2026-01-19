@@ -1,64 +1,105 @@
+/* Overlay */
 .modal-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   background: rgba(0, 0, 0, 0.5);
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: flex-end;
   z-index: 1000;
 }
+
+/* Sidebar */
 .modal-content {
-  background: white;
-  padding: 20px;
-  border-radius: 8px;
-  width: 50%;
-  padding-top: 30px;
-  border-top: 50px solid var(--form-color);
+  
+  background: #fff;
+  width: 620px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  border-left: 6px solid var(--form-color);
+  animation: slideIn 0.3s ease forwards;
 }
+
+/* Top colored header */
+.modal-content::before {
+
+  content: "";
+  height: 60px;
+  background: var(--form-color);
+  flex-shrink: 0;
+}
+
+/* Scrollable area */
 .modal-content-container {
-  padding-left: 20px;
-  padding-right: 20px;
-  border-radius: 8px;
+  border-top-left-radius: 12px;
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
 }
+
+/* 🔑 IMPORTANT FIX */
+.modal-content-container form {
+    border-top-left-radius: 12px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Form fields */
 .form-detail {
   margin-bottom: 20px;
-  width: 100%;
-  label {
-    margin-bottom: 10px;
-  }
 }
-.required {
-  color: red;
+
+.form-detail label {
+  display: block;
+  margin-bottom: 8px;
 }
+
+/* Inputs */
 input {
   width: 100%;
-
   padding: 10px;
   border: 1px solid #ddd;
   border-radius: 6px;
-  font-size: 1rem;
-  transition: all 0.3s ease;
-  background-color: #f9f9f9;
-  overflow: hidden;
-  resize: none;
+  background: #f9f9f9;
 }
 
 input:focus {
   outline: none;
   border-color: var(--secondary-color);
-  box-shadow: 0 0 5px rgba(62, 104, 185, 0.5);
-  background-color: #fff;
+  box-shadow: 0 0 5px rgba(62, 104, 185, 0.4);
+  background: #fff;
 }
+
+/* Errors */
+.text-danger {
+  color: red;
+  margin-bottom: 16px;
+}
+
+/* Required */
+.required {
+  color: red;
+}
+
+/* ✅ BUTTON BAR — NOW REALLY AT BOTTOM */
 .button-group {
+  margin-top: auto;              /* THIS NOW WORKS */
   display: flex;
   justify-content: flex-end;
   gap: 15px;
-  margin-top: 20px;
+  padding: 16px 20px;
+  background: #fff;
+  border-top: 1px solid #ddd;
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.05);
 }
-.text-danger {
-  color: red;
-  margin-bottom: 30px;
+
+/* Animation */
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
 }

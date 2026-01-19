@@ -33,14 +33,29 @@
       </p>
     </div>
 
-    <div *ngIf="isAlreadyReviewed" class="response-card">
-            <div class="icon-container">
-                <!-- Display a checkmark for approval or cross for rejection -->
-                <!-- <span id="responseIcon">✔️</span> -->
-            </div>
-            <h1 id="icon-container" style="color: red;">This Action is Already completed</h1>
-            <!-- <p id="responseMessage">Your response for the Risk has been <span id="responseStatus">recorded.</span> -->
-              <!-- </p> -->
-            <!-- <a href="/" class="home-button">Back to Dashboard</a> -->
-        </div>
+  
+            <div  *ngIf="isAlreadyReviewed">
+  <div class="status-card status-error">
+    <div class="status-icon">
+      ✖
+    </div>
+
+    <h2 class="status-title">
+      Action Already Completed
+    </h2>
+
+    <p class="status-message">
+      This action has already been processed and cannot be changed.
+    </p>
+
+    <!-- Optional button -->
+    <!--
+    <a href="/" class="status-btn">
+      Back to Dashboard
+    </a>
+    -->
+  </div>
+</div>
+
+     
   </div>
