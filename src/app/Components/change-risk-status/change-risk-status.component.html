@@ -1,17 +1,17 @@
 <div class="modal-overlay">
   <div class="modal-content">
-    <button class="btn cancel" (click)="close()">
-        <i class="fa-regular fa-circle-xmark" style="font-size: xx-large;"></i>
-      </button>
+     <h2>Risk Status Update</h2>
+    <button
+    type="button"
+    class="close-btn"
+    (click)="close()"
+    aria-label="Close">
+    ✕
+  </button>
 
-
-
-      <div class="modal-header">
-      <h4>Risk Status Update</h4>
-    </div>
      <form [formGroup]="updateForm" (ngSubmit)="onSubmit()">
 
-     <div class="form-details-sub-container">
+     <div class="modal-content-container">
       <app-form-dropdown label="Risk Status" [dropdownData]="RiskStatuses" dropdownDisplay="name" dropdownValue="id" selectValue="Select Risk Status" (change)="onDropdownRiskStatus($event)" [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)"
         message=""
         required="*"
@@ -57,7 +57,7 @@
 
   @if(isValid){
   <app-form-successfull
-  message="Please check the form fields and <br> ensure all mandatory fields are satisfied. "
+  message="Please check the form fields and ensure all mandatory fields are satisfied. "
   [isSuccessfull] ="false"
   (closeDialog)="closepopupIsValidCheck()" >
   </app-form-successfull>

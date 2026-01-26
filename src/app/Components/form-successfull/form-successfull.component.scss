@@ -1,103 +1,86 @@
+/* Overlay */
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-
-}
-
-.modal-content {
-  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-  color: var(--foreground-color);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 20px;
-  padding: 36px 30px;
-   width: 420px;       
-  height: 200px;      
-  max-width: 420px;
-  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25),
-              inset 0 0 0 1px rgba(255, 255, 255, 0.1);
-  position: relative;
-  transform: scale(0.95);
-  animation: popUp 0.3s ease-out forwards;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  overflow: hidden;
-}
-
-.modal-content::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -50%;
-  width: 200%;
-  height: 100%;
-  background: linear-gradient(120deg, rgba(255,255,255,0.08), rgba(255,255,255,0));
   pointer-events: none;
-  animation: shine 3s ease-in-out infinite;
-  border-radius: 20px;
-  z-index: 0;
+  z-index: 9999;
 }
 
-/* Headings and messages should appear above overlay */
-h4, .modal-header, .modal-message {
-  position: relative;
-  z-index: 1;
+/* Toast container */
+.toast-strip {
+  pointer-events: auto;
+
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  width: 460px;
+  min-height: 56px;
+  padding: 12px 18px;
+
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  background: #2f2f2f;
+  color: #ffffff;
+
+  // border-radius: 8px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+
+  animation: slideDown 0.25s ease-out forwards;
 }
 
-h4 {
-  font-size: 1.5rem;
+/* White icon circle (same for success & error) */
+.icon-circle {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+
+  background: #ffffff;
+  color: #2f2f2f;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 18px;
   font-weight: 700;
-  margin: 0 0 16px;
-  /* color dynamically set by Angular binding */
+  flex-shrink: 0;
 }
 
-.modal-header {
-  font-weight: 600;
-  font-size: 1.1rem;
-  margin-bottom: 12px;
+/* Message */
+.message {
+  flex: 1;
+  font-size: 15px;
+  font-weight: 500;
 }
 
-.modal-message {
-  font-size: 1rem;
-  line-height: 1.5;
-  margin-bottom: 24px;
-  color: var(--foreground-color);
+/* Close button */
+.close-btn {
+  background: transparent;
+  border: none;
+
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+
+  color: #f472b6;
 }
 
-app-style-button {
-  position: relative;
-  z-index: 1;
-  align-self: center;
+.close-btn:hover {
+  text-decoration: underline;
 }
 
-/* Button animation from previous modal */
-@keyframes popUp {
+/* Animation */
+@keyframes slideDown {
   from {
-    transform: scale(0.9);
     opacity: 0;
+    transform: translate(-50%, -10px);
   }
   to {
-    transform: scale(1);
     opacity: 1;
-  }
-}
-
-@keyframes shine {
-  0% {
-    transform: translateX(-100%);
-  }
-  50% {
-    transform: translateX(100%);
-  }
-  100% {
-    transform: translateX(100%);
+    transform: translate(-50%, 0);
   }
 }

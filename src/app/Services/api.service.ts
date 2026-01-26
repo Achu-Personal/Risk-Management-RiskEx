@@ -561,6 +561,15 @@ export class ApiService {
     return this.http.put(`${this.baseUrl}/Risk/update/status/${riskId}`,payload)
 
 }
+
+updateRiskHide(riskId:number,isHide:boolean){
+  return this.http.put(`${this.baseUrl}/Risk/${riskId}/visibility`,isHide)
+
+}
+
+deleteRisk(riskId:number){
+  return this.http.delete(`${this.baseUrl}/Risk/${riskId}`)
+}
 }
 
 

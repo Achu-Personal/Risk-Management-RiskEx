@@ -9,10 +9,21 @@
   <input type="text" placeholder="Search..." [(ngModel)]="searchTerm" />
 
   <!-- Select All Checkbox -->
-  <label>
+   <div class="select-actions">
+    <label class="select-all">
     <input type="checkbox" [checked]="isAllSelected()" (change)="selectAll()" />
     Select All
   </label>
+  <button
+    type="button"
+    class="clear-btn"
+    (click)="clearAll()"
+    [disabled]="selectedItems.length === 0"
+  >
+    Clear All
+  </button>
+   </div>
+  
 
   <!-- Dropdown List -->
   <div *ngFor="let option of filterOptions()">
@@ -21,4 +32,7 @@
       {{ option.departmentName }}
     </label>
   </div>
+  
+
+ 
 </div>

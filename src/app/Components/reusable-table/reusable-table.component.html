@@ -291,7 +291,7 @@
 
 <app-confirmation-popup
   [isOpen]="showApproveDialog"
-  title="Approve Risk"
+  titleName="Approve Risk"
   confirmText="Approve"
   [showComment]="true"
   [isReject]="false"
@@ -302,7 +302,7 @@
 
 <app-confirmation-popup
   [isOpen]="showRejectDialog"
-  title="Reject Risk"
+  titleName="Reject Risk"
   confirmText="Reject"
   [isReject]="true"
   (confirm)="onReject($event)"
@@ -310,7 +310,7 @@
 >
 </app-confirmation-popup>
 
-<app-confirmation-popup
+<!-- <app-confirmation-popup
   [isOpen]="showStatusChangeDialog"
   confirmText="Confirm"
   [showComment]="false"
@@ -319,5 +319,16 @@
     ' user ' + (currentToggleRow.fullName || currentToggleRow.userName || 'User') + '?' : ''"
   (confirm)="onStatusConfirm($event)"
   (cancel)="onStatusCancel()"
->
-</app-confirmation-popup>
+> -->
+@if(showStatusChangeDialog){
+    <app-form-conform-popup
+   [message]="currentToggleRow ?
+    'Are you sure you want to ' + (currentToggleRow.isActive ? 'activate' : 'deactivate') +
+    ' user ' + (currentToggleRow.fullName || currentToggleRow.userName || 'User') + '?' : ''"
+    (closeDialog)="onStatusConfirm()"
+    (notCloseDialog)="onStatusCancel()"
+  ></app-form-conform-popup>
+
+}
+<!-- </app-confirmation-popup> -->
+

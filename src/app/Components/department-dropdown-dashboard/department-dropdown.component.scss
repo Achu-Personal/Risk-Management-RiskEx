@@ -33,7 +33,7 @@
   max-height: 300px;
   overflow-y: auto;
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
-  z-index: 1;
+  z-index: 1000;
   border: 1px solid #ccc;
   border-radius: 10px;
 }
@@ -103,4 +103,62 @@ label:hover {
 
 .bi-chevron-down.rotate {
   transform: rotate(180deg);
+}
+
+
+
+
+
+
+
+
+.select-actions {
+ display: flex;
+  align-items: center;
+  justify-content: space-between;
+  // padding: 6px 12px;
+  border-bottom: 1px solid #e5e7eb;
+  margin-bottom: 6px;
+}
+
+
+.select-all {
+flex: 0 0 70%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  color: #111827;
+  &:hover{
+    background-color: transparent;
+  }
+}
+
+.clear-btn {
+ flex: 0 0 30%;
+  display: flex;
+  justify-content: flex-end;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 4px 10px;
+  // border-radius: 6px;
+  background: transparent;
+  border: none;
+  // border: 1px solid var(--selection-color);
+  color: var(--foreground-color);
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover{
+    color: blue;
+  }
+
+
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
 }

@@ -19,14 +19,79 @@
   border-left: 6px solid var(--form-color);
   animation: slideIn 0.3s ease forwards;
 }
+.model-header{
+  background-color: white;
+}
+/* Top colored header */
+.modal-content {
+  position: relative; 
+  background: #fff;
+  width: 620px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  border-left: 6px solid var(--form-color);
+  animation: slideIn 0.3s ease forwards;
+}
 
 /* Top colored header */
 .modal-content::before {
-
   content: "";
-  height: 60px;
+  height: 64px;
   background: var(--form-color);
   flex-shrink: 0;
+}
+
+/* Title */
+.modal-content h2 {
+  position: absolute;
+  top: 0;
+  left: 20px;
+  height: 60px;
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: left;
+
+  color: var(--foreground-color);           /* ✅ white text on color */
+  font-weight: 600;
+  margin: 0;
+  z-index: 2;
+   font-size: 20px;
+  letter-spacing: 0.3px;
+}
+
+
+.close-btn {
+  position: absolute;
+  top: 0;
+  right: 16px;
+  height: 60px;
+  width: 40px;
+
+ 
+  border: none;
+  color: var(--foreground-color);
+  font-size: 22px;
+  font-weight: 500;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  z-index: 3;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.modal-content form {
+  display: flex;
+  flex-direction: column;
+  flex: 1;              /* 🔥 THIS IS THE KEY */
+  overflow: hidden;
 }
 
 /* Scrollable area */
