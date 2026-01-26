@@ -14,7 +14,7 @@ export class ConfirmationPopupComponent {
 
 
   @Input() isOpen = false;
-  @Input() title = '';
+  @Input() titleName = '';
   @Input() confirmText = 'Confirm';
   @Input() showComment = true;
   @Input() isReject = false;

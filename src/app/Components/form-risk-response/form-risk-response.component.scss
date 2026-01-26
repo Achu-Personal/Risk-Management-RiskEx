@@ -34,6 +34,7 @@ input[type="radio"] {
   cursor: pointer;
   position: relative;
   transition: border-color 0.3s ease, background-color 0.3s ease;
+  margin-top: 9px;
 }
 
 input[type="radio"]:checked::after {
@@ -52,7 +53,7 @@ input[type="radio"]:checked {
 }
 
 input[type="radio"]:checked::after {
-  background-color: var(--form-color);
+  background-color: var(--foreground-color);
 }
 
 
@@ -86,7 +87,7 @@ input[type="radio"]:checked::after {
   font-weight: bold;
   border-radius: 50%;
   padding: 0;
-  background-color: var(--secondary-color);
+  background-color: var(--foreground-color);
   color: white;
   font-size: 12px;
   width: 15px;

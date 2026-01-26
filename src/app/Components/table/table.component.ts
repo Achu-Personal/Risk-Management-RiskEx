@@ -7,18 +7,20 @@ import { ApiService } from '../../Services/api.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../Services/auth/auth.service';
 import { ResidualRiskStatusStylePipe } from "../../Pipes/residual-risk-status-style.pipe";
+import { FormConformPopupComponent } from '../form-conform-popup/form-conform-popup.component';
+import { FormSuccessfullComponent } from '../form-successfull/form-successfull.component';
 
 @Component({
   selector: 'app-table',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [SearchbarComponent, FormsModule, PaginationComponent, CommonModule, ResidualRiskStatusStylePipe],
+  imports: [SearchbarComponent, FormsModule, PaginationComponent, CommonModule, ResidualRiskStatusStylePipe, FormConformPopupComponent, FormSuccessfullComponent],
   templateUrl: './table.component.html',
   styleUrl: './table.component.scss'
 })
 export class TableComponent {
-  constructor( public api: ApiService,private route:ActivatedRoute,private router: Router,private cdr: ChangeDetectorRef,public auth: AuthService){}
-  items:any=[];
+  constructor(public api: ApiService, private route: ActivatedRoute, private router: Router, private cdr: ChangeDetectorRef, public auth: AuthService) { }
+  items: any = [];
   isActive = true;
   isDisabled = false;
   open = true;
@@ -26,20 +28,20 @@ export class TableComponent {
   isButtonVisible = false;
 
   @Input() isLoading: boolean = false;
-  @Input() paginated:any=[];
-  @Input() reset:boolean=false;
+  @Input() paginated: any = [];
+  @Input() reset: boolean = false;
 
-    // Separate arrays for data management
+  // Separate arrays for data management
   filteredItems: any[] = [];
   paginatedItems: any[] = []; // Add this for display items
 
   // filteredItems = [...this.items];
   isDepartmentDropdownOpen: boolean = false;
   isTypeDropdownOpen: boolean = false;
-  isStatusDropdownOpen:boolean =false;
-  isReviewStatusDropdownOpen:boolean =false;
-  isResidualRiskDropdownOpen:boolean =false;
-  isData:boolean = false;
+  isStatusDropdownOpen: boolean = false;
+  isReviewStatusDropdownOpen: boolean = false;
+  isResidualRiskDropdownOpen: boolean = false;
+  isData: boolean = false;
 
   itemsPerPage = 10;
   currentPage = 1;
@@ -51,21 +53,21 @@ export class TableComponent {
   selectedDepartment = '';
   selectedStatus = '';
   selectedReviewStatus = '';
-  selectedResidual ='';
+  selectedResidual = '';
   uniqueRiskTypes: any[] = [];
   uniqueDepartments: any[] = [];
   uniqueStatus: any[] = [];
   uniqueReviewStatus: any[] = [];
-  uniqueResidual:any[]=[];
+  uniqueResidual: any[] = [];
 
   @Output() filteredData = new EventEmitter<any[]>();
   filterTimeout: ReturnType<typeof setTimeout> | null = null;
   reviewStatusMap: Record<string, string> = {
     ReviewPending: "Review Pending",
-    ReviewCompleted:"Review Completed",
-    ApprovalPending:"Approval Pending",
-    ApprovalCompleted:"Approval Completed",
-    Rejected:"Rejected"
+    ReviewCompleted: "Review Completed",
+    ApprovalPending: "Approval Pending",
+    ApprovalCompleted: "Approval Completed",
+    Rejected: "Rejected"
   };
 
   getReviewStatus(status: string): string {
@@ -80,38 +82,38 @@ export class TableComponent {
   }
 
   onclickrow = output()
-    rowClick(row:any) {
-      this.onclickrow.emit(row);
-}
+  rowClick(row: any) {
+    this.onclickrow.emit(row);
+  }
 
   filterTable(): void {
     const reviewStatus = this.getReviewStatus(this.selectedReviewStatus);
     if (this.filterTimeout) clearTimeout(this.filterTimeout);
     this.filterTimeout = setTimeout(() => {
-    this.filteredItems = this.items.filter((item:any) => {
-      let matchesDateRange = true;
-      if (this.filteredDateRange) {
-        const { startDate, endDate } = this.filteredDateRange;
-        if (startDate && endDate) {
-          const itemDate = new Date(item.plannedActionDate);
-          const start = new Date(startDate);
-          const end = new Date(endDate);
-          matchesDateRange = itemDate >= start && itemDate <= end ;
+      this.filteredItems = this.items.filter((item: any) => {
+        let matchesDateRange = true;
+        if (this.filteredDateRange) {
+          const { startDate, endDate } = this.filteredDateRange;
+          if (startDate && endDate) {
+            const itemDate = new Date(item.plannedActionDate);
+            const start = new Date(startDate);
+            const end = new Date(endDate);
+            matchesDateRange = itemDate >= start && itemDate <= end;
+          }
         }
-      }
-      return (
-        matchesDateRange &&
-        (this.selectedRiskType ? item.riskType === this.selectedRiskType : true) &&
-        (this.selectedStatus ? item.riskStatus === this.selectedStatus : true) &&
-        (this.selectedResidual ? item.residualRisk === this.selectedResidual : true) &&
-        (this.selectedReviewStatus ? item.riskAssessments[0].reviewStatus === reviewStatus : true) &&
-        (this.selectedDepartment ? item.departmentName === this.selectedDepartment : true)
-      );
-    });
-  this.currentPage = 1;
-  this.totalItems = this.filteredItems.length;
-  this.updatePaginatedItems();
-  }, 500);
+        return (
+          matchesDateRange &&
+          (this.selectedRiskType ? item.riskType === this.selectedRiskType : true) &&
+          (this.selectedStatus ? item.riskStatus === this.selectedStatus : true) &&
+          (this.selectedResidual ? item.residualRisk === this.selectedResidual : true) &&
+          (this.selectedReviewStatus ? item.riskAssessments[0].reviewStatus === reviewStatus : true) &&
+          (this.selectedDepartment ? item.departmentName === this.selectedDepartment : true)
+        );
+      });
+      this.currentPage = 1;
+      this.totalItems = this.filteredItems.length;
+      this.updatePaginatedItems();
+    }, 500);
   }
 
   onSearch(searchText: string): void {
@@ -134,12 +136,14 @@ export class TableComponent {
     }
   }
 
-  isDepartmentUser:boolean=false;
-
+  isDepartmentUser: boolean = false;
+  isAdmin: boolean = false;
   private initializeItems(): void {
 
     const role = this.auth.getUserRole();
     this.isDepartmentUser = role === 'DepartmentUser';
+    this.isAdmin = role === 'Admin'
+
 
     // Ensure we have valid data before processing
     if (this.paginated && Array.isArray(this.paginated)) {
@@ -157,7 +161,7 @@ export class TableComponent {
     }
 
   }
-  @Input() noDataMessage:string='No risks'
+  @Input() noDataMessage: string = 'No risks'
 
   hasValidData(): boolean {
     return this.paginated && Array.isArray(this.paginated) && this.paginated.length > 0;
@@ -179,7 +183,7 @@ export class TableComponent {
     this.uniqueReviewStatus = [...new Set(this.items
       .map((item: any) => item.riskAssessments?.[0]?.reviewStatus)
       .filter(Boolean)
-      .map((status : string) => this.reviewStatusMap[status])
+      .map((status: string) => this.reviewStatusMap[status])
       .filter(Boolean))];
   }
 
@@ -196,7 +200,7 @@ export class TableComponent {
 
 
     this.paginatedItems = this.filteredItems.slice(startIndex, endIndex);
-    console.log("paginatedItems",this.paginatedItems);
+    console.log("paginatedItems", this.paginatedItems);
     this.totalItems = this.filteredItems.length;
 
     this.cdr.markForCheck();
@@ -314,7 +318,7 @@ export class TableComponent {
     if (changes['filteredDateRange'] && this.filteredDateRange) {
       this.filterTable();
     }
-     if (changes['reset'] && this.reset) {
+    if (changes['reset'] && this.reset) {
       this.resetFilters();
     }
   }
@@ -335,19 +339,19 @@ export class TableComponent {
       ? (this.sortDirection === 'asc' ? 'desc' : 'asc')
       : 'asc';
     this.sortColumn = column;
-  this.filteredItems = [...this.filteredItems].sort((a, b) => {
-    if (column === 'crr') {
-      const valueA = this.getCRRValue(a);
-      const valueB = this.getCRRValue(b);
-      return (valueA - valueB) * (this.sortDirection === 'asc' ? 1 : -1);
-    }
-    if (column === 'plannedActionDate') {
-      const valueA = new Date(a.plannedActionDate).getTime();
-      const valueB = new Date(b.plannedActionDate).getTime();
-      return (valueA - valueB) * (this.sortDirection === 'asc' ? 1 : -1);
-    }
-    return 0;
-  });
+    this.filteredItems = [...this.filteredItems].sort((a, b) => {
+      if (column === 'crr') {
+        const valueA = this.getCRRValue(a);
+        const valueB = this.getCRRValue(b);
+        return (valueA - valueB) * (this.sortDirection === 'asc' ? 1 : -1);
+      }
+      if (column === 'plannedActionDate') {
+        const valueA = new Date(a.plannedActionDate).getTime();
+        const valueB = new Date(b.plannedActionDate).getTime();
+        return (valueA - valueB) * (this.sortDirection === 'asc' ? 1 : -1);
+      }
+      return 0;
+    });
     this.currentPage = 1;
     this.updatePaginatedItems();
   }
@@ -362,86 +366,192 @@ export class TableComponent {
 
 
 
-getStatusColor(status: string): string {
-  switch (status?.toLowerCase()) {
-    case 'open': return '#EF4444';            // Vibrant Red (Critical/High priority)
-    case 'closed': return '#10B981';          // Vibrant Green (Resolved/Complete)
-    case 'deferred': return '#F97316';        // Vibrant Orange (Postponed)
-    case 'undertreatment': return '#3B82F6';  // Vibrant Blue (In progress)
-    case 'accepted': return '#A855F7';        // Vibrant Purple (Acknowledged)
-    case 'monitoring': return '#FBBF24';      // Vibrant Gold (Watch/Review)
-    default: return '#9CA3AF';                // Neutral Gray (Unknown/Neutral)
+  getStatusColor(status: string): string {
+    switch (status?.toLowerCase()) {
+      case 'open': return '#EF4444';            // Vibrant Red (Critical/High priority)
+      case 'closed': return '#10B981';          // Vibrant Green (Resolved/Complete)
+      case 'deferred': return '#F97316';        // Vibrant Orange (Postponed)
+      case 'undertreatment': return '#3B82F6';  // Vibrant Blue (In progress)
+      case 'accepted': return '#A855F7';        // Vibrant Purple (Acknowledged)
+      case 'monitoring': return '#FBBF24';      // Vibrant Gold (Watch/Review)
+      default: return '#9CA3AF';                // Neutral Gray (Unknown/Neutral)
+    }
   }
-}
 
 
-getReviewColor(status: string): string {
-  switch (status?.toLowerCase())  {
-    case 'review pending':    return '#F59E0B';   // Amber (Needs attention)
-    case 'review completed':  return '#3B82F6';   // Blue (Reviewed, awaiting approval)
-    case 'approval pending':  return '#8B5CF6';   // Purple (Final stage pending)
-    case 'approval completed':return '#10B981';   // Green (Fully complete)
-    case 'rejected':         return '#EF4444';   // Red (Action needed)
-    default: return '#9CA3AF'; // Gray (Unknown)
-  }
-}
-
-
-
-getConditionalStatus(riskAssessments: any[]): string {
-  if (!riskAssessments || riskAssessments.length === 0) return '';
-
-  const count = riskAssessments.length;
-  if(riskAssessments[0].reviewStatus==="ReviewPending"){
-    return riskAssessments[0]?.reviewStatus
-  }
-  else{
-   const index=count-1
-  return riskAssessments[index]?.reviewStatus
-
-
+  getReviewColor(status: string): string {
+    switch (status?.toLowerCase()) {
+      case 'review pending': return '#F59E0B';   // Amber (Needs attention)
+      case 'review completed': return '#3B82F6';   // Blue (Reviewed, awaiting approval)
+      case 'approval pending': return '#8B5CF6';   // Purple (Final stage pending)
+      case 'approval completed': return '#10B981';   // Green (Fully complete)
+      case 'rejected': return '#EF4444';   // Red (Action needed)
+      default: return '#9CA3AF'; // Gray (Unknown)
+    }
   }
 
 
 
-}
+  getConditionalStatus(riskAssessments: any[]): string {
+    if (!riskAssessments || riskAssessments.length === 0) return '';
+
+    const count = riskAssessments.length;
+    if (riskAssessments[0].reviewStatus === "ReviewPending") {
+      return riskAssessments[0]?.reviewStatus
+    }
+    else {
+      const index = count - 1
+      return riskAssessments[index]?.reviewStatus
+
+
+    }
 
 
 
-
-getRiskColor(value: number , riskType:string): string {
-  if(riskType=="Quality"){
-     if (value <= 4) {
-    return 'green';
-  } else if (value >= 6&& value <= 16) {
-    return 'yellow';
-  } else  {
-    return 'red';
   }
-  }
-   else if (riskType== "Security") {
+
+
+
+
+  getRiskColor(value: number, riskType: string): string {
+    if (riskType == "Quality") {
+      if (value <= 4) {
+        return 'green';
+      } else if (value >= 6 && value <= 16) {
+        return 'yellow';
+      } else {
+        return 'red';
+      }
+    }
+    else if (riskType == "Security") {
       if (value <= 45) {
-      return 'green';
-    } else if (value  >= 46 && value <= 69) {
-      return 'yellow';
-    } else {
-      return 'red';
+        return 'green';
+      } else if (value >= 46 && value <= 69) {
+        return 'yellow';
+      } else {
+        return 'red';
+      }
+    }
+
+
+
+    else {
+      if (value <= 45) {
+        return 'green';
+      } else if (value >= 46 && value <= 69) {
+        return 'yellow';
+      } else {
+        return 'red';
+      }
     }
   }
 
 
+  isHideToggleOn: boolean = false;
+  isHideToggleOff: boolean = false;
+  hidedItem: any;
+  isHideSuccessfull: boolean = false;
+  isHideError: boolean = false;
+  hideSuccessfullMessage: string = '';
+  hideErrorMessage: string = '';
+  previousState: boolean = false;
+  DeleteRisk:any;
+  isDeletePopupShow:boolean=false;
 
-else{
-    if (value <= 45) {
-      return 'green';
-    } else if (value  >= 46 && value <= 69) {
-      return 'yellow';
-    } else {
-      return 'red';
+
+  onToggleHide(item: any, event: Event) {
+    event.stopPropagation();
+    const isOn = (event.target as HTMLInputElement).checked;
+    this.hidedItem = item;
+    this.previousState = item.isHide;
+    item.isHide = isOn;
+    if (isOn) {
+      this.isHideToggleOn = true;
+      this.isHideToggleOff = false;
     }
-  }
-}
+    else {
+      this.isHideToggleOff = true;
+      this.isHideToggleOn = false;
+    }
 
+
+  }
+  closeHide() {
+    if (this.hidedItem) {
+      this.hidedItem.isHide = this.previousState;
+
+    }
+    this.isHideToggleOn = false;
+    this.isHideToggleOff = false;
+    this.resetToggleState();
+  }
+
+  resetToggleState() {
+    this.hidedItem = null;
+    this.previousState = false;
+
+  }
+  saveHide() {
+    this.isHideToggleOn = false;
+    this.isHideToggleOff = false;
+    // this.isLoading = true;
+    this.api.updateRiskHide(this.hidedItem.id, true).subscribe({
+      next: (res: any) => {
+       window.location.reload();
+      },
+      error: (err) => {
+        this.isLoading = false;
+        this.hideErrorMessage = err.message;
+
+      },
+    });
+    this.resetToggleState();
+
+  }
+  isHideSuccess() {
+    this.isHideSuccessfull = false;
+
+  }
+
+
+  saveOffHide() {
+    this.isHideToggleOn = false;
+    this.isHideToggleOff = false;
+    this.api.updateRiskHide(this.hidedItem.id, false).subscribe({
+      next: (res: any) => {
+     window.location.reload();
+      },
+      error: (err) => {
+        this.isLoading = false;
+        this.hideErrorMessage = err.message;
+
+      },
+    });
+
+  }
+
+  onDelete(item: any) {
+    this.DeleteRisk = item;
+    this.isDeletePopupShow=true;
+  }
+
+  closeDeletePopup(){
+    this.DeleteRisk=null;
+    this.isDeletePopupShow=false;
+  }
+
+  deleteRisk(){
+    this.isDeletePopupShow=false;
+    this.api.deleteRisk(this.DeleteRisk.id).subscribe({
+      next: (res: any) => {
+       window.location.reload();
+      },
+      error: (err) => {
+        this.isLoading = false;
+      },
+    });
+
+  }
 
 
 }

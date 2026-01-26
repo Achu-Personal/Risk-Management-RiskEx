@@ -1,11 +1,17 @@
 <div class="modal-overlay">
   <div class="modal-content">
-    <button class="btn cancel" (click)="close()">
-      <i class="fa-regular fa-circle-xmark" style="font-size: xx-large;"></i>
-    </button>
+     <h2>Reviewer</h2>
+    <button
+    type="button"
+    class="close-btn"
+    (click)="close()"
+    aria-label="Close">
+    ✕
+  </button>
 
-    <div class="form-details-sub-container">
-      <h2>Reviewer</h2>
+
+    <div class="modal-content-container">
+
 
       @if(!isnewReviewernameDisplay){
         <app-form-dropdown
@@ -74,7 +80,7 @@
 
   @if(isErrorReviewer){
     <app-form-successfull
-      message="Reasons May be:<br>A reviewer with this email already exists.<br>Please ensure all required fields are completed correctly and check your internet connection.<br>If the issue persists, please try again later or contact support for assistance."
+      message="Reasons May be: A reviewer with this email already exists. Please ensure all required fields are completed correctly and check your internet connection. If the issue persists, please try again later or contact support for assistance."
       [isSuccessfull]="false"
       (closeDialog)="closeReviewer()">
     </app-form-successfull>

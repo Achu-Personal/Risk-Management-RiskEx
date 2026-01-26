@@ -84,13 +84,14 @@ export class DepartmentDropdownComponent {
   }
 
   isSelected(item: department) {
-    if(this.selectedItems.length === 0){
-      this.selectAll();
-      this.isAllSelected();
 
-    }
     return this.selectedItems.some((selected) => selected.id === item.id);
   }
+clearAll() {
+  this.selectedItems = [];
+  this.updateSelectedDepartment();
+  this.extractDepartmentIdsAndFetchData();
+}
 
   selectAll() {
     if (this.selectedItems.length === this.dropdownOptions.length) {

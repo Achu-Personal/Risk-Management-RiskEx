@@ -1,8 +1,15 @@
 <div class="modal-overlay" *ngIf="isOpen">
   <div class="modal-content">
-    <h2>{{title}}</h2>
+    <h2>{{titleName}}</h2>
+    <button
+    type="button"
+    class="close-btn"
+    (click)="onCancel()"
+    aria-label="Close">
+    ✕
+  </button>
     <form [formGroup]="form" (ngSubmit)="onConfirm()">
-      <div *ngIf="message" class="form-group">
+      <div *ngIf="message" style="margin-top: 10px;" class="form-group">
         <label>{{message}}</label>
       </div>
       <div *ngIf="showComment || isReject" class="form-group">
@@ -24,7 +31,7 @@
           Comment is required for rejection
         </div>
       </div>
-      <div class="button-group">
+      <div class="form-detail button-group">
         <app-style-button
           type="submit"
           label={{confirmText}}

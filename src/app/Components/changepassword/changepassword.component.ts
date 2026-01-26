@@ -15,7 +15,7 @@ import { NotificationService } from '../../Services/notification.service';
 })
 export class ChangepasswordComponent {
   @Output() close = new EventEmitter<void>();
-  @Input() isVisible = false;
+  @Input() isVisible = true;
   @Output() closeModal = new EventEmitter<void>();
 
   changePasswordForm: FormGroup;
