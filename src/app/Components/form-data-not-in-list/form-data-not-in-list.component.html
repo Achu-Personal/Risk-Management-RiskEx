@@ -1,5 +1,13 @@
 <div class="modal-overlay">
   <div  class="modal-content">
+    <h2>{{ isAssignee ? 'Add New Risk Owner' : 'Add New Reviewer' }}</h2>
+    <button
+    type="button"
+    class="close-btn"
+    (click)="cancel()"
+    aria-label="Close">
+    ✕
+  </button>
 
   <div class="modal-content-container">
     <form [formGroup]="group" (ngSubmit)="onSubmit()" >

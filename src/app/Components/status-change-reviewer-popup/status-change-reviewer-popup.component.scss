@@ -1,149 +1,173 @@
+/* Overlay */
 .modal-overlay {
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.5);
   display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-  padding: 20px; /* prevents modal from touching edges */
+  justify-content: flex-end;
+  z-index: 1000;
 }
 
+/* Sidebar */
 .modal-content {
-  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-  color: var(--foreground-color);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 20px;
-  padding: 36px 30px;
-  width: 100%;
-  max-width: 50vw;
-  max-height: auto;
-  min-height: 57vh;       /* 🔥 prevents overflow beyond screen */
-  // overflow-y: auto;
-  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25),
-              inset 0 0 0 1px rgba(255, 255, 255, 0.1);
-  position: relative;
-  transform: scale(0.95);
-  animation: popUp 0.3s ease-out forwards;
-
+  
+  background: #fff;
+  width: 620px;
+  height: 100%;
   display: flex;
   flex-direction: column;
-  // text-align: center;
+  border-left: 6px solid var(--form-color);
+  animation: slideIn 0.3s ease forwards;
+}
+.model-header{
+  background-color: white;
+}
+/* Top colored header */
+.modal-content {
+  position: relative; 
+  background: #fff;
+  width: 620px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  border-left: 6px solid var(--form-color);
+  animation: slideIn 0.3s ease forwards;
 }
 
+/* Top colored header */
 .modal-content::before {
   content: "";
+  height: 64px;
+  background: var(--form-color);
+  flex-shrink: 0;
+}
+
+/* Title */
+.modal-content h2 {
   position: absolute;
   top: 0;
-  left: -50%;
-  width: 200%;
-  height: 100%;
-  background: linear-gradient(120deg, rgba(255,255,255,0.08), rgba(255,255,255,0));
-  pointer-events: none;
-  animation: shine 3s ease-in-out infinite;
-  border-radius: 20px;
-  z-index: 0;
-}
+  left: 20px;
+  height: 60px;
+  width: 100%;
 
-/* Headings and messages stay above shine */
-h4, .modal-header, .modal-message {
-  position: relative;
-  z-index: 1;
-}
-
-.modal-message {
-  font-size: 1rem;
-  line-height: 1.5;
-  margin-bottom: 24px;
-  color: var(--foreground-color);
-}
-
-app-style-button {
-  position: relative;
-  z-index: 1;
-  align-self: center;
-}
-
-
-
-
-
-
-
-
-
-.modal-header {
-  margin-bottom: 24px;
-  color: var(--foreground-color);
-  position: relative; /* stays above shine */
+  display: flex;
   align-items: center;
-  justify-content: center;
-  z-index: 1;
-}
+  justify-content: left;
 
-.modal-header h4 {
-  margin: 0;
-  font-size: 1.5rem;
+  color: var(--foreground-color);           /* ✅ white text on color */
   font-weight: 600;
+  margin: 0;
+  z-index: 2;
+   font-size: 20px;
+  letter-spacing: 0.3px;
 }
 
-.btn.cancel {
+
+.close-btn {
   position: absolute;
-  top: 20px;
-  right: 20px;
-  background-color: transparent;
+  top: 0;
+  right: 16px;
+  height: 60px;
+  width: 40px;
+
+ 
   border: none;
   color: var(--foreground-color);
-  font-size: 1.5rem;
+  font-size: 22px;
+  font-weight: 500;
   cursor: pointer;
-  z-index: 2;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
+  z-index: 3;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
 }
 
+.modal-content form {
+  display: flex;
+  flex-direction: column;
+  flex: 1;              /* 🔥 THIS IS THE KEY */
+  overflow: hidden;
+}
 
-
-
-
-
-
-
-.form-details-sub-container {
-  background-color: var(--accent-color);
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+/* Scrollable area */
+.modal-content-container {
+  border-top-left-radius: 12px;
+  flex: 1;
+  overflow-y: auto;
   padding: 20px;
-  border-left: 20px solid var(--form-color);
-  margin-top: 30px;
 }
+
+/* 🔑 IMPORTANT FIX */
+.modal-content-container form {
+    border-top-left-radius: 12px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Form fields */
+.form-detail {
+  margin-bottom: 20px;
+}
+
+.form-detail label {
+  display: block;
+  margin-bottom: 8px;
+}
+
+/* Inputs */
+input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background: #f9f9f9;
+}
+
+input:focus {
+  outline: none;
+  border-color: var(--secondary-color);
+  box-shadow: 0 0 5px rgba(62, 104, 185, 0.4);
+  background: #fff;
+}
+
+/* Errors */
+.text-danger {
+  color: red;
+  margin-bottom: 16px;
+}
+
+/* Required */
 .required {
   color: red;
 }
-.form-details-sub-container h2 {
-  font-size: 1.4rem;
-  color: var(--foreground-color);
-  margin-bottom: 15px;
-  text-transform: uppercase;
-  border-bottom: 2px solid var(--foreground-color);
-  padding-bottom: 8px;
-}
+
+/* ✅ BUTTON BAR — NOW REALLY AT BOTTOM */
 .button-group {
+  margin-top: auto;              /* THIS NOW WORKS */
   display: flex;
   justify-content: flex-end;
-  gap: 30px;
-  margin-top: 20px;
-  // margin-right: 50px;
+  gap: 15px;
+  padding: 16px 20px;
+  background: #fff;
+  border-top: 1px solid #ddd;
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.05);
 }
 
-@media (max-width: 768px) {
-    .button-group {
-    flex-direction: column;
-    gap: 10px;
-    align-items: center;
+/* Animation */
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
   }
 }
-
 
 a {
   color: black;

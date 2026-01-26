@@ -127,8 +127,8 @@
   justify-content: space-between;
 
   &.selected {
-    background-color: #e3f2fd;
-    color: #007bff;
+    background-color: var(--form-color);
+    color: black;
     font-weight: 500;
   }
 
@@ -146,7 +146,7 @@
   }
 
   .check-icon {
-    color: #007bff;
+    color: var(--foreground-color);
     font-size: 16px;
     font-weight: bold;
     margin-left: auto;

@@ -2,12 +2,13 @@
   <div class="dashboard">
     <div class="topbuttons">
       <div class="dropdown">
-        <app-department-dropdown *ngIf="authService.getUserRole() === 'Admin'|| authService.getUserRole()?.includes('EMTUser')"
-                                                                                                                                                              (departmentsSelected)="GetSelectedDepartment($event)"></app-department-dropdown>
+        <app-department-dropdown
+          *ngIf="authService.getUserRole() === 'Admin'|| authService.getUserRole()?.includes('EMTUser')"
+          (departmentsSelected)="GetSelectedDepartment($event)"></app-department-dropdown>
       </div>
       <div class="registerrisk">
-        <app-style-button *ngIf="!authService.getUserRole()?.includes('EMTUser')" (clicked)="OnRegisterRiskButtonCLicked()"
-                                                                                                                                                              label="Register Risk"></app-style-button>
+        <app-style-button *ngIf="!authService.getUserRole()?.includes('EMTUser')"
+          (clicked)="OnRegisterRiskButtonCLicked()" label="Register Risk"></app-style-button>
       </div>
     </div>
 
@@ -20,46 +21,63 @@
 
 
       <div class="graph1">
-  <div class="heading">
-    <h4>Risk Status Overview</h4>
+    <div class="heading">
+      <h4>Risk Status Overview</h4>
+    </div>
+
+    @if(isAnyRIskToShow){
+
+      <div class="status-headers">
+    <div class="header-label">Risk Type</div>
+    <div class="header-label">Open</div>
+    <div class="header-label">Under Treatment</div>
+    <div class="header-label">Deferred</div>
+    <div class="header-label">Accepted</div>
+    <div class="header-label">Monitoring</div>
+    <div class="header-label">Closed</div>
   </div>
-  @if(isAnyRIskToShow){
-    <div class="risk-cards">
-    @for(risk of riskStats; track risk.riskType) {
-      <div class="risk-card">
-        <div class="card-header">
-          <h5>{{ risk.riskType }}</h5>
-        </div>
-        <div class="risk-counts">
-          <div class="count-item open">
+    <div class="risk-flow">
+      @for(risk of riskStats; track risk.riskType) {
+      <div class="risk-node">
+        <!-- Risk Type Heading -->
+        <div class="node-header">{{ risk.riskType }}</div>
+
+        <!-- Connector Line -->
+        <div class="connector-line"></div>
+
+        <!-- Status Nodes in a Row -->
+        <div class="node-stages">
+          <div class="stage open">
             <span class="label">Open</span>
             <span class="value">{{ risk.openCount }}</span>
           </div>
-          <div class="count-item closed">
+          <div class="stage under-treatment">
+            <span class="label">Under Treatment</span>
+            <span class="value">{{ risk.underTreatmentCount }}</span>
+          </div>
+          <div class="stage deferred">
+            <span class="label">Deferred</span>
+            <span class="value">{{ risk.deferredCount }}</span>
+          </div>
+          <div class="stage accepted">
+            <span class="label">Accepted</span>
+            <span class="value">{{ risk.acceptedCount }}</span>
+          </div>
+          <div class="stage monitoring">
+            <span class="label">Monitoring</span>
+            <span class="value">{{ risk.monitoringCount }}</span>
+          </div>
+          <div class="stage closed">
             <span class="label">Closed</span>
             <span class="value">{{ risk.closedCount }}</span>
           </div>
         </div>
-        <!-- <div class="progress-bar">
-          <div class="progress-fill" 
-               [style.width.%]="(risk.openCount / (risk.openCount + risk.closedCount)) * 100">
-          </div>
-        </div> -->
       </div>
+      }
+    </div>
     }
   </div>
-
-  }
-   @else {
-          <div class="empty-state">
-            <img height="200px" width="250px" src="/assets/icons/Empty sate1.png" />
-            <h6>No Risk found</h6>
-          </div>
-
-          }
-  
-</div>
-      <div class="graph2">
+      <!-- <div class="graph2">
 
         <div class="heading">
           <h4>Risk Rating</h4>
@@ -70,7 +88,8 @@
 
           <div class="forchart">
             <div class="graphchart">
-              <app-chart class="mainchart" [labels]="graph2labels" [chartType]="graph2chartType" [datasets]="graph2datasets" ></app-chart>
+              <app-chart class="mainchart" [labels]="graph2labels" [chartType]="graph2chartType"
+                [datasets]="graph2datasets"></app-chart>
             </div>
 
           </div>
@@ -84,7 +103,7 @@
         </div>
         }
 
-      </div>
+      </div> -->
     </div>
 
 

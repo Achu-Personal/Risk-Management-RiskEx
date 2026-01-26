@@ -93,7 +93,13 @@ export class AuthService {
         if (response.token) {
           localStorage.setItem('token', response.token);
           this.setUserDetails(response.token);
-          this.navigateToDashboard();
+          if(response.user.isChangePasswordOnFirtsLogin===true){
+            this.navigateToDashboard();
+          }
+          else{
+             this.router.navigate(['/changepassword']);
+          }
+          
         }
       }),
       catchError((error: any) => {

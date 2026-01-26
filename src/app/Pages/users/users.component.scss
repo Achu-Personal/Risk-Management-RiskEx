@@ -4,13 +4,7 @@
 .modal-header {
   background-color: var(--secondary-color);
 }
-.button-group {
-  gap: 20px;
-  display: flex;
-  justify-content: end;
-  margin-top: 10px;
-  margin-right: 20px;
-}
+
 
 .sticky-buttons {
   position: sticky;
@@ -22,51 +16,7 @@
   padding-top: 30px;
   overflow-y: none;
 }
-button.button-custom {
-  padding: 10px;
-  font-size: 0.8rem;
-  border: none;
-  border-radius: 5px;
-  width: auto;
-  min-width: 120px;
-  height: auto;
-  white-space: nowrap;
-  overflow: hidden;
-  text-align: center;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-}
 
-button {
-  padding: 7px 20px;
-  font-size: 0.9rem;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-  width: 100px;
-}
-
-button.btn-success {
-  background-color: #4d4d4d;
-  color: #ffffff;
-}
-
-button.btn-success:hover {
-  background-color: #d0c6b6;
-  color: rgb(43, 28, 6);
-  transform: scale(1.05);
-}
-
-button.btn-danger {
-  background-color: #faeaea;
-  color: rgb(17, 16, 16);
-}
-
-button.btn-danger:hover {
-  background-color: #b6b5bd;
-  transform: scale(1.05);
-}
 
 .table-container {
   padding-top: 10px;
@@ -158,5 +108,215 @@ button.btn-danger:hover {
   top: 50%;
   transform: translateY(-50%);
   white-space: nowrap;
+}
+
+/* Overlay */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: flex-end;
+  z-index: 1000;
+}
+
+/* Sidebar */
+.modal-content {
+  
+  background: #fff;
+  width: 620px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  border-left: 6px solid var(--form-color);
+  animation: slideIn 0.3s ease forwards;
+}
+.model-header{
+  background-color: white;
+}
+/* Top colored header */
+.modal-content {
+  position: relative; 
+  background: #fff;
+  width: 620px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  border-left: 6px solid var(--form-color);
+  animation: slideIn 0.3s ease forwards;
+}
+
+/* Top colored header */
+.modal-content::before {
+  content: "";
+  height: 64px;
+  background: var(--form-color);
+  flex-shrink: 0;
+}
+
+/* Title */
+.modal-content h2 {
+  position: absolute;
+  top: 0;
+  left: 20px;
+  height: 60px;
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: left;
+
+  color: var(--foreground-color);           /* ✅ white text on color */
+  font-weight: 600;
+  margin: 0;
+  z-index: 2;
+   font-size: 20px;
+  letter-spacing: 0.3px;
+}
+
+
+.close-btn {
+  position: absolute;
+  top: 0;
+  right: 16px;
+  height: 60px;
+  width: 40px;
+
+ 
+  border: none;
+  color: var(--foreground-color);
+  font-size: 22px;
+  font-weight: 500;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  z-index: 3;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.modal-content form {
+  display: flex;
+  flex-direction: column;
+  flex: 1;              /* 🔥 THIS IS THE KEY */
+  overflow: hidden;
+}
+
+/* Scrollable area */
+.modal-content-container {
+  border-top-left-radius: 12px;
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+}
+
+/* 🔑 IMPORTANT FIX */
+.modal-content-container form {
+    border-top-left-radius: 12px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Form fields */
+.form-detail {
+  margin-bottom: 20px;
+}
+
+.form-detail label {
+  display: block;
+  margin-bottom: 8px;
+}
+
+/* Inputs */
+input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background: #f9f9f9;
+}
+
+input:focus {
+  outline: none;
+  border-color: var(--secondary-color);
+  box-shadow: 0 0 5px rgba(62, 104, 185, 0.4);
+  background: #fff;
+}
+
+/* Errors */
+.text-danger {
+  color: red;
+  // margin-bottom: 7px;
+}
+
+/* Required */
+.required {
+  color: red;
+}
+
+/* ✅ BUTTON BAR — NOW REALLY AT BOTTOM */
+.button-group {
+  margin-top: auto;              /* THIS NOW WORKS */
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  padding: 16px 20px;
+  background: #fff;
+  border-top: 1px solid #ddd;
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.05);
+}
+
+
+
+
+
+
+
+
+/* Style for individual buttons */
+.button-group button {
+ padding: 0 1.1vh;
+  height: 5.5vh;
+  background-color: #4D4D4D ;
+  color: #ffffff ;
+  box-shadow: 0px 0px 4px rgba(185, 154, 62, 0.5);
+  border: none;
+  border-radius: 5px;
+  font-size: small;
+  cursor: pointer;
+  transition: background-color 0.3s, border-color 0.3s;
+  width: 170px;
+
+  display: flex;
+  align-items: center;     /* Vertical centering */
+  justify-content: center; /* Horizontal centering */
+  line-height: normal;
+}
+
+/* Hover effect */
+
+
+/* Focus effect */
+.button-group button:focus {
+  outline: none;
+  box-shadow: 0 0 5px rgba(255, 166, 0, 0.5);
+}
+
+
+
+
+/* Animation */
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
 }
 

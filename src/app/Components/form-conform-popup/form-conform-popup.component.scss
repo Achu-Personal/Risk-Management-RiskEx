@@ -5,15 +5,19 @@
 
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: top;
   padding-top: 30px;
 
   z-index: 9999;
 }
 
 .modal-content {
-  background: #e9e2d6; /* match your screenshot */
+  background: white; /* match your screenshot */
   color: #3a3a3a;
+  border-left: 15px solid var(--form-color);
+  border-top: 10px solid var(--form-color);
+   
+
 
   width: 420px;       /* ✅ fixed width */
   height: 170px;      /* ✅ fixed height */
