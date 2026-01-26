@@ -508,3 +508,81 @@ th span {
   text-overflow: ellipsis;   /* ✅ Add "..." if text is too long */
 }
 
+
+
+
+.action-cell {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* Toggle switch */
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 42px;
+  height: 22px;
+}
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  inset: 0;
+  background-color: #ccc;
+  transition: 0.3s;
+  border-radius: 20px;
+}
+
+.slider::before {
+  content: "";
+  position: absolute;
+  height: 18px;
+  width: 18px;
+  left: 2px;
+  bottom: 2px;
+  background-color: white;
+  transition: 0.3s;
+  border-radius: 50%;
+}
+
+/* Checked state */
+.toggle-switch input:checked + .slider {
+  background-color: green;
+}
+
+.toggle-switch input:checked + .slider::before {
+  transform: translateX(20px);
+}
+
+/* Delete button */
+.delete-btn {
+  background: transparent;
+  border: none;
+  color: #d32f2f;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.delete-btn:hover {
+  color: #b71c1c;
+}
+
+
+.hidden-row td:not(.action-cell) {
+  opacity: 0.4;
+  transition: opacity 0.2s ease;
+}
+
+/* Keep action buttons normal */
+.action-cell {
+  opacity: 1;
+}
+
+

@@ -1,13 +1,18 @@
 <div class="modal-overlay">
-  <div class="modal-content">
+  <div class="toast-strip">
 
-    <h4 [ngStyle]="{'color': isSuccessfull ? 'green' : 'red'}">
-      {{ isSuccessfull ? 'Success' : 'Error' }}
-    </h4>
-    <p class="modal-header" [innerHTML]="HeaderMessage"></p>
-    <p class="modal-message" [innerHTML]="message"></p>
+    <!-- Icon -->
+    <div class="icon-circle">
+      {{ isSuccessfull ? '✔' : '✖' }}
+    </div>
 
-    <app-style-button (clicked)="close()" label="OK" type="button"></app-style-button>
+    <!-- Message -->
+    <div class="message">
+      {{ message }}
+    </div>
+
+    <!-- Close -->
+    <button class="close-btn" (click)="close()">Close</button>
 
   </div>
 </div>

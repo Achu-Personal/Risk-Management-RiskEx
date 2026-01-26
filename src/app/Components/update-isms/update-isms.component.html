@@ -272,7 +272,7 @@
         (openDropdown)="handleDropdownOpen($event)"
         message="You can select an existing reviewer from the dropdown
       or enter a new one. If you enter a new name, it will take priority over the dropdown selection."
-      backgroundColor=" var(--form-color)"
+      backgroundColor=" var(--foreground-color)"
 
         [showInfoButton]="true"></app-form-dropdown>
       }
@@ -325,6 +325,7 @@
       the remaining (residual) risk level, and whether further actions are needed to manage the
       risk within acceptable limits."
         formControlName="remarks"
+        backgroundColor=" var(--foreground-color)"
       ></app-form-text-area>
     </div>
     <div class="form-details-sub-container">
@@ -369,11 +370,8 @@
   } @if(isErrorReviewer){
   <app-form-successfull
   message="Reasons May be:
-  <br>
   A reviewer with this email already exists.
-  <br>
   Please ensure all required fields are completed correctly and check your internet connection.
-  <br>
   If the issue persists, please try again later or contact support for assistance."
   [isSuccessfull]="false"
     (closeDialog)="closeReviewer()"
@@ -381,7 +379,7 @@
   </app-form-successfull>
   } @if(isSave){
   <app-form-conform-popup
-    message="Do you want to save the entered risk details?"
+    message="Do you want to submit the risk?"
     (closeDialog)="saveRisk()"
     (notCloseDialog)="saveConfirmation()"
   ></app-form-conform-popup>
@@ -394,7 +392,7 @@
   }
   @if(isValid){
     <app-form-successfull
-    message="Please check the form fields and <br> ensure all mandatory fields are satisfied. "
+    message="Please check the form fields and ensure all mandatory fields are satisfied. "
     [isSuccessfull] ="false"
     (closeDialog)="closepopupIsValidCheck()" >
     </app-form-successfull>

@@ -21,6 +21,8 @@ import { SingleProjectDropdownComponent } from '../../Components/single-project-
 import { UsermanagementpopupComponent } from '../../Components/usermanagementpopup/usermanagementpopup.component';
 import { EmailService } from '../../Services/email.service';
 import { FormLoaderComponent } from '../../Components/form-loader/form-loader.component';
+import { FormConformPopupComponent } from '../../Components/form-conform-popup/form-conform-popup.component';
+import { FormSuccessfullComponent } from '../../Components/form-successfull/form-successfull.component';
 
 @Component({
   selector: 'app-users',
@@ -36,6 +38,8 @@ import { FormLoaderComponent } from '../../Components/form-loader/form-loader.co
     SingleProjectDropdownComponent,
     UsermanagementpopupComponent,
     FormLoaderComponent,
+    FormConformPopupComponent,
+    FormSuccessfullComponent
   ],
   templateUrl: './users.component.html',
   styleUrl: './users.component.scss',
@@ -51,6 +55,9 @@ export class UsersComponent {
   isLoading = true;
   confirmationMessage: string = '';
   isLoader = false;
+  userPopupShow: boolean = false;
+  isUserSuccess: boolean = false;
+  isUserFail: boolean = false;
 
   headerData: string[] = [];
   headerDataDpt: string[] = ['fullName', 'email', 'department', 'projects'];
@@ -128,7 +135,7 @@ export class UsersComponent {
     });
   }
 
-  confirmationCallback: () => void = () => {};
+  confirmationCallback: () => void = () => { };
 
   handleModalComplete() {
     this.refreshUsersData();
@@ -253,12 +260,6 @@ export class UsersComponent {
 
     this.loadDepartments();
 
-    const addUserModal = document.getElementById('addUserModal');
-    if (addUserModal) {
-      addUserModal.addEventListener('hidden.bs.modal', () => {
-        this.resetUserForm();
-      });
-    }
 
     const departmentControl = this.editUserForm.get('departmentName');
     if (departmentControl) {
@@ -306,10 +307,9 @@ export class UsersComponent {
   }
 
   onSubmitDepartment() {
+    this.departmentPopupShow = false;
+    this.isAddDepartment = false;
     if (this.departmentForm.valid) {
-      this.confirmationMessage =
-        'Are you sure you want to add this department?';
-      this.confirmationCallback = () => {
         const departmentData = {
           name: this.normalizeWhitespace(
             this.departmentForm.get('name')?.value
@@ -323,11 +323,8 @@ export class UsersComponent {
           next: (response) => {
             this.departmentForm.reset();
             this.loadDepartments();
-            this.confirmationPopup.showResultModal(
-              'Department added successfully!',
-              true
-            );
             this.isLoader = false;
+             this.isDepartmentSuccess = true;
           },
           error: (error) => {
             let errorMessage = '';
@@ -350,116 +347,70 @@ export class UsersComponent {
                 'Unknown error occurred';
             }
 
-            this.confirmationPopup.showResultModal(
-              `Failed to add department: ${errorMessage}`,
-              false
-            );
+            this.isAddDepartmentFail=true;
             this.isLoader = false;
           },
         });
-      };
-
-      const modal = document.getElementById('confirmationModal');
-      if (modal) {
-        const bsModal = new (window as any).bootstrap.Modal(modal);
-        bsModal.show();
-      }
     }
   }
 
   onSubmitUser() {
+    this.userPopupShow = false;
+    this.isAddUser = false;
     if (this.userForm.valid) {
-      const addUserModal = document.getElementById('addUserModal');
-      if (addUserModal) {
-        const bootstrapModal = (window as any).bootstrap.Modal.getInstance(
-          addUserModal
-        );
-        if (bootstrapModal) {
-          bootstrapModal.hide();
-        }
-      }
+
       const formData = this.userForm.getRawValue();
-
-      this.confirmationMessage = 'Are you sure you want to add this user?';
-      this.confirmationCallback = () => {
-        const userData = {
-          email: this.normalizeWhitespace(formData.email),
-          fullName: this.normalizeWhitespace(formData.fullName),
-          departmentName: this.normalizeWhitespace(formData.departmentName),
-          projectIds: Array.isArray(formData.projectIds)
-            ? formData.projectIds
-                .map((project: any) =>
-                  typeof project === 'object' ? project.id : project
-                )
-                .filter(Boolean)
-            : [],
-        };
-        this.isLoader = true;
-        this.api.addNewUser(userData).subscribe({
-          next: (response) => {
-            const emailContext = {
-              email: userData.email,
-              fullName: userData.fullName,
-              defaultPassword: 'experion@123',
-            };
-
-            this.emailService
-              .sendUserRegistrationEmail(formData.email, emailContext)
-              .subscribe({
-                next: (emailSent) => {
-                  if (emailSent) {
-                    this.confirmationPopup.showResultModal(
-                      'User added successfully and welcome email sent!',
-                      true
-                    );
-                    this.isLoader = false;
-                  } else {
-                    this.confirmationPopup.showResultModal(
-                      'User added, but failed to send welcome email',
-                      false
-                    );
-                    this.isLoader = false;
-                  }
-                },
-                error: (emailError) => {
-                  this.confirmationPopup.showResultModal(
-                    'User added, but email sending failed',
-                    false
-                  );
-                  this.isLoader = false;
-                },
-              });
-
-            this.resetUserForm();
-            this.refreshUsersData();
-          },
-          error: (error) => {
-            let errorMessage = this.getErrorMessage(error);
-            this.confirmationPopup.showResultModal(
-              `Failed to add user: ${errorMessage}`,
-              false
-            );
-            this.isLoader = false;
-          },
-        });
+      console.log("enter userdata");
+      const userData = {
+        email: this.normalizeWhitespace(formData.email),
+        fullName: this.normalizeWhitespace(formData.fullName),
+        departmentName: this.normalizeWhitespace(formData.departmentName),
+        projectIds: Array.isArray(formData.projectIds)
+          ? formData.projectIds
+            .map((project: any) =>
+              typeof project === 'object' ? project.id : project
+            )
+            .filter(Boolean)
+          : [],
       };
+      this.isLoader = true;
+      this.api.addNewUser(userData).subscribe({
+        next: (response) => {
+          const emailContext = {
+            email: userData.email,
+            fullName: userData.fullName,
+            defaultPassword: 'experion@123',
+          };
+          this.isUserSuccess = true;
+          this.emailService
+            .sendUserRegistrationEmail(formData.email, emailContext)
+            .subscribe({
+              next: (emailSent) => {
+                this.isLoader = false;
+                this.isSendEmailSuccess=true; 
+              },
+              error: (emailError) => {
+                this.isLoader = false;
+                this.isSendEmailFail=true;
+              },
+            });
 
-      const modal = document.getElementById('confirmationModal');
-      if (modal) {
-        const bsModal = new (window as any).bootstrap.Modal(modal);
-        bsModal.show();
-      }
+          this.resetUserForm();
+          this.refreshUsersData();
+        },
+        error: (error) => {
+          let errorMessage = this.getErrorMessage(error);
+          this.isLoader = false;
+          this.isAdduserFail=true;
+        },
+      });
+
     } else {
       Object.keys(this.userForm.controls).forEach((key) => {
         const control = this.userForm.get(key);
         control?.markAsTouched();
         control?.updateValueAndValidity();
       });
-
-      this.confirmationPopup.showResultModal(
-        'Please fill in all required fields correctly.',
-        false
-      );
       this.isLoader = false;
     }
   }
@@ -484,15 +435,14 @@ export class UsersComponent {
   }
 
   onSubmitProject() {
+    this.projectPopupShow = false;
+    this.isAddProject = false;
     if (this.projectForm.valid) {
-      this.confirmationMessage = 'Are you sure you want to add this project?';
-      this.confirmationCallback = () => {
         const projectData = this.projectForm.getRawValue();
         this.isLoader = true;
         this.api.addNewProject(projectData).subscribe({
           next: (response) => {
             this.projectForm.reset();
-
             if (this.authService.getUserRole() === 'DepartmentUser') {
               const userDepartment = this.authService.getDepartmentName();
               this.projectForm.patchValue({ departmentName: userDepartment });
@@ -501,17 +451,8 @@ export class UsersComponent {
             if (projectData.departmentName) {
               this.loadProjectsForDepartment(projectData.departmentName);
             }
-
-            this.confirmationPopup.showResultModal(
-              'Project added successfully!',
-              true
-            );
             this.isLoader = false;
-
-            const modal = document.getElementById('addProjectModal');
-            if (modal) {
-              (modal as HTMLElement).click();
-            }
+            this.isProjectSuccess = true;
           },
           error: (error) => {
             let errorMessage = '';
@@ -532,21 +473,10 @@ export class UsersComponent {
                 error.message ||
                 'Unknown error occurred';
             }
-
-            this.confirmationPopup.showResultModal(
-              `Failed to add project: ${errorMessage}`,
-              false
-            );
             this.isLoader = false;
+            this.isAddprojectFail=true;
           },
         });
-      };
-
-      const modal = document.getElementById('confirmationModal');
-      if (modal) {
-        const bsModal = new (window as any).bootstrap.Modal(modal);
-        bsModal.show();
-      }
     } else {
       Object.keys(this.projectForm.controls).forEach((key) => {
         const control = this.projectForm.get(key);
@@ -568,10 +498,9 @@ export class UsersComponent {
   }
 
   onUpdateDepartment() {
+    this.updatedepartmentPopupShow = false;
+    this.isUpdatedepartment = false;
     if (this.updateDepartmentForm.valid) {
-      this.confirmationMessage =
-        'Are you sure you want to update this department?';
-      this.confirmationCallback = () => {
         const updateData = {
           departmentName: this.normalizeWhitespace(
             this.updateDepartmentForm.get('departmentName')?.value
@@ -588,16 +517,9 @@ export class UsersComponent {
           next: (response) => {
             this.updateDepartmentForm.reset();
             this.loadDepartments();
-            this.confirmationPopup.showResultModal(
-              'Department updated successfully!',
-              true
-            );
             this.isLoader = false;
+            this.isUpdatedepartmentSuccess = true;
 
-            const modal = document.getElementById('updateDepartmentModal');
-            if (modal) {
-              (modal as HTMLElement).click();
-            }
           },
           error: (error) => {
             let errorMessage = '';
@@ -619,21 +541,10 @@ export class UsersComponent {
                 error.message ||
                 'Unknown error occurred';
             }
-
-            this.confirmationPopup.showResultModal(
-              `Failed to update department: ${errorMessage}`,
-              false
-            );
             this.isLoader = false;
+            this.isUpdateDepartmentFail=true;
           },
         });
-      };
-
-      const modal = document.getElementById('confirmationModal');
-      if (modal) {
-        const bsModal = new (window as any).bootstrap.Modal(modal);
-        bsModal.show();
-      }
     }
   }
 
@@ -656,10 +567,9 @@ export class UsersComponent {
   }
 
   onUpdateProject() {
+    this.updateProjectPopupShow = false;
+    this.isUpdateProject = false;
     if (this.updateProjectForm.valid) {
-      this.confirmationMessage =
-        'Are you sure you want to update this project?';
-      this.confirmationCallback = () => {
         const projectId = this.id;
         const updateData: any = {
           projectName: this.updateProjectForm.get('projectName')?.value,
@@ -670,22 +580,22 @@ export class UsersComponent {
         this.api.updateProject(updateData, projectId).subscribe({
           next: (response) => {
             this.updateProjectForm.reset();
+            
+            const userRole = this.authService.getUserRole();
+            const userDepartment = this.authService.getDepartmentName();
 
+            if (userRole === 'DepartmentUser' || userRole?.includes('ProjectUsers')) {
+              this.updateProjectForm.patchValue({
+                selectedDepartment: userDepartment,
+              });
+            }
             if (this.updateProjectForm.get('selectedDepartment')?.value) {
               this.loadProjectsForDepartment(
                 this.updateProjectForm.get('selectedDepartment')?.value
               );
             }
-
-            this.confirmationPopup.showResultModal(
-              'Project updated successfully!',
-              true
-            );
             this.isLoader = false;
-            const modal = document.getElementById('updateProjectModal');
-            if (modal) {
-              (modal as HTMLElement).click();
-            }
+            this.isUpdateProjectSuccess = true;
           },
           error: (error) => {
             let errorMessage = '';
@@ -707,21 +617,10 @@ export class UsersComponent {
                 error.message ||
                 'Unknown error occurred';
             }
-
-            this.confirmationPopup.showResultModal(
-              `Failed to update project: ${errorMessage}`,
-              false
-            );
             this.isLoader = false;
+            this.isUpdateProjectFail=true;
           },
         });
-      };
-
-      const modal = document.getElementById('confirmationModal');
-      if (modal) {
-        const bsModal = new (window as any).bootstrap.Modal(modal);
-        bsModal.show();
-      }
     }
   }
 
@@ -730,7 +629,7 @@ export class UsersComponent {
   }
 
   onEditUser(user: any): void {
-    console.log("user.....",user)
+    console.log("user.....", user)
     this.isLoader = true;
 
     const userProjects = user.projects || [];
@@ -745,42 +644,19 @@ export class UsersComponent {
     });
 
     if (user.department || user.departmentName) {
-      const editModalElement = document.getElementById('editUserModal');
-
+      this.isEditUser=true;
       this.api.getProjects(user.department || user.departmentName).subscribe(
         (projects) => {
           this.editUserForm.patchValue({ projectIds: userProjects });
-
           this.isLoader = false;
-
-          if (editModalElement) {
-            const editModal = new (window as any).bootstrap.Modal(
-              editModalElement
-            );
-            editModal.show();
-          }
         },
         (error) => {
           console.error('Failed to load projects for department', error);
-
           this.isLoader = false;
-
-          if (editModalElement) {
-            const editModal = new (window as any).bootstrap.Modal(
-              editModalElement
-            );
-            editModal.show();
-          }
         }
       );
     } else {
       this.isLoader = false;
-
-      const editModalElement = document.getElementById('editUserModal');
-      if (editModalElement) {
-        const editModal = new (window as any).bootstrap.Modal(editModalElement);
-        editModal.show();
-      }
     }
   }
 
@@ -811,9 +687,9 @@ export class UsersComponent {
 
 
   onSubmitEditUser(): void {
+    this.edituserPopupShow = false;
+    this.isEditUser = false;
     if (this.editUserForm.valid) {
-      this.confirmationMessage = 'Are you sure you want to update this user?';
-      this.confirmationCallback = () => {
         const formData = this.editUserForm.getRawValue();
 
         const userData = {
@@ -822,40 +698,30 @@ export class UsersComponent {
           departmentName: this.normalizeWhitespace(formData.departmentName),
           projectIds: Array.isArray(formData.projectIds)
             ? formData.projectIds
-                .map((project: any) =>
-                  typeof project === 'object' ? project.id : project
-                )
-                .filter(Boolean)
+              .map((project: any) =>
+                typeof project === 'object' ? project.id : project
+              )
+              .filter(Boolean)
             : [],
         };
         const userId = formData.id;
 
         this.isLoader = true;
-
-        const editModalElement = document.getElementById('editUserModal');
-        if (editModalElement) {
-          const editModal = (window as any).bootstrap.Modal.getInstance(
-            editModalElement
-          );
-          if (editModal) {
-            editModal.hide();
-          }
-        }
         this.api.updateUser(userId, userData).subscribe({
           next: (response) => {
-
+            this.isEditUserSuccess=true;
             const emailContext = {
               email: userData.email,
               fullName: userData.fullName,
               departmentName: userData.departmentName || 'Not specified',
               userEmail: userData.email,
-              projects:  Array.isArray(formData.projectIds)
-              ? formData.projectIds
+              projects: Array.isArray(formData.projectIds)
+                ? formData.projectIds
                   .map((project: any) =>
                     typeof project === 'object' ? project.name : project
                   )
                   .filter(Boolean)
-              : [],
+                : [],
             };
 
             console.log('Email context being sent:', emailContext);
@@ -864,26 +730,14 @@ export class UsersComponent {
               .sendUserUpdateEmail(formData.email, emailContext)
               .subscribe({
                 next: (emailSent) => {
-                  if (emailSent) {
-                    this.confirmationPopup.showResultModal(
-                      'User updated successfully and notification email sent!',
-                      true
-                    );
+                  
                     this.isLoader = false;
-                  } else {
-                    this.confirmationPopup.showResultModal(
-                      'User updated, but failed to send notification email',
-                      false
-                    );
-                    this.isLoader = false;
-                  }
+                    this.isSendEmailSuccess=true;
+                  
                 },
                 error: (emailError) => {
-                  this.confirmationPopup.showResultModal(
-                    'User updated, but email sending failed',
-                    false
-                  );
                   this.isLoader = false;
+                  this.isSendEmailFail=true;
                 },
               });
 
@@ -891,40 +745,224 @@ export class UsersComponent {
           },
           error: (error) => {
             let errorMessage = this.getErrorMessage(error);
-            this.confirmationPopup.showResultModal(
-              `Failed to update user: ${errorMessage}`,
-              false
-            );
             this.isLoader = false;
+            this.isEditUserFail=true;
           },
         });
-      };
+      
 
-      const confirmationModalElement =
-        document.getElementById('confirmationModal');
-      if (confirmationModalElement) {
-        const confirmationModal = new (window as any).bootstrap.Modal(
-          confirmationModalElement
-        );
-        confirmationModal.show();
-      } else {
-        console.error('Confirmation modal element not found');
-      }
     } else {
       Object.keys(this.editUserForm.controls).forEach((key) => {
         const control = this.editUserForm.get(key);
         control?.markAsTouched();
         control?.updateValueAndValidity();
       });
-
-      this.confirmationPopup.showResultModal(
-        'Please fill in all required fields correctly.',
-        false
-      );
     }
   }
 
   onEditProjectsSelected(projects: any[]): void {
     this.editUserForm.get('projectIds')?.setValue(projects);
   }
+
+  isAddUser: boolean = false;
+  isAddDepartment: boolean = false;
+  departmentPopupShow:boolean=false;
+  isDepartmentSuccess:boolean=false;
+
+  isAddProject: boolean = false;
+  projectPopupShow:boolean=false;
+  isProjectSuccess:boolean=false;
+
+  isUpdatedepartment: boolean = false;
+  updatedepartmentPopupShow:boolean=false;
+  isUpdatedepartmentSuccess:boolean=false;
+
+  isUpdateProject: boolean = false;
+  updateProjectPopupShow:boolean=false;
+  isUpdateProjectSuccess:boolean=false;
+
+  isEditUser: boolean = false;
+  edituserPopupShow:boolean=false;
+  isEditUserSuccess:boolean=false;
+
+  isAdduserFail:boolean=false;
+  isAddDepartmentFail:boolean=false;
+
+  
+
+
+  addUser() {
+    this.isAddUser = true;
+  }
+  addDepartment() {
+    this.isAddDepartment = true;
+
+  }
+  addproject(){
+    this.isAddProject=true;
+  }
+  updateDepartment(){
+    this.isUpdatedepartment=true;
+  }
+  updateProject(){
+    this.isUpdateProject=true;
+  }
+  editUser(){
+    this.isEditUser=true;
+  }
+
+
+
+
+  onCancel() {
+    this.isAddUser = false;
+    this.userForm.reset();
+    this.resetUserForm();
+  }
+  onDepartmentcancel(){
+    this.isAddDepartment = false;
+    this.departmentForm.reset();
+  }
+  onProjectcancel(){
+    this.isAddProject=false;
+    this.projectForm.reset();
+ 
+    const userRole = this.authService.getUserRole();
+    const userDepartment = this.authService.getDepartmentName();
+
+    if (userRole === 'DepartmentUser' || userRole?.includes('ProjectUsers')) {
+      this.projectForm.patchValue({
+        departmentName: userDepartment,
+      });
+    }
+  }
+  onUpdateDepartmentCancel(){
+    this.isUpdatedepartment=false;
+    this.updateDepartmentForm.reset();
+  }
+  onUpdateProjectCancel(){
+    this.isUpdateProject=false;
+    this.updateProjectForm.reset();
+
+    const userRole = this.authService.getUserRole();
+    const userDepartment = this.authService.getDepartmentName();
+
+    if (userRole === 'DepartmentUser' || userRole?.includes('ProjectUsers')) {
+      this.updateProjectForm.patchValue({
+        selectedDepartment: userDepartment,
+      });
+    }
+  }
+  onEditUserCancel(){
+    this.isEditUser=false;
+    this.editUserForm.reset();
+  }
+
+
+
+
+
+  onConformUser() {
+    this.userPopupShow = true;
+  }
+  onConformDepartment(){
+    this.departmentPopupShow=true;
+  }
+  onConformProject(){
+    this.projectPopupShow=true;
+  }
+  onConformUpdateDepartment(){
+    this.updatedepartmentPopupShow=true;
+  }
+ onConformUpdateProject(){
+  this.updateProjectPopupShow=true;
+ }
+ onConformEditUser(){
+  this.edituserPopupShow=true;
+ }
+
+
+
+
+
+  onCloseUser() {
+    this.userPopupShow = false;
+  }
+  onCloseDepartment(){
+    this.departmentPopupShow=false;
+  }
+  onCloseProject(){
+    this.projectPopupShow=false;
+  }
+  onCloseUpdateDepartment(){
+    this.updatedepartmentPopupShow=false;
+  }
+  onCloseUpdateProject(){
+    this.updateProjectPopupShow=false;
+  }
+  onCloseEditUser(){
+    this.edituserPopupShow=false;
+  }
+
+
+
+
+
+
+  closeUserSuccess() {
+    this.isUserSuccess = false;
+  }
+
+  closeDepartmentSuccess(){
+    this.isDepartmentSuccess=false;
+  }
+  closeProjectSuccess(){
+    this.isProjectSuccess=false;
+  }
+
+  closeUpdatedDepartmentSuccess(){
+    this.isUpdatedepartmentSuccess=false;
+  }
+  closeUpdateProjectSuccess(){
+    this.isUpdateProjectSuccess=false;
+  }
+  closeEdituserSuccess(){
+    this.isEditUserSuccess=false;
+  }
+
+
+
+  isAddprojectFail:boolean=false;
+  isUpdateDepartmentFail:boolean=false;
+  isUpdateProjectFail:boolean=false;
+  isEditUserFail:boolean=false;
+  isSendEmailFail:boolean=false;
+  isSendEmailSuccess:boolean=false;
+
+  adduserFail(){
+    this.isAdduserFail=false;
+  }
+  addDepartmentFail(){
+    this.isAddDepartmentFail=false;
+  }
+  addprojectFail(){
+    this.isAddprojectFail=false;
+  }
+  updateDepartmentFail(){
+    this.isUpdateDepartmentFail=false;
+  }
+  updateProjectFail(){
+    this.isUpdateProjectFail=false;
+  }
+  editUserFail(){
+    this.isEditUserFail=false;
+  }
+  sendEmailFail(){
+    this.isSendEmailFail=false;
+  }
+  sendEmailSuccess(){
+    this.isSendEmailSuccess=false;
+  }
+
+  
 }

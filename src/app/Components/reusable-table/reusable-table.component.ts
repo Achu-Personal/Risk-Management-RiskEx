@@ -20,6 +20,7 @@ import { EditButtonComponent } from '../../UI/edit-button/edit-button.component'
 import { NotificationService } from '../../Services/notification.service';
 import { EmailService } from '../../Services/email.service';
 import { UsermanagementpopupComponent } from '../usermanagementpopup/usermanagementpopup.component';
+import { FormConformPopupComponent } from '../form-conform-popup/form-conform-popup.component';
 
 @Component({
   selector: 'app-reusable-table',
@@ -31,6 +32,7 @@ import { UsermanagementpopupComponent } from '../usermanagementpopup/usermanagem
     PaginationComponent,
     SearchbarComponent,
     EditButtonComponent,
+    FormConformPopupComponent
   ],
   templateUrl: './reusable-table.component.html',
   styleUrl: './reusable-table.component.scss',
@@ -175,7 +177,7 @@ export class ReusableTableComponent {
     this.cdr.markForCheck();
   }
 
-  onStatusConfirm(data: { comment: string }): void {
+  onStatusConfirm(): void {
     if (!this.currentToggleRow) return;
     console.log("dataaaaayyyy",this.currentToggleRow)
 

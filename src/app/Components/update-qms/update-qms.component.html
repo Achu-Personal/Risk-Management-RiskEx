@@ -7,13 +7,13 @@
         message="Likelihood means how likely or possible it is for a risk to happen. If something is very likely, the risk is high. If it’s unlikely, the risk is low."
         required="*"
           (infoClicked)="handleInfoClickLikelihood($event)"
-          backgroundColor=" var(--form-color)"
+          backgroundColor=" var(--foreground-color)"
           [showInfoButtonLikeliHoodImpact]="true" ></app-form-dropdown>
         <app-form-dropdown label="Impact" [dropdownData]="dropdownImpact" dropdownDisplay="assessmentFactor" dropdownValue="id" selectValue="Select impact" (change)="onDropdownChangeImpact($event)" [openDropdownId]="openDropdownId" (openDropdown)="handleDropdownOpen($event)"
         (infoClicked)="handleInfoClickImpact($event)"
         required="*"
         message="Impact means how bad the result will be if the risk happens. A big impact can cause serious problems, while a small impact may only cause minor issues."
-        backgroundColor=" var(--form-color)"
+        backgroundColor=" var(--foreground-color)"
         [showInfoButtonLikeliHoodImpact]="true"></app-form-dropdown>
       </div>
       <div class="form-row">
@@ -70,7 +70,7 @@
       or enter a new one. If you enter a new name, it will take priority over the dropdown selection."
 
 
-      backgroundColor=" var(--form-color)"
+      backgroundColor=" var(--foreground-color)"
 
         [showInfoButton]="true"></app-form-dropdown>
       }
@@ -108,7 +108,7 @@
       <app-form-text-area label="Remarks" placeHolder="Enter remark"
       message="Remarks on risk after mitigation indicate the effectiveness of applied controls,
       the remaining (residual) risk level, and whether further actions are needed to manage the
-      risk within acceptable limits."  formControlName="remarks" ></app-form-text-area>
+      risk within acceptable limits."  formControlName="remarks"  backgroundColor=" var(--foreground-color)" ></app-form-text-area>
     </div>
     <div class="form-details-sub-container">
       <div class="button-group">
@@ -137,18 +137,15 @@
  @if(isErrorReviewer){
   <app-form-successfull
   message="Reasons May be:
-  <br>
   A reviewer with this email already exists.
-  <br>
   Please ensure all required fields are completed correctly and check your internet connection.
-  <br>
   If the issue persists, please try again later or contact support for assistance."
   [isSuccessfull] ="false"
   (closeDialog)="closeReviewer()" >
   </app-form-successfull>
 }
 @if(isSave){
-  <app-form-conform-popup message="Do you want to save the entered risk details?" (closeDialog)="saveRisk()" (notCloseDialog)="saveConfirmation()"></app-form-conform-popup>
+  <app-form-conform-popup message="Do you want to submit the risk?" (closeDialog)="saveRisk()" (notCloseDialog)="saveConfirmation()"></app-form-conform-popup>
 }
 
 @if(isCancel){
@@ -156,7 +153,7 @@
 }
 @if(isValid){
   <app-form-successfull
-  message="Please check the form fields and <br> ensure all mandatory fields are satisfied. "
+  message="Please check the form fields and ensure all mandatory fields are satisfied. "
   [isSuccessfull] ="false"
   (closeDialog)="closepopupIsValidCheck()" >
   </app-form-successfull>
