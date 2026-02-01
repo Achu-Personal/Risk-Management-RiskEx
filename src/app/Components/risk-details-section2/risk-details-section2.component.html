@@ -1,92 +1,122 @@
-
 @if(data!=null)
 {
-  <div class="risk-details-section2">
+<div class="risk-details-section2">
 
 
-    <!-- Left side: To Show Risk Mitigation and  Risk Continjency -->
-    <div>
+  <!-- Left side: To Show Risk Mitigation and  Risk Continjency -->
+  <div>
 
-      <div id="mitigationCard" class=" primaryColor shadowType1 details-card "  >
-        <h5 >Risk Treatment</h5>
-        @if(data.riskMitigation!=null&&data.riskMitigation.trim().length > 0)
-        {
-          <p title={{data.riskMitigation}}>{{data.riskMitigation.length>1020?data.riskMitigation.slice(0,1020)+"...":data.riskMitigation}}</p>
-
-        }
-      </div>
-
-      @if(data.riskContengency!=null&&data.riskContengency.trim().length > 0)
+    <div id="mitigationCard" class=" primaryColor shadowType1 details-card ">
+      <h5>Risk Treatment</h5>
+      @if(data.riskMitigation!=null&&data.riskMitigation.trim().length > 0)
       {
-        <div id="contingencyCard"  class=" primaryColor shadowType1 details-card ">
-          <h5>Risk Contingency</h5>
-          <p title={{data.riskContengency}}>{{data.riskContengency.length>1020? data.riskContengency.slice(0,1020)+"...":data.riskContengency}}</p>
+      <p title={{data.riskMitigation}}>
+        {{data.riskMitigation.length>1020?data.riskMitigation.slice(0,1020)+"...":data.riskMitigation}}</p>
 
-        </div>
       }
-
-
     </div>
 
-      <!-- Right side: To show planned action date and responsibility of action -->
-    <div>
-      <div  class="responsibility-of-action-planned-Action-div" >
-        <div>
-          <h5>Impact Of Risk</h5>
-          <p  title={{data.impact}}>{{ data.impact.length>100? data.impact.slice(0,100)+"....":data.impact}}</p>
-          <div class="" >
-            <h5 >Risk Owner : </h5>
-            <h6 >{{data.responsibilityOfAction}}</h6>
-          </div>
-          <div class="" >
-            <h5 >Risk Creator : </h5>
-            <h6 >{{data.CreatedBy}}</h6>
-          </div>
+    @if(data.riskContengency!=null&&data.riskContengency.trim().length > 0)
+    {
+    <div id="contingencyCard" class=" primaryColor shadowType1 details-card ">
+      <h5>Risk Contingency</h5>
+      <p title={{data.riskContengency}}>{{data.riskContengency.length>1020?
+        data.riskContengency.slice(0,1020)+"...":data.riskContengency}}</p>
 
-          <div  class=" " >
-            <h5>Planned date of Action : </h5>
-            <h6>{{data.plannedActionDate | date: 'd MMM yyyy'}}</h6>
-          </div>
-          <div class="" >
-             <h5>Risk Response :</h5>
-              <div class="risk-response-box">
-                {{ data.RiskResponse }}
-              </div>
-            </div>
-
-
-          @if(stepperData[2].isCompleted && data.ClosedDate?.value)
-          {
-            <div  class=" " >
-              <h5>Closed Date : </h5>
-              <h6>{{data.ClosedDate | date: 'd MMM yyyy'}}</h6>
-            </div>
-
-
-
-            <div class=""   style="display: flex;flex-direction: row;align-items: center;">
-
-              @if( data.Remarks!=null&&data.Remarks!="")
-              {
-                <h5 >Remarks : </h5>
-                <p style="width: 100%;font-size: 2.1vh; margin: 0px;padding: 0px;"  > {{ data.Remarks.length>70? data.Remarks.slice(0,90)+"....":data.Remarks}}</p>
-              }
-            </div>
-          }
-
-        </div>
-
-
-      </div>
-      <div class="risk-status">
-        <h5>Risk Progress</h5>
-
-          <app-stepper [steps]="stepperData" (stepCompleted)="completeStep($event)"></app-stepper>
-
-
-      </div>
     </div>
+    }
+
 
   </div>
+
+  <!-- Right side: To show planned action date and responsibility of action -->
+  <div>
+    <div class="responsibility-of-action-planned-Action-div">
+      <div>
+        <h5>Impact Of Risk</h5>
+        <p title={{data.impact}}>{{ data.impact.length>100? data.impact.slice(0,100)+"....":data.impact}}</p>
+        <div class="">
+          <h5>Risk Owner : </h5>
+          <h6>{{data.responsibilityOfAction}}</h6>
+        </div>
+        <div class="">
+          <h5>Risk Creator : </h5>
+          <h6>{{data.CreatedBy}}</h6>
+        </div>
+
+        <div class=" ">
+          <h5>Planned date of Action : </h5>
+          <h6>{{data.plannedActionDate | date: 'd MMM yyyy'}}</h6>
+        </div>
+        <div class="">
+          <h5>Risk Response :</h5>
+          <div class="risk-response-box">
+            {{ data.RiskResponse }}
+          </div>
+        </div>
+
+
+        @if(stepperData[2].isCompleted && data.ClosedDate?.value)
+        {
+        <div class=" ">
+          <h5>Closed Date : </h5>
+          <h6>{{data.ClosedDate | date: 'd MMM yyyy'}}</h6>
+        </div>
+
+
+
+        <div class="" style="display: flex;flex-direction: row;align-items: center;">
+
+          @if( data.Remarks!=null&&data.Remarks!="")
+          {
+          <h5>Remarks : </h5>
+          <p style="width: 100%;font-size: 2.1vh; margin: 0px;padding: 0px;"> {{ data.Remarks.length>70?
+            data.Remarks.slice(0,90)+"....":data.Remarks}}</p>
+          }
+        </div>
+        }
+
+      </div>
+
+
+    </div>
+   <div class="risk-status">
+
+  <!-- HEADER ROW -->
+  <div class="risk-header">
+    <h5>Risk Progress</h5>
+
+    <div class="view-toggle">
+  <button
+    class="seg-btn"
+    [class.active]="!isExpandedView"
+    (click)="isExpandedView = false">
+    Stepper
+  </button>
+
+  <button
+    class="seg-btn"
+    [class.active]="isExpandedView"
+    (click)="isExpandedView = true">
+    Expanded
+  </button>
+</div>
+
+  </div>
+
+  <!-- CONTENT -->
+
+    <app-stepper
+      [steps]="stepperData"
+      [isExpandedView]="isExpandedView"
+      (stepCompleted)="completeStep($event)">
+    </app-stepper>
+  
+
+</div>
+
+  </div>
+
+</div>
 
 }

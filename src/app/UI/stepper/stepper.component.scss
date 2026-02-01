@@ -1,14 +1,9 @@
 
-.stepper-container {
-  margin: 0 auto;
-}
+// .stepper-container {
+//   margin: 0 auto;
+// }
 
-.timeline {
-  position: relative;
-  display: flex;
-  justify-content: space-between;
 
-}
 
 .step-item {
   position: relative;
@@ -140,7 +135,7 @@
   // background-color: #4c6ef5;
   font-weight: bold;
   margin-bottom: 4px;
-  color: #333;
+  color: black;
 }
 
 .step-info {
@@ -155,7 +150,7 @@
     width: 100%;
   }
   .date {
-    color: #999;
+    color: black;
   }
 
   /* Tooltip styling */
@@ -240,3 +235,616 @@
       max-width: 100%;
     }
 }
+// Hexagon/Diamond Stepper Styles
+
+.progress-container {
+  width: 100%;
+  // margin: 0 auto;
+  margin-top: 12%;
+}
+
+.stepper-horizontal {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1px;
+  margin-bottom: 40px;
+}
+
+// Connecting line
+.connection-line {
+  position: absolute;
+  top: 15px;
+  left: 10%;
+  right: 9%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.2);
+  z-index: 0;
+}
+
+.connection-progress {
+  height: 100%;
+  background: linear-gradient(90deg, #22c55e 0%, #22c55e 100%, rgba(255, 255, 255, 0.3) 100%);
+  width: 100%;
+  transition: width 1s ease;
+}
+
+.step-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+}
+
+// Hexagon Shape
+.step-hexagon {
+  width: 40px;
+  height: 40px;
+  position: relative;
+  margin-bottom: 1px;
+}
+
+.hexagon-inner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform: rotate(45deg);
+  background: white;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.step-wrapper.completed .hexagon-inner {
+  background: linear-gradient(135deg, #5800C8, #8b5cf6);
+  transform: rotate(45deg) scale(1.05);
+}
+
+.step-wrapper.current .hexagon-inner {
+  background: white;
+  animation: rotate-pulse 3s infinite;
+  box-shadow: 0 0 0 0 rgba(88, 0, 200, 0.7);
+}
+
+.hexagon-content {
+  transform: rotate(-45deg);
+  font-size: 12px;
+  font-weight: 700;
+  color: #9ca3af;
+}
+
+.step-wrapper.completed .hexagon-content {
+  color: white;
+  font-size: 10px;
+}
+
+.step-wrapper.current .hexagon-content {
+  color: #5800C8;
+}
+
+.step-number-label {
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255, 255, 255, 0.2);
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.step-title {
+  font-size: 12px;
+  font-weight: 700;
+  text-align: center;
+  // margin-bottom: 15px;
+  line-height: 1;
+  // min-height: 48px;
+  display: flex;
+  align-items: top;
+  justify-content: center;
+  color: black;
+}
+
+.info-card {
+  position: relative;
+  background: var(--primary-color);
+  border-radius: 10px;
+  padding: 10px;
+  width: 100%;
+  height:50px;
+  // box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  margin-top: 10px;
+
+  display: flex;
+  flex-direction: column; 
+  // margin-bottom: 5px;
+  font-size: 10px;
+  justify-content: center;
+  cursor: pointer;
+
+}
+
+// .step-wrapper:hover .info-card {
+//   transform: translateY(-5px);
+//   box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+// }
+
+// .step-wrapper.completed .info-card {
+//   border: 2px solid #d6d4d8;
+// }
+
+.step-wrapper.current .info-card {
+  // border: 2px solid #5800C8;
+  // box-shadow: 0 10px 30px rgba(88, 0, 200, 0.4);
+}
+
+.hexagon-inner.all-complete {
+  background: linear-gradient(90deg, #22c55e, #16a34a) !important;
+
+}
+
+// .card-row {
+//   display: flex;
+//   flex-direction: column; 
+//   // margin-bottom: 5px;
+//   font-size: 10px;
+
+
+// }
+
+.card-label {
+  font-weight: 600;
+  color: var(--form-color);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+.card-value {
+  color: white;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.status-pill {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 600;
+
+  &.accepted {
+    background: #dcfce7;
+    color: #166534;
+  }
+
+  &.rejected {
+    background: #fee2e2;
+    color: #991b1b;
+  }
+}
+
+@keyframes rotate-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(88, 0, 200, 0.7);
+    transform: rotate(45deg) scale(1);
+  }
+  50% {
+    box-shadow: 0 0 0 15px rgba(88, 0, 200, 0);
+    transform: rotate(45deg) scale(1.08);
+  }
+}
+
+// Responsive
+@media (max-width: 1024px) {
+  .stepper-horizontal {
+    flex-wrap: wrap;
+  }
+
+  .step-wrapper {
+    flex-basis: calc(50% - 10px);
+  }
+
+  .connection-line {
+    display: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .step-wrapper {
+    flex-basis: 100%;
+  }
+
+  .step-hexagon {
+    width: 90px;
+    height: 90px;
+  }
+
+  .hexagon-content {
+    font-size: 28px;
+  }
+
+  .step-wrapper.completed .hexagon-content {
+    font-size: 36px;
+  }
+}
+
+
+
+.step-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 13px;
+  color: #cfcfcf;
+}
+
+.status-text {
+  margin-left: 6px;
+  font-weight: 600;
+}
+
+.status-text.accepted {
+  color: #4caf50;
+}
+
+.status-text.rejected {
+  color: #f44336;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+.step-card-minimal {
+  /* Box container */
+  background: rgba(255, 255, 255, 0.03); 
+  border-left: 4px solid var(--foreground-color);        
+  padding: 12px 0 12px 0px;           
+  // margin: 10px 0;
+  transition: all 0.3s ease;
+  height: 130px;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.07);
+  
+  }
+
+  .ladder-items {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .ladder-item {
+    display: flex;
+    align-items: flex-start;
+    font-size: 0.9rem;
+    color: black;
+    line-height: 1.4;
+
+    .bullet {
+      // margin-right: 2px;
+      color: var(--foreground-color); // Hyphen color matches the border
+      font-weight: bold;
+    }
+
+    .text {
+      flex: 1;
+      background-color: var(--form-color);
+      border-radius: 6px;
+      margin-right: 4px;
+      padding: 4px;
+    }
+  }
+}
+
+/* Compact Status Tags */
+.status-tag {
+  // margin-left: 1px;
+  font-size: 0.75rem;
+  padding: 1px 6px;
+  border-radius: 3px;
+  text-transform: uppercase;
+  font-weight: 600;
+
+  &.accepted {
+    color: #4caf50;
+    background: rgba(76, 175, 80, 0.1);
+  }
+
+  &.rejected {
+    color: #f44336;
+    background: rgba(244, 67, 54, 0.1);
+  }
+}
+
+
+.hover-toc {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%) translateY(8px);
+  background: var(--foreground-color);
+  color: white;
+  padding: 12px 14px;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s ease;
+  min-width: 220px;
+  z-index: 10;
+  border: 1px solid var(--form-color);
+}
+
+/* Show on hover */
+.info-card:hover .hover-toc {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Rows */
+.toc-row {
+  display: grid;
+  grid-template-columns: 20px 1fr;
+  gap: 10px;
+  align-items: center;
+  font-size: 13px;
+  margin-bottom: 8px;
+}
+
+.toc-row:last-child {
+  margin-bottom: 0;
+}
+
+/* SVG icons */
+.toc-icon {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: var(--form-color);
+  stroke-width: 2;
+}
+
+
+
+.status-icon {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke-width: 2;
+}
+
+.status-icon.accepted {
+  stroke: #22c55e; /* green */
+}
+
+.status-icon.rejected {
+  stroke: #ef4444; /* red */
+}
+
+.status-icon.pending {
+  stroke: #f59e0b; /* amber */
+}
+
+
+
+.connection-progress {
+  height: 100%;
+  transition: width 0.6s ease;
+
+  &.active {
+    background: linear-gradient(90deg, #5800C8, #8b5cf6);
+  }
+
+  &.success {
+    background: linear-gradient(90deg, #22c55e, #16a34a);
+  }
+  
+}
+
+
+
+.stepper-shell{
+  width:100%;
+  height:100%;
+  overflow-x: hidden;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ROW */
+.process-row {
+  display: grid;
+  grid-template-columns: 24px 1fr;
+  column-gap: 5px;
+  padding: 9px 0;
+}
+
+/* LEFT RAIL */
+.process-rail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 6px;
+}
+
+.process-rail .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #bbb;
+}
+
+.process-rail .line {
+  flex: 1;
+  width: 2px;
+  background: #e0e0e0;
+  margin-top: 4px;
+  height: 12px;
+}
+
+/* HEADER */
+.process-header {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.step-title-expand {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1f1f1f;
+}
+
+/* DETAILS */
+.process-details {
+  margin-top: 6px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.detail {
+  font-size: 13px;
+  font-weight: 500;
+  color: black;
+}
+
+/* INDIVIDUAL DETAILS */
+.action-by {
+  color: black;
+}
+
+.date {
+  color: black;
+}
+
+/* MESSAGE STATES */
+.process-row.accepted .message {
+  color: #15803d; /* green */
+  font-weight: 600;
+}
+
+.process-row.rejected .message {
+  color: #b91c1c; /* red */
+  font-weight: 600;
+}
+
+/* CURRENT STEP */
+.process-row.current .dot {
+  background: #5800C8;
+}
+
+.process-row.current .step-title {
+  color: #5800C8;
+}
+
+.current-badge {
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  background: #5800C8;
+  color: white;
+}
+
+/* COMPLETED */
+.process-row.completed .dot {
+  background: #16a34a;
+}
+
+.process-row.completed .line {
+  background: #16a34a;
+}
+
+/* UPCOMING */
+.process-row.upcoming {
+  opacity: 0.55;
+}
+
+
+.expanded-view {
+  flex: 1;                 /* take remaining space */
+  max-height: 100%;
+  overflow-y: auto;
+
+  padding-right: 8px;
+}
+
+/* Optional – smoother scroll feel */
+.expanded-view {
+  scroll-behavior: smooth;
+}
+
+/* Optional – subtle scrollbar (WebKit) */
+.expanded-view::-webkit-scrollbar {
+  width: 6px;
+}
+
+.expanded-view::-webkit-scrollbar-thumb {
+  background-color: var(--form-color);
+  border-radius: 4px;
+}
+
+.expanded-view::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.stepper-root {
+  height: calc(100vh - 330px); /* header + padding */
+  display: flex;
+  flex-direction: column;
+}
+
+.expanded-wrapper {
+  flex: 1;
+  overflow: hidden;
+}
+
+.expanded-view {
+  height: 100%;
+  overflow-y: auto;
+}
+

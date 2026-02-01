@@ -78,20 +78,50 @@
                   }
                 </div>
               </th>
-              <th (click)="sortTable('plannedActionDate')" title="Expected closing date">
+              <th (click)="sortTable('plannedActionDate')">
                 End Date
                 <span>
-                  {{ sortDirection === "asc" ? "↑" : "↓" }}
+                  {{ sortDirections.plannedActionDate === 'asc' ? '↑' : '↓' }}
                 </span>
               </th>
-              <th (click)="sortTable('crr')" title="Current overall risk rating">
-                CRR
+
+              <th (click)="sortTable('irr')">
+                IRR
                 <span>
-                  {{ sortDirection === "asc" ? "↑" : "↓" }}
+                  {{ sortDirections.irr === 'asc' ? '↑' : '↓' }}
                 </span>
               </th>
+
+              <th (click)="sortTable('prr')">
+                PRR
+                <span>
+                  {{ sortDirections.prr === 'asc' ? '↑' : '↓' }}
+                </span>
+              </th>
+
+
+
               <th title="Responsibility">Assignee</th>
               <th>Reviewer</th>
+              @if(!isButtonVisible){
+              <th title="Current risk status">
+                <div class="dropdown-container">
+                  <button class="dropdown-button" (click)="toggleStatusDropdown()">
+                    Risk Status &#9662;
+                  </button>
+                  @if(isStatusDropdownOpen ){
+                  <ul [class.open]="isStatusDropdownOpen" class="dropdown-options">
+                    @for(type of uniqueStatus;track type){
+                    <li (click)="onStatusSelect(type)">
+                      {{ type }}
+                    </li>
+                    }
+                    <li (click)="onStatusSelect('')">All Status</li>
+                  </ul>
+                  }
+                </div>
+              </th>
+              }
               <th title="Current status of review">
                 <div class="dropdown-container">
                   <button class="dropdown-button" (click)="toggleReviewStatusDropdown()">
@@ -111,25 +141,7 @@
                   }
                 </div>
               </th>
-              @if(!isButtonVisible){
-              <th title="Current risk status">
-                <div class="dropdown-container">
-                  <button class="dropdown-button" (click)="toggleStatusDropdown()">
-                    Risk Status &#9662;
-                  </button>
-                  @if(isStatusDropdownOpen ){
-                  <ul [class.open]="isStatusDropdownOpen" class="dropdown-options">
-                    @for(type of uniqueStatus;track type){
-                    <li (click)="onStatusSelect(type)">
-                      {{ type }}
-                    </li>
-                    }
-                    <li (click)="onStatusSelect('')">All Status</li>
-                  </ul>
-                  }
-                </div>
-              </th>
-              } @if(isButtonVisible){
+              @if(isButtonVisible){
               <th title="Current difference between post and pre overall risk rating">
                 <div class="dropdown-container">
                   <button class="dropdown-button" (click)="toggleResidualDropdown()">
@@ -169,21 +181,32 @@
               }
               <td>{{ item.riskType }}</td>
               <td>{{ item.plannedActionDate | date : "d MMM yyyy" }}</td>
-              @if(item.overallRiskRatingAfter !== null){
-              <td>
-                <div [ngClass]="getRiskColor(item.overallRiskRatingAfter,item.riskType)">
-                  {{ item.overallRiskRatingAfter }}
-                </div>
-              </td>
-              } @else{
+
               <td>
                 <div [ngClass]="getRiskColor(item.overallRiskRatingBefore,item.riskType)">
                   {{ item.overallRiskRatingBefore }}
                 </div>
               </td>
-              }
+
+
+              <td>
+                <div [ngClass]="getRiskColor(item.overallRiskRatingAfter,item.riskType)">
+                  {{ item.overallRiskRatingAfter?? '-' }}
+                </div>
+              </td>
+
               <td>{{ item.responsibleUser }}</td>
               <td>{{ item.riskAssessments[0].reviewer }}</td>
+              @if(!isButtonVisible){
+              <td>
+                <div class="status-cell" [ngStyle]="{
+                    'background-color': getStatusColor(item.riskStatus),
+                    color: '#fff'
+                  }">
+                  {{ item.riskStatus }}
+                </div>
+              </td>
+              }
 
               <td>
                 <div class="status-chip" [ngStyle]="{
@@ -200,16 +223,7 @@
                 </div>
               </td>
 
-              @if(!isButtonVisible){
-              <td>
-                <div class="status-cell" [ngStyle]="{
-                    'background-color': getStatusColor(item.riskStatus),
-                    color: '#fff'
-                  }">
-                  {{ item.riskStatus }}
-                </div>
-              </td>
-              } @if(isButtonVisible){
+              @if(isButtonVisible){
               <td>
                 <div [ngClass]="item.residualRisk | residualRiskStatusStyle">
                   {{ item.residualRisk }}
@@ -221,13 +235,15 @@
 
               <td class="action-cell" (click)="$event.stopPropagation()">
                 <!-- Toggle -->
-                <label class="toggle-switch" title= "Hide">
-                  <input type="checkbox" [checked]="item.isHide" (click)="$event.stopPropagation()" (change)="onToggleHide(item,$event)" />
+                <label class="toggle-switch" title="Hide">
+                  <input type="checkbox" [checked]="item.isHide" (click)="$event.stopPropagation()"
+                    (change)="onToggleHide(item,$event)" />
                   <span class="slider"></span>
                 </label>
 
                 <!-- Delete -->
-                <button class="delete-btn" type="button" (click)="onDelete(item); $event.stopPropagation()" title="Delete">
+                <button class="delete-btn" type="button" (click)="onDelete(item); $event.stopPropagation()"
+                  title="Delete">
                   <i class="fa fa-trash"></i>
                 </button>
               </td>
@@ -250,32 +266,23 @@
 
 
   @if(isHideToggleOn){
-      <app-form-conform-popup
-    message="When hidden, this Risk will not be visible to other users.Do you want to proceed?"
-    (closeDialog)="saveHide()"
-    (notCloseDialog)="closeHide()"
-  ></app-form-conform-popup>
+  <app-form-conform-popup message="When hidden, this Risk will not be visible to other users.Do you want to proceed?"
+    (closeDialog)="saveHide()" (notCloseDialog)="closeHide()"></app-form-conform-popup>
   }
-    @if(isHideToggleOff){
-      <app-form-conform-popup
-    message="When turned off, This Risk will be visible to all users.Do you want to proceed?"
-    (closeDialog)="saveOffHide()"
-    (notCloseDialog)="closeHide()"
-  ></app-form-conform-popup>
+  @if(isHideToggleOff){
+  <app-form-conform-popup message="When turned off, This Risk will be visible to all users.Do you want to proceed?"
+    (closeDialog)="saveOffHide()" (notCloseDialog)="closeHide()"></app-form-conform-popup>
   }
 
-    @if(isDeletePopupShow){
-      <app-form-conform-popup
-    message="Do You Want to Delete this Risk ?"
-    (closeDialog)="deleteRisk()"
-    (notCloseDialog)="closeDeletePopup()"
-  ></app-form-conform-popup>
+  @if(isDeletePopupShow){
+  <app-form-conform-popup message="Do You Want to Delete this Risk ?" (closeDialog)="deleteRisk()"
+    (notCloseDialog)="closeDeletePopup()"></app-form-conform-popup>
   }
 
 
-  
+
 </div>
-  
+
 
 <ng-template #noData>
   <div class="no-data-container" *ngIf="!isLoading">

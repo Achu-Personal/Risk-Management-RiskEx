@@ -3,7 +3,7 @@
     [type]="type"
     [disabled]="disabled"
     [style.color]="disabled ? '#888888' : 'white'"
-    [style.background-color]="disabled ? '#d0c6b6' :'#4D4D4D '"
+    [style.background-color]="disabled ? '#d0c6b6' :'var(--foreground-color) '"
     [style.cursor]="disabled ? 'not-allowed' : 'pointer'"
     [style.height]="customHeight" 
     (click)="onClick()"

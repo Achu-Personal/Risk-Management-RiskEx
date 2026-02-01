@@ -18,9 +18,9 @@
 .btnn button {
  padding: 0 1.1vh;
   height: 5.5vh;
-  background-color: #4D4D4D ;
+  background-color: var(--foreground-color) ;
   color: #ffffff ;
-  box-shadow: 0px 0px 4px rgba(185, 154, 62, 0.5);
+  // box-shadow: 0px 0px 4px rgba(185, 154, 62, 0.5);
   border: none;
   border-radius: 5px;
   font-size: small;
@@ -36,15 +36,15 @@
 
 /* Hover effect */
 .btnn button:hover {
-  background-color: #d0c6b6;
-  color: rgb(43, 28, 6);
+  // background-color: #d0c6b6;
+  // color: rgb(43, 28, 6);
   // border-color: #0056b3;
 }
 
 /* Focus effect */
 .btnn button:focus {
   outline: none;
-  box-shadow: 0 0 5px rgba(255, 166, 0, 0.5);
+  // box-shadow: 0 0 5px rgba(255, 166, 0, 0.5);
 }
 
 
