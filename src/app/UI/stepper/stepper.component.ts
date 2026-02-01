@@ -9,6 +9,8 @@ import {
   KeyValueDiffers,
   KeyValueDiffer,
   ChangeDetectorRef,
+  ViewChild,
+  ElementRef,
 } from '@angular/core';
 import { Step } from '../../Interfaces/Stepper.interface';
 import { CommonModule, DatePipe } from '@angular/common';
@@ -23,8 +25,11 @@ import { CommonModule, DatePipe } from '@angular/common';
 export class StepperComponent {
   @Output() stepCompleted = new EventEmitter<number>();
   @Input() steps: Step[] = [];
+  @Input() isExpandedView!: boolean;
   myListDiffer?: KeyValueDiffer<string, any>;
   currentStep = 1;
+  @ViewChild('expandedView') expandedView!: ElementRef;
+
 
   // ngOnChanges(changes: SimpleChanges) {
   //   if (changes['steps'] && this.steps) {
@@ -46,6 +51,14 @@ export class StepperComponent {
       // console.log('steps changed:', this.steps);
       this.myListDiffer = this.differs.find(this.steps).create();
     }
+
+     if (this.isExpandedView) {
+    setTimeout(() => {
+      this.expandedView.nativeElement
+        .querySelector('.pending')
+        ?.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    });
+  }
   }
 
   ngDoCheck() {
@@ -93,4 +106,21 @@ export class StepperComponent {
   private emitStepCompleted(stepId: number) {
     this.stepCompleted.emit(stepId);
   }
+
+  get currentStepIndex(): number {
+  return this.steps.findIndex(s => !s.isCompleted);
+}
+
+get progressPercent(): number {
+  if (this.currentStepIndex === -1) return 100;
+  return (this.currentStepIndex / (this.steps.length - 1)) * 100;
+}
+
+get allStepsCompleted(): boolean {
+  return this.steps.every(s => s.isCompleted);
+}
+
+
+
+
 }

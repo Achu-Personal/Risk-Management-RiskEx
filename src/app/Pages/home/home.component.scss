@@ -41,7 +41,7 @@ app-department-dropdown {
   }
   :hover {
     // background-color: #0056b3;
-    color: white;
+    color: var(--accent-color);
     // border-color: #b34200;
   }
 }
@@ -61,7 +61,7 @@ app-department-dropdown {
 }
 
 .graph1 {
-  background: linear-gradient(135deg, rgba(224, 204, 172, 0.15) 0%, rgba(224, 204, 172, 0.35) 100%);
+  background: var(--home-risk-overview-color);
   height: 100%;
   // min-height: 280px;
   width: 100%;
@@ -70,7 +70,7 @@ app-department-dropdown {
   display: flex;
   flex-direction: column;
   padding: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  // box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
   position: relative;
   overflow: auto;
 
@@ -115,7 +115,7 @@ app-department-dropdown {
     h4 {
       font-size: 20px;
       font-weight: 700;
-      color: #1f2937;
+      color: var(--home-risk-overview-header-color);
       margin: 0;
       letter-spacing: -0.5px;
     }
@@ -131,7 +131,7 @@ app-department-dropdown {
     gap: 12px;
 
     h6 {
-      color: #9ca3af;
+      color: var(--home-risk-overview-labels-color);
       font-size: 15px;
       font-weight: 500;
       margin: 0;
@@ -157,7 +157,7 @@ app-department-dropdown {
     .header-label {
       font-size: 9px;
       font-weight: 700;
-      color: #4b5563;
+      color: var(--home-risk-overview-labels-color);
       text-transform: uppercase;
       letter-spacing: 0.3px;
       text-align: center;
@@ -210,10 +210,10 @@ app-department-dropdown {
   .node-header {
     font-size: 13px;
     font-weight: 700;
-    color: #374151;
+    color: var(--riskType-label-color);
     text-align: left;
     padding: 6px 10px;
-    background: white;
+    background: var(--riskType-label-bg-color);
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
     letter-spacing: -0.3px;
@@ -254,7 +254,7 @@ app-department-dropdown {
       justify-content: center;
       font-weight: 700;
       font-size: 16px;
-      color: #fff;
+      color: var(--home-risk-value-color);
       box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
       transition: all 0.2s ease;
       border: 2px solid rgba(255, 255, 255, 0.3);
