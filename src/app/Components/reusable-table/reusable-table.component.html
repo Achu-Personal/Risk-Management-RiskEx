@@ -1,4 +1,3 @@
-
 <!-- Add the loading state before the main ng-container -->
 <div class="header1">
   @if(isButtonVisible){
@@ -39,47 +38,51 @@
   </div>
 </div>
 <ng-container *ngIf="!isLoading && hasValidData(); else noData">
-  <div class="table-container"  [ngStyle]="{ height: height }">
+  <div class="table-container" [ngStyle]="{ height: height }">
     <div class="tablestyle">
       <table class="tabledata">
         <thead>
           <tr class="bord">
             @for(header of tableHeaders; track header){
-              <th title="{{header === 'overallRiskRating' ? 'Current Risk Rating' : headerDisplayMap[header] || header}}">
-                <div class="header-with-filter">
-                  {{ headerDisplayMap[header] || header }}
-                  @if(header === 'departmentName' || header === 'riskType' || header ==='riskDepartment' ||  header ==='riskTypeName'){
-                    <span class="filter-icon" (click)="toggleFilter($event, header)">&#9662;</span>
-                    @if(showFilterDropdown && currentFilterColumn === header){
-                      <div class="filter-dropdown" (click)="$event.stopPropagation()">
-                        <div class="filter-search">
-                          <input
-                            type="text"
-                            [(ngModel)]="filterSearchText"
-                            placeholder="Search..."
-                            (input)="searchFilterOptions()">
-                        </div>
-                        <div class="filter-options">
-                          @for(option of getFilteredOptions(); track option){
-                            <div class="filter-option" (click)="applyFilter(header, option)">
-                              {{ option }}
-                            </div>
-                          }
-                        </div>
-                      </div>
+            <th [title]="
+                    header === 'overallRiskRating'
+                      ? 'Initial Risk Rating'
+                      : header === 'overallRiskRatingAfter'
+                        ? 'Post implementation Risk Rating'
+                        : headerDisplayMap[header] || header
+              ">
+              <div class="header-with-filter">
+                {{ headerDisplayMap[header] || header }}
+                @if(header === 'departmentName' || header === 'riskType' || header ==='riskDepartment' || header
+                ==='riskTypeName'){
+                <span class="filter-icon" (click)="toggleFilter($event, header)">&#9662;</span>
+                @if(showFilterDropdown && currentFilterColumn === header){
+                <div class="filter-dropdown" (click)="$event.stopPropagation()">
+                  <div class="filter-search">
+                    <input type="text" [(ngModel)]="filterSearchText" placeholder="Search..."
+                      (input)="searchFilterOptions()">
+                  </div>
+                  <div class="filter-options">
+                    @for(option of getFilteredOptions(); track option){
+                    <div class="filter-option" (click)="applyFilter(header, option)">
+                      {{ option }}
+                    </div>
                     }
-                  }
+                  </div>
                 </div>
-              </th>
-              }
-           @if(IsActionRequiered && !isAdmin && !IsUser && !IsAssignee){
+                }
+                }
+              </div>
+            </th>
+            }
+            @if(IsActionRequiered && !isAdmin && !IsUser && !IsAssignee){
             <th>Actions</th>
             } @else if(IsUser && (isAdmin || isDepartmentUser) ){
             <th>Status</th>
             <th>Action</th>
             }
             @else if(IsUser && !isAdmin && !isDepartmentUser){
-              <th>Status</th>
+            <th>Status</th>
             }
           </tr>
         </thead>
@@ -95,6 +98,12 @@
                 </div>
               </ng-container>
 
+              <ng-container *ngIf="key === 'overallRiskRatingAfter'">
+                <div [ngClass]="getRiskRatingStyle(row[key] ,row.riskType)">
+                  {{ row[key] === 0 || row[key] == null ? '-' : row[key] }}
+                </div>
+              </ng-container>
+
               <ng-container *ngIf="key === 'overallRiskRatingBefore'">
                 <div [ngClass]="getRiskRatingStyle(row[key],row.riskType)">
                   {{ row[key] }}
@@ -105,80 +114,45 @@
                 {{ row[key] | date : "d MMM yyyy" }}
               </ng-container>
               <ng-container *ngIf="key === 'riskStatus'">
-                <span [ngClass]="getRiskStatusClass(row[key])"
-                 class="status-cell"
-                [ngStyle]="{
+                <span [ngClass]="getRiskStatusClass(row[key])" class="status-cell" [ngStyle]="{
                     'background-color': getStatusColor(row[key]),
                     color: '#fff'
-                  }"
-                >
+                  }">
                   {{ row[key] }}
                 </span>
               </ng-container>
-              <ng-container *ngIf="key === 'projects'"
-                ><ng-container *ngIf="row[key]?.length > 0; else noProjects">
+              <ng-container *ngIf="key === 'projects'"><ng-container *ngIf="row[key]?.length > 0; else noProjects">
                   <span>{{ row[key]?.join(", ") }}</span>
                 </ng-container>
                 <ng-template #noProjects>
                   ----
                 </ng-template></ng-container>
 
-              @if(key !=='riskStatus'&& key !=='overallRiskRating' && key !=='overallRiskRatingBefore' && key
+              @if(key !=='riskStatus'&& key !=='overallRiskRating' && key !=='overallRiskRatingBefore' && key !=='overallRiskRatingAfter' && key
               !=='plannedActionDate' && key!=='projects') {
               <ng-container>
-                {{row[key]!=null? (row[key].toString() | slice : 0 : 40):'' }}{{ row[key]!=null? (row[key].length > 40 ? "..." : "") : "" }}
+                {{row[key]!=null? (row[key].toString() | slice : 0 : 40):'' }}{{ row[key]!=null? (row[key].length > 40 ?
+                "..." : "") : "" }}
               </ng-container>
               }
+
               <!-- {{formatDate(row[key]) | slice : 0 : 30
             }}{{ row[key]?.toString.length > 30 ? "..." : "" }} -->
             </td>
             } @if(IsActionRequiered && !isAdmin && !IsUser && !IsAssignee){
             <td>
-              <div
-                class="icon-display"
-                class="icon approve"
-                title="Approve"
-                (click)="approveButton($event, row)"
-              >
+              <div class="icon-display" class="icon approve" title="Approve" (click)="approveButton($event, row)">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                  <circle
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="#976c26"
-                    stroke-width="2"
-                    fill="none"
-                  />
-                  <path
-                    d="M8 12l3 3 5-5"
-                    stroke="#976c26"
-                    stroke-width="2"
-                    fill="none"
-                  />
+                  <circle cx="12" cy="12" r="10" stroke="#976c26" stroke-width="2" fill="none" />
+                  <path d="M8 12l3 3 5-5" stroke="#976c26" stroke-width="2" fill="none" />
                 </svg>
               </div>
 
               <!-- Reject Icon -->
-              <div
-                class="icon reject"
-                title="reject"
-                (click)="rejectButton($event, row)"
-              >
+              <div class="icon reject" title="reject" (click)="rejectButton($event, row)">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                  <circle
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="#976c26"
-                    stroke-width="2"
-                    fill="none"
-                  />
-                  <path
-                    d="M8 8l8 8m0-8l-8 8"
-                    stroke="#976c26"
-                    stroke-width="2"
-                    fill="none"
-                  />
+                  <circle cx="12" cy="12" r="10" stroke="#976c26" stroke-width="2" fill="none" />
+                  <path d="M8 8l8 8m0-8l-8 8" stroke="#976c26" stroke-width="2" fill="none" />
                 </svg>
               </div>
             </td>
@@ -186,50 +160,36 @@
             } @else if(IsUser && (isAdmin || isDepartmentUser) ) {
 
             <td *ngIf="IsUser">
-              <div
-                [ngClass]="{
+              <div [ngClass]="{
                   'active-status': row.isActive,
                   'inactive-status': !row.isActive
-                }"
-              >
+                }">
                 {{ row.isActive ? "Active" : "Inactive" }}
               </div>
             </td>
 
             <!-- Action: Toggle -->
             <td *ngIf="IsUser">
-             <div class="action-buttons-container">
-              <div class="toggle-container"
-                [ngClass]="{'admin-toggle': isSystemAdmin(row)|| isCurrentUser(row)}"
-                [title]="isSystemAdmin(row) ? 'System Admin status cannot be changed' :
+              <div class="action-buttons-container">
+                <div class="toggle-container" [ngClass]="{'admin-toggle': isSystemAdmin(row)|| isCurrentUser(row)}"
+                  [title]="isSystemAdmin(row) ? 'System Admin status cannot be changed' :
                          isCurrentUser(row) ? 'You cannot change your own status' : ''">
-               <label class="switch">
-                 <input
-                   type="checkbox"
-                   [(ngModel)]="row.isActive"
-                   (change)="onToggleChange(row)"
-                   [disabled]="isSystemAdmin(row) || isCurrentUser(row)"
-                   />
-                  <span class="slider"></span>
-                </label>
-              </div>
+                  <label class="switch">
+                    <input type="checkbox" [(ngModel)]="row.isActive" (change)="onToggleChange(row)"
+                      [disabled]="isSystemAdmin(row) || isCurrentUser(row)" />
+                    <span class="slider"></span>
+                  </label>
+                </div>
 
                 <!-- Add Edit Button -->
-                <div
-                  class="icon edit"
-                  title="Edit User"
-                  [class.disabled]="isSystemAdmin(row) || isCurrentUser(row)"
+                <div class="icon edit" title="Edit User" [class.disabled]="isSystemAdmin(row) || isCurrentUser(row)"
                   (click)="(isSystemAdmin(row) || isCurrentUser(row)) ? null : editUser($event, row)"
-                  [ngClass]="{'admin-toggle': isSystemAdmin(row) || isCurrentUser(row)}"
-                  [title]="isSystemAdmin(row) ? 'System Admin status cannot be Edited' :
+                  [ngClass]="{'admin-toggle': isSystemAdmin(row) || isCurrentUser(row)}" [title]="isSystemAdmin(row) ? 'System Admin status cannot be Edited' :
                            isCurrentUser(row) ? 'You cannot Edit your own details' : ''">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" >
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                     <path
                       d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"
-                      stroke="#976c26"
-                      stroke-width="1"
-                      fill="#976c26"
-                    />
+                      stroke="#976c26" stroke-width="1" fill="#976c26" />
                   </svg>
                 </div>
               </div>
@@ -239,27 +199,27 @@
             }
             @else if(IsDraft && IsActionRequiered)
             {
-              <td >
+            <td>
               <div style="display: flex;align-items: center;gap: 10px; height: 100%">
-                <app-edit-button title="Edit Draft"  image="fa-solid fa-pen" [ngStyle]="{'display':'flex'}" (onClick)="onDraftEditt(row)"  ></app-edit-button>
-                <app-edit-button title="Delete Draft"  image="fa-solid fa-trash" [ngStyle]="{'display':'flex'}" (onClick)="onDraftDelete(row)"  ></app-edit-button>
+                <app-edit-button title="Edit Draft" image="fa-solid fa-pen" [ngStyle]="{'display':'flex'}"
+                  (onClick)="onDraftEditt(row)"></app-edit-button>
+                <app-edit-button title="Delete Draft" image="fa-solid fa-trash" [ngStyle]="{'display':'flex'}"
+                  (onClick)="onDraftDelete(row)"></app-edit-button>
               </div>
-              </td>
+            </td>
 
 
 
             }
             @else if(IsUser && !isAdmin && !isDepartmentUser){
-              <td *ngIf="IsUser">
-                <div
-                  [ngClass]="{
+            <td *ngIf="IsUser">
+              <div [ngClass]="{
                     'active-status': row.isActive,
                     'inactive-status': !row.isActive
-                  }"
-                >
-                  {{ row.isActive ? "Active" : "Inactive" }}
-                </div>
-              </td>
+                  }">
+                {{ row.isActive ? "Active" : "Inactive" }}
+              </div>
+            </td>
             }
           </tr>
           }
@@ -271,43 +231,28 @@
   </div>
   <div class="paginations">
     @if(shouldDisplayPagination()){
-      <app-pagination  [totalItems]="totalItems"
-      [itemsPerPage]="itemsPerPage"
-      [currentPage]="currentPage"
+    <app-pagination [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [currentPage]="currentPage"
       (pageChanged)="onPageChange($event)">
 
-      </app-pagination>
+    </app-pagination>
     }
 
 
   </div>
 </ng-container>
 <ng-template #noData>
-  <div class="no-data-container" *ngIf=" !isLoading"  >
+  <div class="no-data-container" *ngIf=" !isLoading">
     <img src="../../../../Images/nodata.png" alt="no-data-message">
     <!-- <h3 class="no-data-message">{{noDataMessage}}</h3> -->
   </div>
 </ng-template>
 
-<app-confirmation-popup
-  [isOpen]="showApproveDialog"
-  titleName="Approve Risk"
-  confirmText="Approve"
-  [showComment]="true"
-  [isReject]="false"
-  (confirm)="onApprove($event)"
-  (cancel)="showApproveDialog = false"
->
+<app-confirmation-popup [isOpen]="showApproveDialog" titleName="Approve Risk" confirmText="Approve" [showComment]="true"
+  [isReject]="false" (confirm)="onApprove($event)" (cancel)="showApproveDialog = false">
 </app-confirmation-popup>
 
-<app-confirmation-popup
-  [isOpen]="showRejectDialog"
-  titleName="Reject Risk"
-  confirmText="Reject"
-  [isReject]="true"
-  (confirm)="onReject($event)"
-  (cancel)="showRejectDialog = false"
->
+<app-confirmation-popup [isOpen]="showRejectDialog" titleName="Reject Risk" confirmText="Reject" [isReject]="true"
+  (confirm)="onReject($event)" (cancel)="showRejectDialog = false">
 </app-confirmation-popup>
 
 <!-- <app-confirmation-popup
@@ -321,14 +266,10 @@
   (cancel)="onStatusCancel()"
 > -->
 @if(showStatusChangeDialog){
-    <app-form-conform-popup
-   [message]="currentToggleRow ?
+<app-form-conform-popup [message]="currentToggleRow ?
     'Are you sure you want to ' + (currentToggleRow.isActive ? 'activate' : 'deactivate') +
     ' user ' + (currentToggleRow.fullName || currentToggleRow.userName || 'User') + '?' : ''"
-    (closeDialog)="onStatusConfirm()"
-    (notCloseDialog)="onStatusCancel()"
-  ></app-form-conform-popup>
+  (closeDialog)="onStatusConfirm()" (notCloseDialog)="onStatusCancel()"></app-form-conform-popup>
 
 }
 <!-- </app-confirmation-popup> -->
-

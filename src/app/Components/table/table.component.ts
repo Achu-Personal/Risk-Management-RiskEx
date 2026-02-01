@@ -10,6 +10,7 @@ import { ResidualRiskStatusStylePipe } from "../../Pipes/residual-risk-status-st
 import { FormConformPopupComponent } from '../form-conform-popup/form-conform-popup.component';
 import { FormSuccessfullComponent } from '../form-successfull/form-successfull.component';
 
+ type SortColumn = 'plannedActionDate' | 'irr' | 'prr';
 @Component({
   selector: 'app-table',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -18,7 +19,9 @@ import { FormSuccessfullComponent } from '../form-successfull/form-successfull.c
   templateUrl: './table.component.html',
   styleUrl: './table.component.scss'
 })
+
 export class TableComponent {
+  
   constructor(public api: ApiService, private route: ActivatedRoute, private router: Router, private cdr: ChangeDetectorRef, public auth: AuthService) { }
   items: any = [];
   isActive = true;
@@ -303,6 +306,7 @@ export class TableComponent {
     this.filteredItems = [...this.items];
     this.currentPage = 1;
     this.totalItems = this.filteredItems.length;
+    this.sortColumn='';
     this.updatePaginatedItems();
   }
 
@@ -332,33 +336,57 @@ export class TableComponent {
   }
 
   //sorting
-  sortDirection: 'asc' | 'desc' = 'asc';
-  sortColumn: string = '';
-  sortTable(column: string) {
-    this.sortDirection = this.sortColumn === column
-      ? (this.sortDirection === 'asc' ? 'desc' : 'asc')
-      : 'asc';
+
+
+  sortColumn: SortColumn | '' = '';
+
+  sortDirections: Record<SortColumn, 'asc' | 'desc'> = {
+    plannedActionDate: 'desc',
+    irr: 'desc',
+    prr: 'desc'
+  };
+
+  sortTable(column: SortColumn) {
+    this.sortDirections[column] =
+      this.sortDirections[column] === 'asc' ? 'desc' : 'asc';
+
     this.sortColumn = column;
+    const direction = this.sortDirections[column];
+
     this.filteredItems = [...this.filteredItems].sort((a, b) => {
-      if (column === 'crr') {
-        const valueA = this.getCRRValue(a);
-        const valueB = this.getCRRValue(b);
-        return (valueA - valueB) * (this.sortDirection === 'asc' ? 1 : -1);
+      let valueA = 0;
+      let valueB = 0;
+
+      switch (column) {
+        case 'irr':
+          valueA = this.getIRRValue(a);
+          valueB = this.getIRRValue(b);
+          break;
+
+        case 'prr':
+          valueA = this.getPRRValue(a);
+          valueB = this.getPRRValue(b);
+          break;
+
+        case 'plannedActionDate':
+          valueA = new Date(a.plannedActionDate).getTime();
+          valueB = new Date(b.plannedActionDate).getTime();
+          break;
       }
-      if (column === 'plannedActionDate') {
-        const valueA = new Date(a.plannedActionDate).getTime();
-        const valueB = new Date(b.plannedActionDate).getTime();
-        return (valueA - valueB) * (this.sortDirection === 'asc' ? 1 : -1);
-      }
-      return 0;
+
+      return (valueA - valueB) * (direction === 'asc' ? 1 : -1);
     });
+
     this.currentPage = 1;
     this.updatePaginatedItems();
   }
-  private getCRRValue(item: any): number {
-    return item.overallRiskRatingAfter !== null
-      ? item.overallRiskRatingAfter
-      : item.overallRiskRatingBefore;
+
+  private getIRRValue(item: any): number {
+    return item.overallRiskRatingBefore ?? Number.MAX_SAFE_INTEGER;
+  }
+
+  private getPRRValue(item: any): number {
+    return item.overallRiskRatingAfter ?? Number.MAX_SAFE_INTEGER;
   }
 
 

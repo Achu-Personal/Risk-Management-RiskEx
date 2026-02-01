@@ -20,7 +20,7 @@
 
       i {
         font-size: 48px;
-        color: #007bff;
+        color: var(--foreground-color);
       }
     }
 
@@ -46,7 +46,7 @@
       text-align: left;
 
       i {
-        color: #007bff;
+        color: var(--foreground-color);
         margin-right: 12px;
         margin-top: 3px;
       }
@@ -77,12 +77,13 @@
 
         &.resend-btn {
           background-color: transparent;
-          border: 1px solid #007bff;
-          color: #007bff;
+          border: 1px solid var(--foreground-color);
+          color: white;
+          background-color: var(--foreground-color);
           box-shadow: 2px 2px 2px 2px grey;
 
           &:hover:not(:disabled) {
-            background-color: rgb(67, 173, 255);
+            background-color: var(--foreground-color);
             color: white;
             box-shadow: none;
           }
@@ -111,12 +112,13 @@
 
         &.login-btn {
           background-color: transparent;
-          border: 1px solid #007bff;
-          color: #007bff;
+          border: 1px solid var(--foreground-color);
+          color: white;
+           background-color: var(--foreground-color);
           box-shadow: 2px 2px 2px 2px grey;
 
           &:hover {
-            background-color: rgb(67, 173, 255);
+            background-color: var(--foreground-color);
             color: white;
             box-shadow: none;
           }

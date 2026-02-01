@@ -35,7 +35,7 @@ export class RiskDetailsSection2Component {
     },
     {
       id: 2,
-      title: 'Review',
+      title: 'Review of initial Assessment',
       isCompleted: false,
       actionBy: '...',
       date: '...',
@@ -45,7 +45,7 @@ export class RiskDetailsSection2Component {
     },
     {
       id: 3,
-      title: 'Mitigation',
+      title: '',
       isCompleted: false,
       actionBy: '....',
       date: '...',
@@ -55,11 +55,21 @@ export class RiskDetailsSection2Component {
     },
     {
       id: 4,
-      title: 'Post Review',
+      title: '',
       isCompleted: false,
       actionBy: '...',
       date: '...',
       stepNumber: '04',
+      message: "",
+      UpdatedAt:""
+    },
+    {
+      id: 5,
+      title: 'Review of Post Implementation of Action',
+      isCompleted: false,
+      actionBy: '...',
+      date: '...',
+      stepNumber: '05',
       message: "",
       UpdatedAt:""
     },
@@ -82,16 +92,15 @@ export class RiskDetailsSection2Component {
 
     if (this.data) {
       console.log("stepppppppppinyy",this.data)
-      this.stepperData.push({
-        id: 5,
+      const stepIndex = this.stepperData.findIndex(step => step.id === 4);
+      if (stepIndex !== -1) {
+      this.stepperData[stepIndex] = {
+        ...this.stepperData[stepIndex],
+        
         title: this.data.RiskStatus?.toLowerCase() === 'open' ? 'Close' : this.data.RiskStatus || 'Unknown',
-        isCompleted: false,
-        actionBy: '...',
-        date: '...',
-        stepNumber: '05',
-        message: "",
         UpdatedAt:this.data.UpdatedAt
-      });
+      };
+    }
     }
 
 
@@ -126,10 +135,10 @@ export class RiskDetailsSection2Component {
 
         this.api.getReviewSatus(id!, false).subscribe((e: any) => {
           // console.log('ReviewSatusafter', e);
-          this.stepperData[3].actionBy = e.isReviewed >= 4 ? e.actionBy : '...';
-          this.stepperData[3].isCompleted = e.isReviewed >= 4 ? true : false;
-          this.stepperData[3].date = e.isReviewed >= 4 ? e.date : "...";
-          this.stepperData[3].message = e.isReviewed != 5 ? (e.isReviewed >= 4 ? "(Accepted)" : '') : `(Rejected)`;
+          this.stepperData[4].actionBy = e.isReviewed >= 4 ? e.actionBy : '...';
+          this.stepperData[4].isCompleted = e.isReviewed >= 4 ? true : false;
+          this.stepperData[4].date = e.isReviewed >= 4 ? e.date : "...";
+          this.stepperData[4].message = e.isReviewed != 5 ? (e.isReviewed >= 4 ? "(Accepted)" : '') : `(Rejected)`;
 
 
           // Step 5: Final Status - Handle all status types
@@ -139,21 +148,22 @@ export class RiskDetailsSection2Component {
           const completedStatuses = ['closed', 'accepted', 'undertreatment', 'monitoring', 'deferred'];
 
           if (completedStatuses.includes(normalizedStatus) && e.isReviewed >= 4) {
-            this.stepperData[4].actionBy = this.data.UpdatedBy || '...';
-            this.stepperData[4].isCompleted = true;
+            this.stepperData[3].actionBy = this.data.UpdatedBy || '...';
+            this.stepperData[3].isCompleted = true;
             // Use ClosedDate if status is closed, otherwise use UpdatedAt
-            this.stepperData[4].date = normalizedStatus === 'closed'
+            this.stepperData[3].date = normalizedStatus === 'closed'
               ? (this.data.ClosedDate || this.data.UpdatedAt || '...')
               : (this.data.UpdatedAt || '...');
 
-            this.stepperData[4].message = "";
+            this.stepperData[3].message = "";
           } else if (normalizedStatus !== 'open') {
             // For any other status that's not "Open", mark as incomplete but show some info
-            this.stepperData[4].actionBy = '...';
-            this.stepperData[4].isCompleted = false;
-            this.stepperData[4].date = '...';
-            this.stepperData[4].message = "";
+            this.stepperData[3].actionBy = '...';
+            this.stepperData[3].isCompleted = false;
+            this.stepperData[3].date = '...';
+            this.stepperData[3].message = "";
           }
+          this.stepperData[2].title = this.data.RiskResponse;
 
           this.cdRef.detectChanges();
         });
@@ -177,4 +187,10 @@ export class RiskDetailsSection2Component {
       step.isCompleted = true;
     }
   }
+
+isExpandedView = false;
+
+toggleView() {
+  this.isExpandedView = !this.isExpandedView;
+}
 }

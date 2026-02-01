@@ -16,23 +16,23 @@
     .rectangle {
       width: 34px;
       height: 70px;
-      border: 3px solid var(--accent-color);
+      border: 3px solid var(--loader-color);
       background-color: transparent;
       animation: updown 1.2s ease-in-out infinite;
     }
 
     .rectangle:nth-child(1) {
-      border-color: var(--primary-color);
+      border-color: var(--loader-color);
       animation-delay: 0s;
     }
 
     .rectangle:nth-child(2) {
-       border-color: var(--primary-color);
+       border-color: var(--loader-color);
       animation-delay: 0.2s;
     }
 
     .rectangle:nth-child(3) {
-       border-color: var(--primary-color);
+       border-color: var(--loader-color);
       animation-delay: 0.4s;
     }
 

@@ -1,59 +1,158 @@
+<div class="stepper-root">
+  <div *ngIf="isExpandedView" class="expanded-wrapper">
+  <div class="expanded-view" >
 
-<div class="stepper-container">
-  <div class="timeline">
-    @for(step of steps; track step.id) {
+    <div class="process-row" *ngFor="let step of steps; let i = index" [ngClass]="{
+      'completed': step.isCompleted,
+      'current': !step.isCompleted && i === currentStepIndex,
+      'upcoming': !step.isCompleted && i > currentStepIndex,
+      'accepted': step.message.toLowerCase().includes('accepted'),
+      'rejected': step.message.toLowerCase().includes('rejected')
+    }">
 
-      <div class="step-item" [class.completed]="step.isCompleted">
-        @if(step.id %2==0){
-          <div class="step-content">
-            <div class="step-title">{{ step.title }}</div>
-            <div class="step-info">
-              <span>by {{step.actionBy.split(' ')[0]+" " }} <span [ngStyle]="{'color':step.message=='(Accepted)'?'green':'red'}" > {{step.message }}</span> </span>
-              <span class="date">on {{ step.date!="..."?  (step.date | date: 'd MMM yyyy'):'...'}}</span>
-              <div class="tooltip">
-                info: {{ step.actionBy }} completed this step on {{ step.date!="..."?  (step.date | date: 'longDate'):'...' }}
-              </div>
-            </div>
-          </div>
-          <div class="step-icon"
-               [class.completed]="step.isCompleted"
-               [class.current]="step.id === currentStep">
-            @if (step.isCompleted) {
-             <span class="checkmark">✔</span>
-            } @else {
-              {{ step.stepNumber }}
-            }
-          </div>
-        }
+      <!-- LEFT RAIL -->
+      <div class="process-rail">
+        <div class="dot"></div>
+        <div class="line" *ngIf="i < steps.length - 1"></div>
+      </div>
 
-         <div class="step">
+      <!-- CONTENT -->
+      <div class="process-content">
+
+        <!-- TITLE -->
+        <div class="process-header">
+          <span class="step-title-expand">{{ step.title }}</span>
+
+          <span *ngIf="!step.isCompleted && i === currentStepIndex" class="current-badge">
+            In progress
+          </span>
+        </div>
+
+        <!-- DETAILS -->
+        <div class="process-details">
+
+          <span *ngIf="step.actionBy" class="detail action-by">
+            • By <strong>{{ step.actionBy }}</strong>
+          </span>
+
+          <span *ngIf="step.isCompleted && step.date !== '...'" class="detail date">
+            • Completed On <strong>{{ step.date | date: 'd MMM yyyy' }}</strong>
+          </span>
+
+          <span *ngIf="step.UpdatedAt && step.title === 'Closed'" class="detail date">
+            • Updated On <strong>{{ step.UpdatedAt | date: 'd MMM yyyy' }}</strong>
+          </span>
+
+
+          <span *ngIf="step.message" class="detail message">
+            <span style="color: black; font-size: 13px;font-weight: 500;">• Staus : </span>{{ step.message.replace('(', '').replace(')', '') }}
+          </span>
 
         </div>
-        @if(step.id %2!==0){
-          <div class="step-icon"
-               [class.completed]="step.isCompleted"
-               [class.current]="step.id === currentStep">
-            @if (step.isCompleted) {
-              <i class="checkmark">✓</i>
-            } @else {
+
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+
+
+  <div class="progress-container" *ngIf="!isExpandedView">
+
+    <div class="stepper-horizontal">
+      <div class="connection-line">
+        <div class="connection-progress" [style.width.%]="progressPercent" [ngClass]="{
+       'success': progressPercent === 100,
+       'active': progressPercent < 100
+     }"></div>
+      </div>
+
+      @for(step of steps; track step.id;let i = $index) {
+
+      <div class="step-wrapper" [class.completed]="step.isCompleted"
+        [class.current]="!step.isCompleted && i === currentStepIndex"
+        [class.upcoming]="!step.isCompleted && i > currentStepIndex">
+
+
+        <div class="step-hexagon">
+          <div class="step-number-label" *ngIf="step.isCompleted">Step {{ step.stepNumber }}</div>
+
+          <div class="hexagon-inner" [class.all-complete]="allStepsCompleted">
+            <div class="hexagon-content">
+              @if (step.isCompleted) {
+              ✓
+              } @else {
               {{ step.stepNumber }}
-            }
-          </div>
-          <div class="step-content">
-            <div class="step-title">{{ step.title }}</div>
-            <div class="step-info">
-              <span>by {{step.actionBy.split(' ')[0]+" " }} <span [ngStyle]="{'color':step.message=='Accepted'?'green':'red'}" > {{step.message }}</span> </span>
-
-              <span class="date">on {{ step!=null? step.date!="..."?  (step.date | date: 'd MMM yyyy'):'...':''}}</span>
-              <span *ngIf="step.title === 'Closed'" class="date">updated on {{ step!=null? step.UpdatedAt!="..."?  (step.UpdatedAt | date: 'd MMM yyyy'):'...':''}}</span>
-
-              <div class="tooltip">
-                info: {{ step.actionBy }} completed this step on {{ step!=null? step.date!="..."?  (step.date | date: 'longDate'):'...':'' }},
-              </div>
+              }
             </div>
           </div>
-        }
+        </div>
+
+
+
+        <div class="info-card">
+          <div class="step-title">{{ step.title }}</div>
+          <div class="hover-toc">
+            <div class="toc-row">
+              <svg class="toc-icon" viewBox="0 0 24 24">
+                <circle cx="12" cy="8" r="4"></circle>
+                <path d="M4 20c0-4 4-6 8-6s8 2 8 6"></path>
+              </svg>
+              <span>By <strong>{{ step.actionBy.split(' ')[0] }}</strong></span>
+            </div>
+
+            <div class="toc-row">
+              <svg class="toc-icon" viewBox="0 0 24 24">
+                <rect x="3" y="5" width="18" height="16" rx="2"></rect>
+                <line x1="3" y1="9" x2="21" y2="9"></line>
+              </svg>
+              <span>Completed on {{ step.date !== '...' ? (step.date | date: 'd MMM yyyy') : '...' }}</span>
+            </div>
+            @if (step.message){
+            <div class="toc-row">
+              <svg class="status-icon" [ngClass]="{
+                accepted: step.message === '(Accepted)',
+                rejected: step.message === '(Rejected)',
+                pending: !step.message
+              }" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10"></circle>
+
+                @if (step.message === '(Accepted)') {
+                <path d="M7 12l3 3 7-7"></path>
+                }
+
+                @if (step.message === '(Rejected)') {
+                <line x1="8" y1="8" x2="16" y2="16"></line>
+                <line x1="16" y1="8" x2="8" y2="16"></line>
+                }
+
+                @if (!step.message) {
+                <path d="M12 6v6l4 2"></path>
+                }
+              </svg>
+
+              <span>
+                Status : {{ step.message.replace('(', '').replace(')', '') }}
+              </span>
+            </div>
+            }
+            @if (step.UpdatedAt && step.title === 'Closed'){
+            <div class="toc-row">
+              <svg class="toc-icon" viewBox="0 0 24 24">
+                <rect x="3" y="5" width="18" height="16" rx="2"></rect>
+                <line x1="3" y1="9" x2="21" y2="9"></line>
+              </svg>
+              <span>Updated on {{ step.UpdatedAt !== '...' ? (step.UpdatedAt | date: 'd MMM yyyy') : '...' }}</span>
+            </div>
+
+            }
+          </div>
+        </div>
       </div>
-    }
+      }
+    </div>
   </div>
+
 </div>
