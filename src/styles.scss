@@ -32,42 +32,117 @@ html, body {
   --button-color: #3e68b9;
 
   --form-color: #d0c6b6;
+  --bg-color:rgb(255, 252, 252);
+  --border-color:#ddd;
+  --bshadow-color:rgba(0, 0, 0, 0.2);
+  --dropdown-hover-color: #f1f1f1;
+  --home-risk-overview-color:linear-gradient(135deg, rgba(224, 204, 172, 0.15) 0%, rgba(224, 204, 172, 0.35) 100%);
+  --home-risk-overview-header-color:#1f2937;
+  --home-risk-overview-labels-color:#4b5563;
+  --riskType-label-color:#374151;
+  --riskType-label-bg-color:white;
+  --home-risk-value-color:white;
+  --dep-dropdown-border-color:#a9a9a9;
+  --dep-dropdown-label-color:rgb(39, 39, 39);
+  --input-color:white;
+  --loader-color:#f4f1ec;
 }
 
 :default {
   --primary-color: #f4f1ec;
   --foreground-color: #4d4d4d;
-  --accent-text-color: #ffffff;
   --secondary-color: #d0c6b6;
   --accent-color: white;
   --selection-color: #ffcb22;
   --primary-text-color: #4d4d4d;
-  --secondary-text-color: white;
+  --secondary-text-color: #4d4d4d;
+  --accent-text-color: #000000;
   --button-color: #3e68b9;
+
+  --form-color: #d0c6b6;
+  --bg-color:rgb(255, 252, 252);
+  --border-color:#ddd;
+  --bshadow-color:rgba(0, 0, 0, 0.2);
+  --dropdown-hover-color: #f1f1f1;
+  --home-risk-overview-color:linear-gradient(135deg, rgba(224, 204, 172, 0.15) 0%, rgba(224, 204, 172, 0.35) 100%);
+  --home-risk-overview-header-color:#1f2937;
+  --home-risk-overview-labels-color:#4b5563;
+  --riskType-label-color:#374151;
+  --riskType-label-bg-color:white;
+  --home-risk-value-color:white;
+  --dep-dropdown-border-color:#a9a9a9;
+  --dep-dropdown-label-color:rgb(39, 39, 39);
+  --input-color:white;
 }
 
 .light-theme {
   --accent-text-color: #000000;
   --primary-color: #f3f4f7;
-  --foreground-color: #333333;
+  --foreground-color: black;
   --secondary-color: #f0e6d6;
   --accent-color: white;
   --selection-color: #ffcb22;
   --primary-text-color: #1a1a1a;
   --secondary-text-color: #333333;
   --button-color: #0056b3;
+  --form-color:#F3F4F7;
+
+
+
+
+
+
+  --secondary-color: #d0c6b6;
+  --accent-color: white;
+  --selection-color: white;
+  --primary-text-color: #4d4d4d;
+  --secondary-text-color: #4d4d4d;
+  --accent-text-color: #000000;
+  --button-color: #3e68b9;
+
+  --form-color: #f1f1f1;
+  --bg-color:rgb(255, 252, 252);
+  --border-color:#ddd;
+  --bshadow-color:rgba(0, 0, 0, 0.2);
+  --dropdown-hover-color: #f1f1f1;
+  --home-risk-overview-color:linear-gradient(135deg, rgba(10, 10, 10, 0.15) 0%, rgba(26, 25, 24, 0.35) 100%);
+  --home-risk-overview-header-color:#1f2937;
+  --home-risk-overview-labels-color:#4b5563;
+  --riskType-label-color:#374151;
+  --riskType-label-bg-color:white;
+  --home-risk-value-color:white;
+  --dep-dropdown-border-color:#a9a9a9;
+  --dep-dropdown-label-color:rgb(39, 39, 39);
+  --input-color:white;
 }
 
 .dark-theme {
-  --accent-text-color: #ffffff;
-  --primary-color: #292640;
-  --foreground-color: #999999;
-  --secondary-color: #282828;
-  --accent-color: #252c47;
-  --selection-color: #4db6ac;
-  --primary-text-color: #ffffff;
-  --secondary-text-color: #ffffff;
-  --button-color: #304ffe;
+  --accent-text-color: white;
+  --primary-color: #22272a;
+  --foreground-color: #0e6836 ;
+  --secondary-color: #f0e6d6;
+  --accent-color: #191d21;
+  --selection-color: #ffcb22;
+  --primary-text-color: #1a1a1a;
+  --secondary-text-color: #333333;
+  --button-color: #0056b3;
+  --form-color:#191d21;
+
+  --bg-color:rgb(255, 252, 252);
+  --border-color:#ddd;
+  --bshadow-color:rgba(0, 0, 0, 0.2);
+  --dropdown-hover-color: #f1f1f1;
+   --home-risk-overview-color:#191d21;
+   --home-risk-overview-header-color:white;
+   --home-risk-overview-labels-color:white;
+   --riskType-label-color:white;
+   --riskType-label-bg-color:#22272a;
+   --home-risk-value-color:white;
+   --dep-dropdown-border-color: #0e6836 ;
+   --dep-dropdown-label-color:white;
+   --input-color:#22272a;
+   --dep-dropdown-label-color:#e7f3fe;
+   --loader-color:#0e6836;
 }
 
 .stylish-blue {

@@ -9,6 +9,7 @@ import { ApiService } from '../../Services/api.service';
 import { StyleButtonComponent } from '../../UI/style-button/style-button.component';
 import { DashbaordCardContainerComponent } from '../../Components/dashbaord-card-container/dashbaord-card-container.component';
 import { ActiveElement } from 'chart.js';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-home',
@@ -33,7 +34,8 @@ export class HomeComponent
     public api: ApiService,
     private router: Router,
     public authService: AuthService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private snackBar: MatSnackBar
   ) { }
 
   privacyRiskCount: number = 0;
@@ -72,7 +74,32 @@ export class HomeComponent
   ngOnInit()
   {
     this.ApiInvocations();
+    this.checkZoomAndNotify();
+    
+    // Optional: detect zoom changes dynamically
+    window.addEventListener('resize', () => this.checkZoomAndNotify());
   }
+
+  private checkZoomAndNotify() {
+    const zoom = this.getBrowserZoom();
+    if (zoom !== 80 && !localStorage.getItem('zoom-notified')) {
+     this.snackBar.open(
+        'For best experience, please set your browser zoom to 80%',
+        'OK',
+        {
+          duration: 5000,
+          horizontalPosition: 'center', // left | center | right
+          verticalPosition: 'top'       // top | bottom
+        }
+      );
+      localStorage.setItem('zoom-notified', 'true'); // prevents repeating
+    }
+  }
+
+  private getBrowserZoom(): number {
+  // Calculate zoom as percentage
+  return Math.round((window.outerWidth / window.innerWidth) * 100);
+}
 
   ApiInvocations() {
     // console.log('Role', this.authService.getProjects());
